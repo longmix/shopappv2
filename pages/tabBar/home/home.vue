@@ -119,6 +119,16 @@
 </template>
 
 <script>
+	var app = getApp();
+	var abotapi = require("../../../common/abotapi.js");
+	
+	console.log(app);
+	
+	console.log('11111111111111111====>>>>'+app.weiduke_server_url);
+	console.log('11111111111111111====>>>>'+app.globalData.weiduke_server_url);
+	
+	
+	
 var ttt = 0;
 //高德SDK
 import amap from '@/common/SDK/amap-wx.js';
