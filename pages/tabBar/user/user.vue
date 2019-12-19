@@ -17,12 +17,13 @@
 		<view class="user">
 			<!-- 头像 -->
 			<view class="left">
-				<image :src="user.face" @tap="toSetting"></image>
+				<label v-if="user_info"><image :src="user_info.headimgurl"></image></label>
+				<label v-else><image src="../../../static/img/face.jpg"></image></label>
 			</view>
 			<!-- 昵称,个性签名 -->
 			<view class="right">
-				<view class="username" @tap="toLogin">{{user.username}}</view>
-				<view class="signature" @tap="toSetting">{{user.signature}}</view>
+				<view class="username"><label v-if="user_info">{{user_info.nickname}}</label><label @click="toLogin" v-else>请点击此处登录</label></view>
+				<view class="signature"><label v-if="user_info">{{user_info.signature}}</label><label v-else></label></view>
 			</view>
 			<!-- 二维码按钮 -->
 			<view class="erweima" @tap="toMyQR">
@@ -52,16 +53,17 @@
 			<view class="balance-info">
 				<view class="left">
 					<view class="box">
-						<view class="num">{{user.integral}}</view>
-						<view class="text">积分</view>
-					</view>
-					<view class="box">
-						<view class="num">{{user.envelope}}</view>
-						<view class="text">佣金</view>
-					</view>
-					<view class="box">
-						<view class="num">{{user.balance}}</view>
+						<view class="num">{{fenxiao_info.balance_yuan}}</view>
 						<view class="text">余额</view>
+					</view>
+					
+					<view class="box">
+						<view class="num">{{fenxiao_info.balance_zengsong_yuan}}</view>
+						<view class="text">赠款</view>
+					</view>
+					<view class="box">
+						<view class="num">{{fenxiao_info.score}}</view>
+						<view class="text">积分</view>
 					</view>
 				</view>
 				<view class="right">
@@ -91,7 +93,9 @@
 	</view>
 </template>
 <script>
-
+	// var abotapi = require("../../../common/abotapi.js");
+	// var app = getApp();
+	
 	export default {
 		data() {
 			return {
@@ -101,14 +105,8 @@
 				statusTop:null,
 				showHeader:true,
 				//个人信息,
-				user:{
-					username:'游客1002',
-					face:'/static/img/face.jpg',
-					signature:'点击昵称跳转登录/注册页',
-					integral:0,
-					balance:0,
-					envelope:0
-				},
+				user_info:'',
+				fenxiao_info:'',
 				// 订单类型
 				orderList:[
 					{text:'待付款',icon:"fukuan"},
@@ -149,39 +147,31 @@
 		},
 		onLoad() {
 			
-			
-			
 			var that = this;
 			uni.request({
 			    url: 'https://yanyubao.tseo.cn/?g=Yanyubao&m=ShopAppWxa&a=get_shop_icon_usercenter',
 			    method: 'post',
 			    data: {
-			      sellerid: 'fNmxUPggP',
-			    
-			    },
+					sellerid: 'fNmxUPggP',
+				},
 			    header: {
-			      'Content-Type': 'application/x-www-form-urlencoded'
+					'Content-Type': 'application/x-www-form-urlencoded'
 			    },
 			    success: function (res) {
-			      console.log('kaafff===', res);
-			      var productlist = res.data.data;
-				  console.log('akafff===', productlist);
-				  that.gooosList = productlist
+					console.log('kaafff===', res);
+					var productlist = res.data.data;
+					console.log('akafff===', productlist);
+					that.gooosList = productlist
 				  
-			      that.setData({
-			        hotKeyList: hotKeyList,
-			      })
 			    },
 			    fail: function (e) {
-			      wx.showToast({
-			        title: '网络异常！',
-			        duration: 2000
-			      });
+					uni.showToast({
+						title: '网络异常！',
+						duration: 2000
+					});
 			    },
-			  });
-			
-			
-			
+			});
+			that.getPage();
 			this.statusHeight = 0;
 			// #ifdef APP-PLUS
 			this.showHeader = false;
@@ -200,6 +190,8 @@
 			});
 		},
 		onShow(){
+			var that = this;
+			that.getPage();
 			uni.getStorage({
 				key: 'UserInfo',
 				success: (res)=>{
@@ -217,6 +209,43 @@
 			});
 		},
 		methods: {
+			//获取用户信息
+			getPage: function () {
+				var userInfo = this.abotapi.get_user_info();
+				var that = this;
+				if(userInfo && userInfo.userid){
+					uni.request({
+						url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
+						data: {
+							sellerid: this.abotapi.globalData.default_sellerid,
+							checkstr: userInfo.checkstr,
+							userid: userInfo.userid,
+							appid: this.abotapi.globalData.xiaochengxu_appid,
+						},
+						header: {
+							"Content-Type": "application/x-www-form-urlencoded"
+						},
+						method: "POST",
+						success: function (res) {
+							console.log('ddd', res);
+				
+							if (res.data.code == "-1") {
+								var last_url = '/pages/user/index';
+								this.abotapi.goto_user_login(last_url, 'normal');
+							} else {
+								var data = res.data;
+								that.user_info = data.data;
+								that.fenxiao_info = that.user_info.fenxiao_info;
+								console.log('data2==>>',that.user_info);
+								console.log('fenxiao_userinfo==>>',that.fenxiao_info);
+							}
+					    }
+					})	
+				}
+			},
+			
+			
+			
 			//消息列表
 			toMsg(){
 				uni.navigateTo({
@@ -238,7 +267,7 @@
 				})
 			},
 			toLogin(){
-				uni.showToast({title: '请登录',icon:"none"});
+				
 				uni.navigateTo({
 					url:'../../login/login'
 				})

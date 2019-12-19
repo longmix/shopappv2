@@ -2,19 +2,19 @@
 	<view>
 		<view class="content">
 			<view class="list">
-				<view class="row">
+				<view class="row"  @click="upLoad()">
 					<view class="title">头像</view>
 					<view class="right"><view class="tis">
-					<image src="/static/img/face.jpg" mode="widthFix"></image>
+					<image :src="user_info.headimgurl" style="width: 100upx;" mode="aspectFit"></image>
 					</view><view class="icon xiangyou"></view></view>
 				</view>
 				<view class="row">
 					<view class="title">昵称</view>
-					<view class="right"><view class="tis">大黑哥</view><view class="icon xiangyou"></view></view>
+					<view class="right"><view class="tis"> <input type="text" :value="user_info.nickname" style="text-align: right;margin-right: 32upx;" name="nickname" @input="nameInput"/></view></view>
 				</view>
 				<view class="row">
 					<view class="title">个性签名</view>
-					<view class="right"><view class="tis">这人太懒了，什么都不写</view><view class="icon xiangyou"></view></view>
+					<view class="right"><view class="tis">{{user_info.signature}}</view><view class="icon xiangyou"></view></view>
 				</view>
 				<view class="row">
 					<view class="title">收货地址</view>
@@ -57,22 +57,213 @@
 					<view class="right"><view class="tis"></view><view class="icon xiangyou"></view></view>
 				</view>
 			</view>
+			<view class="list">
+				<view style="text-align: center;" @click="keep_button()">确认修改</view>
+			</view>
+			<view class="list">
+				<view style="text-align: center;" @click="logout()">退出登录</view>
+			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	var abotapi = require("../../../common/abotapi.js");
+	var app = getApp();
+	var userInfo = abotapi.get_user_info();
 	export default {
 		data() {
 			return {
+				user_info:'',
+				nickname:''
 				
 			};
 		},
+		
+		
+		onLoad:function(options) {
+			var that = this;
+			var userInfo = abotapi.get_user_info();
+			if ((!userInfo) || (!userInfo.userid)) {
+				uni.redirectTo({
+					url: '../../login/login',
+				})
+				return;
+			  }
+			that.getPage();
+		},
 		methods: {
+			//退出登录
+			logout: function () {
+				abotapi.del_user_info();
+			    
+				var sellerid = app.globalData.default_sellerid;
+				if(typeof(sellerid) != 'undefined'){
+			        if(sellerid.length > 15){
+						uni.clearStorageSync();
+						console.log('清空完成，sellerid：'+abotapi.get_sellerid());
+					}
+				}
+			
+				uni.clearStorageSync();
+				
+				uni.switchTab({
+					url: '/pages/tabBar/home/home'
+				})
+				
+			},
+			
+			//获取用户信息
+			getPage: function () {
+				var that = this;
+				if(userInfo && userInfo.userid){
+					uni.request({
+						url: app.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
+						data: {
+							sellerid: app.globalData.default_sellerid,
+							checkstr: userInfo.checkstr,
+							userid: userInfo.userid,
+							appid: app.globalData.xiaochengxu_appid,
+						},
+						header: {
+							"Content-Type": "application/x-www-form-urlencoded"
+						},
+						method: "POST",
+						success: function (res) {
+							console.log('ddd', res);
+				
+							if (res.data.code == "-1") {
+								var last_url = '/pages/user/index';
+								abotapi.goto_user_login(last_url, 'normal');
+							} else {
+								var data = res.data;
+								that.user_info = data.data;
+								console.log('data2==>>',that.user_info);
+							}
+					    }
+					})	
+				}
+			},
+			
+			
 			showType(tbIndex){
 				this.tabbarIndex = tbIndex;
 				this.list = this.orderList[tbIndex];
-			}
+			},
+			//获取输入的nickname
+			nameInput: function(e) {
+				console.log("e",e);
+				// console.log('that.data' + that.data);
+				var that = this;
+			    if (e.detail.value == that.user_info.nickname){
+					this.nickname = e.detail.value;
+				}else{
+					that.user_info.nickname = e.detail.value;
+				}
+			},	
+			//修改用户名字
+			keep_button:function(){
+				var that = this;
+			    console.log('that.data.nickname', that.user_info.nickname);
+			    console.log('this.nickname', this.nickname);
+			    if(this.nickname==that.user_info.nickname){
+				uni.showToast({
+					title: '保存成功',
+					icon: 'success',
+					duration: 2000
+				});
+					return;
+			    }
+				console.log(1111555555);
+				uni.request({
+					url: app.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=user_info_save',
+					header: {  
+						"Content-Type": "application/x-www-form-urlencoded"  
+					}, 
+					method: "POST",  
+					data: {
+						nickname:that.user_info.nickname,
+						checkstr:userInfo.checkstr,
+						userid:userInfo.userid,
+						sellerid: app.globalData.default_sellerid,
+					},    
+					success:function(res){
+						console.log('success',res);
+						if(res.data.code == 1){
+							uni.showToast({
+								title: res.data.msg,
+								icon: 'success',
+								duration: 2000
+							})
+							// uni.redirectTo({
+							// 	url: '../../tabBar/user/user'
+			          
+							// })
+							return;
+						}
+						else if(res.data.code == 0){
+							uni.showToast({
+								title: '修改成功',
+								icon: 'success',
+								duration: 2000
+							})
+						}
+					},
+					fail:function(res){
+						console.log('failfail',res)
+					}
+			    });
+			
+			},
+			
+			//修改头像
+			upLoad:function(){
+				var that=this;
+				uni.chooseImage({
+					success: function(chooseImageRes) {
+						count:1;
+						sizeType: ['compressed'];
+						console.log("chooseImageRes",chooseImageRes);
+						var headimgurl = chooseImageRes.tempFilePaths[0];
+						uni.uploadFile({
+							url: app.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=upload_image_file',
+							filePath: headimgurl,
+							name: 'file',
+							formData: {
+								sellerid: app.globalData.default_sellerid,
+								checkstr: userInfo.checkstr,
+								userid: userInfo.userid,
+							},
+							success: function (res) {
+								var obj = res.data;
+								console.log('obj',obj);
+								
+								uni.request({
+									url: app.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=set_image_headimgurl', 
+									data: {
+										sellerid: app.globalData.default_sellerid,
+										checkstr: userInfo.checkstr,
+										userid: userInfo.userid,
+										img_url: obj.img_url
+									},
+									header: {
+										"Content-Type": "application/x-www-form-urlencoded"
+									},
+									method: "POST",
+									success: function (res) {
+										uni.showToast({
+											title: res.data.msg,
+											icon: 'success',
+											duration: 2000
+										});
+									}
+							  });
+							}
+						});
+					}
+				});
+			},
+			
 		}
 	}
 </script>

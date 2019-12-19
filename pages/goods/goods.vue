@@ -134,16 +134,16 @@
 		</view>
 		<!-- 标题 价格 -->
 		<view class="info-box goods-info">
-			<view class="price">￥{{a001.price}}</view>
+			<view class="price">￥{{goods_detail.price}}</view>
 			<view class="title">
-				{{a001.name}}
+				{{goods_detail.name}}
 			</view>
 		</view>
-		<!-- 服务-规则选择 -->
+		<!-- 服务-规格选择 -->
 		<view class="info-box spec">
 			<view class="row" @tap="showService">
 				<view class="text">服务</view>
-				<view class="content"><view class="serviceitem" v-for="(item,index) in goodsData.service" :key="index">{{item.name}}</view></view>
+				<view class="content"><view class="serviceitem">{{goods_detail.brief}}</view></view>
 				<view class="arrow"><view class="icon xiangyou"></view></view>
 			</view>
 			<view class="row" @tap="showSpec(false)">
@@ -182,17 +182,18 @@
 		<!-- 详情 -->
 		<view class="description">
 			<view class="title">———— 商品详情 ————</view>
-			
-			 <!-- <scroll-view  scroll-y='true'>
-				   <template is="wxParse" data='{{a001.describe}}'/>
-			</scroll-view> -->
-			<view class="content"><rich-text :nodes="describe001"></rich-text></view>
+			<view class="content">
+				<rich-text :nodes="describe"></rich-text>
+			</view>
 			
 		</view>
 	</view>
 </template>
 
 <script>
+	// var app = getApp();
+	// var abotapi = require("../../common/abotapi.js");
+	var productid;
 export default {
 	data() {
 		return {
@@ -207,6 +208,7 @@ export default {
 			// #endif
 			//轮播主图数据
 			picture001:'',
+			goods_detail:'',
 			swiperList: [
 				{ id: 1, img: 'https://ae01.alicdn.com/kf/HTB1Mj7iTmzqK1RjSZFjq6zlCFXaP.jpg' },
 				{ id: 2, img: 'https://ae01.alicdn.com/kf/HTB1fbseTmzqK1RjSZFLq6An2XXaL.jpg' },
@@ -222,10 +224,9 @@ export default {
 			specClass: '',//规格弹窗css类，控制开关动画
 			shareClass:'',//分享弹窗css类，控制开关动画
 			// 商品信息
-			a001:'',
 			goodsData:{
 				id:1,
-				name:"商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题",
+				name:"商品标题商品标题商品标题",
 				price:"127.00",
 				number:1,
 				service:[
@@ -244,43 +245,42 @@ export default {
 			selectSpec:null,//选中规格
 			isKeep:false,//收藏
 			//商品描述html
-			describe001:'',
+			describe:'',
 			descriptionStr:'<div style="text-align:center;"><img width="100%" src="https://ae01.alicdn.com/kf/HTB1t0fUl_Zmx1VjSZFGq6yx2XXa5.jpg"/><img width="100%" src="https://ae01.alicdn.com/kf/HTB1LzkjThTpK1RjSZFKq6y2wXXaT.jpg"/><img width="100%" src="https://ae01.alicdn.com/kf/HTB18dkiTbvpK1RjSZPiq6zmwXXa8.jpg"/></div>'
 		};
 	},
 	onLoad(option) {
 		
 		console.log('44444444444',option);
+		this.productid = option.productid;
 		var that = this;
 		uni.request({
-		    url: 'https://yanyubao.tseo.cn/?g=Yanyubao&m=ShopAppWxa&a=product_detail',
+		    url: this.abotapi.globalData.yanyubao_server_url +  '?g=Yanyubao&m=ShopAppWxa&a=product_detail',
 		    method: 'post',
 		    data: {
-		      
-		    
-		     productid:option.productid //可变性id
+				productid:this.productid
 		    },
 		    header: {
-		      'Content-Type': 'application/x-www-form-urlencoded'
+				'Content-Type': 'application/x-www-form-urlencoded'
 		    },
 		    success: function (res) {
-		      console.log('5555588558===', res);
-		      var product_detail = res.data.data;
-			  console.log('cccafff===', product_detail);
-			  that.a001 = product_detail
-			  // WxParse.wxParse('a001.describe', 'html', a001.describe, that, 15);
-		      that.describe001 = that.a001.describe;
-			  that.picture001 = that.a001.picture_list;
+				console.log('5555588558===', res);
+			  
+				if(res.data.code == 1){
+					that.goods_detail = res.data.data;
+					console.log('that.goods_detail',that.goods_detail);
+					that.describe = that.goods_detail.describe;
+					// that.picture001 = that.a001.picture_list;
+				}
+				// console.log("that.describe001",that.describe001);
 		    },
 		    fail: function (e) {
-		      wx.showToast({
-		        title: '网络异常！',
-		        duration: 2000
-		      });
+				uni.showToast({
+					title: '网络异常！',
+					duration: 2000
+				});
 		    },
-		  });
-		
-		
+		});
 		
 		// #ifdef MP
 		//小程序隐藏返回按钮
@@ -344,12 +344,45 @@ export default {
 		},
 		// 加入购物车
 		joinCart(){
-			if(this.selectSpec==null){
-				return this.showSpec(()=>{
-					uni.showToast({title: "已加入购物车"});
-				});
+			var that = this;
+			var userInfo = this.abotapi.get_user_info();
+			if(!userInfo || !userInfo.userid){
+				
+				var last_url = '/pages/goods/goods';
+				this.app.goto_user_login(last_url,'normal');
+				return;
 			}
-			uni.showToast({title: "已加入购物车"});
+			uni.request({
+				url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=cart_add',
+				method: 'post',
+				data: {
+					amount: 1, 
+					checkstr: userInfo.checkstr,
+					productid: that.goods_detail.productid,
+					sellerid: this.abotapi.get_sellerid(),
+					userid: userInfo.userid,
+				},
+				header: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+				},
+				success: function (res) {
+					uni.showToast({
+						title: '添加成功',
+					});
+				},
+				fail: function (e) {
+					uni.showToast({
+						title: '添加失败',
+					});
+				},
+			});
+			
+			// if(this.selectSpec==null){
+			// 	return this.showSpec(()=>{
+			// 		uni.showToast({title: "已加入购物车"});
+			// 	});
+			// }
+			// uni.showToast({title: "已加入购物车"});
 		},
 		//立即购买
 		buy(){
@@ -862,10 +895,9 @@ page {
 	.layer {
 		position: fixed;
 		z-index: 22;
-		bottom: -70%;
+		bottom: -69%;
 		width: 92%;
 		padding: 0 4%;
-		height: 70%;
 		border-radius: 20upx 20upx 0 0;
 		background-color: #fff;
 		display: flex;

@@ -36,31 +36,24 @@
 				</swiper>
 				<view class="indicator">
 					<view
-						class="dots"
-						v-for="(swiper, index) in swiperList"
-						:class="[currentSwiper >= index ? 'on' : '']"
-						:key="index"
-					></view>
+						class="dots" v-for="(swiper, index) in swiperList" :class="[currentSwiper >= index ? 'on' : '']" :key="index"></view>
 				</view>
 			</view>
 		</view>
 		
 		
 		<!-- 分类列表 -->
-		<view class="category-list">
-			<view
-				class="category"
-				v-for="(row, index) in categoryList"
-				:key="index"
-				@tap="toCategory(row)"
-			>
-				<view class="img"><image :src="row.img"></image></view>
-				<view class="text">{{ row.name }}</view>
+		<view class="category-list" style="margin-left: 11%;" v-if="cb_params.wxa_show_index_icon == 1">
+			<view class="category" v-for="(item, index) in index_icon_list"	:key="index"> <!--  -->
+				<navigator :url="item.url">
+					<view class="img"><image :src="item.src"></image></view>
+					<view class="text">{{ item.name }}</view>
+				</navigator>
 			</view>
 		</view>
 		<!-- 广告图 -->
 		<view v-for="tab in pictures">
-		<view class="banner" ><image :src="tab.image"></image></view>
+			<view class="banner" ><image :src="tab.image"></image></view>
 		</view>
 		<!-- 活动区 -->
 		<view class="promotion">
@@ -98,37 +91,22 @@
 				<image src="/static/img/hua.png"></image>
 			</view>
 			<view class="product-list">
-				<view
-					class="product"
-					v-for="product in productList"
-					:key="product.goods_id"
-					@tap="toGoods(product)"
-				>
+				<view class="product" v-for="product in productList" :key="product.goods_id" @tap="toGoods(product)">
 					<image mode="widthFix" :src="product.picture"></image>
 					<view class="name">{{ product.name }}</view>
 					<view class="info">
 						<view class="price">{{ product.price }}</view>
 						<view class="slogan">{{ product.slogan }}</view>
-						
 					</view>
 				</view>
 			</view>
-			<view class="loading-text">{{ loadingText }}</view>
+			<view class="loading-text"><label v-if="!productList">{{ loadingText }}</label></view>
 		</view>
 	</view>
 </template>
 
 <script>
-	var app = getApp();
-	var abotapi = require("../../../common/abotapi.js");
-	
-	console.log(app);
-	
-	console.log('11111111111111111====>>>>'+app.weiduke_server_url);
-	console.log('11111111111111111====>>>>'+app.globalData.weiduke_server_url);
-	
-	
-	
+
 var ttt = 0;
 //高德SDK
 import amap from '@/common/SDK/amap-wx.js';
@@ -141,6 +119,13 @@ export default {
 			headerTop:null,
 			statusTop:null,
 			nVueTitle:null,
+			productLists:'',
+			pictures:'',
+			yingxiao_list:'',
+			page:1,
+			page_size:5,
+			is_OK:false,
+			cb_params:'',
 			city: '北京',
 			currentSwiper: 0,
 			// 轮播图片
@@ -150,92 +135,11 @@ export default {
 				{ id: 2, src: 'url2', img: '/static/img/2.jpg' },
 				{ id: 3, src: 'url3', img: '/static/img/3.jpg' }
 			],
-			// 分类菜单
-			categoryList: [
-				{ id: 1, name: '办公', img: '/static/img/category/1.png' },
-				{ id: 2, name: '家电', img: '/static/img/category/2.png' },
-				{ id: 3, name: '服饰', img: '/static/img/category/3.png' },
-				{ id: 4, name: '日用', img: '/static/img/category/4.png' },
-				{ id: 5, name: '蔬果', img: '/static/img/category/5.png' },
-				{ id: 6, name: '运动', img: '/static/img/category/6.png' },
-				{ id: 7, name: '书籍', img: '/static/img/category/7.png' },
-				{ id: 8, name: '文具', img: '/static/img/category/8.png' }
-			],
+			index_icon_list:'',
 			Promotion: [],
 			//猜你喜欢列表
 		
-			productList: [
-				{
-					goods_id: 0,
-					img: '/static/img/goods/p1.jpg',
-					name: '商品名称商品名称商品名称商品名称商品名称',
-					price: '￥168',
-					slogan: '1235人付款'
-				},
-				{
-					goods_id: 1,
-					img: '/static/img/goods/p2.jpg',
-					name: '商品名称商品名称商品名称商品名称商品名称',
-					price: '￥168',
-					slogan: '1235人付款'
-				},
-				{
-					goods_id: 2,
-					img: '/static/img/goods/p3.jpg',
-					name: '商品名称商品名称商品名称商品名称商品名称',
-					price: '￥168',
-					slogan: '1235人付款'
-				},
-				{
-					goods_id: 3,
-					img: '/static/img/goods/p4.jpg',
-					name: '商品名称商品名称商品名称商品名称商品名称',
-					price: '￥168',
-					slogan: '1235人付款'
-				},
-				{
-					goods_id: 4,
-					img: '/static/img/goods/p5.jpg',
-					name: '商品名称商品名称商品名称商品名称商品名称',
-					price: '￥168',
-					slogan: '1235人付款'
-				},
-				{
-					goods_id: 5,
-					img: '/static/img/goods/p6.jpg',
-					name: '商品名称商品名称商品名称商品名称商品名称',
-					price: '￥168',
-					slogan: '1235人付款'
-				},
-				{
-					goods_id: 6,
-					img: '/static/img/goods/p7.jpg',
-					name: '商品名称商品名称商品名称商品名称商品名称',
-					price: '￥168',
-					slogan: '1235人付款'
-				},
-				{
-					goods_id: 7,
-					img: '/static/img/goods/p8.jpg',
-					name: '商品名称商品名称商品名称商品名称商品名称',
-					price: '￥168',
-					slogan: '1235人付款'
-				},
-				{
-					goods_id: 8,
-					img: '/static/img/goods/p9.jpg',
-					name: '商品名称商品名称商品名称商品名称商品名称',
-					price: '￥168',
-					slogan: '1235人付款'
-				},
-				{
-					goods_id: 9,
-					img: '/static/img/goods/p10.jpg',
-					name: '商品名称商品名称商品名称商品名称商品名称',
-					price: '￥168',
-					slogan: '1235人付款'
-				}
-			],
+			productList:'',
 			loadingText: '正在加载...'
 		};
 	},
@@ -256,152 +160,66 @@ export default {
 	},
 	//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
 	onReachBottom() {
-		uni.showToast({ title: '触发上拉加载' });
-		let len = this.productList.length;
-		if (len >= 40) {
-			this.loadingText = '到底了';
-			return false;
+		var that = this;
+		var page = that.page;
+		that.page++;
+		
+		if(this.is_OK){
+			uni.showToast({
+				title: '暂无数据',
+				duration: 2000
+			});
+			return;
 		}
-		// 演示,随机加入商品,生成环境请替换为ajax请求
-		let end_goods_id = this.productList[len - 1].goods_id;
-		for (let i = 1; i <= 10; i++) {
-			let goods_id = end_goods_id + i;
-			let p = {
-				goods_id: goods_id,
-				img:
-					'/static/img/goods/p' + (goods_id % 10 == 0 ? 10 : goods_id % 10) + '.jpg',
-				name: '商品名称商品名称商品名称商品名称商品名称',
-				price: '￥168',
-				slogan: '1235人付款'
-			};
-			this.productList.push(p);
-		}
+		uni.request({
+		    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
+		    method: 'post',
+		    data: {
+				sellerid:this.abotapi.globalData.default_sellerid,
+				sort: 1,
+				page: that.page,
+				page_size:that.page_size,
+		    },
+		    header: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+		    },
+		    success: function (res) {
+				console.log('bbafff===', res);
+				
+				if(res.data.code == 1){
+					that.is_OK = false;
+					that.productList = that.productList.concat(res.data.product_list);
+					console.log('超过一页',that.productList)
+					uni.stopPullDownRefresh();//得到数据后停止下拉刷新
+				}else if(res.data.code == 0){
+					that.is_OK = true;
+					uni.showToast({
+						title: '暂无数据',
+						duration: 2000
+					});
+					return;
+				}
+		    },
+		    fail: function (e) {
+				uni.showToast({
+					title: '暂无数据！',
+					duration: 2000
+				});
+		    },
+		});
 	},
 	onLoad() {
 		var that = this;
-		uni.request({
-		    url: 'https://yanyubao.tseo.cn/?g=Yanyubao&m=ShopAppWxa&a=product_list',
-		    method: 'post',
-		    data: {
-		      sellerid: 'fNmxUPggP', 
-		      sort: 1,
-		      page: 1,
-		    },
-		    header: {
-		      'Content-Type': 'application/x-www-form-urlencoded'
-		    },
-		    success: function (res) {
-		      console.log('bbafff===', res);
-		      var productlist = res.data.product_list;
-			  console.log('baafff===', productlist);
-			  that.productList = productlist
-			   
-			   
-			   
-		      that.setData({
-		        hotKeyList: hotKeyList,
-		      })
-		    },
-		    fail: function (e) {
-		      wx.showToast({
-		        title: '网络异常！',
-		        duration: 2000
-		      });
-		    },
-		  });
-		  
-		  var that = this;
-		  uni.request({						//顶部轮播图片请求
-		      url: 'https://yanyubao.tseo.cn/?g=Yanyubao&m=ShopAppWxa&a=get_flash_ad_list',
-		      method: 'post',
-		      data: {
-		        sellerid: 'fNmxUPggP', 
-		        type:4
-		      },
-		      header: {
-		        'Content-Type': 'application/x-www-form-urlencoded'
-		      },
-		      success: function (res) {
-		        console.log('uuufff===', res);
-		        var productlist = res.data.data;
-		  	  console.log('uuifff===', productlist);
-		  	  that.productLists = productlist
-		  	   
-		  	   
-		  	   
-		        that.setData({
-		          hotKeyList: hotKeyList,
-		        })
-		      },
-		      fail: function (e) {
-		        wx.showToast({
-		          title: '网络异常！',
-		          duration: 2000
-		        });
-		      },
-		    });
-			
-			var that = this;
-			uni.request({									//平铺广告请求
-			    url: 'https://yanyubao.tseo.cn/?g=Yanyubao&m=ShopAppWxa&a=get_flash_img_list',
-			    method: 'post',
-			    data: {
-			      sellerid: 'fNmxUPggP', 
-			        type:5
-			    },
-			    header: {
-			      'Content-Type': 'application/x-www-form-urlencoded'
-			    },
-			    success: function (res) {
-			      console.log('wbafff===', res);
-			      var tilepicture = res.data.data;
-				  console.log('qaafff===', tilepicture);
-				  that.pictures = tilepicture
-		   
-			      
-			    },
-			    fail: function (e) {
-			      wx.showToast({
-			        title: '网络异常！',
-			        duration: 2000
-			      });
-			    },
-			  });
+		
+		this.abotapi.set_option_list_str(this, this.callback_function);
 		
 		
+		that.get_product_list();
+		that.get_flash_ad_list();	
+		that.get_flash_img_list();
+		that.yingxiao();
+		that.get_shop_icon_index();
 		
-		var that = this;
-		uni.request({								//商户头条请求
-		    url: 'https://cms.weiduke.com/?g=Home&m=Yanyubao&a=yingxiao',
-		    method: 'post',
-		    data: {
-		      sellerid: 'fNmxUPggP', 
-		      id: 'seller',
-			  action: 'list',			
-			  currentpage: 1
-		    },
-		    header: {
-		      'Content-Type': 'application/x-www-form-urlencoded'
-		    },
-		    success: function (res) {
-		      console.log('eeafff===', res);
-		      var productlist = res.data.product_list;
-			  console.log('wwwafff===', productlist);
-			  that.productList = productlist
-			   
-			   
-			   
-		      that.setData({
-		        hotKeyList: hotKeyList,
-		      })
-		    },
-		    fail: function (e) {
-		      wx.showToast({
-		        title: '网络异常！',
-		        duration: 2000
-		      });
-		    },
-		  });
 		
 		// #ifdef APP-PLUS
 		this.nVueTitle = uni.getSubNVueById('homeTitleNvue');
@@ -433,6 +251,163 @@ export default {
 		this.loadPromotion();
 	},
 	methods: {
+		
+		callback_function:function(that, cb_params){
+			
+			if(!cb_params){
+				return;
+			}
+			
+			
+			
+			console.log('cb_params====', cb_params);
+			
+		},
+		
+		
+		//猜你喜欢
+		get_product_list:function(){
+			var that = this;
+			uni.request({
+			    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
+			    method: 'post',
+			    data: {
+					sellerid:this.abotapi.globalData.default_sellerid,
+					sort: 1,
+					page: that.page,
+					page_size:that.page_size,
+			    },
+			    header: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+			    },
+			    success: function (res) {
+					console.log('bbafff===', res);
+					
+					if(res.data.code == 1){
+						that.is_OK = false;
+						that.productList = res.data.product_list;
+						if(that.page == 1){
+							console.log('第一页')
+							that.productList = res.data.product_list;
+							console.log('第一页index',that.productList)
+						}
+					}
+			    },
+			    fail: function (e) {
+					uni.showToast({
+						title: '网络异常！',
+						duration: 2000
+					});
+			    },
+			});
+		},
+		
+		//顶部轮播图片请求
+		get_flash_ad_list:function(){
+			var that = this;
+			uni.request({						
+			    url: this.abotapi.globalData.yanyubao_server_url +  '?g=Yanyubao&m=ShopAppWxa&a=get_flash_ad_list',
+			    method: 'post',
+			    data: {
+					sellerid:this.abotapi.globalData.default_sellerid,
+					type:4
+			    },
+			    header: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+			    },
+			    success: function (res) {
+					console.log('uuufff===', res);
+					var productlist = res.data.data;
+					console.log('uuifff===', productlist);
+					that.productLists = productlist
+				  
+			    },
+			    fail: function (e) {
+					uni.showToast({
+						title: '网络异常！',
+						duration: 2000
+					});
+			    },
+			});
+		},
+		
+		
+		//平铺广告请求
+		get_flash_img_list:function(){
+			var that = this;
+			uni.request({									
+			    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_flash_img_list',
+			    method: 'post',
+			    data: {
+					sellerid:this.abotapi.globalData.default_sellerid,
+					type:5
+			    },
+			    header: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+			    },
+			    success: function (res) {
+					console.log('wbafff===', res);
+					that.pictures = res.data.data;
+					console.log('pictures',that.pictures);
+			    },
+			    fail: function (e) {
+					uni.showToast({
+						title: '网络异常！',
+						duration: 2000
+					});
+				},
+			});
+		},
+		
+		//商户头条
+		yingxiao:function(){
+			var that = this;
+			uni.request({
+				url : this.abotapi.globalData.weiduke_server_url + '?g=Home&m=Yanyubao&a=yingxiao',
+				method:'POST',
+				data: {
+					id: 'seller',
+					action: 'list',
+					sellerid:this.abotapi.globalData.default_sellerid,
+					currentpage: 1
+				},
+				header:{'Content-Type': 'application/x-www-form-urlencoded'},
+				success:function(res){
+					console.log('res1',res);
+					if(res.data.code == 1){
+						that.yingxiao_list = res.data.data;
+						console.log('yingxiao_list',that.yingxiao_list);
+					}
+				},
+				fail:function(res){
+					console.log('res2',res);
+				},
+			});
+			
+		},
+		
+		//首页分类图标
+		get_shop_icon_index:function(){
+			var that = this;
+			uni.request({
+				url:this.abotapi.globalData.yanyubao_server_url+'?g=Yanyubao&m=ShopAppWxa&a=get_shop_icon_index',
+				method:'POST',
+				header:{'Content-Type': 'application/x-www-form-urlencoded'},
+				data:{
+					sellerid:this.abotapi.globalData.default_sellerid,
+				},
+				success(res) {
+					// console.log('87878787',res);
+					var data = res.data;
+					console.log("data===",data);
+					if(data.code == 1){
+						that.index_icon_list = data.data;
+					}
+				
+				}
+			});
+		},
+		
 		//加载Promotion 并设定倒计时,,实际应用中应该是ajax加载此数据。
 		loadPromotion() {
 			let cutTime = new Date();
@@ -538,10 +513,11 @@ export default {
 		},
 		//分类跳转
 		toCategory(e) {
+			console.log('e',e);
 			//uni.showToast({title: e.name,icon:"none"});
-			uni.setStorageSync('catName',e.name);
+			// uni.setStorageSync('catName',e.name);
 			uni.navigateTo({
-				url: '../../goods/goods-list/goods-list?cid='+e.id+'&name='+e.name
+				url: '../../goods/goods-list/goods-list?cataid=' + e
 			});
 		},
 		//推荐商品跳转

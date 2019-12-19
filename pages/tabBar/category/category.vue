@@ -17,24 +17,24 @@
 		<view class="category-list">
 			<!-- 左侧分类导航 -->
 			<scroll-view  scroll-y="true" class="left" >
-                <view class="row" v-for="(category,index) in categoryList" :key="category.id" :class="[index==showCategoryIndex?'on':'']" @tap="showCategory(index)">
+                <view class="row" v-for="(item,index) in categoryList" :key="item.cataid" @click="tapType(item.cataid)" > <!-- :class="[index==showCategoryIndex?'on':'']" @tap="showCategory(index)"  -->
 					<view class="text">
 						<view class="block"></view>
-						{{category.title}}
+						{{item.name}}
 					</view>
 				</view>
 				
             </scroll-view>
 			<!-- 右侧子导航 -->
 			<scroll-view  scroll-y="true" class="right" >
-			    <view class="category" v-for="(category,index) in categoryList" :key="category.id" v-show="index==showCategoryIndex" >
-					<view class="banner">
-						<image :src="category.banner"></image>
+			    <view class="category" v-for="(item2,index) in cataList" :key="item2.cataid" @click="toCategory(item2.cataid)"> <!--  v-show="index==showCategoryIndex" -->
+					<view class="banner" >
+						<image :src="item2.icon"></image>
 					</view>
 					<view class="list">
-						<view class="box" v-for="(box,i) in category.list" :key="i" @tap="toCategory(box)">
-							<image :src="'/static/img/category/list/'+box.img"></image>
-							<view class="text">{{box.name}}</view>
+						<view class="box">
+							<!-- <image :src="item.icon"></image> -->
+							<view class="text">{{item2.name}}</view>
 						</view>
 					</view>
 				</view>
@@ -45,6 +45,8 @@
 <script>
 	//高德SDK
 	import amap from '@/common/SDK/amap-wx.js';
+	var app = getApp();
+	// var abotapi = require("../../../common/abotapi.js");
 	export default {
 		data() {
 			return {
@@ -52,45 +54,12 @@
 				headerPosition:"fixed",
 				city:"北京",
 				//分类列表
-				categoryList:[
-					{id:1,title:'家用电器',banner:'/static/img/category/banner.jpg',list:[
-						{name:'冰箱',	img:'1.jpg'},
-						{name:'电视',	img:'2.jpg'},
-						{name:'空调',	img:'3.jpg'},
-						{name:'洗衣机',	img:'4.jpg'},
-						{name:'风扇',	img:'5.jpg'},
-						{name:'燃气灶',	img:'6.jpg'},
-						{name:'热水器',	img:'7.jpg'},
-						{name:'电吹风',	img:'8.jpg'},
-						{name:'电饭煲',	img:'9.jpg'}
-					]},
-					{id:2,title:'办公用品',banner:'/static/img/category/banner.jpg',list:[
-						{name:'打印机',	img:'1.jpg'},
-						{name:'路由器',	img:'2.jpg'},
-						{name:'扫描仪',	img:'3.jpg'},
-						{name:'投影仪',	img:'4.jpg'},
-						{name:'墨盒',	img:'5.jpg'},
-						{name:'纸类',	img:'6.jpg'}
-					]},
-					{id:3,title:'日常用品',banner:'/static/img/category/banner.jpg',list:[
-						{name:'茶具',	img:'1.jpg'},
-						{name:'花瓶',	img:'2.jpg'},
-						{name:'纸巾',	img:'3.jpg'},
-						{name:'毛巾',	img:'4.jpg'},
-						{name:'牙膏',	img:'5.jpg'},
-						{name:'保鲜膜',	img:'6.jpg'},
-						{name:'保鲜袋',	img:'7.jpg'}
-					]},
-					{id:4,title:'蔬菜水果',banner:'/static/img/category/banner.jpg',list:[
-						{name:'苹果',	img:'1.jpg'},
-						{name:'芒果',	img:'2.jpg'},
-						{name:'椰子',	img:'3.jpg'},
-						{name:'橙子',	img:'4.jpg'},
-						{name:'奇异果',	img:'5.jpg'},
-						{name:'玉米',	img:'6.jpg'},
-						{name:'百香果',	img:'7.jpg'}
-					]},
-				]
+				categoryList:'',
+				cataList:'',
+				// typeTree:{},
+				currType:0,
+				"types":[],
+				typeTree:[]
 			}
 		},
 		onPageScroll(e){
@@ -102,6 +71,11 @@
 			}
 		},
 		onLoad() {
+			
+			// this.abotapi.getColor();
+			
+			
+			
 			this.amapPlugin = new amap.AMapWX({  
 				//高德地图KEY，随时失效，请务必替换为自己的KEY，参考：http://ask.dcloud.net.cn/article/35070
 				key: '7c235a9ac4e25e482614c6b8eac6fd8e'  
@@ -111,9 +85,89 @@
 				success: (data) => {
 					this.city = data[0].regeocodeData.addressComponent.city.replace(/市/g,'');//把"市"去掉
 				}  
-			}); 
+			});
+			var that = this;
+			uni.request({
+				url: app.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_cata_level2',
+				method:'post',
+				data: {
+				 // 'cataid': 'fXiNUPaWV',
+				  sellerid: app.globalData.default_sellerid
+				},
+				header: {
+					'Content-Type':  'application/x-www-form-urlencoded'
+				},
+				success: function (res) {
+					if(res.data.code == 1) { 
+						// var that = this;
+						that.categoryList = res.data.data;
+						console.log("categoryList",that.categoryList);
+						// var typeTree = that.categoryList[0].sub_cata;
+						var currType = that.categoryList[0].cataid;
+                        this.currType = currType;
+						console.log("this.currType",this.currType);
+						
+						
+						
+						uni.request({
+							url: app.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_cata_supplier',
+							method:'post',
+							data: {
+							  sellerid: app.globalData.default_sellerid,
+							  cataid:currType
+							  },
+							header: {
+								'Content-Type':  'application/x-www-form-urlencoded'
+							},
+							success: function (res) {
+								// var code = res.data.code;
+								console.log(res.data);
+								if(res.data.code==1) { 
+									that.cataList = res.data.data;
+									console.log("cataList",that.cataList);
+									console.log(res.data);
+									
+								} else {
+									uni.showToast({
+										title:res.data.err,
+										duration:2000,
+									});
+								}
+							},
+							error:function(e){
+								uni.showToast({
+									title:'网络异常！',
+									duration:2000,
+								});
+							}
+						});
+						
+					} else {
+						uni.showToast({
+							title:res.data.err,
+							duration:2000,
+						});
+					}    
+				},
+				error:function(e){
+					uni.showToast({
+						title:'网络异常！',
+						duration:2000,
+					});
+				},
+	
+			});
+			
+			// that.tapType();
+			
+			
+			
 		},
 		methods: {
+			callback_function:function(that, cb_params){
+				console.log('cb_params====',cb_params)
+			},
+			
 			//消息列表
 			toMsg(){
 				uni.navigateTo({
@@ -125,15 +179,72 @@
 				this.showCategoryIndex = index;
 			},
 			toCategory(e){
-				uni.setStorageSync('catName',e.name);
+				console.log('e',e);
+				// uni.setStorageSync('catName',e.name);
 				uni.navigateTo({
-					url: '../../goods/goods-list/goods-list?cid='+e.id+'&name='+e.name
+					url: '../../goods/goods-list/goods-list?cataid='+e
 				});
 			},
 			//搜索跳转
 			toSearch(){
 				uni.showToast({title: "建议跳转到新页面做搜索功能"});
-			}
+			},
+			
+			tapType: function (e){
+				console.log('e',e);
+				var that = this;
+				that.currType = e;
+				console.log(that.currType);
+				
+				uni.request({
+					url: app.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_cata_supplier',
+					method:'post',
+					data: {
+					  sellerid: app.globalData.default_sellerid,
+					  cataid:that.currType
+					  },
+					header: {
+						'Content-Type':  'application/x-www-form-urlencoded'
+					},
+					success: function (res) {
+						// var code = res.data.code;
+						console.log(res.data);
+						if(res.data.code==1) { 
+							that.cataList = res.data.data;
+							console.log("cataList",that.cataList);
+							console.log(res.data);
+							
+						} else {
+							uni.showToast({
+								title:res.data.err,
+								duration:2000,
+							});
+						}
+					},
+					error:function(e){
+						uni.showToast({
+							title:'网络异常！',
+							duration:2000,
+						});
+					}
+				});
+			},
+			// 加载品牌、二级类目数据
+			// getTypeTree (currType) {
+			// 	const me = this, _data = me.data;
+			// 	if(!_data.typeTree[currType]){
+			// 		request({
+			// 			url: ApiList.goodsTypeTree,
+			// 			data: {typeId: +currType},
+			// 			success: function (res) {
+			// 				_data.typeTree[currType] = res.data.data;
+			// 				me.setData({
+			// 					typeTree: _data.typeTree
+			// 				});
+			// 			}
+			// 		});
+			// 	}
+			// }
 		}
 	}
 </script>
@@ -286,8 +397,9 @@
 		   width: 76%;
 			left: 24%;
 			.category{
-				width: 94%;
+				width: 42%;
 				padding: 20upx 3%;
+				float: left;
 				.banner{
 					width: 100%;
 					height: 24.262vw;
@@ -304,6 +416,7 @@
 					width: 100%;
 					display: flex;
 					flex-wrap: wrap;
+					margin-left: 26upx;
 					.box{
 						width: calc(71.44vw / 3);
 						margin-bottom: 30upx;

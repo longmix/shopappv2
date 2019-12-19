@@ -255,6 +255,10 @@
 				"backgroundColorBottom":"#ffffff"
 			}
         }
+        ,{
+            "path" : "pages/h5browser/h5browser",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

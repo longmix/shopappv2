@@ -11,12 +11,12 @@
 		<!-- 商品列表 -->
 		<view class="goods-list">
 			<view class="product-list">
-				<view class="product" v-for="(goods) in gooosList" :key="goods.goods_id" @tap="toGoods(goods)">
-					<image mode="widthFix" :src="goods.picture"></image>
-					<view class="name">{{goods.name}}</view>
+				<view class="product" v-if="item.cataid == cataid" v-for="(item,index) in goodsList" :key="item.cataid" @click="toGoods(item.productid)">
+					<image mode="widthFix" src=""></image>
+					<view class="name">{{item.name}}</view>
 					<view class="info">
-						<view class="price">{{goods.price}}</view>
-						<view class="slogan">{{goods.seller_name}}</view>
+						<view class="price">{{item.price}}</view>
+						<view class="slogan">{{item.seller_name}}</view>
 					</view>
 				</view>
 			</view>
@@ -26,21 +26,15 @@
 </template>
 
 <script>
+	var app = getApp();
+	// var abotapi = require("../../../common/abotapi.js");
+	var cataid;
 	export default {
 		data() {
 			return {
-				goodsList:[
-					{ goods_id: 0, img: '/static/img/goods/p1.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' },
-					{ goods_id: 1, img: '/static/img/goods/p2.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' },
-					{ goods_id: 2, img: '/static/img/goods/p3.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' },
-					{ goods_id: 3, img: '/static/img/goods/p4.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' },
-					{ goods_id: 4, img: '/static/img/goods/p5.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' },
-					{ goods_id: 5, img: '/static/img/goods/p6.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' },
-					{ goods_id: 6, img: '/static/img/goods/p7.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' },
-					{ goods_id: 7, img: '/static/img/goods/p8.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' },
-					{ goods_id: 8, img: '/static/img/goods/p9.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' },
-					{ goods_id: 9, img: '/static/img/goods/p10.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' }
-				],
+				cataid:'',
+				goodsList:'',
+				
 				loadingText:"正在加载...",
 				headerTop:"0px",
 				headerPosition:"fixed",
@@ -54,11 +48,11 @@
 			};
 		},
 		onLoad: function (option) { //option为object类型，会序列化上个页面传递的参数
-			console.log(option.cid); //打印出上个页面传递的参数。
-			uni.setNavigationBarTitle({
-				title: option.name
-			});
-			
+			console.log('option',option); //打印出上个页面传递的参数。
+			// uni.setNavigationBarTitle({
+			// 	title: option.name
+			// });
+			this.cataid = option.cataid;
 			//兼容H5下排序栏位置
 			// #ifdef H5
 				//定时器方式循环获取高度为止，这么写的原因是onLoad中head未必已经渲染出来。
@@ -72,35 +66,38 @@
 			// #endif
 			var that = this;
 			uni.request({
-			    url: 'https://yanyubao.tseo.cn/?g=Yanyubao&m=ShopAppWxa&a=product_list',
+			    url: app.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
 			    method: 'post',
 			    data: {
-			      sellerid: 'fNmxUPggP',
+			      sellerid: app.globalData.default_sellerid,
 			      keyword:'', 
 			      sort: 1,
 			      page: 1,
-				  cataid:1874
+				  cataid:this.cataid
 			    },
 			    header: {
 			      'Content-Type': 'application/x-www-form-urlencoded'
 			    },
 			    success: function (res) {
-			      console.log('aaafff===', res);
-			      var productlist = res.data.product_list;
-				  console.log('aaafff===', productlist);
-				  that.gooosList = productlist
-				  
-			      that.setData({
-			        hotKeyList: hotKeyList,
-			      })
+					if(res.data.code == 1){
+						console.log('aaafff===', res);
+						that.goodsList = res.data.product_list;
+						console.log("that.goodsList",that.goodsList);
+						
+					}else if(res.data.code == 0){
+						uni.showToast({
+							title: '暂无商品',
+							duration: 2000
+						});
+					}
 			    },
 			    fail: function (e) {
-			      wx.showToast({
-			        title: '网络异常！',
-			        duration: 2000
-			      });
-			    },
-			  });
+					uni.showToast({
+						title: '网络异常！',
+						duration: 2000
+					});
+				},
+			});
 		
 		},
 		
@@ -158,11 +155,11 @@
 			toGoods(e){
 				console.log('xxxafff===',e);
 				
-				var productid = e.productid;
+				// var productid = e.productid;
 				
-				uni.showToast({title: '商品'+e.goods_id,icon:"none"});
+				// uni.showToast({title: '商品'+e.goods_id,icon:"none"});
 				uni.navigateTo({
-					url: '../goods?productid='+ productid
+					url: '../goods?productid='+ e
 				});
 			},
 			//排序类型
