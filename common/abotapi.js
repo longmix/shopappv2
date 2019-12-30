@@ -6,7 +6,7 @@ module.exports = {
 		weiduke_server_url: 'https://cms.weiduke.com/',
 		yanyubao_server_url: 'https://yanyubao.tseo.cn/',
 		xiaochengxu_appid: 'wx60a801e5fb7f9378',
-		default_sellerid : 'pmyxQxkkU',
+		default_sellerid : 'fyJSPaVja',
 		userInfo: {},
 	},
 	
@@ -19,6 +19,18 @@ module.exports = {
 	
 	    //缓存返回数据
 	    uni.setStorageSync("current_weiduke_token", weiduke_token);
+	},
+	
+	
+	get_current_weiduke_token: function () {
+	    var weiduke_token = uni.getStorageSync("current_weiduke_token");
+	    console.log("获取weiduke_token：" + weiduke_token);
+	
+	    if (!weiduke_token) {
+			weiduke_token = null;
+	    }
+	
+	    return weiduke_token;
 	},
     json_add:function(a,b){
  
