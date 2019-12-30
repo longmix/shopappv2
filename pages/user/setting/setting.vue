@@ -184,7 +184,7 @@
 						nickname:that.user_info.nickname,
 						checkstr:userInfo.checkstr,
 						userid:userInfo.userid,
-						sellerid: this.abotapi.globalData.default_sellerid,
+						sellerid: that.abotapi.globalData.default_sellerid,
 					},    
 					success:function(res){
 						console.log('success',res);
@@ -225,22 +225,23 @@
 						console.log("chooseImageRes",chooseImageRes);
 						var headimgurl = chooseImageRes.tempFilePaths[0];
 						uni.uploadFile({
-							url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=upload_image_file',
+							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=upload_image_file',
 							filePath: headimgurl,
 							name: 'file',
 							formData: {
-								sellerid: this.abotapi.globalData.default_sellerid,
+								sellerid: that.abotapi.globalData.default_sellerid,
 								checkstr: userInfo.checkstr,
 								userid: userInfo.userid,
 							},
 							success: function (res) {
-								var obj = res.data;
+								// var obj = res.data;
+								var obj = JSON.parse(res.data);
 								console.log('obj',obj);
 								
 								uni.request({
-									url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=set_image_headimgurl', 
+									url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=set_image_headimgurl', 
 									data: {
-										sellerid: this.abotapi.globalData.default_sellerid,
+										sellerid: that.abotapi.globalData.default_sellerid,
 										checkstr: userInfo.checkstr,
 										userid: userInfo.userid,
 										img_url: obj.img_url
@@ -255,6 +256,7 @@
 											icon: 'success',
 											duration: 2000
 										});
+										that.user_info.headimgurl = obj.img_url;
 									}
 							  });
 							}
