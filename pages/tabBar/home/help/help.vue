@@ -56,36 +56,36 @@
 		// 生命周期函数--监听页面加载
 		onLoad: function (options) {
 			console.log('options==>>',options);
-		  this.abotapi.set_option_list_str(null, this.abotapi.getColor());
+			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 			
-		  var that = this
+			var that = this
 			
-		  that.sellerid = options.sellerid;
+			that.sellerid = options.sellerid;
 			
-		  if (typeof (that.sellerid) == 'undefined') {
-		    that.sellerid = this.abotapi.globalData.default_sellerid;
-		  }
+			if (typeof (that.sellerid) == 'undefined') {
+				that.sellerid = this.abotapi.globalData.default_sellerid;
+			}
 			
-		  // uni.setNavigationBarTitle({
+			// uni.setNavigationBarTitle({
 				// title: this.abotapi.globalData.shop_name
-		  // })
+			// })
 			
-		  this.initArticleList(that.sellerid);
+			this.initArticleList(that.sellerid);
 			
 		},
 		methods: {
 			initArticleList: function () {
 				
-			   var that = this
+				var that = this
 			   
 				
 			   //=====更新商户头条=================
 			    var url = this.abotapi.globalData.weiduke_server_url + '?g=Home&m=Yanyubao&a=yingxiao';//+ app.globalData.sellerid;
 			    var data = {
-			      id:'seller',
-			      action:'list',
-			      sellerid: that.sellerid,
-			      currentpage:1
+					id:'seller',
+					action:'list',
+					sellerid: that.sellerid,
+					currentpage:1
 			    };
 			    
 			    var cbError = function (res) {
@@ -96,32 +96,30 @@
 				
 			},
 			articleBack: function (res) {
-			  console.log(res);
+				console.log(res);
 				var that = this;
-			  if (res.data.code == '1') {
-			    //为显示加载动画添加3秒延时
-			    setTimeout(function () {
-			     
-			        that.articlelist = res.data.data;
-			     
-			    }, 500)
-			  }
-			  else{
+				if (res.data.code == '1') {
+					//为显示加载动画添加3秒延时
+					setTimeout(function () {
+						that.articlelist = res.data.data;
+					}, 500)
+				}
+				else{
 			    //没有获取数据
 			  
-			  }
+				}
 			},
 			showDetail:function(e){
-			  var that = this;
-			  console.log('点击商户头条进入该详情'+e.currentTarget.dataset.id);
+				console.log('e',e);
+				var that = this;
+				console.log('点击商户头条进入该详情'+e.currentTarget.dataset.id);
 				
-			  var id = e.currentTarget.dataset.id;
-			  wx.setStorageSync('browser_cache_id', id);
+				var id = e.currentTarget.dataset.id;
+				uni.setStorageSync('browser_cache_id', id);
 			  
-			  wx.navigateTo({
-			    url: '../help_detail/help_detail?id=' + id + '&sellerid=' + that.data.sellerid
-			    
-			  })
+				uni.navigateTo({
+					url: '/pages/tabBar/home/help_detail/help_detail?id=' + id + '&sellerid=' + that.sellerid
+				})
 			},
 			
 		}
