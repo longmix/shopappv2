@@ -11,7 +11,7 @@
 			<view class="tis" v-if="cart_list.length == 0 ">购物车是空的哦~</view>
             <view class="row" v-else v-for="(item,index) in cart_list" :key="index" >
 				<!-- 删除按钮 -->
-				<view class="menu" @tap.stop="deleteGoods(item.productid)">
+				<view class="menu" @tap.stop="deleteGoods(index)">
 					<view class="icon shanchu"></view>
 				</view>
 				<!-- 商品 -->
@@ -37,7 +37,7 @@
 										<view class="icon jian"></view>
 									</view>
 									<view class="input" @tap.stop="discard">
-										<input type="number" v-model="item.amount" @input="sum($event,index)" />
+										<input type="number" v-model="item.amount" @input="sum()" />
 									</view>
 									<view class="add"  @tap.stop="add(index)">
 										<view class="icon jia"></view>
@@ -57,7 +57,7 @@
 				</view>
 				<view class="text">全选</view>
 			</view>
-			<view class="delBtn" @tap="deleteList" v-if="selectedList.length>0">删除</view>
+			<!-- <view class="delBtn" @tap="deleteList" v-if="selectedList.length>0">删除</view> -->
 			<view class="settlement">
 				<view class="sum">合计:<view class="money">￥{{sumPrice}}</view></view>
 				<view class="btn" @tap="toConfirmation">结算({{selectedList.length}})</view>
@@ -67,7 +67,6 @@
 </template>
 
 <script>
-
 	export default {
 		data() {
 			return {
@@ -77,8 +76,12 @@
 				statusTop:null,
 				showHeader:true,
 				selectedList:[],
+				carts:'',
+				productid:'',
+				footerbottom:'',
 				isAllselected:false,
 				cart_list:'',
+				is_numOK:false,
 				goodsList:[
 					{id:1,img:'/static/img/goods/p1.jpg',name:'商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题',spec:'规格:S码',price:127.5,number:1,selected:false},
 					{id:2,img:'/static/img/goods/p2.jpg',name:'商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题',spec:'规格:S码',price:127.5,number:1,selected:false},
@@ -106,46 +109,8 @@
 		},
 		onLoad() {
 			var that = this;
-			var userInfo = this.abotapi.get_user_info();
-			uni.request({
-				url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=cart_list',
-				method: 'post',
-				data: {
-					userid: userInfo.userid,
-					checkstr: userInfo.checkstr,
-					page: 1,
-					sellerid: this.abotapi.get_sellerid()
-				},
-				header: {
-					'Content-Type': 'application/x-www-form-urlencoded'
-				},
-				success: function (res) {
-					console.log('res',res);
-					if(res.data.code == 1){
-						that.cart_list = res.data.data;
-					}
-					//--init data
-				// 	var carts = res.data.data;
-				// 	var total_amount = 0;
-				// 	if (res.data.code == 1) {           
-				// 		for (var i = 0; i < carts.length; i++) {               
-				// 			total_amount += carts[i].amount
-				// 		}
-				// 		wx.setTabBarBadge({
-				// 			index: 2,
-				// 			text: total_amount.toString()
-				// 		})
-				
-				// 	} else if (res.data.code == 2) {
-							 
-				// 	}
-				console.log('res',that.cart_list);
-					//endInitData
-				},
-			});
-			
-			
-			
+			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
+			that.get_shop_list();
 			
 			//兼容H5下结算条位置
 			// #ifdef H5
@@ -156,7 +121,52 @@
 			this.statusHeight = plus.navigator.getStatusbarHeight();
 			// #endif
 		},
+		onShow() {
+			var that = this
+
+			setTimeout(function(){
+				that.get_shop_list();
+			},1)
+		},
 		methods: {
+			//获取购物车商品列表
+			get_shop_list:function(){
+				var that = this;
+				var userInfo = this.abotapi.get_user_info();
+				if ((!userInfo) || (!userInfo.userid)) {
+					uni.redirectTo({
+						url: '/pages/login/login',
+					})
+					uni.showToast({
+						title:'请先登录',
+						icon:'none'
+					});
+					return;
+				}
+				uni.request({
+					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=cart_list',
+					method: 'post',
+					data: {
+						userid: userInfo.userid,
+						checkstr: userInfo.checkstr,
+						page: 1,
+						sellerid: this.abotapi.get_sellerid()
+					},
+					header: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					},
+					success: function (res) {
+						console.log('res',res);
+						if(res.data.code == 1){
+							that.cart_list = res.data.data;
+						}
+					console.log('res',that.cart_list);
+						//endInitData
+					},
+				});
+			},
+			
+			
 			//加入商品 参数 goods:商品数据
 			joinGoods(goods){
 				/*
@@ -236,7 +246,7 @@
 			toGoods(e){
 				uni.showToast({title: '商品'+e});
 				uni.navigateTo({
-					url: '../../goods/goods?productid='+e 
+					url: '/pages/goods/goods?productid='+e 
 				});
 			},
 			//跳转确认订单页面
@@ -260,35 +270,137 @@
 					data:tmpList,
 					success: () => {
 						uni.navigateTo({
-							url:'../../order/confirmation'
+							url:'/pages/order/confirmation'
 						})
 					}
 				})
 			},
 			//删除商品
-			deleteGoods(id){
-				let len = this.cart_list.length;
-				for(let i=0;i<len;i++){
-					if(id==this.cart_list[i].id){
-						this.cart_list.splice(i, 1);
-						break;
+			deleteGoods(e){
+				console.log('e',e);
+				var that = this;
+				var index = parseInt(e);
+				var num = that.cart_list[index].amount;
+				this.productid = that.cart_list[index].productid;
+				uni.showModal({
+					title: '提示',
+					content: '你确认移除吗',
+					success: function(res) {
+						console.log('res999',res);
+						that.del(index);
+					},
+					fail: function() {
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
 					}
-				}
-				this.selectedList.splice(this.selectedList.indexOf(id), 1);
-				this.sum();
+				});
+			
 				this.oldIndex = null;
 				this.theIndex = null;
 			},
-			// 删除商品s
+			
+			
+			del:function(index){
+				var that = this;
+				var userInfo = this.abotapi.get_user_info();
+				uni.request({
+					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=cart_del',
+					method:'post',
+					data: {
+						productid: this.productid,
+						userid: userInfo.userid,
+						checkstr: userInfo.checkstr,
+						sellerid: this.abotapi.get_sellerid()
+					},
+					header: {
+						'Content-Type':  'application/x-www-form-urlencoded'
+					},
+					success: function (res) {
+						console.log('res',res);
+
+						if(res.data.code == 1){
+							// 购物车数据
+							that.cart_list.splice(index,1)
+							uni.showToast({
+								title: res.data.msg,
+								icon:'success',
+								duration: 2000
+							});
+							that.sum();
+						}else{
+							uni.showToast({
+								title: '操作失败！',
+								duration: 2000
+							});
+						}
+					},
+				});
+			},
+			// 全选删除商品
 			deleteList(){
-				let len = this.selectedList.length;
-				while (this.selectedList.length>0)
-				{
-					this.deleteGoods(this.selectedList[0]);
-				}
-				this.selectedList = [];
-				this.isAllselected = this.selectedList.length == this.cart_list.length && this.cart_list.length>0;
-				this.sum();
+				
+				
+				var that = this;
+				var index = parseInt(e.currentTarget.dataset.index);
+				var num = that.data.carts[index].amount;
+				var productid = e.currentTarget.dataset.cartid;
+				uni.showModal({
+					title: '提示',
+					content: '你确认移除吗',
+					success: function(res) {
+						res.confirm && wx.request({
+							url: app.globalData.http_server + '?g=Yanyubao&m=ShopAppWxa&a=cart_del',
+							method:'post',
+							data: {
+								productid: productid,
+								userid: userInfo.userid,
+								checkstr: userInfo.checkstr,
+								sellerid: app.get_sellerid()
+							},
+							header: {
+								'Content-Type':  'application/x-www-form-urlencoded'
+							},
+							success: function (res) {
+								//--init data
+								var data = res.data;
+								if(data.code == 1){
+									//that.data.productData.length =0;
+									// that.loadProductData();
+				
+									// 购物车数据
+									var carts = that.data.carts;
+									carts.splice(index,1);
+									that.sum();
+								}else{
+									uni.showToast({
+										title: '操作失败！',
+										duration: 2000
+									});
+								}
+							},
+						});
+					},
+					fail: function() {
+						// fail
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+					}
+				});
+				
+				
+				
+				// let len = this.selectedList.length;
+				// while (this.selectedList.length>0)
+				// {
+				// 	this.deleteGoods(this.selectedList[0]);
+				// }
+				// this.selectedList = [];
+				// this.isAllselected = this.selectedList.length == this.cart_list.length && this.cart_list.length>0;
+				// this.sum();
 			},
 			// 选中商品
 			selected(index){
@@ -309,42 +421,125 @@
 				}
 				this.selectedList = this.isAllselected?[]:arr;
 				this.isAllselected = this.isAllselected||this.cart_list.length==0?false : true;
+				console.log('this.isAllselected',this.isAllselected);
+				console.log('this.selectedList',this.selectedList);
 				this.sum();
 			},
 			// 减少数量
-			sub(index){
-				if(this.cart_list[index].amount<=1){
+			sub(e){
+				var userInfo = this.abotapi.get_user_info();
+				console.log('e===>>>',e);
+				var that = this;
+				var index = parseInt(e);
+				var num = that.cart_list[index].amount;
+				// 如果只有1件了，就不允许再减了
+				if (num < 1 || num == 1) {
+					this.is_numOK = true;
+					uni.showToast({
+						title: '已是最小数！',
+						duration: 2000
+					});
 					return;
+				}else{
+					num--;
 				}
-				this.cart_list[index].amount--;
-				this.sum();
+				console.log(num);
+				var productid = that.cart_list[index].productid;
+				uni.request({
+					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=cart_num_change',
+					method:'post',
+					data: {
+						productid: productid,
+						userid: userInfo.userid,
+						checkstr: userInfo.checkstr,
+						action: 'dec',
+						amount: num,
+						sellerid: this.abotapi.get_sellerid()
+					},
+					header: {
+						'Content-Type':  'application/x-www-form-urlencoded'
+					},
+					success: function (res) {
+						
+						console.log('res',res);
+						if(res.data.code == 1){
+							that.cart_list[index].amount = num;
+							that.sum();
+						}else{
+							uni.showToast({
+								title: '操作失败！',
+								duration: 2000
+							});
+						}
+					},
+					fail: function() {
+						// fail
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+					}
+				});
 			},
 			// 增加数量
-			add(index){
-				this.cart_list[index].amount++;
-				this.sum();
+			add(e){
+				
+				var userInfo = this.abotapi.get_user_info();
+				console.log('e===>>>',e);
+				var that = this;
+				var index = parseInt(e);
+				var num = that.cart_list[index].amount;
+				// 只有大于一件的时候，才能添加
+				if (num > 1 || num == 1) {
+					num++;
+				}
+				console.log(num);
+				var productid = that.cart_list[index].productid;
+				uni.request({
+					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=cart_num_change',
+					method:'post',
+					data: {
+						productid: productid,
+						userid: userInfo.userid,
+						checkstr: userInfo.checkstr,
+						action: 'inc',
+						amount: num,
+						sellerid: this.abotapi.get_sellerid()
+					},
+					header: {
+						'Content-Type':  'application/x-www-form-urlencoded'
+					},
+					success: function (res) {
+						
+						console.log('res',res);
+						if(res.data.code == 1){
+							that.cart_list[index].amount = num;
+							that.sum();
+						}
+					},
+					fail: function() {
+						// fail
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+					}
+				});
+				
 			},
 			// 合计
-			sum(e,index){
-				console.log('e',e);
-				this.sumPrice=0;
-				let len = this.cart_list.length;
-				for(let i=0;i<len;i++){
-					if(this.cart_list[i].selected) {
-						console.log(111111);
-						if(e && i==index){
-							console.log(222222);
-							this.sumPrice = this.sumPrice + (e.detail.value*this.cart_list[i].price);
-						}else{
-							console.log(33333);
+			sum(){
+				var that = this;
+				if (that.cart_list||that.cart_list!=null){
+					// 计算总金额
+					this.sumPrice = 0;
+					for (var i = 0; i < that.cart_list.length; i++) {
+						if (that.cart_list[i].selected) {
 							this.sumPrice = this.sumPrice + (this.cart_list[i].amount*this.cart_list[i].price);
 						}
 					}
+					this.sumPrice = this.sumPrice.toFixed(2);
 				}
-				this.sumPrice = this.sumPrice.toFixed(2);
-			},
-			discard() {
-				//丢弃
 			}
 			
 			
@@ -605,7 +800,7 @@
 			justify-content: flex-end;
 			align-items: center;
 			.sum{
-				width: 50%;
+				width: 56%;
 				font-size: 28upx;
 				margin-right: 10upx;
 				display: flex;

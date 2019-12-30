@@ -45,7 +45,7 @@
 <script>
 	//高德SDK
 	import amap from '@/common/SDK/amap-wx.js';
-	var app = getApp();
+	// var app = getApp();
 	// var abotapi = require("../../../common/abotapi.js");
 	export default {
 		data() {
@@ -72,9 +72,7 @@
 		},
 		onLoad() {
 			
-			// this.abotapi.getColor();
-			
-			
+			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 			
 			this.amapPlugin = new amap.AMapWX({  
 				//高德地图KEY，随时失效，请务必替换为自己的KEY，参考：http://ask.dcloud.net.cn/article/35070
@@ -88,11 +86,11 @@
 			});
 			var that = this;
 			uni.request({
-				url: app.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_cata_level2',
+				url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_cata_level2',
 				method:'post',
 				data: {
 				 // 'cataid': 'fXiNUPaWV',
-				  sellerid: app.globalData.default_sellerid
+				  sellerid: this.abotapi.globalData.default_sellerid
 				},
 				header: {
 					'Content-Type':  'application/x-www-form-urlencoded'
@@ -103,44 +101,13 @@
 						that.categoryList = res.data.data;
 						console.log("categoryList",that.categoryList);
 						// var typeTree = that.categoryList[0].sub_cata;
-						var currType = that.categoryList[0].cataid;
-                        this.currType = currType;
-						console.log("this.currType",this.currType);
+						var Goods_cataid = that.categoryList[0].cataid;
+                        that.currType = Goods_cataid;
+						console.log("that.currType",that.currType);
+						
+						that.get_cataList();
 						
 						
-						
-						uni.request({
-							url: app.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_cata_supplier',
-							method:'post',
-							data: {
-							  sellerid: app.globalData.default_sellerid,
-							  cataid:currType
-							  },
-							header: {
-								'Content-Type':  'application/x-www-form-urlencoded'
-							},
-							success: function (res) {
-								// var code = res.data.code;
-								console.log(res.data);
-								if(res.data.code==1) { 
-									that.cataList = res.data.data;
-									console.log("cataList",that.cataList);
-									console.log(res.data);
-									
-								} else {
-									uni.showToast({
-										title:res.data.err,
-										duration:2000,
-									});
-								}
-							},
-							error:function(e){
-								uni.showToast({
-									title:'网络异常！',
-									duration:2000,
-								});
-							}
-						});
 						
 					} else {
 						uni.showToast({
@@ -174,6 +141,44 @@
 					url:'../../msg/msg'
 				})
 			},
+			
+			get_cataList:function(){
+				var that = this;
+				uni.request({
+					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_cata_supplier',
+					method:'post',
+					data: {
+					  sellerid: this.abotapi.globalData.default_sellerid,
+					  cataid: that.currType
+					  },
+					header: {
+						'Content-Type':  'application/x-www-form-urlencoded'
+					},
+					success: function (res) {
+						// var code = res.data.code;
+						console.log(res.data);
+						if(res.data.code==1) { 
+							that.cataList = res.data.data;
+							console.log("cataList",that.cataList);
+							console.log(res.data);
+							
+						} else {
+							uni.showToast({
+								title:res.data.err,
+								duration:2000,
+							});
+						}
+					},
+					error:function(e){
+						uni.showToast({
+							title:'网络异常！',
+							duration:2000,
+						});
+					}
+				});
+			},
+			
+			
 			//分类切换显示
 			showCategory(index){
 				this.showCategoryIndex = index;
@@ -182,7 +187,7 @@
 				console.log('e',e);
 				// uni.setStorageSync('catName',e.name);
 				uni.navigateTo({
-					url: '../../goods/goods-list/goods-list?cataid='+e
+					url: '/pages/goods/goods-list/goods-list?cataid='+e
 				});
 			},
 			//搜索跳转
@@ -197,10 +202,10 @@
 				console.log(that.currType);
 				
 				uni.request({
-					url: app.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_cata_supplier',
+					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_cata_supplier',
 					method:'post',
 					data: {
-					  sellerid: app.globalData.default_sellerid,
+					  sellerid: this.abotapi.globalData.default_sellerid,
 					  cataid:that.currType
 					  },
 					header: {

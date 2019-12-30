@@ -7,7 +7,7 @@
 			<!-- 定位城市 -->
 			<view class="addr">
 				<view class="icon location"></view>
-				{{ city }}
+				<view>{{address}}111</view>
 			</view>
 			<!-- 搜索框 -->
 			<view class="input-box">
@@ -31,7 +31,7 @@
 			<view class="swiper-box">
 				<swiper circular="true" autoplay="true" @change="swiperChange">
 					<swiper-item v-for="swiper in productLists" :key="swiper.id">
-						<image :src="swiper.image" @tap="toSwiper(swiper)"></image>
+						<image :src="swiper.image" mode="widthFix" @tap="toSwiper(swiper)"></image>
 					</swiper-item>
 				</swiper>
 				<view class="indicator">
@@ -40,10 +40,35 @@
 				</view>
 			</view>
 		</view>
-		
+		<!--商户头条start-->
+		    <view v-if="wxa_show_toutiao == 1">
+			   <view class="toutiao">
+					<view class="toutiao_left" @tap="touTiaoList" v-if="!wxa_shop_toutiao_icon">
+						<image src="/static/img/toutiao.gif"></image>
+					</view>
+					<view class="toutiao_left" @tap="touTiaoList" v-if="wxa_shop_toutiao_icon">
+						<image :src="wxa_shop_toutiao_icon"></image>
+					</view>
+					<swiper class="toutiao_right" vertical="true" autoplay="true" circular="true" interval="2000" >  <!-- v-if="!wxa_shop_toutiao_flash_line||wxa_shop_toutiao_flash_line!=2"  -->
+						<swiper-item v-for="(item,index) in articlelist" :key="index">
+							<view class="toutiao_right" @tap="touTiaoList(item.id)" >
+								<text>{{item.title}}</text>
+							</view>
+						</swiper-item>
+					</swiper>
+				
+					<!-- <swiper class="toutiao_right2" vertical="true" autoplay="true" circular="true" interval="2000" v-if="wxa_shop_toutiao_flash_line==2">
+						<swiper-item v-for="(item2,index2) in articlelist2" :key="index2" @tap="touTiaoList(item2.id)">
+							<view>•  {{item2[0].title}}</view>
+							<view>•  {{item2[1].title}}</view>
+						</swiper-item>
+					</swiper> -->
+			   </view>
+		   </view>
+		   <!--商户头条end-->
 		
 		<!-- 分类列表 -->
-		<view class="category-list" style="margin-left: 11%;" v-if="cb_params.wxa_show_index_icon == 1">
+		<view class="category-list" style="margin-left: 11%;">
 			<view class="category" v-for="(item, index) in index_icon_list"	:key="index"> <!--  -->
 				<navigator :url="item.url">
 					<view class="img"><image :src="item.src"></image></view>
@@ -53,7 +78,7 @@
 		</view>
 		<!-- 广告图 -->
 		<view v-for="tab in pictures">
-			<view class="banner" ><image :src="tab.image"></image></view>
+			<view class="banner" ><image :src="tab.image" style="width: 100%;" mode="widthFix"></image></view>
 		</view>
 		<!-- 活动区 -->
 		<view class="promotion">
@@ -109,10 +134,23 @@
 
 var ttt = 0;
 //高德SDK
-import amap from '@/common/SDK/amap-wx.js';
+import bmap from '../../../common/SDK/bmap-wx.js';
 export default {
 	data() {
 		return {
+			ak: "wSVukg6uErl2HDnWCF5ao3AAAGOznHhg",	//填写申请到的ak
+			markers: [],
+			longitude: '', 	//经度
+			latitude: '',	//纬度
+			address: '',		//地址
+			cityInfo: {},		//城市信息
+			wxMarkerData:'',
+			articlelist:'',
+			articlelist2:'',
+			wxa_show_toutiao:'',
+			
+			
+			
 			showHeader:true,
 			afterHeaderOpacity: 1,//不透明度
 			headerPosition: 'fixed',
@@ -210,6 +248,17 @@ export default {
 	},
 	onLoad() {
 		var that = this;
+		 
+		uni.getLocation({
+		    type: 'wgs84',
+		    success: function (res) {
+		        console.log('当前位置的经度：' + res.longitude);
+		        console.log('当前位置的纬度：' + res.latitude);
+		    }
+		});
+		
+		this.abotapi.set_option_list_str(null, this.abotapi.getColor());
+		
 		
 		this.abotapi.set_option_list_str(this, this.callback_function);
 		
@@ -217,10 +266,54 @@ export default {
 		that.get_product_list();
 		that.get_flash_ad_list();	
 		that.get_flash_img_list();
-		that.yingxiao();
+		that.initArticleList();
 		that.get_shop_icon_index();
+		var regeocoding_fail = function (data) {
+			console.log('333333', data);
+			console.log('44444', that.ak);
+		};
+		var regeocoding_success = function (data) {
+			console.log('00000', data);
+			var address = this.address;
+			this.wxMarkerData = data.wxMarkerData;
+			this.markers = this.wxMarkerData;
+			this.latitude = this.wxMarkerData[0].latitude;
+			this.longitude = this.wxMarkerData[0].longitude;
+			this.address = this.wxMarkerData[0].address;
+			console.log('address',this.address);
+			this.cityInfo = data.originalData.result.addressComponent,
+			// console.log('with', that.data.imageWidth)
+			uni.setStorageSync("latitude", this.wxMarkerData[0].latitude)
+			console.log('location', this.wxMarkerData[0].latitude)
+			uni.setStorageSync("longitude", this.wxMarkerData[0].longitude)
+			uni.setStorageSync("markers", this.wxMarkerData)
+		      // getCurrentPages()[getCurrentPages().length - 1].onLoad()
+		}
 		
+		this.abotapi.set_option_list_str(that, function (that, cb_params) {
+			//var that = this;
 		
+			console.log('getShopOptionAndRefresh+++++:::' + cb_params)
+	
+			//从本地读取
+			var option_list_str = uni.getStorageSync("option_list_str");
+			var option_list = JSON.parse(option_list_str);
+	
+			console.log("获取商城选项数据：" + option_list_str + '用于百度地图');
+			console.log("百度地图AK：" + option_list.baidu_map_ak_wxa);
+	
+			/* 获取定位地理位置 */
+			// 新建bmap对象
+	
+			var BMap_obj = new bmap.BMapWX({
+				ak: option_list.baidu_map_ak_wxa
+			});
+	
+			BMap_obj.regeocoding({
+				fail: regeocoding_fail,
+				success: regeocoding_success
+			});
+		});
 		// #ifdef APP-PLUS
 		this.nVueTitle = uni.getSubNVueById('homeTitleNvue');
 		this.nVueTitle.onMessage(res => {
@@ -232,24 +325,16 @@ export default {
 		this.showHeader = false;
 		this.statusHeight = plus.navigator.getStatusbarHeight();
 		// #endif
-		this.amapPlugin = new amap.AMapWX({
-			//高德地图KEY，随时失效，请务必替换为自己的KEY，参考：http://ask.dcloud.net.cn/article/35070
-			key: '7c235a9ac4e25e482614c6b8eac6fd8e'
-		});
-		//定位地址
-		this.amapPlugin.getRegeo({
-			success: data => {
-				this.city = data[0].regeocodeData.addressComponent.city.replace(/市/g, ''); //把"市"去掉
-				// #ifdef APP-PLUS
-				this.nVueTitle.postMessage({type: 'location',city:this.city});
-				// #endif
-			}
-		});
+		
 		//开启定时器
 		this.Timer();
 		//加载活动专区
 		this.loadPromotion();
 	},
+	
+	
+	
+	
 	methods: {
 		
 		callback_function:function(that, cb_params){
@@ -258,9 +343,118 @@ export default {
 				return;
 			}
 			
-			
-			
 			console.log('cb_params====', cb_params);
+			if (cb_params.wxa_product_list_style) {
+			    
+			      this.wxa_product_list_style = cb_params.wxa_product_list_style
+			    
+			  }
+			if (cb_params.wxa_shop_toutiao_icon) {
+			  
+			    this.wxa_shop_toutiao_icon = cb_params.wxa_shop_toutiao_icon
+			  
+			}
+			if (cb_params.wxa_show_kucun_in_list) {
+			  
+			    this.wxa_show_kucun_in_list = cb_params.wxa_show_kucun_in_list
+			  
+			}
+			if (cb_params.wxa_show_icon_index_count){
+			  
+			    this.icon_count = cb_params.wxa_show_icon_index_count
+			  
+			}
+			if (cb_params.wxa_show_index_icon) {
+			  
+			   this.wxa_show_index_icon = cb_params.wxa_show_index_icon
+			  
+			}
+			if (cb_params.wxa_show_index_swiper) {
+			  
+			    this.wxa_show_index_swiper = cb_params.wxa_show_index_swiper
+			  
+			}
+			if (cb_params.wxa_show_pic_pinpu) {
+			  
+			    this.wxa_show_pic_pinpu = cb_params.wxa_show_pic_pinpu
+			  
+			}
+			if (cb_params.wxa_show_search_input) {
+			  
+			    this.wxa_show_search_input = cb_params.wxa_show_search_input
+			  
+			}
+			if (cb_params.wxa_show_toutiao) {
+			  
+			    this.wxa_show_toutiao = cb_params.wxa_show_toutiao
+			  
+			}
+			if (cb_params.wxa_show_video_player) {
+			  
+			   this.wxa_show_video_player = cb_params.wxa_show_video_player
+			
+			}
+			if (cb_params.wxa_video_player_url) {
+			  
+			    this.wxa_video_player_url = cb_params.wxa_video_player_url
+			  
+			}
+			if (cb_params.wxa_video_screen_url) {
+			  
+			    this.wxa_video_screen_url = cb_params.wxa_video_screen_url
+			  
+			}
+			if (cb_params.wxa_shop_toutiao_flash_line) {
+			  
+			    this.wxa_shop_toutiao_flash_line = cb_params.wxa_shop_toutiao_flash_line
+			  
+			}
+					
+			if (cb_params.wxa_hidden_product_list) {
+			  
+			    this.wxa_hidden_product_list = cb_params.wxa_hidden_product_list
+			  
+			}
+					
+			if (cb_params.wxa_kefu_button_type) {
+			  
+			   this.wxa_kefu_button_type = cb_params.wxa_kefu_button_type
+			  
+			}
+					
+			if (cb_params.wxa_kefu_button_icon) {
+			  
+			   this.wxa_kefu_button_icon = cb_params.wxa_kefu_button_icon
+			  
+			}
+					
+			if (cb_params.wxa_kefu_mobile_num) {
+			  
+			    this.wxa_kefu_mobile_num = cb_params.wxa_kefu_mobile_num
+			  
+			}
+					
+			if (cb_params.wxa_kefu_form_url) {
+			  
+			    this.wxa_kefu_form_url = cb_params.wxa_kefu_form_url
+			  
+			}
+					
+			if (cb_params.wxa_show_kefu_button) {
+			  
+			    this.wxa_show_kefu_button = cb_params.wxa_show_kefu_button
+			  
+			}
+					
+			if (cb_params.wxa_kefu_bg_color) {
+			  
+			    this.wxa_kefu_bg_color = cb_params.wxa_kefu_bg_color
+			  
+			}
+			
+			
+			
+			
 			
 		},
 		
@@ -359,6 +553,74 @@ export default {
 			});
 		},
 		
+		
+		initArticleList: function () {
+		
+		    var that = this
+		
+		    //=====更新商户头条=================
+		    var url = this.abotapi.globalData.weiduke_server_url + '?g=Home&m=Yanyubao&a=yingxiao';//+ app.globalData.sellerid;
+		    var data = {
+				id: 'seller',
+				action: 'list',
+				sellerid: this.abotapi.get_sellerid(),
+				currentpage: 1
+		    };
+		
+		    var cbError = function (res) {
+		
+		    };
+		    this.abotapi.httpPost(url, data, this.yingxiao, cbError);
+		    //========End====================
+		
+		},
+		  
+		  
+		articleBack: function (res) {
+		    console.log(res);
+		
+		    var that = this
+		    if (res.data.code == '1') {
+				this.abotapi.set_current_weiduke_token(res.data.token);
+		      
+		      //为显示加载动画添加3秒延时
+				setTimeout(function () {
+		       
+					that.articlelist = res.data.data
+					console.log('that.articlelist',that.articlelist);
+					// loading = !this.data.loading
+		        
+				}, 500)
+		
+				if (this.wxa_shop_toutiao_flash_line == 2) {
+					var data = res.data.data;
+					var articlelist2 = [];
+					for (var i = 0, length = data.length -1; i < (length / 2); i++) {
+						var arr = [data[0], data[1]];
+						articlelist2.push(arr);
+						data.shift()
+						data.shift()
+					}
+		        
+					that.articlelist2 =  articlelist2 
+					console.log('that.articlelist2',that.articlelist2);
+				}
+				// }else {
+		  //     //没有获取数据
+				// }
+			}
+		},
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		//商户头条
 		yingxiao:function(){
 			var that = this;
@@ -374,10 +636,31 @@ export default {
 				header:{'Content-Type': 'application/x-www-form-urlencoded'},
 				success:function(res){
 					console.log('res1',res);
+					that.abotapi.set_current_weiduke_token(res.data.token);
 					if(res.data.code == 1){
-						that.yingxiao_list = res.data.data;
-						console.log('yingxiao_list',that.yingxiao_list);
+							that.articlelist = res.data.data;
+						console.log('articlelist',that.articlelist);
 					}
+					
+					
+					if (this.wxa_shop_toutiao_flash_line == 2) {
+						var data = res.data.data;
+						var articlelist2 = [];
+						for (var i = 0, length = data.length -1; i < (length / 2); i++) {
+							var arr = [data[0], data[1]];
+							articlelist2.push(arr);
+							data.shift()
+							data.shift()
+						}
+					
+						that.articlelist2 =  articlelist2;
+						console.log('that.articlelist2',that.articlelist2);
+					}
+					//     else {
+					//       //没有获取数据
+					
+					//     }
+					
 				},
 				fail:function(res){
 					console.log('res2',res);
@@ -406,6 +689,14 @@ export default {
 				
 				}
 			});
+		},
+		
+		//点击商户头条进入列表
+		touTiaoList: function (e) {
+		    console.log('点击商户头条进入列表');
+		    uni.navigateTo({
+				url: '/pages/tabBar/home/help/help?sellerid=' + this.abotapi.globalData.default_sellerid
+		    })
 		},
 		
 		//加载Promotion 并设定倒计时,,实际应用中应该是ajax加载此数据。
@@ -517,7 +808,7 @@ export default {
 			//uni.showToast({title: e.name,icon:"none"});
 			// uni.setStorageSync('catName',e.name);
 			uni.navigateTo({
-				url: '../../goods/goods-list/goods-list?cataid=' + e
+				url: '/pages/goods/goods-list/goods-list?cataid=' + e
 			});
 		},
 		//推荐商品跳转
@@ -534,7 +825,7 @@ export default {
 			
 			uni.showToast({ title: '商品' + e.goods_id, icon: 'none' });
 			uni.navigateTo({
-				url: '../../goods/goods?productid='+productid
+				url: '/pages/goods/goods?productid='+productid
 			});
 		},
 		//轮播图指示器
@@ -679,7 +970,6 @@ page{position: relative;background-color: #fff;}
 			swiper-item {
 				image {
 					width: 100%;
-					height: 30.7vw;
 				}
 			}
 		}
@@ -741,12 +1031,58 @@ page{position: relative;background-color: #fff;}
 	width: 92%;
 	margin: 40upx 4%;
 	image {
-		width: 100%;
-		height: 40vw;
 		border-radius: '';
 		box-shadow: 0upx 5upx 25upx rgba(0, 0, 0, 0.3);
 	}
 }
+
+.toutiao{
+  width:100%;
+  height:50px;
+  margin:10px auto;
+  background-color: #fff;
+  clear: both;
+}
+
+.toutiao_left{
+  width:15%;
+  height:50px;
+  float:left;
+}
+
+.toutiao_left image{
+  width:80%;
+  height:100%;
+  float:left;
+}
+
+.toutiao_right{
+  width:85%;
+  height:50px;
+  float:left;
+  font-size:16px;
+  line-height:50px;
+  color:#666666;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.toutiao_right2{
+  width:85%;
+  height:50px;
+  float:left;
+  font-size:13px;
+  line-height:50rpx;
+  color:black;
+  overflow: hidden;
+  letter-spacing: 3rpx;
+  text-overflow: ellipsis;
+}
+
+
+
+
 .promotion {
 	width: 92%;
 	margin: 0 4%;

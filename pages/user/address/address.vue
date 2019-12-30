@@ -2,26 +2,26 @@
 	<view>
 		<view class="content">
 			<view class="list">
-				<view class="row" v-for="(row,index) in addressList" :key="index" @tap="select(row)">
-					<view class="left">
+				<view class="row" v-for="(item,index) in address" :key="index" @tap="select(item.addressid)">
+					<!-- <view class="left">
 						<view class="head">
 							{{row.head}}
 						</view>
-					</view>
+					</view> -->
 					<view class="center">
 						<view class="name-tel">
-							<view class="name">{{row.name}}</view>
-							<view class="tel">{{row.tel}}</view>
-							<view class="default" v-if="row.isDefault">
-								默认
+							<view class="name">{{item.name}}</view>
+							<view class="tel">{{item.mobile}}</view>
+							<view class="default" v-if="item.is_default == 1">
+								{{item.default}}
 							</view>
 						</view>
 						<view class="address">
-							{{row.address.region.label}} {{row.address.detailed}}
+							{{item.province_name}} {{item.district_name}} {{item.address}}
 						</view>
 					</view>
 					<view class="right">
-						<view class="icon bianji" @tap.stop="edit(row)">
+						<view class="icon bianji" @tap.stop="edit(item.addressid)">
 							
 						</view>
 					</view>
@@ -40,69 +40,94 @@
 		data() {
 			return {
 				isSelect:false,
-				addressList:[
-					{id:1,name:"大黑哥",head:"大",tel:"18816881688",address:{region:{"label":"广东省-深圳市-福田区","value":[18,2,1],"cityCode":"440304"},detailed:'深南大道1111号无名摩登大厦6楼A2'},isDefault:true},
-					{id:2,name:"大黑哥",head:"大",tel:"15812341234",address:{region:{"label":"广东省-深圳市-福田区","value":[18,2,1],"cityCode":"440304"},detailed:'深北小道2222号有名公寓502'},isDefault:false},
-					{id:3,name:"老大哥",head:"老",tel:"18155467897",address:{region:{"label":"广东省-深圳市-福田区","value":[18,2,1],"cityCode":"440304"},detailed:'深南大道1111号无名摩登大厦6楼A2'},isDefault:false},
-					{id:4,name:"王小妹",head:"王",tel:"13425654895",address:{region:{"label":"广东省-深圳市-福田区","value":[18,2,1],"cityCode":"440304"},detailed:'深南大道1111号无名摩登大厦6楼A2'},isDefault:false},
-				]
+				address:[],
+				row:''
 			};
 		},
 		onShow() {
-			
-			uni.getStorage({
-				key:'delAddress',
-				success: (e) => {
-					let len = this.addressList.length;
-					if(e.data.hasOwnProperty('id')){
-						for(let i=0;i<len;i++){
-							if(this.addressList[i].id==e.data.id){
-								this.addressList.splice(i,1);
-								break;
-							}
-						}
-					}
-					uni.removeStorage({
-						key:'delAddress'
-					})
-				}
-			})
-			uni.getStorage({
-				key:'saveAddress',
-				success: (e) => {
-					let len = this.addressList.length;
-					if(e.data.hasOwnProperty('id')){
-						for(let i=0;i<len;i++){
-							if(this.addressList[i].id==e.data.id){
-								this.addressList.splice(i,1,e.data);
-								break;
-							}
-						}
-					}else{
-						let lastid = this.addressList[len-1];
-						lastid++;
-						e.data.id = lastid;
-						this.addressList.push(e.data);
-					}
-					uni.removeStorage({
-						key:'saveAddress'
-					})
-				}
-			})
+			var that = this;
+			that.get_address_list();
+			// uni.getStorage({
+			// 	key:'saveAddress',
+			// 	success: (e) => {
+			// 		let len = this.addressList.length;
+			// 		if(e.data.hasOwnProperty('id')){
+			// 			for(let i=0;i<len;i++){
+			// 				if(this.addressList[i].id==e.data.id){
+			// 					this.addressList.splice(i,1,e.data);
+			// 					break;
+			// 				}
+			// 			}
+			// 		}else{
+			// 			let lastid = this.addressList[len-1];
+			// 			lastid++;
+			// 			e.data.id = lastid;
+			// 			this.addressList.push(e.data);
+			// 		}
+			// 		uni.removeStorage({
+			// 			key:'saveAddress'
+			// 		})
+			// 	}
+			// })
 		},
 		onLoad(e) {
-			if(e.type=='select'){
+			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
+			this.get_address_list();
+			
+			if(e.type == 'select'){
 				this.isSelect = true;
 			}
 		},
 		methods:{
+			
+			get_address_list:function(){
+				var that = this;
+				var userInfo = this.abotapi.get_user_info();
+				uni.request({
+					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_list',
+					data: {
+						checkstr: userInfo.checkstr,
+				        userid:userInfo.userid,
+				        sellerid: this.abotapi.get_sellerid()
+					},
+					method: 'POST', 
+					header: {
+						'Content-Type':  'application/x-www-form-urlencoded'
+					},
+				      
+					success: function (res) {
+						console.log('res',res);
+						if(res.data.code == 1){
+							that.address = res.data.addressList;
+							uni.getStorage({
+								key:'delAddress',
+								success: (e) => {
+									let len = that.address.length;
+									if(e.data.hasOwnProperty('id')){
+										for(let i=0;i<len;i++){
+											if(that.address[i].id==e.data.id){
+												that.address.splice(i,1);
+												break;
+											}
+										}
+									}
+									uni.removeStorage({
+										key:'delAddress'
+									})
+								}
+							})
+						}
+					}
+				})
+			},
+			
 			edit(row){
 				uni.setStorage({
 					key:'address',
 					data:row,
 					success() {
 						uni.navigateTo({
-							url:"edit/edit?type=edit"
+							url:"/pages/user/address/edit/edit?action=edit&addressid=" + row
 						})
 					}
 				});
@@ -115,16 +140,41 @@
 			},
 			select(row){
 				//是否需要返回地址(从订单确认页跳过来选收货地址)
+				console.log('row',row);
 				if(!this.isSelect){
 					return ;
 				}
-				uni.setStorage({
-					key:'selectAddress',
-					data:row,
-					success() {
-						uni.navigateBack();
+				var that = this;
+				var userInfo = this.abotapi.get_user_info();
+				uni.request({
+					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_save',
+					data: {
+						action:'get',
+						checkstr: userInfo.checkstr,
+				        userid:userInfo.userid,
+				        sellerid: this.abotapi.get_sellerid(),
+						addressid:row
+					},
+					method: 'POST', 
+					header: {
+						'Content-Type':  'application/x-www-form-urlencoded'
+					},
+				      
+					success: function (res) {
+						console.log('res',res);
+						if(res.data.code == 1){
+							// that.address = res.data.addressList;
+							console.log('res',res);
+						}
 					}
 				})
+				// uni.setStorage({
+				// 	key:'selectAddress',
+				// 	data:row,
+				// 	success() {
+				// 		uni.navigateBack();
+				// 	}
+				// })
 			}
 		}
 	}

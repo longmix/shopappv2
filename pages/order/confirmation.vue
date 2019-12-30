@@ -8,15 +8,15 @@
 			<view class="right">
 				<view class="tel-name">
 					<view class="name">
-						{{recinfo.name}}
+						{{address.name}}
 					</view>
 					<view class="tel">
-						{{recinfo.tel}}
+						{{address.mobile}}
 					</view>
 				</view>
 				<view class="addres">
-					{{recinfo.address.region.label}}
-					{{recinfo.address.detailed}}
+					{{address.city_name}}{{address.district_name}}{{address.address}}
+					<!-- {{address.address.detailed}} -->
 				</view>
 			</view>
 		</view>
@@ -109,9 +109,44 @@
 				note:'',		//备注
 				int:1200,		//抵扣积分
 				deduction:0,	//抵扣价格
-				recinfo:{id:1,name:"大黑哥",head:"大",tel:"18816881688",address:{region:{"label":"广东省-深圳市-福田区","value":[18,2,1],"cityCode":"440304"},detailed:'深南大道1111号无名摩登大厦6楼A2'},isDefault:true}
+				recinfo:'',
+				address:'',
+				// recinfo:{id:1,name:"大黑哥",head:"大",tel:"18816881688",address:{region:{"label":"广东省-深圳市-福田区","value":[18,2,1],"cityCode":"440304"},detailed:'深南大道1111号无名摩登大厦6楼A2'},isDefault:true}
 
 			};
+		},
+		
+		onLoad() {
+			
+			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
+			var that = this;
+			uni.getStorage({
+				key:'buylist',
+				success: (ret) => {
+					this.buylist = ret.data;
+					this.goodsPrice=0;
+					//合计
+					let len = this.buylist.length;
+					for(let i=0;i<len;i++){
+						this.goodsPrice = this.goodsPrice + (this.buylist[i].amount*this.buylist[i].price);
+					}
+					this.deduction = this.int/100;
+					this.sumPrice = this.goodsPrice-this.deduction+this.freight;
+				}
+			});
+			that.get_address_list();
+			uni.getStorage({
+				key:'selectAddress',
+				success: (e) => {
+					this.recinfo = e.data;
+					console.log('this.recinfo',this.recinfo);
+					
+					
+					uni.removeStorage({
+						key:'selectAddress'
+					})
+				}
+			})
 		},
 		onShow() {
 			//页面显示时，加载订单信息
@@ -133,6 +168,7 @@
 				key:'selectAddress',
 				success: (e) => {
 					this.recinfo = e.data;
+					console.log('this.recinfo',this.recinfo);
 					uni.removeStorage({
 						key:'selectAddress'
 					})
@@ -152,6 +188,35 @@
 			}
 		},
 		methods: {
+			//获取用户地址
+			get_address_list:function(){
+				var that = this;
+				var userInfo = this.abotapi.get_user_info();
+				uni.request({
+					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_list',
+					data: {
+						checkstr: userInfo.checkstr,
+				        userid:userInfo.userid,
+				        sellerid: this.abotapi.get_sellerid()
+					},
+					method: 'POST', 
+					header: {
+						'Content-Type':  'application/x-www-form-urlencoded'
+					},
+				      
+					success: function (res) {
+						console.log('res',res);
+						if(res.data.code == 1){
+							that.address = res.data.addressList[0];
+							// if(that.address[index].is_default == 1){
+							// 	that.address = that.address[index];
+							// }
+						}
+					}
+				})
+			},
+			
+			
 			clearOrder(){
 				uni.removeStorage({
 					key: 'buylist',
@@ -185,7 +250,7 @@
 						success: () => {
 							uni.hideLoading();
 							uni.redirectTo({
-								url:"../pay/payment/payment?amount="+this.sumPrice
+								url:"/pages/pay/payment/payment?amount="+this.sumPrice
 							})
 						}
 					})
@@ -195,7 +260,7 @@
 			//选择收货地址
 			selectAddress(){
 				uni.navigateTo({
-					url:'../user/address/address?type=select'
+					url:'/pages/user/address/address?type=select'
 				})
 			}
 		}

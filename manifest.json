@@ -1,5 +1,5 @@
 {
-    "name" : "商城模板(更新一部分nvue页和subNvue导航栏)",
+    "name" : "通版商城V2",
     "appid" : "",
     "description" : "",
     "versionName" : "1.2.0",
@@ -62,11 +62,16 @@
     /* 快应用特有相关 */
     "mp-weixin" : {
         /* 小程序特有相关 */
-        "appid" : "",
+        "appid" : "wx00d1e2843c3b3f77",
         "setting" : {
             "urlCheck" : true,
-            "minified" : true
+            "minified" : true,
+            "es6" : false
         },
-        "permission" : {}
+        "permission" : {
+			"scope.userLocation": {
+				"desc": "你的位置信息将用于小程序位置接口的效果展示"
+			}
+        }
     }
 }

@@ -20,7 +20,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="loading-text">{{loadingText}}</view>
+			<view v-if="!goodsList" class="loading-text">{{loadingText}}</view>
 		</view>
 	</view>
 </template>
@@ -52,6 +52,7 @@
 			// uni.setNavigationBarTitle({
 			// 	title: option.name
 			// });
+			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 			this.cataid = option.cataid;
 			//兼容H5下排序栏位置
 			// #ifdef H5
@@ -159,7 +160,7 @@
 				
 				// uni.showToast({title: '商品'+e.goods_id,icon:"none"});
 				uni.navigateTo({
-					url: '../goods?productid='+ e
+					url: '/pages/goods/goods?productid='+ e
 				});
 			},
 			//排序类型

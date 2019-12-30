@@ -66,9 +66,9 @@
 </template>
 
 <script>
-	var abotapi = require("../../common/abotapi.js");
-	var app = getApp();
-	var userInfo = abotapi.get_user_info();
+	// var abotapi = require("../../common/abotapi.js");
+	// var app = getApp();
+	// var userInfo = abotapi.get_user_info();
 	// var userAcountInfo = abotapi.get_user_account_info();
 	
 	
@@ -112,7 +112,7 @@
 		},
 		onLoad:function(){
 			// this.isWeixin=this.abotapi.isWeixin();		
-		
+		this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 			this.click_check();
 		},
 		methods:{
@@ -134,7 +134,7 @@
 			
 			    var that = this
 			    uni.request({
-					url: app.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_tokenstr',
+					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_tokenstr',
 					header: {
 						"Content-Type": "application/x-www-form-urlencoded"
 					},
@@ -143,7 +143,7 @@
 						// console.log(res.data);
 						that.tokenstr = res.data.tokenstr;		
 						//console.log(res.data.tokenstr);			
-						that.img_checkcode_url = app.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=getverifycodeimg' + '&tokenstr=' + that.tokenstr
+						that.img_checkcode_url = that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=getverifycodeimg' + '&tokenstr=' + that.tokenstr
 					}
 				});
 			},
@@ -154,11 +154,11 @@
 				console.log(1111);
 				  
 				uni.request({
-					url: app.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=sendsms',
+					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=sendsms',
 					data: {
 						mobile: that.mobile,
 						verifycode: that.img,
-						sellerid: app.globalData.default_sellerid,
+						sellerid: this.abotapi.globalData.default_sellerid,
 						//verifycode_sms: that.second,
 						tokenstr: that.tokenstr
 					},
@@ -190,7 +190,7 @@
 				  
 				            that.tokenstr = request_data.data.tokenstr;
 							
-							that.img_checkcode_url =  app.globalData.yanyubao_server_url + '?g=Yanyubao&m=Xiaochengxu&a=getverifycodeimg' + '&tokenstr=' + that.tokenstr
+							that.img_checkcode_url =  that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=Xiaochengxu&a=getverifycodeimg' + '&tokenstr=' + that.tokenstr
 			
 						}
 					}
@@ -228,16 +228,16 @@
 			   	var that = this;
 				//console.log(code+'hehe');
 				uni.request({
-					url: app.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=login',
+					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=login',
 					header: {
 						"Content-Type": "application/x-www-form-urlencoded"
 					},
 					method: "POST",
 					data: { 
-						appid: app.globalData.xiaochengxu_appid,      
+						appid: this.abotapi.globalData.xiaochengxu_appid,      
 						mobile: that.mobile,
 						verifycode_sms: that.tel,
-						sellerid: app.globalData.default_sellerid,
+						sellerid: this.abotapi.globalData.default_sellerid,
 						
 					},
 					success: function (request_res) {
@@ -253,21 +253,21 @@
 							console.log('登录成功返回userid:' + request_res.data.userid);
 						
 					   
-							app.globalData.userInfo.user_openid = request_res.data.openid;
-							app.globalData.userInfo.userid = request_res.data.userid;          
-							app.globalData.userInfo.checkstr = request_res.data.checkstr;
+							that.abotapi.globalData.userInfo.user_openid = request_res.data.openid;
+							that.abotapi.globalData.userInfo.userid = request_res.data.userid;          
+							that.abotapi.globalData.userInfo.checkstr = request_res.data.checkstr;
 						
 							//保存openid
-							abotapi.set_current_openid(request_res.data.openid);
-							console.log('更新缓存的用户信息:',app.globalData.userInfo);
+							that.abotapi.set_current_openid(request_res.data.openid);
+							console.log('更新缓存的用户信息:',that.abotapi.globalData.userInfo);
 							// console.log();
 							  
-							abotapi.set_user_info(app.globalData.userInfo);
+							that.abotapi.set_user_info(that.abotapi.globalData.userInfo);
 							
 							uni.request({
-								url: app.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=get_user_info',
+								url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=get_user_info',
 								data: {
-									sellerid: app.globalData.default_sellerid,
+									sellerid: that.abotapi.globalData.default_sellerid,
 									checkstr: request_res.data.checkstr,
 									userid: request_res.data.userid,
 								},
@@ -282,13 +282,13 @@
 									if (res.data.code == "-1") {
 									   
 										var last_url = '/pages/user/userInfo';
-										abotapi.goto_user_login(last_url);
+										that.abotapi.goto_user_login(last_url);
 							         
 									} else {
 										var	data = res.data;						      
 									 
 										if(data.code == 1){
-											abotapi.set_user_account_info(data.data)
+											that.abotapi.set_user_account_info(data.data)
 										}
 									}		
 								}
@@ -347,7 +347,7 @@
 						console.log("延誉宝服务器解析jscode并返回以下内容：");
 						console.log(request_res);
 						// abotapi.globalData.user_openid = request_res.data.openid;
-						app.globalData.tokenstr = request_res.data.tokenstr;
+						that.abotapi.globalData.tokenstr = request_res.data.tokenstr;
 					}
 				});
 				
@@ -370,7 +370,7 @@
 						//console.log(e.detail.errMsg);return;
 		  
 						uni.request({
-							url: app.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=wxa_one_click_login',
+							url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=wxa_one_click_login',
 							header: {
 								"Content-Type": "application/x-www-form-urlencoded"
 							},
@@ -378,10 +378,10 @@
 							dataType: 'json',
 							data: {
 								js_code: res.code,
-								xiaochengxu_appid: app.globalData.xiaochengxu_appid,
+								xiaochengxu_appid: this.abotapi.globalData.xiaochengxu_appid,
 								iv: e.detail.iv,
 								encryptedData: e.detail.encryptedData,
-								sellerid: app.globalData.default_sellerid,
+								sellerid: this.abotapi.globalData.default_sellerid,
 								parentid: 0,
 							},
 							success: function (res) {
@@ -389,22 +389,22 @@
 			  
 								if (res.data && (res.data.code == 1)) {
 									//更新checkstr和uwid，
-									app.globalData.userInfo.userid = res.data.userid;
-									//app.globalData.userInfo.checkstr = res.data.checkstr;
+									this.abotapi.globalData.userInfo.userid = res.data.userid;
+									//this.abotapi.globalData.userInfo.checkstr = res.data.checkstr;
 				  
 									console.log('一键登录成功，userid:' + res.data.userid);
 				  
-									app.globalData.userInfo.user_openid = res.data.openid;
-									app.globalData.userInfo.userid = res.data.userid;
-									app.globalData.userInfo.checkstr = res.data.checkstr;
-									app.globalData.userInfo.is_get_userinfo = res.data.is_get_userinfo;
+									this.abotapi.globalData.userInfo.user_openid = res.data.openid;
+									this.abotapi.globalData.userInfo.userid = res.data.userid;
+									this.abotapi.globalData.userInfo.checkstr = res.data.checkstr;
+									this.abotapi.globalData.userInfo.is_get_userinfo = res.data.is_get_userinfo;
 				  
 									//保存openid
 									abotapi.set_current_openid(res.data.openid);
 					  
-									console.log(app.globalData.userInfo);
+									console.log(this.abotapi.globalData.userInfo);
 					  
-									abotapi.set_user_info(app.globalData.userInfo);
+									abotapi.set_user_info(this.abotapi.globalData.userInfo);
 						  
 									uni.showToast({
 										title: res.data.msg,

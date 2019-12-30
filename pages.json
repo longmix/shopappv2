@@ -1,6 +1,6 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		{
+		{	//主页
 			"path": "pages/tabBar/home/home",
 			"style": {
 				"navigationBarTextStyle":"black",
@@ -17,7 +17,7 @@
 				}
 			}
 		},
-		{
+		{	//商品分类
 			"path": "pages/tabBar/category/category",
 			"style": {
 				"navigationBarTextStyle":"black",
@@ -28,7 +28,7 @@
 				}
 			}
 		},
-		{
+		{	//购物车
 			"path": "pages/tabBar/cart/cart",
 			"style": {
 				"enablePullDownRefresh": true,
@@ -44,7 +44,7 @@
 				}
 			}
 		},
-		{
+		{	//用户主页
 			"path": "pages/tabBar/user/user",
 			"style": {
 				"enablePullDownRefresh": true,
@@ -62,7 +62,7 @@
 				}
 			}
 		},
-		{
+		{	//商品列表
             "path" : "pages/goods/goods-list/goods-list",
             "style" : {
 				"navigationBarTitleText" : "",
@@ -72,7 +72,7 @@
 				}
 			}
         },
-		{
+		{	//商品详情
 		    "path" : "pages/goods/goods",
 		    "style" : {
 				"navigationBarTitleText" : "",
@@ -87,7 +87,7 @@
 				}
 			}
 		},
-		{
+		{	//登录页
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "登录",
@@ -99,7 +99,7 @@
 		        }
 			}
 		},
-		{
+		{	//账号注册页
 			"path": "pages/login/register",
 			"style": {
 				"navigationBarTitleText": "注册账号",
@@ -130,7 +130,7 @@
 				"softinputNavBar":"none"
             }
         }
-        ,{
+        ,{	//订单列表
             "path" : "pages/user/order_list/order_list",
             "style" : {
 				"navigationBarTitleText":"我的订单",
@@ -139,7 +139,7 @@
 				"backgroundColorBottom":"#ffffff"
 			}
         }
-        ,{
+        ,{	//用户设置
             "path" : "pages/user/setting/setting",
             "style" : {
 				"navigationBarBackgroundColor":"#f8f8f8",
@@ -258,6 +258,20 @@
         ,{
             "path" : "pages/h5browser/h5browser",
             "style" : {}
+        }
+        ,{
+            "path" : "pages/tabBar/home/help/help",
+            "style": {
+            	"navigationBarTitleText": "商户头条",
+            	"softinputNavBar":"none"
+            }
+        }
+        ,{
+            "path" : "pages/tabBar/home/help_detail/help_detail",
+            "style": {
+            	"navigationBarTitleText": "文章详情",
+            	"softinputNavBar":"none"
+            }
         }
     ],
 	"globalStyle": {

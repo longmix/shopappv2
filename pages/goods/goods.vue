@@ -250,7 +250,7 @@ export default {
 		};
 	},
 	onLoad(option) {
-		
+		this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 		console.log('44444444444',option);
 		this.productid = option.productid;
 		var that = this;
@@ -409,7 +409,7 @@ export default {
 				data:tmpList,
 				success: () => {
 					uni.navigateTo({
-						url:'../order/confirmation'
+						url:'/pages/order/confirmation'
 					})
 				}
 			})

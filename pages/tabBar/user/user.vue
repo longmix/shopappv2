@@ -146,13 +146,13 @@
 			this.statusTop = e.scrollTop>=0?null:-this.statusHeight+'px';
 		},
 		onLoad() {
-			
+			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 			var that = this;
 			uni.request({
-			    url: 'https://yanyubao.tseo.cn/?g=Yanyubao&m=ShopAppWxa&a=get_shop_icon_usercenter',
+			    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_shop_icon_usercenter',
 			    method: 'post',
 			    data: {
-					sellerid: 'fNmxUPggP',
+					sellerid: this.abotapi.globalData.default_sellerid,
 				},
 			    header: {
 					'Content-Type': 'application/x-www-form-urlencoded'
@@ -249,27 +249,27 @@
 			//消息列表
 			toMsg(){
 				uni.navigateTo({
-					url:'../../msg/msg'
+					url:'/pages/msg/msg'
 				})
 			},
 			toOrderList(index){
 				uni.setStorageSync('tbIndex',index);
-				uni.navigateTo({url:'../../user/order_list/order_list?tbIndex='+index}) 
+				uni.navigateTo({url:'/pages/user/order_list/order_list?tbIndex='+index}) 
 			},
 			toSetting(){
 				uni.navigateTo({
-					url:'../../user/setting/setting'
+					url:'/pages/user/setting/setting'
 				})
 			},
 			toMyQR(){
 				uni.navigateTo({
-					url:'../../user/myQR/myQR'
+					url:'/pages/user/myQR/myQR'
 				})
 			},
 			toLogin(){
 				
 				uni.navigateTo({
-					url:'../../login/login'
+					url:'/pages/login/login'
 				})
 				this.isfirst = false;
 			},
@@ -283,7 +283,7 @@
 			},
 			toDeposit(){
 				uni.navigateTo({
-					url:'../../user/deposit/deposit'
+					url:'/pages/user/deposit/deposit'
 				})
 			},
 			toPage(url){

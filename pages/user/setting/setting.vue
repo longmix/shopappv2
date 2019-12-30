@@ -69,7 +69,7 @@
 
 <script>
 	var abotapi = require("../../../common/abotapi.js");
-	var app = getApp();
+	// var app = getApp();
 	var userInfo = abotapi.get_user_info();
 	export default {
 		data() {
@@ -83,7 +83,6 @@
 		
 		onLoad:function(options) {
 			var that = this;
-			var userInfo = abotapi.get_user_info();
 			if ((!userInfo) || (!userInfo.userid)) {
 				uni.redirectTo({
 					url: '../../login/login',
@@ -97,11 +96,11 @@
 			logout: function () {
 				abotapi.del_user_info();
 			    
-				var sellerid = app.globalData.default_sellerid;
+				var sellerid = this.abotapi.globalData.default_sellerid;
 				if(typeof(sellerid) != 'undefined'){
 			        if(sellerid.length > 15){
 						uni.clearStorageSync();
-						console.log('清空完成，sellerid：'+abotapi.get_sellerid());
+						console.log('清空完成，sellerid：'+ abotapi.get_sellerid());
 					}
 				}
 			
@@ -118,12 +117,12 @@
 				var that = this;
 				if(userInfo && userInfo.userid){
 					uni.request({
-						url: app.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
+						url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
 						data: {
-							sellerid: app.globalData.default_sellerid,
+							sellerid: this.abotapi.globalData.default_sellerid,
 							checkstr: userInfo.checkstr,
 							userid: userInfo.userid,
-							appid: app.globalData.xiaochengxu_appid,
+							appid: this.abotapi.globalData.xiaochengxu_appid,
 						},
 						header: {
 							"Content-Type": "application/x-www-form-urlencoded"
@@ -134,7 +133,7 @@
 				
 							if (res.data.code == "-1") {
 								var last_url = '/pages/user/index';
-								abotapi.goto_user_login(last_url, 'normal');
+								this.abotapi.goto_user_login(last_url, 'normal');
 							} else {
 								var data = res.data;
 								that.user_info = data.data;
@@ -176,7 +175,7 @@
 			    }
 				console.log(1111555555);
 				uni.request({
-					url: app.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=user_info_save',
+					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=user_info_save',
 					header: {  
 						"Content-Type": "application/x-www-form-urlencoded"  
 					}, 
@@ -185,7 +184,7 @@
 						nickname:that.user_info.nickname,
 						checkstr:userInfo.checkstr,
 						userid:userInfo.userid,
-						sellerid: app.globalData.default_sellerid,
+						sellerid: this.abotapi.globalData.default_sellerid,
 					},    
 					success:function(res){
 						console.log('success',res);
@@ -226,11 +225,11 @@
 						console.log("chooseImageRes",chooseImageRes);
 						var headimgurl = chooseImageRes.tempFilePaths[0];
 						uni.uploadFile({
-							url: app.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=upload_image_file',
+							url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=upload_image_file',
 							filePath: headimgurl,
 							name: 'file',
 							formData: {
-								sellerid: app.globalData.default_sellerid,
+								sellerid: this.abotapi.globalData.default_sellerid,
 								checkstr: userInfo.checkstr,
 								userid: userInfo.userid,
 							},
@@ -239,9 +238,9 @@
 								console.log('obj',obj);
 								
 								uni.request({
-									url: app.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=set_image_headimgurl', 
+									url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=set_image_headimgurl', 
 									data: {
-										sellerid: app.globalData.default_sellerid,
+										sellerid: this.abotapi.globalData.default_sellerid,
 										checkstr: userInfo.checkstr,
 										userid: userInfo.userid,
 										img_url: obj.img_url

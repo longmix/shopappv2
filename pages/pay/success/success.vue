@@ -24,6 +24,7 @@
 		},
 		onLoad(e) {
 			this.amount = parseFloat(e.amount).toFixed(2);
+			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 		},
 		methods: {
 			toUser() {

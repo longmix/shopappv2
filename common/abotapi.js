@@ -10,7 +10,16 @@ module.exports = {
 		userInfo: {},
 	},
 	
+	set_current_weiduke_token: function (weiduke_token) {
+	    if (!weiduke_token) {
+			return;
+	    }
 	
+	    console.log("设置weiduke_token：" + weiduke_token);
+	
+	    //缓存返回数据
+	    uni.setStorageSync("current_weiduke_token", weiduke_token);
+	},
     json_add:function(a,b){
  
         if(a==undefined || a.length==0) return b;
@@ -214,7 +223,7 @@ module.exports = {
 	
 	
 	
-	onLaunch: function () {   
+	onLaunch02: function () {   
 	    var that = this;
 	    //调用API从本地缓存中获取数据
 	    var logs = uni.getStorageSync('logs') || []
