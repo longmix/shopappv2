@@ -165,8 +165,7 @@
 										content: '小程序服务器异常',
 									});
 					
-					
-					
+
 									//返回上一页
 									uni.navigateBack({
 										delta: 2
@@ -189,8 +188,7 @@
 					
 							}
 						});
-				
-				
+								
 					},
 					fail: function (login_res){
 						uni.hideLoading();
@@ -242,7 +240,6 @@
 				uni.hideLoading()
 			}, 2000)
 		  
-			
 		},
 		onReady: function () {
 			// 页面渲染完成
@@ -418,28 +415,6 @@
 					},
 					success: function (res) {
 						
-						
-						// if(res.data.code == 1){
-						// 	that.remark = res.data;
-						// 	that.remark_list = that.remark.msg;
-						// 	console.log('that.msg返回值',that.remark_list);
-						// 	// if(that.page == 1){
-						// 	// 	that.remark_list = that.remark.msg;
-						// 	// }else{
-						// 	// 	that.remark_list = that.remark_list.concat(that.remark.msg);
-						// 	// }
-						// }else if(res.data.code == 0){
-						// 	// that.is_Remark_list = true;
-						// 	return;
-						// }
-						// that.remark = res.data.count;
-						// console.log('remark',that.remark);
-						
-						
-						
-						
-						
-						
 						var data = res.data;
 						if (data.code == 1) {
 							that.comment_num_id = 'comment_num_' + that.wz_id;
@@ -474,8 +449,7 @@
 			},
 				
 				
-				
-				
+
 			//提交评论
 			submitRemark: function (e) {
 				var that = this;

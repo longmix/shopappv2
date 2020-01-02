@@ -260,14 +260,12 @@ export default {
 		    }
 		});
 		
-		
 		that.get_flash_ad_list();	
 		that.get_flash_img_list();
 		that.initArticleList();
 		that.get_shop_icon_index();
 		
 		that.get_product_list();	
-		
 		
 		// #ifdef APP-PLUS
 		this.nVueTitle = uni.getSubNVueById('homeTitleNvue');

@@ -55,22 +55,22 @@
 		},
 		// 生命周期函数--监听页面加载
 		onLoad: function (options) {
-			console.log('options==>>',options);
-			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
+			// console.log('options==>>',options);
+			// this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 			
-			var that = this
+			// var that = this
 			
-			that.sellerid = options.sellerid;
+			// that.sellerid = options.sellerid;
 			
-			if (typeof (that.sellerid) == 'undefined') {
-				that.sellerid = this.abotapi.globalData.default_sellerid;
-			}
+			// if (typeof (that.sellerid) == 'undefined') {
+			// 	that.sellerid = this.abotapi.globalData.default_sellerid;
+			// }
 			
-			// uni.setNavigationBarTitle({
-				// title: this.abotapi.globalData.shop_name
-			// })
+			// // uni.setNavigationBarTitle({
+			// 	// title: this.abotapi.globalData.shop_name
+			// // })
 			
-			this.initArticleList(that.sellerid);
+			// this.initArticleList(that.sellerid);
 			
 		},
 		methods: {
