@@ -7,7 +7,7 @@
 			<!-- 定位城市 -->
 			<view class="addr">
 				<view class="icon location"></view>
-				<view>{{address}}111</view>
+				<view>{{address}}</view>
 			</view>
 			<!-- 搜索框 -->
 			<view class="input-box">
@@ -138,7 +138,7 @@ import bmap from '../../../common/SDK/bmap-wx.js';
 export default {
 	data() {
 		return {
-			ak: "wSVukg6uErl2HDnWCF5ao3AAAGOznHhg",	//填写申请到的ak
+			ak: "",	//填写申请到的ak，从shop_option中获取 baidu_map_ak_wxa这个属性
 			markers: [],
 			longitude: '', 	//经度
 			latitude: '',	//纬度
@@ -160,7 +160,7 @@ export default {
 			productLists:'',
 			pictures:'',
 			yingxiao_list:'',
-			page:1,
+			page_num:1,
 			page_size:5,
 			is_OK:false,
 			cb_params:'',
@@ -199,8 +199,8 @@ export default {
 	//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
 	onReachBottom() {
 		var that = this;
-		var page = that.page;
-		that.page++;
+		var page_num = that.page_num;
+		that.page_num ++;
 		
 		if(this.is_OK){
 			uni.showToast({
@@ -215,7 +215,7 @@ export default {
 		    data: {
 				sellerid:this.abotapi.globalData.default_sellerid,
 				sort: 1,
-				page: that.page,
+				page: that.page_num,
 				page_size:that.page_size,
 		    },
 		    header: {
@@ -249,6 +249,9 @@ export default {
 	onLoad() {
 		var that = this;
 		 
+		this.abotapi.set_option_list_str(this, this.callback_function);
+		
+		
 		uni.getLocation({
 		    type: 'wgs84',
 		    success: function (res) {
@@ -257,63 +260,15 @@ export default {
 		    }
 		});
 		
-		this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 		
-		
-		this.abotapi.set_option_list_str(this, this.callback_function);
-		
-		
-		that.get_product_list();
 		that.get_flash_ad_list();	
 		that.get_flash_img_list();
 		that.initArticleList();
 		that.get_shop_icon_index();
-		var regeocoding_fail = function (data) {
-			console.log('333333', data);
-			console.log('44444', that.ak);
-		};
-		var regeocoding_success = function (data) {
-			console.log('00000', data);
-			var address = this.address;
-			this.wxMarkerData = data.wxMarkerData;
-			this.markers = this.wxMarkerData;
-			this.latitude = this.wxMarkerData[0].latitude;
-			this.longitude = this.wxMarkerData[0].longitude;
-			this.address = this.wxMarkerData[0].address;
-			console.log('address',this.address);
-			this.cityInfo = data.originalData.result.addressComponent,
-			// console.log('with', that.data.imageWidth)
-			uni.setStorageSync("latitude", this.wxMarkerData[0].latitude)
-			console.log('location', this.wxMarkerData[0].latitude)
-			uni.setStorageSync("longitude", this.wxMarkerData[0].longitude)
-			uni.setStorageSync("markers", this.wxMarkerData)
-		      // getCurrentPages()[getCurrentPages().length - 1].onLoad()
-		}
 		
-		this.abotapi.set_option_list_str(that, function (that, cb_params) {
-			//var that = this;
+		that.get_product_list();	
 		
-			console.log('getShopOptionAndRefresh+++++:::' + cb_params)
-	
-			//从本地读取
-			var option_list_str = uni.getStorageSync("option_list_str");
-			var option_list = JSON.parse(option_list_str);
-	
-			console.log("获取商城选项数据：" + option_list_str + '用于百度地图');
-			console.log("百度地图AK：" + option_list.baidu_map_ak_wxa);
-	
-			/* 获取定位地理位置 */
-			// 新建bmap对象
-	
-			var BMap_obj = new bmap.BMapWX({
-				ak: option_list.baidu_map_ak_wxa
-			});
-	
-			BMap_obj.regeocoding({
-				fail: regeocoding_fail,
-				success: regeocoding_success
-			});
-		});
+		
 		// #ifdef APP-PLUS
 		this.nVueTitle = uni.getSubNVueById('homeTitleNvue');
 		this.nVueTitle.onMessage(res => {
@@ -344,6 +299,12 @@ export default {
 			}
 			
 			console.log('cb_params====', cb_params);
+			
+			
+			//====1、更新界面的颜色
+			this.abotapi.getColor();
+			
+			//====2、其他的设置选项：商品列表风格、头条图标等等
 			if (cb_params.wxa_product_list_style) {
 			    
 			      this.wxa_product_list_style = cb_params.wxa_product_list_style
@@ -452,7 +413,49 @@ export default {
 			  
 			}
 			
+			//====3、获取经纬度坐标，显示当前城市			
+			console.log("百度地图AK：" + cb_params.baidu_map_ak_wxa);
+				
+			/* 获取定位地理位置 */
+			// 新建bmap对象
+				
+			var BMap_obj = new bmap.BMapWX({
+				ak: cb_params.baidu_map_ak_wxa
+			});
 			
+			var regeocoding_fail = function (data) {
+				console.log('333333', data);
+				console.log('44444', that.ak);
+			};
+			
+			var regeocoding_success = function (data) {
+				console.log('00000', data);
+				
+
+				this.wxMarkerData = data.wxMarkerData;
+				this.markers = this.wxMarkerData;
+				this.latitude = this.wxMarkerData[0].latitude;
+				this.longitude = this.wxMarkerData[0].longitude;
+				this.address = this.wxMarkerData[0].address;
+				console.log('address',this.address);
+				
+				this.cityInfo = data.originalData.result.addressComponent,
+				// console.log('with', that.data.imageWidth)
+				
+				uni.setStorageSync("latitude", this.wxMarkerData[0].latitude)
+				console.log('location', this.wxMarkerData[0].latitude)
+				
+				uni.setStorageSync("longitude", this.wxMarkerData[0].longitude)
+				
+				uni.setStorageSync("markers", this.wxMarkerData)
+				
+			      // getCurrentPages()[getCurrentPages().length - 1].onLoad()
+			}
+				
+			BMap_obj.regeocoding({
+				fail: regeocoding_fail,
+				success: regeocoding_success
+			});
 			
 			
 			
