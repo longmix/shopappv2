@@ -46,6 +46,7 @@
 		        var url = 'https://www.abot.cn';
 		        if (url_data[1] == 'weiduke_home') {
 					url = 'https://cms.weiduke.com/index.php/Wap/Index/index/token/' + url_data[0] + '.shtml';
+					'/pages/tabBar/user/https://yanyubao.tseo.cn/User/agent_income.html?oneclicklogin=%oneclicklogin%'
 		
 					console.log(url);
 		

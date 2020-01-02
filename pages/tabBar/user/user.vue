@@ -287,6 +287,7 @@
 				})
 			},
 			toPage(url){
+				console.log('url',url);
 				if(!url){
 					uni.showToast({title: '模板未包含此页面',icon:"none"});return;
 				}

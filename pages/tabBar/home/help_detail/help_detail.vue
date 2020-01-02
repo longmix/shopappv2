@@ -105,7 +105,8 @@
 				wz_id:'',
 				publishtype:'',
 				is_Focus:false,
-				is_OK:false
+				is_OK:false,
+				app_name_chat_title:''
 			}
 		},
 		
@@ -778,7 +779,10 @@
 				})
 				
 			},
-				
+			
+			
+			
+			//页面滑动
 			toReamrkList: function () {
 				var that = this;
 				uni.setStorageSync('comment_num_' + this.wz_id, this.comment_num_all)

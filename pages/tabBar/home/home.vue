@@ -31,12 +31,11 @@
 			<view class="swiper-box">
 				<swiper circular="true" autoplay="true" @change="swiperChange">
 					<swiper-item v-for="swiper in productLists" :key="swiper.id">
-						<image :src="swiper.image" mode="widthFix" @tap="toSwiper(swiper)"></image>
+						<image @click="toFlashAd(swiper)" :src="swiper.image" mode="widthFix"></image>
 					</swiper-item>
 				</swiper>
 				<view class="indicator">
-					<view
-						class="dots" v-for="(swiper, index) in swiperList" :class="[currentSwiper >= index ? 'on' : '']" :key="index"></view>
+					<view class="dots" v-for="(swiper, index) in swiperList" :class="[currentSwiper >= index ? 'on' : '']" :key="index"></view>
 				</view>
 			</view>
 		</view>
@@ -77,19 +76,14 @@
 			</view>
 		</view>
 		<!-- 广告图 -->
-		<view v-for="tab in pictures">
+		<view v-for="(tab,index) in pictures" :key="index" @click="toAdDetails(tab)">
 			<view class="banner" ><image :src="tab.image" style="width: 100%;" mode="widthFix"></image></view>
 		</view>
 		<!-- 活动区 -->
 		<view class="promotion">
 			<view class="text">优惠专区</view>
 			<view class="list">
-				<view
-					class="column"
-					v-for="(row, index) in Promotion"
-					@tap="toPromotion(row)"
-					:key="index"
-				>
+				<view class="column" v-for="(row, index) in Promotion" @tap="toPromotion(row)" :key="index">
 					<view class="top">
 						<view class="title">{{ row.title }}</view>
 						<view class="countdown" v-if="row.countdown">
@@ -116,7 +110,7 @@
 				<image src="/static/img/hua.png"></image>
 			</view>
 			<view class="product-list">
-				<view class="product" v-for="product in productList" :key="product.goods_id" @tap="toGoods(product)">
+				<view class="product" v-for="(product,index) in productList" :key="index" @click="toGoods(product)">
 					<image mode="widthFix" :src="product.picture"></image>
 					<view class="name">{{ product.name }}</view>
 					<view class="info">
@@ -148,8 +142,8 @@ export default {
 			articlelist:'',
 			articlelist2:'',
 			wxa_show_toutiao:'',
-			
-			
+			wxa_shop_toutiao_flash_line:'',
+			addListener:'',
 			
 			showHeader:true,
 			afterHeaderOpacity: 1,//不透明度
@@ -800,8 +794,11 @@ export default {
 			uni.showToast({ title: '建议跳转到新页面做搜索功能' });
 		},
 		//轮播图跳转
-		toSwiper(e) {
-			uni.showToast({ title: e.src, icon: 'none' });
+		toFlashAd:function(e){
+			console.log("toFlashAd-e",e);
+			uni.navigateTo({
+				url:e.url,
+			})
 		},
 		//分类跳转
 		toCategory(e) {
@@ -814,9 +811,9 @@ export default {
 		},
 		//推荐商品跳转
 		toPromotion(e) {
+			console.log('toPromotion-e',e);
 			
-			
-			uni.showToast({ title: e.title, icon: 'none' });
+			// uni.showToast({ title: e.title, icon: 'none' });
 		},
 		//商品跳转
 		toGoods(e) {
@@ -824,7 +821,7 @@ export default {
 			
 			var productid = e.productid;
 			
-			uni.showToast({ title: '商品' + e.goods_id, icon: 'none' });
+			// uni.showToast({ title: '商品' + e.goods_id, icon: 'none' });
 			uni.navigateTo({
 				url: '/pages/goods/goods?productid='+productid
 			});
@@ -832,6 +829,13 @@ export default {
 		//轮播图指示器
 		swiperChange(event) {
 			this.currentSwiper = event.detail.current;
+		},
+		toAdDetails:function(e){
+			console.log('toAdDetails-e',e);
+			// return;
+			uni.navigateTo({
+				url:e.url,
+			})
 		}
 	}
 };
@@ -957,7 +961,7 @@ page{position: relative;background-color: #fff;}
 	justify-content: center;
 	.swiper-box {
 		width: 92%;
-		height: 30.7vw;
+		// height: 30.7vw;
 
 		overflow: hidden;
 		border-radius: 15upx;
@@ -967,7 +971,7 @@ page{position: relative;background-color: #fff;}
 		z-index: 1;
 		swiper {
 			width: 100%;
-			height: 30.7vw;
+			// height: 30.7vw;
 			swiper-item {
 				image {
 					width: 100%;

@@ -258,7 +258,7 @@
 										});
 										that.user_info.headimgurl = obj.img_url;
 									}
-							  });
+								});
 							}
 						});
 					}

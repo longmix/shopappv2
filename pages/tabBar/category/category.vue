@@ -29,7 +29,8 @@
 			<scroll-view  scroll-y="true" class="right" >
 			    <view class="category" v-for="(item2,index) in cataList" :key="item2.cataid" @click="toCategory(item2.cataid)"> <!--  v-show="index==showCategoryIndex" -->
 					<view class="banner" >
-						<image :src="item2.icon"></image>
+						<image v-if="item2.icon" :src="item2.icon" mode="widthFix"></image>
+						<image v-else src="" mode="widthFix" style="height: 240upx;"></image>
 					</view>
 					<view class="list">
 						<view class="box">
@@ -407,13 +408,13 @@
 				float: left;
 				.banner{
 					width: 100%;
-					height: 24.262vw;
+					// height: 24.262vw;
 					border-radius: 10upx;
 					overflow: hidden;
 					box-shadow: 0upx 5upx 20upx rgba(0,0,0,0.3);
 					image{
 						width: 100%;
-						height: 24.262vw;
+						// height: 24.262vw;
 					}
 				}
 				.list{
@@ -431,7 +432,7 @@
 						flex-wrap: wrap;
 						image{
 							width: 60%;
-							height: calc(71.44vw / 3 * 0.6);
+							// height: calc(71.44vw / 3 * 0.6);
 						}
 						.text{
 							margin-top: 5upx;

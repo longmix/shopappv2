@@ -12,7 +12,7 @@
 		<view class="goods-list">
 			<view class="product-list">
 				<view class="product" v-if="item.cataid == cataid" v-for="(item,index) in goodsList" :key="item.cataid" @click="toGoods(item.productid)">
-					<image mode="widthFix" src=""></image>
+					<image mode="widthFix" :src="item.picture"></image>
 					<view class="name">{{item.name}}</view>
 					<view class="info">
 						<view class="price">{{item.price}}</view>
@@ -67,10 +67,10 @@
 			// #endif
 			var that = this;
 			uni.request({
-			    url: app.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
+			    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
 			    method: 'post',
 			    data: {
-			      sellerid: app.globalData.default_sellerid,
+			      sellerid: this.abotapi.globalData.default_sellerid,
 			      keyword:'', 
 			      sort: 1,
 			      page: 1,
@@ -235,7 +235,7 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			height: 60upx;
+			// height: 60upx;
 			color: #979797;
 			font-size: 24upx;
 		}
