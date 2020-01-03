@@ -43,12 +43,12 @@
 		    <view v-if="wxa_show_toutiao == 1">
 			   <view class="toutiao">
 					<view class="toutiao_left" @tap="touTiaoList" v-if="!wxa_shop_toutiao_icon">
-						<image src="/static/img/toutiao.gif"></image>
+						<image :src="wxa_shop_toutiao_icon"></image>
 					</view>
 					<view class="toutiao_left" @tap="touTiaoList" v-if="wxa_shop_toutiao_icon">
 						<image :src="wxa_shop_toutiao_icon"></image>
 					</view>
-					<swiper class="toutiao_right" vertical="true" autoplay="true" circular="true" interval="2000" >  <!-- v-if="!wxa_shop_toutiao_flash_line||wxa_shop_toutiao_flash_line!=2"  -->
+					<swiper class="toutiao_right" vertical="true" autoplay="true" circular="true" interval="2000" v-if="!wxa_shop_toutiao_flash_line||wxa_shop_toutiao_flash_line!=2">
 						<swiper-item v-for="(item,index) in articlelist" :key="index">
 							<view class="toutiao_right" @tap="touTiaoList(item.id)" >
 								<text>{{item.title}}</text>
@@ -56,12 +56,12 @@
 						</swiper-item>
 					</swiper>
 				
-					<!-- <swiper class="toutiao_right2" vertical="true" autoplay="true" circular="true" interval="2000" v-if="wxa_shop_toutiao_flash_line==2">
+					<swiper class="toutiao_right2" vertical="true" autoplay="true" circular="true" interval="2000" v-if="wxa_shop_toutiao_flash_line==2">
 						<swiper-item v-for="(item2,index2) in articlelist2" :key="index2" @tap="touTiaoList(item2.id)">
 							<view>•  {{item2[0].title}}</view>
 							<view>•  {{item2[1].title}}</view>
 						</swiper-item>
-					</swiper> -->
+					</swiper>
 			   </view>
 		   </view>
 		   <!--商户头条end-->
@@ -150,7 +150,7 @@ export default {
 			current_cityname:'',
 			current_citynameLength:'',
 			current_citynameWidth:'',
-			
+			wxa_shop_toutiao_icon:'',
 			
 			
 			showHeader:true,
@@ -673,20 +673,8 @@ export default {
 					that.articlelist2 =  articlelist2 
 					console.log('that.articlelist2',that.articlelist2);
 				}
-				// }else {
-		  //     //没有获取数据
-				// }
 			}
 		},
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		
 		//商户头条
@@ -724,11 +712,6 @@ export default {
 						that.articlelist2 =  articlelist2;
 						console.log('that.articlelist2',that.articlelist2);
 					}
-					//     else {
-					//       //没有获取数据
-					
-					//     }
-					
 				},
 				fail:function(res){
 					console.log('res2',res);
@@ -864,7 +847,9 @@ export default {
 		},
 		//搜索跳转
 		toSearch() {
-			uni.showToast({ title: '建议跳转到新页面做搜索功能' });
+			uni.navigateTo({
+				url:'/pages/search/search'				
+			})
 		},
 		
 		//推荐商品跳转

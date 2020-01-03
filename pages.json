@@ -8,12 +8,7 @@
 				"onReachBottomDistance":50,
 				"app-plus": {
 					"titleNView": false ,//禁用原生导航栏
-					"softinputNavBar":"none",
-					"subNVues":[{  
-						"id": "homeTitleNvue", // 唯一标识  
-						"path": "pages/tabBar/home/subNvue/homeTitleNvue", // 页面路径  
-						"type":"navigationBar"
-					}]
+					"softinputNavBar":"none"
 				}
 			}
 		},
@@ -59,6 +54,16 @@
 						"path": "pages/tabBar/user/subNvue/userTitleNvue", // 页面路径  
 						"type":"navigationBar"
 					}]
+				}
+			}
+		},
+		{	//商品搜索
+		    "path" : "pages/search/search",
+		    "style" : {
+				"navigationBarTitleText" : "商品搜索",
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"bounce":"none"
 				}
 			}
 		},

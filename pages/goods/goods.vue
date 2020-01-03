@@ -8,7 +8,7 @@
 				<view class="middle"></view>
 				<view class="icon-btn">
 					<view class="icon tongzhi" @tap="toMsg"></view>
-					<view class="icon cart" @tap="joinCart"></view>
+					<view class="icon cart" @tap="toCart"></view>
 				</view>
 			</view>
 			<!-- 头部-滚动渐变显示 -->
@@ -85,7 +85,7 @@
 		<view class="popup service" :class="serviceClass" @touchmove.stop.prevent="discard" @tap="hideService">
 			<!-- 遮罩层 -->
 			<view class="mask"></view>
-			<view class="layer" @tap.stop="discard">
+			<view class="layer2" @tap.stop="discard">
 				<view class="content">
 					<view class="row" v-for="(item,index) in goodsData.service" :key="index">
 						<view class="title">{{item.name}}</view>
@@ -99,7 +99,7 @@
 		<view class="popup spec" :class="specClass" @touchmove.stop.prevent="discard" @tap="hideSpec">
 			<!-- 遮罩层 -->
 			<view class="mask"></view>
-			<view class="layer" @tap.stop="discard">
+			<view class="layer2" @tap.stop="discard">
 				<view class="content">
 					<view class="title">选择规格：</view>
 					<view class="sp">
@@ -305,9 +305,9 @@ export default {
 		this.afterHeaderzIndex = e.scrollTop > 0 ? 11 : 10;
 	},
 	//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
-	onReachBottom() {
-		uni.showToast({ title: '触发上拉加载' });
-	},
+	// onReachBottom() {
+	// 	uni.showToast({ title: '触发上拉加载' });
+	// },
 	mounted () {
 		
 	},
@@ -337,6 +337,11 @@ export default {
 			setTimeout(() => {
 				this.shareClass = 'none';
 			}, 150);
+		},
+		toCart:function(){
+			uni.switchTab({
+				url:'/pages/tabBar/cart/cart'
+			})
 		},
 		//收藏
 		keep(){
@@ -926,7 +931,38 @@ page {
 	.layer {
 		position: fixed;
 		z-index: 22;
-		bottom: -69%;
+		bottom: -40%;
+		width: 92%;
+		padding: 0 4%;
+		border-radius: 20upx 20upx 0 0;
+		background-color: #fff;
+		display: flex;
+		flex-wrap: wrap;
+		align-content: space-between;
+		.content {
+			width: 100%;
+			padding: 20upx 0;
+		}
+		.btn {
+			width: 100%;
+			height: 100upx;
+			.button {
+				width: 100%;
+				height: 80upx;
+				border-radius: 40upx;
+				color: #fff;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				background-color: #f47952;
+				font-size: 28upx;
+			}
+		}
+	}
+	.layer2 {
+		position: fixed;
+		z-index: 22;
+		bottom: 0;
 		width: 92%;
 		padding: 0 4%;
 		border-radius: 20upx 20upx 0 0;

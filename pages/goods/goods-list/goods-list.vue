@@ -16,7 +16,7 @@
 					<view class="name">{{item.name}}</view>
 					<view class="info">
 						<view class="price">{{item.price}}</view>
-						<view class="slogan">{{item.seller_name}}</view>
+						<!-- <view class="slogan">{{item.seller_name}}</view> -->
 					</view>
 				</view>
 			</view>
@@ -39,9 +39,9 @@
 				headerTop:"0px",
 				headerPosition:"fixed",
 				orderbyList:[
-					{text:"销量",selected:true,orderbyicon:false,orderby:0},
-					{text:"价格",selected:false,orderbyicon:['sheng','jiang'],orderby:0},
-					{text:"好评",selected:false,orderbyicon:false,orderby:0}
+					{text:"最新",selected:true,orderbyicon:false,orderby:0},
+					{text:"销量",selected:false,orderbyicon:['sheng','jiang'],orderby:0},
+					{text:"价格",selected:false,orderbyicon:false,orderby:0}
 				],
 				orderby:"sheng",
 				gooosList:'',
@@ -125,7 +125,7 @@
 		},
 		//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
 		onReachBottom(){
-			uni.showToast({title: '触发上拉加载'});
+			// uni.showToast({title: '触发上拉加载'});
 			let len = this.goodsList.length;
 			if(len>=40){
 				this.loadingText="到底了";

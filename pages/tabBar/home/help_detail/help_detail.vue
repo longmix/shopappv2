@@ -141,7 +141,7 @@
 						}
 				
 						uni.request({
-							url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=wxa_one_click_login',
+							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=wxa_one_click_login',
 							header: {
 								"Content-Type": "application/x-www-form-urlencoded"
 							},
@@ -149,14 +149,14 @@
 							dataType: 'json',
 							data: {
 								js_code: login_res.code,
-								xiaochengxu_appid: this.abotapi.globalData.xiaochengxu_appid,
-								sellerid: this.abotapi.get_sellerid(),
+								xiaochengxu_appid: that.abotapi.globalData.xiaochengxu_appid,
+								sellerid: that.abotapi.get_sellerid(),
 							},
 							success: function (res) {
 								uni.hideLoading();
 								if(res.data.code == 1){
 									current_openid = res.data.openid;
-									this.abotapi.set_current_openid(current_openid);
+									that.abotapi.set_current_openid(current_openid);
 				
 									that.__get_img_from_weiduke(options.id, that); 
 									console.log('jjjjss')

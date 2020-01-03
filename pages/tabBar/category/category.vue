@@ -3,7 +3,7 @@
 		<!-- 状态栏 -->
 		<view class="status" :style="{position:headerPosition}"></view>
         <view class="header" :style="{position:headerPosition}">
-			<view class="addr"><view class="icon location"></view>{{city}}</view>
+			<view class="addr" :style="{fontSize:current_citynameWidth+'px'}"><view class="icon location"></view>{{current_cityname}}</view>
 			<view class="input-box">
 				<input placeholder="默认关键字" placeholder-style="color:#c0c0c0;" @tap="toSearch()"/>
 				<view class="icon search"></view>
@@ -53,7 +53,8 @@
 			return {
 				showCategoryIndex:0,
 				headerPosition:"fixed",
-				city:"北京",
+				current_cityname:'',
+				current_citynameWidth:'',
 				//分类列表
 				categoryList:'',
 				cataList:'',
@@ -72,19 +73,8 @@
 			}
 		},
 		onLoad() {
+			this.abotapi.set_option_list_str(this, this.callback_function);
 			
-			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
-			
-			this.amapPlugin = new amap.AMapWX({  
-				//高德地图KEY，随时失效，请务必替换为自己的KEY，参考：http://ask.dcloud.net.cn/article/35070
-				key: '7c235a9ac4e25e482614c6b8eac6fd8e'  
-			});
-			//定位地址
-			this.amapPlugin.getRegeo({  
-				success: (data) => {
-					this.city = data[0].regeocodeData.addressComponent.city.replace(/市/g,'');//把"市"去掉
-				}  
-			});
 			var that = this;
 			uni.request({
 				url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_cata_level2',
@@ -133,7 +123,26 @@
 		},
 		methods: {
 			callback_function:function(that, cb_params){
-				console.log('cb_params====',cb_params)
+				console.log('cb_params====',cb_params);
+				var that = this;
+				//====1、更新界面的颜色
+				that.abotapi.getColor();
+				
+				// uni.getStorageSync('current_cityname');
+				that.current_cityname = uni.getStorageSync('current_cityname');
+				console.log("that.current_cityname",that.current_cityname);
+				
+				var current_citynameLength = that.current_cityname.length;
+				
+				if(current_citynameLength == 2){
+					that.current_citynameWidth = uni.upx2px(28);
+				}
+				else if(current_citynameLength == 3){
+					that.current_citynameWidth = uni.upx2px(24);
+				}
+				else if(current_citynameLength == 4){
+					that.current_citynameWidth = uni.upx2px(20);
+				}
 			},
 			
 			//消息列表
