@@ -67,7 +67,7 @@
 		   <!--商户头条end-->
 		
 		<!-- 首页导航图标列表 -->
-		<view class="category-list" style="margin-left: 11%;">
+		<view class="category-list">
 			<view class="category" :style="wxa_show_icon_index_count== 4? 'width:25%':'width:20%'" v-for="(item, index) in index_icon_list"	:key="index" @click="toAdDetails(item.url)"> <!--  -->
 				<view >
 					<view class="img"><image :src="item.src"></image></view>
@@ -77,7 +77,9 @@
 		</view>
 		<!-- 广告图 -->
 		<view v-for="(tab,index) in pictures" :key="index" @click="toAdDetails(tab.url)">
-			<view class="banner" ><image :src="tab.image" style="width: 100%;" mode="widthFix"></image></view>
+			<view class="banner" >
+				<image :src="tab.image" style="width: 100%;vertical-align: middle;" mode="widthFix"></image>
+			</view>
 		</view>
 		<!-- 活动区 -->
 		<view class="promotion">
@@ -1041,7 +1043,7 @@ page{position: relative;background-color: #fff;}
 }
 
 .category-list {
-	width: 92%;
+	width: 100%;
 	margin: 0 4%;
 	padding: 0 0 30upx 0;
 	border-bottom: solid 2upx #f6f6f6;
@@ -1072,12 +1074,20 @@ page{position: relative;background-color: #fff;}
 		}
 	}
 }
-.banner {
+.banner_with_shadow {
 	width: 92%;
 	margin: 40upx 4%;
 	image {
 		border-radius: '';
 		box-shadow: 0upx 5upx 25upx rgba(0, 0, 0, 0.3);
+	}
+}
+
+.banner {
+	width: 100%;
+	margin: 0;
+	image {
+		border-radius: '';
 	}
 }
 

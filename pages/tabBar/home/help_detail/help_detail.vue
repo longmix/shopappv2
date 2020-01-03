@@ -9,7 +9,7 @@
 			</view>
 		</view>
 		
-		<view class='title'>{{wz_text.title}}</view>
+		<view class='wz_title'>{{wz_text.title}}</view>
 		<view style='margin:32rpx;margin-top:30rpx;margin-bottom:150rpx;padding-bottom:80rpx;'>
 		
 			<view class='datetime' v-if="wxa_show_article_detail_category == 1">
@@ -909,11 +909,11 @@
 	  margin-top: 10rpx;
 	  margin-bottom: 10rpx;
 	}
-	.title{
+	.wz_title{
 	  font-size: 34rpx;
 	  padding:32rpx;
-	  box-shadow:#EDEDED 2rpx 2rpx 15rpx 6rpx;
-	  margin-top: 70rpx;
+	  /*box-shadow:#EDEDED 2rpx 2rpx 15rpx 6rpx;
+	  margin-top: 70rpx;*/
 	}
 	.datetime{
 	  margin-left:10rpx;
@@ -936,7 +936,7 @@
 	.wenzhang_detail{
 	  font-size: 30rpx;
 	  font-family: "微软雅黑";
-	  margin-bottom:80rpx;
+	  margin-bottom:40rpx;
 	}
 	.tuijian{
 	  font-size: 24rpx;
@@ -1198,7 +1198,7 @@
 	  display:flex;
 	  justify-content:space-between;
 	  font-size:30rpx;
-	  margin-top:20rpx;
+	  margin-top:40rpx;
 	
 	}
 

@@ -18,7 +18,7 @@
 					</view>
 				</block>
 			</view>
-			<view class="weui-panel__ft">
+			<view class="weui-panel__ft" style="display:none;">
 				<view class="weui-cell weui-cell_access weui-cell_link">
 					<view class="weui-cell__bd">查看更多</view>
 					<view class="weui-cell__ft weui-cell__ft_in-access"></view>
@@ -176,7 +176,7 @@
 }
 
 .weui-media-box {
-  padding: 15px;
+  padding: 0px;
   position: relative;
 }
 .weui-media-box:before {
