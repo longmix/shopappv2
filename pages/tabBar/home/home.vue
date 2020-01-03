@@ -30,8 +30,8 @@
 		<view class="swiper">
 			<view class="swiper-box">
 				<swiper circular="true" autoplay="true" @change="swiperChange">
-					<swiper-item v-for="swiper in productLists" :key="swiper.id">
-						<image @click="toFlashAd(swiper)" :src="swiper.image" mode="widthFix"></image>
+					<swiper-item v-for="swiper in productLists" :key="swiper.id" @click="toAdDetails(swiper.url)">
+						<image  :src="swiper.image" mode="widthFix"></image>
 					</swiper-item>
 				</swiper>
 				<view class="indicator">
@@ -66,17 +66,17 @@
 		   </view>
 		   <!--商户头条end-->
 		
-		<!-- 分类列表 -->
+		<!-- 首页导航图标列表 -->
 		<view class="category-list" style="margin-left: 11%;">
-			<view class="category" v-for="(item, index) in index_icon_list"	:key="index"> <!--  -->
-				<navigator :url="item.url">
+			<view class="category" :style="wxa_show_icon_index_count== 4? 'width:25%':'width:20%'" v-for="(item, index) in index_icon_list"	:key="index" @click="toAdDetails(item.url)"> <!--  -->
+				<view >
 					<view class="img"><image :src="item.src"></image></view>
 					<view class="text">{{ item.name }}</view>
-				</navigator>
+				</view>
 			</view>
 		</view>
 		<!-- 广告图 -->
-		<view v-for="(tab,index) in pictures" :key="index" @click="toAdDetails(tab)">
+		<view v-for="(tab,index) in pictures" :key="index" @click="toAdDetails(tab.url)">
 			<view class="banner" ><image :src="tab.image" style="width: 100%;" mode="widthFix"></image></view>
 		</view>
 		<!-- 活动区 -->
@@ -144,6 +144,8 @@ export default {
 			wxa_show_toutiao:'',
 			wxa_shop_toutiao_flash_line:'',
 			addListener:'',
+			wxa_show_icon_index_count:'',
+			
 			
 			showHeader:true,
 			afterHeaderOpacity: 1,//不透明度
@@ -186,6 +188,18 @@ export default {
 	},
 	//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
 	onPullDownRefresh() {
+		var that = this;
+		
+		
+		that.get_flash_ad_list();
+		that.get_flash_img_list();
+		that.initArticleList();
+		that.get_shop_icon_index();
+		
+		that.get_product_list();
+		
+		
+		
 		setTimeout(function() {
 			uni.stopPullDownRefresh();
 		}, 1000);
@@ -314,7 +328,7 @@ export default {
 			}
 			if (cb_params.wxa_show_icon_index_count){
 			  
-			    this.icon_count = cb_params.wxa_show_icon_index_count
+			    this.wxa_show_icon_index_count = cb_params.wxa_show_icon_index_count
 			  
 			}
 			if (cb_params.wxa_show_index_icon) {
@@ -587,7 +601,7 @@ export default {
 		        
 				}, 500)
 		
-				if (this.wxa_shop_toutiao_flash_line == 2) {
+				if (that.wxa_shop_toutiao_flash_line == 2) {
 					var data = res.data.data;
 					var articlelist2 = [];
 					for (var i = 0, length = data.length -1; i < (length / 2); i++) {
@@ -638,7 +652,7 @@ export default {
 					}
 					
 					
-					if (this.wxa_shop_toutiao_flash_line == 2) {
+					if (that.wxa_shop_toutiao_flash_line == 2) {
 						var data = res.data.data;
 						var articlelist2 = [];
 						for (var i = 0, length = data.length -1; i < (length / 2); i++) {
@@ -793,22 +807,7 @@ export default {
 		toSearch() {
 			uni.showToast({ title: '建议跳转到新页面做搜索功能' });
 		},
-		//轮播图跳转
-		toFlashAd:function(e){
-			console.log("toFlashAd-e",e);
-			uni.navigateTo({
-				url:e.url,
-			})
-		},
-		//分类跳转
-		toCategory(e) {
-			console.log('e',e);
-			//uni.showToast({title: e.name,icon:"none"});
-			// uni.setStorageSync('catName',e.name);
-			uni.navigateTo({
-				url: '/pages/goods/goods-list/goods-list?cataid=' + e
-			});
-		},
+		
 		//推荐商品跳转
 		toPromotion(e) {
 			console.log('toPromotion-e',e);
@@ -818,10 +817,7 @@ export default {
 		//商品跳转
 		toGoods(e) {
 			console.log('rrxfff===',e);
-			
 			var productid = e.productid;
-			
-			// uni.showToast({ title: '商品' + e.goods_id, icon: 'none' });
 			uni.navigateTo({
 				url: '/pages/goods/goods?productid='+productid
 			});
@@ -830,12 +826,14 @@ export default {
 		swiperChange(event) {
 			this.currentSwiper = event.detail.current;
 		},
-		toAdDetails:function(e){
-			console.log('toAdDetails-e',e);
-			// return;
-			uni.navigateTo({
-				url:e.url,
-			})
+		
+		
+		//首页导航图标、轮播图、平面广告跳转
+		toAdDetails:function(url){
+			var var_list = Object();
+			console.log('toAdDetails- to url ====>>>>>>', url);
+			this.abotapi.call_h5browser_or_other_goto_url(url, var_list, '');
+			
 		}
 	}
 };

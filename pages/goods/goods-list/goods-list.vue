@@ -35,7 +35,7 @@
 				cataid:'',
 				goodsList:'',
 				
-				loadingText:"正在加载...",
+				loadingText:"暂无商品",
 				headerTop:"0px",
 				headerPosition:"fixed",
 				orderbyList:[
@@ -86,10 +86,10 @@
 						console.log("that.goodsList",that.goodsList);
 						
 					}else if(res.data.code == 0){
-						uni.showToast({
-							title: '暂无商品',
-							duration: 2000
-						});
+						// uni.showToast({
+						// 	title: '暂无商品',
+						// 	duration: 2000
+						// });
 					}
 			    },
 			    fail: function (e) {

@@ -287,13 +287,9 @@
 				})
 			},
 			toPage(url){
-				console.log('url',url);
-				if(!url){
-					uni.showToast({title: '模板未包含此页面',icon:"none"});return;
-				}
-				uni.navigateTo({
-					url:url
-				})
+				var var_list = Object();
+				console.log('toAdDetails- to url ====>>>>>>', url);
+				this.abotapi.call_h5browser_or_other_goto_url(url, var_list, '');
 			}
 		}
 	} 

@@ -863,14 +863,21 @@ module.exports = {
 				return;
 			}
 			
-			this.httpPost({
+			console.log('call_h5browser_or_other_goto_url ===>>>获取oneclicklogin 的值 ');
+			
+			var that = this;
+			
+			uni.request({
 				url: this.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=one_click_login_str',
 				method: 'post',
 				data: {
 				  sellerid: this.get_sellerid(),
 				  checkstr: userInfo.checkstr,
 				  userid: userInfo.userid
-				},				
+				},
+				header: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+				},		
 				success: function (res) {
 				  //--init data        
 				  var code = res.data.code;
@@ -879,19 +886,17 @@ module.exports = {
 					
 					url = url.replace('%oneclicklogin%', oneclicklogin);
 		
-					this.call_h5browser_or_other_goto_url(url, var_list, ret_page);
+					that.call_h5browser_or_other_goto_url(url, var_list, ret_page);
 				  }
 				},
 				fail: function (res) {
 		
 				}
-			  });
+			 });
 		
-			  return;
-			}
-			
-			return;
+			 return;
 		}
+			
    
 		//判断各种跳转条件
 		if (url.indexOf('switchTab') == 0) {

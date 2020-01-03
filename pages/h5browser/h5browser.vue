@@ -11,7 +11,10 @@
 			return {
 				url: null,
 				title: "",
-				ret_page:''
+				ret_page:'',
+				share_title:'',
+				share_image:'',
+				share_path_extra_option:''
 			}
 		},
 		
@@ -46,9 +49,9 @@
 		        var url = 'https://www.abot.cn';
 		        if (url_data[1] == 'weiduke_home') {
 					url = 'https://cms.weiduke.com/index.php/Wap/Index/index/token/' + url_data[0] + '.shtml';
-					'/pages/tabBar/user/https://yanyubao.tseo.cn/User/agent_income.html?oneclicklogin=%oneclicklogin%'
+					//'/pages/tabBar/user/https://yanyubao.tseo.cn/User/agent_income.html?oneclicklogin=%oneclicklogin%'
 		
-					console.log(url);
+					
 		
 					if (url.indexOf('*') != -1) {
 						url = url.replace("*", "?");
@@ -97,6 +100,8 @@
 			else if (options.url != null) {
 		
 				var extra_option_str = '';
+				
+				
 		
 		
 		        //判断分享转发的特殊参数
@@ -111,25 +116,28 @@
 		        if(extra_option_str.length > 2){
 					extra_option_str = extra_option_str.substr(0, extra_option_str.length - 1);
 		
-					share_path_extra_option = extra_option_str
+					this.share_path_extra_option = extra_option_str
 		        }
 		
 		        if(options.share_title){
 					
-					share_title = options.share_title
+					this.share_title = options.share_title
 				
 		        }
 		
 		        if (options.share_image) {
 				
-					share_image = options.share_image
+					this.share_image = options.share_image
 			
 		        }
-					url = decodeURIComponent(options.url)
+				
+				console.log('111111111111111111111======>>>>'+options.url);
+				
+				this.url = decodeURIComponent(options.url)
 		        
 		      }
 				else {	
-					url = 'https://www.abot.cn'
+					this.url = 'https://www.abot.cn'
 				}
 		
 		    },
