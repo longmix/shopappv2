@@ -264,7 +264,7 @@ export default {
 		var that = this;
 		 
 		this.abotapi.set_option_list_str(this, this.callback_function);
-		
+		this.abotapi.get_shop_info_from_server(this.callback_func_for_shop_info);
 		
 		uni.getLocation({
 		    type: 'wgs84',
@@ -514,6 +514,15 @@ export default {
 			});
 			
 			
+			
+		},
+		
+		callback_func_for_shop_info:function(shop_info){
+			var shop_name = shop_info.shop_name;
+			
+			uni.setNavigationBarTitle({
+				title:shop_name
+			})
 			
 		},
 		

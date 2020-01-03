@@ -348,10 +348,10 @@ module.exports = {
 	    }
 	
 	    uni.request({
-			url: this.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_shop_info',
+			url: that.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_shop_info',
 			method: 'post',
 			data: {
-				sellerid: this.globalData.default_sellerid
+				sellerid: that.globalData.default_sellerid
 			},
 			header: {
 				'Content-Type': 'application/x-www-form-urlencoded'
@@ -359,10 +359,10 @@ module.exports = {
 			success: function (res) {
 				if (res.data.code == 1) {
 					var shop_list = res.data.data;
-					this.globalData.shop_name = shop_list.shop_name;
+					that.globalData.shop_name = shop_list.shop_name;
 	
 					uni.setStorage({
-						key: 'shop_info_from_server_str_' + this.globalData.default_sellerid,
+						key: 'shop_info_from_server_str_' + that.globalData.default_sellerid,
 						data: shop_list,
 						success: function (res) {
 							console.log('异步保存成功');
