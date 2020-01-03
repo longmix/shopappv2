@@ -856,6 +856,42 @@ module.exports = {
 		if (url.indexOf("%wxa_openid%") != -1) {
 			url = url.replace('%wxa_openid%', this.get_current_openid());
 		}
+		
+		if(url.indexOf("%oneclicklogin%") != -1){
+			var userInfo = this.get_user_info();
+			if(!userInfo){
+				return;
+			}
+			
+			this.httpPost({
+				url: this.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=one_click_login_str',
+				method: 'post',
+				data: {
+				  sellerid: this.get_sellerid(),
+				  checkstr: userInfo.checkstr,
+				  userid: userInfo.userid
+				},				
+				success: function (res) {
+				  //--init data        
+				  var code = res.data.code;
+				  if (code == 1) {
+					var oneclicklogin = res.data.oneclicklogin;
+					
+					url = url.replace('%oneclicklogin%', oneclicklogin);
+		
+					this.call_h5browser_or_other_goto_url(url, var_list, ret_page);
+				  }
+				},
+				fail: function (res) {
+		
+				}
+			  });
+		
+			  return;
+			}
+			
+			return;
+		}
    
 		//判断各种跳转条件
 		if (url.indexOf('switchTab') == 0) {
@@ -908,12 +944,10 @@ module.exports = {
    
 			}
    
-		} else if (url.indexOf('http://') == 0) {
-			uni.navigateTo({
-				url: '/pages/h5browser/h5browser?url=' + encodeURIComponent(url) + '&ret_page=' + ret_page,
-			})
-		}
-		else if (url.indexOf('https://') == 0) {
+		} else if ((url.indexOf('http://') == 0)||(url.indexOf('https://') == 0)) {
+			
+			
+			
 			uni.navigateTo({
 				url: '/pages/h5browser/h5browser?url=' + encodeURIComponent(url) + '&ret_page=' + ret_page,
 			})
@@ -924,37 +958,38 @@ module.exports = {
 				var appid = arr[2];
 				var pagepath = arr[3];
 				var extraData = null;
-			if (arr[4]) {
-				extraData = arr[4];
-			}
-   
-			var extraData_obj = null;
-			if (extraData) {
-				extraData_obj = JSON.parse(extraData);
-			}
-   
-			//console.log('1111111111111', extraData)
-   
-			uni.navigateToMiniProgram({
-				appId: appid,
-				envVersion: 'release',
-				path: pagepath,
-				extraData: extraData_obj,
-				success(res) {
-					// 打开成功
-				},
-				fail: function (res) {
-					uni.showModal({
-						title: '跳转小程序失败',
-						content: res.errMsg,
-						showCancel: false
-					})
-   
-					console.log('跳转小程序失败：', res);
+				
+				if (arr[4]) {
+					extraData = arr[4];
 				}
-			})
-         }
-       }
+	   
+				var extraData_obj = null;
+				if (extraData) {
+					extraData_obj = JSON.parse(extraData);
+				}
+	   
+				//console.log('1111111111111', extraData)
+	   
+				uni.navigateToMiniProgram({
+					appId: appid,
+					envVersion: 'release',
+					path: pagepath,
+					extraData: extraData_obj,
+					success(res) {
+						// 打开成功
+					},
+					fail: function (res) {
+						uni.showModal({
+							title: '跳转小程序失败',
+							content: res.errMsg,
+							showCancel: false
+						})
+	   
+						console.log('跳转小程序失败：', res);
+					}
+				})
+			}
+		}
 		else {
 			uni.navigateTo({
 				url: url
