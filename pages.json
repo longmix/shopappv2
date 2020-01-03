@@ -65,7 +65,7 @@
 		{	//商品列表
             "path" : "pages/goods/goods-list/goods-list",
             "style" : {
-				"navigationBarTitleText" : "",
+				"navigationBarTitleText" : "商品列表",
 				"enablePullDownRefresh": true,
 				"app-plus": {
 					"bounce":"none"
@@ -75,7 +75,7 @@
 		{	//商品详情
 		    "path" : "pages/goods/goods",
 		    "style" : {
-				"navigationBarTitleText" : "",
+				"navigationBarTitleText" : "商品详情",
 				"navigationBarBackgroundColor":"#f1f1f1",
 				"onReachBottomDistance":50,
 				"h5":{

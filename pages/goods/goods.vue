@@ -520,8 +520,12 @@ export default {
 				match = match.replace(/width:[^;]+;/gi, 'max-width:100%;').replace(/width:[^;]+;/gi, 'max-width:100%;');
 				return match;
 			});
-			newContent = newContent.replace(/<br[^>]*\/>/gi, '');
+			//newContent = newContent.replace(/<br[^>]*\/>/gi, '');
+			
+			newContent = newContent.replace(/<p[^>]*>/gi, '<p style="margin:20px;">');
+			
 			newContent = newContent.replace(/\<img/gi, '<img style="max-width:100%;height:auto;display:inline-block;margin:10rpx auto;"');
+			
 			return newContent;
 		}	
 	}

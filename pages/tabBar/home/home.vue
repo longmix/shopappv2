@@ -5,9 +5,9 @@
 		<!-- 顶部导航栏 -->
 		<view v-if="showHeader" class="header" :style="{ position: headerPosition,top:headerTop,opacity: afterHeaderOpacity }">
 			<!-- 定位城市 -->
-			<view class="addr">
+			<view class="addr" :style="{fontSize:current_citynameWidth+'px'}">
 				<view class="icon location"></view>
-				<view>{{address}}</view>
+				<view>{{current_cityname}}</view>
 			</view>
 			<!-- 搜索框 -->
 			<view class="input-box">
@@ -145,6 +145,10 @@ export default {
 			wxa_shop_toutiao_flash_line:'',
 			addListener:'',
 			wxa_show_icon_index_count:'',
+			current_cityname:'',
+			current_citynameLength:'',
+			current_citynameWidth:'',
+			
 			
 			
 			showHeader:true,
@@ -429,15 +433,18 @@ export default {
 				ak: cb_params.baidu_map_ak_wxa
 			});
 			
+			var that002 = this;
+			
 			var regeocoding_fail = function (data) {
 				console.log('333333', data);
 				console.log('44444', that.ak);
 			};
 			
+			
+			
 			var regeocoding_success = function (data) {
 				console.log('00000', data);
 				
-
 				this.wxMarkerData = data.wxMarkerData;
 				this.markers = this.wxMarkerData;
 				this.latitude = this.wxMarkerData[0].latitude;
@@ -445,17 +452,58 @@ export default {
 				this.address = this.wxMarkerData[0].address;
 				console.log('address',this.address);
 				
+				
+				that002.current_cityname = data.originalData.result.addressComponent.city
+				console.log('this.current_cityname',that002.current_cityname);
+				
+				that002.current_citynameLength = that002.current_cityname.length;
+				console.log('this.current_citynameLength',that002.current_citynameLength);
+				
+				
+				
+				if(that002.current_citynameLength == 2){
+					that002.current_citynameWidth = uni.upx2px(28);
+				}
+				else if(that002.current_citynameLength == 3){
+					that002.current_citynameWidth = uni.upx2px(24);
+				}
+				else if(that002.current_citynameLength == 4){
+					that002.current_citynameWidth = uni.upx2px(20);
+				}
+				
 				this.cityInfo = data.originalData.result.addressComponent,
+				
 				// console.log('with', that.data.imageWidth)
 				
-				uni.setStorageSync("latitude", this.wxMarkerData[0].latitude)
-				console.log('location', this.wxMarkerData[0].latitude)
+			
+				uni.setStorage({
+					key:'current_cityname',
+					data:that002.current_cityname,
+					success:function(){}
+				})
 				
-				uni.setStorageSync("longitude", this.wxMarkerData[0].longitude)
 				
-				uni.setStorageSync("markers", this.wxMarkerData)
+				uni.setStorage({
+					key:'current_latitude',
+					data:this.wxMarkerData[0].latitude,
+					success:function(){}
+				})
 				
-			      // getCurrentPages()[getCurrentPages().length - 1].onLoad()
+				
+				uni.setStorage({
+					key:'current_longitude',
+					data:this.wxMarkerData[0].longitude,
+					success:function(){}
+				})
+				
+				uni.setStorage({
+					key:'markers',
+					data:this.wxMarkerData,
+					success:function(){}
+				})
+				
+				
+			    // getCurrentPages()[getCurrentPages().length - 1].onLoad()
 			}
 				
 			BMap_obj.regeocoding({
@@ -888,7 +936,7 @@ page{position: relative;background-color: #fff;}
 		flex-shrink: 0;
 		display: flex;
 		align-items: center;
-		font-size: 28upx;
+		// font-size: 28upx;
 		.icon {
 			height: 60upx;
 			margin-right: 5upx;
