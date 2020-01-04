@@ -39,8 +39,6 @@
 
 <script>
 	
-	import pickergroup from "../../common/pickergroup.vue";
-	import upimgBox from "../../common/upimgbox.vue";
 	
 	function countdown(that) {
 	  var timer001 = that.timer001;
