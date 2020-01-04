@@ -1134,7 +1134,7 @@ page{position: relative;background-color: #fff;}
 
 .promotion {
 	width: 92%;
-	margin: 0 4%;
+	margin: 50upx 4% 20upx;
 	.text {
 		width: 100%;
 		height: 60upx;

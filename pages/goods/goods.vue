@@ -346,7 +346,7 @@ export default {
 			var userInfo = this.abotapi.get_user_info();
 			if(!userInfo || !userInfo.userid){
 				
-				var last_url = '/pages/goods/goods';
+				var last_url = '/pages/goods/goods?productid='+this.productid;
 				this.app.goto_user_login(last_url,'normal');
 				return;
 			}
@@ -522,7 +522,7 @@ export default {
 			
 			newContent = newContent.replace(/<p[^>]*>/gi, '<p style="margin:20px;">');
 			
-			newContent = newContent.replace(/\<img/gi, '<img style="max-width:100%;height:auto;display:inline-block;margin:10rpx auto;"');
+			newContent = newContent.replace(/\<img/gi, '<img style="max-width:100%;height:auto;display:inline-block;margin:10rpx auto;vertical-align: middle;"');
 			
 			return newContent;
 		}	

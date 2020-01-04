@@ -534,7 +534,7 @@ module.exports = {
 					}
 			
 					uni.redirectTo({
-						 url: '/pages/login/index',
+						 url: '/pages/login/login',
 					})
 			
 					uni.hideToast();
@@ -860,6 +860,9 @@ module.exports = {
 		if(url.indexOf("%oneclicklogin%") != -1){
 			var userInfo = this.get_user_info();
 			if(!userInfo){
+				
+				this.goto_user_login('/pages/tabBar/home/home', 'switchTab');
+				
 				return;
 			}
 			
