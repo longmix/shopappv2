@@ -126,11 +126,11 @@
 		<!-- 商品主图轮播 -->
 		<view class="swiper-box">
 			<swiper circular="true" autoplay="true" @change="swiperChange">
-				<swiper-item v-for="swiper in picture001" :key="swiper.id">
-					<image :src="swiper.picture"></image>
+				<swiper-item v-for="(swiper_img,key_picture) in picture_list" :key="key_picture">
+					<image :src="swiper_img.picture"></image>
 				</swiper-item>
 			</swiper>
-			<view class="indicator">{{currentSwiper+1}}/{{swiperList.length}}</view>
+			<view class="indicator">{{currentSwiper+1}}/{{picture_list.length}}</view>
 		</view>
 		<!-- 标题 价格 -->
 		<view class="info-box goods-info">
@@ -207,16 +207,9 @@ export default {
 			showBack:true,
 			// #endif
 			//轮播主图数据
-			picture001:'',
+			picture_list:'',
 			goods_detail:'',
-			swiperList: [
-				{ id: 1, img: 'https://ae01.alicdn.com/kf/HTB1Mj7iTmzqK1RjSZFjq6zlCFXaP.jpg' },
-				{ id: 2, img: 'https://ae01.alicdn.com/kf/HTB1fbseTmzqK1RjSZFLq6An2XXaL.jpg' },
-				{ id: 3, img: 'https://ae01.alicdn.com/kf/HTB1dPUMThnaK1RjSZFtq6zC2VXa0.jpg' },
-				{ id: 4, img: 'https://ae01.alicdn.com/kf/HTB1OHZrTXzqK1RjSZFvq6AB7VXaw.jpg' }
-			],
 			//轮播图下标
-			
 			currentSwiper: 0,
 			anchorlist:[],//导航条锚点
 			selectAnchor:0,//选中锚点
@@ -270,7 +263,7 @@ export default {
 					that.goods_detail = res.data.data;
 					console.log('that.goods_detail',that.goods_detail);
 					that.describe = that.goods_detail.describe;
-					// that.picture001 = that.a001.picture_list;
+					that.picture_list = that.goods_detail.picture_list;
 				}
 				// console.log("that.describe001",that.describe001);
 		    },

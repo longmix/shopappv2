@@ -201,8 +201,10 @@
 				});
 			},
 			//搜索跳转
-			toSearch(){
-				uni.showToast({title: "建议跳转到新页面做搜索功能"});
+			toSearch() {
+				uni.navigateTo({
+					url:'/pages/search/search'				
+				})
 			},
 			
 			tapType: function (e){

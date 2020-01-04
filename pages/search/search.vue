@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="search df">
-			<input class="df_1" placeholder="请输入你要搜索的内容"  @input="searchValueInput($event)" :value="searchValue" @confirm="doSearch"/><!-- confirm-type="search"  :focus="focus"  -->
+			<input class="df_1" placeholder="请输入你要搜索的内容" :value="searchValue" confirm-type="search" @input="searchValueInput2($event)" :focus="focus"  @confirm="doSearch($event)"/><!--  -->
 			<button @tap="doSearch"><image class="searchcion" src="../../static/img/search.png"></image></button>
 		</view>
 		<view class="cont" v-if="hotKeyShow">
@@ -20,7 +20,7 @@
 			<block v-if="wxa_product_list_style == 1">
 				<view class="">
 	    
-					<navigator  class="logo_info navigator" :url="'../product/detail?productid='+item.productid" v-for="(item,index) in shopList" :key="index"  :data-productid="item.productid" style="margin:10px;">
+					<navigator  class="logo_info navigator" :url="'/pages/goods/goods?productid='+item.productid" v-for="(item,index) in shopList" :key="index"  :data-productid="item.productid" style="margin:10px;">
 						<view class="logo_pic" style="margin-top:18rpx;">
 							<image :src="item.picture" style="width:180rpx;height:180rpx;"></image>
 						</view>
@@ -29,7 +29,7 @@
 							<view class="titles wenzi" style="text-align: left;font-weight:400;font-size:18px;overflow: hidden;white-space: nowrap;text-overflow:ellipsis;">{{item.name}}</view>
 							<view class="brief">
 								<view style="color:gray;font-size:26rpx;">
-									{{item.seller_name}}
+									<!-- {{item.seller_name}} -->
 								</view>
 					
 								<view v-if="item.price2 > 0" style="color:red;">¥ {{item.price}} {{item.product_take_score}}</view>
@@ -48,13 +48,13 @@
 	
 			<block  v-if="wxa_product_list_style != 1" v-for="(items,index) in shopList" :key="index"  :data-productid="items.productid">
 				<view class="ban">
-					<navigator :url="'../product/detail?productid='+items.productid" class="cover flex-wrp">
+					<navigator :url="'/pages/goods/goods?productid='+items.productid" class="cover flex-wrp">
 						<image class="banner" :src="items.picture" mode="widthFix"></image>
 						<view class="act-item ellipsis">
 							<text class="type">{{items.name}}</text>
 						</view>
-						<view class="act-item ellipsis" >
-							<text class="kkk">{{items.seller_name}}</text>
+						<view class="act-item ellipsis">
+							<!-- <text class="kkk">{{items.seller_name}}</text> -->
 						</view>
 						<view class="act-item ellipsis" >
 							<text style="color:red">¥ {{items.price}} {{items.product_take_score}}</text>
@@ -89,7 +89,9 @@
 				searchValue: '',
 				historyKeyList: [],
 				hotKeyList: [],
-				is_more: true
+				is_more: true,
+				content:'',
+				showModalStatus:false
 			}
 		},
 		
@@ -174,13 +176,20 @@
 			// 页面关闭
 		},
 		
-		mothods:{
-			onKeyInput: function(event) {
-			            this.inputValue = event.target.value
-			        },
-			searchValueInput: function (e) {
+		methods: {
+			callback_func_for_shop_info:function(shop_info){
+				var shop_name = shop_info.shop_name;
+				
+				uni.setNavigationBarTitle({
+					title:shop_name
+				})
+				
+			},
+			
+			
+			//获取用户输入的搜索值
+			searchValueInput2: function (e) {
 				console.log('e',e);
-				return;
 				var that = this;
 			    var value = e.detail.value;
 				that.searchValue = value,
@@ -190,7 +199,69 @@
 			        that.historyKeyShow = true;
 			    }
 			},
+			doSearch: function (e) {
+				console.log('e1',e);
+				var that = this;
+			    var searchKey = that.searchValue;
 			
+			    var historyKeyList = that.historyKeyList;
+			    this.remove(searchKey);
+			    historyKeyList.unshift(searchKey);
+			    uni.setStorageSync('historyKeyList_cache', historyKeyList)
+			    console.log('dddddd', searchKey);
+			
+			    if (!searchKey) {
+					that.focus = true;
+			        that.hotKeyShow = true;
+			        that.historyKeyShow = true;
+					return;
+			    };
+			
+				that.hotKeyShow = false;
+				that.historyKeyShow = false;
+				that.shopList.length = 0;
+				that.searchProductData();
+			},
+			
+			searchProductData: function () {
+			
+			    var that = this;
+			    console.log('66666666666', that.cataid)
+			    uni.request({
+					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
+					method: 'post',
+					data: {
+						sellerid: this.abotapi.get_sellerid(),
+						keyword: that.searchValue ? that.searchValue : '',
+						sort: 1,
+						page: that.page,
+						cataid: that.cataid ? that.cataid : ''
+					},
+					header: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					},
+					success: function (res) {
+						var data = res.data.product_list;
+						if (data == '') {
+							uni.showToast({
+								title: '没有更多数据！',
+								duration: 2000
+							});
+							that.is_more = false;
+							return false;
+						}
+						that.shopList = that.shopList.concat(data)
+						that.page = that.page + 1
+						that.is_more = true
+					},
+					fail: function (e) {
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+					},
+			    });
+			},
 			
 			
 			
@@ -211,8 +282,6 @@
 				}.bind(this), 200)
 			},
 			
-			
-			
 			hideModal: function () {
 				// 隐藏遮罩层
 				var animation = uni.createAnimation({
@@ -228,6 +297,53 @@
 					this.animationData = animation.export()
 					this.showModalStatus = false
 				}.bind(this), 200)
+			},
+			
+			//删除指定元素
+			remove: function (e) {
+				var index = this.historyKeyList.indexOf(e);
+			    if (index > -1) {
+					this.historyKeyList.splice(index, 1);
+				}
+			},
+			
+			
+			doKeySearch: function (e) {
+				var that = this;
+			    var key = e.currentTarget.dataset.key;
+			
+			    // var historyKeyList = that.historyKeyList;
+			    this.remove(key);
+			    that.historyKeyList.unshift(key);
+			    uni.setStorageSync('historyKeyList_cache', that.historyKeyList)
+			
+				that.searchValue = key;
+				that.hotKeyShow = false;
+				that.historyKeyShow = false;
+			    that.doSearch();
+			},
+			
+			
+			
+			//详情页跳转
+			lookdetail: function (e) {
+				var that = this;
+				console.log(e)
+			    var lookid = e.currentTarget.dataset.procuctid;
+			    console.log(lookid);
+			    uni.navigateTo({
+					url: "../index/detail?id=" + lookid.id
+				})
+			},
+			
+			
+			switchSlider: function (e) {
+				this.current = e.target.dataset.index
+			},
+			
+			
+			changeSlider: function (e) {
+				this.current = e.detail.current
 			},
 			
 			//点击加载更多
@@ -270,126 +386,8 @@
 			//     })
 			// },
 			
-			
-			//删除指定元素
-			remove: function (e) {
-				var index = this.historyKeyList.indexOf(e);
-			    if (index > -1) {
-					this.historyKeyList.splice(index, 1);
-				}
-			},
-			
-			
-			doKeySearch: function (e) {
-				var that = this;
-			    var key = e.currentTarget.dataset.key;
-			
-			    var historyKeyList = this.data.historyKeyList;
-			    this.remove(key);
-			    historyKeyList.unshift(key);
-			    uni.setStorageSync('historyKeyList_cache', historyKeyList)
-			
-				that.searchValue = key;
-				that.hotKeyShow = false;
-				that.historyKeyShow = false;
-			    that.doSearch();
-			},
-			
-			
-			doSearch: function () {
-				var that = this;
-			    var searchKey = this.searchValue;
-			
-			    var historyKeyList = this.historyKeyList;
-			    this.remove(searchKey);
-			    historyKeyList.unshift(searchKey);
-			    uni.setStorageSync('historyKeyList_cache', historyKeyList)
-			    console.log('dddddd', searchKey);
-			
-			    if (!searchKey) {
-					that.focus = true;
-			        that.hotKeyShow = true;
-			        that.historyKeyShow = true;
-					return;
-			    };
-			
-				that.hotKeyShow = false;
-				that.historyKeyShow = false;
-				that.shopList.length = 0;
-				that.searchProductData();
-			
-			},
-			  
-			
-			
-			
-			
-			
-			
-			searchProductData: function () {
-			
-			    var that = this;
-			    console.log('66666666666', that.cataid)
-			    uni.request({
-					url: this.abotapi.globalData.http_server + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
-					method: 'post',
-					data: {
-						sellerid: this.abotapi.get_sellerid(),
-						keyword: that.data.searchValue ? that.data.searchValue : '',
-						sort: 1,
-						page: that.data.page,
-						cataid: that.data.cataid ? that.data.cataid : ''
-					},
-					header: {
-						'Content-Type': 'application/x-www-form-urlencoded'
-					},
-					success: function (res) {
-						var data = res.data.product_list;
-						if (data == '') {
-							uni.showToast({
-								title: '没有更多数据！',
-								duration: 2000
-							});
-							that.is_more = false;
-							return false;
-						}
-						that.shopList = that.shopList.concat(data)
-						that.page = that.page + 1
-						that.is_more = true
-					},
-					fail: function (e) {
-						uni.showToast({
-							title: '网络异常！',
-							duration: 2000
-						});
-					},
-			    });
-			},
-			
-			
-			
-			
-			//详情页跳转
-			lookdetail: function (e) {
-				var that = this;
-				console.log(e)
-			    var lookid = e.currentTarget.dataset.procuctid;
-			    console.log(lookid);
-			    uni.navigateTo({
-					url: "../index/detail?id=" + lookid.id
-					})
-			},
-			
-			
-			switchSlider: function (e) {
-				this.current = e.target.dataset.index
-			},
-			
-			
-			changeSlider: function (e) {
-				this.current = e.detail.current
-			},
 		},
+		
 	}
 	
 	

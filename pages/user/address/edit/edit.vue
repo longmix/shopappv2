@@ -1,70 +1,7 @@
 <template>
 	<view>
 		
-<!-- 		
-		<view class="container"> 
-			<form @submit="formSubmit" @reset="formReset">
-				<view class="section">
-					<input type="text" hidden="true" :value="mid" name="user_id"/>
-					<input type="text" name="name" placeholder="收货人姓名"  :value="address_detail.name"/>
-				</view>
-				<view class="section">
-					<input type="text" name="phone" placeholder="电话号码" :value="address_detail.mobile"/>
-				</view>
-		    <view class="section">
-		      <picker @change="bindPickerChangeshengArr" :value="shengIndex" mode="selector" :range="shengArr" :data-id="shengId[shengIndex].region_id">
-		        <view class="picker">
-		          选择省份：{{shengArr[shengIndex]}}
-		          <input hidden="true" name="province" :value="shengArr[shengIndex]"/>
-		        </view>
-		      </picker>
-		    </view>
-		    <view class="section">
-		      <picker @change="bindPickerChangeshiArr" :value="shiIndex" mode="selector" :range="shiArr">
-		        <view class="picker">
-		          选择城市：{{shiArr[shiIndex]}}
-		          <input hidden="true" name="city" :value="shiArr[shiIndex]"/>
-		        </view>
-		      </picker>
-		    </view>
-		    <view class="section">
-		      <picker @change="bindPickerChangequArr" :value="quIndex" mode="selector" :range="quArr">
-		        <view class="picker">
-		          选择地区：{{quArr[quIndex]}}
-		          <input hidden="true" name="town" :value="quArr[quIndex]"/>
-		        </view>
-		      </picker>
-		    </view>
-		    <view class="section">
-		      <input type="text" class="ww" name="address" placeholder="详细地址" :value='address'/>
-		    </view>
-		    <view>
-		      <label></label>
-		    </view>
-			<view class="row">
-				<view class="nominal">
-					设置默认地址
-				</view>
-				<view class="input switch">
-				
-						
-						
-						<switch color="#f06c7a" :checked="isDefault" name="is_default" @change="isDefaultChange" />
-				</view>
-			</view>
-			<view class="row" v-if="editType=='edit'" @tap="del">
-				<view class="del">
-					删除收货地址
-				</view>
-			</view>
-		    <view class="btn-area">
-		      <button formType="submit">保存地址</button>
-		    </view>
-		  </form>
-		</view> -->
-		
-		
-		
+
 		<view class="container">
 			<form @submit="formSubmit" @reset="formReset">
 				<view class="content">
@@ -91,7 +28,7 @@
 						<view class="input">
 							<picker @change="bindPickerChangeshengArr" :value="shengIndex" mode="selector" :range="shengArr" >
 								<view class="picker">
-								 {{shengArr[shengIndex]}} | {{shengIndex}} 
+								 {{shengArr[shengIndex]}} 
 									<!-- <input hidden="true" name="province" :value="shengArr[shengIndex]"/> -->
 								</view>
 							</picker>
@@ -104,7 +41,7 @@
 						<view class="input">
 							<picker @change="bindPickerChangeshiArr" :value="shiIndex" mode="selector" :range="shiArr">
 								<view class="picker">
-									{{shiArr[shiIndex]}} | {{shiIndex}}
+									{{shiArr[shiIndex]}}
 									<input hidden="true" name="city" :value="shiArr[shiIndex]"/>
 								</view>
 							</picker>
