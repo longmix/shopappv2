@@ -40,8 +40,8 @@
 				</view>
 			</view>
 			<view class="btn">
-				<view class="joinCart" @tap="joinCart">加入购物车</view>
-				<view class="buy" @tap="buy">立即购买</view>
+				<view class="joinCart" data-type="addcart" data-status="2" @tap="setModalStatus($event)">加入购物车</view>
+				<view class="buy" data-status="1" @tap="setModalStatus($event)">立即购买</view>
 			</view>
 		</view>
 		<!-- share弹窗 -->
@@ -51,7 +51,7 @@
 				<view class="h1">分享</view>
 				<view class="list">
 					<view class="box">
-						<image src="../../static/img/share/wx.png"></image>
+						<image src="../../static/img/share/uni.png"></image>
 						<view class="title">
 							微信好友
 						</view>
@@ -101,36 +101,84 @@
 			<view class="mask"></view>
 			<view class="layer2" @tap.stop="discard">
 				<view class="content">
-					<view class="title">选择规格：</view>
-					<view class="sp">
-						<view v-for="(item,index) in goodsData" :class="[index==selectSpec?'on':'']" @tap="setSelectSpec(index)" :key="index">{{item}}</view>
-					</view>
-					<view class="length" v-if="selectSpec!=null">
-						<view class="text">数量</view>
-						<view class="number">
-							<view class="sub" @tap.stop="sub">
-								<view class="icon jian"></view>
+					<view v-if="isExistSpec" class="guige">
+						<view class="title">选择规格：</view>
+						<!-- <view class="sp">
+							<view v-for="(item,index) in goodsData" :class="[index==selectSpec?'on':'']" @tap="setSelectSpec(index)" :key="index">{{item}}</view>
+						</view> -->
+						<!-- <view class="length" v-if="selectSpec!=null">
+							<view class="text">数量</view>
+							<view class="number">
+								<view class="sub" @tap.stop="sub">
+									<view class="icon jian"></view>
+								</view>
+								<view class="input" @tap.stop="discard">
+									<input type="number" v-model="goodsData.number" />
+								</view>
+								<view class="add"  @tap.stop="add">
+									<view class="icon jia"></view>
+								</view>
 							</view>
-							<view class="input" @tap.stop="discard">
-								<input type="number" v-model="goodsData.number" />
-							</view>
-							<view class="add"  @tap.stop="add">
-								<view class="icon jia"></view>
+						</view> -->
+						
+						<!-- 规格开始 -->
+						<view class="specs" v-if="attr_list">商品选项</view>
+						<view class="specs-a" style='display:flex;'>
+							<view :class="[option_list_arr[0] == item ? 'specs-e' : 'specs-d']" v-for="(item, index) in attr_key_arr"  :data-spec1="item" @click='changeSpec1($event)'>
+								{{item}}
 							</view>
 						</view>
+						<view class="specs-a" style="display:flex;" v-if="attr_list_arr[spec1] != null">
+							<view :class="[option_list_arr[1] == item2 ? 'specs-e' : 'specs-d']" v-for="(item2, index) in attr_list_arr[spec1]" :data-spec2="item2"  @click="changeSpec2($event)">
+							  {{item2}}
+							</view>
+						</view>
+						<!-- 规格结束 -->
 					</view>
+					
+					<view class="text_center">
+					      <image class="drawer_image" :src="goods_detail.picture"></image>
+					      <view class="mingcheng">
+					        <view>{{goods_detail.name}}</view>
+					        <view style="font-size:29rpx;color:red">¥ {{goods_detail.price}}</view>
+					        <view style="font-size:26rpx;color:#ccc">库存：{{goods_detail.sale_volume}}</view>
+					      </view>
+					 </view>
+					<view class="text">数量</view>
+					<view class="number">
+					  	<view class="sub" data-alpha-beta="0" @tap.stop="changeNum($event)">
+					  		<view class="icon jian"></view>
+					  	</view>
+					  	<view class="input" @tap.stop="discard">
+					  		<input type="number" v-model="amount" />
+					  	</view>
+					  	<view class="add" data-alpha-beta="1" @tap.stop="changeNum($event)">
+					  		<view class="icon jia"></view>
+					  	</view>
+					</view>
+					
+					
 				</view>
-				<view class="btn"><view class="button" @tap="hideSpec">完成</view></view>
+				<view class="btn"><view class="button" :data-status="status" @tap="addShopCart($event)">{{buys}}</view></view>
 			</view>
+			
+			
 		</view>
+		
+		
+		
+		
 		<!-- 商品主图轮播 -->
 		<view class="swiper-box">
 			<swiper circular="true" autoplay="true" @change="swiperChange">
-				<swiper-item v-for="(swiper_img,key_picture) in picture_list" :key="key_picture">
-					<image :src="swiper_img.picture"></image>
+				<swiper-item v-for="picture_item in picture_list" :key="picture_item.id">
+					<image :src="picture_item.picture"></image>
+
 				</swiper-item>
 			</swiper>
-			<view class="indicator">{{currentSwiper+1}}/{{picture_list.length}}</view>
+
+			<view class="indicator">{{currentSwiper+1}}/{{picture_length}}</view>
+
 		</view>
 		<!-- 标题 价格 -->
 		<view class="info-box goods-info">
@@ -146,14 +194,13 @@
 				<view class="content"><view class="serviceitem">{{goods_detail.brief}}</view></view>
 				<view class="arrow"><view class="icon xiangyou"></view></view>
 			</view>
-			<view class="row" @tap="showSpec(false)">
-				<view class="text">选择</view>
+			<view class="row" @tap="showSpec(false)" v-if="isExistSpec">
+				<view class="text">选择规格</view>
 				<view class="content">
-					<view>选择规格：</view>
-					<view class="sp">
-						<view v-for="(item,index) in goodsData.spec" :key="index" :class="[index==selectSpec?'on':'']">{{item}}</view>
-					</view>
 					
+					<view class="sp">
+						<view>{{spec1}} {{spec2}}</view>
+					</view>
 				</view>
 				<view class="arrow"><view class="icon xiangyou"></view></view>
 			</view>
@@ -236,10 +283,26 @@ export default {
 				}
 			},
 			selectSpec:null,//选中规格
+			isExistSpec: false, //有无规格
 			isKeep:false,//收藏
 			//商品描述html
 			describe:'',
-			descriptionStr:'<div style="text-align:center;"><img width="100%" src="https://ae01.alicdn.com/kf/HTB1t0fUl_Zmx1VjSZFGq6yx2XXa5.jpg"/><img width="100%" src="https://ae01.alicdn.com/kf/HTB1LzkjThTpK1RjSZFKq6y2wXXaT.jpg"/><img width="100%" src="https://ae01.alicdn.com/kf/HTB18dkiTbvpK1RjSZPiq6zmwXXa8.jpg"/></div>'
+			descriptionStr:'<div style="text-align:center;"><img width="100%" src="https://ae01.alicdn.com/kf/HTB1t0fUl_Zmx1VjSZFGq6yx2XXa5.jpg"/><img width="100%" src="https://ae01.alicdn.com/kf/HTB1LzkjThTpK1RjSZFKq6y2wXXaT.jpg"/><img width="100%" src="https://ae01.alicdn.com/kf/HTB18dkiTbvpK1RjSZPiq6zmwXXa8.jpg"/></div>',
+			option_list_arr: [],
+			spec1: '',
+			spec2: '',
+			attr_list_arr: [],
+			attr_key_arr: [],
+			attr_list: [],
+			picture_list: [],
+			picture_length: 0,
+			amount: 1,
+			buys:'立即购买',
+			status:'',
+			action_type: '',
+			current_spec: ''
+			
+			
 		};
 	},
 	onLoad(option) {
@@ -258,14 +321,71 @@ export default {
 		    },
 		    success: function (res) {
 				console.log('5555588558===', res);
-			  
+				
 				if(res.data.code == 1){
 					that.goods_detail = res.data.data;
 					console.log('that.goods_detail',that.goods_detail);
 					that.describe = that.goods_detail.describe;
+
 					that.picture_list = that.goods_detail.picture_list;
+					that.picture_length = that.goods_detail.picture_list ? that.goods_detail.picture_list.length : 0;
+					
+					
+					 var attr_list = that.goods_detail.attr_list
+					 
+					if(attr_list){
+						that.isExistSpec = true;
+					}
+					
+					  console.log('attr_list', attr_list);
+					  
+					  if(that.goods_detail.option_name){
+						var option_list_arr = that.goods_detail.option_name.split(' ');
+			
+					   
+					   that.option_list_arr = option_list_arr;
+					   that.spec1 = option_list_arr[0];
+					   that.spec2 = option_list_arr[1];
+			
+					  }
+					  
+					  console.log('option_list_arr', option_list_arr)
+			
+					  if(attr_list){
+						var attr_key_arr = []
+						var attr_list_arr = {}                  
+						for(var i = 0; i<attr_list.length; i++){
+						  var arr = attr_list[i].option_name.split(' ');         
+						  if (attr_key_arr.indexOf(arr[0]) == -1) {
+							attr_key_arr.push(arr[0]);                        
+						  }              
+						}
+			
+						console.log('第一行：', attr_key_arr);
+			
+						for (var j=0; j < attr_key_arr.length; j++){
+						  var attr_arr = []
+						  for (var i = 0; i < attr_list.length; i++) {
+							var arr = attr_list[i].option_name.split(' ');
+			
+							if ((attr_key_arr[j] == arr[0]) && arr[1]){
+							  attr_arr.push(arr[1])
+							}
+						  }
+						  attr_list_arr[attr_key_arr[j]] = attr_arr
+						}
+			
+						console.log('最终的商品属性列表：', attr_list_arr);            
+			
+			
+						that.attr_list_arr = attr_list_arr;
+						that.attr_key_arr = attr_key_arr;
+						that.attr_list = attr_list;
+								
+			
+					  }
+					
 				}
-				// console.log("that.describe001",that.describe001);
 		    },
 		    fail: function (e) {
 				uni.showToast({
@@ -305,6 +425,98 @@ export default {
 		
 	},
 	methods: {
+		
+		changeSpec1:function(e){
+		    var that = this
+		    var spec1 = e.currentTarget.dataset.spec1;
+		    var option_list_arr = that.option_list_arr;
+		    option_list_arr[0] = spec1;
+		
+		    console.log('aaaaaaaaaaaaaaaaaaa', spec1, option_list_arr)
+		    console.log('aaaaaaaaaaaaaaaaaaa', option_list_arr[0])
+		
+			that.spec1 = spec1;
+			that.option_list_arr = option_list_arr;
+		
+		
+		    if (option_list_arr.length == 1){
+		      this.current_spec = spec1;
+		      this.changeSpec2(null);
+		    }
+		
+		  },
+		
+		  changeSpec2:function(e){
+		    var that = this
+		
+		    var spec2 = that.current_spec;
+		    var spec_str = spec2;
+		
+		    if(e){
+		      spec2 = e.currentTarget.dataset.spec2;
+		    }
+		
+		    var attr_list = that.attr_list;
+		    var option_list_arr = that.option_list_arr;
+		
+		    if (!spec_str){
+		      spec_str = that.spec1 + ' ' + spec2
+		
+		      option_list_arr[1] = spec2
+		    }
+		
+		
+			this.spec2 = spec2;
+			this.option_list_arr = option_list_arr;
+			
+
+		    
+		    for (var i = 0; i < attr_list.length; i++){
+		      if (spec_str == attr_list[i].option_name){
+		        var productid = attr_list[i].productid
+		      }
+		    }
+		
+		    uni.request({
+		      url: this.abotapi.globalData.yanyubao_server_url +  '?g=Yanyubao&m=ShopAppWxa&a=product_detail',
+		      method: 'post',
+		      data: {
+		        productid: productid,
+		      },
+		      header: {
+		        'Content-Type': 'application/x-www-form-urlencoded'
+		      },
+		      success: function (res) {
+		        var code = res.data.code;
+		        if (code == 1) {
+				  
+				  that.goods_detail = res.data.data;
+				  console.log('that.goods_detail',that.goods_detail);
+				  that.describe = that.goods_detail.describe;
+				  
+				  that.picture_list = that.goods_detail.picture_list;
+				  that.picture_length = that.goods_detail.picture_list ? that.goods_detail.picture_list.length : 0;		   
+
+		        } else {
+		          uni.showToast({
+		            title: res.data.msg,
+		            icon: 'none'
+		          })
+		        }
+		
+		      },
+		      fail:function(res){
+		        uni.showToast({
+		          title: '网络异常',
+		          duration: 2000
+		        })
+		
+		      },
+		    })	    
+		},
+		
+		
+		
 		//轮播图指示器
 		swiperChange(event) {
 			this.currentSwiper = event.detail.current;
@@ -342,6 +554,13 @@ export default {
 		},
 		// 加入购物车
 		joinCart(){
+			
+			if(this.selectSpec==null){
+				return this.showSpec(()=>{
+					this.toConfirmation();
+				});
+			}
+			
 			var that = this;
 			var userInfo = this.abotapi.get_user_info();
 			if(!userInfo || !userInfo.userid){
@@ -383,14 +602,101 @@ export default {
 			// uni.showToast({title: "已加入购物车"});
 		},
 		//立即购买
-		buy(){
-			if(this.selectSpec==null){
-				return this.showSpec(()=>{
-					this.toConfirmation();
-				});
-			}
-			this.toConfirmation();
+		// buy(){
+		// 	if(this.selectSpec==null){
+		// 		return this.showSpec(()=>{
+		// 			this.toConfirmation();
+		// 		});
+		// 	}
+		// 	this.toConfirmation();
+		// },
+		
+		
+		setModalStatus: function (e) {
+			this.showSpec();
+		    var that = this;
+		    var action_type = '';
+		    if(e.currentTarget.dataset.type){
+		      action_type = e.currentTarget.dataset.type;
+		    }
+		
+		    if (e.currentTarget.dataset.status == 1) {
+				this.buys = '立即购买';
+				this.status = '1';
+				this.action_type = action_type;
+				
+		    }else {
+				this.buys = '加入购物车';
+				this.status = '2';
+				this.action_type = action_type;
+		    }
+		    
+
+
 		},
+		
+		
+		
+		addShopCart:function(e){ //添加到购物车
+		
+		
+		    var that = this;
+			var userInfo = this.abotapi.get_user_info();
+			if(!userInfo || !userInfo.userid){
+				
+				var last_url = '/pages/goods/goods';
+				this.app.goto_user_login(last_url,'normal');
+				return;
+			}
+			
+		
+			if (e.currentTarget.dataset.status == 1) {
+				this.addShopCart = true;
+		      }
+		
+		
+		    if (e.currentTarget.dataset.status == 1){
+		
+		      var new_url = '../order/pay?amount=' + that.data.amount + "&productid=" + that.data.productid + "&action=direct_buy";
+		
+		      uni.navigateTo({
+		        url: new_url,
+		      })
+		
+		    }
+		    else if (e.currentTarget.dataset.status == 2){
+		      //加入购物车
+		      uni.request({
+		        url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=cart_add',
+		        method: 'post',		        
+		        data: {
+		          amount: that.amount, 
+		          checkstr: userInfo.checkstr,
+		          productid: that.goods_detail.productid,
+		          sellerid: this.abotapi.get_sellerid(),
+		          userid: userInfo.userid,
+		        },
+		        header: {
+		          'Content-Type': 'application/x-www-form-urlencoded'
+		        },
+		        success: function (res) {
+		          uni.showToast({
+		            title: '添加成功',
+		
+		          });
+		        },
+		        fail: function (e) {
+		          uni.showToast({
+		            title: '添加失败',
+		          });
+		        },
+		      });
+		    }           
+		},
+		
+		
+		
+		
 		//商品评论
 		toRatings(){
 			uni.navigateTo({
@@ -420,16 +726,19 @@ export default {
 		setSelectSpec(index){
 			this.selectSpec = index;
 		},
-		//减少数量
-		sub(){
-			if(this.goodsData.number<=1){
-				return;
-			}
-			this.goodsData.number--;
-		},
-		//增加数量
-		add(){
-			this.goodsData.number++;
+
+		//修改数量		
+		changeNum:function  (e) {
+		    var that = this;
+		    if (e.target.dataset.alphaBeta == 0) {
+		        if (this.amount <= 1) {
+		            amount:1
+		        }else{
+					this.amount = parseInt(this.amount) - 1;		   
+		        };
+		    }else{
+				this.amount = parseInt(this.amount) + 1;
+		    };
 		},
 		//跳转锚点
 		toAnchor(index){
@@ -774,6 +1083,7 @@ page {
 					}
 				}
 			}
+			
 		}
 		
 		.arrow {
@@ -935,6 +1245,7 @@ page {
 		.content {
 			width: 100%;
 			padding: 20upx 0;
+			
 		}
 		.btn {
 			width: 100%;
@@ -966,6 +1277,14 @@ page {
 		.content {
 			width: 100%;
 			padding: 20upx 0;
+			.text{
+				float: left;
+				font-size: 36upx;
+			}
+			.guige{
+				border-bottom: 1px solid #bfbfbf;
+				padding-bottom: 20px;
+			}
 		}
 		.btn {
 			width: 100%;
@@ -1047,49 +1366,49 @@ page {
 			padding-top: 20upx;
 			.text{
 				font-size: 30upx;
-			}
-			.number{
+			}	
+		}
+	.number{
+		float:right;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		.input{
+			width: 80upx;
+			height: 60upx;
+			margin: 0 10upx;
+			background-color: #f3f3f3;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			text-align: center;
+			input{
+				width: 80upx;
+				height: 60upx;
 				display: flex;
 				justify-content: center;
 				align-items: center;
-				.input{
-					width: 80upx;
-					height: 60upx;
-					margin: 0 10upx;
-					background-color: #f3f3f3;
-					display: flex;
-					justify-content: center;
-					align-items: center;
-					text-align: center;
-					input{
-						width: 80upx;
-						height: 60upx;
-						display: flex;
-						justify-content: center;
-						align-items: center;
-						text-align: center;
-						font-size: 26upx;
-					}
-				}
-				
-				.sub ,.add{
-					width: 60upx;
-					height: 60upx;
-					background-color: #f3f3f3;
-					border-radius: 5upx;
-					.icon{
-						font-size: 30upx;
-						width: 60upx;
-						height: 60upx;
-						display: flex;
-						justify-content: center;
-						align-items: center;
-						
-					}
-				}
+				text-align: center;
+				font-size: 26upx;
 			}
 		}
 		
+		.sub ,.add{
+			width: 60upx;
+			height: 60upx;
+			background-color: #f3f3f3;
+			border-radius: 5upx;
+			.icon{
+				font-size: 30upx;
+				width: 60upx;
+				height: 60upx;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				
+			}
+		}
+	}
 	}
 }
 .share{
@@ -1173,6 +1492,73 @@ page {
 		.rich-text .img{
 			max-width:100%;
 		}
+		
 	}
+}
+
+
+.specs{
+	  padding-left: 5%;
+	  font-size:28rpx;
+	}
+	
+	.specs-a{
+	  padding:2% 5% 0 5%;
+	  
+	  margin-top:20rpx;
+	}
+	
+	.specs-b{
+	  font-size:28rpx;
+	  border-top:2px solid rgb(204, 204, 204);
+	  padding-top:14rpx;
+	
+	}
+	
+	.specs-c{
+	  display: flex;
+	  padding:3% 5% 0 5%;
+	  flex-wrap:wrap;
+	}
+	.specs-c view{
+	  font-size:28rpx;
+	  padding:4rpx 10rpx;
+	  margin-left: 10rpx;
+	  border-radius: 8rpx;
+	}
+	
+	.specs-d{
+	  border:1px solid #e5e5e5;
+	  color:#444;
+	  margin-right: 20rpx;
+	  font-size:28rpx;
+	  padding:6rpx 14rpx;
+	  border-radius:5px;
+	}
+	
+	.specs-e{
+	  border:1px solid #dd2727;
+	  background-color:#dd2727; 
+	  color:#fff;
+	  margin-right: 20rpx;
+	  font-size:28rpx;
+	  padding:6rpx 14rpx;
+	  border-radius:5px;
+	}
+
+.text_center{
+ width: 100%;
+ margin: 20px 0px;
+}
+.mingcheng{
+width: 60%;
+display: inline-block;
+font-size:35rpx;
+line-height: 50rpx;
+margin-left: 40rpx;
+}
+.drawer_image {
+  width: 28%;
+  height: 200rpx;
 }
 </style>
