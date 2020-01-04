@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="header" :style="{position:headerPosition,top:headerTop}">
-			<view class="target" v-for="(target,index) in orderbyList" @tap="select(index)" :key="index" :class="[target.selected?'on':'']">
+			<view class="target" v-for="(target,index2) in orderbyList" @tap="select(index2)" :key="index2" :class="[target.selected?'on':'']">
 				{{target.text}}
 				<view v-if="target.orderbyicon" class="icon" :class="target.orderbyicon[target.orderby]"></view>
 			</view>
@@ -11,7 +11,7 @@
 		<!-- 商品列表 -->
 		<view class="goods-list">
 			<view class="product-list">
-				<view class="product" v-if="item.cataid == cataid" v-for="(item,index) in goodsList" :key="item.cataid" @click="toGoods(item.productid)">
+				<view class="product" v-if="item.cataid == cataid" v-for="(item,indexs) in goodsList" :key="indexs" @click="toGoods(item.productid)">
 					<image mode="widthFix" :src="item.picture"></image>
 					<view class="name">{{item.name}}</view>
 					<view class="info">
@@ -27,24 +27,22 @@
 
 <script>
 	var app = getApp();
-	// var abotapi = require("../../../common/abotapi.js");
 	var cataid;
 	export default {
 		data() {
 			return {
 				cataid:'',
 				goodsList:'',
+				sorts:1,
 				
 				loadingText:"暂无商品",
 				headerTop:"0px",
 				headerPosition:"fixed",
 				orderbyList:[
 					{text:"最新",selected:true,orderbyicon:false,orderby:0},
-					{text:"销量",selected:false,orderbyicon:['sheng','jiang'],orderby:0},
+					{text:"销量",selected:false,orderbyicon:false,orderby:0},
 					{text:"价格",selected:false,orderbyicon:false,orderby:0}
 				],
-				orderby:"sheng",
-				gooosList:'',
 			};
 		},
 		onLoad: function (option) { //option为object类型，会序列化上个页面传递的参数
@@ -66,39 +64,7 @@
 				},1);
 			// #endif
 			var that = this;
-			uni.request({
-			    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
-			    method: 'post',
-			    data: {
-			      sellerid: this.abotapi.globalData.default_sellerid,
-			      keyword:'', 
-			      sort: 1,
-			      page: 1,
-				  cataid:this.cataid
-			    },
-			    header: {
-			      'Content-Type': 'application/x-www-form-urlencoded'
-			    },
-			    success: function (res) {
-					if(res.data.code == 1){
-						console.log('aaafff===', res);
-						that.goodsList = res.data.product_list;
-						console.log("that.goodsList",that.goodsList);
-						
-					}else if(res.data.code == 0){
-						// uni.showToast({
-						// 	title: '暂无商品',
-						// 	duration: 2000
-						// });
-					}
-			    },
-			    fail: function (e) {
-					uni.showToast({
-						title: '网络异常！',
-						duration: 2000
-					});
-				},
-			});
+			that.reload();
 		
 		},
 		
@@ -141,16 +107,43 @@
 			}
 		},
 		methods:{
+			
+			//获取商品列表
 			reload(){
-				console.log("reload");
-				let tmpArr = []
-				this.goodsList = [];
-				let end_goods_id = 0;
-				for(let i=1;i<=10;i++){
-					let goods_id = end_goods_id+i;
-					let p = { goods_id: goods_id, img: '/static/img/goods/p'+(goods_id%10==0?10:goods_id%10)+'.jpg', name: '商品名称商品名称商品名称商品名称商品名称', price: '￥168', slogan:'1235人付款' };
-					this.goodsList.push(p);
-				}
+				var that = this;
+				uni.request({
+				    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
+				    method: 'post',
+				    data: {
+				      sellerid: this.abotapi.globalData.default_sellerid,
+				      keyword:'', 
+				      sort: that.sorts,
+				      page: 1,
+					  cataid:that.cataid
+				    },
+				    header: {
+				      'Content-Type': 'application/x-www-form-urlencoded'
+				    },
+				    success: function (res) {
+						if(res.data.code == 1){
+							console.log('aaafff===', res);
+							that.goodsList = res.data.product_list;
+							console.log("that.goodsList",that.goodsList);
+							
+						}else if(res.data.code == 0){
+							// uni.showToast({
+							// 	title: '暂无商品',
+							// 	duration: 2000
+							// });
+						}
+				    },
+				    fail: function (e) {
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+					},
+				});
 			},
 			//商品跳转
 			toGoods(e){
@@ -163,25 +156,33 @@
 					url: '/pages/goods/goods?productid='+ e
 				});
 			},
-			//排序类型
-			select(index){
-				let tmpTis = this.orderbyList[index].text+"排序 "
-				if(this.orderbyList[index].orderbyicon){
-					let type = this.orderbyList[index].orderby==0?'升序':'降序';
-					if(this.orderbyList[index].selected){
-						type = this.orderbyList[index].orderby==0?'降序':'升序';
-						this.orderbyList[index].orderby = this.orderbyList[index].orderby==0?1:0;
+			//排序类型   sort值选项(5:最新、3:销量、4:价格) 
+			select(index2){
+				if(this.orderbyList[index2].orderbyicon){
+					if(this.orderbyList[index2].selected){
+						this.orderbyList[index2].orderby = this.orderbyList[index2].orderby==0?1:0;
 					}
 					tmpTis+=type
 				}
-				this.orderbyList[index].selected = true;
+				this.orderbyList[index2].selected = true;
 				let len = this.orderbyList.length;
 				for(let i=0;i<len;i++){
-					if(i!=index){
+					if(i!=index2){
 						this.orderbyList[i].selected = false;
 					}
 				}
-				uni.showToast({title:tmpTis,icon:"none"});
+				var that = this;
+				console.log('index2==>>',index2);
+				if(index2 == 0){
+					that.index2 = 5;
+				}else if(index2 == 1){
+					that.index2 = 3;
+				}else if(index2 == 2){
+					that.index2 = 4;
+				}
+				
+				that.sorts = that.index2;
+				that.reload();
 			}
 		}
 		
