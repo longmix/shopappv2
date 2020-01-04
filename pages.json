@@ -92,10 +92,22 @@
 				}
 			}
 		},
-		{	//登录页
+		{	//手机验证码登录页
 			"path": "pages/login/login",
 			"style": {
-				"navigationBarTitleText": "登录",
+				"navigationBarTitleText": "手机账号登录",
+				"navigationBarBackgroundColor":"#f06c7a",
+				"navigationBarTextStyle":"white",
+				"app-plus": {
+		            "bounce": "none" ,//关闭窗口回弹效果
+					"softinputNavBar":"none"
+		        }
+			}
+		},
+		{	//账号密码登录页
+			"path": "pages/login/login_by_password",
+			"style": {
+				"navigationBarTitleText": "账号密码登录",
 				"navigationBarBackgroundColor":"#f06c7a",
 				"navigationBarTextStyle":"white",
 				"app-plus": {

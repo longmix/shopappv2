@@ -39,8 +39,7 @@
 			<div></div>
 			<button type="primary"  formType="submit" open-type="getUserInfo" class="btn-row-submit" style="width: 92%;background: #2E85D8;" @click="btn_user_login">登陆</button>
 			<div class="flex mgb-20">
-				<navigator class="cl-black pointer flex-1" 
-					style="margin-top: 30upx;text-align: right;font-size: 34upx;">账号密码登录</navigator>
+				<navigator class="cl-black pointer flex-1" style="margin-top: 30upx;text-align: right;font-size: 34upx;" url="/pages/login/login_by_password">账号密码登录</navigator>
 			</div>
 			
 			

@@ -228,9 +228,9 @@
     <view class="weui-loading"></view>
     <view class="weui-loadmore__tips">正在加载</view>
   </view>
-    <view v-else >
-	<view style='text-align:center;font-size:15px;color:#666;margin-bottom:30px;'>没有更多数据了</view>
-   </view>
+    <view v-else>
+		<view style='text-align:center;font-size:15px;color:#666;margin-bottom:30px;'>没有更多数据了</view>
+	</view>
 </view>
 	</view>
 </template>
@@ -288,10 +288,10 @@
 			
 		  
 			this.initSystemInfo();
-			this.currentTab = parseInt(options.currentTab),
+			this.currentTab = parseInt(options.tbIndex),
 			this.isStatus = options.otype
-		
-			if (options.currentTab) {
+			console.log('this.isStatus',this.isStatus);
+			if (options.tbIndex) {
 				this.loadOrderList();
 			}  
 		}, 
@@ -600,6 +600,7 @@
 					},
 					success: function (res) {
 						//--init data        
+						console.log('list_res',res);
 						var code = res.data.code;
 						var list = res.data.orderList;
 						/*

@@ -42,7 +42,7 @@
 		<view class="order">
 			<!-- 订单类型 -->
 			<view class="list">
-				<view class="box" v-for="(row,index) in orderList" :key="index" @tap="toOrderList(index)">
+				<view class="box" style="width: 25%;" v-for="(row,index) in orderList" :key="index" @tap="toOrderList(row.otype,index)">
 					<view class="img">
 						<view class="icon" :class="row.icon"></view>
 					</view>
@@ -109,11 +109,10 @@
 				fenxiao_info:'',
 				// 订单类型
 				orderList:[
-					{text:'待付款',icon:"fukuan"},
-					{text:'待发货',icon:"fahuo"},
-					{text:'待收货',icon:"shouhuo"},
-					{text:'待评价',icon:"pingjia"},
-					{text:'退换货',icon:"tuihuo"}
+					{text:'待付款',icon:"fukuan",otype:1},
+					{text:'待发货',icon:"fahuo",otype:2},
+					{text:'待收货',icon:"shouhuo",otype:6},
+					{text:'已完成',icon:"pingjia",otype:7},
 				],
 				// 工具栏列表
 				gooosList:'',
@@ -238,9 +237,14 @@
 					url:'/pages/msg/msg'
 				})
 			},
-			toOrderList(index){
+			toOrderList(row,index){
+				console.log("row",row);
+				console.log("index",index);
 				uni.setStorageSync('tbIndex',index);
-				uni.navigateTo({url:'/pages/user/order_list/order_list?tbIndex='+index}) 
+				uni.setStorageSync('tbOtype',row);
+				uni.navigateTo({
+					url:'/pages/user/order_list/order_list?tbindex='+index+'&otype='+row
+				}) 
 			},
 			toSetting(){
 				uni.navigateTo({
