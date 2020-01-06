@@ -1,17 +1,17 @@
 <template>
 	<view>
 		<view class="search df">
-			<input class="df_1" placeholder="请输入你要搜索的内容" :value="searchValue" confirm-type="search" @input="searchValueInput2($event)" :focus="focus"  @confirm="doSearch($event)"/><!--  -->
+			<input class="df_1" placeholder="请输入你要搜索的内容" :value="searchValue" confirm-type="search" @input="searchValueInput($event)" :focus="focus"  @confirm="doSearch($event)"/><!--  -->
 			<button @tap="doSearch"><image class="searchcion" src="../../static/img/search.png"></image></button>
 		</view>
 		<view class="cont" v-if="hotKeyShow">
 			<text class="font_14">热门搜索</text>
 			<view class="w100">
-				<button v-for="(itema,index) in hotKeyList" @tap="doKeySearch" :key="index">{{itema}}</button>
+				<button v-for="(itema,index) in hotKeyList" @tap="doKeySearch" :data-key="itema">{{itema}}</button>
 			</view>
 			<text class="font_14">历史搜索</text>
 			<view class="w100">
-				<button v-for="(item2,index) in historyKeyList" @tap="doKeySearch" :key="index">{{item2}}</button>
+				<button v-for="(item2,index) in historyKeyList" @tap="doKeySearch" :data-key="item2">{{item2}}</button>
 			</view>
 		</view>
 	
@@ -149,7 +149,7 @@
 				},
 				success: function (res) {
 					console.log('sssss', res)
-					var hotKeyList = res.hot_keywords
+					var hotKeyList = res.data.hot_keywords
 					that.hotKeyList = hotKeyList
 				},
 				fail: function (e) {
@@ -188,7 +188,7 @@
 			
 			
 			//获取用户输入的搜索值
-			searchValueInput2: function (e) {
+			searchValueInput: function (e) {
 				console.log('e',e);
 				var that = this;
 			    var value = e.detail.value;
