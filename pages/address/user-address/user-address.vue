@@ -1,13 +1,13 @@
 <template>
 	<view>
-		<view class="content">
+	<!-- 	<view class="content">
 			<view class="list">
-				<view class="row" v-for="(item,index) in address" :key="index" @tap="select(item.addressid)">
-					<!-- <view class="left">
+				<view class="row" v-for="(item,index) in address" :key="index" @tap="setDefault($event)" :data-id="item.addressid">
+					<view class="left">
 						<view class="head">
 							{{row.head}}
 						</view>
-					</view> -->
+					</view>
 					<view class="center">
 						<view class="name-tel">
 							<view class="name">{{item.name}}</view>
@@ -33,6 +33,61 @@
 				<view class="icon tianjia"></view>新增地址
 			</view>
 		</view>
+		
+		
+		
+		 -->
+		
+		
+		
+		
+		
+		<!--地址管理-->
+		<radio-group class="radio-group">
+		<view :hidden="hiddenAddress" class="address" v-for="(item,index) in address" :key="index">
+		  <view class="address-icon" @tap="setDefault($event)" :data-id="item.addressid">
+		    <radio :checked="item.is_default==1?true:false" value="index" />
+		  </view>
+		  
+		  <view class="address-detail">
+		    <view @tap="select_address_to_order" :data-id="item.addressid">
+		    <view class="address-name-phone">
+		      <text class="address-name">{{item.name}}</text>
+		      <text class="address-phone">{{item.mobile}}</text>
+		    </view>
+		    <view class="address-info">{{item.province_name}}{{item.city_name}}{{item.district_name}}{{item.address}}</view>
+		    </view>
+		    <view class="address-edit">
+		      <view>
+		        <icon></icon>
+		        <text :hidden="item.is_default==0?false:true"></text>
+		      </view>
+		      <view>
+		        <text :hidden="item.is_default==0?false:true" @tap="setDefault" :data-id="item.addressid">设置默认</text>
+		        <text :hidden="item.is_default==0?false:true"> | </text>
+		        <text :data-id="item.addressid" @tap="saveAddress($event)">编辑</text>
+		        <text> | </text>
+		        <text :data-id="item.addressid" @tap="delAddress($event)">删除</text>
+		      </view>
+		    </view>
+		  </view>
+		</view>
+		</radio-group>
+		<view @click="add()">
+			<view :hidden="hiddenAddress" class="add-address">
+				<view class="btn_max">新增地址</view>
+			</view>
+		</view>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	</view>
 </template>
 <script>
@@ -41,7 +96,11 @@
 			return {
 				isSelect:false,
 				address:[],
-				row:''
+				row:'',
+				productid:'',
+				amount:'',
+				action:'',
+				action_pay:''
 			};
 		},
 		onShow() {
@@ -70,13 +129,96 @@
 			// 	}
 			// })
 		},
-		onLoad(e) {
-			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
-			this.get_address_list();
+		onLoad(options) {
+			 console.log('user-address----options==', options)
+			    this.abotapi.set_option_list_str(null, this.abotapi.getColor());
+			    
+			    var userInfo = this.abotapi.get_user_info();
+			    if ((!userInfo) || (!userInfo.userid)) {
+			      uni.redirectTo({
+			        url: '/pages/login/login',
+			      })
+			      return;
+			    };
+			    var that = this;
+			    // 页面初始化 options为页面跳转所带来的参数
+			    var cartId = options.cartId;
+			    var buynum = options.buynum;
+			    
+			    console.log(options);
+			    console.log(654987)
 			
-			if(e.type == 'select'){
-				this.isSelect = true;
-			}
+			    if(options.cartId){
+			        is_from_order_page:true
+			    }
+			
+			    var userInfo = this.abotapi.get_user_info();
+			    console.log(userInfo);
+			    console.log(333333)
+			
+			
+			    if (options.productid){
+			        that.productid = options.productid;
+			    }
+			    
+			    if (options.amount) {
+			        that.amount = options.amount;
+			    }
+			
+			    if (options.action) {
+			        that.action = options.action;
+			    }
+			    
+			    if (options.action_pay) {
+			        that.action_pay = options.action_pay;
+			    }
+			
+			    uni.showLoading({
+			      title: '加载中...',
+			    })
+			    uni.request({
+			      url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_list',
+			      data: {
+			        checkstr: userInfo.checkstr,
+			        userid:userInfo.userid,
+			        sellerid: this.abotapi.get_sellerid()
+			      },
+			      method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+			      header: {// 设置请求的 header
+			        'Content-Type':  'application/x-www-form-urlencoded'
+			      },
+			      
+			      success: function (res) {
+			        uni.hideLoading();
+			        // success
+			        var code = res.data.code
+			        
+			        var address = [];
+			
+			        if (code == 1) {
+			          var address = res.data.addressList;
+			        }
+			
+			          that.address = address          
+			
+			        if (cartId) {
+			            that.cartId = cartId
+			        }
+			
+			        if (buynum) {
+			            that.buynum = buynum
+			        }
+			
+			
+			      },
+			      fail: function () {
+			        // fail
+			        uni.showToast({
+			          title: '网络异常！',
+			          duration: 2000
+			        });
+			      }
+			    })
 		},
 		methods:{
 			
@@ -121,164 +263,261 @@
 				})
 			},
 			
-			edit(addressid){
-				uni.navigateTo({
-					url:'/pages/address/address?action=edit&addressid=' + addressid,
-				})
-				
-				
-			},
+			
+			//新增地址
 			add(){
 				uni.navigateTo({
-					url:"/pages/address/address?cartId=" + this.cartId + "&action=add"
+					url:'/pages/address/address?cartId='+that.cartId+'&action=add&amount='+that.amount+'&productid='+that.productid+'&action='+that.action+'&action_pay='+that.action_pay
 				})
 			},
-			select(row){
-				//是否需要返回地址(从订单确认页跳过来选收货地址)
-				console.log('row',row);
-				if(!this.isSelect){
-					return ;
-				}
+			
+			
+			
+			
+			//编辑所选地址
+			saveAddress:function (e) {
 				var that = this;
-				var userInfo = this.abotapi.get_user_info();
-				uni.request({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_save',
+			    var addressId = e.currentTarget.dataset.id;
+			    uni.redirectTo({
+					url: '/pages/address/address?action=edit&addressId=' + addressId + '&amount=' + that.amount + '&productid=' + that.productid + '&action=' + that.action + '&action_pay=' + that.action_pay,
+			    }); 
+			},
+			
+			//设置默认地址
+			setDefault: function(e) {
+			    var that = this;
+			
+			    var addrId = e.currentTarget.dataset.id;
+			    var userInfo = that.abotapi.get_user_info();
+			    uni.request({
+					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_save',
 					data: {
-						action:'get',
+						action:	'edit',
+						addressid: addrId,
+						moren:1,
+						userid: userInfo.userid,
 						checkstr: userInfo.checkstr,
-				        userid:userInfo.userid,
-				        sellerid: this.abotapi.get_sellerid(),
-						addressid:row
+						sellerid: that.abotapi.get_sellerid()
 					},
-					method: 'POST', 
-					header: {
+					method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+					header: {// 设置请求的 header
 						'Content-Type':  'application/x-www-form-urlencoded'
 					},
-				      
+			      
 					success: function (res) {
-						console.log('res',res);
-						if(res.data.code == 1){
-							// that.address = res.data.addressList;
-							console.log('res',res);
+						// success
+						var code = res.data.code;
+						var cartId = that.cartId;
+						var amount = that.amount;
+						var productid = that.productid;
+						var action_pay = that.action_pay;
+			
+						console.log('productid=================11', productid)
+						console.log('amount=================11', amount)
+						console.log('action_pay=================11', action_pay)
+						if(cartId == 321){
+							if (code == 1) {
+								if (action_pay == 'direct_buy') {
+									uni.redirectTo({
+										//url: '../../order/pay?productid=' + productid + "&buynum=" + buynum,
+										url: '/pages/order/confirmation?amount=' + that.amount + "&productid=" + that.productid + "&action=direct_buy",
+									});
+									//    return false;
+								} else {
+									uni.redirectTo({
+										url: '/pages/order/confirmation?amount=' + that.amount + "&productid=" + that.productid,
+									});
+								}
+								uni.showToast({
+									title: '操作成功！',
+									duration: 2000
+								});
+								that.DataonLoad();
+							} else {
+								uni.showToast({
+									title: res.data.msg,
+									duration: 2000
+								});
+							}
+						}else{
+							uni.showToast({
+								title: '设置成功！',
+							});
+							uni.redirectTo({
+								url: '/pages/address/user-address/user-address',
+							});
 						}
+			        
+					},
+					fail: function () {
+						// fail
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
 					}
 				})
-				// uni.setStorage({
-				// 	key:'selectAddress',
-				// 	data:row,
-				// 	success() {
-				// 		uni.navigateBack();
-				// 	}
-				// })
-			}
+			},
+			
+			  DataonLoad: function () {
+			    var that = this;
+			    var userInfo = this.abotapi.get_user_info();
+			    // 页面初始化 options为页面跳转所带来的参数
+			    uni.request({
+			      url: this.abotapi.globalData.yanyubao_server_url+ '?g=Yanyubao&m=ShopAppWxa&a=address_list',
+			      data: {
+			        userid: userInfo.userid,
+			        checkstr: userInfo.checkstr,
+			        sellerid: this.abotapi.get_sellerid()
+			      },
+			      method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+			      header: {// 设置请求的 header
+			        'Content-Type':  'application/x-www-form-urlencoded'
+			      },
+			      
+			      success: function (res) {
+			        // success
+			        var address = res.data.addressList;
+			        if (!address) {
+			          address = []
+			        }
+			
+			          that.address = address
+			
+			        
+			      },
+			      fail: function () {
+			        // fail
+			        uni.showToast({
+			          title: '网络异常！',
+			          duration: 2000
+			        });
+			      }
+			    })
+			    
+			  },
+			  
+			//删除地址	
+			delAddress: function (e) {
+				var that = this;
+			    console.log(e)
+			    var addrId = e.currentTarget.dataset.id;
+			    var userInfo = that.abotapi.get_user_info();
+			    uni.showModal({
+					title: '提示',
+					content: '你确认移除吗',
+					success: function(res) {
+						res.confirm && uni.request({
+							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_save',
+							data: {
+								action: 'del',
+								addressid: addrId,
+								userid: userInfo.userid,
+								checkstr: userInfo.checkstr,
+								sellerid: that.abotapi.get_sellerid()
+							},
+							method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+							header: {// 设置请求的 header
+								'Content-Type':  'application/x-www-form-urlencoded'
+							},
+			          
+							success: function (res) {
+								// success
+								var code = res.data.code;
+								if(code==1){
+									that.DataonLoad();
+								}else{
+									uni.showToast({
+										title: res.data.msg,
+										duration: 2000
+									});
+								}
+							},
+							fail: function () {
+								// fail
+								uni.showToast({
+									title: '网络异常！',
+									duration: 2000
+								});
+							}
+						});
+					}
+				});
+			
+			},
+			
 		}
 	}
 </script>
 
 <style lang="scss">
-view{
-	display: flex;
-}
-	.icon {
-		// &.bianji {
-		// 	&:before{content:"\e61b";}
-		// }
-		// &.tianjia {
-		// 	&:before{content:"\e81a";}
-		// }
+	/*地址管理*/
+	
+	page {
+	  background-color: #efeff4;
+	  font-size: 10pt;
+	  -webkit-user-select: none;
+	  user-select: none;
+	  width: 100%;
+	  overflow-x: hidden;
 	}
-	.add{
-		position: fixed;
-		bottom: 0;
-		width: 100%;
-		height: 120upx;
-		justify-content: center;
-		align-items: center;
-		.btn{
-			box-shadow: 0upx 5upx 10upx rgba(0,0,0,0.4);
-			width: 70%;
-			height: 80upx;
-			border-radius: 80upx;
-			background-color: #f06c7a;
-			color: #fff;
-			justify-content: center;
-			align-items: center;
-			.icon{
-				height: 80upx;
-				color: #fff;
-				font-size: 30upx;
-				justify-content: center;
-				align-items: center;
-			}
-			font-size: 30upx;
-		}
+	
+	.address {
+	  display: flex;
+	  flex-wrap: wrap;
+	  background-color: #fff;
+	  margin-top: 1px;
+	  padding: 30rpx;
+	  margin: 30rpx 0;
 	}
-	.list{
-		flex-wrap: wrap;
-		.row{
-			width: 96%;
-			padding: 20upx 2%;
-			.left{
-				width: 90upx;
-				flex-shrink: 0;
-				align-items: center;
-				.head{
-					width: 70upx;
-					height: 70upx;
-					background:linear-gradient(to right,#ccc,#aaa);
-					color: #fff;
-					justify-content: center;
-					align-items: center;
-					border-radius: 60upx;
-					font-size: 35upx;
-				}
-			}
-			.center{
-				width: 100%;
-				flex-wrap: wrap;
-				.name-tel{
-					width: 100%;
-					align-items: baseline;
-					.name{
-						font-size: 34upx;
-					}
-					.tel{
-						margin-left: 30upx;
-						font-size: 24upx;
-						color: #777;
-					}
-					.default{
-
-						font-size: 22upx;
-						
-						background-color: #f06c7a;
-						color: #fff;
-						padding: 0 18upx;
-						border-radius: 24upx;
-						margin-left: 20upx;
-					}
-				}
-				.address{
-					width: 100%;
-					font-size: 24upx;
-					align-items: baseline;
-					color: #777;
-				}
-			}
-			.right{
-				flex-shrink: 0;
-				align-items: center;
-				margin-left: 20upx;
-				.icon{
-					justify-content: center;
-					align-items: center;
-					width: 80upx;
-					height: 60upx;
-					border-left: solid 1upx #aaa;
-					font-size: 40upx;
-					color: #777;
-				}
-			}
-		}
+	
+	.address-icon {
+	  width: 100rpx;
+	}
+	
+	.address-detail {
+	  width: 590rpx;
+	}
+	
+	.address-name-phone {
+	  margin-bottom: 20rpx;
+	  font-size: 11pt;
+	  font-weight: 900;
+	}
+	
+	.address-name{
+	  margin-right: 20rpx;
+	}
+	
+	.address-info {
+	  margin-bottom: 30rpx;
+	}
+	
+	.address-edit {
+	  display: flex;
+	  justify-content: space-between;
+	  flex-wrap: wrap;
+	  border-top: 1px #efeff4 solid;
+	  padding-top: 30rpx;
+	}
+	
+	.add-address {
+	  display: flex;
+	  align-items: center;
+	  margin-top: 20px;
+	  padding: 18rpx;
+	  background-color: #fff;
+	  font-size: 11pt;
+	  font-weight: 900;
+	}
+	
+	.btn_max{
+	  background-color: #1AAD19;
+	  border-radius: 5px;
+	  line-height: 2.55;
+	  color: #FFFFFF;
+	  font-size: 36rpx;
+	  text-align: center;
+	  width: 100%;
 	}
 </style>

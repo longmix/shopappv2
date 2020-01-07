@@ -20,8 +20,8 @@
 			</view>
 			<!-- 右侧图标按钮 -->
 			<view class="icon-btn">
-				<view class="icon yuyin-home"></view>
-				<view class="icon tongzhi" @tap="toMsg"></view>
+				<view class="icon yuyin-home" style="display: none;"></view>
+				<view class="icon tongzhi" @tap="touTiaoList"></view>  <!-- 下版本换为:toMsg -->
 			</view>
 		</view>
 		<!-- 占位 -->
@@ -29,9 +29,9 @@
 		<!-- 轮播图 -->
 		<view class="swiper">
 			<view class="swiper-box">
-				<swiper circular="true" autoplay="true" @change="swiperChange">
-					<swiper-item v-for="swiper in productLists" :key="swiper.id" @click="toAdDetails(swiper.url)">
-						<image  :src="swiper.image" mode="widthFix"></image>
+				<swiper circular="true" autoplay="true" @change="swiperChange" :style="{height:imgheights[current] + 'px'} ">
+					<swiper-item v-for="(swiper,index) in productLists" :key="swiper.id" @click="toAdDetails(swiper.url)">
+						<image @load="imageLoad($event)"  :data-id='index' :src="swiper.image" mode="widthFix"></image>
 					</swiper-item>
 				</swiper>
 				<view class="indicator">
@@ -180,7 +180,10 @@ export default {
 			//猜你喜欢列表
 		
 			productList:'',
-			loadingText: '正在加载...'
+			loadingText: '正在加载...',
+			imgheights: [],
+			current: 0,
+			windowHeight: 0,
 		};
 	},
 	onPageScroll(e) {
@@ -262,6 +265,14 @@ export default {
 	},
 	onLoad() {
 		var that = this;
+		
+		uni.getSystemInfo({
+		    success: function (res) {
+				
+				that.windowHeight = res.windowHeight;
+				
+		    }
+		});
 		 
 		this.abotapi.set_option_list_str(this, this.callback_function);
 		this.abotapi.get_shop_info_from_server(this.callback_func_for_shop_info);
@@ -870,6 +881,28 @@ export default {
 		swiperChange(event) {
 			this.currentSwiper = event.detail.current;
 		},
+		
+		
+		imageLoad: function (e) {//获取图片真实宽度  
+				
+		    var imgwidth = e.detail.width,
+		      imgheight = e.detail.height,
+		      //宽高比  
+		      ratio = imgwidth / imgheight;
+		    console.log(imgwidth, imgheight)
+		    //计算的高度值  
+		    var viewHeight = this.windowHeight / ratio;
+		    var imgheight = viewHeight;
+		    var imgheights = this.imgheights;
+		    //把每一张图片的对应的高度记录到数组里  
+		    imgheights[e.target.dataset.id] = uni.upx2px(imgheight);
+	
+		    console.log(imgheights);
+		
+	
+		     this.imgheights = imgheights
+		   
+		  },
 		
 		
 		//首页导航图标、轮播图、平面广告跳转

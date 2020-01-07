@@ -299,16 +299,52 @@ export default {
 			buys:'立即购买',
 			status:'',
 			action_type: '',
-			current_spec: ''
-			
+			current_spec: '',
+			options_str:''
 			
 		};
 	},
 	onLoad(option) {
 		this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 		console.log('44444444444',option);
-		this.productid = option.productid;
 		var that = this;
+		
+		var options_str = '';
+		
+		//如果当前访问者没有登录或者注册，那么分析转发过来的链接是否带有推荐者信息
+		if(option.userid){
+			var userInfo = that.abotapi.get_user_info();
+	
+			if ((!userInfo) || (!userInfo.userid)) {
+				that.abotapi.set_current_parentid(options.userid);
+			}
+		}
+	
+		
+		if (option.productid) {
+			that.productid = option.productid;
+		
+			options_str += 'productid=' + option.productid + '&';
+		}
+		    
+		
+		if (option.price_type){
+			that.price_type = option.price_type;
+		
+			options_str += 'price_type=' + option.price_type+'&';
+		}
+		    
+		    options_str = options_str.substr(0, options_str.length -1);
+		
+		    console.log('options_str', options_str);
+		
+		    that.options_str = options_str ;
+		
+		
+		
+		
+		
+		
 		uni.request({
 		    url: this.abotapi.globalData.yanyubao_server_url +  '?g=Yanyubao&m=ShopAppWxa&a=product_detail',
 		    method: 'post',
@@ -592,7 +628,7 @@ export default {
 			var userInfo = this.abotapi.get_user_info();
 			if(!userInfo || !userInfo.userid){
 				
-				var last_url = '/pages/goods/goods';
+				var last_url = '/pages/goods/goods?' + that.options_str;;
 				this.abotapi.goto_user_login(last_url,'normal');
 				return;
 			}

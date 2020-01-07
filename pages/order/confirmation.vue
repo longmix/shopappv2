@@ -107,29 +107,29 @@
 	<view>
 		<view v-if="wxa_order_queren_hide_address != 1" style="border-bottom:1px dashed #e5e5e5;">
 		    <view class="p_all bg_white mt10 font_14" v-if="addemt==0">
-				<navigator open-type='redirect' :url="'/pages/user/address/address?cartId=321&amount='+{amount}+'&productid='+{productid}+'&action='+{action}" hover-class="none">
+				<view @click="goAddress()">
 					<view class="df">
-						<view class="df_1 c6">
+						<view class="df_1 c6" style="padding: 5upx 20upx;">
 							<view style='display:flex;'>
-								<view class="l_h20" style="font-size:40rpx;margin-right:56rpx;">{{order_address_detail.name}}</view>
-								<view class="l_h20 " style="font-size:40rpx;">{{order_address_detail.mobile}}</view>
+								<view class="l_h20" style="font-size:40upx;margin-right:56upx;">{{order_address_detail.name}}</view>
+								<view class="l_h20 " style="font-size:40upx;">{{order_address_detail.mobile}}</view>
 							</view>
-							<view class="l_h20 mt5" style="font-size:22rpx;margin-top:22rpx;">
+							<view class="l_h20 mt5" style="font-size:22upx;margin-top:22upx;">
 								{{order_address_detail.province_name}}{{order_address_detail.city_name}}{{order_address_detail.district_name}}{{order_address_detail.address}}
 							</view>
 						</view>
 						<image class="x_right mt15" src="../../static/img/x_right.png"></image>			
 					</view>
-				</navigator>
+				</view>
 			</view>
 			<view class="p_all bg_white mt10 font_14" v-else>
-				<navigator :url="'/pages/user/address/address?cartId='+{cartId}" hover-class="none">
+				<view @click="goAddress()">
 					<view class="df">
 						<view class="df_1 c6">添加收货地址</view>
 		
 						<image class="x_right mt15" src="../../static/img/x_right.png"></image>			
 					</view>
-				</navigator>
+				</view>
 			</view>
 		</view>
 		
@@ -198,14 +198,14 @@
 				</view> 
 			</view>
 			
-		    <text style="font-size:28rpx;padding-left:3%;">备注</text>
+		    <text style="font-size:28upx;padding-left:3%;">备注</text>
 			<view class="p_all bg_white mt10 font_14">
 				<textarea class="min_60" auto-height name="remark" placeholder="如有备注请填写" @input="remarkInput" :value="remark" rows="3"/> 
 			</view>	
 		
 			<view class="p_all mt10">
 				<view class="btnGreen">
-					<button class="xx_pay_submit" type="default" id="xxPay" :disabled="btnDisabled" formType="submit" @tap="createOrder">提交订单</button>
+					<button class="xx_pay_submit" type="default" id="xxPay" :disabled="btnDisabled" style="width: 90%;" formType="submit" @tap="createOrder">提交订单</button>
 				</view>
 			</view>
 		
@@ -263,9 +263,9 @@
 				all_price:'',
 				traffic_price:'',
 				pay_price:'',
-				util:''
+				util:'',
 				// recinfo:{id:1,name:"大黑哥",head:"大",tel:"18816881688",address:{region:{"label":"广东省-深圳市-福田区","value":[18,2,1],"cityCode":"440304"},detailed:'深南大道1111号无名摩登大厦6楼A2'},isDefault:true}
-
+				order_address_detail: {}
 			};
 		},
 		
@@ -1075,7 +1075,13 @@
 			
 			
 			
-			
+			//跳转收货地址
+			goAddress:function(){
+				var that= this;
+				uni.navigateTo({
+					url:'/pages/address/user-address/user-address?cartId=321&amount='+that.amount+'&productid='+that.productid+'&action_pay='+that.action
+				})
+			},
 			// clearOrder(){
 			// 	uni.removeStorage({
 			// 		key: 'buylist',
@@ -1163,7 +1169,7 @@
 	    display:-webkit-box; 
 	    -webkit-line-clamp:2;  
 	    -webkit-box-orient:vertical; 
-	    font-size: 28rpx;
+	    font-size: 28upx;
 	} 
 	.h10_hui{
 	    height: 10px;
@@ -1262,13 +1268,13 @@
 	    height: 20px;
 	}
 	.hui{
-	    margin-left: 28rpx;
-	    font-size: 30rpx;
+	    margin-left: 28upx;
+	    font-size: 30upx;
 	    
 	}
 	.xuan{
-	    padding: 10rpx 0;
-	    font-size: 30rpx;
+	    padding: 10upx 0;
+	    font-size: 30upx;
 	}
 	
 	.photo_name{
@@ -1278,22 +1284,23 @@
 	.danji_shulian{
 	  display:flex;
 	  justify-content:space-between;
-	  border-bottom: 1rpx solid #e5e5e5;
-	  padding:18rpx 0 18rpx 0;
+	  border-bottom: 1upx solid #e5e5e5;
+	  padding:0 20upx;
 	}
 	
 	.heji_con{
 	  display:flex;
 	  justify-content:space-between;
+	  padding: 0 20upx;
 	}
 	
 	.a-dikou{
 	  display:flex;
 	  padding:0 0 3%;
-	  font-size:28rpx;
+	  font-size:28upx;
 	  justify-content:space-between;
 	  border-bottom:1px solid #e5e5e5;
-	  margin-bottom:20rpx;
+	  margin-bottom:20upx;
 	  width:94%;
 	  margin-left:3%;
 	}
@@ -1303,7 +1310,7 @@
 	}
 	
 	.c-dikou{
-	  margin-left:40rpx;
+	  margin-left:40upx;
 	}
 	.d-dikou{
 	  zoom: .7
