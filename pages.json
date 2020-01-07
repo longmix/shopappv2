@@ -289,7 +289,21 @@
             	"navigationBarTitleText": "文章详情",
             	"softinputNavBar":"none"
             }
-        }
+        },
+		{
+		    "path" : "pages/address/user-address/user-address",
+		    "style": {
+		    	"navigationBarTitleText": "地址",
+		    	"softinputNavBar":"none"
+		    }
+		},
+		{
+		    "path" : "pages/address/address",
+		    "style": {
+		    	"navigationBarTitleText": "联系地址",
+		    	"softinputNavBar":"none"
+		    }
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

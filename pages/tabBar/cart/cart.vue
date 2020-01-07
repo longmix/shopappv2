@@ -60,7 +60,7 @@
 			<!-- <view class="delBtn" @tap="deleteList" v-if="selectedList.length>0">删除</view> -->
 			<view class="settlement">
 				<view class="sum">合计:<view class="money">￥{{sumPrice}}</view></view>
-				<view class="btn" @tap="toConfirmation">结算({{selectedList.length}})</view>
+				<view class="btn" @tap="toConfirmation(selectedList)">结算({{selectedList.length}})</view>
 			</view>
 		</view>
 	</view>
@@ -250,7 +250,7 @@
 				});
 			},
 			//跳转确认订单页面
-			toConfirmation(){
+			toConfirmation(e){
 				let tmpList=[];
 				let len = this.cart_list.length;
 				for(let i=0;i<len;i++){
@@ -265,12 +265,13 @@
 					});
 					return ;
 				}
+				console.log("e======>>>>>>>>>>",e);
 				uni.setStorage({
 					key:'buylist',
 					data:tmpList,
 					success: () => {
 						uni.navigateTo({
-							url:'/pages/order/confirmation'
+							url:'/pages/order/confirmation?productid='+e
 						})
 					}
 				})
@@ -409,6 +410,9 @@
 				let i = this.selectedList.indexOf(this.cart_list[index].productid);
 				i>-1?this.selectedList.splice(i, 1):this.selectedList.push(this.cart_list[index].productid);
 				this.isAllselected = this.selectedList.length == this.cart_list.length;
+				
+				console.log("this.selectedList",this.selectedList);
+				
 				this.sum();
 			},
 			//全选

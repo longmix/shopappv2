@@ -146,14 +146,14 @@
 					 </view>
 					<view class="text">数量</view>
 					<view class="number">
-					  	<view class="sub" data-alpha-beta="0" @tap.stop="changeNum($event)">
-					  		<view class="icon jian"></view>
+					  	<view class="sub" >
+					  		<view class="icon jian" data-alpha-beta="0" @click="changeNum($event)"></view>
 					  	</view>
 					  	<view class="input" @tap.stop="discard">
 					  		<input type="number" v-model="amount" />
 					  	</view>
-					  	<view class="add" data-alpha-beta="1" @tap.stop="changeNum($event)">
-					  		<view class="icon jia"></view>
+					  	<view class="add" >
+					  		<view class="icon jia" data-alpha-beta="1" @click="changeNum($event)"></view>
 					  	</view>
 					</view>
 					
@@ -294,7 +294,6 @@ export default {
 			attr_list_arr: [],
 			attr_key_arr: [],
 			attr_list: [],
-			picture_list: [],
 			picture_length: 0,
 			amount: 1,
 			buys:'立即购买',
@@ -552,55 +551,7 @@ export default {
 		keep(){
 			this.isKeep = this.isKeep?false:true;
 		},
-		// 加入购物车
-		joinCart(){
-			
-			if(this.selectSpec==null){
-				return this.showSpec(()=>{
-					this.toConfirmation();
-				});
-			}
-			
-			var that = this;
-			var userInfo = this.abotapi.get_user_info();
-			if(!userInfo || !userInfo.userid){
-				
-				var last_url = '/pages/goods/goods?productid='+this.productid;
-				this.app.goto_user_login(last_url,'normal');
-				return;
-			}
-			uni.request({
-				url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=cart_add',
-				method: 'post',
-				data: {
-					amount: 1, 
-					checkstr: userInfo.checkstr,
-					productid: that.goods_detail.productid,
-					sellerid: this.abotapi.get_sellerid(),
-					userid: userInfo.userid,
-				},
-				header: {
-					'Content-Type': 'application/x-www-form-urlencoded'
-				},
-				success: function (res) {
-					uni.showToast({
-						title: '添加成功',
-					});
-				},
-				fail: function (e) {
-					uni.showToast({
-						title: '添加失败',
-					});
-				},
-			});
-			
-			// if(this.selectSpec==null){
-			// 	return this.showSpec(()=>{
-			// 		uni.showToast({title: "已加入购物车"});
-			// 	});
-			// }
-			// uni.showToast({title: "已加入购物车"});
-		},
+		
 		//立即购买
 		// buy(){
 		// 	if(this.selectSpec==null){
@@ -617,7 +568,7 @@ export default {
 		    var that = this;
 		    var action_type = '';
 		    if(e.currentTarget.dataset.type){
-		      action_type = e.currentTarget.dataset.type;
+				action_type = e.currentTarget.dataset.type;
 		    }
 		
 		    if (e.currentTarget.dataset.status == 1) {
@@ -630,9 +581,6 @@ export default {
 				this.status = '2';
 				this.action_type = action_type;
 		    }
-		    
-
-
 		},
 		
 		
@@ -645,19 +593,19 @@ export default {
 			if(!userInfo || !userInfo.userid){
 				
 				var last_url = '/pages/goods/goods';
-				this.app.goto_user_login(last_url,'normal');
+				this.abotapi.goto_user_login(last_url,'normal');
 				return;
 			}
 			
 		
-			if (e.currentTarget.dataset.status == 1) {
-				this.addShopCart = true;
-		      }
+			// if (e.currentTarget.dataset.status == 1) {
+			// 	this.addShopCart = true;
+		 //      }
 		
 		
 		    if (e.currentTarget.dataset.status == 1){
 		
-		      var new_url = '../order/pay?amount=' + that.data.amount + "&productid=" + that.data.productid + "&action=direct_buy";
+		      var new_url = '/pages/order/confirmation?amount=' + that.amount + "&productid=" + that.goods_detail.productid + "&action=direct_buy";
 		
 		      uni.navigateTo({
 		        url: new_url,
@@ -729,15 +677,16 @@ export default {
 
 		//修改数量		
 		changeNum:function  (e) {
+			console.log("数量发生变化_e",e);
 		    var that = this;
 		    if (e.target.dataset.alphaBeta == 0) {
-		        if (this.amount <= 1) {
-		            amount:1
+		        if (that.amount <= 1) {
+		            that.amount = 1
 		        }else{
-					this.amount = parseInt(this.amount) - 1;		   
+					that.amount = parseInt(that.amount) - 1;		   
 		        };
 		    }else{
-				this.amount = parseInt(this.amount) + 1;
+				that.amount = parseInt(that.amount) + 1;
 		    };
 		},
 		//跳转锚点
