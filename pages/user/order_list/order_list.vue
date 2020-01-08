@@ -2,7 +2,7 @@
 	<view>
 		<!--pages/user/dingdan.wxml-->
 <view class="swiper-tab">
-  <view class="swiper-tab-list" :class="currentTab==0 ? 'on' : ''" data-current="0" data-otype=""  @tap="swichNav">全部</view>
+  <view class="swiper-tab-list" :class="currentTab==0 ? 'on' : ''" data-current="0" data-otype="0"  @tap="swichNav">全部</view>
   <view class="swiper-tab-list" :class="currentTab==1 ? 'on' : ''" data-current="1" data-otype="1" @tap="swichNav">待付款</view>
   <view class="swiper-tab-list" :class="currentTab==2 ? 'on' : ''" data-current="2" data-otype="2" @tap="swichNav">待发货</view> 
   <view class="swiper-tab-list" :class="currentTab==3 ? 'on' : ''" data-current="3" data-otype="6" @tap="swichNav">待收货</view>
@@ -250,7 +250,7 @@
 				Height:'',
 				// tab切换  
 				currentTab: 0,  
-				isStatus:1,//1待付款，2待发货，6待收货 7已完成
+				isStatus:1,//0全部,1待付款，2待发货，6待收货 7已完成
 				page:1,
 				refundpage:0,
 				orderList:[],
@@ -333,16 +333,17 @@
 			removeOrder:function(e){
 			    var that = this;
 			    var orderId = e.currentTarget.dataset.orderId;
+				var userInfo = that.abotapi.get_user_info();
 			    uni.showModal({
 					title: '提示',
 					content: '你确定要取消订单吗？',
 					success: function(res) {
 						res.confirm && uni.request({
-							url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=orderdel',
+							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=orderdel',
 							method:'post',
 							data: {
 								orderid: orderId,
-								sellerid: this.abotapi.get_sellerid(),
+								sellerid: that.abotapi.get_sellerid(),
 								checkstr: userInfo.checkstr,
 								userid: userInfo.userid
 							},
@@ -743,12 +744,12 @@
 			},
 				
 				
-			swichNav: function(e) { 
+			swichNav: function(e) {
 				
-				var that = this;  
+				var that = this;
 				if( that.currentTab == e.target.dataset.current ) {  
-					return false;  
-				} else { 
+					return false;
+				} else {
 					var current = e.target.dataset.current;
 					that.currentTab = parseInt(current);
 					that.isStatus = e.target.dataset.otype;
@@ -757,72 +758,6 @@
 				};
 			},
 			
-			
-			
-			payOrderByWechat: function (e) {
-				var order_id = e.currentTarget.dataset.orderId;
-				var order_sn = e.currentTarget.dataset.ordersn;
-				if(!order_sn){
-					uni.showToast({
-						title: "订单异常!",
-						duration: 2000,
-					});
-					return false;
-				}
-				uni.request({
-					url: this.abotapi.d.ceshiUrl + '/Api/Wxpay/wxpay',
-					data: {
-						order_id: order_id,
-						order_sn: order_sn,
-						uid: this.abotapi.d.userId,
-					},
-					method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-					header: {
-						'Content-Type': 'application/x-www-form-urlencoded'
-					}, // 设置请求的 header
-					success: function (res) {
-						if (res.data.status == 1) {
-							var order = res.data.arr;
-							uni.requestPayment({
-								timeStamp: order.timeStamp,
-								nonceStr: order.nonceStr,
-								package: order.package,
-								signType: 'MD5',
-								paySign: order.paySign,
-								success: function (res) {
-									uni.showToast({
-										title: "支付成功!",
-										duration: 2000,
-									});
-									setTimeout(function () {
-										uni.navigateTo({
-											url: '../user/dingdan?currentTab=1&otype=deliver',
-										});
-									}, 3000);
-								},
-								fail: function (res) {
-									uni.showToast({
-										title: res,
-										duration: 3000
-									})
-								}
-							})
-						} else {
-							uni.showToast({
-								title: res.data.err,
-								duration: 2000
-							});
-						}
-					},
-					fail: function (e) {
-						// fail
-						uni.showToast({
-							title: '网络异常！',
-							duration: 2000
-						});
-					}
-				})
-			},
 			
 			
 			payOrderByWechat: function (e) {
