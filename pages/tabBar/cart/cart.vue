@@ -82,13 +82,7 @@
 				isAllselected:false,
 				cart_list:'',
 				is_numOK:false,
-				goodsList:[
-					{id:1,img:'/static/img/goods/p1.jpg',name:'商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题',spec:'规格:S码',price:127.5,number:1,selected:false},
-					{id:2,img:'/static/img/goods/p2.jpg',name:'商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题',spec:'规格:S码',price:127.5,number:1,selected:false},
-					{id:3,img:'/static/img/goods/p3.jpg',name:'商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题',spec:'规格:S码',price:127.5,number:1,selected:false},
-					{id:4,img:'/static/img/goods/p4.jpg',name:'商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题',spec:'规格:S码',price:127.5,number:1,selected:false},
-					{id:5,img:'/static/img/goods/p5.jpg',name:'商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题',spec:'规格:S码',price:127.5,number:1,selected:false}
-				],
+				
 				//控制滑动效果
 				theIndex:null,
 				oldIndex:null,
@@ -244,36 +238,41 @@
 			
 			//商品跳转
 			toGoods(e){
-				uni.showToast({title: '商品'+e});
+				// uni.showToast({title: '商品'+e});
 				uni.navigateTo({
 					url: '/pages/goods/goods?productid='+e 
 				});
 			},
 			//跳转确认订单页面
 			toConfirmation(e){
-				let tmpList=[];
-				let len = this.cart_list.length;
-				for(let i=0;i<len;i++){
-					if(this.cart_list[i].selected) {
-						tmpList.push(this.cart_list[i]);
+				
+				var toastStr = '';
+				// 遍历取出已勾选的cid
+				for (var i = 0; i < this.cart_list.length; i++) {
+					if (this.cart_list[i].selected) {
+						toastStr += this.cart_list[i].productid+','
 					}
-				}
-				if(tmpList.length<1){
+				};
+				console.log("1111111",toastStr);
+				console.log("2222222222");
+				var product_list = toastStr.substring(0, toastStr.length - 1);
+				   
+				var proId = product_list.split(",")
+				console.log(product_list);
+				console.log(proId);
+				if (toastStr.length == 0){
 					uni.showToast({
-						title:'请选择商品结算',
-						icon:'none'
+						title: '请选择要结算的商品！',
+						duration: 2000
 					});
-					return ;
+					return false;
 				}
-				console.log("e======>>>>>>>>>>",e);
-				uni.setStorage({
-					key:'buylist',
-					data:tmpList,
-					success: () => {
-						uni.navigateTo({
-							url:'/pages/order/confirmation?productid='+e
-						})
-					}
+				
+				console.log('encodeURIComponent(JSON.stringify(proId))==',encodeURIComponent(JSON.stringify(proId)));
+				
+				//存回data
+				uni.navigateTo({
+					url: '/pages/order/confirmation?productid=' + encodeURIComponent(JSON.stringify(proId)),
 				})
 			},
 			//删除商品

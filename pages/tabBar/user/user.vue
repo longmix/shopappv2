@@ -1,20 +1,20 @@
 <template>
 	<view>
-		<view v-if="showHeader" class="status" :style="{position:headerPosition,top:statusTop}"></view>
-		<view v-if="showHeader" class="header" :style="{position:headerPosition,top:headerTop}">
+		<view v-if="showHeader" class="status" :style="{position:headerPosition,top:statusTop,backgroundColor:wxa_shop_nav_bg_color,fontColor:wxa_shop_nav_font_color}"></view>
+		<view v-if="showHeader" class="header" :style="{position:headerPosition,top:headerTop,backgroundColor:wxa_shop_nav_bg_color,fontColor:wxa_shop_nav_font_color}">
 			<view class="addr"></view>
 			<view class="input-box">
 				
 			</view>
 			<view class="icon-btn">
-				<view class="icon tongzhi" @tap="toMsg"></view>
+				<view class="icon tongzhi" @tap="touTiaoList"></view>				<!--下版本替换为: toMsg -->
 				<view class="icon setting" @tap="toSetting"></view>
 			</view>
 		</view>
 		<!-- 占位 -->
 		<view v-if="showHeader" class="place"></view>
 		<!-- 用户信息 -->
-		<view class="user">
+		<view class="user" :style="{backgroundColor:wxa_shop_nav_bg_color}">
 			<!-- 头像 -->
 			<view class="left">
 				<label v-if="user_info"><image :src="user_info.headimgurl"></image></label>
@@ -107,12 +107,15 @@
 				//个人信息,
 				user_info:'',
 				fenxiao_info:'',
+				wxa_shop_nav_bg_color:'',
+				wxa_shop_nav_font_color:'',
 				// 订单类型
 				orderList:[
+					{text:'全部',icon:"pingjia",otype:0},
 					{text:'待付款',icon:"fukuan",otype:1},
 					{text:'待发货',icon:"fahuo",otype:2},
 					{text:'待收货',icon:"shouhuo",otype:6},
-					{text:'已完成',icon:"pingjia",otype:7},
+					
 				],
 				// 工具栏列表
 				gooosList:'',
@@ -131,8 +134,19 @@
 			this.statusTop = e.scrollTop>=0?null:-this.statusHeight+'px';
 		},
 		onLoad() {
-			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 			var that = this;
+			
+			this.abotapi.set_option_list_str(this, 
+				function(that001, option_list){
+					that.abotapi.getColor();
+					
+						that.wxa_shop_nav_bg_color  = option_list.wxa_shop_nav_bg_color;
+						
+						that.wxa_shop_nav_font_color = option_list.wxa_shop_nav_font_color
+				
+				}
+			);
+			
 			uni.request({
 			    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_shop_icon_usercenter',
 			    method: 'post',
@@ -251,6 +265,14 @@
 					url:'/pages/user/setting/setting'
 				})
 			},
+			
+			//点击商户头条进入列表
+			touTiaoList: function (e) {
+			    console.log('点击商户头条进入列表');
+			    uni.navigateTo({
+					url: '/pages/tabBar/home/help/help?sellerid=' + this.abotapi.globalData.default_sellerid
+			    })
+			},
 			toMyQR(){
 				uni.navigateTo({
 					url:'/pages/user/myQR/myQR'
@@ -272,6 +294,8 @@
 				return false
 			},
 			toDeposit(){
+				uni.showToast({title: '该功能升级中'});
+				return;
 				uni.navigateTo({
 					url:'/pages/user/deposit/deposit'
 				})

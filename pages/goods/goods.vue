@@ -7,7 +7,7 @@
 				<view class="back"><view class="icon xiangqian" @tap="back" v-if="showBack"></view></view> 
 				<view class="middle"></view>
 				<view class="icon-btn">
-					<view class="icon tongzhi" @tap="toMsg"></view>
+					<view class="icon tongzhi" @tap="touTiaoList"></view>
 					<view class="icon cart" @tap="toCart"></view>
 				</view>
 			</view>
@@ -18,7 +18,7 @@
 					<view v-for="(anchor,index) in anchorlist" :class="[selectAnchor==index ?'on':'']" :key="index" @tap="toAnchor(index)">{{anchor.name}}</view>
 				</view>
 				<view class="icon-btn">
-					<view class="icon tongzhi" @tap="toMsg"></view>
+					<view class="icon tongzhi" @tap="touTiaoList"></view>      <!-- 下版本-> toMsg -->
 					<view class="icon cart" @tap="joinCart"></view>
 				</view>
 			</view>
@@ -31,7 +31,7 @@
 					<view class="text">分享</view>
 				</view>
 				<view class="box" @tap="toChat">
-					<view class="icon kefu"></view>
+					<view class="icon kefu"></view>		<!-- 下版本改为   -->
 					<view class="text">客服</view>
 				</view>
 				<view class="box" @tap="keep">
@@ -50,7 +50,7 @@
 			<view class="layer" @tap.stop="discard">
 				<view class="h1">分享</view>
 				<view class="list">
-					<view class="box">
+					<!-- <view class="box">
 						<image src="../../static/img/share/uni.png"></image>
 						<view class="title">
 							微信好友
@@ -73,7 +73,8 @@
 						<view class="title">
 							QQ
 						</view>
-					</view>
+					</view> -->
+					
 				</view>
 				<view class="btn" @tap="hideShare">
 					取消
@@ -89,7 +90,7 @@
 				<view class="content">
 					<view class="row" v-for="(item,index) in goodsData.service" :key="index">
 						<view class="title">{{item.name}}</view>
-						<view class="description">{{item.description}}121111</view>
+						<view class="description">{{item.description}}</view>
 					</view>
 				</view>
 				<view class="btn"><view class="button" @tap="hideService">完成</view></view>
@@ -206,7 +207,7 @@
 			</view>
 		</view>
 		<!-- 评价 -->
-		<view class="info-box comments" id="comments">
+		<!-- <view class="info-box comments" id="comments">
 			<view class="row">
 				<view class="text">商品评价({{goodsData.comment.number}})</view>
 				<view class="arrow" @tap="toRatings">
@@ -225,7 +226,7 @@
 					{{goodsData.comment.content}}
 				</view>
 			</view>
-		</view>
+		</view> -->
 		<!-- 详情 -->
 		<view class="description">
 			<view class="title">———— 商品详情 ————</view>
@@ -300,7 +301,8 @@ export default {
 			status:'',
 			action_type: '',
 			current_spec: '',
-			options_str:''
+			options_str:'',
+			telephone:''
 			
 		};
 	},
@@ -334,11 +336,11 @@ export default {
 			options_str += 'price_type=' + option.price_type+'&';
 		}
 		    
-		    options_str = options_str.substr(0, options_str.length -1);
-		
-		    console.log('options_str', options_str);
-		
-		    that.options_str = options_str ;
+		options_str = options_str.substr(0, options_str.length -1);
+	
+		console.log('options_str', options_str);
+	
+		that.options_str = options_str ;
 		
 		
 		
@@ -436,6 +438,14 @@ export default {
 		// #endif
 		//option为object类型，会序列化上个页面传递的参数
 		console.log(option.cid); //打印出上个页面传递的参数。
+		
+		
+		
+		//获取客服电话
+		
+		
+		
+		
 	},
 	onReady(){
 		this.calcAnchor();//计算锚点高度，页面数据是ajax加载时，请把此行放在数据渲染完成事件中执行以保证高度计算正确
@@ -456,9 +466,7 @@ export default {
 	// onReachBottom() {
 	// 	uni.showToast({ title: '触发上拉加载' });
 	// },
-	mounted () {
-		
-	},
+	
 	methods: {
 		
 		changeSpec1:function(e){
@@ -550,7 +558,13 @@ export default {
 		    })	    
 		},
 		
-		
+		//点击商户头条进入列表
+		touTiaoList: function (e) {
+		    // console.log('点击商户头条进入列表');
+		    uni.navigateTo({
+				url: '/pages/tabBar/home/help/help?sellerid=' + this.abotapi.globalData.default_sellerid
+		    })
+		},
 		
 		//轮播图指示器
 		swiperChange(event) {
@@ -564,12 +578,25 @@ export default {
 		},
 		// 客服
 		toChat(){
-			uni.navigateTo({
-				url:"../msg/chat/chat?name=客服008"
+			// uni.navigateTo({
+			// 	url:"../msg/chat/chat?name=客服008"
+			// })
+			
+			
+			
+			var shop_list = uni.getStorageSync("shop_info_from_server_str_" + this.abotapi.globalData.default_sellerid);
+			console.log('aaaaaaaaaaaaaaaaaaaaaaaaaa====>>>>', shop_list);
+			this.telephone = shop_list.telephone
+			uni.makePhoneCall({
+				phoneNumber: this.telephone,
 			})
+			
+			
 		},
 		// 分享
 		share(){
+			uni.showToast({title: '请点击右上角分享'});
+			return;
 			this.shareClass = 'show';
 		},
 		hideShare(){
@@ -787,7 +814,7 @@ export default {
 			}, 200);
 		},
 		discard() {
-			//丢弃
+			
 		}
 	},
 	
@@ -1046,9 +1073,10 @@ page {
 			margin-right: 20upx;
 		}
 		.content {
-			font-size: 28upx;
+			font-size: 24upx;
 			display: flex;
 			flex-wrap: wrap;
+			color: #a2a2a2;
 			.serviceitem{
 				margin-right: 10upx;
 			}

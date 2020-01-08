@@ -34,9 +34,6 @@
 						<image @load="imageLoad($event)"  :data-id='index' :src="swiper.image" mode="widthFix"></image>
 					</swiper-item>
 				</swiper>
-				<view class="indicator">
-					<view class="dots" v-for="(swiper, index) in swiperList" :class="[currentSwiper >= index ? 'on' : '']" :key="index"></view>
-				</view>
 			</view>
 		</view>
 		<!--商户头条start-->
@@ -82,7 +79,7 @@
 			</view>
 		</view>
 		<!-- 活动区 -->
-		<view class="promotion">
+		<!-- <view class="promotion">
 			<view class="text">优惠专区</view>
 			<view class="list">
 				<view class="column" v-for="(row, index) in Promotion" @tap="toPromotion(row)" :key="index">
@@ -103,14 +100,14 @@
 					<view class="right"><image :src="row.img"></image></view>
 				</view>
 			</view>
-		</view>
+		</view> -->
 		<!-- 商品列表 -->
-		<view class="goods-list">
-			<view class="title">
+		<view class="goods-list" style="margin-top: 40upx;">
+			<!-- <view class="title">
 				<image src="/static/img/hua.png"></image>
 				猜你喜欢
 				<image src="/static/img/hua.png"></image>
-			</view>
+			</view> -->
 			<view class="product-list">
 				<view class="product" v-for="(product,index) in productList" :key="index" @click="toGoods(product)">
 					<image mode="widthFix" :src="product.picture"></image>
@@ -170,11 +167,6 @@ export default {
 			currentSwiper: 0,
 			// 轮播图片
 			
-			swiperList: [
-				{ id: 1, src: 'url1', img: '/static/img/1.jpg' },
-				{ id: 2, src: 'url2', img: '/static/img/2.jpg' },
-				{ id: 3, src: 'url3', img: '/static/img/3.jpg' }
-			],
 			index_icon_list:'',
 			Promotion: [],
 			//猜你喜欢列表

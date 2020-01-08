@@ -17,7 +17,7 @@
 		<view class="category-list">
 			<!-- 左侧分类导航 -->
 			<scroll-view  scroll-y="true" class="left" >
-                <view class="row" v-for="(item,index) in categoryList" :key="item.cataid" @click="tapType(item.cataid)" > <!-- :class="[index==showCategoryIndex?'on':'']" @tap="showCategory(index)"  -->
+                <view class="row" v-for="(item,index) in categoryList" :key="index" :class="[index==showCategoryIndex?'on':'']" @tap="showCategory(item.cataid,index)"> <!--   @click="tapType(item.cataid)"  -->
 					<view class="text">
 						<view class="block"></view>
 						{{item.name}}
@@ -27,7 +27,7 @@
             </scroll-view>
 			<!-- 右侧子导航 -->
 			<scroll-view  scroll-y="true" class="right" >
-			    <view class="category" v-for="(item2,index) in cataList" :key="item2.cataid" @click="toCategory(item2.cataid)"> <!--  v-show="index==showCategoryIndex" -->
+			    <view class="category" v-for="(item2,index2) in cataList" :key="index2" @click="toCategory(item2.cataid)" v-if="cataList != null"> <!--  v-show="index==showCategoryIndex" -->
 					<view class="banner" >
 						<image v-if="item2.icon" :src="item2.icon" mode="widthFix"></image>
 						<image v-else src="" mode="widthFix" style="height: 240upx;"></image>
@@ -39,6 +39,12 @@
 						</view>
 					</view>
 				</view>
+				
+				<view style="text-align: center;margin-top: 100upx;" v-if="cataList == null">
+					<image style="width: 150upx;" mode="widthFix" src="../../../static/img/search_no.png"></image>
+					<text style="display: block;color: #8a8a8a;">暂无任何数据</text>
+				</view> 
+				
 			</scroll-view>
 		</view>
 	</view>
@@ -190,8 +196,9 @@
 			
 			
 			//分类切换显示
-			showCategory(index){
+			showCategory(e,index){
 				this.showCategoryIndex = index;
+				this.tapType(e);
 			},
 			toCategory(e){
 				console.log('e',e);

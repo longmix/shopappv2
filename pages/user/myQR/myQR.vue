@@ -1,19 +1,21 @@
 <template>
-	<view>
-		<view class="block">
-			
-		</view>
-		<view class="QR">
-			<image src="../../../static/img/qr.png"></image>
-		</view>
-		<view class="title">
-			扫描二维码，加我好友
-		</view>
-		<view class="btn" v-show="showBtn" @tap="printscreen">
-			{{tis}}
-		</view>
-		<view class="logo">
-			<image mode="widthFix" src="../../../static/img/qrlogo.png"></image>
+	<view :style="{height:windowHeight+'px',backgroundColor:wxa_shop_nav_bg_color,fontColor:wxa_shop_nav_font_color}">
+		<view :style="{backgroundColor:wxa_shop_nav_bg_color,fontColor:wxa_shop_nav_font_color}">
+			<view class="block">
+				
+			</view>
+			<view class="QR">
+				<image :src="qrcode_url"></image>
+			</view>
+			<view class="title" :style="{backgroundColor:wxa_shop_nav_bg_color,fontColor:wxa_shop_nav_font_color}">
+				扫描二维码，加我好友
+			</view>
+			<view class="btn" v-show="showBtn" @tap="printscreen">
+				{{tis}} 
+			</view>
+			<view class="logo">
+				<!-- <image mode="widthFix" src="../../../static/img/qrlogo.png"></image> -->
+			</view>
 		</view>
 	</view>
 </template>
@@ -23,15 +25,76 @@
 		data() {
 			return {
 				tis:"保存到相册",
-				showBtn:false
+				showBtn:false,
+				wxa_shop_nav_bg_color:'',
+				wxa_shop_nav_font_color:'',
+				qrcode_url:'',
+				windowHeight:''
 			};
 		},
 		onLoad() {
 			// #ifdef APP-PLUS
 			this.showBtn = true;
 			// #endif
+			var that = this;
+			this.abotapi.set_option_list_str(this,
+				function(that001, option_list){
+					that.abotapi.getColor();
+					
+						that.wxa_shop_nav_bg_color  = option_list.wxa_shop_nav_bg_color;
+						
+						that.wxa_shop_nav_font_color = option_list.wxa_shop_nav_font_color
+				
+				}
+			);
+			
+			//获取屏幕高度
+			uni.getSystemInfo({
+			    success: function (res) {
+					
+					that.windowHeight = res.windowHeight;
+			    }
+			});
+			
+			
+			
+			that.getImg();
 		},
 		methods:{
+			
+			getImg:function(){
+				var userInfo = this.abotapi.get_user_info();
+				var that = this;
+				uni.request({
+					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_my_qrcode',
+					method:'post',
+					data: {
+						sellerid: this.abotapi.get_sellerid(),
+						checkstr: userInfo.checkstr,
+						userid: userInfo.userid,
+						appid: this.abotapi.globalData.xiaochengxu_appid,
+					},
+					header: {
+						'Content-Type':  'application/x-www-form-urlencoded'
+					},
+					success: function (res) {
+						console.log("res",res);
+						if(res.data.code == 1){
+							that.qrcode_url = res.data.qrcode_url;
+						}
+					},
+					fail: function () {
+						// fail
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+					}
+				});
+			},
+			
+			
+			
 			// 截图，调用webview、Bitmap方法
 			printscreen(){
 				this.tis = "正在保存"
@@ -71,9 +134,7 @@
 </script>
 
 <style lang="scss">
-page{
-	background-color: #f06c7a;
-}
+
 .block{
 	width: 100%;
 	height: 30vh;

@@ -273,6 +273,11 @@
 			var that = this;
 			console.log('order/pay 参数：', options);
 			
+			
+			
+			// #ifdef H5
+				options.productid = encodeURIComponent(options.productid);
+			// #endif
 			uni.showLoading({
 				title: '加载中...',
 			})
@@ -292,6 +297,9 @@
 			var arr = Object.keys(options);
 			var options_len = arr.length;
 			
+			console.log("arr",arr);
+			console.log("options_len",options_len);
+			
 			if (options_len > 0){
 				var params_str = '';
 			
@@ -300,9 +308,11 @@
 				}
 				params_str = params_str.substr(0, params_str.length - 1);
 			
-				last_url = '/pages/order/pay?'+params_str;
+				last_url = '/pages/order/confirmation?'+params_str;
+				console.log("last_url",last_url);
+				console.log("params_str",params_str);
 			}
-			
+			console.log("productid",that.productid);
 			if (!last_url && options.productid) {
 				last_url = '/pages/goods/goods?productid=' + options.productid;
 				that.last_url = last_url
@@ -317,9 +327,9 @@
 				that.price_type = options.price_type
 			}
 			
-			this.productid = options.productid;
-			this.amount = options.amount;
-			this.action = options.action;
+			that.productid = options.productid;
+			that.amount = options.amount;
+			that.action = options.action;
 			
 			if (options.paysuccess_url){
 				uni.setStorageSync('paysuccess_url', decodeURIComponent(options.paysuccess_url));
