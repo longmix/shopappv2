@@ -128,6 +128,9 @@
 var ttt = 0;
 //高德SDK
 import bmap from '../../../common/SDK/bmap-wx.js';
+
+//import abotapi001 from '../../../common/abotapi.js';
+
 export default {
 	data() {
 		return {
@@ -533,7 +536,7 @@ export default {
 		//猜你喜欢
 		get_product_list:function(){
 			var that = this;
-			uni.request({
+			this.abotapi.abotRequest({
 			    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
 			    method: 'post',
 			    data: {
@@ -541,9 +544,6 @@ export default {
 					sort: 1,
 					page: that.page,
 					page_size:that.page_size,
-			    },
-			    header: {
-					'Content-Type': 'application/x-www-form-urlencoded'
 			    },
 			    success: function (res) {
 					console.log('bbafff===', res);

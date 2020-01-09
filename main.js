@@ -2,6 +2,9 @@ import Vue from 'vue'
 import App from './App'
 import $abotapi from './common/abotapi.js';
 
+//var abotapi001 = require('./common/abotapi.js');
+
+//import abotapi001 from './common/abotapi.js';
 
 
 // var weiduke_server_url ='https://cms.weiduke.com/';

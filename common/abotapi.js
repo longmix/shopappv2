@@ -1,6 +1,37 @@
 
+
+const abotRequest = (params) => {
+  uni.request({
+    url: params.url,
+    method: params.method || 'POST',
+    data: params.data || {},
+    header: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    success(res) {
+      console.log('HTTP Request to ' + params.url);
+      console.log('with data ', params.data);
+      console.log('get result', res);
+
+      if (params.success) {
+        params.success(res);
+      }
+    },
+    fail(res) {
+      if (params.fail) {
+        params.fail(res);
+      }
+    },
+    complete(res) {
+      if (params.complete) {
+        params.complete(res);
+      }
+    },
+  });
+};
+
 module.exports = {
-	
+	abotRequest,
 	
 	globalData:{
 		weiduke_server_url: 'https://cms.weiduke.com/',
