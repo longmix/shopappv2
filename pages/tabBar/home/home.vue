@@ -120,6 +120,26 @@
 			</view>
 			<view class="loading-text"><label v-if="!productList">{{ loadingText }}</label></view>
 		</view>
+		
+		<!-- 客服按钮 -->
+		<view class="u-tap-btn" v-if="wxa_show_kefu_button==1">
+			<block v-if="wxa_kefu_button_type==1">
+				<button class="u-go-home2" @tap="call_seller" :style="{backgroundColor:wxa_kefu_bg_color}">
+					<image :src="wxa_kefu_button_icon" mode="widthFix"></image>
+				</button>
+			</block>
+			<block v-if="wxa_kefu_button_type==2">
+				<button class="u-go-home2" @tap="toAdDetails(wxa_kefu_form_url)" :style="{backgroundColor:wxa_kefu_bg_color}">
+					<image :src="wxa_kefu_button_icon" mode="widthFix"></image>
+				</button>
+			</block>
+			<block v-if="wxa_kefu_button_type==3">
+				<button class="u-go-home2" openType="contact" :style="{backgroundColor:wxa_kefu_bg_color}">
+					<image :src="wxa_kefu_button_icon" mode="widthFix"></image>
+				</button>
+			</block>
+		</view>
+		
 	</view>
 </template>
 
@@ -179,6 +199,14 @@ export default {
 			imgheights: [],
 			current: 0,
 			windowHeight: 0,
+			
+			//客服相关
+			wxa_show_kefu_button:'',
+			wxa_kefu_button_type:'',
+			wxa_kefu_button_icon:'',
+			wxa_kefu_mobile_num:'',
+			wxa_kefu_form_url:'',
+			wxa_kefu_bg_color:''
 		};
 	},
 	onPageScroll(e) {
@@ -903,7 +931,17 @@ export default {
 			console.log('toAdDetails- to url ====>>>>>>', url);
 			this.abotapi.call_h5browser_or_other_goto_url(url, var_list, '');
 			
-		}
+		},
+		
+		//客服相关
+		//拨打客服电话
+		call_seller: function () {
+		    console.log('wxa_kefu_mobile_num', this.wxa_kefu_mobile_num)
+		    uni.makePhoneCall({
+				phoneNumber: this.wxa_kefu_mobile_num,
+		    })
+		},
+		
 	}
 };
 </script>

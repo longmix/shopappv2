@@ -1,237 +1,245 @@
 <template>
 	<view>
 		<!--pages/user/dingdan.wxml-->
-<view class="swiper-tab">
-  <view class="swiper-tab-list" :class="currentTab==0 ? 'on' : ''" data-current="0" data-otype="0"  @tap="swichNav">全部</view>
-  <view class="swiper-tab-list" :class="currentTab==1 ? 'on' : ''" data-current="1" data-otype="1" @tap="swichNav">待付款</view>
-  <view class="swiper-tab-list" :class="currentTab==2 ? 'on' : ''" data-current="2" data-otype="2" @tap="swichNav">待发货</view> 
-  <view class="swiper-tab-list" :class="currentTab==3 ? 'on' : ''" data-current="3" data-otype="6" @tap="swichNav">待收货</view>
-  <view class="swiper-tab-list" :class="currentTab==4 ? 'on' : ''" data-current="4" data-otype="7" @tap="swichNav">已完成</view>
+		<view class="swiper-tab">
+			<view class="swiper-tab-list" :class="currentTab==0 ? 'on' : ''" data-current="0" data-otype="0"  @tap="swichNav">全部</view>
+			<view class="swiper-tab-list" :class="currentTab==1 ? 'on' : ''" data-current="1" data-otype="1" @tap="swichNav">待付款</view>
+			<view class="swiper-tab-list" :class="currentTab==2 ? 'on' : ''" data-current="2" data-otype="2" @tap="swichNav">待发货</view> 
+			<view class="swiper-tab-list" :class="currentTab==3 ? 'on' : ''" data-current="3" data-otype="6" @tap="swichNav">待收货</view>
+			<view class="swiper-tab-list" :class="currentTab==4 ? 'on' : ''" data-current="4" data-otype="7" @tap="swichNav">已完成</view>
   <!--
   <view class="swiper-tab-list {{currentTab==4 ? 'on' : ''}}" data-current="4" bindtap="swichNav">退款/售后</view>
   -->
-</view>
-<view class="c_t60"></view>
-<view>
-<swiper  :current="currentTab" class="swiper-box" :style="{height:Height+'px'}" duration="300" @change="bindChange">
+		</view>
+		<view class="c_t60"></view>
+		<view>
+			<swiper  :current="currentTab" class="swiper-box" :style="{height:Height+'px'}" duration="300" @change="bindChange">
+			
+				<!-- 全部 -->
+				<swiper-item >
+					<view class="search_no" v-if="!orderList.length">
+						<view style="text-align: center;margin-top: 100upx;">
+							<image style="width: 150upx;" mode="widthFix" src="../../../static/img/search_no.png"></image>
+							<text style="display: block;color: #8a8a8a;">没有可用订单/(ㄒoㄒ)/~~</text>
+						</view>
+					</view>
+					<view class="shop df bordermax" v-for="(item,index) in orderList" :key="index" style='display: block;'>
+						<navigator :url="'../order/detail?orderId='+item.orderid" class="borderb font_14 orderno">
+							订单编号：{{item.orderno}}
+							<view style="float:right;color: #666;font-size: 26rpx;">{{item.status_str}}</view>
+						</navigator> 
+						<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../product/detail?productid='+product_item.productid"  class="df_1 borb" style='display:flex;' v-for="(product_item,index2) in item.orderProduct" :key="index2" v-for-item="product_item">
+							<image class="sh_slt" :src="product_item.picture"></image>             
+							<view class="sp_text">
+								<view class="sp_tit ovh1">{{product_item.name}}</view>
+								<view class="sp_neb">¥{{product_item.price}}×{{product_item.amount}}</view>
+								<view class="sp_jg">¥：{{product_item.price2}}</view>   
+							</view>
+						</navigator>
+						<view class="borderb bordert font_14">
+							<view>共计{{item.total_num}}商品<view class='fl_r'></view></view>
+							<view>商品金额：<view class='fl_r'>￥{{item.price}}</view></view>
+							<view>快递费：<view class='fl_r'>￥{{item.price3}}</view></view>
+							<view>订单金额：<view class='fl_r'>￥{{item.all_price}}</view></view>
+							<view>余额支付：<view class='fl_r'>￥{{item.yue_price}}</view></view>
+							<view>赠款支付：<view class='fl_r'>￥{{item.coupon_price}}</view></view>        
+							<view>实际支付：<view class='fl_r'>￥{{item.pay_price}}</view></view>
+							<!-- <view>支付方式：<view class='fl_r'>{{item.payment_name}}</view></view> -->
+						</view>
+						<view v-if="from_o2o==1 && item.order_option.o2o_room_tuan_yuding">预订日期：{{item.order_option.o2o_room_tuan_yuding}}</view>
+						<view v-if="item.buyer_memo != ''">备注：{{item.buyer_memo}}</view>
+						<view  class="btn_b">
+							<navigator :url="'../order/detail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
+						</view> 
+					</view>
+				</swiper-item>
 
-  <!-- 全部 -->
-  <swiper-item >
-    <view class="search_no" v-if="!orderList.length">
-        <view style="text-align: center;margin-top: 100upx;">
-        	<image style="width: 150upx;" mode="widthFix" src="../../../static/img/search_no.png"></image>
-        	<text style="display: block;color: #8a8a8a;">没有可用订单/(ㄒoㄒ)/~~</text>
-        </view>
-    </view>
-    <view class="shop df bordermax" v-for="(item,index) in orderList" :key="index" style='display: block;'>
-        <navigator :url="'../order/detail?orderId='+item.orderid" class="borderb font_14 orderno">订单编号：{{item.orderno}}<view style="float:right;color: #666;font-size: 26rpx;">{{item.status_str}}</view></navigator> 
-        <navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../product/detail?productid='+product_item.productid"  class="df_1 borb" style='display:flex;' v-for="(product_item,index2) in item.orderProduct" :key="index2" v-for-item="product_item">
-            <image class="sh_slt" :src="product_item.picture"></image>             
-            <view class="sp_text">
-                <view class="sp_tit ovh1">{{product_item.name}}</view>
-                <view class="sp_neb">¥{{product_item.price}}×{{product_item.amount}}</view>
-                <view class="sp_jg">¥：{{product_item.price2}}</view>   
-            </view>
-        </navigator>
-        <view class="borderb bordert font_14">
-          <view>共计{{item.total_num}}商品<view class='fl_r'></view></view>
-          <view>商品金额：<view class='fl_r'>￥{{item.price}}</view></view>
-          <view>快递费：<view class='fl_r'>￥{{item.price3}}</view></view>
-          <view>订单金额：<view class='fl_r'>￥{{item.all_price}}</view></view>
-          <view>余额支付：<view class='fl_r'>￥{{item.yue_price}}</view></view>
-          <view>赠款支付：<view class='fl_r'>￥{{item.coupon_price}}</view></view>        
-          <view>实际支付：<view class='fl_r'>￥{{item.pay_price}}</view></view>
-          <!-- <view>支付方式：<view class='fl_r'>{{item.payment_name}}</view></view> -->
-        </view>
-        <view v-if="from_o2o==1 && item.order_option.o2o_room_tuan_yuding">预订日期：{{item.order_option.o2o_room_tuan_yuding}}</view>
-        <view v-if="item.buyer_memo != ''">备注：{{item.buyer_memo}}</view>
-        <view  class="btn_b">
-          <navigator :url="'../order/detail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
-        </view> 
-  </view>
-  </swiper-item>
+				<!-- 待付款 -->
+				<swiper-item > 
+					<view class="search_no" v-if="!orderList0.length">
+						<view style="text-align: center;margin-top: 100upx;">
+							<image style="width: 150upx;" mode="widthFix" src="../../../static/img/search_no.png"></image>
+							<text style="display: block;color: #8a8a8a;">没有可用订单/(ㄒoㄒ)/~~</text>
+						</view>
+					</view>
 
-  <!-- 待付款 -->
-  <swiper-item > 
-    <view class="search_no" v-if="!orderList0.length">
-        <view style="text-align: center;margin-top: 100upx;">
-        	<image style="width: 150upx;" mode="widthFix" src="../../../static/img/search_no.png"></image>
-        	<text style="display: block;color: #8a8a8a;">没有可用订单/(ㄒoㄒ)/~~</text>
-        </view>
-    </view>
-
-    <view class="shop df bordermax" v-for="(item,index) in orderList0" :key="index" style='display: block;'>
-        <navigator :url="'../order/detail?orderId='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator>
-        <navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../product/detail?productid='+product_item.productid" class="df_1 borb" style='display:flex;' v-for="(product_item,index) in item.orderProduct" v-for-item="product_item" :key="index">    
-            <image class="sh_slt" :src="product_item.picture"></image>         
-            <view class="sp_text">
-                <view class="sp_tit ovh1">{{product_item.name}}</view>
-                <view class="sp_neb">¥{{product_item.price}}×{{product_item.amount}}</view>
-                <view class="sp_jg">¥：{{product_item.price2}}</view>
-            </view>
-        </navigator>
-        <view class="borderb bordert font_14">
-           <view>共计{{item.total_num}}商品<view class='fl_r'></view></view>
-          <view>商品金额：<view class='fl_r'>￥{{item.price}}</view></view>
-          <view>快递费：<view class='fl_r'>￥{{item.price3}}</view></view>
-          <view>订单金额：<view class='fl_r'>￥{{item.all_price}}</view></view>
-          <view>余额支付：<view class='fl_r'>￥{{item.yue_price}}</view></view>
-          <view>赠款支付：<view class='fl_r'>￥{{item.coupon_price}}</view></view>        
-          <view>实际支付：<view class='fl_r'>￥{{item.pay_price}}</view></view>
-          <!-- <view>支付方式：<view class='fl_r'>{{item.payment_name}}</view></view> -->
-        </view>
-        <view v-if="from_o2o==1 && item.order_option.o2o_room_tuan_yuding">预订日期：{{item.order_option.o2o_room_tuan_yuding}}</view>
-        <view v-if="item.buyer_memo != ''">备注：{{item.buyer_memo}}</view>
-        <view class="btn_b">
-          <navigator :url="'../order/zhifu?orderId='+item.orderid&'balance_zengsong_dikou='+item.coupon_price&'balance_dikou='+item.yue_price" class="font_12 fl_r mr_5 btn_min">支付订单</navigator>
-          <view class="font_12 fl_r mr_5 btn_min" @tap="removeOrder" :data-order-id="item.orderid">取消订单</view>
-        </view> 
-</view>
-  </swiper-item>
-  <!-- 待发货 -->
-  <swiper-item>
-    <view class="search_no" v-if="!orderList1.length">
-       <view style="text-align: center;margin-top: 100upx;">
-       	<image style="width: 150upx;" mode="widthFix" src="../../../static/img/search_no.png"></image>
-       	<text style="display: block;color: #8a8a8a;">没有可用订单/(ㄒoㄒ)/~~</text>
-       </view>
-    </view>
-    <view class="shop df bordermax" v-for="(item,index) in orderList1" :key="index" style='display: block;'>
-        <navigator :url="'../order/detail?orderId='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator> 
-        <navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../product/detail?productid='+product_item.productid" class="df_1 borb" style='display:flex;' v-for="(product_item,index) in item.orderProduct" v-for-item="product_item" :key="index">
-            <image class="sh_slt" :src="product_item.picture"></image>             
-            <view class="sp_text">
-                <view class="sp_tit ovh1">{{product_item.name}}</view>
-                <view class="sp_neb">¥{{product_item.price}}×{{product_item.amount}}</view>
-                <view class="sp_jg">¥：{{product_item.price2}}</view>   
-            </view>
-        </navigator>
-        <view class="borderb bordert font_14">
-          <view>共计{{item.total_num}}商品<view class='fl_r'></view></view>
-          <view>商品金额：<view class='fl_r'>￥{{item.price}}</view></view>
-          <view>快递费：<view class='fl_r'>￥{{item.price3}}</view></view>
-          <view>订单金额：<view class='fl_r'>￥{{item.all_price}}</view></view>
-          <view>余额支付：<view class='fl_r'>￥{{item.yue_price}}</view></view>
-          <view>赠款支付：<view class='fl_r'>￥{{item.coupon_price}}</view></view>        
-          <view>实际支付：<view class='fl_r'>￥{{item.pay_price}}</view></view>
-          <!-- <view>支付方式：<view class='fl_r'>{{item.payment_name}}</view></view> -->
-        </view>
-        <view v-if="from_o2o==1 && item.order_option.o2o_room_tuan_yuding">预订日期：{{item.order_option.o2o_room_tuan_yuding}}</view>
-        <view v-if="item.buyer_memo != ''">备注：{{item.buyer_memo}}</view>
-        <view  class="btn_b">
-          <navigator class="font_12 btn_min fl_r" @tap="refundOrder" v-if="wxa_order_hide_daishouhuo_refund == 0" :data-order-id="item.orderid">申请退款</navigator>
-          <navigator :url="'../order/detail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
-        </view> 
-  </view>
-  </swiper-item>
-  <!-- 待收货 -->
-  <swiper-item>
-        <view class="search_no" v-if="!orderList2.length">
-            <view style="text-align: center;margin-top: 100upx;">
-            	<image style="width: 150upx;" mode="widthFix" src="../../../static/img/search_no.png"></image>
-            	<text style="display: block;color: #8a8a8a;">没有可用订单/(ㄒoㄒ)/~~</text>
-            </view>
-        </view>
-      <view class="shop df bordermax" v-for="(item,index) in orderList2" :key="index" style='display: block;'>
-        <navigator :url="'../order/detail?orderId='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator>      
-        <navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../product/detail?productid='+product_item.productid" class="df_1 borb" style='display:flex;' v-for="(product_item,index) in item.orderProduct" :for-item="product_item" :key="index"> 
-            <image class="sh_slt" :src="product_item.picture"></image>           
-            <view class="sp_text">
-                <view class="sp_tit ovh1">{{product_item.name}}</view>
-                <view class="sp_neb">¥{{product_item.price}}×{{product_item.amount}} </view>
-                <view class="sp_jg">¥：{{product_item.price2}}</view>
+					<view class="shop df bordermax" v-for="(item,index) in orderList0" :key="index" style='display: block;'>
+						<navigator :url="'../order/detail?orderId='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator>
+						<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../product/detail?productid='+product_item.productid" class="df_1 borb" style='display:flex;' v-for="(product_item,index) in item.orderProduct" v-for-item="product_item" :key="index">    
+							<image class="sh_slt" :src="product_item.picture"></image>         
+							<view class="sp_text">
+								<view class="sp_tit ovh1">{{product_item.name}}</view>
+								<view class="sp_neb">¥{{product_item.price}}×{{product_item.amount}}</view>
+								<view class="sp_jg">¥：{{product_item.price2}}</view>
+							</view>
+						</navigator>
+						<view class="borderb bordert font_14">
+							<view>共计{{item.total_num}}商品<view class='fl_r'></view></view>
+							<view>商品金额：<view class='fl_r'>￥{{item.price}}</view></view>
+							<view>快递费：<view class='fl_r'>￥{{item.price3}}</view></view>
+							<view>订单金额：<view class='fl_r'>￥{{item.all_price}}</view></view>
+							<view>余额支付：<view class='fl_r'>￥{{item.yue_price}}</view></view>
+							<view>赠款支付：<view class='fl_r'>￥{{item.coupon_price}}</view></view>    
+							<view>实际支付：<view class='fl_r'>￥{{item.pay_price}}</view></view>
+							<!-- <view>支付方式：<view class='fl_r'>{{item.payment_name}}</view></view> -->
+						</view>
+						<view v-if="from_o2o==1 && item.order_option.o2o_room_tuan_yuding">预订日期：{{item.order_option.o2o_room_tuan_yuding}}</view>
+						<view v-if="item.buyer_memo != ''">备注：{{item.buyer_memo}}</view>
+						<view class="btn_b">
+							<navigator :url="'/pages/pay/payment/payment?orderId='+item.orderid+'&balance_zengsong_dikou='+item.coupon_price+'&balance_dikou='+item.yue_price" class="font_12 fl_r mr_5 btn_min">支付订单</navigator>
+							<view class="font_12 fl_r mr_5 btn_min" @tap="removeOrder" :data-order-id="item.orderid">取消订单</view>
+						</view> 
+					</view>
+				</swiper-item>
+				
+				<!-- 待发货 -->
+				<swiper-item>
+					<view class="search_no" v-if="!orderList1.length">
+						<view style="text-align: center;margin-top: 100upx;">
+							<image style="width: 150upx;" mode="widthFix" src="../../../static/img/search_no.png"></image>
+							<text style="display: block;color: #8a8a8a;">没有可用订单/(ㄒoㄒ)/~~</text>
+						</view>
+					</view>
+					<view class="shop df bordermax" v-for="(item,index) in orderList1" :key="index" style='display: block;'>
+						<navigator :url="'../order/detail?orderId='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator> 
+						<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../product/detail?productid='+product_item.productid" class="df_1 borb" style='display:flex;' v-for="(product_item,index) in item.orderProduct" v-for-item="product_item" :key="index">
+							<image class="sh_slt" :src="product_item.picture"></image>             
+							<view class="sp_text">
+								<view class="sp_tit ovh1">{{product_item.name}}</view>
+								<view class="sp_neb">¥{{product_item.price}}×{{product_item.amount}}</view>
+								<view class="sp_jg">¥：{{product_item.price2}}</view>   
+							</view>
+						</navigator>
+						<view class="borderb bordert font_14">
+							<view>共计{{item.total_num}}商品<view class='fl_r'></view></view>
+							<view>商品金额：<view class='fl_r'>￥{{item.price}}</view></view>
+							<view>快递费：<view class='fl_r'>￥{{item.price3}}</view></view>
+							<view>订单金额：<view class='fl_r'>￥{{item.all_price}}</view></view>
+							<view>余额支付：<view class='fl_r'>￥{{item.yue_price}}</view></view>
+							<view>赠款支付：<view class='fl_r'>￥{{item.coupon_price}}</view></view>        
+							<view>实际支付：<view class='fl_r'>￥{{item.pay_price}}</view></view>
+							<!-- <view>支付方式：<view class='fl_r'>{{item.payment_name}}</view></view> -->
+						</view>
+						<view v-if="from_o2o==1 && item.order_option.o2o_room_tuan_yuding">预订日期：{{item.order_option.o2o_room_tuan_yuding}}</view>
+						<view v-if="item.buyer_memo != ''">备注：{{item.buyer_memo}}</view>
+						<view  class="btn_b">
+							<navigator class="font_12 btn_min fl_r" @tap="refundOrder" v-if="wxa_order_hide_daishouhuo_refund == 0" :data-order-id="item.orderid">申请退款</navigator>
+							<navigator :url="'../order/detail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
+						</view> 
+					</view>
+				</swiper-item>
+  
+  
+				<!-- 待收货 -->
+				<swiper-item>
+					<view class="search_no" v-if="!orderList2.length">
+						<view style="text-align: center;margin-top: 100upx;">
+							<image style="width: 150upx;" mode="widthFix" src="../../../static/img/search_no.png"></image>
+							<text style="display: block;color: #8a8a8a;">没有可用订单/(ㄒoㄒ)/~~</text>
+						</view>
+					</view>
+					<view class="shop df bordermax" v-for="(item,index) in orderList2" :key="index" style='display: block;'>
+						<navigator :url="'../order/detail?orderId='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator>      
+						<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../product/detail?productid='+product_item.productid" class="df_1 borb" style='display:flex;' v-for="(product_item,index) in item.orderProduct" :for-item="product_item" :key="index"> 
+							<image class="sh_slt" :src="product_item.picture"></image>           
+							<view class="sp_text">
+								<view class="sp_tit ovh1">{{product_item.name}}</view>
+								<view class="sp_neb">¥{{product_item.price}}×{{product_item.amount}} </view>
+								<view class="sp_jg">¥：{{product_item.price2}}</view>
                 
-            </view>
-        </navigator>
-        <view class="borderb bordert font_14">
-          <view>共计{{item.total_num}}商品<view class='fl_r'></view></view>
-          <view>商品金额：<view class='fl_r'>￥{{item.price}}</view></view>
-          <view>快递费：<view class='fl_r'>￥{{item.price3}}</view></view>
-          <view>订单金额：<view class='fl_r'>￥{{item.all_price}}</view></view>
-          <view>余额支付：<view class='fl_r'>￥{{item.yue_price}}</view></view>
-          <view>赠款支付：<view class='fl_r'>￥{{item.coupon_price}}</view></view>        
-          <view>实际支付：<view class='fl_r'>￥{{item.pay_price}}</view></view>
-          <!-- <view>支付方式：<view class='fl_r'>{{item.payment_name}}</view></view> -->
-        </view>
-        <view v-if="from_o2o==1 && item.order_option.o2o_room_tuan_yuding">预订日期：{{item.order_option.o2o_room_tuan_yuding}}</view>
-        <view v-if="item.buyer_memo != ''">备注：{{item.buyer_memo}}</view>
-        <view  class="btn_b">
-          <navigator v-if="wxa_order_hide_daishouhuo_refund_after == 0" class="font_12 btn_min fl_r" :url="'tuihuo?orderId='+item.orderid">申请退款</navigator>
-          <view class="font_12 btn_min fl_r mr_5" @tap="recOrder" :data-order-id="item.orderid">确认收货</view>
-          <navigator :url="'../order/detail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
-        </view>
-  </view>
-  </swiper-item>
-  <!-- 已完成-->
-  <swiper-item>
-    <view class="search_no" v-if="!orderList3.length">
-        <!-- <view class="font_14"><image class="scimg" mode="widthFix" style="width: 100%;" src=""></image></view>
-        <text></text> -->
-		<view style="text-align: center;margin-top: 100upx;">
-			<image style="width: 150upx;" mode="widthFix" src="../../../static/img/search_no.png"></image>
-			<text style="display: block;color: #8a8a8a;">没有可用订单/(ㄒoㄒ)/~~</text>
-		</view> 
-    </view>
-    <view class="shop df bordermax" v-for="(item,index) in orderList3" :key="index" style='display: block;'>        
-        <navigator :url="'../order/detail?orderId='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator>
-        <navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../product/detail?productid='+product_item.productid" class="df_1 borb" style='display:flex;' v-for="(product_item,index) in item.orderProduct" v-for-item="product_item" :key="index">
-            <image class="sh_slt" :src="product_item.picture"></image>            
-            <view class="sp_text">
-                <view class="sp_tit ovh1">{{product_item.name}}</view>
-                <view class="sp_neb">¥{{product_item.price}}×{{product_item.amount}}</view>
-                <view class="sp_jg">¥：{{product_item.price2}}</view>  
-            </view>
-        </navigator>
-        <view class="borderb bordert font_14">
-           <view>共计{{item.total_num}}商品<view class='fl_r'></view></view>
-          <view>商品金额：<view class='fl_r'>￥{{item.price}}</view></view>
-          <view>快递费：<view class='fl_r'>￥{{item.price3}}</view></view>
-          <view>订单金额：<view class='fl_r'>￥{{item.all_price}}</view></view>
-          <view>余额支付：<view class='fl_r'>￥{{item.yue_price}}</view></view>
-          <view>赠款支付：<view class='fl_r'>￥{{item.coupon_price}}</view></view>        
-          <view>实际支付：<view class='fl_r'>￥{{item.pay_price}}</view></view>
-          <!-- <view>支付方式：<view class='fl_r'>{{item.payment_name}}</view></view> -->
-        </view>
-        <view v-if="from_o2o==1 && item.order_option.o2o_room_tuan_yuding">预订日期：{{item.order_option.o2o_room_tuan_yuding}}</view>
-        <view v-if="item.buyer_memo != ''">备注：{{item.buyer_memo}}</view>
-        <view  class="btn_b">
-          <navigator :url="'../order/detail?orderId='+item.orderid&'balance_zengsong_dikou='+item.coupon_price&'balance_dikou='+item.yue_price" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
-        </view>
-  </view>
-  </swiper-item>
+							</view>
+						</navigator>
+						<view class="borderb bordert font_14">
+							<view>共计{{item.total_num}}商品<view class='fl_r'></view></view>
+							<view>商品金额：<view class='fl_r'>￥{{item.price}}</view></view>
+							<view>快递费：<view class='fl_r'>￥{{item.price3}}</view></view>
+							<view>订单金额：<view class='fl_r'>￥{{item.all_price}}</view></view>
+							<view>余额支付：<view class='fl_r'>￥{{item.yue_price}}</view></view>
+							<view>赠款支付：<view class='fl_r'>￥{{item.coupon_price}}</view></view>        
+							<view>实际支付：<view class='fl_r'>￥{{item.pay_price}}</view></view>
+							<!-- <view>支付方式：<view class='fl_r'>{{item.payment_name}}</view></view> -->
+						</view>
+						<view v-if="from_o2o==1 && item.order_option.o2o_room_tuan_yuding">预订日期：{{item.order_option.o2o_room_tuan_yuding}}</view>
+						<view v-if="item.buyer_memo != ''">备注：{{item.buyer_memo}}</view>
+						<view  class="btn_b">
+							<navigator v-if="wxa_order_hide_daishouhuo_refund_after == 0" class="font_12 btn_min fl_r" :url="'tuihuo?orderId='+item.orderid">申请退款</navigator>
+							<view class="font_12 btn_min fl_r mr_5" @tap="recOrder" :data-order-id="item.orderid">确认收货</view>
+							<navigator :url="'../order/detail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
+						</view>
+					</view>
+				</swiper-item>
+ 
+ 
+				<!-- 已完成-->
+				<swiper-item>
+					<view class="search_no" v-if="!orderList3.length">
+						<!-- <view class="font_14"><image class="scimg" mode="widthFix" style="width: 100%;" src=""></image></view>
+						<text></text> -->
+						<view style="text-align: center;margin-top: 100upx;">
+							<image style="width: 150upx;" mode="widthFix" src="../../../static/img/search_no.png"></image>
+							<text style="display: block;color: #8a8a8a;">没有可用订单/(ㄒoㄒ)/~~</text>
+						</view> 
+					</view>
+					<view class="shop df bordermax" v-for="(item,index) in orderList3" :key="index" style='display: block;'>        
+						<navigator :url="'../order/detail?orderId='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator>
+						<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../product/detail?productid='+product_item.productid" class="df_1 borb" style='display:flex;' v-for="(product_item,index) in item.orderProduct" v-for-item="product_item" :key="index">
+							<image class="sh_slt" :src="product_item.picture"></image>            
+							<view class="sp_text">
+								<view class="sp_tit ovh1">{{product_item.name}}</view>
+								<view class="sp_neb">¥{{product_item.price}}×{{product_item.amount}}</view>
+								<view class="sp_jg">¥：{{product_item.price2}}</view>  
+							</view>
+						</navigator>
+						<view class="borderb bordert font_14">
+							<view>共计{{item.total_num}}商品<view class='fl_r'></view></view>
+							<view>商品金额：<view class='fl_r'>￥{{item.price}}</view></view>
+							<view>快递费：<view class='fl_r'>￥{{item.price3}}</view></view>
+							<view>订单金额：<view class='fl_r'>￥{{item.all_price}}</view></view>
+							<view>余额支付：<view class='fl_r'>￥{{item.yue_price}}</view></view>
+							<view>赠款支付：<view class='fl_r'>￥{{item.coupon_price}}</view></view>        
+							<view>实际支付：<view class='fl_r'>￥{{item.pay_price}}</view></view>
+							<!-- <view>支付方式：<view class='fl_r'>{{item.payment_name}}</view></view> -->
+						</view>
+						<view v-if="from_o2o==1 && item.order_option.o2o_room_tuan_yuding">预订日期：{{item.order_option.o2o_room_tuan_yuding}}</view>
+						<view v-if="item.buyer_memo != ''">备注：{{item.buyer_memo}}</view>
+						<view  class="btn_b">
+							<navigator :url="'../order/detail?orderId='+item.orderid&'balance_zengsong_dikou='+item.coupon_price&'balance_dikou='+item.yue_price" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
+						</view>
+					</view>
+				</swiper-item>
 
-  <!-- 退款/售后
-  <swiper-item>
-    <view class="search_no" v-if="{{!orderList4.length}}">
-        <view class="font_14"><image class="scimg" src="../../../static/img/search_no.png"></image></view>
-        <text>没有可用订单/(ㄒoㄒ)/~~</text>
-    </view>
+			  <!-- 退款/售后
+			  <swiper-item>
+				<view class="search_no" v-if="{{!orderList4.length}}">
+					<view class="font_14"><image class="scimg" src="../../../static/img/search_no.png"></image></view>
+					<text>没有可用订单/(ㄒoㄒ)/~~</text>
+				</view>
 
-    <view class="shop df" v-for="{{orderList4}}">
-        <image class="sh_slt" src="{{item.photo_x}}"></image>
-        <view class="df_1">            
-            <view class="sp_text">
-                <navigator url="../index/detail?productId={{item.pid}}" hover-class="changestyle">
-                    <view class="sp_tit ovh1">{{item.name}}</view>
-                </navigator>
-                <view class="sp_neb">单价：¥ {{item.price_yh}} 数量：×{{item.product_num}} 产品：×{{item.pro_count}}</view>
-                <view class="sp_jg">¥：{{item.price}}</view>
-                <view class="font_12 red fl_r">{{item.desc}}</view>
-                <navigator url="../order/detail?orderId={{item.id}}" class="font_12 red fl_r mr_5">订单详情</navigator>
-            </view>
-        </view>
-    </view>
-  </swiper-item>
-   -->
-</swiper>
- <view class="weui-loadmore" :hidden="isHideLoadMore" v-if="isHideLoadMore==false">
-    <view class="weui-loading"></view>
-    <view class="weui-loadmore__tips">正在加载</view>
-  </view>
-    <view v-else>
-		<view style='text-align:center;font-size:15px;color:#666;margin-bottom:30px;'>没有更多数据了</view>
-	</view>
-</view>
+				<view class="shop df" v-for="{{orderList4}}">
+					<image class="sh_slt" src="{{item.photo_x}}"></image>
+					<view class="df_1">            
+						<view class="sp_text">
+							<navigator url="../index/detail?productId={{item.pid}}" hover-class="changestyle">
+								<view class="sp_tit ovh1">{{item.name}}</view>
+							</navigator>
+							<view class="sp_neb">单价：¥ {{item.price_yh}} 数量：×{{item.product_num}} 产品：×{{item.pro_count}}</view>
+							<view class="sp_jg">¥：{{item.price}}</view>
+							<view class="font_12 red fl_r">{{item.desc}}</view>
+							<navigator url="../order/detail?orderId={{item.id}}" class="font_12 red fl_r mr_5">订单详情</navigator>
+						</view>
+					</view>
+				</view>
+			  </swiper-item>
+			   -->
+			</swiper>
+			<view class="weui-loadmore" :hidden="isHideLoadMore" v-if="isHideLoadMore==false">
+				<view class="weui-loading"></view>
+				<view class="weui-loadmore__tips">正在加载</view>
+			</view>
+			<view v-else>
+				<view style='text-align:center;font-size:15px;color:#666;margin-bottom:30px;'>没有更多数据了</view>
+			</view>
+		</view>
 	</view>
 </template>
 

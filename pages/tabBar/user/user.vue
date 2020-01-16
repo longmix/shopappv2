@@ -294,8 +294,8 @@
 				return false
 			},
 			toDeposit(){
-				uni.showToast({title: '该功能升级中'});
-				return;
+				// uni.showToast({title: '该功能升级中'});
+				// return;
 				uni.navigateTo({
 					url:'/pages/user/deposit/deposit'
 				})

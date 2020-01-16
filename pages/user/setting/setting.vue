@@ -94,13 +94,13 @@
 		methods: {
 			//退出登录
 			logout: function () {
-				abotapi.del_user_info();
+				this.abotapi.del_user_info();
 			    
 				var sellerid = this.abotapi.globalData.default_sellerid;
 				if(typeof(sellerid) != 'undefined'){
 			        if(sellerid.length > 15){
 						uni.clearStorageSync();
-						console.log('清空完成，sellerid：'+ abotapi.get_sellerid());
+						console.log('清空完成，sellerid：'+ this.abotapi.get_sellerid());
 					}
 				}
 			

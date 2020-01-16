@@ -36,8 +36,10 @@ module.exports = {
 	globalData:{
 		weiduke_server_url: 'https://cms.weiduke.com/',
 		yanyubao_server_url: 'https://yanyubao.tseo.cn/',
-		xiaochengxu_appid: 'wx60a801e5fb7f9378',
-		default_sellerid : 'fyJSPaVja',
+		// xiaochengxu_appid: 'wx60a801e5fb7f9378',
+		xiaochengxu_appid: 'wx00d1e2843c3b3f77',
+		// default_sellerid : 'fyJSPaVja',
+		default_sellerid : 'pQNNmSkaq',
 		userInfo: {},
 	},
 	

@@ -118,8 +118,8 @@
 					</view>
 		
 		
-					<view class="zhifu_li" v-for-index="index" :data-index='index' @tap='zhuangzhangPay' v-for="(item,index001) in pay_list" :key="index001" :style='key==index?"background-color:#e6e6e6":""+zz_pay?"display:none":"display:block"' >
-						<view class="zhifu_name" v-for-index="index" :data-index='index' @tap='zhuangzhangPay'>{{item.pay_name}}</view>
+					<view class="zhifu_li" :key="index" :data-index='index' @tap='zhuangzhangPay($event)' v-for="(item,index) in pay_list" :style='key==index?"background-color:#e6e6e6":""+zz_pay?"display:none":"display:block"' >
+						<view class="zhifu_name" :key="index" :data-index='index' @tap='zhuangzhangPay($event)'>{{item.pay_name}}</view>
 					</view>
 				   <view :style="payView?'display:none':'display:block'+';font-size:15px;margin-bottom:100px;'">
 						<view :style="zz_pay?'display:none':'display:block'">
@@ -175,7 +175,7 @@
 										<view class='section_view2'>{{pay_price}}</view>      
 									</view> 
 									<view class="pay_submit">     
-										<button class="pay_submit" type="default" id="Pay"  formType="submit" :data-price="pay_price" @tap="createProductOrderByZZ">确认支付</button>       
+										<button class="pay_submit" type="default" id="Pay"  formType="submit" :data-price="pay_price" @tap="createProductOrderByZZ()">确认支付</button>       
 									</view>             
 								</form>
 							</view> 
@@ -186,10 +186,10 @@
 		</view>
 		
 		<view class="pay_submit" v-if="zz_pay">
-			<button type="default" id="Pay" formType="submit" :data-price="pay_price" @tap="zz_pay?'createProductOrderByWX':'createProductOrderByZZ'">确认支付</button>
+			<button type="default" id="Pay" formType="submit" :data-price="pay_price" @tap="zz_pay?createProductOrderByWX():createProductOrderByZZ()">确认支付</button>
 		</view>
 		<view class="pay_submit" v-if="pay_price == 0.00">
-			<button type="default" id="Pay" formType="submit" :data-price="pay_price" @tap="createProductOrderByZZ">确认支付</button>
+			<button type="default" id="Pay" formType="submit" :data-price="pay_price" @tap="createProductOrderByZZ()">确认支付</button>
 		</view>
 		
 		
@@ -210,54 +210,54 @@
 
 
 <script>
-	export default {
-		data() {
-			return {
-				amount:0,
-				orderName:'',
-				paytype:'alipay',//支付类型
-				orderData:''
-			};
-		},
-		onLoad(e) {
-			console.log("e",e);
-			return;
-			this.amount = parseFloat(e.amount).toFixed(2);
-			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
-			uni.getStorage({
-				key:'paymentOrder',
-				success: (e) => {
-					if(e.data.length>1){
-						this.orderName = '多商品合并支付'
-					}else{
-						this.orderName = e.data[0].name;
-					}
-					uni.removeStorage({
-						key:'paymentOrder'
-					})
-				}
-			})
-		},
-		methods:{
-			doDeposit(){
-				//模板模拟支付，实际应用请调起微信/支付宝
-				uni.showLoading({
-					title:'支付中...'
-				});
-				setTimeout(()=>{
-					uni.hideLoading();
-					uni.showToast({
-						title:'支付成功'
-					});
-					setTimeout(()=>{
-						uni.redirectTo({
-							url:'../../pay/success/success?amount='+this.amount
-						});
-					},300);
-				},700)
-			}
-		}
-	}
+	// export default {
+	// 	data() {
+	// 		return {
+	// 			amount:0,
+	// 			orderName:'',
+	// 			paytype:'alipay',//支付类型
+	// 			orderData:''
+	// 		};
+	// 	},
+	// 	onLoad(e) {
+	// 		console.log("e",e);
+	// 		return;
+	// 		this.amount = parseFloat(e.amount).toFixed(2);
+	// 		this.abotapi.set_option_list_str(null, this.abotapi.getColor());
+	// 		uni.getStorage({
+	// 			key:'paymentOrder',
+	// 			success: (e) => {
+	// 				if(e.data.length>1){
+	// 					this.orderName = '多商品合并支付'
+	// 				}else{
+	// 					this.orderName = e.data[0].name;
+	// 				}
+	// 				uni.removeStorage({
+	// 					key:'paymentOrder'
+	// 				})
+	// 			}
+	// 		})
+	// 	},
+	// 	methods:{
+	// 		doDeposit(){
+	// 			//模板模拟支付，实际应用请调起微信/支付宝
+	// 			uni.showLoading({
+	// 				title:'支付中...'
+	// 			});
+	// 			setTimeout(()=>{
+	// 				uni.hideLoading();
+	// 				uni.showToast({
+	// 					title:'支付成功'
+	// 				});
+	// 				setTimeout(()=>{
+	// 					uni.redirectTo({
+	// 						url:'../../pay/success/success?amount='+this.amount
+	// 					});
+	// 				},300);
+	// 			},700)
+	// 		}
+	// 	}
+	// }
 </script>
 
 
@@ -283,7 +283,8 @@
 				adds:'',
 				name:'',
 				time:'',
-				orderId:''
+				orderId:'',
+				key:''
 			}
 		},
 		onShow: function () {
@@ -355,6 +356,7 @@
 						that.type_list = type_list
 						that.show_weixin_pay = show_weixin_pay;
 						that.show_zhuanzhang_pay = show_zhuanzhang_pay
+						console.log("that.show_zhuanzhang_pay",that.show_zhuanzhang_pay);
 					} else {
 						uni.showToast({
 							title: res.data.msg,
@@ -373,6 +375,7 @@
 		},
 		methods:{
 			radioChange: function (e) {
+				console.log('change-->e',e);
 				var that = this;
 				var pay = e.detail.value;
 				if (pay=='zz_pay'){
@@ -383,7 +386,8 @@
 				}
 				var userInfo = that.abotapi.get_user_info();
 				var pay_list = that.pay_list
-				if (typeof (pay_list) == 'undefined'){
+				console.log('pay_list1',pay_list);
+				if (pay_list == ''){
 					uni.request({
 						url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=offlinepay_get',
 						method: 'post',
@@ -400,7 +404,7 @@
 							var code = res.data.code;
 							if (code == 1) {
 								var pay_list = res.data.data;
-								console.log(pay_list);
+								console.log('pay_list',pay_list);
 								that.pay_list = pay_list;
 							} else {
 								uni.showToast({
@@ -599,11 +603,11 @@
 		
 											if (that.recharge == 1) {
 												uni.switchTab({
-													url: '/pages/user/user',
+													url: '/pages/tabBar/user/user',
 												});
 											} else {
 												uni.navigateTo({
-													url: '../user/dingdan?currentTab=0&otype=',
+													url: '/pages/user/order_list/order_list?currentTab=0&otype=',
 												});
 											}
 										}, 1500);
