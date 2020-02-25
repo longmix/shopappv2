@@ -37,7 +37,7 @@
 				<input type="text" class="flexIcon-text"  name="password"  placeholder-class="cl-white" @input="telInput" placeholder-style="color: rgba(255,255,255,0.8);"  placeholder="请输入手机验证码" />
 			</view>
 			<div></div>
-			<button type="primary"  formType="submit" open-type="getUserInfo" class="btn-row-submit" style="width: 92%;background: #2E85D8;" @getuserinfo="btn_user_login">登陆</button>
+			<button type="primary"  formType="submit" open-type="getUserInfo" class="btn-row-submit" style="width: 92%;background: #2E85D8;" @click="btn_user_login">登陆</button>
 			<div class="flex mgb-20">
 				<navigator class="cl-black pointer flex-1" style="margin-top: 30upx;text-align: right;font-size: 34upx;" url="/pages/login/login_by_password">账号密码登录</navigator>
 			</div>
@@ -198,10 +198,11 @@
 				})
 			},
 			
-			
-			btn_user_login: function (userinfo) {
+			//手机验证码登录
+			btn_user_login: function () {
 			    console.log('getUserInfo button click, and get following msg');
-			    console.log(userinfo);
+			    // console.log(userinfo);
+				var that = this;
 			    if (!this.mobile) {
 					uni.showToast({
 						title: '请输入手机号码！',
@@ -226,64 +227,19 @@
 					})
 					return;
 			    }
-			    //uni.login({}) // 现在，调用 uni.login 是一个可选项了。只有当你需要使用微信登录鉴别用户，才需要用到它，用来获取用户的匿名识别符
-			    if (userinfo.detail.errMsg == 'getUserInfo:ok') {
-			
-					//uni.request({}) // 将用户信息、匿名识别符发送给服务器，调用成功时执行 callback(null, res)
-					var that = this;
-			
-					console.log('uni.login <<<==== btn_user_login');
-			
-					uni.login({
-						success: function (res) {
-							console.log('btn_user_login uni.login return message');
-							console.log(res);
-							console.log(res.code);
-							that.js_code = res.code;
-							console.log(that.js_code);
-							that.get_userinfo_ok_callback(userinfo, that.js_code);
-						}
-					});
-			
-			
-				} else if (userinfo.detail.errMsg == 'getUserInfo:fail auth deny') { // 当用户点击拒绝时
-					uni.showModal({}) // 提示用户，需要授权才能登录
-			
-			    }
-			},
-			  
-			
-			get_userinfo_ok_callback: function (userinfo, js_code) {
-				var headimgurl = userinfo.detail.userInfo.avatarUrl
-				uni.setStorage({
-			        key: 'key5',
-			        data: headimgurl,
-			        success: function (res) {
-						console.log('异步保存成功')
-			        }
-				})
-				var that = this;
-				//console.log(code+'hehe');
+				
 				uni.request({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=login',
-			        header: {
+				    url: apps.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=login',
+				    header: {
 						"Content-Type": "application/x-www-form-urlencoded"
-			        },
-			        method: "POST",
-			        data: { 
-						appid: this.abotapi.globalData.xiaochengxu_appid,      
+				    },
+				    method: "POST",
+				    data: { 
 						mobile: that.mobile,
 						verifycode_sms: that.tel,
-						sellerid: this.abotapi.globalData.default_sellerid,
-						parentid: 0,
-			  
-						formId: that.formId,
-			  
-						js_code: js_code,        
-						iv: userinfo.detail.iv,
-						encryptedData: userinfo.detail.encryptedData,
-			        },
-			        success: function (request_res) {
+						sellerid: apps.globalData.default_sellerid,
+				    },
+				    success: function (request_res) {
 						console.log(4444444444444444444);
 						console.log(request_res);
 						var data = request_res.data;
@@ -293,22 +249,21 @@
 						if (request_res.data && (request_res.data.code == 1)){
 							console.log("update_mobile : check_button : ");
 							console.log('登录成功返回userid:' + request_res.data.userid);
-			            
-			           
-							that.abotapi.globalData.userInfo.user_openid = request_res.data.openid;
-							that.abotapi.globalData.userInfo.userid = request_res.data.userid;          
-							that.abotapi.globalData.userInfo.checkstr = request_res.data.checkstr;
-			  
-			            
+				        
+				       
+							apps.globalData.userInfo.user_openid = request_res.data.openid;
+							apps.globalData.userInfo.userid = request_res.data.userid;          
+							apps.globalData.userInfo.checkstr = request_res.data.checkstr;
+							  
 							//保存openid
-							that.abotapi.set_current_openid(request_res.data.openid);
+							app.set_current_openid(request_res.data.openid);
 							console.log('更新缓存的用户信息:');
-							console.log(that.abotapi.globalData.userInfo);
-					  
-							that.abotapi.set_user_info(that.abotapi.globalData.userInfo);
-			  
-			 
-			            
+							console.log(apps.globalData.userInfo);
+							  
+							that.app.set_user_info(apps.globalData.userInfo);
+							  
+				 
+				        
 							uni.showModal({
 								title: '提示',
 								content: request_res.data.msg,
@@ -316,7 +271,7 @@
 								success: function (res) {
 									//console.log("回调结果"+res.code);
 									if (res.confirm) {		 
-										//=======检查登录成功之后的跳转=======
+									//=======检查登录成功之后的跳转=======
 										var last_url = uni.getStorageSync('last_url');
 				 
 										console.log('last_url-----', last_url)
@@ -328,20 +283,21 @@
 												uni.switchTab({
 													url: last_url,
 												})
-											}else {
+											} else {
 												uni.redirectTo({
 													url: last_url,
 												})
 											}
 				 
 											uni.removeStorageSync('last_url');
-											uni.removeStorageSync('page_type'); 
+											uni.removeStorageSync('page_type');
+				 
 											return;
 										}
 									//===========End================
-			                  
-										uni.switchTab({
-											url:'/pages/tabBar/home/home'
+				              
+										uni.redirectTo({
+											url: '/pages/index/index'
 										})
 									}
 								}
@@ -354,184 +310,15 @@
 								duration: 2000
 							});
 						}
-			          
+				      
 						console.log("延誉宝服务器解析jscode并返回以下内容：");
 						console.log(request_res);
 						// app.globalData.user_openid = request_res.data.openid;
-						that.abotapi.globalData.tokenstr = request_res.data.tokenstr;
-					}
+						apps.globalData.tokenstr = request_res.data.tokenstr;
+				    }
 				});
-			},
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			// btn_user_login: function (userinfo) {
-			//     console.log('getUserInfo button click, and get following msg');
-			//     console.log(userinfo);
-			//     if (!this.mobile) {
-			// 		uni.showToast({
-			// 			title: '请输入手机号码！',
-			// 			icon: 'fail',
-			// 			duration: 2000
-			// 		})
-			// 		return;
-			//     }
-			//     if (!this.img) {
-			// 		uni.showToast({
-			// 			title: '请输入图片验证码！',
-			// 			icon: 'fail',
-			// 			duration: 2000
-			// 		})
-			// 		return; 
-			//     }
-			//     if (!this.tel) {
-			// 		uni.showToast({
-			// 			title: '请输入手机验证码！',
-			// 			icon: 'fail',
-			// 			duration: 2000
-			// 		})
-			// 		return;
-			//     }
-			//    	var that = this;
-			// 	//console.log(code+'hehe');
-			// 	uni.request({
-			// 		url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=login',
-			// 		header: {
-			// 			"Content-Type": "application/x-www-form-urlencoded"
-			// 		},
-			// 		method: "POST",
-			// 		data: { 
-			// 			appid: this.abotapi.globalData.xiaochengxu_appid,      
-			// 			mobile: that.mobile,
-			// 			verifycode_sms: that.tel,
-			// 			sellerid: this.abotapi.globalData.default_sellerid,
-			// 			parentid: this.abotapi.get_current_parentid(),
-			// 			formId: that.formId,
-			// 			js_code: that.js_code,
-			// 			iv: userinfo.detail.iv,
-			// 			encryptedData: userinfo.detail.encryptedData,
-			// 		},
-			// 		success: function (request_res) {
-			// 			console.log(4444444444444444444);
-			// 			console.log(request_res);
-			// 			var data = request_res.data;
-			// 			//var res = JSON.parse(data);
-			// 			//console.log(res);
-			// 			console.log('request_res.data===>>>>',request_res.data);
-						
-			// 			if (request_res.data && (request_res.data.code == 1)){
-			// 				console.log("update_mobile : check_button : ");
-			// 				console.log('登录成功返回userid:' + request_res.data.userid);
-			// 				console.log('登录成功返回user_openid:' + request_res.data.user_openid);
-						
-					   
-			// 				that.abotapi.globalData.userInfo.user_openid = request_res.data.openid;
-			// 				that.abotapi.globalData.userInfo.userid = request_res.data.userid;          
-			// 				that.abotapi.globalData.userInfo.checkstr = request_res.data.checkstr;
-						
-			// 				//保存openid
-			// 				that.abotapi.set_current_openid(request_res.data.openid);
-			// 				console.log('更新缓存的用户信息:',that.abotapi.globalData.userInfo);
-			// 				// console.log();
-							  
-			// 				that.abotapi.set_user_info(that.abotapi.globalData.userInfo);
-							
-			// 				uni.request({
-			// 					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=get_user_info',
-			// 					data: {
-			// 						sellerid: that.abotapi.globalData.default_sellerid,
-			// 						checkstr: request_res.data.checkstr,
-			// 						userid: request_res.data.userid,
-			// 					},
-			// 					header: {
-			// 						"Content-Type": "application/x-www-form-urlencoded"
-			// 					},
-			// 					method: "POST",
-			// 					success: function (res) {
-			// 						console.log('ddd', res);
-			// 						// console.log('ddd', res.data.code);
-									
-			// 						if (res.data.code == "-1") {
-									   
-			// 							var last_url = '/pages/user/userInfo';
-			// 							that.abotapi.goto_user_login(last_url);
-							         
-			// 						} else {
-			// 							var	data = res.data;						      
-									 
-			// 							if(data.code == 1){
-			// 								that.abotapi.set_user_account_info(data.data)
-			// 							}
-			// 						}		
-			// 					}
-			// 				})
-							
-			// 				uni.showModal({
-			// 					title: '提示',
-			// 					content: request_res.data.msg,
-			// 					showCancel: false,
-			// 					success: function (res) {
-			// 						//console.log("回调结果"+res.code);
-			// 						if (res.confirm) {		 
-			// 							//=======检查登录成功之后的跳转=======
-			// 							var last_url = uni.getStorageSync('last_url');
-					 
-			// 							console.log('last_url-----', last_url)
-					 
-			// 							var page_type = uni.getStorageSync('page_type');
-			// 							if (last_url) {
-			// 								if (page_type && (page_type == 'switchTab')) {
-					 
-			// 									uni.switchTab({
-			// 										url: last_url,
-			// 									})
-			// 								}
-			// 								else {
-			// 									uni.redirectTo({
-			// 										url: last_url,
-			// 									})
-			// 								}
-					 
-			// 								uni.removeStorageSync('last_url');
-			// 								uni.removeStorageSync('page_type');
-					 
-			// 								return;
-			// 							}
-			// 						//===========End================
-								  
-								  
-			// 							uni.switchTab({
-			// 								url: '/pages/tabBar/home/home'
-			// 							})
-										
-			// 						}
-			// 					}
-			// 				});
-			// 			}else {
-			// 				console.log(request_res);
-			// 				uni.showToast({
-			// 					title: '登录失败',
-			// 					icon: 'fail',
-			// 					duration: 2000
-			// 				});
-			// 			}
-					  
-			// 			console.log("延誉宝服务器解析jscode并返回以下内容：");
-			// 			console.log(request_res);
-			// 			// abotapi.globalData.user_openid = request_res.data.openid;
-			// 			that.abotapi.globalData.tokenstr = request_res.data.tokenstr;
-			// 		}
-			// 	});
 				
-			// },
+			},
 			 
 				
 			btn_one_click_login:function(e){
@@ -669,12 +456,7 @@
 			formSubmit:function(e){
 				var that=this;
 				
-				console.log('aaaaaaaaaaaaaaaaaaa');
-				console.log(e);
-				console.log(e.detail.formId);
-
-				that.formId = e.detail.formId				
-				 
+				that.btn_user_login();
 			}
 		}
 	}
