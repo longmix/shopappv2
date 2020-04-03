@@ -947,7 +947,9 @@ export default {
 </script>
 <style lang="scss">
 page{position: relative;background-color: #fff;}
-
+.icon.location:before {
+    content: '\E611';
+}
 .pullDown-effects{
 	position: fixed;
 	//top: calc(100upx - 36vw);

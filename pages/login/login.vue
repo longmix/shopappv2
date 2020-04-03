@@ -229,7 +229,7 @@
 			    }
 				
 				uni.request({
-				    url: apps.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=login',
+				    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=login',
 				    header: {
 						"Content-Type": "application/x-www-form-urlencoded"
 				    },
@@ -237,10 +237,12 @@
 				    data: { 
 						mobile: that.mobile,
 						verifycode_sms: that.tel,
-						sellerid: apps.globalData.default_sellerid,
+						sellerid: this.abotapi.globalData.default_sellerid,
 				    },
 				    success: function (request_res) {
 						console.log(4444444444444444444);
+						
+						
 						console.log(request_res);
 						var data = request_res.data;
 						//var res = JSON.parse(data);
@@ -251,16 +253,16 @@
 							console.log('登录成功返回userid:' + request_res.data.userid);
 				        
 				       
-							apps.globalData.userInfo.user_openid = request_res.data.openid;
-							apps.globalData.userInfo.userid = request_res.data.userid;          
-							apps.globalData.userInfo.checkstr = request_res.data.checkstr;
+							that.abotapi.globalData.userInfo.user_openid = request_res.data.openid;
+							that.abotapi.globalData.userInfo.userid = request_res.data.userid;          
+							that.abotapi.globalData.userInfo.checkstr = request_res.data.checkstr;
 							  
 							//保存openid
-							app.set_current_openid(request_res.data.openid);
+							that.abotapi.set_current_openid(request_res.data.openid);
 							console.log('更新缓存的用户信息:');
-							console.log(apps.globalData.userInfo);
+							console.log(that.abotapi.globalData.userInfo);
 							  
-							that.app.set_user_info(apps.globalData.userInfo);
+							that.abotapi.set_user_info(that.abotapi.globalData.userInfo);
 							  
 				 
 				        
@@ -314,7 +316,7 @@
 						console.log("延誉宝服务器解析jscode并返回以下内容：");
 						console.log(request_res);
 						// app.globalData.user_openid = request_res.data.openid;
-						apps.globalData.tokenstr = request_res.data.tokenstr;
+						this.abotapi.globalData.tokenstr = request_res.data.tokenstr;
 				    }
 				});
 				

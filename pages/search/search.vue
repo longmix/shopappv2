@@ -91,7 +91,8 @@
 				hotKeyList: [],
 				is_more: true,
 				content:'',
-				showModalStatus:false
+				showModalStatus:false,
+				wxa_product_list_style:''
 			}
 		},
 		
@@ -109,9 +110,9 @@
 			}
 			var objectId = options.title;
 			//更改头部标题
-			uni.setNavigationBarTitle({
-				title: objectId,
-		    });
+			// uni.setNavigationBarTitle({
+			// 	title: objectId,
+		 //    });
 		
 		    //页面初始化 options为页面跳转所带来的参数
 		    var cataid = options.cataid;
