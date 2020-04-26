@@ -41,7 +41,7 @@
 				</view>
 				
 				<view style="text-align: center;margin-top: 100upx;" v-if="cataList == null">
-					<image style="width: 150upx;" mode="widthFix" src="../../../static/img/search_no.png"></image>
+					<image style="width: 150upx;" mode="widthFix" src="../../static/img/search_no.png"></image>
 					<text style="display: block;color: #8a8a8a;">暂无任何数据</text>
 				</view> 
 				

@@ -1,7 +1,6 @@
-{
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+{	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{	//主页
-			"path": "pages/tabBar/home/home",
+			"path": "pages/home/home",
 			"style": {
 				"navigationBarTextStyle":"black",
 				"enablePullDownRefresh": true,
@@ -13,7 +12,7 @@
 			}
 		},
 		{	//商品分类
-			"path": "pages/tabBar/category/category",
+			"path": "pages/category/category",
 			"style": {
 				"navigationBarTextStyle":"black",
 				"app-plus": {
@@ -24,7 +23,7 @@
 			}
 		},
 		{	//购物车
-			"path": "pages/tabBar/cart/cart",
+			"path": "pages/cart/cart",
 			"style": {
 				"enablePullDownRefresh": true,
 				"navigationBarTextStyle":"black",
@@ -33,14 +32,14 @@
 					"softinputNavBar":"none",
 					"subNVues":[{  
 						"id": "cartTitleNvue", // 唯一标识  
-						"path": "pages/tabBar/cart/subNvue/cartTitleNvue", // 页面路径  
+						"path": "pages/cart/subNvue/cartTitleNvue", // 页面路径  
 						"type":"navigationBar"
 					}]
 				}
 			}
 		},
 		{	//用户主页
-			"path": "pages/tabBar/user/user",
+			"path": "pages/userCenter/user",
 			"style": {
 				"enablePullDownRefresh": true,
 				"backgroundTextStyle":"light",
@@ -51,7 +50,7 @@
 					"titleNView": false ,//禁用原生导航栏
 					"subNVues":[{  
 						"id": "userTitleNvue", // 唯一标识  
-						"path": "pages/tabBar/user/subNvue/userTitleNvue", // 页面路径  
+						"path": "pages/userCenter/subNvue/userTitleNvue", // 页面路径  
 						"type":"navigationBar"
 					}]
 				}
@@ -277,14 +276,14 @@
             "style" : {}
         }
         ,{
-            "path" : "pages/tabBar/home/help/help",
+            "path" : "pages/home/help/help",
             "style": {
             	"navigationBarTitleText": "商户头条",
             	"softinputNavBar":"none"
             }
         }
         ,{
-            "path" : "pages/tabBar/home/help_detail/help_detail",
+            "path" : "pages/home/help_detail/help_detail",
             "style": {
             	"navigationBarTitleText": "文章详情",
             	"softinputNavBar":"none"
@@ -303,6 +302,20 @@
 		    	"navigationBarTitleText": "联系地址",
 		    	"softinputNavBar":"none"
 		    }
+		},
+		{
+		    "path" : "pages/shopList/shopList",
+		    "style": {
+		    	"navigationBarTitleText": "商家列表",
+		    	"softinputNavBar":"none"
+		    }
+		},
+		{
+		    "path" : "pages/shopDetail/shopDetail",
+		    "style": {
+		    	"navigationBarTitleText": "商家详情",
+		    	"softinputNavBar":"none"
+		    }
 		}
     ],
 	"globalStyle": {
@@ -319,25 +332,25 @@
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
 		"list": [{
-				"pagePath": "pages/tabBar/home/home",
+				"pagePath": "pages/home/home",
 				"iconPath": "static/img/tabBar/home.png",
 				"selectedIconPath": "static/img/tabBar/home-on.png",
 				"text": "首页"
 			},
 			{
-				"pagePath": "pages/tabBar/category/category",
+				"pagePath": "pages/category/category",
 				"iconPath": "static/img/tabBar/category.png",
 				"selectedIconPath": "static/img/tabBar/category-on.png",
-				"text": "分类"
+				"text": "商品"
 			},
 			{
-				"pagePath": "pages/tabBar/cart/cart",
+				"pagePath": "pages/shopList/shopList",
 				"iconPath": "static/img/tabBar/cart.png",
 				"selectedIconPath": "static/img/tabBar/cart-on.png",
-				"text": "购物车"
+				"text": "商家"
 			},
 			{
-				"pagePath": "pages/tabBar/user/user",
+				"pagePath": "pages/userCenter/user",
 				"iconPath": "static/img/tabBar/user.png",
 				"selectedIconPath": "static/img/tabBar/user-on.png",
 				"text": "我的"

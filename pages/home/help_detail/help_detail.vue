@@ -3,7 +3,7 @@
 		<view class='detail_top' v-if="wz_keyword2">
 			<view class='detail_top_view' v-for="(item,index) in wz_keyword2" :key="index">
 				<view class='biaoqian'>
-					<image :src='item.status==1?"../../../../static/img/help/shced1.png":"../../../../static/img/help/shced2.png"' @tap="add_tj" :data-text='item.name'></image>
+					<image :src='item.status==1?"../../../static/img/help/shced1.png":"../../../static/img/help/shced2.png"' @tap="add_tj" :data-text='item.name'></image>
 					<text>{{item.name}}</text>
 				</view>
 			</view>
@@ -50,7 +50,7 @@
 						</view>
 					</view>
 					<view class="comment_delete" :data-id="items.id" @tap='deleteRemark'  :hidden="openid!==items.wecha_id">
-						<image src="../../../../static/img/help/delete_red.png" mode="widthFix"></image>
+						<image src="../../../static/img/help/delete_red.png" mode="widthFix"></image>
 					</view>
 				  
 				</view>
@@ -62,15 +62,15 @@
 		
 			<view class="comment">
 		     
-				<image class="comment_img comment_write_img" src="../../../../static/img/help/write.png"></image>
+				<image class="comment_img comment_write_img" src="../../../static/img/help/write.png"></image>
 		        <input class="comment_input" placeholder="写评论..." confirm-type="send" @confirm="send()" :data-imgid="wz_text.id" v-model="inputValue" type="text"></input> <!--  -->
 		        
-		        <image class="comment_img comment_right_img" src="../../../../static/img/help/comment.png" @tap='toReamrkList'  ></image><!--  @click="get_input_focus()" -->
+		        <image class="comment_img comment_right_img" src="../../../static/img/help/comment.png" @tap='toReamrkList'  ></image><!--  @click="get_input_focus()" -->
 		        <view class="comment_num" :hidden="!comment_num">{{comment_num}}</view>
 		        <image class="comment_img comment_right_img" :style="comment_num ? 'margin-left:0':''" :src="isShoucang==true? '../../../../static/img/help/star_on.png': '../../../../static/img/help/star_off.png'" @tap='shoucang' ></image>
 		        <button  class="share" open-type="share"></button>
-		        <image class="comment_img comment_right_img" src="../../../../static/img/help/share.png" open-type="share"></image>
-		        <image class="comment_img comment_right_img" @tap="toHomePage" src="../../../../static/img/help/home_page.png"></image>
+		        <image class="comment_img comment_right_img" src="../../../static/img/help/share.png" open-type="share"></image>
+		        <image class="comment_img comment_right_img" @tap="toHomePage" src="../../../static/img/help/home_page.png"></image>
 				<!-- <image class="comment_img comment_right_img" src="../../../../static/img/help/friends.png"></image> -->
 		     </view>
 		</view>

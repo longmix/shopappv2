@@ -147,7 +147,7 @@
 
 var ttt = 0;
 //高德SDK
-import bmap from '../../../common/SDK/bmap-wx.js';
+import bmap from '../../common/SDK/bmap-wx.js';
 
 //import abotapi001 from '../../../common/abotapi.js';
 
