@@ -39,8 +39,9 @@ module.exports = {
 		// xiaochengxu_appid: 'wx60a801e5fb7f9378',
 		xiaochengxu_appid: 'wx00d1e2843c3b3f77',
 		// default_sellerid : 'fyJSPaVja',
-		default_sellerid : 'pQNNmSkaq',
+		// default_sellerid : 'pQNNmSkaq',	
 		
+		default_sellerid: 'fSNQPajka',
 		
 		is_shop_cart_in_tabbar: 1,
 		
