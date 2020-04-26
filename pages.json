@@ -316,6 +316,13 @@
 		    	"navigationBarTitleText": "商家详情",
 		    	"softinputNavBar":"none"
 		    }
+		},
+		{
+		    "path" : "pages/menuList/menuList",
+		    "style": {
+		    	"navigationBarTitleText": "商家详情",
+		    	"softinputNavBar":"none"
+		    }
 		}
     ],
 	"globalStyle": {
