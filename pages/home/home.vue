@@ -101,6 +101,72 @@
 				</view>
 			</view>
 		</view> -->
+		
+		<!-- 实体商家列表 -->
+		<view>
+		<view style="display: flex;padding: 10upx;margin: 10upx;border-radius: 10upx;background: #fff;border: 1upx solid #fff;">
+			<view style="width:200upx;height:200upx;margin-left: 20upx;">
+				<image style="width:200upx;height:200upx;" src="../../static/img/shop/3.jpg"></image>
+			</view>
+			<view style="width:100%;margin-left: 20upx;">
+				<view>
+					<view style="font-size: 30upx;color:#333;">食其家(商城路881号店)</view>
+					<view style="display: flex; align-items:center;justify-content:space-between;">
+						<view style="display: flex;">
+							<image style="width: 40upx;height: 40upx;" src="../../static/img/VIP.png"></image>
+							<image style="width: 40upx;height: 40upx;" src="../../static/img/VIP.png"></image>
+							<image style="width: 40upx;height: 40upx;" src="../../static/img/VIP.png"></image>
+							<image style="width: 40upx;height: 40upx;" src="../../static/img/VIP.png"></image>
+							<image style="width: 40upx;height: 40upx;" src="../../static/img/VIP.png"></image>
+						</view>
+						<view style="margin-right: 30rpx;font-size: 24upx;">
+							21公里
+						</view>
+					</view>
+					<view style="font-size: 24upx;color:#666;">城市名称|分类</view>
+					<view style="display: flex;align-items: center;flex-wrap: wrap;">
+						<view style="padding:4px 10upx;margin:10upx 10upx 0upx 0upx;border-radius:6upx;background: #ff8000 linear-gradient(to right, rgba(255,255,255,0), rgba(2555,255,255,.5));font-size: 24upx;color:#fff;">可排队</view>
+						<view style="padding:4px 10upx;margin:10upx 10upx 0upx 0upx;border-radius:6upx;background: #ff8000 linear-gradient(to right, rgba(255,255,255,0), rgba(2555,255,255,.5));font-size: 24upx;color:#fff;">可排队</view>
+						<view style="padding:4px 10upx;margin:10upx 10upx 0upx 0upx;border-radius:6upx;background: #ff8000 linear-gradient(to right, rgba(255,255,255,0), rgba(2555,255,255,.5));font-size: 24upx;color:#fff;">可排队</view>
+						<view style="padding:4px 10upx;margin:10upx 10upx 0upx 0upx;border-radius:6upx;background: #ff8000 linear-gradient(to right, rgba(255,255,255,0), rgba(2555,255,255,.5));font-size: 24upx;color:#fff;">可排队</view>
+						
+					</view>
+				</view>
+			</view>
+		</view>
+		<view style="display: flex;padding: 10upx;margin: 10upx;border-radius: 10upx;background: #fff;">
+			<view style="width:200upx;height:200upx;margin-left: 20upx;">
+				<image style="width:200upx;height:200upx;" src="../../static/img/shop/3.jpg"></image>
+			</view>
+			<view style="width:100%;margin-left: 20upx;">
+				<view>
+					<view style="font-size: 30upx;color:#333;">食其家(商城路881号店)</view>
+					<view style="display: flex; align-items:center;justify-content:space-between;">
+						<view style="display: flex;">
+							<image style="width: 40upx;height: 40upx;" src="../../static/img/VIP.png"></image>
+							<image style="width: 40upx;height: 40upx;" src="../../static/img/VIP.png"></image>
+							<image style="width: 40upx;height: 40upx;" src="../../static/img/VIP.png"></image>
+							<image style="width: 40upx;height: 40upx;" src="../../static/img/VIP.png"></image>
+							<image style="width: 40upx;height: 40upx;" src="../../static/img/VIP.png"></image>
+						</view>
+						<view style="margin-right: 30rpx;font-size: 24upx;">
+							21公里
+						</view>
+					</view>
+					<view style="font-size: 24upx;color:#666;">城市名称|分类</view>
+					<view style="display: flex;align-items: center;flex-wrap: wrap;">
+						<view style="padding:4px 10upx;margin:10upx 10upx 0upx 0upx;border-radius:6upx;background: #ff8000 linear-gradient(to right, rgba(255,255,255,0), rgba(2555,255,255,.5));font-size: 24upx;color:#fff;">可排队</view>
+						<view style="padding:4px 10upx;margin:10upx 10upx 0upx 0upx;border-radius:6upx;background: #ff8000 linear-gradient(to right, rgba(255,255,255,0), rgba(2555,255,255,.5));font-size: 24upx;color:#fff;">可排队</view>
+						<view style="padding:4px 10upx;margin:10upx 10upx 0upx 0upx;border-radius:6upx;background: #ff8000 linear-gradient(to right, rgba(255,255,255,0), rgba(2555,255,255,.5));font-size: 24upx;color:#fff;">可排队</view>
+						<view style="padding:4px 10upx;margin:10upx 10upx 0upx 0upx;border-radius:6upx;background: #ff8000 linear-gradient(to right, rgba(255,255,255,0), rgba(2555,255,255,.5));font-size: 24upx;color:#fff;">可排队</view>
+						
+					</view>
+				</view>
+			</view>
+		</view>
+		</view>
+		<!-- 实体商家结束 -->
+		
 		<!-- 商品列表 -->
 		<view class="goods-list" style="margin-top: 40upx;">
 			<!-- <view class="title">
@@ -296,7 +362,7 @@ export default {
 				
 		    }
 		});
-		 
+		this.call_back_get_shang_list();
 		this.abotapi.set_option_list_str(this, this.callback_function);
 		this.abotapi.get_shop_info_from_server(this.callback_func_for_shop_info);
 		
@@ -549,6 +615,37 @@ export default {
 			
 			
 			
+		},
+		
+		/* 获取前十条商家 */
+		call_back_get_shang_list:function(){
+			//获取全部商家 的金纬度
+			this.abotapi.abotRequest({
+			    url: this.abotapi.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/get_shang_all_jingwei',
+			    method: 'post',
+			    data: {
+					sellerid:this.abotapi.globalData.default_sellerid,
+			    },
+			    success: function (res) {
+					console.log('call_back_get_shang_list===', res);
+					return;
+					if(res.data.code == 1){
+						that.is_OK = false;
+						that.productList = res.data.product_list;
+						if(that.page == 1){
+							console.log('第一页')
+							that.productList = res.data.product_list;
+							console.log('第一页index',that.productList)
+						}
+					}
+			    },
+			    fail: function (e) {
+					uni.showToast({
+						title: '网络异常！',
+						duration: 2000
+					});
+			    },
+			});
 		},
 		
 		callback_func_for_shop_info:function(shop_info){
