@@ -124,11 +124,8 @@
 								</view>
 							</view>
 							<view style="font-size: 24upx;color:#666;">{{item.city_name}}|{{item.cata_name}}</view>
-							<view style="display: flex;align-items: center;flex-wrap: wrap;">
-								<view style="padding:4px 10upx;margin:10upx 10upx 0upx 0upx;border-radius:6upx;background: #ff8000 linear-gradient(to right, rgba(255,255,255,0), rgba(2555,255,255,.5));font-size: 24upx;color:#fff;">可排队</view>
-								<view style="padding:4px 10upx;margin:10upx 10upx 0upx 0upx;border-radius:6upx;background: #ff8000 linear-gradient(to right, rgba(255,255,255,0), rgba(2555,255,255,.5));font-size: 24upx;color:#fff;">可排队</view>
-								<view style="padding:4px 10upx;margin:10upx 10upx 0upx 0upx;border-radius:6upx;background: #ff8000 linear-gradient(to right, rgba(255,255,255,0), rgba(2555,255,255,.5));font-size: 24upx;color:#fff;">可排队</view>
-								<view style="padding:4px 10upx;margin:10upx 10upx 0upx 0upx;border-radius:6upx;background: #ff8000 linear-gradient(to right, rgba(255,255,255,0), rgba(2555,255,255,.5));font-size: 24upx;color:#fff;">可排队</view>
+							<view v-if="item.spec != ''" style="display: flex;align-items: center;flex-wrap: wrap;">
+								<view v-for="(items,index) in item.spec" :key="index" style="padding:4px 10upx;margin:10upx 10upx 0upx 0upx;border-radius:6upx;background: #ff8000 linear-gradient(to right, rgba(255,255,255,0), rgba(2555,255,255,.5));font-size: 24upx;color:#fff;">{{items}}</view>
 								
 							</view>
 						</view>
@@ -589,7 +586,7 @@ export default {
 		/* 获取前十条商家 */
 		call_back_get_shang_list:function(){
 			//获取全部商家 的金纬度
-			console.log('this.coordinate',this.coordinate);
+			
 			var that = this;
 			
 			this.abotapi.abotRequest({
@@ -599,7 +596,6 @@ export default {
 					sellerid:this.abotapi.globalData.default_sellerid,
 			    },
 			    success: function (res) {
-					console.log('call_back_get_shang_list===', res);
 					
 					if (res.data.code != 1) {
 					    //显示错误信息
@@ -608,19 +604,19 @@ export default {
 					 }
 					
 					var arr = res.data.data;
-					console.log('开始计算arr',arr);
+					
 					var dis = 0
 					var shop_location_list = [];
 					if(arr){
 						for (var index in arr) {
 								  if (!isNaN(index)) {
-									  console.log('开始计算');
+									  
 									dis = that.abotapi.getDisance(that.coordinate['latitude'], that.coordinate['longitude'], arr[index]['latitude'], arr[index]['longitude']);
-						console.log('开始计算dis',dis);
+						
 									arr[index]['dis'] = dis;
 						
 									dis = Math.ceil(dis)
-						console.log('开始计算dis2',dis);
+						
 									var dis_str = '';
 									if (dis < 1000) {
 									  dis_str = dis + '米'
@@ -629,10 +625,10 @@ export default {
 									else {
 									  dis_str = (dis / 1000).toFixed(1) + '公里'
 									}
-									console.log('开始计算dis_str',dis_str);
+									
 									arr[index]['dis_str'] = dis_str;
 						
-									console.log('222222222222222', arr[index]);
+									
 						
 									shop_location_list.push(arr[index])
 								  }
@@ -665,7 +661,7 @@ export default {
 						shangid_str += paixu_shanglist[i]['xianmai_shangid']+'|';
 					}
 					//排序
-					console.log('排序完成', shop_location_list);
+					
 					
 					//用商家id字符串请求获取商家列表
 					that.abotapi.abotRequest({
@@ -719,7 +715,7 @@ export default {
 							that.twoArr = res.data['xianmai_shang_list'];
 							
 							
-							console.log('88888', res.data['xianmai_shang_list']);
+							
 				
 							
 					    },

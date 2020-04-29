@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view>
-		  <image @load="imageLoad($event)"  :data-id='index'  mode="widthFix" style="width: 100%;" :src="shoplist.icon_image"></image>
+		  <image @load="imageLoad($event)"  :data-id='index'  mode="widthFix" style="width: 100%;" :src="shoplist.mendian_image"></image>
 		</view>
 		
 		<view class="shang_detail_box1">
@@ -21,7 +21,7 @@
 			<!-- 星级结束 -->
 			
 			<!-- 标签 -->
-			<view style="display:flex;flex-wrap: wrap;" >
+			<view style="display:flex;flex-wrap: wrap;justify-content: center;" >
 			    <view v-for="item in shoplist.spec" :key="item" class="biaoqian">
 				{{item}}
 			    </view>
@@ -34,7 +34,7 @@
 			  <view style="width: 100%;display: flex;justify-content: center;align-items: center;margin-top: 20upx;">
 				  <view style="width:60%;background-color: #FFFFFF;height: 10upx;"></view>
 				  <view class="fuwu">
-					 点餐 外卖 排队 预约
+					 {{shoplist.name}}
 				  </view>
 				  <view style="width:60%;background-color: #FFFFFF;height: 10upx;"></view>
 			  </view>
@@ -80,15 +80,17 @@
 				<view class="paidui-a">
 					<view class="icon-title">
 
-						<text class='paidui-c'>排队取号</text>
+						<text class='paidui-c'>我要点餐</text>
 					</view>
-				<text class='paidui-d'>等待时间仅供参考</text>
+				<text class='paidui-d'>点餐不用等</text>
 				</view>
 				<view class="yuding-a">
-					<view style="font-size:25rpx;">提前排队就餐快</view>
-					<view style="background:#F19E49;">立即排队</view>
+					<view style="font-size:25rpx;">点餐快人一步</view>
+					<navigator url="../menuList/menuList" hover-class="navigator-hover">
+						<view style="background:#E86452;">查看菜单</view>
+					</navigator>
 				</view>
-				<view class="paidui-b">餐厅当前暂停取号</view>
+				<view class="paidui-b">餐厅当前暂停点餐</view>
 			</view>
 			<!-- 按钮1   end -->
 			
@@ -98,54 +100,21 @@
 				<view class="paidui-a">
 					<view class="icon-title">
 			
-						<text class='paidui-c'>排队取号</text>
+						<text class='paidui-c'>外卖配送</text>
 					</view>
-				<text class='paidui-d'>等待时间仅供参考</text>
+				<text class='paidui-d'>美食送上门</text>
 				</view>
 				<view class="yuding-a">
-					<view style="font-size:25rpx;">提前排队就餐快</view>
-					<view style="background:#F19E49;">立即排队</view>
+					<view style="font-size:25rpx;">在线点餐</view>
+					<navigator url="../menuList/menuList" hover-class="navigator-hover">
+						<view style="background:#75CC47;">外卖配送</view>
+					</navigator>
 				</view>
-				<view class="paidui-b">餐厅当前暂停取号</view>
+				<view class="paidui-b">餐厅当前暂停配送</view>
 			</view>
 			<!-- 按钮2  end -->
 			
-			<!-- 按钮3 -->
-			<view class="paidui-con">
-				<image class="icon-a" src="../../static/img/category/2.png"></image>
-				<view class="paidui-a">
-					<view class="icon-title">
 			
-						<text class='paidui-c'>排队取号</text>
-					</view>
-				<text class='paidui-d'>等待时间仅供参考</text>
-				</view>
-				<view class="yuding-a">
-					<view style="font-size:25rpx;">提前排队就餐快</view>
-					<view style="background:#F19E49;">立即排队</view>
-				</view>
-				<view class="paidui-b">餐厅当前暂停取号</view>
-			</view>
-			<!-- 按钮3  end -->
-			
-			
-			<!-- 按钮4 -->
-			<view class="paidui-con">
-				<image class="icon-a" src="../../static/img/category/2.png"></image>
-				<view class="paidui-a">
-					<view class="icon-title">
-			
-						<text class='paidui-c'>排队取号</text>
-					</view>
-				<text class='paidui-d'>等待时间仅供参考</text>
-				</view>
-				<view class="yuding-a">
-					<view style="font-size:25rpx;">提前排队就餐快</view>
-					<view style="background:#F19E49;">立即排队</view>
-				</view>
-				<view class="paidui-b">餐厅当前暂停取号</view>
-			</view>
-			<!-- 按钮4  end -->
 		</view>
 		
 		<!-- 功能按钮结束-->

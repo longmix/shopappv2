@@ -14,8 +14,8 @@
 		<!-- 轮播图 -->
 		<view class="swiper">
 			<view class="swiper-box">
-				<swiper circular="true" autoplay="true" @change="swiperChange" :style="{height:imgheights[current] + 'px'} ">
-					<swiper-item v-for="(swiper,index) in productLists" :key="swiper.id" @click="toAdDetails(swiper.url)">
+				<swiper circular="true" autoplay="true"  :style="{height:imgheights[current] + 'px'} ">
+					<swiper-item v-for="(swiper,index) in productLists" :key="swiper.id" ><!-- @click="toAdDetails(swiper.url)" -->
 						<image @load="imageLoad($event)"  :data-id='index' :src="swiper.image" mode="widthFix"></image>
 					</swiper-item>
 				</swiper>
@@ -31,12 +31,12 @@
 		    </view>
 		
 		  <view  class="top-input-con" id="affix"> 
-		   <view class="ab">
+		   <view class="ab" @click="shuaxin()">
 		    <text>全部美食</text>
-		    <image class='local-img' src="../../images/xiala.png"></image> 
+		    <image class='local-img' src="../../static/img/xiala.png"></image> 
 		    </view>
 		   
-		  <picker bindchange="bindPickerChangeFloor" data-searchType="cataName" >
+		  <picker @change="bindPickerChangeFloor($event)" :value="index" :range="cata_list" data-searchType="cataName">
 		    <view class="ab" style="width:80rpx;padding: 15rpx 30rpx;">
 		
 		    
@@ -45,24 +45,25 @@
 		        </view>
 		      
 		    
-		    <image class='local-img' src="../../images/xiala.png"></image> 
+		    <image class='local-img' src="../../static/img/xiala.png"></image> 
 		    </view>
 		  </picker>
-		    <view class="ab" bindtap="bindPickerChangeFloor" data-searchType="star_level" >
+		    <view class="ab" @click="bindPickerChangeFloor($event)" data-searchType="star_level" >
 		          <text>智能排序</text>
-		    <image class='local-img' src="../../images/xiala.png"></image> 
+		    <image class='local-img' src="../../static/img/xiala.png"></image> 
 		    </view>
 		
 		    
-		<picker >
+		<picker @change="bindPickerChangeFloor($event)" :value="index" :range="spec_list" data-searchType="spec">
 		    <view class="ab" style="width:80rpx;padding: 15rpx 30rpx;">
 		    
 		        <view class="picker" style="float:left;" >
 		          <text>筛选</text>
+				  
 		        </view>
 		      
 		    
-		    <image class='local-img' src="../../images/xiala.png"></image> 
+		    <image class='local-img' src="../../static/img/xiala.png"></image> 
 		    </view>
 		    </picker>
 		  </view>
@@ -70,7 +71,7 @@
 		
 		<!-- 实体商家列表 -->
 		<block v-for="item in xianmaishang_list" :key="item">
-		<view @click="toShang_detail($event)" :data-shangid="item.xianmai_shangid" style="display: flex;padding: 10upx;margin: 10upx;border-radius: 10upx;background: #fff;align-items: center;">
+		<view @click="toShang_detail($event)" :data-shangid="item.xianmai_shangid" style="display: flex;padding: 10upx;margin: 10upx;border-radius: 10upx;background: #fff;">
 			<view style="width:200upx;height:200upx;margin-left: 20upx;">
 				<image style="width:200upx;height:200upx;" :src="item.icon_image"></image>
 			</view>
@@ -87,13 +88,13 @@
 						</view>
 					</view>
 					<view style="font-size: 24upx;color:#666;">{{item.city_name}}|{{item.cata_name}}</view>
-					<view style="display: flex;flex-wrap:wrap;">
+					<view v-if="item.spec != ''" style="display: flex;flex-wrap:wrap;">
 						<view v-for="items in item.spec" :key="items" class="youhui-biaoqian">{{items}}</view>
 						
 						
 					</view>
 					
-					<view v-if="item.youhui_detail" style="display: flex;flex-wrap:wrap;font-size: 24rpx;">
+					<view v-if="item.youhui_detail" style="font-size: 24rpx;">
 						<view class="youhui">优惠</view>
 						<text>{{item.youhui_detail}}</text>
 					</view>
@@ -173,6 +174,8 @@
 				xianmaishang_list:[],
 				shang_list:[],
 				imgUrls:[],
+				spec_list:[],
+				cata_list:[],
 				//客服相关
 				wxa_show_kefu_button:'',
 				wxa_kefu_button_type:'',
@@ -205,11 +208,12 @@
 			var shang_list = uni.getStorageSync("shop_location_list");
 			this.shang_list = shang_list;
 			console.log('shang_list',shang_list);
-			
-			
+			this.get_gundong_img();
+			this.get_shang_list();
 		},
 		onShow() {
-			this.get_shang_list();
+			this.get_cata_tag();
+			this.shuaxin();
 		},
 		
 		
@@ -231,22 +235,21 @@
 				var that = this;
 				
 				var shang_list = this.shang_list;
-				console.log('获取缓存中的商家列表',shang_list);
+				
 				var page = this.page;
 				var shang_num = this.shang_num;
 				
 				var star = (page - 1) * shang_num;
 				var end = page * shang_num;
-				console.log(star);
-				console.log(end);
+				
 				var threeArr = shang_list.slice(star, end); //返回特定的数组
-				console.log('threeArr',threeArr);
+				
 				
 				var shangid_str = '';
 				for(var i = 0;i <  threeArr.length;i++){
 					shangid_str = shangid_str + threeArr[i]['xianmai_shangid'] + '|';
 				}
-				console.log('shangid_str',shangid_str);
+				
 				
 				that.abotapi.abotRequest({
 				    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/XianmaiShangData/get_shang_list',
@@ -295,14 +298,14 @@
 								
 						}
 								
-						console.log('iiiiiiiiiiiiiiiii', res.data['xianmai_shang_list']);
+						
 						for(var i = 0 ; i< res.data['xianmai_shang_list'].length;i++){
 							that.xianmaishang_list.push(res.data['xianmai_shang_list'][i]);
 						}
 						
 						
 						
-						console.log('88888',that.xianmaishang_list);
+						
 								
 						
 				    },
@@ -322,6 +325,96 @@
 				this.page = page+1;
 				this.get_shang_list();
 			},
+			
+			//获取滚动图片接口
+			get_gundong_img:function(){
+				var that = this;
+				that.abotapi.abotRequest({
+					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_flash_ad_list',
+					method: 'post',
+					data: {
+						sellerid:that.abotapi.globalData.default_sellerid,
+						'type': 4
+					},
+					success: function (res) {
+						console.log('resresres',res);
+						that.productLists = res.data.data;
+					}
+				})
+			},
+			
+			//全部美食
+			shuaxin:function(){
+				this.page = 1;
+				this.xianmaishang_list = [];
+				this.get_shang_list();
+			},
+			
+			//筛选功能
+			bindPickerChangeFloor:function(e){
+				var searchType = e.currentTarget.dataset.searchtype;
+				var index = e.target.value;
+				var cata_list = this.cata_list; // 分类列表
+				var spec_list = this.spec_list; // 特色列表
+				console.log('触发',searchType);
+				console.log('触发',index);
+				console.log('触发',cata_list);
+				console.log('触发',spec_list);
+				//智能排序
+				if(searchType){
+					
+				}
+				
+				
+			},
+			
+			
+			
+			//获取全部的分类和标签
+			get_cata_tag:function(){
+				//请求全部美食二级分类
+				var that = this;
+				that.abotapi.abotRequest({
+					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/XianmaiShangData/get_all_cata2',
+					data: {
+						sellerid:that.abotapi.globalData.default_sellerid,
+					},
+					header: {
+						"Content-Type": "application/x-www-form-urlencoded"
+					},
+					method: "POST",
+					success: function (res) {
+						console.log('99999996666666666', res);
+						that.cata_list = res.data.data;
+
+					}
+				})
+				//请求筛选 特色标签
+				that.abotapi.abotRequest({
+					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/XianmaiShangData/get_all_spec',
+					data: {
+						sellerid:that.abotapi.globalData.default_sellerid,
+					},
+					header: {
+						"Content-Type": "application/x-www-form-urlencoded"
+					},
+					method: "POST",
+					success: function (res) {
+					console.log('45678912345679', res);
+
+					if (res.data.code != 1) {
+					//显示错误信息
+					return;
+					}
+					that.spec_list = res.data.data;
+					// that.setData({
+					// 
+					// });
+
+					}
+				})
+			},
+			
 			
 			//实体商家跳转
 			toShang_detail(e) {
@@ -545,5 +638,55 @@ margin-left: 11rpx;
 padding-top: 1rpx;
 
 }
+.swiper {
+	width: 100%;
+	margin-top: 10upx;
+	display: flex;
+	
+	justify-content: center;
+	
+}
+.swiper-box {
+		width: 92%;
+		
 
+		overflow: hidden;
+		border-radius: 15upx;
+		box-shadow: 0upx 8upx 25upx rgba(0, 0, 0, 0.2);
+		
+		position: relative;
+		z-index: 1;
+		
+		
+	}
+	.indicator {
+		position: absolute;
+		bottom: 20upx;
+		left: 20upx;
+		background-color: rgba(255, 255, 255, 0.4);
+		width: 150upx;
+		height: 5upx;
+		border-radius: 3upx;
+		overflow: hidden;
+		display: flex;
+		
+	}
+	.dots {
+		width: 0upx;
+		background-color: rgba(255, 255, 255, 1);
+		transition: all 0.3s ease-out;
+		
+	}
+	.on {
+		width: (100%/3);
+	}
+	swiper {
+		width: 100%;
+		
+		
+	}
+	image {
+		width: 100%;
+	}
+	
 </style>

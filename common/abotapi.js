@@ -75,9 +75,6 @@ module.exports = {
 	        type: 'wgs84',
 	        success: function (res) {
 				
-	            console.log('当前位置的经度：' + res.longitude);
-	            console.log('当前位置的纬度：' + res.latitude);
-				
 				coordinate['longitude'] = res.longitude;
 				coordinate['latitude'] = res.latitude;
 	        },
@@ -91,8 +88,6 @@ module.exports = {
 	},
 	 
 	getDisance: function (lat1, lng1, lat2, lng2) {
-		console.log('开始计算经纬度');
-		
 		var dis = 0;
 		var radLat1 = this.toRad(lat1);
 		var radLat2 = this.toRad(lat2);
