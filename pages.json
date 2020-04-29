@@ -320,7 +320,7 @@
 		{
 		    "path" : "pages/menuList/menuList",
 		    "style": {
-		    	"navigationBarTitleText": "商家详情",
+		    	"navigationBarTitleText": "菜单",
 		    	"softinputNavBar":"none"
 		    }
 		}

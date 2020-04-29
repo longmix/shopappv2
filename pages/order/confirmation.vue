@@ -265,7 +265,9 @@
 				pay_price:'',
 				util:'',
 				// recinfo:{id:1,name:"大黑哥",head:"大",tel:"18816881688",address:{region:{"label":"广东省-深圳市-福田区","value":[18,2,1],"cityCode":"440304"},detailed:'深南大道1111号无名摩登大厦6楼A2'},isDefault:true}
-				order_address_detail: {}
+				order_address_detail: {},
+				is_waimai: '',
+				shopId: ''
 			};
 		},
 		
@@ -281,6 +283,23 @@
 			uni.showLoading({
 				title: '加载中...',
 			})
+			
+			
+			 console.log('options============', options)
+			    var is_waimai = options.is_waimai;
+				
+				
+				this.is_waimai = is_waimai
+						
+			    
+			    var that = this;
+			    if (options.shopId) {
+					
+					this.shopId = options.shopId
+			    }
+			
+			
+			
 			
 			if (options.ucid) {
 				that.ucid = options.ucid

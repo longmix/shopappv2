@@ -4,7 +4,7 @@
 	
 	  <view class="header-item1">
 	    <view class="header-item2">
-	        <image class="header-logo" :src="shoplist.image_list[0]"></image>
+	        <image class="header-logo" :src="shoplist.icon_image"></image>
 	        <text class="header-name">
 	          <text style="display:block;color:#fff;">{{shoplist.name}}</text>    
 	        </text>
@@ -48,12 +48,14 @@
 	  </scroll-view>
 	 </view>
 	
-	<view class="good_box" :hidden="hide_good_box"  :style="{left: bus_x + 'px';top:bus_y + 'px'}"> </view>
+	<view class="good_box" :hidden="hide_good_box"  :style="{left: bus_x + 'px',top:bus_y + 'px'}"> </view>
+	
+	<view>dddd {{!showCartDetail}} 5555</view>
 	
 	<!--遮罩层-->
 	<view class="shade2" :hidden="!showCartDetail" @tap='showCartDetailf' catchtouchmove="true">
 	</view>
-	<view class="shade" hidden="!showCartDetail" >
+	<view class="shade" :hidden="!showCartDetail" >
 	<scroll-view class="cart-detail" :animation="animationData" :hidden="!showCartDetail" scroll-y="true">
 	  <view class="mark" @tap="hiddenCartDetailf"></view>
 	   
@@ -73,9 +75,9 @@
 	
 	           <text style="width: 219%;">支付金额：￥{{item.price_total}}</text>
 	            <view class="info-add">
-	              <view class="add-add" :data-price="" :data-name="" :data-productid="item.productid" :data-idx='idx' @tap="tapReduceCart">-</view>
+	              <view class="add-add"  :data-productid="item.productid" :data-idx='idx' @tap="tapReduceCart">-</view>
 	              <view class="info-num">{{item.count}}</view>
-	              <view class="add-de" :data-price="" :data-productid="" :data-name="" :data-idx='idx' @tap="cartAddCart">+</view>
+	              <view class="add-de"  :data-idx='idx' @tap="cartAddCart">+</view>
 	            </view>
 	
 	           </view>
@@ -87,7 +89,7 @@
 	</scroll-view>
 	</view>
 	
-	<view class="wx-popup" :hidden="!is_show_choose_specs" catchtouchmove="true">
+	<!-- <view class="wx-popup" :hidden="!is_show_choose_specs" catchtouchmove="true">
 	  <view class='popup-container'>
 	    <view class="wx-popup-title-specs">
 	      <image src="../../static/img/delete_red.png" class="wx-popup-close" @tap='closeChooseSpecs'></image>
@@ -98,10 +100,10 @@
 	
 	    <view class="wx-popup-con">
 	        
-	      <view class="wx-shouhuo-con" wx:for="{{spec_list}}" wx:for-index="idx" wx:for-item="item">
+	      <view class="wx-shouhuo-con" v-for="(item, idx) in spec_list">
 	        <view class="wx-specs-type">{{item[0]}}： </view>
 	        <view class="wx-input-con-specs">
-	          <view wx:for="{{item[1]}}" class="{{currentSpecsIdx[idx] == idx2? 'select-specs' : ''}}" wx:for-item="item2" wx:for-index="idx2" bindtap="doChooseSpecs" data-idx="{{idx}}" data-idx2="{{idx2}}">{{item2}}</view>
+	          <view v-for="(item2, idx2) in item[1]" :class="[currentSpecsIdx[idx] == idx2? 'select-specs' : '']"  @tap="doChooseSpecs" :data-idx="idx" :data-idx2="idx2">{{item2}}</view>
 	        </view>  
 	      </view>   
 	    </view>
@@ -114,28 +116,28 @@
 	        <view class="wx-specs-zongjia">总价</view>
 	        <view class="wx-specs-total-price"><text>￥</text><text style="font-size:36rpx;">{{product.price}}</text></view>
 	      </view>
-	      <text class="specs-btn-ok" bindtap="tapAddCart"  data-idx1="{{product_index1}}" data-idx2="{{product_index2}}" data-productid="{{product.productid}}" data-price="{{product.price}}" data-name="{{product.name}}">+ 加入购物车</text>
+	      <text class="specs-btn-ok" @tap="tapAddCart"  :data-idx1="product_index1" :data-idx2="product_index2" :data-productid="product.productid" :data-price="product.price" :data-name="product.name">+ 加入购物车</text>
 	    </view>
 	  </view>
-	</view>
+	</view> -->
 	
 	
 	
 	
 	<!--购物车-->
-	 <view class="cart">
+	<view class="cart">
 	  <view class="data">
 	    <view class="icon">
-	      <view class="icon-img" bindtap="showCartDetailf">
-	        <image src="../../images/car.png"></image>
+	      <view class="icon-img" @tap="showCartDetailf">
+	        <image src="../../static/img/car.png"></image>
 	      </view>
-	      <view class="cart-count" style="opacity:{{cart_count != 0 ? '' : '0'}};">{{cart_count}}</view>
+	      <view class="cart-count" :style="{opacity: cart_count != 0 ? '' : '0'}">{{cart_count}}</view>
 	      <view class="count">需要支付 ￥{{total}}</view>
 	    </view>
 	    <!-- <view class="total">购物车数量：{{cart.count}}</view> -->
 	  </view>
 	  <form bindtap="submit">
-	    <button class="yellow {{cart.count?'':'disabled'}}" formType="submit" >去结算</button>
+	    <button class="yellow"  formType="submit" >去结算</button>
 	  </form>
 	 </view>
 	
@@ -146,6 +148,8 @@
 
 
 //import abotapi001 from '../../../common/abotapi.js';
+import util from '@/common/util.js';
+
 
 export default {
 	data() {
@@ -160,7 +164,19 @@ export default {
 			is_show_choose_specs: false, 
 			currentSpecsIdx: [],
 			select_specs: '',
-			is_waimai:'',
+			shopId: '',
+			is_waimai: 1,
+			shoplist: '',
+			menu_list: '',
+			selectOrder: '',
+			cartlist: {},
+			toView: '',
+			menuHeight: '',
+			bus_x: '',
+			bus_y: '',
+			finger:{},
+			busPos:{},
+			animationData:'',
 		};
 	},
 	onPageScroll(e) {
@@ -240,77 +256,64 @@ export default {
 		    },
 		});
 	},
-	onLoad() {
-    
-		var shopId = options.xianmai_shangid;
-		var is_waimai = options.is_waimai;
+	onLoad(options) {
+		
+		// const oMeta = document.createElement('meta');
+		// oMeta.name = "referrer";
+		// oMeta.content = "no-referrer"
+		// document.getElementsByTagName('head')[0].appendChild(oMeta);
+		
+		// console.log('document888',document);
+		var userInfo;
+    // 1232 1231 133 191
+	
+		var shopId = 133;
+		
+		// var shopId = options.xianmai_shangid;
+		// var is_waimai = options.is_waimai;
+		
+		var is_waimai = 0;
+	
 		console.log('ppppppppppppppppppppp', is_waimai);
 		console.log('ppppppppppppppppppppp', options);
 		
-		this.setData({
-		  is_waimai: is_waimai,
-		})
-		console.log('this.is_waimai',11111111111111);
-		
+		this.is_waimai = is_waimai;
 
-		console.log('this.is_waimai',this.data.is_waimai);
 
 		// var shop = server.selectedShopDetail(shopId);
-		var desk_no = '';
-
-		if (options.scene){
-		  var arr = options.scene.split('__');
-		  console.log(112233);
-		  console.log(arr);
-		  if(arr.length >= 2){
-			shopId = arr[0];
-			desk_no = arr[1];
-
-			//将桌号缓存到本地
-			wx.setStorage({
-			  key: 'current_desk_no',
-			  data: desk_no,
-			});
-		  }
-		}
-
-
-
-
 
 		console.log('565656', shopId)
 		var that = this;
 
-		that.setData({
-		  shopId: shopId,
-		})
+		that.shopId = shopId;
+		
 
 		  // 获取商家详情
 		  var post_data = {
-			sellerid: app.get_sellerid(),
+			sellerid: this.abotapi.get_sellerid(),
 			xianmai_shangid: shopId,
 		  }
 		console.log('787878', shopId)
 		  if (userInfo) {
 			post_data.userid = userInfo.userid
 		  }
-		  api.abotRequest({
-			url: app.globalData.http_server + '/openapi/XianmaiShangData/get_shang_detail',
+		this.abotapi.abotRequest({	
+			url: this.abotapi.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/get_shang_detail',
+			// url: 'https://yanyubao.tseo.cn/hahading/index.php/openapi/ProductData/get_product_list_all_data',
 			data: post_data,
 			header: {
 			  "Content-Type": "application/x-www-form-urlencoded"
 			},
 			method: "POST",
 			success: function (res) {
-			  var data = res.data.data;       
-			  that.setData({
-				shoplist: data,
-				
-			  });
+			  var data = res.data.data;    
+				 
+				 that.shoplist = data
+				 console.log('that.shoplist',that.shoplist)
 
-			  wx.setStorage({
+			  uni.setStorage({
 				key: 'shoplist',
-				data: that.data.shoplist,
+				data: that.shoplist,
 				success: function (res) {
 				  console.log('异步保存成功')
 				}
@@ -325,17 +328,12 @@ export default {
 
 		
 
-
-
-		
-		
-
 	   // http://192.168.0.205/hahading/server/index.php/openapi/ProductData/get_product_list_all_data
 		//获取商家点餐分类信息
-		api.abotRequest({
-		  url: app.globalData.http_hahading_server + 'openapi/ProductData/get_product_list_all_data',
+		this.abotapi.abotRequest({
+		  url: this.abotapi.globalData.o2owaimai_server_url + 'openapi/ProductData/get_product_list_all_data',
 		  data: {
-			xianmai_shangid: that.data.shopId,
+			xianmai_shangid: that.shopId,
 			is_waimai: is_waimai,
 		  },
 		  header: {
@@ -351,19 +349,19 @@ export default {
 	   
 			if (data.menu == '') {
 			  
-			  wx.showModal({
+			  uni.showModal({
 				title: '提示',
 				content: '暂时没有商品，请等待...',
 				success(res) {
 				  if (res.confirm) {
-					// wx.navigateTo({
+					// uni.navigateTo({
 					//   url: '/pages/shops/shop_detail' + '?id=' + shopId,
 					// })
-					wx.navigateBack({
+					uni.navigateBack({
 					  delta: 1
 					})
 				  } else if (res.cancel) {
-					wx.navigateBack({
+					uni.navigateBack({
 					  delta: 1
 					})
 				  }
@@ -386,11 +384,9 @@ export default {
 
 
 
-			var selectOrder = data.menu[0].id
-			  that.setData({
-				menu_list: menu_list,
-				selectOrder: selectOrder
-			  });
+			var selectOrder = data.menu[0].id		
+			that.menu_list = menu_list;
+			that.selectOrder = selectOrder;
 
 		  },
 		  fail: function (e) {
@@ -399,39 +395,23 @@ export default {
 		})
 		console.log('ffffifififififif', is_waimai);
 		if (is_waimai == 1){
-		  var cart_list = wx.getStorageSync('waimai_list_' + this.data.shopId);
+		  var cart_list = uni.getStorageSync('waimai_list_' + this.shopId);
 		  console.log('fffeeeeefififif', cart_list);
 		}else{
-		  var cart_list = wx.getStorageSync('cart_list_' + this.data.shopId);
+		  var cart_list = uni.getStorageSync('cart_list_' + this.shopId);
 		  console.log('ffffifififififif', cart_list);
 		}
 	   
-		that.setData({
-		  cartlist: cart_list
-		})
+	   
+		that.cartlist = cart_list
 
 		that.sum();
-
-		// var userInfo = app.get_user_info();
-		// if ((!userInfo) || (!userInfo.userid)) {   
-		//       that.setData({
-		//         cart: {
-		//           count: 0 ,
-		//           total: 0,
-		//         }
-		//       });
-		// }else{
-	   
-		// };
-
-
-
 		
 
 
 
 		//加载静态订单数据
-		var res = wx.getStorageSync('orderList');
+		var res = uni.getStorageSync('orderList');
 		if (res) {
 		  if (res.count < 0) res.count = 0;
 		  this.setData({
@@ -442,41 +422,37 @@ export default {
 		  });
 		  console.log("shop---Loading");
 		  console.log(res.count, res.total, res.cartList);
-		  console.log(this.data.cart.count, this.data.cart.total);
+		  console.log(this.cart.count, this.cart.total);
 		  console.log("shop---end");
 		  if (!server.isEmptyObject(res.cartList)) {
-			this.setData({
-			  cartList: res.cartList,
-			  localList: server.filterEmptyObject(res.cartList)
-			});
+			  this.cartList = res.cartList;
+			  this.localList = server.filterEmptyObject(res.cartList);
 		  }
 		}
 
 		//防止未定义数组的形式
-		if (typeof this.data.cartList[this.data.shopId] == 'undefined' || server.isEmptyObject(this.data.cartList[this.data.shopId])) {
-		  var cartList = this.data.cartList;
-		  cartList[this.data.shopId] = [];
-		  this.setData({
-			cartList: cartList
-		  })
+		if (typeof this.cartList[this.shopId] == 'undefined' || server.isEmptyObject(this.cartList[this.shopId])) {
+		  var cartList = this.cartList;
+		  cartList[this.shopId] = [];		  
+		  this.cartList = cartList
 		}
-		console.log(this.data.localList, this.data.cartList)
+		console.log(this.localList, this.cartList)
 
 
 
 
 		var that = this;
-		wx.getSystemInfo({// 获取页面的有关信息
+		uni.getSystemInfo({// 获取页面的有关信息
 		  success: function (res) {
-			wx.setStorageSync('systemInfo', res)
+			uni.setStorageSync('systemInfo', res)
 			var ww = res.windowWidth;
 			var hh = res.windowHeight;
 
-			that.setData({
-			  ww : ww,
-			  hh : hh,
-			  menuHeight: hh - 130.63
-			})
+			that.ww = res.windowWidth;
+			that.hh = res.windowHeight;
+			
+			that.menuHeight = hh - 130.63;
+
 			
 		  }
 		});
@@ -485,7 +461,7 @@ export default {
 		
 		this.busPos = {};
 		this.busPos['x'] = 27.185;//购物车的位置
-		this.busPos['y'] = this.data.hh - 32;
+		this.busPos['y'] = this.hh - 32;
 
 
 	},
@@ -495,609 +471,592 @@ export default {
 	
 	methods: {
 		
-		callback_function:function(that, cb_params){
-			
-			if(!cb_params){
-				return;
-			}
-			
-			console.log('cb_params====', cb_params);
-			
-			
-			//====1、更新界面的颜色
-			this.abotapi.getColor();
-			
-			//====2、其他的设置选项：商品列表风格、头条图标等等
-			if (cb_params.wxa_product_list_style) {
-			    
-			      this.wxa_product_list_style = cb_params.wxa_product_list_style
-			    
-			  }
-			if (cb_params.wxa_shop_toutiao_icon) {
-			  
-			    this.wxa_shop_toutiao_icon = cb_params.wxa_shop_toutiao_icon
-			  
-			}
-			if (cb_params.wxa_show_kucun_in_list) {
-			  
-			    this.wxa_show_kucun_in_list = cb_params.wxa_show_kucun_in_list
-			  
-			}
-			if (cb_params.wxa_show_icon_index_count){
-			  
-			    this.wxa_show_icon_index_count = cb_params.wxa_show_icon_index_count
-			  
-			}
-			if (cb_params.wxa_show_index_icon) {
-			  
-			   this.wxa_show_index_icon = cb_params.wxa_show_index_icon
-			  
-			}
-			if (cb_params.wxa_show_index_swiper) {
-			  
-			    this.wxa_show_index_swiper = cb_params.wxa_show_index_swiper
-			  
-			}
-			if (cb_params.wxa_show_pic_pinpu) {
-			  
-			    this.wxa_show_pic_pinpu = cb_params.wxa_show_pic_pinpu
-			  
-			}
-			if (cb_params.wxa_show_search_input) {
-			  
-			    this.wxa_show_search_input = cb_params.wxa_show_search_input
-			  
-			}
-			if (cb_params.wxa_show_toutiao) {
-			  
-			    this.wxa_show_toutiao = cb_params.wxa_show_toutiao
-			  
-			}
-			if (cb_params.wxa_show_video_player) {
-			  
-			   this.wxa_show_video_player = cb_params.wxa_show_video_player
-			
-			}
-			if (cb_params.wxa_video_player_url) {
-			  
-			    this.wxa_video_player_url = cb_params.wxa_video_player_url
-			  
-			}
-			if (cb_params.wxa_video_screen_url) {
-			  
-			    this.wxa_video_screen_url = cb_params.wxa_video_screen_url
-			  
-			}
-			if (cb_params.wxa_shop_toutiao_flash_line) {
-			  
-			    this.wxa_shop_toutiao_flash_line = cb_params.wxa_shop_toutiao_flash_line
-			  
-			}
-					
-			if (cb_params.wxa_hidden_product_list) {
-			  
-			    this.wxa_hidden_product_list = cb_params.wxa_hidden_product_list
-			  
-			}
-					
-			if (cb_params.wxa_kefu_button_type) {
-			  
-			   this.wxa_kefu_button_type = cb_params.wxa_kefu_button_type
-			  
-			}
-					
-			if (cb_params.wxa_kefu_button_icon) {
-			  
-			   this.wxa_kefu_button_icon = cb_params.wxa_kefu_button_icon
-			  
-			}
-					
-			if (cb_params.wxa_kefu_mobile_num) {
-			  
-			    this.wxa_kefu_mobile_num = cb_params.wxa_kefu_mobile_num
-			  
-			}
-					
-			if (cb_params.wxa_kefu_form_url) {
-			  
-			    this.wxa_kefu_form_url = cb_params.wxa_kefu_form_url
-			  
-			}
-					
-			if (cb_params.wxa_show_kefu_button) {
-			  
-			    this.wxa_show_kefu_button = cb_params.wxa_show_kefu_button
-			  
-			}
-					
-			if (cb_params.wxa_kefu_bg_color) {
-			  
-			    this.wxa_kefu_bg_color = cb_params.wxa_kefu_bg_color
-			  
-			}
-			
-			//====3、获取经纬度坐标，显示当前城市			
-			console.log("百度地图AK：" + cb_params.baidu_map_ak_wxa);
-				
-			/* 获取定位地理位置 */
-			// 新建bmap对象
-				
-			var BMap_obj = new bmap.BMapWX({
-				ak: cb_params.baidu_map_ak_wxa
-			});
-			
-			var that002 = this;
-			
-			var regeocoding_fail = function (data) {
-				console.log('333333', data);
-				console.log('44444', that.ak);
-			};
-			
-			
-			
-			var regeocoding_success = function (data) {
-				console.log('00000', data);
-				
-				this.wxMarkerData = data.wxMarkerData;
-				this.markers = this.wxMarkerData;
-				this.latitude = this.wxMarkerData[0].latitude;
-				this.longitude = this.wxMarkerData[0].longitude;
-				this.address = this.wxMarkerData[0].address;
-				console.log('address',this.address);
-				
-				
-				that002.current_cityname = data.originalData.result.addressComponent.city
-				console.log('this.current_cityname',that002.current_cityname);
-				
-				that002.current_citynameLength = that002.current_cityname.length;
-				console.log('this.current_citynameLength',that002.current_citynameLength);
-				
-				
-				
-				if(that002.current_citynameLength == 2){
-					that002.current_citynameWidth = uni.upx2px(28);
-				}
-				else if(that002.current_citynameLength == 3){
-					that002.current_citynameWidth = uni.upx2px(24);
-				}
-				else if(that002.current_citynameLength == 4){
-					that002.current_citynameWidth = uni.upx2px(20);
-				}
-				
-				this.cityInfo = data.originalData.result.addressComponent,
-				
-				// console.log('with', that.data.imageWidth)
-				
-			
-				uni.setStorage({
-					key:'current_cityname',
-					data:that002.current_cityname,
-					success:function(){}
-				})
-				
-				
-				uni.setStorage({
-					key:'current_latitude',
-					data:this.wxMarkerData[0].latitude,
-					success:function(){}
-				})
-				
-				
-				uni.setStorage({
-					key:'current_longitude',
-					data:this.wxMarkerData[0].longitude,
-					success:function(){}
-				})
-				
-				uni.setStorage({
-					key:'markers',
-					data:this.wxMarkerData,
-					success:function(){}
-				})
-				
-				
-			    // getCurrentPages()[getCurrentPages().length - 1].onLoad()
-			}
-				
-			BMap_obj.regeocoding({
-				fail: regeocoding_fail,
-				success: regeocoding_success
-			});
-			
-			
-			
-		},
+		/**
+		   * 点击商品展示滚动
+		   */
+		  clickMenu: function (e) {
+		    var that = this;
+		    var cate = e.currentTarget.dataset.cate;
+		    var selectOrder = e.currentTarget.dataset.selectorder
 		
-		callback_func_for_shop_info:function(shop_info){
-			var shop_name = shop_info.shop_name;
+			that.is_menu_list_scroll = true;
+			that.toView = cate;
+			that.selectOrder = selectOrder;
+			that.clickleft = 1;
 			
-			uni.setNavigationBarTitle({
-				title:shop_name
-			})
-			
-		},
+		  },
 		
+		  /**
+		   * 商品展示滚动
+		   */
+		  onGoodsScroll: function (e) {
+		    var scare = e.detail.scrollWidth / 250,
+		      scrollTop = e.detail.scrollTop,
+		      h = 0,
+		      selectOrder,
+		      len = this.menu_list.length;
 		
-		//猜你喜欢
-		get_product_list:function(){
-			var that = this;
-			this.abotapi.abotRequest({
-			    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
-			    method: 'post',
-			    data: {
-					sellerid:this.abotapi.globalData.default_sellerid,
-					sort: 1,
-					page: that.page,
-					page_size:that.page_size,
-			    },
-			    success: function (res) {
-					console.log('bbafff===', res);
-					
-					if(res.data.code == 1){
-						that.is_OK = false;
-						that.productList = res.data.product_list;
-						if(that.page == 1){
-							console.log('第一页')
-							that.productList = res.data.product_list;
-							console.log('第一页index',that.productList)
-						}
-					}
-			    },
-			    fail: function (e) {
-					uni.showToast({
-						title: '网络异常！',
-						duration: 2000
-					});
-			    },
-			});
-		},
+		    this.menu_list.forEach(function (classify, i) {
+		      var _h = 37.5 + classify.menu.length * 94 ;
+		      //console.log("srcollTop:" + scrollTop);
+		      //console.log(h - 100 / scare);
+		       console.log('classify==', classify);
+		      // console.log('i====',i)
+		      if (scrollTop >= h) {
+		        selectOrder = classify.id;
+		      }
+		      h += _h;
+		    });
 		
-		//顶部轮播图片请求
-		get_flash_ad_list:function(){
-			var that = this;
-			uni.request({						
-			    url: this.abotapi.globalData.yanyubao_server_url +  '?g=Yanyubao&m=ShopAppWxa&a=get_flash_ad_list',
-			    method: 'post',
-			    data: {
-					sellerid:this.abotapi.globalData.default_sellerid,
-					type:4
-			    },
-			    header: {
-					'Content-Type': 'application/x-www-form-urlencoded'
-			    },
-			    success: function (res) {
-					console.log('uuufff===', res);
-					var productlist = res.data.data;
-					console.log('uuifff===', productlist);
-					that.productLists = productlist
-				  
-			    },
-			    fail: function (e) {
-					uni.showToast({
-						title: '网络异常！',
-						duration: 2000
-					});
-			    },
-			});
-		},
-		
-		
-		//平铺广告请求
-		get_flash_img_list:function(){
-			var that = this;
-			uni.request({									
-			    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_flash_img_list',
-			    method: 'post',
-			    data: {
-					sellerid:this.abotapi.globalData.default_sellerid,
-					type:5
-			    },
-			    header: {
-					'Content-Type': 'application/x-www-form-urlencoded'
-			    },
-			    success: function (res) {
-					console.log('wbafff===', res);
-					that.pictures = res.data.data;
-					console.log('pictures',that.pictures);
-			    },
-			    fail: function (e) {
-					uni.showToast({
-						title: '网络异常！',
-						duration: 2000
-					});
-				},
-			});
-		},
-		
-		
-		initArticleList: function () {
-		
-		    var that = this
-		
-		    //=====更新商户头条=================
-		    var url = this.abotapi.globalData.weiduke_server_url + '?g=Home&m=Yanyubao&a=yingxiao';//+ app.globalData.sellerid;
-		    var data = {
-				id: 'seller',
-				action: 'list',
-				sellerid: this.abotapi.get_sellerid(),
-				currentpage: 1
-		    };
-		
-		    var cbError = function (res) {
-		
-		    };
-		    this.abotapi.httpPost(url, data, this.yingxiao, cbError);
-		    //========End====================
-		
-		},
-		  
-		  
-		articleBack: function (res) {
-		    console.log(res);
-		
-		    var that = this
-		    if (res.data.code == '1') {
-				this.abotapi.set_current_weiduke_token(res.data.token);
+		    if (this.clickleft == 1) {
+			  
+			  this.clickleft = 0;
 		      
-		      //为显示加载动画添加3秒延时
-				setTimeout(function () {
-		       
-					that.articlelist = res.data.data
-					console.log('that.articlelist',that.articlelist);
-					// loading = !this.data.loading
-		        
-				}, 500)
-		
-				if (that.wxa_shop_toutiao_flash_line == 2) {
-					var data = res.data.data;
-					var articlelist2 = [];
-					for (var i = 0, length = data.length -1; i < (length / 2); i++) {
-						var arr = [data[0], data[1]];
-						articlelist2.push(arr);
-						data.shift()
-						data.shift()
-					}
-		        
-					that.articlelist2 =  articlelist2 
-					console.log('that.articlelist2',that.articlelist2);
-				}
-			}
-		},
-		
-		
-		//商户头条
-		yingxiao:function(){
-			var that = this;
-			uni.request({
-				url : this.abotapi.globalData.weiduke_server_url + '?g=Home&m=Yanyubao&a=yingxiao',
-				method:'POST',
-				data: {
-					id: 'seller',
-					action: 'list',
-					sellerid:this.abotapi.globalData.default_sellerid,
-					currentpage: 1
-				},
-				header:{'Content-Type': 'application/x-www-form-urlencoded'},
-				success:function(res){
-					console.log('res1',res);
-					that.abotapi.set_current_weiduke_token(res.data.token);
-					if(res.data.code == 1){
-							that.articlelist = res.data.data;
-						console.log('articlelist',that.articlelist);
-					}
-					
-					
-					if (that.wxa_shop_toutiao_flash_line == 2) {
-						var data = res.data.data;
-						var articlelist2 = [];
-						for (var i = 0, length = data.length -1; i < (length / 2); i++) {
-							var arr = [data[0], data[1]];
-							articlelist2.push(arr);
-							data.shift()
-							data.shift()
-						}
-					
-						that.articlelist2 =  articlelist2;
-						console.log('that.articlelist2',that.articlelist2);
-					}
-				},
-				fail:function(res){
-					console.log('res2',res);
-				},
-			});
+		    } else {
+		      
+			  this.selectOrder = selectOrder
 			
-		},
+		    }
 		
-		//首页分类图标
-		get_shop_icon_index:function(){
+		    // this.setData({
+		    //   selectOrder: selectOrder
+		    // });
+		  },
+		  showCartDetailf: function (e) {
 			var that = this;
-			uni.request({
-				url:this.abotapi.globalData.yanyubao_server_url+'?g=Yanyubao&m=ShopAppWxa&a=get_shop_icon_index',
-				method:'POST',
-				header:{'Content-Type': 'application/x-www-form-urlencoded'},
-				data:{
-					sellerid:this.abotapi.globalData.default_sellerid,
-				},
-				success(res) {
-					// console.log('87878787',res);
-					var data = res.data;
-					console.log("data===",data);
-					if(data.code == 1){
-						that.index_icon_list = data.data;
-					}
-				
-				}
-			});
-		},
-		
-		//点击商户头条进入列表
-		touTiaoList: function (e) {
-		    console.log('点击商户头条进入列表');
-		    uni.navigateTo({
-				url: '/pages/tabBar/home/help/help?sellerid=' + this.abotapi.globalData.default_sellerid
-		    })
-		},
-		
-		//加载Promotion 并设定倒计时,,实际应用中应该是ajax加载此数据。
-		loadPromotion() {
-			let cutTime = new Date();
-			let yy = cutTime.getFullYear(),
-				mm = cutTime.getMonth() + 1,
-				dd = cutTime.getDate();
-			let tmpcountdown = yy + '/' + mm + '/' + dd + ' 23:59:59';
-			let tmpPromotion = [
-				{
-					title: '整点秒杀',
-					ad: '整天秒杀专区',
-					img: '/static/img/s1.jpg',
-					countdown: false
-				},
-				{
-					title: '限时抢购',
-					ad: '每天23点上线',
-					img: '/static/img/s2.jpg',
-					countdown: tmpcountdown
-				} //countdown为目标时间，程序会获取当前时间倒数
-			];
-			//检查倒计时
-			for (let i = 0; i < tmpPromotion.length; i++) {
-				let row = tmpPromotion[i];
-				if (row.countdown) {
-					let h = '00',
-						m = '00',
-						s = '00';
-					let currentTime = new Date();
-					let cutoffTime = new Date(tmpcountdown);
-					if (!(currentTime >= cutoffTime)) {
-						let countTime = parseInt(
-							(cutoffTime.getTime() - currentTime.getTime()) / 1000
-						);
-						h = parseInt(countTime / 3600);
-						m = parseInt((countTime % 3600) / 60);
-						s = countTime % 60;
-						h = h < 10 ? '0' + h : h;
-						m = m < 10 ? '0' + m : m;
-						s = s < 10 ? '0' + s : s;
-					}
-					tmpPromotion[i].countdown = { h: h, m: m, s: s };
-				}
-			}
-			this.Promotion = tmpPromotion;
-		},
-		//定时器
-		Timer() {
-			setInterval(() => {
-				if (this.Promotion.length > 0) {
-					for (let i = 0; i < this.Promotion.length; i++) {
-						let row = this.Promotion[i];
-						if (row.countdown) {
-							if (
-								!(
-									row.countdown.h == 0 &&
-									row.countdown.m == 0 &&
-									row.countdown.s == 0
-								)
-							) {
-								if (row.countdown.s > 0) {
-									row.countdown.s--;
-									row.countdown.s =
-										row.countdown.s < 10
-											? '0' + row.countdown.s
-											: row.countdown.s;
-								} else if (row.countdown.m > 0) {
-									row.countdown.m--;
-									row.countdown.m =
-										row.countdown.m < 10
-											? '0' + row.countdown.m
-											: row.countdown.m;
-									row.countdown.s = 59;
-								} else if (row.countdown.h > 0) {
-									row.countdown.h--;
-									row.countdown.h =
-										row.countdown.h < 10
-											? '0' + row.countdown.h
-											: row.countdown.h;
-									row.countdown.m = 59;
-									row.countdown.s = 59;
-								}
-								this.Promotion[i].countdown = row.countdown;
-							}
-						}
-					}
-				}
-			}, 1000);
-		},
-		//消息列表
-		toMsg(){
-			uni.navigateTo({
-				url:'../../msg/msg'
-			})
-		},
-		//搜索跳转
-		toSearch() {
-			uni.navigateTo({
-				url:'/pages/search/search'				
-			})
-		},
-		
-		//推荐商品跳转
-		toPromotion(e) {
-			console.log('toPromotion-e',e);
-			
-			// uni.showToast({ title: e.title, icon: 'none' });
-		},
-		//商品跳转
-		toGoods(e) {
-			console.log('rrxfff===',e);
-			var productid = e.productid;
-			uni.navigateTo({
-				url: '/pages/goods/goods?productid='+productid
-			});
-		},
-		//轮播图指示器
-		swiperChange(event) {
-			this.currentSwiper = event.detail.current;
-		},
-		
-		
-		imageLoad: function (e) {//获取图片真实宽度  
-				
-		    var imgwidth = e.detail.width,
-		      imgheight = e.detail.height,
-		      //宽高比  
-		      ratio = imgwidth / imgheight;
-		    console.log(imgwidth, imgheight)
-		    //计算的高度值  
-		    var viewHeight = this.windowHeight / ratio;
-		    var imgheight = viewHeight;
-		    var imgheights = this.imgheights;
-		    //把每一张图片的对应的高度记录到数组里  
-		    imgheights[e.target.dataset.id] = uni.upx2px(imgheight);
-	
-		    console.log(imgheights);
-		
-	
-		     this.imgheights = imgheights
+			this.is_show_choose_specs = false;
+		    		   
+		    console.log(this.showCartDetail);
+		    // this.setData({
 		   
+		    //   showCartDetail: true
+		    // })
+		    if (!this.showCartDetail) {
+		      var animation = uni.createAnimation({
+		        duration: 200,
+		        timingFunction: "linear",
+		        delay: 0
+		      })
+		      animation.translateY(300).step()
+			  
+			  this.animationData = animation.export();
+			  this.showCartDetail = true;
+			  
+		     
+		      setTimeout(function () {
+				  
+		        animation.translateY(0).step()			
+				this.animationData = animation.export();
+		    
+		      }.bind(this), 200)
+		    } else {
+		      var animation = uni.createAnimation({
+		        duration: 200,
+		        timingFunction: "linear",
+		        delay: 0
+		      })
+		      animation.translateY(200).step()
+			  
+			  this.animationData = animation.export();
+		  
+		      setTimeout(function () {
+		        animation.translateY(0).step()
+				
+				this.showCartDetail = false;
+		       
+		      }.bind(this), 200)
+		    }
+		   
+		     userInfo = that.abotapi.get_user_info();
+		    //调用点击购物车接口 
+		
+		    console.log('that.data.cartlist', that.cartlist)
+		
+		
+		  },
+		  hiddenCartDetailf: function () {
+			  
+			  this.showCartDetail = false;
+		
+		    console.log(this.showCartDetail);
 		  },
 		
 		
-		//首页导航图标、轮播图、平面广告跳转
-		toAdDetails:function(url){
-			var var_list = Object();
-			console.log('toAdDetails- to url ====>>>>>>', url);
-			this.abotapi.call_h5browser_or_other_goto_url(url, var_list, '');
-			
+		
+		  //点击加入购物车
+		  tapAddCart: function (e) {
+		
+		    // var last_url = '/pages/shops/shop_detail';
+		    // app.goto_user_login(last_url, 'normal');
+		    console.log('menu_list===00000', this.menu_list)
+		
+		    this.touchOnGoods(this, e);
+		    var that = this;
+		    var menu = that.menu_list;
+		    var productid = e.currentTarget.dataset.productid;
+		    var shopId = that.shopId;
+		    var idx1 = e.currentTarget.dataset.idx1;
+		    var idx2 = e.currentTarget.dataset.idx2;
+		    var is_waimai = that.is_waimai;
+		    console.log('gggggfffffssss', is_waimai);
+		    // 获取购物车的缓存数组（没有数据，则赋予一个空数组）  
+		    if (is_waimai == 1) {
+		      var cart_list = uni.getStorageSync('waimai_list_' + shopId) || [];
+		      console.log("waimai_list_,{}", cart_list);
+		    }else{
+		      var cart_list = uni.getStorageSync('cart_list_' + shopId) || [];
+		      console.log("cart_list,{}", cart_list);
+		    }
+		    
+		    
+		    if (cart_list.length > 0) {
+		      // 遍历购物车数组  
+		      for (var j in cart_list) {
+		        // 判断购物车内的item的id，和事件传递过来的id，是否相等  
+		        if (cart_list[j].productid == productid) {
+		          // 相等的话，给count+1（即再次添加入购物车，数量+1）
+		         
+		            cart_list[j].count = cart_list[j].count + 1;
+		               
+		          // 最后，把购物车数据，存放入缓存（此处不用再给购物车数组push元素进去，因为这个是购物车有的，直接更新当前数组即可）  
+		         
+				 console.log('55555', that.cartlist)
+				 
+				  try {
+		            if(is_waimai == 1){
+		              uni.setStorageSync('waimai_list_' + shopId, cart_list)
+		            }else{
+		              uni.setStorageSync('cart_list_' + shopId, cart_list)
+		            }
+		            
+		          } catch (e) {
+		            console.log(e)
+		          }
+		          //关闭窗口
+		          uni.showToast({
+		            title: '加入购物车成功！',
+		            icon: 'success',
+		            duration: 2000
+		          });
+				  
+				  console.log('0000000')
+				  that.cartlist = cart_list;
+		         console.log('1111111')
+		          that.sum();
+		          // this.closeDialog();
+		          // 返回（在if内使用return，跳出循环节约运算，节约性能） 
+		          return;
+		        }
+		      }
+		      // 遍历完购物车后，没有对应的item项，把goodslist的当前项放入购物车数组
+		
+		      if (that.is_show_choose_specs) {
+		        menu[idx1].menu[idx2].spec_list = that.select_specs;
+		      }
+		      menu[idx1].menu[idx2].count = 1; 
+		      cart_list.push(menu[idx1].menu[idx2]);
+		    } else {
+		
+		      if (that.is_show_choose_specs) {
+		        menu[idx1].menu[idx2].spec_list = that.select_specs;
+		      }
+		
+		      menu[idx1].menu[idx2].count = 1;
+		      cart_list.push(menu[idx1].menu[idx2]);
+		    }
+		    // 最后，把购物车数据，存放入缓存  
+		    try {
+		      // cosole.log('is_waimai____', is_waimai);
+		      if (is_waimai == 1){
+		        uni.setStorageSync('waimai_list_' + shopId, cart_list) 
+		      }else{
+		        uni.setStorageSync('cart_list_' + shopId, cart_list) 
+		      }
+		          
+		      // 返回（在if内使用return，跳出循环节约运算，节约性能） 
+		      //关闭窗口
+		      uni.showToast({
+		        title: '加入购物车成功！',
+		        icon: 'success',
+		        duration: 2000
+		      });
+		
+		
+		console.log('3333333')
+				that.cartlist = cart_list
+		console.log('4444444')      
+		      that.sum();
+		      console.log('ssssssssssssssss',that.cartlist)
+		      // this.closeDialog();
+		      return;
+		    } catch (e) {
+		      console.log(e)
+		    }
+		
+		    console.log('menu_list===111111', that.menu_list)
+		
+		
+		  
+		  },
+		
+		
+		
+		  sum: function (e) {
+			  
+		    if(this.is_waimai == 1){
+		      var cart_list = uni.getStorageSync('waimai_list_' + this.shopId);
+		      console.log('waimai_list_====>>>>', cart_list);
+		    }else{
+		      var cart_list = uni.getStorageSync('cart_list_' + this.shopId);
+		      console.log('cart_list_====>>>>', cart_list);
+		    }
+		    
+		    
+		    if(cart_list || cart_list != null){
+		      var total = 0;
+		      var cart_count = 0;
+		      for (var i = 0; i < cart_list.length; i++) {
+		        total += cart_list[i].count * cart_list[i].price;
+		        
+		        cart_list[i].price_total = util.sprintf("%6.2f", cart_list[i].count * cart_list[i].price);
+		
+		        //购物车总数  
+		        cart_count += cart_list[i].count;  
+		      }
+		      if (this.is_waimai == 1) {
+		        uni.setStorageSync('waimai_list_' + this.shopId, cart_list);
+		      }else{
+		        uni.setStorageSync('cart_list_' + this.shopId, cart_list);
+		      }
+		      
+			  console.log('cart_count==',cart_count)
+			  
+			  this.cartlist = cart_list
+			  this.cart_count = cart_count
+			  this.total = total.toFixed(2)
+		
+		    console.log('this.cart_count==',this.cart_count)
+		    } 
+		  },
+		
+		
+		// 增加数量
+		  cartAddCart: function (e) {
+		    // var last_url = '/pages/menu/menu-list';
+		    // app.goto_user_login(last_url, 'normal');
+		    var that = this;
+		
+		    var idx = e.currentTarget.dataset.idx;
+		    var count = this.cartlist[idx].count;
+		    // 商品总数量+1  
+		    this.cartlist[idx].count++;
+		
+		    // 将数值与状态写回  
+			this.cartlist = this.cartlist
+		   
+		    if(this.is_waimai == 1){
+		      uni.setStorageSync('waimai_list' + this.shopId, this.cartlist);
+		    } else if (this.is_waimai == 0){
+		      uni.setStorageSync('cart_list_' + this.shopId, this.cartlist);
+		    }
+		    
+		
+		    this.sum(); 
+		    this.touchOnGoods(this, e);
+		  },
+		
+		  //减少数量
+		  tapReduceCart: function (e) {
+		    var idx = e.currentTarget.dataset.idx;
+		    var count = this.cartlist[idx].count;
+		    // 商品总数量-1
+		    if (count > 1) {
+		      this.cartlist[idx].count--;
+		      console.log('1111111111',this.cartlist);
+		    }else{
+		      this.cartlist.splice(idx, 1);
+		      if (this.cartlist.length > 0) {
+				  this.cartlist = this.cartlist
+		        
+		        if(this.is_waimai == 1){
+		          uni.setStorageSync('waimai_list_' + this.shopId, this.cartlist);
+		        } else if (this.is_waimai == 0){
+		          uni.setStorageSync('cart_list_' + this.shopId, this.cartlist);
+		        }
+		        
+		      } else {
+		        
+				this.cartlist = this.cartlist
+		        if (this.is_waimai == 1) {
+		          uni.setStorageSync('waimai_list_' + this.shopId, []);
+		        } else if (this.is_waimai == 0) {
+		          uni.setStorageSync('cart_list_' + this.shopId, []);
+		        }
+		       
+		      }
+		      console.log('2222222222', this.cartlist);
+		      this.sum();
+		      return;
+		    }
+		    // 将数值与状态写回  
+			this.cartlist = this.cartlist
+		    if(this.is_waimai == 1){
+		      console.log('3333333333', this.cartlist);
+		      uni.setStorageSync('waimai_list_' + this.shopId, this.cartlist);
+		    }else{
+		      console.log('444444444444', this.cartlist);
+		      uni.setStorageSync('cart_list_' + this.shopId, this.cartlist);
+		    }
+		    
+		    this.sum();
+		  },
+		  
+		
+		  /* 删除item */
+		  // delGoods: function (e) {
+		  //   this.data.carts.splice(e.target.id.substring(3), 1);
+		  //   // 更新data数据对象  
+		  //   if (this.data.carts.length > 0) {
+		  //     this.setData({
+		  //       carts: this.data.carts
+		  //     })
+		  //     uni.setStorageSync('cart', this.data.carts);
+		  //     this.priceCount();
+		  //   } else {
+		  //     this.setData({
+		  //       cart: this.data.carts,
+		  //       iscart: false,
+		  //       hidden: true,
+		  //     })
+		  //     uni.setStorageSync('cart', []);
+		  //   }
+		
+		
+		
+		
+		
+		
+		  //调用的方法
+		  touchOnGoods: function(that, e) {
+			  console.log('touchOnGoods==',e);
+		    if (!this.hide_good_box) return;
+		    that.finger = {}; var topPoint = {};
+		    that.finger['x'] = e.touches["0"].clientX;//点击的位置
+		    that.finger['y'] = e.touches["0"].clientY;
+		
+		console.log('that.finger==',that.finger['y']);
+		
+		    if(that.finger['y'] < that.busPos['y']) {
+		      topPoint['y'] = that.finger['y'] - 150;
+		    } else {
+		      topPoint['y'] = that.busPos['y'] - 150;
+		    }
+		      topPoint['x'] = Math.abs(that.finger['x'] - that.busPos['x']) / 2;
+		
+		    if (that.finger['x'] > that.busPos['x']) {
+		      topPoint['x'] = (that.finger['x'] - that.busPos['x']) / 2 + that.busPos['x'];
+		    } else {//
+		      topPoint['x'] = (that.busPos['x'] - that.finger['x']) / 2 + that.finger['x'];
+		    }
+		    that.linePos = util.bezier([that.busPos, topPoint, that.finger], 20);
+		    console.log('bezier_points', that.linePos)
+		    that.startAnimation(that, e);
 		},
 		
-		//客服相关
-		//拨打客服电话
-		call_seller: function () {
-		    console.log('wxa_kefu_mobile_num', this.wxa_kefu_mobile_num)
-		    uni.makePhoneCall({
-				phoneNumber: this.wxa_kefu_mobile_num,
-		    })
+		startAnimation:function (that, e) {
+		  var index = 0,
+		    bezier_points = that.linePos['bezier_points'];
+			
+			that.hide_good_box = false;
+			that.bus_x = that.finger['x'];
+			that.bus_y = that.finger['y'];
+		  
+		  var len = bezier_points.length;
+		  index = len
+		  var i = index -1;
+		  that.timer = setInterval(function () {
+		
+		      if(i > -1){
+				  
+				  that.bus_x = bezier_points[i]['x']
+				  that.bus_y = bezier_points[i]['y']
+		        
+		        i--;
+		      }
+		      
+		      if (i < 1) {
+		        clearInterval(that.timer);
+				
+				that.hide_good_box = true;
+		      
+		      }
+		  }, 15);
 		},
+		
+		
+		 
+		
+		
+		  
+		  
+		
+		
+		
+		
+		  //保存购物车的东西
+		  saveCart: function (count, total) {
+		    console.log(typeof total, total);
+		    if (isNaN(total))
+		      total = 0;
+		    console.log(typeof total, total);
+		    total = Math.round(parseFloat(total));
+		    this.setData({
+		      cart: {
+		        count: count,
+		        total: total
+		      }
+		    });
+		    uni.setStorage({
+		      key: 'orderList',
+		      data: {
+		        cartList: this.cartList,
+		        count: this.cart.count,
+		        total: this.cart.total
+		      }
+		    });
+		  },
+		  submit: function (e) {
+		    console.log('waimai======>',this.is_waimai);
+		    var last_url = '/pages/menu/menu-list?xianmai_shangid=' + this.shopId + '&is_waimai=' + this.is_waimai;
+		    
+		    app.goto_user_login(last_url, 'normal');
+		    
+		    if ((!userInfo) || (!userInfo.userid)) {
+		      return;
+		    }
+		
+		    if(this.cartlist.length == 0){
+		      uni.showModal({
+		        title: '提示',
+		        content: '购物车空空如也~',
+		        showCancel: false,
+		        success(res) {
+		
+		        }
+		      })
+		      return;
+		    }
+		    
+		
+		    var total = this.total
+		    uni.navigateTo({
+		      url: '/pages/order/pay?shopId=' + this.shopId + '&total=' + this.total + '&cart_count=' + this.cart_count + '&is_waimai=' + this.is_waimai
+		    })
+		  },
+		
+		  shopdetail: function (e) {
+		    uni.navigateTo({
+		      url: '/pages/menu/menu-detail',
+		    })
+		  },
+		  
+		  toPageIndex:function(e){
+		    uni.navigateTo({
+		      url: '/pages/shops/shop_detail?id=' + this.shopId,
+		    })
+		  },
+		
+		
+		  //显示选择规格弹窗
+		  chooseSpecs: function (e) {
+		    var that = this;
+		    var index1 = e.currentTarget.dataset.idx1;
+		    var index2 = e.currentTarget.dataset.idx2;
+		
+		    var spec_list = this.menu_list[index1].menu[index2].spec_list;
+		
+		
+		    console.log('sssss', this.menu_list)
+		
+		    var currentSpecsIdx = [];
+		
+		    for(var i=0; i<spec_list.length; i++){
+		      currentSpecsIdx[i] = 0;
+		    }
+		
+		
+		    console.log('spec_list=====', spec_list)
+		    // spec_list.forEach(function (sku_item, i) {
+		    //   spec_list[i].img = that.data.menu_list[index1].menu[index2].img
+		    // });
+		
+		
+			this.product_index1 = index1,
+			this.product_index2 = index2,
+			this.spec_list = spec_list,
+			this.product = this.menu_list[index1].menu[index2],
+			this.is_show_choose_specs = true,
+			this.currentSpecsIdx = currentSpecsIdx
+		
+		  
+		
+		    this.getSelectSpecs();
+		
+		  },
+		
+		  //选择规格
+		  doChooseSpecs: function (e) {
+		    var index = e.currentTarget.dataset.idx;
+		    var index2 = e.currentTarget.dataset.idx2;
+		
+		    
+		    var key = 'currentSpecsIdx[' + index + ']';
+			
+			// this.setData({
+			//   [key]: index2, 
+			// })
+			
+			this.currentSpecsIdx[index] = index2;
+		
+			
+		    
+		    this.getSelectSpecs();
+		    console.log('e========', e)
+		
+		    console.log('currentSpecsIdx', key)
+		    console.log('currentSpecsIdx', this.currentSpecsIdx);
+		    
+		   
+		
+		  },
+		
+		  getSelectSpecs:function(){
+		    
+		    var currentSpecsIdx = this.currentSpecsIdx
+		    var select_specs = '';
+		
+		
+		    for(var key in currentSpecsIdx){
+		
+		      select_specs += this.spec_list[key][1][currentSpecsIdx[key]] + " "
+		    }
+		
+		
+		    select_specs.substr(0, select_specs.length - 1);
+		      
+		    console.log('select_specs===', select_specs)
+		
+			this.select_specs = select_specs
+		
+		  },
+		
+		
+		  //关闭选择规格
+		  closeChooseSpecs: function (e) {
+			  
+			this.is_show_choose_specs = false
+		   
+		  },
 		
 	}
 };
