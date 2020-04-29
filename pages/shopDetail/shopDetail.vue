@@ -412,9 +412,9 @@
 				          name: data.name,
 				        };
 				
-				        wx.setStorageSync("shang_" + data.xianmai_shangid + "_detail", shang_detail);
+				        uni.setStorageSync("shang_" + data.xianmai_shangid + "_detail", shang_detail);
 				
-				        wx.setStorage({
+				        uni.setStorage({
 				          key: 'shoplist',
 				          data: that.shoplist,
 				          success: function (res) {
