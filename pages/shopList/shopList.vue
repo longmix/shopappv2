@@ -1,7 +1,74 @@
 <template>
 	
-	<!-- 实体商家列表 -->
+	
 	<view>
+		<!-- 商家搜索 -->
+		<view class="top-input-con"> 
+
+			<view  class="scroll-txt">   
+				<icon type="search" size="14" style="margin: 0px 10rpx 0 0"></icon>
+				<text class="scroll-ads">搜索附近商家</text>
+			</view>
+		</view>
+		
+		<!-- 轮播图 -->
+		<view class="swiper">
+			<view class="swiper-box">
+				<swiper circular="true" autoplay="true" @change="swiperChange" :style="{height:imgheights[current] + 'px'} ">
+					<swiper-item v-for="(swiper,index) in productLists" :key="swiper.id" @click="toAdDetails(swiper.url)">
+						<image @load="imageLoad($event)"  :data-id='index' :src="swiper.image" mode="widthFix"></image>
+					</swiper-item>
+				</swiper>
+			</view>
+		</view>
+		
+		  <!-- -附近商家 -->
+		
+		    <view class="label-line">
+		      <view class='label-line-a'></view>
+		      <view>附近商家</view>
+		      <view class='label-line-a'></view>
+		    </view>
+		
+		  <view  class="top-input-con" id="affix"> 
+		   <view class="ab">
+		    <text>全部美食</text>
+		    <image class='local-img' src="../../images/xiala.png"></image> 
+		    </view>
+		   
+		  <picker bindchange="bindPickerChangeFloor" data-searchType="cataName" >
+		    <view class="ab" style="width:80rpx;padding: 15rpx 30rpx;">
+		
+		    
+		        <view style="float:left;" class="picker">
+		          <text>分类</text>
+		        </view>
+		      
+		    
+		    <image class='local-img' src="../../images/xiala.png"></image> 
+		    </view>
+		  </picker>
+		    <view class="ab" bindtap="bindPickerChangeFloor" data-searchType="star_level" >
+		          <text>智能排序</text>
+		    <image class='local-img' src="../../images/xiala.png"></image> 
+		    </view>
+		
+		    
+		<picker >
+		    <view class="ab" style="width:80rpx;padding: 15rpx 30rpx;">
+		    
+		        <view class="picker" style="float:left;" >
+		          <text>筛选</text>
+		        </view>
+		      
+		    
+		    <image class='local-img' src="../../images/xiala.png"></image> 
+		    </view>
+		    </picker>
+		  </view>
+		
+		
+		<!-- 实体商家列表 -->
 		<block v-for="item in xianmaishang_list" :key="item">
 		<view @click="toShang_detail($event)" :data-shangid="item.xianmai_shangid" style="display: flex;padding: 10upx;margin: 10upx;border-radius: 10upx;background: #fff;align-items: center;">
 			<view style="width:200upx;height:200upx;margin-left: 20upx;">
@@ -102,9 +169,10 @@
 				windowHeight: 0,
 				//获取商家
 				page:1,
-				shang_num:2,
+				shang_num:10,
 				xianmaishang_list:[],
 				shang_list:[],
+				imgUrls:[],
 				//客服相关
 				wxa_show_kefu_button:'',
 				wxa_kefu_button_type:'',
@@ -129,17 +197,20 @@
 		},
 		//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
 		onReachBottom() {
-			consle.log(1213);
+			console.log(1213);
+			this.jiazai();
 		},
 		onLoad() {
 			
 			var shang_list = uni.getStorageSync("shop_location_list");
 			this.shang_list = shang_list;
 			console.log('shang_list',shang_list);
-			this.get_shang_list();
+			
 			
 		},
-		
+		onShow() {
+			this.get_shang_list();
+		},
 		
 		
 		
@@ -406,4 +477,73 @@
 		margin-right: 10rpx;
 
 	}
+	.top-input-con {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10rpx 20rpx;
+	background: #fff;
+	z-index: 2;
+	
+	}
+	.scroll-txt {
+		text-align: center;
+		margin: 10rpx 0rpx;
+		border: 20rpx red;
+		padding: 12rpx 0 12rpx 0;
+		color: #333;
+		background: #e6e6e6;
+		justify-content: center;
+		display: flex;
+		align-items: center;
+		border-radius: 60rpx;
+		height: 50rpx;
+		width: 100%;
+
+	}
+	.label-line {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 28rpx;
+		color: #aaa;
+		margin-bottom: 27rpx;
+		margin-top: 27rpx;
+
+	}
+.label-line-a {
+border: 1px solid #eee;
+width: 30%;
+
+}
+.label-line-a {
+border: 1px solid #eee;
+width: 30%;
+
+}
+.top-input-con {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 10rpx 20rpx;
+background: #fff;
+z-index: 2;
+
+}
+.ab {
+font-size: 22rpx;
+padding: 2% 5%;
+border: 1px solid #ddd;
+border-radius: 20px;
+color: #666;
+
+}
+.local-img {
+width: 24rpx;
+height: 24rpx;
+margin-left: 11rpx;
+padding-top: 1rpx;
+
+}
+
 </style>
