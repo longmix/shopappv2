@@ -60,6 +60,42 @@ module.exports = {
 	    uni.setStorageSync("current_weiduke_token", weiduke_token);
 	},
 	
+	get_location: function () {
+		console.log(123456);
+		coordinate = [];
+	    uni.getLocation({
+			
+	        type: 'wgs84',
+	        success: function (res) {
+				
+	            console.log('当前位置的经度：' + res.longitude);
+	            console.log('当前位置的纬度：' + res.latitude);
+				
+				coordinate['longitude'] = res.longitude;
+				coordinate['latitude'] = res.latitude;
+	        },
+			
+	    });
+		return coordinate;
+	},
+	
+	toRad: function (d) {
+	    return d * Math.PI / 180;
+	},
+	 
+	getDisance: function (lat1, lng1, lat2, lng2) {
+		console.log('开始计算经纬度');
+		
+		var dis = 0;
+		var radLat1 = this.toRad(lat1);
+		var radLat2 = this.toRad(lat2);
+		var deltaLat = radLat1 - radLat2;
+		var deltaLng = this.toRad(lng1) - this.toRad(lng2);
+		var dis = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(deltaLat / 2), 2) + Math.cos(radLat1) *
+		Math.cos(radLat2) * Math.pow(Math.sin(deltaLng / 2),
+		2)));
+		return dis * 6378137;
+	},
 	
 	get_current_weiduke_token: function () {
 	    var weiduke_token = uni.getStorageSync("current_weiduke_token");

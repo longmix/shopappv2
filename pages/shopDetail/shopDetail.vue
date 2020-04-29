@@ -1,60 +1,31 @@
 <template>
 	<view>
 		<view>
-		  <image @load="imageLoad($event)"  :data-id='index'  mode="widthFix" style="width: 100%;" src="../../static/img/1.jpg"></image>
+		  <image @load="imageLoad($event)"  :data-id='index'  mode="widthFix" style="width: 100%;" :src="shoplist.icon_image"></image>
 		</view>
 		
 		<view class="shang_detail_box1">
 			<!-- 头像昵称 -->
 			<view class="head_and_name">
-				<image style="margin-right:10upx;width: 70upx;height:70upx;border-radius: 50%;" src="../../static/img/alipay.png" mode=""></image>
-				<text>涮我吧</text>
+				<image style="margin-right:10upx;width: 70upx;height:70upx;border-radius: 50%;" :src="shoplist.icon_image" mode=""></image>
+				<text>{{shoplist.name}}</text>
 			</view>
 			<!-- 头像昵称结束 -->
 			
 			<!-- 星级 -->
 			<view style="display: flex;justify-content: center;align-items: center;">
 				<text>星级</text>
-				<image style="width: 50upx;height: 50upx;" src="../../static/img/VIP.png" mode=""></image>
-				<image style="width: 50upx;height: 50upx;" src="../../static/img/VIP.png" mode=""></image>
-				<image style="width: 50upx;height: 50upx;" src="../../static/img/VIP.png" mode=""></image>
-				<image style="width: 50upx;height: 50upx;" src="../../static/img/VIP.png" mode=""></image>
-				<image style="width: 50upx;height: 50upx;" src="../../static/img/VIP.png" mode=""></image>
+				<image v-for="item in shoplist.star_level" :key="item" style="width: 50upx;height: 50upx;" src="../../static/img/VIP.png" mode=""></image>
+				
 			</view>
 			<!-- 星级结束 -->
 			
 			<!-- 标签 -->
 			<view style="display:flex;flex-wrap: wrap;" >
-			    <view class="biaoqian">
-				宝宝椅
+			    <view v-for="item in shoplist.spec" :key="item" class="biaoqian">
+				{{item}}
 			    </view>
-				<view class="biaoqian">
-				宝宝椅
-				</view>
-				<view class="biaoqian">
-				宝宝椅
-				</view>
-				<view class="biaoqian">
-				宝宝椅
-				</view>
-				<view class="biaoqian">
-				宝宝椅
-				</view>
-				<view class="biaoqian">
-				宝宝椅
-				</view>
-				<view class="biaoqian">
-				宝宝椅
-			    </view>
-				<view class="biaoqian">
-				宝宝椅
-				</view>
-				<view class="biaoqian">
-				宝宝椅
-			    </view>
-				<view class="biaoqian">
-				宝宝椅
-				</view>
+				
 				
 			  </view>
 			  <!-- 标签结束-->
@@ -76,7 +47,7 @@
 					  
 					  <view style="color:#333;font-size: 28upx;display: flex;align-items: center;">
 						  <image style="width: 30upx;height: 30upx;" src="../../static/img/share/pyq.png"></image>
-						  营业时间|8:00--22:00
+						  营业时间|{{shoplist.yingyeshijian}}
 					  </view>
 					  <image style="width: 30upx;height: 30upx;" src="../../static/img/user/point.png"></image>
 						
@@ -86,7 +57,7 @@
 				  <view style="display: flex;justify-content: space-between;align-items: center;padding: 20upx;">
 					  <view style="color:#333;font-size: 28upx;display: flex;align-items: center;">
 						  <image style="width: 30upx;height: 30upx;" src="../../static/img/user/point.png"></image>
-						  <view style="width: 80%;">上海欧阳路196号法兰桥园区1号楼B102(靠近四达路和吉祥路之间)</view>
+						  <view style="width: 100%;">{{shoplist.address}}</view>
 					  </view>
 					  <view>
 						  <image style="width: 30upx;height: 30upx;" src="../../static/img/x_right.png"></image>
@@ -186,18 +157,19 @@
 			  <view class='biaoti'>优惠活动</view>
 			</view>
 		
-		
+		<block v-if="shoplist.youhui_title == ''">
 			<view style="text-align: center;color:#ccc;font-size:16px;">暂无优惠</view>
 			<view style="padding-bottom: 21px;color: red;width: 94%;margin-left: 13px;" >
 			  <text style="width:20px;"></text>
 			</view>
+		</block>
 		
-		
-			<view style="text-align: left;padding-left:8px;color:#666;font-size:16px;text-align:center;padding:6rpx;font-weight:bold;">sdfsdfsd</view>
+		<block v-if="shoplist.youhui_title != ''">
+			<view style="text-align: left;padding-left:8px;color:#666;font-size:16px;text-align:center;padding:6rpx;font-weight:bold;">{{shoplist.youhui_title}}</view>
 			<view style="padding-top:5px;padding-bottom: 24rpx;color: #666;width: 94%;margin: 0 auto;font-size:14px;text-indent: 54rpx;">
-			<text>dsfsd</text>
+				<text>{{shoplist.youhui_detail}}</text>
 			</view>
-		
+		</block>
 		</view>
 		<!--商家简介-->
 		<view style="border-bottom:6px solid #eee;">
@@ -205,17 +177,18 @@
 		  <image src="../../static/img/category/8.png"></image>
 		  <view class='biaoti'>商家简介</view>
 		</view>
+		<block v-if="shoplist.brief == ''">
+			<view style="text-align: center;color:#ccc;font-size:16px;">暂无简介</view>
+			<view style="padding-bottom: 21px;color: red;width: 94%;margin-left: 13px;" >
+			  <text style="width:20px;"></text>
+			</view>
+		</block>
 		
-		<view style="text-align: center;color:#ccc;font-size:16px;">暂无简介</view>
-		<view style="padding-bottom: 21px;color: red;width: 94%;margin-left: 13px;" >
-		  <text style="width:20px;"></text>
-		</view>
-		
-		
+		<block v-if="shoplist.brief != ''">
 		<view style="padding-top:5px;padding-bottom: 24rpx;color: #666;width: 94%;margin: 0 auto;font-size:14px;text-indent: 54rpx;">
-		  <text>sdfsdfsdf</text>
+		  <text>{{shoplist.brief}}</text>
 		</view>
-		
+		</block>
 		</view>
 	</view>
 </template>
@@ -242,7 +215,9 @@
 				current_citynameLength:'',
 				current_citynameWidth:'',
 				wxa_shop_toutiao_icon:'',
-				
+				shoplist: '',
+				shang_faquan_list: '',
+				spec: '',
 				
 				showHeader:true,
 				afterHeaderOpacity: 1,//不透明度
@@ -357,51 +332,10 @@
 			    },
 			});
 		},
-		onLoad() {
-			var that = this;
+		onLoad(e) {
+			console.log('eeeeeee',e);
+			this.get_shang_detail(e);
 			
-			uni.getSystemInfo({
-			    success: function (res) {
-					
-					that.windowHeight = res.windowHeight;
-					
-			    }
-			});
-			 
-			this.abotapi.set_option_list_str(this, this.callback_function);
-			this.abotapi.get_shop_info_from_server(this.callback_func_for_shop_info);
-			
-			uni.getLocation({
-			    type: 'wgs84',
-			    success: function (res) {
-			        console.log('当前位置的经度：' + res.longitude);
-			        console.log('当前位置的纬度：' + res.latitude);
-			    }
-			});
-			
-			that.get_flash_ad_list();	
-			that.get_flash_img_list();
-			that.initArticleList();
-			that.get_shop_icon_index();
-			
-			that.get_product_list();	
-			
-			// #ifdef APP-PLUS
-			this.nVueTitle = uni.getSubNVueById('homeTitleNvue');
-			this.nVueTitle.onMessage(res => {
-				let type = res.data.type;
-				if(type=='focus'){
-					this.toSearch();
-				}
-			});
-			this.showHeader = false;
-			this.statusHeight = plus.navigator.getStatusbarHeight();
-			// #endif
-			
-			//开启定时器
-			this.Timer();
-			//加载活动专区
-			this.loadPromotion();
 		},
 		
 		
@@ -409,557 +343,7 @@
 		
 		methods: {
 			
-			callback_function:function(that, cb_params){
-				
-				if(!cb_params){
-					return;
-				}
-				
-				console.log('cb_params====', cb_params);
-				
-				
-				//====1、更新界面的颜色
-				this.abotapi.getColor();
-				
-				//====2、其他的设置选项：商品列表风格、头条图标等等
-				if (cb_params.wxa_product_list_style) {
-				    
-				      this.wxa_product_list_style = cb_params.wxa_product_list_style
-				    
-				  }
-				if (cb_params.wxa_shop_toutiao_icon) {
-				  
-				    this.wxa_shop_toutiao_icon = cb_params.wxa_shop_toutiao_icon
-				  
-				}
-				if (cb_params.wxa_show_kucun_in_list) {
-				  
-				    this.wxa_show_kucun_in_list = cb_params.wxa_show_kucun_in_list
-				  
-				}
-				if (cb_params.wxa_show_icon_index_count){
-				  
-				    this.wxa_show_icon_index_count = cb_params.wxa_show_icon_index_count
-				  
-				}
-				if (cb_params.wxa_show_index_icon) {
-				  
-				   this.wxa_show_index_icon = cb_params.wxa_show_index_icon
-				  
-				}
-				if (cb_params.wxa_show_index_swiper) {
-				  
-				    this.wxa_show_index_swiper = cb_params.wxa_show_index_swiper
-				  
-				}
-				if (cb_params.wxa_show_pic_pinpu) {
-				  
-				    this.wxa_show_pic_pinpu = cb_params.wxa_show_pic_pinpu
-				  
-				}
-				if (cb_params.wxa_show_search_input) {
-				  
-				    this.wxa_show_search_input = cb_params.wxa_show_search_input
-				  
-				}
-				if (cb_params.wxa_show_toutiao) {
-				  
-				    this.wxa_show_toutiao = cb_params.wxa_show_toutiao
-				  
-				}
-				if (cb_params.wxa_show_video_player) {
-				  
-				   this.wxa_show_video_player = cb_params.wxa_show_video_player
-				
-				}
-				if (cb_params.wxa_video_player_url) {
-				  
-				    this.wxa_video_player_url = cb_params.wxa_video_player_url
-				  
-				}
-				if (cb_params.wxa_video_screen_url) {
-				  
-				    this.wxa_video_screen_url = cb_params.wxa_video_screen_url
-				  
-				}
-				if (cb_params.wxa_shop_toutiao_flash_line) {
-				  
-				    this.wxa_shop_toutiao_flash_line = cb_params.wxa_shop_toutiao_flash_line
-				  
-				}
-						
-				if (cb_params.wxa_hidden_product_list) {
-				  
-				    this.wxa_hidden_product_list = cb_params.wxa_hidden_product_list
-				  
-				}
-						
-				if (cb_params.wxa_kefu_button_type) {
-				  
-				   this.wxa_kefu_button_type = cb_params.wxa_kefu_button_type
-				  
-				}
-						
-				if (cb_params.wxa_kefu_button_icon) {
-				  
-				   this.wxa_kefu_button_icon = cb_params.wxa_kefu_button_icon
-				  
-				}
-						
-				if (cb_params.wxa_kefu_mobile_num) {
-				  
-				    this.wxa_kefu_mobile_num = cb_params.wxa_kefu_mobile_num
-				  
-				}
-						
-				if (cb_params.wxa_kefu_form_url) {
-				  
-				    this.wxa_kefu_form_url = cb_params.wxa_kefu_form_url
-				  
-				}
-						
-				if (cb_params.wxa_show_kefu_button) {
-				  
-				    this.wxa_show_kefu_button = cb_params.wxa_show_kefu_button
-				  
-				}
-						
-				if (cb_params.wxa_kefu_bg_color) {
-				  
-				    this.wxa_kefu_bg_color = cb_params.wxa_kefu_bg_color
-				  
-				}
-				
-				//====3、获取经纬度坐标，显示当前城市			
-				console.log("百度地图AK：" + cb_params.baidu_map_ak_wxa);
-					
-				/* 获取定位地理位置 */
-				// 新建bmap对象
-					
-				var BMap_obj = new bmap.BMapWX({
-					ak: cb_params.baidu_map_ak_wxa
-				});
-				
-				var that002 = this;
-				
-				var regeocoding_fail = function (data) {
-					console.log('333333', data);
-					console.log('44444', that.ak);
-				};
-				
-				
-				
-				var regeocoding_success = function (data) {
-					console.log('00000', data);
-					
-					this.wxMarkerData = data.wxMarkerData;
-					this.markers = this.wxMarkerData;
-					this.latitude = this.wxMarkerData[0].latitude;
-					this.longitude = this.wxMarkerData[0].longitude;
-					this.address = this.wxMarkerData[0].address;
-					console.log('address',this.address);
-					
-					
-					that002.current_cityname = data.originalData.result.addressComponent.city
-					console.log('this.current_cityname',that002.current_cityname);
-					
-					that002.current_citynameLength = that002.current_cityname.length;
-					console.log('this.current_citynameLength',that002.current_citynameLength);
-					
-					
-					
-					if(that002.current_citynameLength == 2){
-						that002.current_citynameWidth = uni.upx2px(28);
-					}
-					else if(that002.current_citynameLength == 3){
-						that002.current_citynameWidth = uni.upx2px(24);
-					}
-					else if(that002.current_citynameLength == 4){
-						that002.current_citynameWidth = uni.upx2px(20);
-					}
-					
-					this.cityInfo = data.originalData.result.addressComponent,
-					
-					// console.log('with', that.data.imageWidth)
-					
-				
-					uni.setStorage({
-						key:'current_cityname',
-						data:that002.current_cityname,
-						success:function(){}
-					})
-					
-					
-					uni.setStorage({
-						key:'current_latitude',
-						data:this.wxMarkerData[0].latitude,
-						success:function(){}
-					})
-					
-					
-					uni.setStorage({
-						key:'current_longitude',
-						data:this.wxMarkerData[0].longitude,
-						success:function(){}
-					})
-					
-					uni.setStorage({
-						key:'markers',
-						data:this.wxMarkerData,
-						success:function(){}
-					})
-					
-					
-				    // getCurrentPages()[getCurrentPages().length - 1].onLoad()
-				}
-					
-				BMap_obj.regeocoding({
-					fail: regeocoding_fail,
-					success: regeocoding_success
-				});
-				
-				
-				
-			},
 			
-			callback_func_for_shop_info:function(shop_info){
-				var shop_name = shop_info.shop_name;
-				
-				uni.setNavigationBarTitle({
-					title:shop_name
-				})
-				
-			},
-			
-			
-			//猜你喜欢
-			get_product_list:function(){
-				var that = this;
-				this.abotapi.abotRequest({
-				    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
-				    method: 'post',
-				    data: {
-						sellerid:this.abotapi.globalData.default_sellerid,
-						sort: 1,
-						page: that.page,
-						page_size:that.page_size,
-				    },
-				    success: function (res) {
-						console.log('bbafff===', res);
-						
-						if(res.data.code == 1){
-							that.is_OK = false;
-							that.productList = res.data.product_list;
-							if(that.page == 1){
-								console.log('第一页')
-								that.productList = res.data.product_list;
-								console.log('第一页index',that.productList)
-							}
-						}
-				    },
-				    fail: function (e) {
-						uni.showToast({
-							title: '网络异常！',
-							duration: 2000
-						});
-				    },
-				});
-			},
-			
-			//顶部轮播图片请求
-			get_flash_ad_list:function(){
-				var that = this;
-				uni.request({						
-				    url: this.abotapi.globalData.yanyubao_server_url +  '?g=Yanyubao&m=ShopAppWxa&a=get_flash_ad_list',
-				    method: 'post',
-				    data: {
-						sellerid:this.abotapi.globalData.default_sellerid,
-						type:4
-				    },
-				    header: {
-						'Content-Type': 'application/x-www-form-urlencoded'
-				    },
-				    success: function (res) {
-						console.log('uuufff===', res);
-						var productlist = res.data.data;
-						console.log('uuifff===', productlist);
-						that.productLists = productlist
-					  
-				    },
-				    fail: function (e) {
-						uni.showToast({
-							title: '网络异常！',
-							duration: 2000
-						});
-				    },
-				});
-			},
-			
-			
-			//平铺广告请求
-			get_flash_img_list:function(){
-				var that = this;
-				uni.request({									
-				    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_flash_img_list',
-				    method: 'post',
-				    data: {
-						sellerid:this.abotapi.globalData.default_sellerid,
-						type:5
-				    },
-				    header: {
-						'Content-Type': 'application/x-www-form-urlencoded'
-				    },
-				    success: function (res) {
-						console.log('wbafff===', res);
-						that.pictures = res.data.data;
-						console.log('pictures',that.pictures);
-				    },
-				    fail: function (e) {
-						uni.showToast({
-							title: '网络异常！',
-							duration: 2000
-						});
-					},
-				});
-			},
-			
-			
-			initArticleList: function () {
-			
-			    var that = this
-			
-			    //=====更新商户头条=================
-			    var url = this.abotapi.globalData.weiduke_server_url + '?g=Home&m=Yanyubao&a=yingxiao';//+ app.globalData.sellerid;
-			    var data = {
-					id: 'seller',
-					action: 'list',
-					sellerid: this.abotapi.get_sellerid(),
-					currentpage: 1
-			    };
-			
-			    var cbError = function (res) {
-			
-			    };
-			    this.abotapi.httpPost(url, data, this.yingxiao, cbError);
-			    //========End====================
-			
-			},
-			  
-			  
-			articleBack: function (res) {
-			    console.log(res);
-			
-			    var that = this
-			    if (res.data.code == '1') {
-					this.abotapi.set_current_weiduke_token(res.data.token);
-			      
-			      //为显示加载动画添加3秒延时
-					setTimeout(function () {
-			       
-						that.articlelist = res.data.data
-						console.log('that.articlelist',that.articlelist);
-						// loading = !this.data.loading
-			        
-					}, 500)
-			
-					if (that.wxa_shop_toutiao_flash_line == 2) {
-						var data = res.data.data;
-						var articlelist2 = [];
-						for (var i = 0, length = data.length -1; i < (length / 2); i++) {
-							var arr = [data[0], data[1]];
-							articlelist2.push(arr);
-							data.shift()
-							data.shift()
-						}
-			        
-						that.articlelist2 =  articlelist2 
-						console.log('that.articlelist2',that.articlelist2);
-					}
-				}
-			},
-			
-			
-			//商户头条
-			yingxiao:function(){
-				var that = this;
-				uni.request({
-					url : this.abotapi.globalData.weiduke_server_url + '?g=Home&m=Yanyubao&a=yingxiao',
-					method:'POST',
-					data: {
-						id: 'seller',
-						action: 'list',
-						sellerid:this.abotapi.globalData.default_sellerid,
-						currentpage: 1
-					},
-					header:{'Content-Type': 'application/x-www-form-urlencoded'},
-					success:function(res){
-						console.log('res1',res);
-						that.abotapi.set_current_weiduke_token(res.data.token);
-						if(res.data.code == 1){
-								that.articlelist = res.data.data;
-							console.log('articlelist',that.articlelist);
-						}
-						
-						
-						if (that.wxa_shop_toutiao_flash_line == 2) {
-							var data = res.data.data;
-							var articlelist2 = [];
-							for (var i = 0, length = data.length -1; i < (length / 2); i++) {
-								var arr = [data[0], data[1]];
-								articlelist2.push(arr);
-								data.shift()
-								data.shift()
-							}
-						
-							that.articlelist2 =  articlelist2;
-							console.log('that.articlelist2',that.articlelist2);
-						}
-					},
-					fail:function(res){
-						console.log('res2',res);
-					},
-				});
-				
-			},
-			
-			//首页分类图标
-			get_shop_icon_index:function(){
-				var that = this;
-				uni.request({
-					url:this.abotapi.globalData.yanyubao_server_url+'?g=Yanyubao&m=ShopAppWxa&a=get_shop_icon_index',
-					method:'POST',
-					header:{'Content-Type': 'application/x-www-form-urlencoded'},
-					data:{
-						sellerid:this.abotapi.globalData.default_sellerid,
-					},
-					success(res) {
-						// console.log('87878787',res);
-						var data = res.data;
-						console.log("data===",data);
-						if(data.code == 1){
-							that.index_icon_list = data.data;
-						}
-					
-					}
-				});
-			},
-			
-			//点击商户头条进入列表
-			touTiaoList: function (e) {
-			    console.log('点击商户头条进入列表');
-			    uni.navigateTo({
-					url: '/pages/tabBar/home/help/help?sellerid=' + this.abotapi.globalData.default_sellerid
-			    })
-			},
-			
-			//加载Promotion 并设定倒计时,,实际应用中应该是ajax加载此数据。
-			loadPromotion() {
-				let cutTime = new Date();
-				let yy = cutTime.getFullYear(),
-					mm = cutTime.getMonth() + 1,
-					dd = cutTime.getDate();
-				let tmpcountdown = yy + '/' + mm + '/' + dd + ' 23:59:59';
-				let tmpPromotion = [
-					{
-						title: '整点秒杀',
-						ad: '整天秒杀专区',
-						img: '/static/img/s1.jpg',
-						countdown: false
-					},
-					{
-						title: '限时抢购',
-						ad: '每天23点上线',
-						img: '/static/img/s2.jpg',
-						countdown: tmpcountdown
-					} //countdown为目标时间，程序会获取当前时间倒数
-				];
-				//检查倒计时
-				for (let i = 0; i < tmpPromotion.length; i++) {
-					let row = tmpPromotion[i];
-					if (row.countdown) {
-						let h = '00',
-							m = '00',
-							s = '00';
-						let currentTime = new Date();
-						let cutoffTime = new Date(tmpcountdown);
-						if (!(currentTime >= cutoffTime)) {
-							let countTime = parseInt(
-								(cutoffTime.getTime() - currentTime.getTime()) / 1000
-							);
-							h = parseInt(countTime / 3600);
-							m = parseInt((countTime % 3600) / 60);
-							s = countTime % 60;
-							h = h < 10 ? '0' + h : h;
-							m = m < 10 ? '0' + m : m;
-							s = s < 10 ? '0' + s : s;
-						}
-						tmpPromotion[i].countdown = { h: h, m: m, s: s };
-					}
-				}
-				this.Promotion = tmpPromotion;
-			},
-			//定时器
-			Timer() {
-				setInterval(() => {
-					if (this.Promotion.length > 0) {
-						for (let i = 0; i < this.Promotion.length; i++) {
-							let row = this.Promotion[i];
-							if (row.countdown) {
-								if (
-									!(
-										row.countdown.h == 0 &&
-										row.countdown.m == 0 &&
-										row.countdown.s == 0
-									)
-								) {
-									if (row.countdown.s > 0) {
-										row.countdown.s--;
-										row.countdown.s =
-											row.countdown.s < 10
-												? '0' + row.countdown.s
-												: row.countdown.s;
-									} else if (row.countdown.m > 0) {
-										row.countdown.m--;
-										row.countdown.m =
-											row.countdown.m < 10
-												? '0' + row.countdown.m
-												: row.countdown.m;
-										row.countdown.s = 59;
-									} else if (row.countdown.h > 0) {
-										row.countdown.h--;
-										row.countdown.h =
-											row.countdown.h < 10
-												? '0' + row.countdown.h
-												: row.countdown.h;
-										row.countdown.m = 59;
-										row.countdown.s = 59;
-									}
-									this.Promotion[i].countdown = row.countdown;
-								}
-							}
-						}
-					}
-				}, 1000);
-			},
-			//消息列表
-			toMsg(){
-				uni.navigateTo({
-					url:'../../msg/msg'
-				})
-			},
-			//搜索跳转
-			toSearch() {
-				uni.navigateTo({
-					url:'/pages/search/search'				
-				})
-			},
-			
-			//推荐商品跳转
-			toPromotion(e) {
-				console.log('toPromotion-e',e);
-				
-				// uni.showToast({ title: e.title, icon: 'none' });
-			},
 			//商品跳转
 			toGoods(e) {
 				console.log('rrxfff===',e);
@@ -968,11 +352,6 @@
 					url: '/pages/goods/goods?productid='+productid
 				});
 			},
-			//轮播图指示器
-			swiperChange(event) {
-				this.currentSwiper = event.detail.current;
-			},
-			
 			
 			imageLoad: function (e) {//获取图片真实宽度  
 					
@@ -994,25 +373,92 @@
 			     this.imgheights = imgheights
 			   
 			  },
-			
-			
-			//首页导航图标、轮播图、平面广告跳转
-			toAdDetails:function(url){
-				var var_list = Object();
-				console.log('toAdDetails- to url ====>>>>>>', url);
-				this.abotapi.call_h5browser_or_other_goto_url(url, var_list, '');
+			  
+			//获取商家详情
+			get_shang_detail:function(options){
+				console.log('options===', options)
 				
-			},
-			
-			//客服相关
-			//拨打客服电话
-			call_seller: function () {
-			    console.log('wxa_kefu_mobile_num', this.wxa_kefu_mobile_num)
-			    uni.makePhoneCall({
-					phoneNumber: this.wxa_kefu_mobile_num,
-			    })
-			},
-			
+				    var that = this;
+				
+				    var xianmai_shangid 
+				    
+				    if (options.shangid){
+				      xianmai_shangid = options.shangid;
+				    }
+				   
+				
+				    if (options.scene) {
+				      xianmai_shangid = options.scene
+				    }
+				
+				    
+				    
+				    this.xianmai_shangid = xianmai_shangid;
+				    
+				    
+				    
+				// 获取商家详情
+				var post_data = {
+				      sellerid: this.abotapi.globalData.default_sellerid,
+				      xianmai_shangid: this.xianmai_shangid,
+				      }
+				
+				    
+				    this.abotapi.abotRequest({
+				      url:this.abotapi.globalData.yanyubao_server_url+'openapi/XianmaiShangData/get_shang_detail',
+				      data: post_data,
+				      header: {
+				        "Content-Type": "application/x-www-form-urlencoded"
+				      },
+				      method: "POST",
+				      success: function (res) {
+				        console.log('xiangqing', res);
+				        var data=res.data.data;
+				
+				        var spec = data.spec;
+				        if (spec){
+				          data.spec = spec.split(" ");
+				        }else{
+				          var spec = '';
+				        }
+				        
+				
+				        console.log('pppppppppppppppp', data);
+				        
+						that.shoplist = data;
+						that.shang_faquan_list = data.shang_faquan_list;
+						that.spec = spec;
+				        
+				
+				        
+				        // var latitude_longitude = {
+				        //   latitude : data.latitude,
+				        //   longitude : data.longitude,
+				        // };
+				        
+				        // wx.setStorageSync("longitude_" + data.xianmai_shangid + "_latitude", latitude_longitude);
+				        var shang_detail = {
+				          latitude: data.latitude,
+				          longitude: data.longitude,
+				          name: data.name,
+				        };
+				
+				        wx.setStorageSync("shang_" + data.xianmai_shangid + "_detail", shang_detail);
+				
+				        wx.setStorage({
+				          key: 'shoplist',
+				          data: that.shoplist,
+				          success: function (res) {
+				            console.log('异步保存成功')
+				          }
+				        })
+				
+				      },
+				      fail: function (e) {
+				        
+				      },
+				    })
+			}
 		}
 	};
 </script>
