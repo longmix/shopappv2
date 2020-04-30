@@ -22,55 +22,53 @@
 			</view>
 		</view>
 		
-		  <!-- -附近商家 -->
+		<!-- -附近商家 -->
 		
-		    <view class="label-line">
-		      <view class='label-line-a'></view>
-		      <view>附近商家</view>
-		      <view class='label-line-a'></view>
-		    </view>
+		<view class="label-line">
+		  <view class='label-line-a'></view>
+		  <view>附近商家</view>
+		  <view class='label-line-a'></view>
+		</view>
 		
-		  <view  class="top-input-con" id="affix"> 
-		   <view class="ab" @click="shuaxin()">
-		    <text>全部美食</text>
-		    <image class='local-img' src="../../static/img/xiala.png"></image> 
-		    </view>
-		   
-		  <picker @change="bindPickerChangeFloor($event)" :value="index" :range="cata_list" data-searchType="cataName">
-		    <view class="ab" style="width:80rpx;padding: 15rpx 30rpx;">
+		<view  class="top-input-con" id="affix"> 
 		
-		    
-		        <view style="float:left;" class="picker">
-		          <text>分类</text>
-		        </view>
-		      
-		    
-		    <image class='local-img' src="../../static/img/xiala.png"></image> 
-		    </view>
-		  </picker>
-		    <view class="ab" @click="bindPickerChangeFloor($event)" data-searchType="star_level" >
-		          <text>智能排序</text>
-		    <image class='local-img' src="../../static/img/xiala.png"></image> 
-		    </view>
-		
-		    
-		<picker @change="bindPickerChangeFloor($event)" :value="index" :range="spec_list" data-searchType="spec">
-		    <view class="ab" style="width:80rpx;padding: 15rpx 30rpx;">
-		    
-		        <view class="picker" style="float:left;" >
-		          <text>筛选</text>
-				  
-		        </view>
-		      
-		    
-		    <image class='local-img' src="../../static/img/xiala.png"></image> 
-		    </view>
-		    </picker>
-		  </view>
-		
+			<!-- 全部美食按钮 -->
+			<view class="ab" @click="shuaxin()">
+				<text>全部美食</text>
+				<image class='local-img' src="../../static/img/xiala.png"></image> 
+			</view>
+			
+			<!-- 分类按钮 -->
+			<picker @change="bindPickerChangeFloor($event)" :value="index" :range="cata_list" data-searchType="cataName">
+				<view class="ab" style="width:80rpx;padding: 15rpx 30rpx;">
+					<view style="float:left;" class="picker">
+						<text>分类</text>
+					</view>
+					<image class='local-img' src="../../static/img/xiala.png"></image> 
+				</view>
+			</picker>
+			
+			<!-- 智能排序按钮 -->
+			<view class="ab" @click="bindPickerChangeFloor($event)" data-searchType="star_level" >
+				<text>智能排序</text>
+				<image class='local-img' src="../../static/img/xiala.png"></image> 
+			</view>
+
+			<!-- 筛选按钮 -->
+			<picker @change="bindPickerChangeFloor($event)" :value="index" :range="spec_list" data-searchType="spec">
+				<view class="ab" style="width:80rpx;padding: 15rpx 30rpx;">
+					<view class="picker" style="float:left;" >
+						<text>筛选</text>
+					</view>
+					<image class='local-img' src="../../static/img/xiala.png"></image> 
+				</view>
+			</picker>
+		</view>
+		<!-- 筛选按钮结束 -->
 		
 		<!-- 实体商家列表 -->
-		<block v-for="item in xianmaishang_list" :key="item">
+		<view style='background-color: #f4f4f4;padding-top: 10upx;'>
+		<block v-for="item in xianmaishang_list" :key="item" style='background-color: #ffffff;'>
 		<view @click="toShang_detail($event)" :data-shangid="item.xianmai_shangid" style="display: flex;padding: 10upx;margin: 10upx;border-radius: 10upx;background: #fff;">
 			<view style="width:200upx;height:200upx;margin-left: 20upx;">
 				<image style="width:200upx;height:200upx;" :src="item.icon_image"></image>
@@ -111,7 +109,7 @@
 			</view>
 		</view>
 		</block>
-		
+		</view>
 		
 		<!-- <view @click="jiazai()">点击加载更多...</view> -->
 	</view>

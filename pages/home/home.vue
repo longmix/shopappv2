@@ -29,7 +29,7 @@
 		<!-- 轮播图 -->
 		<view class="swiper">
 			<view class="swiper-box">
-				<swiper circular="true" autoplay="true" @change="swiperChange" :style="{height:imgheights[current] + 'upx'} ">
+				<swiper circular="true" autoplay="true" @change="swiperChange" :style="{height:imgheights[current] + 'px'} ">
 					<swiper-item v-for="(swiper,index) in productLists" :key="swiper.id" @click="toAdDetails(swiper.url)">
 						<image @load="imageLoad($event)"  :data-id='index' :src="swiper.image" mode="widthFix"></image>
 					</swiper-item>
@@ -103,8 +103,8 @@
 		</view> -->
 		
 		<!-- 实体商家列表 -->
-		<view v-if="twoArr">
-			<block v-for="item in twoArr" :key="item.message">
+		<view v-if="twoArr" style='background-color: #f4f4f4;padding-top: 20upx;'>
+			<block v-for="item in twoArr" :key="item.message" style="background-color: #ffffff;">
 				
 				<view class="shang_box" @click="toShang_detail($event)" :data-shangid="item.xianmai_shangid">
 					<view style="width:200upx;height:200upx;margin-left: 20upx;">
@@ -607,36 +607,8 @@ export default {
 					
 					var arr = res.data.data;
 					
-					var dis = 0
-					var shop_location_list = [];
-					if(arr){
-						for (var index in arr) {
-								  if (!isNaN(index)) {
-									  
-									dis = that.abotapi.getDisance(that.coordinate['latitude'], that.coordinate['longitude'], arr[index]['latitude'], arr[index]['longitude']);
-						
-									arr[index]['dis'] = dis;
-						
-									dis = Math.ceil(dis)
-						
-									var dis_str = '';
-									if (dis < 1000) {
-									  dis_str = dis + '米'
-									}
-									
-									else {
-									  dis_str = (dis / 1000).toFixed(1) + '公里'
-									}
-									
-									arr[index]['dis_str'] = dis_str;
-						
-									
-						
-									shop_location_list.push(arr[index])
-								  }
-								}
-					}
-					
+					var shop_location_list = that.jisuan_juli(arr);
+					console.log('shop_location_list',shop_location_list);
 			
 					function compare(obj1, obj2) {
 					  var val1 = obj1.dis;
@@ -740,6 +712,37 @@ export default {
 					});
 			    },
 			});
+		},
+		
+		//计算距离
+		jisuan_juli:function(arr){
+			var dis = 0
+			var shop_location_list = [];
+			var that = this;
+			for (var index in arr) {
+				if (!isNaN(index)) {
+				  
+					dis = that.abotapi.getDisance(that.coordinate['latitude'], that.coordinate['longitude'], arr[index]['latitude'], arr[index]['longitude']);
+				
+					arr[index]['dis'] = dis;
+				
+					dis = Math.ceil(dis)
+				
+					var dis_str = '';
+					if (dis < 1000) {
+					  dis_str = dis + '米'
+					}
+				
+					else {
+					  dis_str = (dis / 1000).toFixed(1) + '公里'
+					}
+				
+					arr[index]['dis_str'] = dis_str;
+					
+					shop_location_list.push(arr[index])
+				}
+			}
+			return shop_location_list;
 		},
 		
 		callback_func_for_shop_info:function(shop_info){
@@ -1310,7 +1313,7 @@ page{position: relative;background-color: #fff;}
 }
 
 .category-list {
-	width: 100%;
+	width: 96%;
 	margin: 0 4%;
 	padding: 0 0 30upx 0;
 	border-bottom: solid 2upx #f6f6f6;

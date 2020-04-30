@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view>
+		<view v-if="shoplist.mendian_image">
 		  <image @load="imageLoad($event)"  :data-id='index'  mode="widthFix" style="width: 100%;" :src="shoplist.mendian_image"></image>
 		</view>
 		
@@ -86,7 +86,7 @@
 				</view>
 				<view class="yuding-a">
 					<view style="font-size:25rpx;">点餐快人一步</view>
-					<navigator url="../menuList/menuList" hover-class="navigator-hover">
+					<navigator :url="'../menuList/menuList?is_waimai=0&xianmai_shangid=' + xianmai_shangid" hover-class="navigator-hover">
 						<view style="background:#E86452;">查看菜单</view>
 					</navigator>
 				</view>
@@ -104,10 +104,10 @@
 					</view>
 				<text class='paidui-d'>美食送上门</text>
 				</view>
-				<view class="yuding-a">
+				<view class="yuding-a" >
 					<view style="font-size:25rpx;">在线点餐</view>
-					<navigator url="../menuList/menuList" hover-class="navigator-hover">
-						<view style="background:#75CC47;">外卖配送</view>
+					<navigator style="background:#75CC47;" :url="'../menuList/menuList?is_waimai=1&xianmai_shangid=' + xianmai_shangid" hover-class="navigator-hover" >
+						<view >外卖配送</view>
 					</navigator>
 				</view>
 				<view class="paidui-b">餐厅当前暂停配送</view>
@@ -253,53 +253,7 @@
 		},
 		//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
 		onReachBottom() {
-			var that = this;
-			var page_num = that.page_num;
-			that.page_num ++;
 			
-			if(this.is_OK){
-				uni.showToast({
-					title: '暂无数据',
-					duration: 2000
-				});
-				return;
-			}
-			uni.request({
-			    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
-			    method: 'post',
-			    data: {
-					sellerid:this.abotapi.globalData.default_sellerid,
-					sort: 1,
-					page: that.page_num,
-					page_size:that.page_size,
-			    },
-			    header: {
-					'Content-Type': 'application/x-www-form-urlencoded'
-			    },
-			    success: function (res) {
-					console.log('bbafff===', res);
-					
-					if(res.data.code == 1){
-						that.is_OK = false;
-						that.productList = that.productList.concat(res.data.product_list);
-						console.log('超过一页',that.productList)
-						uni.stopPullDownRefresh();//得到数据后停止下拉刷新
-					}else if(res.data.code == 0){
-						that.is_OK = true;
-						uni.showToast({
-							title: '暂无数据',
-							duration: 2000
-						});
-						return;
-					}
-			    },
-			    fail: function (e) {
-					uni.showToast({
-						title: '暂无数据！',
-						duration: 2000
-					});
-			    },
-			});
 		},
 		onLoad(e) {
 			console.log('eeeeeee',e);
@@ -612,10 +566,10 @@
 	}
 	.yuding-a :first-child{
 	  font-size: 28rpx;
-	  color: #666;
+	  color: #fff;
 	}
 	.yuding-a :nth-child(2){
-	  background:#6EB8F2;
+	  background:rgb(232, 100, 82) none repeat scroll 0% 0%;
 	  font-size:30rpx;
 	  color:#fff;
 	  padding:10rpx 30rpx;
