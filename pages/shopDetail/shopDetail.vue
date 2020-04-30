@@ -86,7 +86,7 @@
 				</view>
 				<view class="yuding-a">
 					<view style="font-size:25rpx;">点餐快人一步</view>
-					<navigator :url="'../menuList/menuList?is_waimai=0&xianmai_shangid=' + xianmai_shangid" hover-class="navigator-hover">
+					<navigator :url="'../menuList/menuList?is_waimai=0&xianmai_shangid='  + xianmai_shangid" hover-class="navigator-hover">
 						<view style="background:#E86452;">查看菜单</view>
 					</navigator>
 				</view>
@@ -214,7 +214,7 @@
 				imgheights: [],
 				current: 0,
 				windowHeight: 0,
-				
+				xianmai_shangid:'',
 				//客服相关
 				wxa_show_kefu_button:'',
 				wxa_kefu_button_type:'',
