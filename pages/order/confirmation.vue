@@ -133,7 +133,9 @@
 			</view>
 		</view>
 		
-		<view class="p_all bg_white df item"  v-for="(item,key) in productData" :key="key">
+		
+		
+		<view class="p_all bg_white df item"  v-for="(item,key) in productData" :key="key" v-if="from_o2owaimai != 1">
 			<view class="photo_name">
 				<view class="cp_photo">			
 					<image mode='widthFix' :src="item.picture"></image>
@@ -164,6 +166,30 @@
 			</view>
 		        
 		</view>
+		
+		
+		
+		
+		<view class="p_all bg_white df item" style="border-bottom: 1rpx solid #e5e5e5;"  >
+		  <view class="d_name">{{shoplist.name}}</view>
+			<view class="photo_name" v-for="item in cartlist">
+			  <view class="cp_photo">			
+				<image :src="item.img"></image>
+			  </view>
+			  <view class="df_1">	
+				<view class="font_14 mt5" style="display: flex;justify-content: space-between;">
+					  <text style="">{{item.name}} <text style="color:#666;font-size:26rpx" v-if="item.spec_list.length">（{{item.spec_list}}）</text></text>
+					  <view>￥ {{item.price}}</view>
+				</view>	
+				<view style="font-size: 26rpx;margin-top: 14px;">x {{item.count}}</view>
+			  </view>
+			</view>	  
+		</view>
+		
+		
+		
+		
+		
 		<view class="w100">
 			
 			<view class="a-dikou" :hidden="wxa_order_hide_balance_zengsong==1">
@@ -171,7 +197,7 @@
 					<view>赠款抵扣</view>
 					<view class="c-dikou">剩余 ￥ {{balance_zengsong}}</view>
 				</view>  
-				<switch class='d-dikou'  :checked="isSwitch1" @change="switch1Change"  data-type="1"/>
+				<switch class='d-dikou'  :checked="isSwitch1" @change="switch1Change($event)"  data-type="1"/>
 			</view>
 		
 		
@@ -180,7 +206,7 @@
 					<view>余额抵扣</view>
 					<view class="c-dikou">剩余 ￥ {{balance}}</view>
 				</view>  
-				<switch class='d-dikou' :checked="isSwitch2" @change="switch1Change" data-type="2" />
+				<switch class='d-dikou' :checked="isSwitch2" @change="switch1Change($event)" data-type="2" />
 			</view>
 		
 			<view class='p_all' style="padding-bottom:0;">
@@ -216,6 +242,10 @@
 <script>
 	
 	var util = require('../../common/util.js');
+	var bmap = require('../../common/SDK/bmap-wx.js');
+	var wxMarkerData = [];
+	
+	
 	export default {
 		data() {
 			return {
@@ -228,7 +258,6 @@
 				deduction:0,	//抵扣价格
 				recinfo:'',
 				address:'',
-				
 				
 				
 				itemData:{},
@@ -267,7 +296,9 @@
 				// recinfo:{id:1,name:"大黑哥",head:"大",tel:"18816881688",address:{region:{"label":"广东省-深圳市-福田区","value":[18,2,1],"cityCode":"440304"},detailed:'深南大道1111号无名摩登大厦6楼A2'},isDefault:true}
 				order_address_detail: {},
 				is_waimai: '',
-				shopId: ''
+				shopId: '',
+				shoplist:'',
+				cartlist: ''
 			};
 		},
 		
@@ -286,18 +317,36 @@
 			
 			
 			 console.log('options============', options)
-			    var is_waimai = options.is_waimai;
+			 
+				if(options.from_o2owaimai){
+					that.from_o2owaimai = options.from_o2owaimai
+				}
+			 
 				
+				var is_waimai = options.is_waimai;
+				that.is_waimai = is_waimai
 				
-				this.is_waimai = is_waimai
-						
-			    
-			    var that = this;
+			   
 			    if (options.shopId) {
 					
-					this.shopId = options.shopId
+					that.shopId = options.shopId
 			    }
 			
+			
+				if(options.total) {			
+					that.all_price = options.total;
+					that.pay_price = options.total,
+					that.pay_price_origin = options.total,
+					that.address_total = options.total
+			    }
+				
+				console.log('that.all_price', that.all_price)
+			
+			    if (options.cart_count) {
+					
+					that.cart_count = options.cart_count
+					
+			    }
 			
 			
 			
@@ -360,6 +409,8 @@
 			this.abotapi.set_option_list_str(this, this.callback_function);
 		},
 		onShow() {
+			 var that = this;
+			var userInfo = this.abotapi.get_user_info();
 			//页面显示时，加载订单信息
 			uni.getStorage({
 				key:'buylist',
@@ -385,6 +436,220 @@
 					})
 				}
 			})
+			
+			console.log('that.is_waimai===',that.is_waimai)
+			//外賣訂單
+			    if (that.is_waimai && (that.is_waimai == 1)) {
+			      //外卖订单，重新计算总价
+			
+			      console.log("longitude=====>>>", 'longitude_' + that.shopId + '_latitude');
+			      // var longitude_latitude = wx.getStorageInfoSync('longitude_' + options.shopId + '_latitude');
+			
+			      var get_str = "shang_" + that.shopId + "_detail";
+			      var shang_detail = uni.getStorageSync(get_str);
+				  
+				  console.log('shang_detail===',shang_detail)
+			
+				  this.shoplist = shang_detail
+			      		
+			     
+			      that.abotapi.abotRequest({
+			        url: that.abotapi.globalData.o2owaimai_server_url + 'openapi/PublicData/get_option_list',
+			        data: {
+			          merchantid: that.shopId,
+			        },
+			        header: {
+			          "Content-Type": "application/x-www-form-urlencoded"
+			        },
+			        method: "POST",
+			        success: function (res) {
+			          var data = res.data;
+			          console.log('ffdaaeeqq===', res);
+			          if (data.code == 1) {
+						that.rider_set_data = data.data
+			          }
+
+			
+			          var thats = that;
+			          var util = util;
+			          thats.abotapi.abotRequest({
+			
+			            url: thats.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_list',
+			            data: {
+			              checkstr: userInfo.checkstr,
+			              userid: userInfo.userid,
+			              sellerid: thats.abotapi.get_sellerid()
+			            },
+			            method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+			            header: {// 设置请求的 header
+			              'Content-Type': 'application/x-www-form-urlencoded'
+			            },
+			
+			            success: function (res) {
+			              console.log('gggggggggggggg==9999', res)
+			              
+			
+			
+			              uni.hideLoading();
+			              // success
+			              var code = res.data.code
+			              var addressList = res.data.addressList;
+			
+			              console.log('gggggggggggggg==8888', res)
+			              console.log('gggggggggggggg==77777', code==2)
+			
+			              var address = [];
+			
+			              if (code == 2) {
+			                console.log('gggggggggggggg==5', !address)
+			                console.log('gggggggggggggg==6', address)
+			                if (!addressList) {
+								
+							  thats.addemt = 0;
+			                  
+			                }
+			              } else {
+			                thats.addemt = 1;
+						
+			              }
+			
+			              if (thats.addemt) {
+			
+			                for (var i = 0; i < addressList.length; i++) {
+			                  if (addressList[i].is_default == 1) {
+			                    var address = addressList[i];
+			                    break;
+			                  }
+			                }
+			
+			
+			                if (address.length == 0) {
+								
+								thats.addemt = 0;
+
+			                }else{
+			                  thats.addemt = 1;
+							 
+			                }
+							
+							thats.address = address;
+			                // 新建百度地图对象 
+			                var BMap = new bmap.BMapWX({
+			                  ak: thats.abotapi.globalData.baidu_map_ak
+			                });
+			                var fail = function (data) {
+			
+			                  console.log(data)
+			                };
+			                var success = function (data) {
+			
+			                  wxMarkerData = data.wxMarkerData;
+							  
+							  thats.makers = wxMarkerData;
+							  thats.latitude = wxMarkerData[0].latitude;
+							  thats.longitude = wxMarkerData[0].longitude;
+			               
+			
+			
+			                  var distance = thats.abotapi.getDisance(shang_detail.latitude, shang_detail.longitude, thats.latitude, thats.longitude);
+			                  
+			                  console.log('distance====',distance)
+			                
+							  
+								thats.distance = distance
+		
+			
+			                  thats.compare_distance();
+			
+			                  //计算配送费
+			                  console.log('traffic_price=ffffff11111==>???', thats.waimai_rmb);
+			                  if (!thats.waimai_rmb) {
+			                    var waimai_rmb = thats.rider_set_data['min_rmb'];
+			                  } else {
+			                    var waimai_rmb = Number(thats.waimai_rmb).toFixed(2);
+			                  }
+			
+			
+			                  var traffic_price = waimai_rmb;
+			
+			
+			
+			                  var price = Number(thats.all_price).toFixed(2);
+			
+			
+			                  var all_price = Number(price) + Number(waimai_rmb);
+			                  var pay_price = Number(price) + Number(waimai_rmb);
+			
+			                  console.log('price===>???', price);
+			                  console.log('traffic_price=11111==>???', traffic_price);
+			                  console.log('waimai_rmb===>???', waimai_rmb);
+			                  console.log('all_price===>???', all_price);
+			                  console.log('pay_price===>???', pay_price);
+
+								thats.caiping_all_price = price;
+								thats.traffic_price = traffic_price;
+								thats.all_price = all_price.toFixed(2);
+								thats.pay_price = pay_price.toFixed(2);
+								thats.pay_price_origin = parseFloat(price);
+								thats.yajin = 0.00;
+				
+			                }
+			
+			
+			                var address = thats.address.province_name + thats.address.city_name + thats.address.district_name + thats.address.address;
+			
+			                // 发起geocoding检索请求 
+			                BMap.geocoding({
+			                  address: address,
+			                  fail: fail,
+			                  success: success,
+			                  iconPath: '../../img/marker_red.png',
+			                  iconTapPath: '../../img/marker_red.png'
+			                });
+			
+			
+			
+			
+			              } else {
+			
+			                var price = Number(thats.all_price).toFixed(2);
+			                console.log('price==============', price)
+							
+							
+							thats.caiping_all_price = price;
+							thats.traffic_price = 0;
+							thats.all_price = price;
+							thats.pay_price = price;
+							thats.pay_price_origin = price;
+							thats.yajin = 0.00;
+			               
+			              }
+			
+			
+			            },
+			            fail: function () {
+			              // fail
+			              uni.showToast({
+			                title: '网络异常！',
+			                duration: 2000
+			              });
+			            }
+			          })
+			
+			
+			
+			
+			
+			
+			        }
+			      })
+			
+			
+			    }
+			
+			
+			
+			
 
 		},
 		onHide() {
@@ -484,177 +749,259 @@
 			
 			},
 			
+			//比较距离获取配送费
 			
+			  compare_distance:function(){
+			
+			    var rider_option = this.rider_set_data;
+			    console.log('=>>>>11222', rider_option);
+			    var distance = (this.distance) / 1000;
+			    
+			    if (distance <= rider_option.min_km){
+					
+					this.waimai_rmb = rider_option.min_rmb;
+					this.btnDisabled = false;
+			      
+			      
+			    } else if (distance > rider_option.min_km && distance <= rider_option.max_km){
+			      
+				  this.waimai_rmb = rider_option.max_rmb;
+				  this.btnDisabled = false;
+			      
+			    } else if (distance > rider_option.max_km){
+			      uni.showToast({
+			        title: '超出配送范围！',
+			        duration: 4000
+			      });
+			      
+				  this.btnDisabled = true;  
+			      
+			    }
+			    
+			  },
 			
 			loadProductDetail:function(){
-				console.log(123123);
 				var that = this;
-			    var userInfo = that.abotapi.get_user_info();
+			    var userInfo = that.abotapi.get_user_info();	
 				
-				if (that.action == "direct_buy") {
-							
-					var data_params = {
-						productid: that.productid,
-						userid: userInfo.userid,
-						checkstr: userInfo.checkstr,
-						action: that.action,
-						amount: that.amount,
-						sellerid: that.abotapi.get_sellerid(),
-					};
-							
-							
-					if (that.ucid){
-						data_params.ucid = that.ucid
-					}
-							
-				  
-					uni.request({
-						url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_queren',
-						method: 'post',
-						data: data_params,
-						header: {
-							'Content-Type': 'application/x-www-form-urlencoded'
-						},
-						success: function (res) {
-							console.log("ORDER_QUEREN_res",res);
-							setTimeout(function () {
-								uni.hideLoading()
-							}, 2000)
-							var code = res.data.code;
-							if(code == 2) {
-								uni.showToast({
-									title: res.data.msg,
-									icon: 'none',
-									duration: 2000,
-								});
-							}else if (code == 1) {
+				if(that.from_o2owaimai != 1){
+				
+					if (that.action == "direct_buy") {
 								
-								var order_address_detail = res.data.address;
-							
-								console.log(order_address_detail);
-							
-								if (!order_address_detail) {
-									that.addemt = 1
-									console.log('that.addemt = 1');
-								}else {
-									that.order_address_detail = order_address_detail;
-									that.addemt = 0
-									console.log('that.addemt = 0');
-								}
-							
-				        
-								that.all_price = res.data.all_price;
-								that.pay_price = res.data.pay_price;
-								that.pay_price_origin = res.data.pay_price;
-				              
-							
-								that.order_address_detail = order_address_detail;
-								that.productData = res.data.orderlist;
-								console.log("that.productData==>>>",that.productData);
-								that.traffic_price = res.data.traffic_price;
-								that.all_product_take_score = res.data.all_product_take_score;
-								that.balance = res.data.balance;
-								that.balance_zengsong = res.data.balance_zengsong;
-							
-								if (res.data.user_coupon_item){
-									that.user_coupon_item = res.data.user_coupon_item
-								}
-							} else {
-								uni.showModal({
-									title: '提示',
-									content: res.data.msg,
-									showCancel: 'false'
-								})            
-							}
-						},
-						fail: function () {
-							// fail
-							uni.showToast({
-								title: '网络异常！',
-								duration: 2000
-							});
+						var data_params = {
+							productid: that.productid,
+							userid: userInfo.userid,
+							checkstr: userInfo.checkstr,
+							action: that.action,
+							amount: that.amount,
+							sellerid: that.abotapi.get_sellerid(),
+						};
+								
+								
+						if (that.ucid){
+							data_params.ucid = that.ucid
 						}
-					});
-				} else {
-					
-					
-							var data_params = {
-								// productid: that.productId,
-								productid: that.productid,
-								userid: userInfo.userid,
-								checkstr: userInfo.checkstr,
-								sellerid: that.abotapi.get_sellerid(),
-							}
-							
-							console.log("data_params",data_params);
-							if(that.ucid){
-								data_params.ucid = that.ucid
-							}
-					
-							uni.request({
-								url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_queren',
-								method: 'post',
-								data: data_params,
-								header: {
-									'Content-Type': 'application/x-www-form-urlencoded'
-								},
-								success: function (res) {
-									console.log("order_queren_res",res);
-									setTimeout(function () {
-										uni.hideLoading()
-									}, 2000)
-									var code = res.data.code;
-									// console.log(res.data);
-					
-									if (code == 1) {
-										var order_address_detail=res.data.address;
-									
-										if (!order_address_detail){
-											that.addemt = 1
-											console.log('that.addemt2 = 1');
-										}else { 
-											that.order_address_detail = order_address_detail;
-											that.addemt = 0
-											console.log('that.addemt2 = 0');
-										}
-					
-										that.all_price = res.data.all_price;
-										that.pay_price = res.data.pay_price;
-										that.pay_price_origin = res.data.pay_price;
-					
-					
-										that.order_address_detail = order_address_detail;
-					
-										that.productData = res.data.orderlist;
-					
-										that.traffic_price = res.data.traffic_price;
-										that.all_product_take_score = res.data.all_product_take_score;
-										that.balance = res.data.balance;
-										that.balance_zengsong = res.data.balance_zengsong;
-					
-										if (res.data.user_coupon_item) {
-											that.user_coupon_item = res.data.user_coupon_item
-										}
-									} else {
-										uni.showModal({
-											title: '提示',
-											content: res.data.msg,
-											showCancel: 'false'
-										}) 
-									}
-								},
-								fail: function () {
-									// fail
+								
+					  
+						uni.request({
+							url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_queren',
+							method: 'post',
+							data: data_params,
+							header: {
+								'Content-Type': 'application/x-www-form-urlencoded'
+							},
+							success: function (res) {
+								console.log("ORDER_QUEREN_res",res);
+								setTimeout(function () {
+									uni.hideLoading()
+								}, 2000)
+								var code = res.data.code;
+								if(code == 2) {
 									uni.showToast({
-										title: '网络异常！',
-										duration: 2000
+										title: res.data.msg,
+										icon: 'none',
+										duration: 2000,
 									});
+								}else if (code == 1) {
+									
+									var order_address_detail = res.data.address;
+								
+									console.log(order_address_detail);
+								
+									if (!order_address_detail) {
+										that.addemt = 1
+										console.log('that.addemt = 1');
+									}else {
+										that.order_address_detail = order_address_detail;
+										that.addemt = 0
+										console.log('that.addemt = 0');
+									}
+								
+							
+									that.all_price = res.data.all_price;
+									that.pay_price = res.data.pay_price;
+									that.pay_price_origin = res.data.pay_price;
+								  
+								
+									that.order_address_detail = order_address_detail;
+									that.productData = res.data.orderlist;
+									console.log("that.productData==>>>",that.productData);
+									that.traffic_price = res.data.traffic_price;
+									that.all_product_take_score = res.data.all_product_take_score;
+									that.balance = res.data.balance;
+									that.balance_zengsong = res.data.balance_zengsong;
+								
+									if (res.data.user_coupon_item){
+										that.user_coupon_item = res.data.user_coupon_item
+									}
+								} else {
+									uni.showModal({
+										title: '提示',
+										content: res.data.msg,
+										showCancel: 'false'
+									})            
 								}
-							});
+							},
+							fail: function () {
+								// fail
+								uni.showToast({
+									title: '网络异常！',
+									duration: 2000
+								});
+							}
+						});
+					} else {
+						
+								var data_params = {
+									// productid: that.productId,
+									productid: that.productid,
+									userid: userInfo.userid,
+									checkstr: userInfo.checkstr,
+									sellerid: that.abotapi.get_sellerid(),
+								}
+								
+								console.log("data_params",data_params);
+								if(that.ucid){
+									data_params.ucid = that.ucid
+								}
+						
+								uni.request({
+									url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_queren',
+									method: 'post',
+									data: data_params,
+									header: {
+										'Content-Type': 'application/x-www-form-urlencoded'
+									},
+									success: function (res) {
+										console.log("order_queren_res",res);
+										setTimeout(function () {
+											uni.hideLoading()
+										}, 2000)
+										var code = res.data.code;
+										// console.log(res.data);
+						
+										if (code == 1) {
+											var order_address_detail=res.data.address;
+										
+											if (!order_address_detail){
+												that.addemt = 1
+												console.log('that.addemt2 = 1');
+											}else { 
+												that.order_address_detail = order_address_detail;
+												that.addemt = 0
+												console.log('that.addemt2 = 0');
+											}
+						
+											that.all_price = res.data.all_price;
+											that.pay_price = res.data.pay_price;
+											that.pay_price_origin = res.data.pay_price;
+						
+						
+											that.order_address_detail = order_address_detail;
+						
+											that.productData = res.data.orderlist;
+						
+											that.traffic_price = res.data.traffic_price;
+											that.all_product_take_score = res.data.all_product_take_score;
+											that.balance = res.data.balance;
+											that.balance_zengsong = res.data.balance_zengsong;
+						
+											if (res.data.user_coupon_item) {
+												that.user_coupon_item = res.data.user_coupon_item
+											}
+										} else {
+											uni.showModal({
+												title: '提示',
+												content: res.data.msg,
+												showCancel: 'false'
+											}) 
+										}
+									},
+									fail: function () {
+										// fail
+										uni.showToast({
+											title: '网络异常！',
+											duration: 2000
+										});
+									}
+								});
+						
+					}
+				
+				}else{
 					
+					if (userInfo) {
+					      uni.request({
+					        url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
+					        data: {
+					          sellerid: that.abotapi.get_sellerid(),
+					          checkstr: userInfo.checkstr,
+					          userid: userInfo.userid
+					        },
+					        header: {
+					          "Content-Type": "application/x-www-form-urlencoded"
+					        },
+					        method: "POST",
+					        success: function (res) {
+					         uni.hideLoading();
+					         
+					          if (res.data.code == "-1") {
+					            uni.navigateTo({
+					              url: '/pages/login/login',
+					            })
+					          } else {
+					            var data = res.data
+					            var data2 = data.data
+					       
+								that.balance = data2.balance;
+								that.balance_zengsong = data2.balance_zengsong;
+					            
+					          }
+					
+					        }
+					      })
+					    }
+					
+					
+					
+					
+					console.log('this.shopId', this.shopId)
+								
+					var is_waimai = this.is_waimai;
+					
+					
+					console.log('this.is_waimai', this.is_waimai)
+					 
+					if(is_waimai == 1){
+					  var cart_list = uni.getStorageSync('waimai_list_' + this.shopId);
+					}else{
+					  var cart_list = uni.getStorageSync('cart_list_' + this.shopId);
+					}
+					
+					this.cartlist = cart_list
+					
+					console.log('this.cartlist==',this.cartlist);
 				}
-				
-				
 				
 		
 			},
@@ -731,115 +1078,264 @@
 			createOrder:function(){
 				this.btnDisabled = true
 			    var that = this;
-			    
-			    if (that.wxa_order_queren_hide_address != 1){
-					if (!that.order_address_detail || (!that.order_address_detail.addressid)){
-						uni.showModal({
-							title: '提示',
-							content: '请填写收货地址',
-							showCancel:false,
-							success(res) {
-								that.btnDisabled = false
-							}
-						})
-			
-						return;
-					}
-			    }
-			
-			
-			    var userInfo = that.abotapi.get_user_info();
-			
-			
-			    console.log(that.pay_price);
-			    console.log(that.all_price);
-			
-			
-			    var data_orderAdd = {
-			
-					buyer_memo: that.remark,
-					all_price: that.all_price,
-					userid: userInfo.userid,
-					checkstr: userInfo.checkstr,
-					traffic_price: that.traffic_price,
-					pay_price: that.pay_price,
-					sellerid: that.abotapi.get_sellerid(),
-					payment: 3
-			    };
+				 var userInfo = that.abotapi.get_user_info();
 				
-				
-			    if (that.all_price == 'undefined'){
-					uni.showModal({
-						title: '提示',
-						content: '参数错误，请重新下单！',
-						showCancel: 'false'
-					})
-					return;
-				}
-			
-			    if (that.all_product_take_score){
-					data_orderAdd.all_product_take_score = that.all_product_take_score
-			    }
-			
-			    if(that.ucid){
-					data_orderAdd.ucid = that.user_coupon_item.ucid;
-					data_orderAdd.coupon_price = that.user_coupon_item.price;
-			    }
-			
-			    
-			    uni.request({
-					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_add',
-					method: 'post',
-					data: data_orderAdd,
-					header: {
-						'Content-Type': 'application/x-www-form-urlencoded'
-					},
-					success: function (res) {
-						console.log("res======",res);
-						//--init data        
-						var data = res.data;
-						if (data.code == 1) {
-						//创建订单成功
-							that.paytype = 'weixin';
-							that.orderid = res.data.orderid;
-							that.orderno = res.data.orderno;
-
-							uni.redirectTo({
-								url: '/pages/pay/payment/payment?orderId=' + that.orderid + '&balance_zengsong_dikou=' + that.balance_zengsong_dikou + '&balance_dikou=' + that.balance_dikou + '&traffic_price=' + that.traffic_price,
-							})
-						}else if (data.code == 2) {
-			
+			    if(!that.from_o2owaimai){
+					if (that.wxa_order_queren_hide_address != 1){
+						if (!that.order_address_detail || (!that.order_address_detail.addressid)){
 							uni.showModal({
 								title: '提示',
-								content: res.data.msg,
+								content: '请填写收货地址',
+								showCancel:false,
 								success(res) {
-									if (res.confirm) {
-										console.log('用户点击确定')
-									} else if (res.cancel) {
-										console.log('用户点击取消')
-									}
+									that.btnDisabled = false
 								}
 							})
-							that.btnDisabled = false
-			
-			          
-						} else {
+								
+							return;
+						}
+					}
+					
+					
+					console.log(that.pay_price);
+					console.log(that.all_price);
+								
+								
+					var data_orderAdd = {
+								
+						buyer_memo: that.remark,
+						all_price: that.all_price,
+						userid: userInfo.userid,
+						checkstr: userInfo.checkstr,
+						traffic_price: that.traffic_price,
+						pay_price: that.pay_price,
+						sellerid: that.abotapi.get_sellerid(),
+						payment: 3
+					};
+					
+					
+					if (that.all_price == 'undefined'){
+						uni.showModal({
+							title: '提示',
+							content: '参数错误，请重新下单！',
+							showCancel: 'false'
+						})
+						return;
+					}
+								
+					if (that.all_product_take_score){
+						data_orderAdd.all_product_take_score = that.all_product_take_score
+					}
+								
+					if(that.ucid){
+						data_orderAdd.ucid = that.user_coupon_item.ucid;
+						data_orderAdd.coupon_price = that.user_coupon_item.price;
+					}
+								
+					
+					that.abotapi.abotRequest({
+						url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_add',
+						method: 'post',
+						data: data_orderAdd,
+						header: {
+							'Content-Type': 'application/x-www-form-urlencoded'
+						},
+						success: function (res) {
+							console.log("res======",res);
+							//--init data        
+							var data = res.data;
+							if (data.code == 1) {
+							//创建订单成功
+								that.paytype = 'weixin';
+								that.orderid = res.data.orderid;
+								that.orderno = res.data.orderno;
+					
+								uni.redirectTo({
+									url: '/pages/pay/payment/payment?orderId=' + that.orderid + '&balance_zengsong_dikou=' + that.balance_zengsong_dikou + '&balance_dikou=' + that.balance_dikou + '&traffic_price=' + that.traffic_price,
+								})
+							}else if (data.code == 2) {
+								
+								uni.showModal({
+									title: '提示',
+									content: res.data.msg,
+									success(res) {
+										if (res.confirm) {
+											console.log('用户点击确定')
+										} else if (res.cancel) {
+											console.log('用户点击取消')
+										}
+									}
+								})
+								that.btnDisabled = false
+								
+					      
+							} else {
+								uni.showToast({
+									title: "下单失败!",
+									duration: 2500
+								});
+								that.btnDisabled = false
+							}
+						},
+						fail: function (e) {
 							uni.showToast({
-								title: "下单失败!",
-								duration: 2500
+								title: '网络异常！err:createProductOrder',
+								duration: 2000
 							});
 							that.btnDisabled = false
 						}
-					},
-					fail: function (e) {
-						uni.showToast({
-							title: '网络异常！err:createProductOrder',
-							duration: 2000
-						});
-						that.btnDisabled = false
-					}
-			    });
+					});
+				} else {
+					if(that.is_waimai && (that.is_waimai == 1)){
+					      if(that.addemt == 0){
+					        uni.showToast({
+					          title: '请添加收货地址',
+					          duration: 2000,
+					          icon: 'none'
+					        })
+					        return;
+					      }
+					    }
+						that.btnDisabled = true;
+					
+					    
+					    var data_orderAdd = {
+					
+					      buyer_memo: that.remark,
+					      all_price: that.all_price,
+					      userid: userInfo.userid,
+					      checkstr: userInfo.checkstr,
+					      //traffic_price: 0,//that.data.traffic_price,
+					      pay_price: that.pay_price,
+					      sellerid: that.abotapi.get_sellerid(),
+					      // all_product_take_score: that.data.all_product_take_score,
+					      payment: 3,
+					      direct_add_new:1,
+					      traffic_price: this.waimai_rmb,
+					    };
+					
+					
+					    if(that.ucid){
+					      data_orderAdd.ucid = that.data.user_coupon_item.ucid;
+					      data_orderAdd.coupon_price = that.data.user_coupon_item.price;
+					    }
+					
+					   
+					   that.abotapi.abotRequest({
+					        url:  that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_add',
+					        method: 'post',
+					        data: data_orderAdd,
+					        header: {
+					          'Content-Type': 'application/x-www-form-urlencoded'
+					        },
+					        success: function (res) {
+					          //--init data        
+					          var data = res.data;
+					          if (data.code == 1) {
+					            //创建订单成功
+								that.paytype = 'weixin';
+								that.orderid = res.data.orderid;
+								that.orderno = res.data.orderno;
+					
+					
+					            that.order_add_new_option_by_key_value();
+					
+					
+					          } else if (data.code == 2) {
+					
+					            uni.showModal({
+					              title: '提示',
+					              content: res.data.msg,
+					              success(res) {
+					                if (res.confirm) {
+					                  console.log('用户点击确定')
+					                } else if (res.cancel) {
+					                  console.log('用户点击取消')
+					                }
+					              }
+					            })
+					
+					           
+					          } else {
+					            uni.showToast({
+					              title: "下单失败!",
+					              duration: 2500
+					            });
+					          }
+					        },
+					        fail: function (e) {
+					          uni.showToast({
+					            title: '网络异常！err:createProductOrder',
+					            duration: 2000
+					          });
+					        }
+					      });
+					    
+					
+					
+				}
+			
 			},
+			
+
+			//首次点餐
+			  order_add_new_option_by_key_value: function (e) {
+			    var that = this;
+			    
+			    var is_waimai = that.is_waimai;
+			
+			    if (is_waimai == 1){
+			      var cartlist = wx.getStorageSync('waimai_list_' + that.shopId);
+			    }else{
+			      var cartlist = wx.getStorageSync('cart_list_' + that.shopId);
+			    }
+			    
+			    
+			    var order_add_new_option_by_key_value = [];
+			
+			    if(that.is_waimai == 1){
+			      order_add_new_option_by_key_value.push({ "key": "o2owaimai_order_product_list", "value": cartlist }, { "key": "o2owaimai_order_xianmai_shangid", "value": that.shopId },  { "key": "xianmai_order_type", "value": that.is_waimai }, { "key": "xianmai_waimai_peisong_price", "value": that.waimai_rmb })
+			    }else {
+			      order_add_new_option_by_key_value.push({ "key": "o2owaimai_order_product_list", "value": cartlist }, { "key": "o2owaimai_order_xianmai_shangid", "value": that.shopId }, { "key": "o2owaimai_xianmai_yajin_orderid", "value": that.shoplist.yajin_orderid }, { "key": "xianmai_order_type", "value": that.is_waimai })
+			    }
+			
+			    var desk_no = uni.getStorageInfoSync('current_desk_no');
+			    if(desk_no){
+			      order_add_new_option_by_key_value.push({"key":"o2owaimai_current_desk_no", "value":desk_no});
+			    }
+			
+			
+			    var order_add_new_option_by_key_value_str = encodeURIComponent(JSON.stringify(order_add_new_option_by_key_value));
+			
+			    that.abotapi.abotRequest({
+			
+			      url: that.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/XianmaiShangData/order_add_new_option_by_key_value',
+			
+			      data: {
+			        sellerid: that.abotapi.get_sellerid(),
+			        orderid: that.orderid,
+			        order_option_key_and_value_str: order_add_new_option_by_key_value_str
+			      },
+			      header: {
+			        "Content-Type": "application/x-www-form-urlencoded"
+			      },
+			      method: "POST",
+			      success: function (res) {
+					  
+					 uni.redirectTo({
+					 	url: '/pages/explore/pay/payment/payment?orderId=' + that.orderid + '&balance_zengsong_dikou=' + that.balance_zengsong_dikou + '&balance_dikou=' + that.balance_dikou + '&traffic_price=' + that.traffic_price,
+					 })
+					  
+			        // that.wxpay();
+			      },
+			      fail: function (res) {
+			        that.setData({
+			          btnDisabled: false,
+			        });
+			      }
+			    })
+			
+			  },
 			
 			
 			//调起微信支付
@@ -948,14 +1444,14 @@
 			
 			  
 			//钱包抵扣
-			switch1Change: function (e) {
-				console.log('eeeeee',e);
+			  switch1Change: function (e, type = null, value = null, that = null) {
+			    console.log('eeeeee', e, type, value)
 			
-				if (type == null && value == null) {
-					var type = e.currentTarget.dataset.type;
-					var value = e.detail.value;
-					var that = this;
-				}
+			    if (type == null && value == null) {
+			       type = e.currentTarget.dataset.type
+			       value = e.detail.value
+			       that = this;
+			    }
 			
 			    var pay_price = that.pay_price;
 			    var pay_price_origin = that.pay_price_origin;   
@@ -967,137 +1463,129 @@
 			
 			
 			    if (type == 1) {
-					if (value) {
-						if (parseFloat(balance_zengsong) < parseFloat(pay_price_origin)) {
+					that.isSwitch1 = value;
+			      if (value) {
+			        if (parseFloat(balance_zengsong) < parseFloat(pay_price_origin)) {
 			
-							if (that.balance_dikou) {
+			          if (that.balance_dikou) {
 			
-								that.switch1Change(null, 2, false, that)
-								pay_price = that.pay_price;
-								balance_zengsong = that.balance_zengsong;
-								balance = that.balance;
-								balance_zengsong_dikou = that.balance_zengsong_dikou;
-								balance_dikou = that.balance_dikou;
-						
-			
-								that.balance_zengsong = util.sprintf("%6.2f", 0);
-								that.pay_price = util.sprintf("%6.2f", parseFloat(pay_price) - parseFloat(balance_zengsong));
-								that.balance_zengsong_dikou = util.sprintf("%6.2f", parseFloat(balance_zengsong));
-								that.isSwitch2 = false;
-							} else {
-								that.balance_zengsong = util.sprintf("%6.2f", 0);
-								that.pay_price = util.sprintf("%6.2f", parseFloat(pay_price) - parseFloat(balance_zengsong));
-								that.balance_zengsong_dikou = util.sprintf("%6.2f", parseFloat(balance_zengsong));
-							}
+			            that.switch1Change(null, 2, false, that)
+			            pay_price = that.pay_price;
+			            balance_zengsong = that.balance_zengsong;
+			            balance = that.balance;
+			            balance_zengsong_dikou = that.balance_zengsong_dikou;
+			            balance_dikou = that.balance_dikou;
 			
 			
+			            
+			              that.balance_zengsong = util.sprintf("%6.2f", 0);
+			              that.pay_price = util.sprintf("%6.2f", parseFloat(pay_price) - parseFloat(balance_zengsong));
+			              that.balance_zengsong_dikou = util.sprintf("%6.2f", parseFloat(balance_zengsong));
+			              that.isSwitch2 = false;
+			            
+			          } else {
+			            
+			              that.balance_zengsong = util.sprintf("%6.2f", 0);
+			              that.pay_price = util.sprintf("%6.2f", parseFloat(pay_price) - parseFloat(balance_zengsong));
+			              that.balance_zengsong_dikou = util.sprintf("%6.2f", parseFloat(balance_zengsong));
+			            
+			          }
 			
-						} else {
 			
-							if (that.balance_dikou) {
 			
-								that.switch1Change(null, 2, false, that)
-								pay_price = that.pay_price;
-								balance_zengsong = that.balance_zengsong;
-								balance = that.balance;
-								balance_zengsong_dikou = that.balance_zengsong_dikou;
-								balance_dikou = that.balance_dikou;
-							}
+			        } else {
 			
-								that.balance_zengsong = util.sprintf("%6.2f", parseFloat(balance_zengsong) - parseFloat(pay_price));
-								that.pay_price = util.sprintf("%6.2f", 0);
-								that.balance_zengsong_dikou = util.sprintf("%6.2f", parseFloat(pay_price));
-								that.isSwitch2 = false;
-						
-						}
-					} else {
+			          if (that.balance_dikou) {
 			
-						that.balance_zengsong = util.sprintf("%6.2f", parseFloat(balance_zengsong) + parseFloat(balance_zengsong_dikou));
-						that.pay_price = util.sprintf("%6.2f", parseFloat(pay_price) + parseFloat(balance_zengsong_dikou));
-						that.balance_dikou = util.sprintf("%6.2f", 0);
-						that.balance_zengsong_dikou = util.sprintf("%6.2f", 0);
-					}
+			            that.switch1Change(null, 2, false, that)
+			            pay_price = that.pay_price;
+			            balance_zengsong = that.balance_zengsong;
+			            balance = that.balance;
+			            balance_zengsong_dikou = that.balance_zengsong_dikou;
+			            balance_dikou = that.balance_dikou;
+			          }
+			
+			          
+			            that.balance_zengsong = util.sprintf("%6.2f", parseFloat(balance_zengsong) - parseFloat(pay_price));
+						that.pay_price = util.sprintf("%6.2f", 0);
+			            that.balance_zengsong_dikou = util.sprintf("%6.2f", parseFloat(pay_price));
+			            that.isSwitch2 = false;
+			          
+			
+			        }
+			      } else {
+			
+			        
+			          that.balance_zengsong = util.sprintf("%6.2f", parseFloat(balance_zengsong) + parseFloat(balance_zengsong_dikou));
+			          that.pay_price = util.sprintf("%6.2f", parseFloat(pay_price) + parseFloat(balance_zengsong_dikou));
+			          that.balance_dikou = util.sprintf("%6.2f", 0);
+			          that.balance_zengsong_dikou = util.sprintf("%6.2f", 0);
+			       
+			      }
 			
 			    } else if (type == 2) {
-					if (value) {
-						if (parseFloat(balance) < parseFloat(pay_price_origin)) {
+					that.isSwitch2 = value;
+			      if (value) {
+					  
+					  
+					  
+			        if (parseFloat(balance) < parseFloat(pay_price_origin)) {
 			     
-							if (that.balance_zengsong_dikou) {
+			          if (that.balance_zengsong_dikou) {
 			
-								that.switch1Change(null, 1, false, that)
-								pay_price = that.pay_price;
-								balance_zengsong = that.balance_zengsong;
-								balance = that.balance;
-								balance_zengsong_dikou = that.balance_zengsong_dikou;
-								balance_dikou = that.balance_dikou;
-						
-			
-								that.balance = util.sprintf("%6.2f", 0);
-								that.pay_price = util.sprintf("%6.2f", parseFloat(pay_price) - parseFloat(balance));
-								that.balance_dikou = util.sprintf("%6.2f", parseFloat(balance));
-								that.isSwitch1 = false;
-							} else {
-								that.balance = util.sprintf("%6.2f", 0);
-								that.pay_price = util.sprintf("%6.2f", parseFloat(pay_price) - parseFloat(balance));
-								that.balance_dikou = util.sprintf("%6.2f", parseFloat(balance));
-							}
+			            that.switch1Change(null, 1, false, that)
+			            pay_price = that.pay_price;
+			            balance_zengsong = that.balance_zengsong;
+			            balance = that.balance;
+			            balance_zengsong_dikou = that.balance_zengsong_dikou;
+			            balance_dikou = that.balance_dikou;
 			
 			
-						} else {
+						that.balance = util.sprintf("%6.2f", 0);
+						that.pay_price = util.sprintf("%6.2f", parseFloat(pay_price) - parseFloat(balance));
+						that.balance_dikou = util.sprintf("%6.2f", parseFloat(balance));
+						that.isSwitch1 = false;
+			            
+			          } else {
+			           
+			              that.balance = util.sprintf("%6.2f", 0);
+			              that.pay_price = util.sprintf("%6.2f", parseFloat(pay_price) - parseFloat(balance));
+			              that.balance_dikou = util.sprintf("%6.2f", parseFloat(balance));
+			            
+			          }
 			
-							if (that.balance_zengsong_dikou) {
 			
-								that.switch1Change(null, 1, false, that)
-								pay_price = that.pay_price;
-								balance_zengsong = that.balance_zengsong;
-								balance = that.balance;
-								balance_zengsong_dikou = that.balance_zengsong_dikou;
-								balance_dikou = that.balance_dikou;
-							}
-							that.balance = util.sprintf("%6.2f", parseFloat(balance) - parseFloat(pay_price));
-							that.pay_price = util.sprintf("%6.2f", 0);
-							that.balance_dikou = util.sprintf("%6.2f", parseFloat(pay_price));
-							that.isSwitch1 = false;
 			
-						}
-					} else {
+			        } else {
 			
-						that.balance = util.sprintf("%6.2f", parseFloat(balance) + parseFloat(balance_dikou));
-						that.pay_price = util.sprintf("%6.2f", parseFloat(pay_price) + parseFloat(balance_dikou));
-						that.balance_zengsong_dikou = util.sprintf("%6.2f", 0);
-						that.balance_dikou = util.sprintf("%6.2f", 0);
-					}
+			          if (that.balance_zengsong_dikou) {
+			
+			            that.switch1Change(null, 1, false, that)
+			            pay_price = that.pay_price;
+			            balance_zengsong = that.balance_zengsong;
+			            balance = that.balance;
+			            balance_zengsong_dikou = that.balance_zengsong_dikou;
+			            balance_dikou = that.balance_dikou;
+			          }
+			          
+						that.balance = util.sprintf("%6.2f", parseFloat(balance) - parseFloat(pay_price));
+						that.pay_price = util.sprintf("%6.2f", 0);
+						that.balance_dikou = util.sprintf("%6.2f", parseFloat(pay_price));
+						that.isSwitch1 = false;
+			
+			        }
+			      } else {
+						        
+			          that.balance = util.sprintf("%6.2f", parseFloat(balance) + parseFloat(balance_dikou));
+			          that.pay_price = util.sprintf("%6.2f", parseFloat(pay_price) + parseFloat(balance_dikou));
+			          that.balance_zengsong_dikou = util.sprintf("%6.2f", 0);
+			          that.balance_dikou = util.sprintf("%6.2f", 0);			        
+			      }
 			
 			    }
-			},
+				
 			
-			//添加order_option
-			order_add_new_option_by_key_value:function(e){
-				var that = this;
-			    
-			    api.abotRequest({
-					url: app.globalData.http_server + '?g=Yanyubao&m=ShopAppWxa&a=order_add_new_option_by_key_value',
-					data: {
-						userid: userInfo.userid,
-						checkstr: userInfo.checkstr,
-						sellerid: that.abotapi.get_sellerid(),
-						orderid: that.orderid,
-						order_option_key_and_value_str: that.order_option_key_and_value_str
-					},
-					header: {
-						"Content-Type": "application/x-www-form-urlencoded"
-					},
-					method: "POST",
-					success: function (res) {
-			        
-					},
-					fail: function (res) {
-			        
-					}
-			    })
-			
-			    
-			},
+			  },
 			
 			
 			
@@ -1354,4 +1842,26 @@
 	  display:flex;
 	  align-items:flex-end;
 	}
+	.p_all {
+		padding: 3%;
+	}
+	.photo_name {
+		display: flex;
+		margin: 2% 0;
+	}
+	.mt5{
+		margin-top: 10upx;
+	}
+	.font_14{
+		font-size: 28upx;
+	}
+	.df_1 {
+		-webkit-box-flex: 1;
+		-webkit-flex: 1;
+		-ms-flex: 1;
+		flex: 1;
+		-webkit-tap-highlight-color: transparent;	
+	}
+
+
 </style>

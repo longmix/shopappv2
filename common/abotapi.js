@@ -38,7 +38,7 @@ module.exports = {
 		yanyubao_server_url: 'https://yanyubao.tseo.cn/',
 		o2owaimai_server_url: 'http://yanyubao.tseo.cn/o2owaimai/index.php/',
 		
-		o2owaimai_server_url: 'https://yanyubao.tseo.cn/hahading/index.php/',
+		// o2owaimai_server_url: 'https://yanyubao.tseo.cn/hahading/index.php/',
 		
 		// xiaochengxu_appid: 'wx60a801e5fb7f9378',
 		xiaochengxu_appid: 'wx00d1e2843c3b3f77',
@@ -50,9 +50,10 @@ module.exports = {
 		//哈哈订
 		default_sellerid: 'fimmUPUPV',
 		
+		
 		is_shop_cart_in_tabbar: 1,
 		
-		
+		baidu_map_ak: 'OTsGerqQhowGSFOWG8c6p86R',
 		userInfo: {},
 	},
 	

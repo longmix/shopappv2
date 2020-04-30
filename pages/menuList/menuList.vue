@@ -136,7 +136,7 @@
 	    </view>
 	    <!-- <view class="total">购物车数量：{{cart.count}}</view> -->
 	  </view>
-	  <form bindtap="submit">
+	  <form @tap="submit">
 	    <button class="yellow"  formType="submit" >去结算</button>
 	  </form>
 	 </view>
@@ -267,12 +267,13 @@ export default {
 		var userInfo;
     // 1232 1231 133 191
 	
-		var shopId = 133;
 		
-		// var shopId = options.xianmai_shangid;
-		// var is_waimai = options.is_waimai;
 		
-		var is_waimai = 0;
+		var shopId = options.xianmai_shangid;
+		var is_waimai = options.is_waimai;
+		
+		// var shopId = 133;
+		// var is_waimai = 1;
 	
 		console.log('ppppppppppppppppppppp', is_waimai);
 		console.log('ppppppppppppppppppppp', options);
@@ -927,10 +928,12 @@ export default {
 		  },
 		  submit: function (e) {
 		    console.log('waimai======>',this.is_waimai);
+			var that = this;
 		    var last_url = '/pages/menu/menu-list?xianmai_shangid=' + this.shopId + '&is_waimai=' + this.is_waimai;
 		    
-		    app.goto_user_login(last_url, 'normal');
-		    
+		    that.abotapi.goto_user_login(last_url, 'normal');
+		    var userInfo = that.abotapi.get_user_info();
+			
 		    if ((!userInfo) || (!userInfo.userid)) {
 		      return;
 		    }
@@ -950,7 +953,7 @@ export default {
 		
 		    var total = this.total
 		    uni.navigateTo({
-		      url: '/pages/order/pay?shopId=' + this.shopId + '&total=' + this.total + '&cart_count=' + this.cart_count + '&is_waimai=' + this.is_waimai
+		      url: '/pages/order/confirmation?shopId=' + this.shopId + '&total=' + this.total + '&cart_count=' + this.cart_count + '&is_waimai=' + this.is_waimai + '&from_o2owaimai=1' 
 		    })
 		  },
 		
