@@ -113,7 +113,7 @@
 		</block>
 		
 		
-		<view @click="jiazai()">点击加载更多...</view>
+		<!-- <view @click="jiazai()">点击加载更多...</view> -->
 	</view>
 	<!-- 实体商家结束 -->
 	
