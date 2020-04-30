@@ -14,7 +14,7 @@
 		<!-- 轮播图 -->
 		<view class="swiper">
 			<view class="swiper-box">
-				<swiper circular="true" autoplay="true"  :style="{height:imgheights[current] + 'px'} ">
+				<swiper circular="true" autoplay="true" @change="swiperChange" :style="{height:imgheights[current] + 'upx'} ">
 					<swiper-item v-for="(swiper,index) in productLists" :key="swiper.id" ><!-- @click="toAdDetails(swiper.url)" -->
 						<image @load="imageLoad($event)"  :data-id='index' :src="swiper.image" mode="widthFix"></image>
 					</swiper-item>
@@ -148,7 +148,7 @@
 				headerTop:null,
 				statusTop:null,
 				nVueTitle:null,
-				productLists:'',
+				productLists:[],
 				pictures:'',
 				yingxiao_list:'',
 				page_num:1,
@@ -176,6 +176,11 @@
 				imgUrls:[],
 				spec_list:[],
 				cata_list:[],
+				coordinate:'',
+				all_cata_list:'',
+				all_spec_list:'',
+				is_xiala:0,
+				sx_shang_list:[],
 				//客服相关
 				wxa_show_kefu_button:'',
 				wxa_kefu_button_type:'',
@@ -200,20 +205,30 @@
 		},
 		//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
 		onReachBottom() {
-			console.log(1213);
-			this.jiazai();
+			
+			if(this.is_xiala == 0){
+				this.jiazai();
+			}
+			
 		},
 		onLoad() {
 			
 			var shang_list = uni.getStorageSync("shop_location_list");
+			
 			this.shang_list = shang_list;
-			console.log('shang_list',shang_list);
+			
 			this.get_gundong_img();
+			
+			//获取经纬度
+			var coordinate = this.abotapi.get_location();
+			this.coordinate = coordinate;
 			this.get_shang_list();
+			this.get_cata_tag();
 		},
 		onShow() {
-			this.get_cata_tag();
-			this.shuaxin();
+			
+			console.log('res.data.data111',this.productLists);
+			//this.shuaxin();
 		},
 		
 		
@@ -231,10 +246,15 @@
 			
 			//获取商家
 			get_shang_list:function(){
-				
+				this.xianmaishang_list = [];
 				var that = this;
 				
-				var shang_list = this.shang_list;
+				var shang_list = that.shang_list;
+				if(that.sx_shang_list.length != 0){
+					
+					var shang_list = that.sx_shang_list;
+				}
+				
 				
 				var page = this.page;
 				var shang_num = this.shang_num;
@@ -259,17 +279,19 @@
 						str: shangid_str
 				    },
 				    success: function (res) {
-						//console.log('get_shang_list===', res.data.xianmai_shang_list);
+						
 						
 						if (res.data.code != 1) {
 						  //显示错误信息
 						  return;
 						}
-								
+						if(res.data.xianmai_shang_list.length < shang_num){
+							that.is_xiala = 1;
+						}
 						var id = 0;
 						
 						for (var shangid in res.data['xianmai_shang_list']) {
-						  //console.log('111111111111111111111111111', res.data['xianmai_shang_list'][shangid]['xianmai_shangid']);
+						  
 								
 						  var xianmai_shangid = res.data['xianmai_shang_list'][shangid]['xianmai_shangid'];
 								
@@ -281,7 +303,7 @@
 							  break;
 							}
 						  }
-						  //console.log(disItem);
+						 
 								
 						  res.data['xianmai_shang_list'][shangid].dis = disItem.dis_str;
 								
@@ -337,38 +359,119 @@
 						'type': 4
 					},
 					success: function (res) {
-						console.log('resresres',res);
+						
 						that.productLists = res.data.data;
+						console.log('res.data.data111',that.productLists);
 					}
 				})
 			},
 			
 			//全部美食
 			shuaxin:function(){
+				var shang_list = uni.getStorageSync("shop_location_list");
+				
+				this.shang_list = shang_list;
+				
 				this.page = 1;
-				this.xianmaishang_list = [];
+				
+				this.sx_shang_list = [];
 				this.get_shang_list();
 			},
 			
 			//筛选功能
 			bindPickerChangeFloor:function(e){
-				var searchType = e.currentTarget.dataset.searchtype;
-				var index = e.target.value;
-				var cata_list = this.cata_list; // 分类列表
+				//缓存中的商家列表
+				
+				var shang_list = uni.getStorageSync("shop_location_list");
+				//this.shang_list = shang_list;
+				
+				
+				//var shang_list = this.shang_list;
+				
+				//var that = this;
+				this.xianmaishang_list = [];
+				//延誉宝返回的分列和特色列表,读缓存
+				var h_cata_lsit = uni.getStorageSync("cata_list");
+				var h_spec_list = uni.getStorageSync("spec_list");
+				
+				
+				
+				//点击带的参数，区分是分类筛选还是智能筛选或者是特色筛选
+				var searchtype = e.currentTarget.dataset.searchtype;
+				
+				var cata_list = this.cata_list; // 分类列表 （渲染的数据）
 				var spec_list = this.spec_list; // 特色列表
-				console.log('触发',searchType);
-				console.log('触发',index);
-				console.log('触发',cata_list);
-				console.log('触发',spec_list);
-				//智能排序
-				if(searchType){
+				var index = e.target.value;//选择了 cata_list 的key
+				
+				if(searchtype == 'star_level'){
+					function compare(obj1, obj2) {
+					  var val1 = obj1.star_level;
+					  var val2 = obj2.star_level;
+					  if (val1 < val2) {
+						return -1;
+					  } else if (val1 > val2) {
+						return 1;
+					  } else {
+						return 0;
+					  }
+					}
 					
+					
+					
+					var paixu_sha = shang_list.sort(compare);
+					this.sx_shang_list = paixu_sha.reverse();
+					
+					
+					
+				}else if(searchtype == 'cataName'){
+					
+					
+					
+					var cata_names = cata_list[index];
+					
+					
+					var xz_cataid = h_cata_lsit[cata_names]; // 选择的分类id
+					
+					//筛选全部商家的分类id为xz_cataid;
+					var xz_shang_list = [];
+					for(var i in shang_list){
+						if(shang_list[i]['cataid'] == xz_cataid){
+							xz_shang_list.push(shang_list[i]);
+						}
+					}
+					this.sx_shang_list = xz_shang_list;
+				}else if(searchtype == 'spec'){
+					var spec_names = spec_list[index];
+					
+					
+					var xz_shang_list = [];
+					for(var i in shang_list){
+						if(shang_list[i]['spec'].indexOf(spec_names) != -1){
+							xz_shang_list.push(shang_list[i]);
+						}
+					}
+					this.sx_shang_list = xz_shang_list;
 				}
 				
+				
+				
+				this.get_shang_list(); //获取商家的详细信息
 				
 			},
 			
 			
+			//去重
+			unique:function(arr){
+				
+				var hash = [];
+				for(var i = 0; i < arr.length; i++) {
+					if(hash.indexOf(arr[i]) == -1) {
+						hash.push(arr[i]);
+					}
+				}
+				return hash;
+		
+			},
 			
 			//获取全部的分类和标签
 			get_cata_tag:function(){
@@ -384,7 +487,7 @@
 					},
 					method: "POST",
 					success: function (res) {
-						console.log('99999996666666666', res);
+						
 						that.cata_list = res.data.data;
 
 					}
@@ -400,16 +503,16 @@
 					},
 					method: "POST",
 					success: function (res) {
-					console.log('45678912345679', res);
-
+					
 					if (res.data.code != 1) {
 					//显示错误信息
 					return;
 					}
-					that.spec_list = res.data.data;
-					// that.setData({
-					// 
-					// });
+					
+					var spec_list = that.unique(res.data.data);
+					
+					that.spec_list = spec_list;
+					
 
 					}
 				})
@@ -418,7 +521,7 @@
 			
 			//实体商家跳转
 			toShang_detail(e) {
-				console.log('rrxfff===',e.currentTarget.dataset.shangid);
+				
 				var shangid = e.currentTarget.dataset.shangid;
 				uni.navigateTo({
 					url: '/pages/shopDetail/shopDetail?shangid='+shangid
@@ -439,11 +542,10 @@
 					},
 					header:{'Content-Type': 'application/x-www-form-urlencoded'},
 					success:function(res){
-						console.log('res1',res);
+						
 						that.abotapi.set_current_weiduke_token(res.data.token);
 						if(res.data.code == 1){
 								that.articlelist = res.data.data;
-							console.log('articlelist',that.articlelist);
 						}
 						
 						
@@ -458,11 +560,11 @@
 							}
 						
 							that.articlelist2 =  articlelist2;
-							console.log('that.articlelist2',that.articlelist2);
+							
 						}
 					},
 					fail:function(res){
-						console.log('res2',res);
+						
 					},
 				});
 				
@@ -479,9 +581,9 @@
 						sellerid:this.abotapi.globalData.default_sellerid,
 					},
 					success(res) {
-						// console.log('87878787',res);
+						
 						var data = res.data;
-						console.log("data===",data);
+						
 						if(data.code == 1){
 							that.index_icon_list = data.data;
 						}
@@ -492,7 +594,7 @@
 			
 			//商品跳转
 			toGoods(e) {
-				console.log('rrxfff===',e);
+				
 				var productid = e.productid;
 				uni.navigateTo({
 					url: '/pages/goods/goods?productid='+productid
@@ -501,12 +603,13 @@
 			
 			//轮播图指示器
 			swiperChange(event) {
+				console.log('swiperChangeswiperChange',event);
 				this.currentSwiper = event.detail.current;
 			},
 			
 			
 			imageLoad: function (e) {//获取图片真实宽度  
-					
+					console.log('eeeeeeeeee', e)
 			    var imgwidth = e.detail.width,
 			      imgheight = e.detail.height,
 			      //宽高比  
@@ -516,11 +619,12 @@
 			    var viewHeight = this.windowHeight / ratio;
 			    var imgheight = viewHeight;
 			    var imgheights = this.imgheights;
+				
 			    //把每一张图片的对应的高度记录到数组里  
 			    imgheights[e.target.dataset.id] = uni.upx2px(imgheight);
 		
-			    console.log(imgheights);
-			
+			    
+			console.log('imgheights',imgheights);
 		
 			     this.imgheights = imgheights
 			   
@@ -530,7 +634,7 @@
 			//首页导航图标、轮播图、平面广告跳转
 			toAdDetails:function(url){
 				var var_list = Object();
-				console.log('toAdDetails- to url ====>>>>>>', url);
+				
 				this.abotapi.call_h5browser_or_other_goto_url(url, var_list, '');
 				
 			},

@@ -29,7 +29,7 @@
 		<!-- 轮播图 -->
 		<view class="swiper">
 			<view class="swiper-box">
-				<swiper circular="true" autoplay="true" @change="swiperChange" :style="{height:imgheights[current] + 'px'} ">
+				<swiper circular="true" autoplay="true" @change="swiperChange" :style="{height:imgheights[current] + 'upx'} ">
 					<swiper-item v-for="(swiper,index) in productLists" :key="swiper.id" @click="toAdDetails(swiper.url)">
 						<image @load="imageLoad($event)"  :data-id='index' :src="swiper.image" mode="widthFix"></image>
 					</swiper-item>
@@ -597,6 +597,8 @@ export default {
 			    },
 			    success: function (res) {
 					
+					uni.setStorageSync("cata_list", res.data.all_cata_list);
+					uni.setStorageSync("spec_list", res.data.all_spec_list);
 					if (res.data.code != 1) {
 					    //显示错误信息
 					
@@ -651,7 +653,10 @@ export default {
 					
 					
 					var paixu_shanglist = shop_location_list.sort(compare);
+					
 					uni.setStorageSync("shop_location_list", paixu_shanglist);
+					
+					//console.log('要魂村的',);
 					var shangid_str = '';//获取商家前十个的商家id
 					for(var i = 0; i < 10;i++){
 						if(!paixu_shanglist[i]){
@@ -1093,6 +1098,7 @@ export default {
 		},
 		//轮播图指示器
 		swiperChange(event) {
+			console.log('swiperChangeswiperChange',event);
 			this.currentSwiper = event.detail.current;
 		},
 		
