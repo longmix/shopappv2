@@ -14,7 +14,7 @@
 		<!-- 轮播图 -->
 		<view class="swiper">
 			<view class="swiper-box">
-				<swiper circular="true" autoplay="true" @change="swiperChange" :style="{height:imgheights[current] + 'upx'} ">
+				<swiper circular="true" autoplay="true"  :style="{height:imgheights[current] + 'upx'} ">
 					<swiper-item v-for="(swiper,index) in productLists" :key="swiper.id" ><!-- @click="toAdDetails(swiper.url)" -->
 						<image @load="imageLoad($event)"  :data-id='index' :src="swiper.image" mode="widthFix"></image>
 					</swiper-item>
@@ -148,7 +148,7 @@
 				headerTop:null,
 				statusTop:null,
 				nVueTitle:null,
-				productLists:[],
+				productLists:'',
 				pictures:'',
 				yingxiao_list:'',
 				page_num:1,
@@ -205,7 +205,7 @@
 		},
 		//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
 		onReachBottom() {
-			
+			console.log(this.is_xiala);
 			if(this.is_xiala == 0){
 				this.jiazai();
 			}
@@ -222,12 +222,12 @@
 			//获取经纬度
 			var coordinate = this.abotapi.get_location();
 			this.coordinate = coordinate;
-			this.get_shang_list();
-			this.get_cata_tag();
+			
 		},
 		onShow() {
+			this.get_shang_list();
+			this.get_cata_tag();
 			
-			console.log('res.data.data111',this.productLists);
 			//this.shuaxin();
 		},
 		
@@ -246,7 +246,7 @@
 			
 			//获取商家
 			get_shang_list:function(){
-				this.xianmaishang_list = [];
+				
 				var that = this;
 				
 				var shang_list = that.shang_list;
@@ -361,19 +361,19 @@
 					success: function (res) {
 						
 						that.productLists = res.data.data;
-						console.log('res.data.data111',that.productLists);
 					}
 				})
 			},
 			
 			//全部美食
 			shuaxin:function(){
+				this.is_xiala = 0;
 				var shang_list = uni.getStorageSync("shop_location_list");
 				
 				this.shang_list = shang_list;
 				
 				this.page = 1;
-				
+				this.xianmaishang_list = [];
 				this.sx_shang_list = [];
 				this.get_shang_list();
 			},
@@ -381,12 +381,14 @@
 			//筛选功能
 			bindPickerChangeFloor:function(e){
 				//缓存中的商家列表
-				
+				this.is_xiala = 0;
 				var shang_list = uni.getStorageSync("shop_location_list");
 				//this.shang_list = shang_list;
 				
 				
 				//var shang_list = this.shang_list;
+				
+				
 				
 				//var that = this;
 				this.xianmaishang_list = [];
@@ -454,7 +456,7 @@
 				}
 				
 				
-				
+				this.page = 1;
 				this.get_shang_list(); //获取商家的详细信息
 				
 			},
@@ -603,28 +605,26 @@
 			
 			//轮播图指示器
 			swiperChange(event) {
-				console.log('swiperChangeswiperChange',event);
 				this.currentSwiper = event.detail.current;
 			},
 			
 			
 			imageLoad: function (e) {//获取图片真实宽度  
-					console.log('eeeeeeeeee', e)
+					
 			    var imgwidth = e.detail.width,
 			      imgheight = e.detail.height,
 			      //宽高比  
 			      ratio = imgwidth / imgheight;
-			    console.log(imgwidth, imgheight)
+			    
 			    //计算的高度值  
 			    var viewHeight = this.windowHeight / ratio;
 			    var imgheight = viewHeight;
 			    var imgheights = this.imgheights;
-				
 			    //把每一张图片的对应的高度记录到数组里  
 			    imgheights[e.target.dataset.id] = uni.upx2px(imgheight);
 		
 			    
-			console.log('imgheights',imgheights);
+			
 		
 			     this.imgheights = imgheights
 			   
