@@ -337,7 +337,7 @@ export default {
 		
 		var coordinate = this.abotapi.get_location();
 		this.coordinate = coordinate;
-		console.log('经纬度',coordinate);
+		
 		
 		that.get_flash_ad_list();	
 		that.get_flash_img_list();
@@ -346,7 +346,7 @@ export default {
 		
 		that.get_product_list();	
 		this.call_back_get_shang_list();
-		console.log(123456123);
+		
 		// #ifdef APP-PLUS
 		this.nVueTitle = uni.getSubNVueById('homeTitleNvue');
 		this.nVueTitle.onMessage(res => {
@@ -596,7 +596,7 @@ export default {
 					sellerid:this.abotapi.globalData.default_sellerid,
 			    },
 			    success: function (res) {
-					
+					console.log('resss',res);
 					uni.setStorageSync("cata_list", res.data.all_cata_list);
 					uni.setStorageSync("spec_list", res.data.all_spec_list);
 					if (res.data.code != 1) {
@@ -1101,7 +1101,7 @@ export default {
 		},
 		//轮播图指示器
 		swiperChange(event) {
-			console.log('swiperChangeswiperChange',event);
+			
 			this.currentSwiper = event.detail.current;
 		},
 		
