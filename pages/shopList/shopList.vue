@@ -14,8 +14,8 @@
 		<!-- 轮播图 -->
 		<view class="swiper">
 			<view class="swiper-box">
-				<swiper circular="true" autoplay="true"  :style="{height:imgheights[current] + 'upx'} ">
-					<swiper-item v-for="(swiper,index) in productLists" :key="swiper.id" ><!-- @click="toAdDetails(swiper.url)" -->
+				<swiper circular="true" autoplay="true"  :style="{height:imgheights[current] + 'px'} ">
+					<swiper-item v-for="(swiper,index) in productLists" :key="swiper.id"><!-- @click="toAdDetails(swiper.url)" -->
 						<image @load="imageLoad($event)"  :data-id='index' :src="swiper.image" mode="widthFix"></image>
 					</swiper-item>
 				</swiper>
@@ -210,12 +210,19 @@
 			
 		},
 		onLoad() {
-			
+			var that = this;
+			uni.getSystemInfo({
+			    success: function (res) {
+					
+					that.windowHeight = res.windowHeight;
+					
+			    }
+			});
 			var shang_list = uni.getStorageSync("shop_location_list");
 			
 			this.shang_list = shang_list;
 			
-			this.get_gundong_img();
+			
 			
 			//获取经纬度
 			var coordinate = this.abotapi.get_location();
@@ -225,8 +232,11 @@
 		onShow() {
 			this.get_shang_list();
 			this.get_cata_tag();
-			
+			this.get_gundong_img();
 			//this.shuaxin();
+			console.log('imgheights2222',this.imgheights);
+			console.log('imgheights2222',this.current);
+			
 		},
 		
 		
@@ -383,26 +393,26 @@
 				var shang_list = uni.getStorageSync("shop_location_list");
 				//this.shang_list = shang_list;
 				
-				
+				console.log('shang_list11',shang_list);
 				//var shang_list = this.shang_list;
 				
 				
 				
 				//var that = this;
-				this.xianmaishang_list = [];
+				
 				//延誉宝返回的分列和特色列表,读缓存
 				var h_cata_lsit = uni.getStorageSync("cata_list");
 				var h_spec_list = uni.getStorageSync("spec_list");
 				
-				
-				
+				console.log('h_cata_lsit11',h_cata_lsit);
+				console.log('h_spec_list11',h_spec_list);
 				//点击带的参数，区分是分类筛选还是智能筛选或者是特色筛选
 				var searchtype = e.currentTarget.dataset.searchtype;
 				
 				var cata_list = this.cata_list; // 分类列表 （渲染的数据）
 				var spec_list = this.spec_list; // 特色列表
 				var index = e.target.value;//选择了 cata_list 的key
-				
+				console.log('searchtype',searchtype);
 				if(searchtype == 'star_level'){
 					function compare(obj1, obj2) {
 					  var val1 = obj1.star_level;
@@ -452,8 +462,8 @@
 					}
 					this.sx_shang_list = xz_shang_list;
 				}
-				
-				
+				console.log('xz_shang_list',xz_shang_list);
+				this.xianmaishang_list = [];
 				this.page = 1;
 				this.get_shang_list(); //获取商家的详细信息
 				
@@ -608,16 +618,20 @@
 			
 			
 			imageLoad: function (e) {//获取图片真实宽度  
-					
+					console.log(e);
 			    var imgwidth = e.detail.width,
 			      imgheight = e.detail.height,
+				  
 			      //宽高比  
 			      ratio = imgwidth / imgheight;
-			    
+			    console.log(imgwidth);
+			    console.log('this.windowHeight',this.windowHeight);
 			    //计算的高度值  
 			    var viewHeight = this.windowHeight / ratio;
 			    var imgheight = viewHeight;
 			    var imgheights = this.imgheights;
+				console.log('imgheights',imgheights);
+				console.log('imgheight',imgheight);
 			    //把每一张图片的对应的高度记录到数组里  
 			    imgheights[e.target.dataset.id] = uni.upx2px(imgheight);
 		
