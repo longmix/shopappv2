@@ -36,7 +36,7 @@ module.exports = {
 	globalData:{
 		weiduke_server_url: 'https://cms.weiduke.com/',
 		yanyubao_server_url: 'https://yanyubao.tseo.cn/',
-		o2owaimai_server_url: 'https://yanyubao.tseo.cn/o2owaimai/index.php/',
+		o2owaimai_server_url: 'https://app.tseo.cn/o2owaimai/index.php/',
 		
 		// o2owaimai_server_url: 'https://yanyubao.tseo.cn/hahading/index.php/',
 		
