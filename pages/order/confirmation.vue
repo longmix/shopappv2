@@ -1294,14 +1294,14 @@
 			    var order_add_new_option_by_key_value = [];
 			
 			    if(that.is_waimai == 1){
-			      order_add_new_option_by_key_value.push({ "key": "o2owaimai_order_product_list", "value": cartlist }, { "key": "o2owaimai_order_xianmai_shangid", "value": that.shopId },  { "key": "xianmai_order_type", "value": that.is_waimai }, { "key": "xianmai_waimai_peisong_price", "value": that.waimai_rmb })
+			      order_add_new_option_by_key_value.push({ "key": "hahading_order_product_list", "value": cartlist }, { "key": "hahading_order_xianmai_shangid", "value": that.shopId },  { "key": "xianmai_order_type", "value": that.is_waimai }, { "key": "xianmai_waimai_peisong_price", "value": that.waimai_rmb })
 			    }else {
-			      order_add_new_option_by_key_value.push({ "key": "o2owaimai_order_product_list", "value": cartlist }, { "key": "o2owaimai_order_xianmai_shangid", "value": that.shopId }, { "key": "o2owaimai_xianmai_yajin_orderid", "value": that.shoplist.yajin_orderid }, { "key": "xianmai_order_type", "value": that.is_waimai })
+			      order_add_new_option_by_key_value.push({ "key": "hahading_order_product_list", "value": cartlist }, { "key": "hahading_order_xianmai_shangid", "value": that.shopId }, { "key": "hahading_xianmai_yajin_orderid", "value": that.shoplist.yajin_orderid }, { "key": "xianmai_order_type", "value": that.is_waimai })
 			    }
 			
 			    var desk_no = uni.getStorageInfoSync('current_desk_no');
 			    if(desk_no){
-			      order_add_new_option_by_key_value.push({"key":"o2owaimai_current_desk_no", "value":desk_no});
+			      order_add_new_option_by_key_value.push({"key":"hahading_current_desk_no", "value":desk_no});
 			    }
 			
 			
