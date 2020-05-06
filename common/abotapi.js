@@ -70,7 +70,7 @@ module.exports = {
 	
 	get_location: function () {
 		console.log(123456);
-		coordinate = [];
+		var coordinate = [];
 	    uni.getLocation({
 			
 	        type: 'wgs84',
