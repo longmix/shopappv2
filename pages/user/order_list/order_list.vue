@@ -24,11 +24,11 @@
 						</view>
 					</view>
 					<view class="shop df bordermax" v-for="(item,index) in orderList" :key="index" style='display: block;'>
-						<navigator :url="'../order/detail?orderId='+item.orderid" class="borderb font_14 orderno">
+						<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="borderb font_14 orderno">
 							订单编号：{{item.orderno}}
 							<view style="float:right;color: #666;font-size: 26rpx;">{{item.status_str}}</view>
 						</navigator> 
-						<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../product/detail?productid='+product_item.productid"  class="df_1 borb" style='display:flex;' v-for="(product_item,index2) in item.orderProduct" :key="index2" v-for-item="product_item">
+						<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../product/detail?productid='+product_item.productid"  class="df_1 borb" style='display:flex;' v-for="(product_item,index2) in item.orderProduct" :key="index2">
 							<image class="sh_slt" :src="product_item.picture"></image>             
 							<view class="sp_text">
 								<view class="sp_tit ovh1">{{product_item.name}}</view>
@@ -46,10 +46,9 @@
 							<view>实际支付：<view class='fl_r'>￥{{item.pay_price}}</view></view>
 							<!-- <view>支付方式：<view class='fl_r'>{{item.payment_name}}</view></view> -->
 						</view>
-						<view v-if="from_o2o==1 && item.order_option.o2o_room_tuan_yuding">预订日期：{{item.order_option.o2o_room_tuan_yuding}}</view>
 						<view v-if="item.buyer_memo != ''">备注：{{item.buyer_memo}}</view>
 						<view  class="btn_b">
-							<navigator :url="'../order/detail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
+							<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
 						</view> 
 					</view>
 				</swiper-item>
@@ -64,7 +63,7 @@
 					</view>
 
 					<view class="shop df bordermax" v-for="(item,index) in orderList0" :key="index" style='display: block;'>
-						<navigator :url="'../order/detail?orderId='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator>
+						<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator>
 						<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../product/detail?productid='+product_item.productid" class="df_1 borb" style='display:flex;' v-for="(product_item,index) in item.orderProduct" v-for-item="product_item" :key="index">    
 							<image class="sh_slt" :src="product_item.picture"></image>         
 							<view class="sp_text">
@@ -82,8 +81,7 @@
 							<view>赠款支付：<view class='fl_r'>￥{{item.coupon_price}}</view></view>    
 							<view>实际支付：<view class='fl_r'>￥{{item.pay_price}}</view></view>
 							<!-- <view>支付方式：<view class='fl_r'>{{item.payment_name}}</view></view> -->
-						</view>
-						<view v-if="from_o2o==1 && item.order_option.o2o_room_tuan_yuding">预订日期：{{item.order_option.o2o_room_tuan_yuding}}</view>
+						</view>						
 						<view v-if="item.buyer_memo != ''">备注：{{item.buyer_memo}}</view>
 						<view class="btn_b">
 							<navigator :url="'/pages/pay/payment/payment?orderId='+item.orderid+'&balance_zengsong_dikou='+item.coupon_price+'&balance_dikou='+item.yue_price" class="font_12 fl_r mr_5 btn_min">支付订单</navigator>
@@ -101,8 +99,8 @@
 						</view>
 					</view>
 					<view class="shop df bordermax" v-for="(item,index) in orderList1" :key="index" style='display: block;'>
-						<navigator :url="'../order/detail?orderId='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator> 
-						<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../product/detail?productid='+product_item.productid" class="df_1 borb" style='display:flex;' v-for="(product_item,index) in item.orderProduct" v-for-item="product_item" :key="index">
+						<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator> 
+						<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../product/detail?productid='+product_item.productid" class="df_1 borb" style='display:flex;' v-for="(product_item,index) in item.orderProduct"  :key="index">
 							<image class="sh_slt" :src="product_item.picture"></image>             
 							<view class="sp_text">
 								<view class="sp_tit ovh1">{{product_item.name}}</view>
@@ -120,11 +118,10 @@
 							<view>实际支付：<view class='fl_r'>￥{{item.pay_price}}</view></view>
 							<!-- <view>支付方式：<view class='fl_r'>{{item.payment_name}}</view></view> -->
 						</view>
-						<view v-if="from_o2o==1 && item.order_option.o2o_room_tuan_yuding">预订日期：{{item.order_option.o2o_room_tuan_yuding}}</view>
 						<view v-if="item.buyer_memo != ''">备注：{{item.buyer_memo}}</view>
 						<view  class="btn_b">
 							<navigator class="font_12 btn_min fl_r" @tap="refundOrder" v-if="wxa_order_hide_daishouhuo_refund == 0" :data-order-id="item.orderid">申请退款</navigator>
-							<navigator :url="'../order/detail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
+							<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
 						</view> 
 					</view>
 				</swiper-item>
@@ -139,7 +136,7 @@
 						</view>
 					</view>
 					<view class="shop df bordermax" v-for="(item,index) in orderList2" :key="index" style='display: block;'>
-						<navigator :url="'../order/detail?orderId='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator>      
+						<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator>      
 						<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../product/detail?productid='+product_item.productid" class="df_1 borb" style='display:flex;' v-for="(product_item,index) in item.orderProduct" :for-item="product_item" :key="index"> 
 							<image class="sh_slt" :src="product_item.picture"></image>           
 							<view class="sp_text">
@@ -159,12 +156,11 @@
 							<view>实际支付：<view class='fl_r'>￥{{item.pay_price}}</view></view>
 							<!-- <view>支付方式：<view class='fl_r'>{{item.payment_name}}</view></view> -->
 						</view>
-						<view v-if="from_o2o==1 && item.order_option.o2o_room_tuan_yuding">预订日期：{{item.order_option.o2o_room_tuan_yuding}}</view>
 						<view v-if="item.buyer_memo != ''">备注：{{item.buyer_memo}}</view>
 						<view  class="btn_b">
 							<navigator v-if="wxa_order_hide_daishouhuo_refund_after == 0" class="font_12 btn_min fl_r" :url="'tuihuo?orderId='+item.orderid">申请退款</navigator>
 							<view class="font_12 btn_min fl_r mr_5" @tap="recOrder" :data-order-id="item.orderid">确认收货</view>
-							<navigator :url="'../order/detail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
+							<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
 						</view>
 					</view>
 				</swiper-item>
@@ -181,7 +177,7 @@
 						</view> 
 					</view>
 					<view class="shop df bordermax" v-for="(item,index) in orderList3" :key="index" style='display: block;'>        
-						<navigator :url="'../order/detail?orderId='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator>
+						<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator>
 						<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../product/detail?productid='+product_item.productid" class="df_1 borb" style='display:flex;' v-for="(product_item,index) in item.orderProduct" v-for-item="product_item" :key="index">
 							<image class="sh_slt" :src="product_item.picture"></image>            
 							<view class="sp_text">
@@ -200,10 +196,9 @@
 							<view>实际支付：<view class='fl_r'>￥{{item.pay_price}}</view></view>
 							<!-- <view>支付方式：<view class='fl_r'>{{item.payment_name}}</view></view> -->
 						</view>
-						<view v-if="from_o2o==1 && item.order_option.o2o_room_tuan_yuding">预订日期：{{item.order_option.o2o_room_tuan_yuding}}</view>
 						<view v-if="item.buyer_memo != ''">备注：{{item.buyer_memo}}</view>
 						<view  class="btn_b">
-							<navigator :url="'../order/detail?orderId='+item.orderid&'balance_zengsong_dikou='+item.coupon_price&'balance_dikou='+item.yue_price" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
+							<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid&'balance_zengsong_dikou='+item.coupon_price&'balance_dikou='+item.yue_price" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
 						</view>
 					</view>
 				</swiper-item>
@@ -225,7 +220,7 @@
 							<view class="sp_neb">单价：¥ {{item.price_yh}} 数量：×{{item.product_num}} 产品：×{{item.pro_count}}</view>
 							<view class="sp_jg">¥：{{item.price}}</view>
 							<view class="font_12 red fl_r">{{item.desc}}</view>
-							<navigator url="../order/detail?orderId={{item.id}}" class="font_12 red fl_r mr_5">订单详情</navigator>
+							<navigator url="../orderDetail/orderDetail?orderId={{item.id}}" class="font_12 red fl_r mr_5">订单详情</navigator>
 						</view>
 					</view>
 				</view>
@@ -248,6 +243,17 @@
 	// pages/user/dingdan.js
 	//index.js  
 	//获取应用实例  
+	
+	// import app from '@/common/common.js';
+		
+		
+	
+		
+	var apps = getApp();
+	// var userInfo = this.abotapi.get_user_info();
+	// var userAcountInfo = this.abotapi.get_user_account_info();
+	
+	
 	var next_page = 1;
 	export default {
 		data() {
@@ -281,30 +287,28 @@
 		 */
 		onUnload: function () {
 		  uni.switchTab({      
-		    url: '/pages/user/user',
+		    url: '/pages/userInfo/userInfo',
 		  })
 		},
 		onLoad: function(options) {
+			var that = this;
 			console.log('options',options);
-			this.abotapi.set_option_list_str(this, this.callback_set_option);
+			that.abotapi.set_option_list_str(this, this.callback_set_option);
 			
-			var from_o2o = uni.getStorageSync('from_o2o');
-			
-			if (from_o2o){
-				this.from_o2o = from_o2o
-			}
 			
 		  
 			this.initSystemInfo();
-			this.currentTab = parseInt(options.tbIndex),
+			this.currentTab = parseInt(options.currentTab),
 			this.isStatus = options.otype
 			console.log('this.isStatus',this.isStatus);
-			if (options.tbIndex) {
+			if (options.currentTab) {
 				this.loadOrderList();
 			}  
 		}, 
 		onShow: function () {
-			var userInfo = this.abotapi.get_user_info();
+			var that = this;
+			var userInfo = that.abotapi.get_user_info();
+			// var userAcountInfo = this.abotapi.get_user_account_info();
 			// this.loadOrderList();
 		},
 		
@@ -323,7 +327,7 @@
 				if (!option_list) {
 					return;
 				}
-				this.abotapi.getColor();
+				// that.abotapi.getColor();
 				this.wxa_order_hide_daishouhuo_refund = option_list.wxa_order_hide_daishouhuo_refund;
 			    this.wxa_order_hide_daishouhuo_refund_after = option_list.wxa_order_hide_daishouhuo_refund_after;
 			    this.wxa_order_info_page_no_link_to_product = option_list.wxa_order_info_page_no_link_to_product;
@@ -397,11 +401,11 @@
 					content: '你确定已收到宝贝吗？',
 					success: function(res) {
 						res.confirm && uni.request({
-							url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_finish',
+							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_finish',
 							method:'post',
 							data: {
 								orderid: orderId,
-								sellerid: this.abotapi.get_sellerid(),
+								sellerid: that.abotapi.get_sellerid(),
 								checkstr: userInfo.checkstr,
 								userid: userInfo.userid
 							},
@@ -448,11 +452,11 @@
 					content: '你确定要申请退款吗？',
 					success: function (res) {
 						res.confirm && uni.request({
-							url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_tuikuan_direct',
+							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_tuikuan_direct',
 							method: 'post',
 							data: {
 								orderid: orderId,
-								sellerid: this.abotapi.get_sellerid(),
+								sellerid: that.abotapi.get_sellerid(),
 								checkstr: userInfo.checkstr,
 								userid: userInfo.userid
 							},
@@ -490,7 +494,8 @@
 			
 			//点击加载更多
 			onReachBottom: function () {
-				var userInfo = this.abotapi.get_user_info();
+				var that = this;
+				var userInfo = that.abotapi.get_user_info();
 				console.log('加载更多')
 				var that = this;
 				var page = that.page;
@@ -501,11 +506,11 @@
 					duration: 500
 				}) 
 				uni.request({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_index',
+					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_index',
 					method: 'post',
 					data: {
 						order_sort: that.isStatus,
-						sellerid: this.abotapi.get_sellerid(),
+						sellerid: that.abotapi.get_sellerid(),
 						checkstr: userInfo.checkstr,
 						userid: userInfo.userid,
 						page: page + 1
@@ -593,14 +598,14 @@
 			loadOrderList: function(){
 				console.log('sdfsdfsdfasadf')
 				var that = this;
-				var userInfo = this.abotapi.get_user_info();
+				var userInfo = that.abotapi.get_user_info();
 				uni.request({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_index',
+					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_index',
 					method:'post',
 					data: {
 						order_sort: that.isStatus,
 						page:	1,
-						sellerid: this.abotapi.get_sellerid(),
+						sellerid: that.abotapi.get_sellerid(),
 						checkstr: userInfo.checkstr,
 						userid: userInfo.userid
 					},
@@ -612,6 +617,10 @@
 						console.log('list_res',res);
 						var code = res.data.code;
 						var list = res.data.orderList;
+						if(!list){
+							list = [];
+						}
+						
 						/*
 						var order_list = [];
 						if (list||list!=null){
@@ -684,10 +693,10 @@
 			loadReturnOrderList:function(){
 			    var that = this;
 			    uni.request({
-					url: this.abotapi.d.ceshiUrl + '/Api/Order/order_refund',
+					url: that.abotapi.d.ceshiUrl + '/Api/Order/order_refund',
 					method:'post',
 					data: {
-						uid:this.abotapi.d.userId,
+						uid:that.abotapi.d.userId,
 						page:that.refundpage,
 					},
 					header: {
@@ -779,11 +788,11 @@
 					return false;
 				}
 				uni.request({
-					url: this.abotapi.d.ceshiUrl + '/Api/Wxpay/wxpay',
+					url: that.abotapi.d.ceshiUrl + '/Api/Wxpay/wxpay',
 					data: {
 						order_id: order_id,
 						order_sn: order_sn,
-						uid: this.abotapi.d.userId,
+						uid: that.abotapi.d.userId,
 					},
 					method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
 					header: {
@@ -872,7 +881,7 @@
 	//     var uri = "/ztb/userZBT/GetWxOrder";
 	//     var method = "post";
 	//     var dataMap = {
-	//       SessionId: this.abotapi.globalData.userInfo.sessionId,
+	//       SessionId: that.abotapi.globalData.userInfo.sessionId,
 	//       OrderNo: orderId
 	//     }
 	//     console.log(dataMap);
@@ -918,7 +927,9 @@
 	    line-height: 80rpx;
 	    background: #fff;  
 	    position: fixed;
-	    top: 0;  
+		 /* #ifdef H5 */
+	    top: 88upx; 
+		/* #endif */
 	    z-index: 999;
 	    }  
 	.swiper-tab-list{  
@@ -1089,5 +1100,9 @@
 	
 	.orderno{
 	  font-size: 30rpx;
+	}
+	.fl_r{ float: right;}
+	.font_14 view{
+		height: 48upx;
 	}
 </style>

@@ -155,6 +155,15 @@
 				"backgroundColorBottom":"#ffffff"
 			}
         }
+		,{	//订单列表
+		    "path" : "pages/user/orderDetail/orderDetail",
+		    "style" : {
+				"navigationBarTitleText":"订单详情",
+				"navigationBarBackgroundColor":"#f8f8f8",
+				"backgroundColorTop":"#f3f3f3",
+				"backgroundColorBottom":"#ffffff"
+			}
+		}
         ,{	//用户设置
             "path" : "pages/user/setting/setting",
             "style" : {

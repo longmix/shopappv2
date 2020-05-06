@@ -1,0 +1,417 @@
+<template>
+	<view>
+		
+	
+	 <view class="abb" :style="{background:wxa_shop_nav_bg_color}">
+	        <view class="tctb" :style="{color:wxa_shop_nav_font_color}">订单编号：{{orderData.orderno}}</view>
+	</view>
+	<view class="w100">
+			
+	    <navigator :open-type="[wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate']" :url="'../product/detail?productid=' + item.productid"  class="p_all bg_white df item" v-for="item in orderList" :key="productid">
+	
+				<view class="cp_photo">			
+					<image :src="item.picture"></image>
+				</view>
+				<view class="df_1">	
+					<view class="font_14 mt5 ovh1">
+			           {{item.name}}
+			        </view>
+				<text class="gm_ovh_1h pt10" >数量：{{item.amount}} 单价：¥{{item.price}}</text>
+				<text class="gm_ovh_1h pt10" style="font-weight:bold;color: #333;">¥{{item.price2}}</text>
+				</view>
+	    </navigator>
+	
+	
+			
+			<view class="p_all bg_white mt10 font_14" v-if="orderData.realname">
+				<view class="df">
+					<view class="df_1 c6">
+					<view class="l_h20" style="font-weight: bold;color: #333;">{{orderData.realname}}   <text>{{orderData.mobile}}</text> </view>
+					<view class="l_h20 mt5" style="font-size: 25rpx;">地址：<text v-if="!wxa_order_hide_sanji_address">{{orderData.address01}}</text>{{orderData.address02}}</view>
+					</view>
+				</view>
+			</view>	
+	
+			<view class="p_all bg_white mt10 c6 l_h20  font_14">
+				<view >
+				订单状态：<text class="red">{{orderData.status_str}}</text>
+	      <navigator v-if="orderData.status_str=='待付款'" :url="'../order/zhifu?orderId=' + orderData.orderid + '&balance_zengsong_dikou=' + orderData.coupon_price + '&balance_dikou=' + orderData.yue_price" class="font_12 fl_r mr_5 btn_min">立即支付</navigator>
+				</view>
+				
+				<view class="mt10">
+				订单时间：<text style="color:#333; font-weight:bold;">{{orderData.createtime}}</text>
+				</view>  
+	
+	      <view class="mt10" v-if="orderData.buyer_memo">
+				留言备注：<view style="font-size:24rpx; color:#666;">
+				  {{orderData.buyer_memo?orderData.buyer_memo:''}} 
+			  </view>	
+				</view> 
+	
+	      
+	
+	
+	      <view class="bordert font_14">
+	          <view>商品数量<view class='fl_r'>x {{orderData.total_num}}</view></view>
+	          <view>商品金额<view class='fl_r'>￥{{orderData.price}}</view></view>
+	          
+	      </view>
+	
+	      <view class="bordert font_14">
+	          <view>快递费<view class='fl_r'>￥{{orderData.price3}}</view></view>
+	      </view>
+	      <view class="bordert font_14">
+	          <view>订单金额<view class='fl_r'>￥{{orderData.order_total_price}}</view></view>
+	          <view>余额支付<view class='fl_r'>￥{{orderData.yue_price}}</view></view>
+	          <view>赠款支付<view class='fl_r'>￥{{orderData.coupon_price}}</view></view>   
+	      </view>
+	
+	      <view class="borderb bordert font_14">
+	          <view v-if='orderData.pay_price'>实际支付<view class='fl_r'>￥{{orderData.pay_price}}</view></view>
+	          <view>支付方式<view class='fl_r'>{{orderData.payment_name}}</view></view>
+	        </view>
+			  </view>
+	
+	
+	
+	        
+	
+		<view class="p_all mt10">
+			<view class="btnGreen">
+				        <!-- <button type="warn" size="{{warnSize}}" loading="{{loading}}" plain="{{plain}}"
+	        :disabled="disabled" @tap="warn"> 确认 </button> -->
+	        		<!--<contact-button type="default-light" session-from="orderNo_{{orderData.OrderNo}}">
+			        客服
+			        </contact-button>-->
+			</view>
+		</view>
+	</view>
+	</view>
+</template>
+
+
+<script>
+	// pages/user/dingdan.js
+	//index.js  
+	//获取应用实例  
+	
+	// import app from '@/common/common.js';
+		
+		
+	
+		
+	var apps = getApp();
+	// var userInfo = this.abotapi.get_user_info();
+	// var userAcountInfo = this.abotapi.get_user_account_info();
+	
+	
+	var next_page = 1;
+	export default {
+		data() {
+			return {
+				isHideLoadMore:false,
+				winWidth: 0,  
+				winHeight: 0,  
+				Height:'',
+				// tab切换  
+				currentTab: 0,  
+				isStatus:1,//0全部,1待付款，2待发货，6待收货 7已完成
+				page:1,
+				refundpage:0,
+				orderList:[],
+				orderList0:[],
+				orderList1:[],
+				orderList2:[],
+				orderList3:[],
+				orderList4:[],
+				orderData:'',
+				wxa_shop_nav_bg_color:'',
+				wxa_order_hide_daishouhuo_refund_after:'',
+				orderno:''
+				
+			}
+		},
+		
+		
+		
+		/**
+		 * 生命周期函数--监听页面卸载
+		 */
+		onUnload: function () {
+		  uni.switchTab({      
+		    url: '/pages/userInfo/userInfo',
+		  })
+		},
+		onLoad: function(options) {
+			var that = this;
+			
+			
+			that.abotapi.set_option_list_str(this, this.callback_set_option);
+			
+			this.orderId = options.orderId
+			this.balance_zengsong_dikou = options.balance_zengsong_dikou
+			this.balance_dikou = options.balance_dikou
+			
+		
+			this.loadProductDetail();
+		}, 
+		onShow: function () {
+			var that = this;
+			var userInfo = that.abotapi.get_user_info();
+			// var userAcountInfo = this.abotapi.get_user_account_info();
+			// this.loadOrderList();
+		},
+		
+		methods:{
+			  callback_set_option: function (that, option_list){
+			    console.log('getShopOptionAndRefresh+++++:::' + option_list)
+			
+			   
+			    if (!option_list) {
+			      return;
+			    }
+			
+			
+			    if (option_list.wxa_shop_nav_bg_color) {
+					that.wxa_shop_nav_bg_color = option_list.wxa_shop_nav_bg_color;
+			    }
+			
+			    if (option_list.wxa_shop_nav_font_color) {
+					that.wxa_shop_nav_font_color = option_list.wxa_shop_nav_font_color;
+			    }
+			
+					that.wxa_order_hide_sanji_address = option_list.wxa_order_hide_sanji_address;
+					that.wxa_order_info_page_no_link_to_product = option_list.wxa_order_info_page_no_link_to_product;
+			
+			  },
+			  loadProductDetail:function(){
+				  var that = this;
+			      var app = getApp();
+			      // pages/order/detail.js
+			      var userInfo = that.abotapi.get_user_info();
+			  
+			      var that = this;
+			      console.log('userid', userInfo.userid);
+			      console.log('userstr', userInfo.checkstr);
+			      that.abotapi.abotRequest({
+			        url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_xiangqing',
+			        method: 'post',
+			        data: {
+			          orderid: that.orderId,
+			          userid: userInfo.userid,
+			          checkstr: userInfo.checkstr,
+			          sellerid: that.abotapi.get_sellerid()
+			        },
+			        header: {
+			          'Content-Type': 'application/x-www-form-urlencoded'
+			        },
+			        success: function (res) {
+			          var code = res.data.code;
+			          if (code == 1) {
+			            var orderData = res.data.orderinfo;
+						that.orderData = orderData;
+						that.orderList = orderData.orderProduct;
+			          
+			            console.log(that.orderList);
+			          } else {
+			            uni.showToast({
+			              title: res.data.msg,
+			              duration: 2000
+			            });
+			          }
+			        },
+			        fail: function () {
+			          // fail
+			          wx.showToast({
+			            title: '网络异常！',
+			            duration: 2000
+			          });
+			        }
+			      });
+			    },
+		}
+		
+	}
+	
+	
+	
+	
+</script>
+
+
+<style>
+	.item .cp_photo{ 
+	    width: 60px; 
+	    height: 60px;
+	    overflow: hidden; 
+	    border-radius: 3px; 
+	    margin-right: 10px;
+	}
+	.item .cp_photo image{ 
+	    width: 60px; 
+	    height: 60px;
+	}
+	.mt10{
+	  margin-top: 10rpx;
+	  color:#333;
+	}
+	.btn_min{
+	  background-color: #1AAD19;
+	  border-radius: 5px;
+	  padding-left: 28rpx;
+	  padding-right: 28rpx;
+	  line-height: 2.3;
+	  color: #FFFFFF;
+	}
+	.gm_ovh_2h{
+	    line-height:25px; 
+	    height: 50px; 
+	    margin:0; 
+	    overflow:hidden;  
+	    text-overflow:ellipsis; 
+	    display:-webkit-box; 
+	    -webkit-line-clamp:2;  
+	    -webkit-box-orient:vertical; 
+	    font-size: 16px;
+	}
+	.gm_ovh_1h{
+	    line-height:25px; 
+	    height: 25px; 
+	    margin:0; 
+	    overflow:hidden;  
+	    text-overflow:ellipsis; 
+	    display:-webkit-box; 
+	    -webkit-line-clamp:2;  
+	    -webkit-box-orient:vertical; 
+	    font-size: 25rpx;
+	    color: #666;
+	} 
+	.h10_hui{
+	    height: 10px;
+	    width: 100%;
+	    background: #eee;
+	}
+	
+	.min_60{
+	    min-height: 60px;
+	}
+	
+	.w100{ 
+	  width: 100%;
+	  color:#333;
+	}
+	
+	.iconWarn{
+	   vertical-align:top;padding-right:2px;
+	}
+	
+	.iconClear{
+	  float:right;
+	  padding-top: 5px;
+	  padding-left: 10px;
+	  padding-right:10px;
+	  margin-top:-36px;
+	  height: 28px;
+	}
+	
+	.inputStyle{
+	  height: 36px;
+	  line-height: 36px;
+	  padding-left: 2px;
+	  width:80%;
+	}
+	
+	.tips{
+	  margin-bottom:10px;
+	}
+	.x_right{
+	    width:16px;
+	    height: 18px;
+	    display:inline-block; 
+	    vertical-align: middle;
+	    float: right; 
+	}
+	.zhifu{
+	    background: #fff;
+	    margin-bottom: 1px;
+	    padding: 4%;
+	    width: 92%;
+	    font-size: 14px;
+	    color: #666;
+	}
+	.font_20{
+	    font-size: 20px;
+	    font-weight: bold;
+	}
+	.xx_pay_submit{
+	  margin-top: 10px;
+	}
+	.gms_view{  
+	    width: 100%;
+	    display: inline-block;
+	    text-align: right;
+	}
+	.gms_view navigator{
+	    border: 1px solid #ddd;
+	    width: 22px;
+	    height: 22px;
+	    border-radius: 50%;
+	    color: #666;
+	    font-size: 12px;
+	    text-align: center;
+	    line-height: 22px;
+	    float: right;
+	    font-weight: bold;
+	    
+	}
+	.gms_view input{
+	    background: #fff;
+	    border: 1px solid #ddd;
+	    border-radius: 2px;
+	    font-size: 12px;
+	    width: 30px;
+	    margin: 0 5px;
+	    text-align: center;
+	    color: #999;
+	    float: right;
+	}
+	
+	.red{
+	    color: red;
+	}
+	
+	.sl{
+	  font-size: 12px;
+	  color: #999;
+	}
+	.abb{
+	    display: flex;
+	    flex-direction: row;
+	    align-items: center;
+	    background-color: #fff;
+	    overflow: hidden;
+	    height: 146rpx;
+	    border-bottom: 3px solid #EFEFEF;
+	}
+	.tctb {
+	  margin-left:30rpx;
+	  font-size:32rpx;
+	  color:#fff;
+	  border-radius:62rpx;
+	  text-align:center;
+	  height:57rpx;
+	}
+	
+	.borderb{
+	  border-bottom: 1px solid #f1f1f1;
+	  margin-bottom: 5px;
+	  padding-bottom: 7px;
+	}
+	.bordert{
+	  border-top: 1px solid #f1f1f1;
+	  margin-top: 5px;
+	  padding-top: 5px;
+	  display:block;
+	  width:100%;
+	}
+</style>

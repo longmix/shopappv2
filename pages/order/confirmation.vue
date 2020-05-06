@@ -1323,7 +1323,7 @@
 			      success: function (res) {
 					  
 					 uni.redirectTo({
-					 	url: '/pages/explore/pay/payment/payment?orderId=' + that.orderid + '&balance_zengsong_dikou=' + that.balance_zengsong_dikou + '&balance_dikou=' + that.balance_dikou + '&traffic_price=' + that.traffic_price,
+					 	url: '/pages/pay/payment/payment?orderId=' + that.orderid + '&balance_zengsong_dikou=' + that.balance_zengsong_dikou + '&balance_dikou=' + that.balance_dikou + '&traffic_price=' + that.traffic_price,
 					 })
 					  
 			        // that.wxpay();

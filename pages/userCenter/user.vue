@@ -257,7 +257,7 @@
 				uni.setStorageSync('tbIndex',index);
 				uni.setStorageSync('tbOtype',row);
 				uni.navigateTo({
-					url:'/pages/user/order_list/order_list?tbindex='+index+'&otype='+row
+					url:'/pages/user/order_list/order_list?currentTab='+index+'&otype='+row
 				}) 
 			},
 			toSetting(){
