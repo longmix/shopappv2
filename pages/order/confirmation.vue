@@ -1322,9 +1322,29 @@
 			      method: "POST",
 			      success: function (res) {
 					  
-					 uni.redirectTo({
-					 	url: '/pages/pay/payment/payment?orderId=' + that.orderid + '&balance_zengsong_dikou=' + that.balance_zengsong_dikou + '&balance_dikou=' + that.balance_dikou + '&traffic_price=' + that.traffic_price,
-					 })
+					 if(that.is_waimai == 1){
+					   uni.removeStorage({
+						 key: 'waimai_list_' + that.shopId,
+						 success(res) {
+						   uni.redirectTo({
+						   	url: '/pages/pay/payment/payment?orderId=' + that.orderid + '&balance_zengsong_dikou=' + that.balance_zengsong_dikou + '&balance_dikou=' + that.balance_dikou + '&traffic_price=' + that.traffic_price,
+						   })
+						 }
+					   })
+					 }else{
+					   
+					   uni.removeStorage({
+						 key: 'cart_list_' + that.shopId,
+						 success(res) {
+						   uni.redirectTo({
+						   	url: '/pages/pay/payment/payment?orderId=' + that.orderid + '&balance_zengsong_dikou=' + that.balance_zengsong_dikou + '&balance_dikou=' + that.balance_dikou + '&traffic_price=' + that.traffic_price,
+						   })
+						 }
+					   })
+					 }
+					  
+					  
+					 
 					  
 			        // that.wxpay();
 			      },

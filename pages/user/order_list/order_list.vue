@@ -67,18 +67,15 @@
 				</swiper-item>
 
 				<!-- 待付款 -->
-				<swiper-item > 
+				<swiper-item>
 					<view class="search_no" v-if="!orderList0.length">
 						<view style="text-align: center;margin-top: 100upx;">
 							<image style="width: 150upx;" mode="widthFix" src="../../../static/img/search_no.png"></image>
 							<text style="display: block;color: #8a8a8a;">没有可用订单/(ㄒoㄒ)/~~</text>
 						</view>
 					</view>
-
 					<view class="shop df bordermax" v-for="(item,index) in orderList0" :key="index" style='display: block;'>
-						<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator>
-						
-		
+						<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator> 
 						
 						<block v-if="item.order_option.hahading_order_product_list_length > 0">
 							<image class="sh_slt" :src="item.order_option.hahading_order_product_list[0].img"></image>  
@@ -89,29 +86,30 @@
 								  
 							</view>
 						</block>
-						
 						<block v-else>
-							<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../product/detail?productid='+product_item.productid" class="df_1 borb" style='display:flex;' v-for="(product_item,index) in item.orderProduct" v-for-item="product_item" :key="index">    
-								<image class="sh_slt" :src="product_item.picture"></image>         
+							
+							<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../product/detail?productid='+product_item.productid" class="df_1 borb" style='display:flex;' v-for="(product_item,index) in item.orderProduct"  :key="index">
+								<image class="sh_slt" :src="product_item.picture"></image>             
 								<view class="sp_text">
 									<view class="sp_tit ovh1">{{product_item.name}}</view>
 									<view class="sp_neb">¥{{product_item.price}}×{{product_item.amount}}</view>
-									<view class="sp_jg">¥：{{product_item.price2}}</view>
+									<view class="sp_jg">¥：{{product_item.price2}}</view>   
 								</view>
 							</navigator>
-							<view class="borderb bordert font_14">
+							<view class="borderb bordert font_14" >
 								<view>共计{{item.total_num}}商品<view class='fl_r'></view></view>
 								<view>商品金额：<view class='fl_r'>￥{{item.price}}</view></view>
 								<view>快递费：<view class='fl_r'>￥{{item.price3}}</view></view>
 								<view>订单金额：<view class='fl_r'>￥{{item.all_price}}</view></view>
 								<view>余额支付：<view class='fl_r'>￥{{item.yue_price}}</view></view>
-								<view>赠款支付：<view class='fl_r'>￥{{item.coupon_price}}</view></view>    
+								<view>赠款支付：<view class='fl_r'>￥{{item.coupon_price}}</view></view>        
 								<view>实际支付：<view class='fl_r'>￥{{item.pay_price}}</view></view>
 								<!-- <view>支付方式：<view class='fl_r'>{{item.payment_name}}</view></view> -->
-							</view>	
+							</view>
+						
 						</block>
 						<view v-if="item.buyer_memo != ''">备注：{{item.buyer_memo}}</view>
-						<view class="btn_b">
+						<view  class="btn_b">
 							<navigator :url="'/pages/pay/payment/payment?orderId='+item.orderid+'&balance_zengsong_dikou='+item.coupon_price+'&balance_dikou='+item.yue_price" class="font_12 fl_r mr_5 btn_min">支付订单</navigator>
 							<view class="font_12 fl_r mr_5 btn_min" @tap="removeOrder" :data-order-id="item.orderid">取消订单</view>
 						</view> 
@@ -588,6 +586,35 @@
 			
 						console.log('11111111');
 						var list = res.data.orderList;
+						
+						
+						
+						if(list){
+										
+							for (var i = 0; i < list.length; i++) {
+							  
+							  if (list[i].order_option && ('hahading_order_product_list' in list[i].order_option) && list[i].order_option.hahading_order_product_list) {
+								console.log(i, list[i].order_option.hahading_order_product_list)
+								list[i].order_option.hahading_order_product_list = JSON.parse(list[i].order_option.hahading_order_product_list)
+								list[i].order_option.hahading_order_product_list_length = list[i].order_option.hahading_order_product_list.length;
+							  }else{
+								console.log('ddd88', list[i]);
+								if(!list[i].order_option){
+									list[i].order_option = {};	
+								}
+								list[i].order_option.hahading_order_product_list_length = 0;  
+							  }
+							}
+					
+					
+							for (var i=0; i<list.length; i++){
+							  if (list[i].order_option && ('hahading_order_xianmai_shangdata' in list[i].order_option) && list[i].order_option.hahading_order_xianmai_shangdata){
+								list[i].order_option.hahading_order_xianmai_shangdata = JSON.parse(list[i].order_option.hahading_order_xianmai_shangdata)
+							  }
+							}
+						}
+						
+						
 						/*
 						var order_list = [];
 						if (list || list != null) {
@@ -700,7 +727,7 @@
 						  }else{
 							console.log('ddd88', list[i]);
 							if(!list[i].order_option){
-								list[i].order_option = {};
+								list[i].order_option = {};	
 							}
 							list[i].order_option.hahading_order_product_list_length = 0;  
 						  }

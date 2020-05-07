@@ -27,7 +27,7 @@
             </scroll-view>
 			<!-- 右侧子导航 -->
 			<scroll-view  scroll-y="true" class="right" >
-			    <view class="category" v-for="(item2,index2) in cataList" :key="index2" @click="toCategory(item2.cataid)" v-if="cataList != null"> <!--  v-show="index==showCategoryIndex" -->
+			    <view class="category" v-for="(item2,index2) in cataList" :key="index2" @click="toCategory(item2.cataid, item2.name)" v-if="cataList != null"> <!--  v-show="index==showCategoryIndex" -->
 					<view class="banner" >
 						<image v-if="item2.icon" :src="item2.icon" mode="widthFix"></image>
 						<image v-else src="" mode="widthFix" style="height: 240upx;"></image>
@@ -200,11 +200,10 @@
 				this.showCategoryIndex = index;
 				this.tapType(e);
 			},
-			toCategory(e){
-				console.log('e',e);
+			toCategory(cataid, cata_name){
 				// uni.setStorageSync('catName',e.name);
 				uni.navigateTo({
-					url: '/pages/goods/goods-list/goods-list?cataid='+e
+					url: '/pages/goods/goods-list/goods-list?cataid='+cataid+'&cata_name=' + cata_name
 				});
 			},
 			//搜索跳转

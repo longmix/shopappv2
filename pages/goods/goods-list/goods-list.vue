@@ -47,9 +47,15 @@
 		},
 		onLoad: function (option) { //option为object类型，会序列化上个页面传递的参数
 			console.log('option',option); //打印出上个页面传递的参数。
-			// uni.setNavigationBarTitle({
-			// 	title: option.name
-			// });
+			
+			var title = '商品列表';
+			if(option.cata_name){
+				title += '—' + option.cata_name;
+			}
+			
+			uni.setNavigationBarTitle({
+				title: title
+			});
 			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 			this.cataid = option.cataid;
 			//兼容H5下排序栏位置
@@ -258,7 +264,7 @@
 				}
 				.name{
 					width: 92%;
-					padding: 10upx 4%;
+					margin: 10upx 4%;
 					display: -webkit-box;
 					-webkit-box-orient: vertical;
 					-webkit-line-clamp: 2;
