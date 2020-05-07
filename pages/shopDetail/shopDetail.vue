@@ -31,7 +31,7 @@
 			  <!-- 标签结束-->
 			  
 			  <!-- 服务-->
-			  <view style="width: 100%;display: flex;justify-content: center;align-items: center;margin-top: 20upx;">
+			  <view style="width: 100%;display: flex;justify-content: center;align-items: center;padding:30upx;">
 				  <view style="width:60%;background-color: #FFFFFF;height: 10upx;"></view>
 				  <view class="fuwu">
 					 {{shoplist.name}}
@@ -46,8 +46,8 @@
 				  <view style="display: flex;justify-content: space-between;align-items: center;padding: 20upx;">
 					  
 					  <view style="color:#333;font-size: 28upx;display: flex;align-items: center;">
-						  <image style="width: 30upx;height: 30upx;" src="../../static/img/share/pyq.png"></image>
-						  营业时间|{{shoplist.yingyeshijian}}
+						  <image style="width: 30upx;height: 30upx;" src="../../static/img/share/time1.png"></image>
+						  <span style="margin-left: 25upx;">营业时间|{{shoplist.yingyeshijian}}</span>
 					  </view>
 					  <image style="width: 30upx;height: 30upx;" src="../../static/img/user/point.png"></image>
 						
@@ -56,8 +56,10 @@
 				  <!-- 地址-->
 				  <view style="display: flex;justify-content: space-between;align-items: center;padding: 20upx;">
 					  <view style="color:#333;font-size: 28upx;display: flex;align-items: center;">
-						  <image style="width: 30upx;height: 30upx;" src="../../static/img/user/point.png"></image>
-						  <view style="width: 100%;">{{shoplist.address}}</view>
+						  <image style="width:40upx;height:40upx;" src="../../static/img/user/adress1.png"></image>
+						  <view style="width: 100%;">
+							  <span style="margin-left: 25upx;">{{shoplist.address}}</span>
+							  </view>
 					  </view>
 					  <view>
 						  <image style="width: 30upx;height: 30upx;" src="../../static/img/x_right.png"></image>
@@ -76,7 +78,7 @@
 		<view>
 			<!-- 按钮1 -->
 			<view class="paidui-con">
-				<image class="icon-a" src="../../static/img/category/2.png"></image>
+				<image class="icon-a" src="../../static/img/category/diancan.png"></image>
 				<view class="paidui-a">
 					<view class="icon-title">
 
@@ -96,7 +98,7 @@
 			
 			<!-- 按钮2 -->
 			<view class="paidui-con">
-				<image class="icon-a" src="../../static/img/category/2.png"></image>
+				<image style="height: 85upx;"class="icon-a" src="../../static/img/category/faster.png"></image>
 				<view class="paidui-a">
 					<view class="icon-title">
 			
@@ -106,7 +108,7 @@
 				</view>
 				<view class="yuding-a" >
 					<view style="font-size:25rpx;">在线点餐</view>
-					<navigator style="background:#75CC47;" :url="'../menuList/menuList?is_waimai=1&xianmai_shangid=' + xianmai_shangid" hover-class="navigator-hover" >
+					<navigator style="background:#E86452;" :url="'../menuList/menuList?is_waimai=1&xianmai_shangid=' + xianmai_shangid" hover-class="navigator-hover" >
 						<view >外卖配送</view>
 					</navigator>
 				</view>
@@ -122,7 +124,7 @@
 		<!-- 优惠 -->
 		<view style="border-bottom:6px solid #eee;">
 			<view class="icon-title2">
-			  <image src="../../static/img/category/8.png"></image>
+			  <image src="../../static/img/category/youhui.png"></image>
 			  <view class='biaoti'>优惠活动</view>
 			</view>
 		
@@ -143,7 +145,7 @@
 		<!--商家简介-->
 		<view style="border-bottom:6px solid #eee;">
 		<view class="icon-title2">
-		  <image src="../../static/img/category/8.png"></image>
+		  <image src="../../static/img/category/jianjie.png"></image>
 		  <view class='biaoti'>商家简介</view>
 		</view>
 		<block v-if="shoplist.brief == ''">
@@ -388,7 +390,7 @@
 
 <style>
 	.shang_detail_box1{
-		background-color: #E0E0E0;
+		background-color:#81ab85;
 		margin: 5upx;
 		border-radius: 20upx;
 		overflow-y:auto;
@@ -397,7 +399,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		background-color: rgb(211, 211, 216);
+		background-color:#81ab85;
 		border-top-left-radius: 10px;
 		border-top-right-radius: 10px;
 		padding: 20upx;
@@ -405,7 +407,7 @@
 	}
 	.biaoqian{
 		margin-right:1%;
-		background-color: #6EB8F2;
+		background-color:#fed060;
 		color: #fff;
 		border-radius: 4px;
 		text-align: center;
@@ -414,10 +416,11 @@
 		line-height: 20px;
 		font-size: 19rpx;
 		margin-top: 10upx;
+		font-weight: bold;
 	}
 	.shijian_dizhi{
 		width: 90%;
-		margin-left: 5%;
+		margin-left:5%;
 		margin-bottom: 20upx;
 		background-color: #FFFFFF;
 		margin-bottom: 50upx;
