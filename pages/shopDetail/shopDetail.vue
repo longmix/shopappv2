@@ -6,7 +6,7 @@
 		
 		<view class="shang_detail_box1">
 			<!-- 头像昵称 -->
-			<view class="head_and_name">
+			<view style="margin-top: 25upx;" class="head_and_name">
 				<image style="margin-right:10upx;width: 70upx;height:70upx;border-radius: 50%;" :src="shoplist.icon_image" mode=""></image>
 				<text>{{shoplist.name}}</text>
 			</view>
@@ -31,7 +31,7 @@
 			  <!-- 标签结束-->
 			  
 			  <!-- 服务-->
-			  <view style="width: 100%;display: flex;justify-content: center;align-items: center;padding:30upx;">
+			  <view style="width: 100%;display: flex;justify-content: center;align-items: center;padding:0upx;">
 				  <view style="width:60%;background-color: #FFFFFF;height: 10upx;"></view>
 				  <view class="fuwu">
 					 {{shoplist.name}}
@@ -160,6 +160,9 @@
 		  <text>{{shoplist.brief}}</text>
 		</view>
 		</block>
+		</view>
+		<view class="bottom">
+			
 		</view>
 	</view>
 </template>
@@ -849,5 +852,8 @@
 	  float: left;
 	  margin-left: 10rpx;
 	}
-
+    .bottom{
+		width: 100%;
+		height: 500rpx;
+	}
 </style>
