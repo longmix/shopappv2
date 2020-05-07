@@ -40,15 +40,28 @@ module.exports = {
 		
 		// o2owaimai_server_url: 'https://yanyubao.tseo.cn/hahading/index.php/',
 		
+		
 		// xiaochengxu_appid: 'wx60a801e5fb7f9378',
 		xiaochengxu_appid: 'wx00d1e2843c3b3f77',
+		
+		
 		// default_sellerid : 'fyJSPaVja',
 		// default_sellerid : 'pQNNmSkaq',	
 		
 		// default_sellerid: 'fSNQPajka',
 		
 		//哈哈订
-		default_sellerid: 'fimmUPUPV',
+		//default_sellerid: 'fimmUPUPV',
+		//default_copyright_text:'哈哈订信息科技 版权所有',
+		
+		//腾羽生物
+		default_sellerid: 'fSNQPajka',
+		default_copyright_text:'腾羽生物科技 版权所有',
+		
+		//其他配置选项
+		//首页显示附近商家的数量，如果为0则不显示
+		default_shang_list_count_in_front_page:10,
+		
 		
 		
 		is_shop_cart_in_tabbar: 1,
