@@ -184,25 +184,22 @@
 						//console.log(res);
 						console.log(request_res.data);
 						if (request_res.data && (request_res.data.code == 1)){
-							console.log("update_mobile : check_button : ");
-							console.log('登录成功返回userid:' + request_res.data.userid);
-				      
-				     
-							this.abotapi.globalData.userInfo.userid = request_res.data.userid;          
-							this.abotapi.globalData.userInfo.checkstr = request_res.data.checkstr;
+							
+							that.abotapi.globalData.userInfo.userid = request_res.data.userid;          
+							that.abotapi.globalData.userInfo.checkstr = request_res.data.checkstr;
 							  
 				      
 					
 							console.log('更新缓存的用户信息:');
-							console.log(this.abotapi.globalData.userInfo);
+							console.log(that.abotapi.globalData.userInfo);
 	  
-							that.abotapi.set_user_info(this.abotapi.globalData.userInfo);
+							that.abotapi.set_user_info(that.abotapi.globalData.userInfo);
 							  
 				 		  
 							uni.request({
-								url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=get_user_info',
+								url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=get_user_info',
 								data: {
-									sellerid: this.abotapi.globalData.default_sellerid,
+									sellerid: that.abotapi.globalData.default_sellerid,
 									checkstr: request_res.data.checkstr,
 									userid: request_res.data.userid,
 								},
@@ -216,7 +213,7 @@
 				 			
 									if (res.data.code == "-1") {
 										var last_url = '/pages/user/userInfo';
-										this.abotapi.goto_user_login(last_url);
+										that.abotapi.goto_user_login(last_url);
 				 	         
 									} else {
 										var	data = res.data;						      
@@ -268,7 +265,7 @@
 							//===========End================
 				
 										uni.switchTab({
-											url: '/pages/tabBar/home/home'
+											url: '../home/home'
 										})
 									}
 								}
@@ -285,7 +282,7 @@
 						console.log("延誉宝服务器解析jscode并返回以下内容：");
 						console.log(request_res);
 						// this.abotapi.globalData.user_openid = request_res.data.openid;
-						this.abotapi.globalData.tokenstr = request_res.data.tokenstr;
+						that.abotapi.globalData.tokenstr = request_res.data.tokenstr;
 					}
 				});
 			    

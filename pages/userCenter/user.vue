@@ -331,7 +331,8 @@
 				  }
 			
 				  if (url.indexOf("%refresh_token%") != -1) {
-					request_url = that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=generate_refresh_token_for_other_system';
+					  console.log('123',456);
+					request_url = that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=generate_refresh_token_value_for_other_system';
 				  }
 				  console.log('request_url', request_url);
 				  console.log('url', url);
@@ -352,7 +353,7 @@
 					  //--init data   
 					  console.log('dddddddddddddd',res);     
 					  var code = res.data.code;
-					 return;
+					
 					  if (code == 1) {
 						var oneclicklogin = res.data.oneclicklogin;
 			
@@ -362,8 +363,8 @@
 						if (res.data.refresh_token) {
 						  url = url.replace('%refresh_token%', res.data.refresh_token);
 						}
-			
-						app.call_h5browser_or_other_goto_url(url, var_list);
+						console.log('url1111',url);
+						that.abotapi.call_h5browser_or_other_goto_url(url, var_list);
 			
 						return;
 			
@@ -386,7 +387,7 @@
 			
 				};
 			
-				app.call_h5browser_or_other_goto_url(url, var_list);   
+				that.abotapi.call_h5browser_or_other_goto_url(url, var_list);   
 				
 			}
 		}
