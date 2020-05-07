@@ -68,16 +68,19 @@ module.exports = {
 	    uni.setStorageSync("current_weiduke_token", weiduke_token);
 	},
 	
-	get_location: function () {
+	get_location: function (that='',call_back_get_shang_list='') {
 		console.log(123456);
 		var coordinate = [];
 	    uni.getLocation({
 			
 	        type: 'wgs84',
 	        success: function (res) {
-				
+				console.log('res123456',res);
 				coordinate['longitude'] = res.longitude;
 				coordinate['latitude'] = res.latitude;
+				
+				typeof call_back_get_shang_list == "function" && call_back_get_shang_list(that);
+				
 	        },
 			
 	    });
@@ -89,11 +92,13 @@ module.exports = {
 	},
 	 
 	getDisance: function (lat1, lng1, lat2, lng2) {
+		
 		var dis = 0;
 		var radLat1 = this.toRad(lat1);
 		var radLat2 = this.toRad(lat2);
 		var deltaLat = radLat1 - radLat2;
 		var deltaLng = this.toRad(lng1) - this.toRad(lng2);
+		
 		var dis = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(deltaLat / 2), 2) + Math.cos(radLat1) *
 		Math.cos(radLat2) * Math.pow(Math.sin(deltaLng / 2),
 		2)));

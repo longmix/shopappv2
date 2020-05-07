@@ -33,32 +33,32 @@
 		<view  class="top-input-con" id="affix"> 
 		
 			<!-- 全部美食按钮 -->
-			<view class="ab" @click="shuaxin()">
+			<view class="ab" @click="shuaxin()" style="width:25%;float:left;">
 				<text>全部美食</text>
-				<image class='local-img' src="../../static/img/xiala.png"></image> 
+				<!-- <image class='local-img' src="../../static/img/xiala.png"></image> -->
 			</view>
 			
 			<!-- 分类按钮 -->
-			<picker @change="bindPickerChangeFloor($event)" :value="index" :range="cata_list" data-searchType="cataName">
-				<view class="ab" style="width:80rpx;padding: 15rpx 30rpx;">
-					<view style="float:left;" class="picker">
-						<text>分类</text>
+			<picker class="ab" style="width:25%;" @change="bindPickerChangeFloor($event)" :value="index" :range="cata_list" data-searchType="cataName">
+				<view  style="display: flex;justify-content: center;align-items: center;">
+					<view class="picker">
+						<text>{{fenlei_name}}</text>
 					</view>
 					<image class='local-img' src="../../static/img/xiala.png"></image> 
 				</view>
 			</picker>
 			
 			<!-- 智能排序按钮 -->
-			<view class="ab" @click="bindPickerChangeFloor($event)" data-searchType="star_level" >
+			<view class="ab" @click="bindPickerChangeFloor($event)" data-searchType="star_level" style='width: 25%;'>
 				<text>智能排序</text>
-				<image class='local-img' src="../../static/img/xiala.png"></image> 
+				<!-- <image class='local-img' src="../../static/img/xiala.png"></image> --> 
 			</view>
 
 			<!-- 筛选按钮 -->
-			<picker @change="bindPickerChangeFloor($event)" :value="index" :range="spec_list" data-searchType="spec">
-				<view class="ab" style="width:80rpx;padding: 15rpx 30rpx;">
+			<picker class="ab" style="width:25%;" @change="bindPickerChangeFloor($event)" :value="index" :range="spec_list" data-searchType="spec">
+				<view style="display: flex;justify-content: center;align-items: center;">
 					<view class="picker" style="float:left;" >
-						<text>筛选</text>
+						<text>{{shaixuan_name}}</text>
 					</view>
 					<image class='local-img' src="../../static/img/xiala.png"></image> 
 				</view>
@@ -178,6 +178,8 @@
 				all_cata_list:'',
 				all_spec_list:'',
 				is_xiala:0,
+				fenlei_name:'分类',
+				shaixuan_name:'筛选',
 				sx_shang_list:[],
 				//客服相关
 				wxa_show_kefu_button:'',
@@ -230,6 +232,9 @@
 			
 		},
 		onShow() {
+			if(this.shang_list.length != 0){
+				this.get_shang_list();
+			}
 			this.get_shang_list();
 			this.get_cata_tag();
 			this.get_gundong_img();
@@ -383,6 +388,8 @@
 				this.page = 1;
 				this.xianmaishang_list = [];
 				this.sx_shang_list = [];
+				this.fenlei_name = '分类';
+				this.shaixuan_name = '筛选';
 				this.get_shang_list();
 			},
 			
@@ -414,6 +421,8 @@
 				var index = e.target.value;//选择了 cata_list 的key
 				console.log('searchtype',searchtype);
 				if(searchtype == 'star_level'){
+					this.fenlei_name = '分类';
+					this.shaixuan_name = '筛选';
 					function compare(obj1, obj2) {
 					  var val1 = obj1.star_level;
 					  var val2 = obj2.star_level;
@@ -435,11 +444,11 @@
 					
 				}else if(searchtype == 'cataName'){
 					
-					
+					this.shaixuan_name = '筛选';
 					
 					var cata_names = cata_list[index];
 					
-					
+					this.fenlei_name = cata_names;
 					var xz_cataid = h_cata_lsit[cata_names]; // 选择的分类id
 					
 					//筛选全部商家的分类id为xz_cataid;
@@ -451,9 +460,11 @@
 					}
 					this.sx_shang_list = xz_shang_list;
 				}else if(searchtype == 'spec'){
+					this.fenlei_name = '分类';
+					
 					var spec_names = spec_list[index];
 					
-					
+					this.shaixuan_name = spec_names;
 					var xz_shang_list = [];
 					for(var i in shang_list){
 						if(shang_list[i]['spec'].indexOf(spec_names) != -1){
@@ -618,27 +629,22 @@
 			
 			
 			imageLoad: function (e) {//获取图片真实宽度  
-					console.log(e);
+					
 			    var imgwidth = e.detail.width,
-			      imgheight = e.detail.height,
+			    imgheight = e.detail.height,
 				  
-			      //宽高比  
-			      ratio = imgwidth / imgheight;
-			    console.log(imgwidth);
-			    console.log('this.windowHeight',this.windowHeight);
+			    //宽高比  
+			    ratio = imgwidth / imgheight;
+			   
 			    //计算的高度值  
 			    var viewHeight = this.windowHeight / ratio;
 			    var imgheight = viewHeight;
 			    var imgheights = this.imgheights;
-				console.log('imgheights',imgheights);
-				console.log('imgheight',imgheight);
+				
 			    //把每一张图片的对应的高度记录到数组里  
 			    imgheights[e.target.dataset.id] = uni.upx2px(imgheight);
-		
 			    
-			
-		
-			     this.imgheights = imgheights
+				this.imgheights = imgheights
 			   
 			  },
 			
@@ -720,49 +726,50 @@
 		margin-top: 27rpx;
 
 	}
-.label-line-a {
-border: 1px solid #eee;
-width: 30%;
+	.label-line-a {
+		border: 1px solid #eee;
+		width: 30%;
 
-}
-.label-line-a {
-border: 1px solid #eee;
-width: 30%;
+	}
+	.label-line-a {
+		border: 1px solid #eee;
+		width: 30%;
 
-}
-.top-input-con {
-display: flex;
-justify-content: space-between;
-align-items: center;
-padding: 10rpx 20rpx;
-background: #fff;
-z-index: 2;
+	}
+	.top-input-con {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 10rpx 20rpx;
+		background: #fff;
+		z-index: 2;
 
-}
-.ab {
-font-size: 22rpx;
-padding: 2% 5%;
-border: 1px solid #ddd;
-border-radius: 20px;
-color: #666;
+	}
+	.ab {
+		text-align: center;
+		font-size: 32rpx;
+		padding: 15upx 0;
+		border: 1px solid #ddd;
+		border-radius: 20px;
+		color: #666;
 
-}
-.local-img {
-width: 24rpx;
-height: 24rpx;
-margin-left: 11rpx;
-padding-top: 1rpx;
+	}
+	.local-img {
+		width: 24rpx;
+		height: 24rpx;
+		margin-left: 11rpx;
+		padding-top: 1rpx;
 
-}
-.swiper {
-	width: 100%;
-	margin-top: 10upx;
-	display: flex;
-	
-	justify-content: center;
-	
-}
-.swiper-box {
+	}
+	.swiper {
+		width: 100%;
+		margin-top: 10upx;
+		display: flex;
+		
+		justify-content: center;
+		
+	}
+	.swiper-box {
 		width: 92%;
 		
 
@@ -773,8 +780,8 @@ padding-top: 1rpx;
 		position: relative;
 		z-index: 1;
 		
-		
-	}
+			
+		}
 	.indicator {
 		position: absolute;
 		bottom: 20upx;

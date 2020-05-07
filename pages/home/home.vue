@@ -124,8 +124,13 @@
 								</view>
 							</view>
 							<view style="font-size: 24upx;color:#666;">{{item.city_name}}|{{item.cata_name}}</view>
-							<view v-if="item.spec != ''" style="display: flex;align-items: center;flex-wrap: wrap;">
+							<!-- <view v-if="item.spec != ''" style="display: flex;align-items: center;flex-wrap: wrap;">
 								<view v-for="(items,index) in item.spec" :key="index" style="padding:4px 10upx;margin:10upx 10upx 0upx 0upx;border-radius:6upx;background: #ff8000 linear-gradient(to right, rgba(255,255,255,0), rgba(2555,255,255,.5));font-size: 24upx;color:#fff;">{{items}}</view>
+								
+							</view> -->
+							<view v-if="item.spec != ''" style="display: flex;flex-wrap:wrap;">
+								<view v-for="items in item.spec" :key="items" class="youhui-biaoqian">{{items}}</view>
+								
 								
 							</view>
 						</view>
@@ -335,9 +340,17 @@ export default {
 		this.abotapi.set_option_list_str(this, this.callback_function);
 		this.abotapi.get_shop_info_from_server(this.callback_func_for_shop_info);
 		
-		var coordinate = this.abotapi.get_location();
-		this.coordinate = coordinate;
 		
+		var coordinate = this.abotapi.get_location(this,this.call_back_get_shang_list);
+		console.log('coordinate1',coordinate);
+		// if(coordinate.length == 0){
+		// 	console.log('coordinate',123465);
+		// 	var coordinate = [];
+		// 	coordinate['latitude'] = 31.293216;
+		// 	coordinate['longitude'] = 121.662945;
+		// }
+		this.coordinate = coordinate;
+		console.log('coordinate',coordinate);
 		
 		that.get_flash_ad_list();	
 		that.get_flash_img_list();
@@ -345,7 +358,7 @@ export default {
 		that.get_shop_icon_index();
 		
 		that.get_product_list();	
-		this.call_back_get_shang_list();
+		//this.call_back_get_shang_list();
 		
 		// #ifdef APP-PLUS
 		this.nVueTitle = uni.getSubNVueById('homeTitleNvue');
@@ -358,7 +371,10 @@ export default {
 		this.showHeader = false;
 		this.statusHeight = plus.navigator.getStatusbarHeight();
 		// #endif
-		
+		console.log('this.coordinate',this.coordinate);
+		if(this.coordinate.length != 0){
+			this.call_back_get_shang_list();
+		}
 		//开启定时器
 		this.Timer();
 		//加载活动专区
@@ -496,9 +512,17 @@ export default {
 				
 			/* 获取定位地理位置 */
 			// 新建bmap对象
-				
+			// #ifdef H5
+				var baidu_map_ak = cb_params.baidu_map_ak_h5;
+			// #endif
+			// #ifdef APP-PLUS
+				var baidu_map_ak = cb_params.baidu_map_ak_app;
+			// #endif
+			// #ifdef MP-WEIXIN
+				var baidu_map_ak = cb_params.baidu_map_ak_wxa;
+			// #endif
 			var BMap_obj = new bmap.BMapWX({
-				ak: cb_params.baidu_map_ak_wxa
+				ak: baidu_map_ak
 			});
 			
 			var that002 = this;
@@ -511,7 +535,7 @@ export default {
 			
 			
 			var regeocoding_success = function (data) {
-				console.log('00000', data);
+				console.log('00000111', data);
 				
 				this.wxMarkerData = data.wxMarkerData;
 				this.markers = this.wxMarkerData;
@@ -611,7 +635,7 @@ export default {
 					console.log('shop_location_list',shop_location_list);
 			
 					function compare(obj1, obj2) {
-					  var val1 = obj1.dis;
+					  var val1 = obj1.dis; 
 					  var val2 = obj2.dis;
 					  if (val1 < val2) {
 						return -1;
@@ -716,14 +740,19 @@ export default {
 		
 		//计算距离
 		jisuan_juli:function(arr){
+			console.log('计算距离123',arr);
+			
 			var dis = 0
 			var shop_location_list = [];
 			var that = this;
+			
+			
+			
 			for (var index in arr) {
 				if (!isNaN(index)) {
 				  
 					dis = that.abotapi.getDisance(that.coordinate['latitude'], that.coordinate['longitude'], arr[index]['latitude'], arr[index]['longitude']);
-				
+					
 					arr[index]['dis'] = dis;
 				
 					dis = Math.ceil(dis)
@@ -1561,4 +1590,14 @@ page{position: relative;background-color: #fff;}
 		}
 	}
 }
+.youhui-biaoqian {
+		font-size: 24upx;
+		margin-bottom: 10upx;
+		border: 1px solid #666;
+		text-align: center;
+		color: #555;
+		border-radius: 6rpx;
+		padding: 2px 5px;
+		margin-right: 10rpx;
+	}
 </style>
