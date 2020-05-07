@@ -19,7 +19,8 @@
         },
         "modules" : {
             "Share" : {},
-            "OAuth" : {}
+            "OAuth" : {},
+            "Payment" : {}
         },
         /* 模块配置 */
         "distribute" : {
@@ -52,9 +53,30 @@
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
                 ]
             },
-            "ios" : {},
+            "ios" : {
+                "idfa" : false,
+                "privacyDescription" : {
+                    "NSPhotoLibraryUsageDescription" : "读取相册以用于设置头像",
+                    "NSPhotoLibraryAddUsageDescription" : "保存视频或图片素材到相册",
+                    "NSCameraUsageDescription" : "使用相机拍摄商品以及设置头像",
+                    "NSLocationWhenInUseUsageDescription" : "访问位置以获取当前所在城市",
+                    "NSLocationAlwaysUsageDescription" : "访问位置以获取当前所在城市",
+                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "访问位置以获取当前所在城市"
+                }
+            },
             /* ios打包配置 */
-            "sdkConfigs" : {}
+            "sdkConfigs" : {
+                "maps" : {},
+                "payment" : {
+                    "weixin" : {
+                        "appid" : "12224323423",
+                        "UniversalLinks" : ""
+                    }
+                }
+            }
+        },
+        "uniStatistics" : {
+            "enable" : false
         }
     },
     /* SDK配置 */
@@ -72,6 +94,9 @@
             "scope.userLocation" : {
                 "desc" : "你的位置信息将用于显示所在城市"
             }
+        },
+        "uniStatistics" : {
+            "enable" : false
         }
     },
     "h5" : {
@@ -81,6 +106,32 @@
         },
         "devServer" : {
             "port" : ""
+        },
+        "uniStatistics" : {
+            "enable" : false
+        }
+    },
+    "uniStatistics" : {
+        "enable" : false
+    },
+    "mp-alipay" : {
+        "uniStatistics" : {
+            "enable" : false
+        }
+    },
+    "mp-baidu" : {
+        "uniStatistics" : {
+            "enable" : false
+        }
+    },
+    "mp-qq" : {
+        "uniStatistics" : {
+            "enable" : false
+        }
+    },
+    "mp-toutiao" : {
+        "uniStatistics" : {
+            "enable" : false
         }
     }
 }
