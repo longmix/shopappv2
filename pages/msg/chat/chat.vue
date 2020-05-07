@@ -169,11 +169,11 @@
 			getMsgList(){
 				// 消息列表
 				let list = [
-					{id:0,uid:0,username:"大黑哥",face:"/static/img/face.jpg",time:"12:56",type:"text",msg:{content:"为什么温度会相差那么大？"}},
+					{id:0,uid:0,username:"大黑哥",face:"",time:"12:56",type:"text",msg:{content:"为什么温度会相差那么大？"}},
 					{id:1,uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg",time:"12:57",type:"text",msg:{content:"这个是有偏差的，两个温度相差十几二十度是很正常的，如果相差五十度，那即是质量问题了。"}},
 					{id:2,uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg",time:"12:59",type:"voice",msg:{url:"/static/voice/3.aac",length:"00:06"}},
-					{id:3,uid:0,username:"大黑哥",face:"/static/img/face.jpg",time:"13:05",type:"voice",msg:{url:"/static/voice/2.mp3",length:"00:06"}},
-					{id:4,uid:0,username:"大黑哥",face:"/static/img/face.jpg",time:"13:05",type:"img",msg:{url:"/static/img/goods/p10.jpg",w:200,h:200}},
+					{id:3,uid:0,username:"大黑哥",face:"",time:"13:05",type:"voice",msg:{url:"/static/voice/2.mp3",length:"00:06"}},
+					{id:4,uid:0,username:"大黑哥",face:"",time:"13:05",type:"img",msg:{url:"/static/img/goods/p10.jpg",w:200,h:200}},
 					{id:5,uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg",time:"12:59",type:"img",msg:{url:"/static/img/q.jpg",w:1920,h:1080}}
 				]
 				// 获取消息中的图片,并处理显示尺寸
@@ -297,7 +297,7 @@
 				var nowDate = new Date();
 				let lastid = this.msgList[this.msgList.length-1].id;
 				lastid++;
-				let msg = {id:lastid,uid:0,username:"大黑哥",face:"/static/img/face.jpg",time:nowDate.getHours()+":"+nowDate.getMinutes(),type:type,msg:content};
+				let msg = {id:lastid,uid:0,username:"大黑哥",face:"",time:nowDate.getHours()+":"+nowDate.getMinutes(),type:type,msg:content};
 				this.screenMsg(msg);
 				// 定时器模拟对方回复,三秒
 				setTimeout(()=>{

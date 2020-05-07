@@ -18,7 +18,7 @@
 			<!-- 头像 -->
 			<view class="left">
 				<label v-if="user_info"><image :src="user_info.headimgurl"></image></label>
-				<label v-else><image src="../../../static/img/face.jpg"></image></label>
+				<label v-else><image src=""></image></label>
 			</view>
 			<!-- 昵称,个性签名 -->
 			<view class="right">

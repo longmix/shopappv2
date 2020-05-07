@@ -95,11 +95,8 @@
 </template>
 
 <script>
-	import mpvueCityPicker from '@/components/mpvue-citypicker/mpvueCityPicker.vue'
 	export default {
-		components: {
-			mpvueCityPicker
-		},
+	
 		data() {
 			return {
 				shengArr: [],//省级数组
@@ -514,9 +511,7 @@
 			onCancel(e) {
 				console.log(e)
 			},
-			chooseCity() {
-				this.$refs.mpvueCityPicker.show()
-			},
+			
 			
 			del(e) {
 				console.log('del-e==>>',e);

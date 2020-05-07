@@ -86,7 +86,7 @@
 				],
 				labelIndex:0,
 				ratingsList:[
-					{id:1,username:"大黑哥",face:"/static/img/face.jpg",date:'2019-04-21',spec:"规格: XL",grade:"good",
+					{id:1,username:"大黑哥",face:"",date:'2019-04-21',spec:"规格: XL",grade:"good",
 						first:{content:"好看，可以，不愧是专业的，才拿到手上就研究了半天才装上",
 						img:["https://ae01.alicdn.com/kf/HTB1wREwTXzqK1RjSZFvq6AB7VXaT.jpg","https://ae01.alicdn.com/kf/HTB1sL7hTjDpK1RjSZFrq6y78VXaw.jpg","https://ae01.alicdn.com/kf/HTB111soTbvpK1RjSZPiq6zmwXXaB.jpg","https://ae01.alicdn.com/kf/HTB1O2TRTmzqK1RjSZPcq6zTepXa4.jpg"],
 						video:[{img:"https://ae01.alicdn.com/kf/HTB1AMEBTcfpK1RjSZFOq6y6nFXaK.jpg",path:"https://mp4.vjshi.com/2018-12-28/1083f3db90334f86e3fc3586b4472914.mp4"}]
@@ -96,19 +96,19 @@
 						video:[{img:"https://ae01.alicdn.com/kf/HTB1AMEBTcfpK1RjSZFOq6y6nFXaK.jpg",path:"https://mp4.vjshi.com/2017-06-17/ed1d63669bea39f5ef078c4e194291d6.mp4"}]
 						}
 					},
-					{id:2,username:"小黑狗",face:"/static/img/face.jpg",date:'2019-04-21',spec:"规格: XL",grade:"secondary",
+					{id:2,username:"小黑狗",face:"",date:'2019-04-21',spec:"规格: XL",grade:"secondary",
 						first:{content:"好评，看图",
 						img:["https://ae01.alicdn.com/kf/HTB111soTbvpK1RjSZPiq6zmwXXaB.jpg","https://ae01.alicdn.com/kf/HTB1O2TRTmzqK1RjSZPcq6zTepXa4.jpg"],
 						video:[]
 						}
 					},
-					{id:3,username:"小黑狗",face:"/static/img/face.jpg",date:'2019-04-21',spec:"规格: XL",grade:"poor",
+					{id:3,username:"小黑狗",face:"",date:'2019-04-21',spec:"规格: XL",grade:"poor",
 						first:{content:"好评，看图",
 						img:["https://ae01.alicdn.com/kf/HTB111soTbvpK1RjSZPiq6zmwXXaB.jpg","https://ae01.alicdn.com/kf/HTB1O2TRTmzqK1RjSZPcq6zTepXa4.jpg"],
 						video:[]
 						}
 					},
-					{id:3,username:"小黑狗",face:"/static/img/face.jpg",date:'2019-04-21',spec:"规格: XL",grade:"secondary",
+					{id:3,username:"小黑狗",face:"",date:'2019-04-21',spec:"规格: XL",grade:"secondary",
 						first:{content:"系统默认好评",
 						img:[],
 						video:[]

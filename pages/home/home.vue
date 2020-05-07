@@ -1562,7 +1562,7 @@ page{position: relative;background-color: #fff;}
 			}
 			.name {
 				width: 92%;
-				padding: 10upx 4%;
+				margin: 10upx 4%;
 				display: -webkit-box;
 				-webkit-box-orient: vertical;
 				-webkit-line-clamp: 2;

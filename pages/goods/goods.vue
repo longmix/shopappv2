@@ -278,7 +278,7 @@ export default {
 				spec:["XS","S","M","L","XL","XXL"],
 				comment:{
 					number:102,
-					userface:'../../static/img/face.jpg',
+					userface:'',
 					username:'大黑哥',
 					content:'很不错，之前买了很多次了，很好看，能放很久，和图片色差不大，值得购买！'
 				}
