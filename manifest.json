@@ -73,5 +73,14 @@
                 "desc" : "你的位置信息将用于显示所在城市"
             }
         }
+    },
+    "h5" : {
+        "router" : {
+            "base" : "/o2oh5/",
+            "mode" : "hash"
+        },
+        "devServer" : {
+            "port" : ""
+        }
     }
 }
