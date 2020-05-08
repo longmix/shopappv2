@@ -92,7 +92,7 @@ module.exports = {
 				coordinate['longitude'] = res.longitude;
 				coordinate['latitude'] = res.latitude;
 				
-				typeof call_back_get_shang_list == "function" && call_back_get_shang_list(that);
+				typeof call_back_get_shang_list == "function" && call_back_get_shang_list(that,coordinate);
 				
 	        },
 			

@@ -608,9 +608,12 @@ export default {
 		},
 		
 		/* 获取前十条商家 */
-		call_back_get_shang_list:function(){
+		call_back_get_shang_list:function(that,coordinate){
 			//获取全部商家 的金纬度
 			
+			//coordinate = JSON.stringify(coordinate);
+			console.log('coordinatecoordinate',JSON.stringify(coordinate));
+			uni.setStorageSync("coordinate_array", coordinate);
 			var that = this;
 			
 			this.abotapi.abotRequest({

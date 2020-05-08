@@ -226,16 +226,20 @@
 			
 			
 			
-			//获取经纬度
-			var coordinate = this.abotapi.get_location();
-			this.coordinate = coordinate;
+			
 			
 		},
 		onShow() {
-			if(this.shang_list.length != 0){
-				this.get_shang_list();
+			//获取经纬度
+			var coordinate = uni.getStorageSync("coordinate");
+			console.log('coordinate155',coordinate);
+			if(coordinate.length != 0){
+				this.get_shang_list
 			}
-			this.get_shang_list();
+			
+			this.coordinate = coordinate;
+			
+			
 			this.get_cata_tag();
 			this.get_gundong_img();
 			//this.shuaxin();
