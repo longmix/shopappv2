@@ -1,19 +1,23 @@
 <template>
 	<view>
         <view class="chat-list">
-			<view class="chat" v-for="(chat,index) in chatList" :key="index">
+			<view class="chat" v-for="(chat,index) in latestMsgList" :key="index" v-if="chat.chat_type == 0">
 				<view class="row" @tap="toChat(chat)">
 					<view class="left">
-						<image :src="chat.face"></image>
+						<image  :src="chat.from_person_detail.headimgurl"></image>
 					</view>
 					<view class="right">
 						<view class="top">
-							<view class="username">{{chat.username}}</view>
-							<view class="time">{{chat.time}}</view>
+							<view class="username">{{chat.from_person_detail.nickname}}</view>
+							<view class="time">{{chat.latest_time}}</view>
 						</view>
 						<view class="bottom">
-							<view class="msg">{{chat.msg}}</view>
-							<view class="tis" v-if="chat.tisNum>0">{{chat.tisNum}}</view>
+							<view class="msg" v-if="chat.msg_type == 'text'" v-html="chat.latest_msg"></view>
+							<view class="msg" v-else-if="chat.msg_type == 'img'">[图片]</view>
+							<view class="msg" v-else-if="chat.msg_type == 'redEnvelope'">[红包]</view>
+							<view class="msg" v-else-if="chat.msg_type == 'voice'">[语音]</view>
+							<!-- <view class="msg">{{chat.latest_msg}}</view> -->
+							<!-- <view class="tis" v-if="chat.tisNum>0">{{chat.tisNum}}</view> -->
 						</view>
 					</view>
 				</view>
@@ -148,7 +152,8 @@
 						tisNum:0
 					}
 
-				]
+				],
+				latestMsgList: []
 			}
 		},
 		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
@@ -158,9 +163,98 @@
 		    }, 1000);
 		},
 		onLoad() {
-
+			var that = this;
+			that.getLastMsg();
 		},
 		methods: {
+			linkSocket: function(){
+				var userInfo = that.abotapi.get_user_info();
+				const socket_io = io(that.abotapi.globalData.socket_server, {path: '/socketio/'})
+			    var that = this;
+				// socket连接后以uid登录
+				var uid = 'chat_app_userid_' + userInfo.userid;
+							
+							
+				console.log('chat_app_userid_=============',uid);
+				
+							
+				socket_io.on('connect', function(){
+					
+					console.log('socket_io====6666',  socket_io.connected);
+					console.log('socket_io====7777',  socket_io);
+					socket_io.emit('login', uid);
+					console.log(111);
+					console.log('注册成功，uid=>'+uid);
+					console.log(111);
+				});
+				
+			
+				
+				socket_io.on('new_msg', function(msg){
+					
+					console.log('msg===main000',msg)
+					
+					//console.log("收到消息："+msg.replace(/&quot;/g,'"'));							
+					msg = msg.replace(/&quot;/g,'"');
+					msg = JSON.parse(msg);
+					msg = JSON.parse(decodeURIComponent(msg));
+					//发的消息只在当前房间显示
+					console.log('msg===main',msg)
+					if(msg){
+						
+						// var current_chat_gui = app.globalData.current_chat_gui
+						
+						// console.log('current_chat_gui===',current_chat_gui)
+						
+						// if(current_chat_gui){
+						// 	current_chat_gui.getNewMsg(msg);
+						// }		
+										
+						that.abotapi.socketMsgHandle(that.chat_help.current_chat_gui, that.chat_help.current_chat_page,msg);
+										
+						that.getLastMsg();
+																				
+						
+					}
+			  
+					
+				});
+			},
+			getLastMsg:function(){
+				var that = this;
+				var userInfo = that.abotapi.get_user_info();
+				uni.request({
+				     url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ChatData/chat_history',
+				     data: {
+						action: 'latest_list',
+						userid02: userInfo.userid,
+						checkstr: userInfo.checkstr,
+						sellerid: 'fmXJPaVea',//that.abotapi.globalData.default_sellerid,
+						chat_type: '0,4',
+				     },
+				     header: {
+				       "Content-Type": "application/x-www-form-urlencoded"
+				     },
+				     method: "POST",
+				     success: function (res) {
+				       console.log('ddd', res);
+					       
+						var	data = res.data;
+						if(data.code == 1){
+							
+							that.latestMsgList = data.data
+							
+						 } else {
+							 that.latestMsgList = [];
+						 }
+						 
+						 console.log('that.latestMsgList==',that.latestMsgList[0].from_person_detail.headimgurl);
+						 uni.setStorageSync('latestMsgList_cache',that.latestMsgList);
+						 
+				     }
+				   })
+			},
+			
 			toChat(chat){
 				uni.navigateTo({
 					url:"chat/chat?name="+chat.username

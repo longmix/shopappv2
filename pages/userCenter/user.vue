@@ -22,8 +22,8 @@
 			</view>
 			<!-- 昵称,个性签名 -->
 			<view class="right">
-				<view class="username"><label v-if="user_info">{{user_info.nickname}}</label><label @click="toLogin" v-else>请点击此处登录</label></view>
-				<view class="signature"><label v-if="user_info">{{user_info.signature}}</label><label v-if="user_info.signature == null"></label></view>
+				<view class="username" :style="{color:wxa_shop_nav_font_color=='#000000' ? '#333' : 'wxa_shop_nav_font_color'}"><label v-if="user_info">{{user_info.nickname}}</label><label @click="toLogin" v-else>请点击此处登录</label></view>
+				<view class="signature" :style="{color:wxa_shop_nav_font_color=='#000000' ? '#333' : 'wxa_shop_nav_font_color'}"><label v-if="user_info">{{user_info.signature}}</label><label v-if="user_info.signature == null"></label></view>
 			</view>
 			<!-- 二维码按钮 -->
 			<view class="erweima" @tap="toMyQR">
@@ -53,16 +53,16 @@
 			<view class="balance-info">
 				<view class="left">
 					<view class="box">
-						<view class="num">{{fenxiao_info.balance_yuan}}</view>
+						<view class="num">{{userInfo && userInfo.userid ? fenxiao_info.balance_yuan : '0.00'}}</view>
 						<view class="text">余额</view>
 					</view>
 					
 					<view class="box">
-						<view class="num">{{fenxiao_info.balance_zengsong_yuan}}</view>
+						<view class="num">{{userInfo && userInfo.userid ? fenxiao_info.balance_zengsong_yuan : '0.00'}}</view>
 						<view class="text">赠款</view>
 					</view>
 					<view class="box">
-						<view class="num">{{fenxiao_info.score}}</view>
+						<view class="num">{{userInfo && userInfo.userid ? fenxiao_info.score : '0'}}</view>
 						<view class="text">积分</view>
 					</view>
 				</view>
@@ -85,6 +85,12 @@
 						<image :src="row.src"></image>
 					</view>
 					<view class="text">{{row.name}}</view>
+				</view>
+				<view class="box"  @tap="toPage('/pages/about/about')">
+					<view class="img">
+						<image src="../../static/img/search.png"></image>
+					</view>
+					<view class="text">{{about}}</view>
 				</view>
 			</view>
 		</view>
@@ -122,7 +128,9 @@
 				],
 				// 工具栏列表
 				gooosList:'',
-				default_copyright_text: ''
+				default_copyright_text: '',
+				about: '',
+				userInfo: ''
 			}
 		},
 		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
@@ -139,6 +147,19 @@
 		},
 		onLoad() {
 			var that = this;
+			
+			// #ifdef H5
+				that.about = '关于我们';
+			// #endif
+			
+			// #ifdef APP-PLUS
+				that.about = '关于app';
+			// #endif
+			
+			// #ifdef MP-WEIXIN
+				that.about = '关于小程序'
+			// #endif
+			
 			
 			that.default_copyright_text = that.abotapi.globalData.default_copyright_text;
 			
@@ -196,7 +217,11 @@
 		},
 		onShow(){
 			var that = this;
+
+			that.userInfo  = this.abotapi.get_user_info();
+
 			that.getPage();
+			
 			uni.getStorage({
 				key: 'UserInfo',
 				success: (res)=>{
@@ -216,8 +241,11 @@
 		methods: {
 			//获取用户信息
 			getPage: function () {
-				var userInfo = this.abotapi.get_user_info();
 				var that = this;
+				var userInfo = that.userInfo
+				
+				console.log('getpage--userInfo==',userInfo)
+				
 				if(userInfo && userInfo.userid){
 					uni.request({
 						url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',

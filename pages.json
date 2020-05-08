@@ -332,6 +332,13 @@
 		    	"navigationBarTitleText": "菜单",
 		    	"softinputNavBar":"none"
 		    }
+		},
+		{
+		    "path" : "pages/about/about",
+		    "style": {
+		    	"navigationBarTitleText": "关于",
+		    	"softinputNavBar":"none"
+		    }
 		}
     ],
 	"globalStyle": {

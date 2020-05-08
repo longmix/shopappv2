@@ -102,48 +102,49 @@
 			<view class="mask"></view>
 			<view class="layer2" @tap.stop="discard">
 				<view class="content">
-					<view v-if="isExistSpec" class="guige">
-						<view class="title">选择规格：</view>
-						<!-- <view class="sp">
-							<view v-for="(item,index) in goodsData" :class="[index==selectSpec?'on':'']" @tap="setSelectSpec(index)" :key="index">{{item}}</view>
-						</view> -->
-						<!-- <view class="length" v-if="selectSpec!=null">
-							<view class="text">数量</view>
-							<view class="number">
-								<view class="sub" @tap.stop="sub">
-									<view class="icon jian"></view>
-								</view>
-								<view class="input" @tap.stop="discard">
-									<input type="number" v-model="goodsData.number" />
-								</view>
-								<view class="add"  @tap.stop="add">
-									<view class="icon jia"></view>
-								</view>
-							</view>
-						</view> -->
-						
-						<!-- 规格开始 -->
-						<view class="specs" v-if="attr_list">商品选项</view>
-						<view class="specs-a" style='display:flex;'>
-							<view :class="[option_list_arr[0] == item ? 'specs-e' : 'specs-d']" v-for="(item, index) in attr_key_arr"  :data-spec1="item" @click='changeSpec1($event)'>
-								{{item}}
-							</view>
-						</view>
-						<view class="specs-a" style="display:flex;" v-if="attr_list_arr[spec1] != null">
-							<view :class="[option_list_arr[1] == item2 ? 'specs-e' : 'specs-d']" v-for="(item2, index) in attr_list_arr[spec1]" :data-spec2="item2"  @click="changeSpec2($event)">
-							  {{item2}}
-							</view>
-						</view>
-						<!-- 规格结束 -->
-					</view>
+	
 					
 					<view class="text_center">
 					      <image class="drawer_image" :src="goods_detail.picture"></image>
 					      <view class="mingcheng">
 					        <view>{{goods_detail.name}}</view>
 					        <view style="font-size:29rpx;color:red">¥ {{goods_detail.price}}</view>
-					        <view style="font-size:26rpx;color:#ccc">库存：{{goods_detail.sale_volume}}</view>
+					        <view style="font-size:26rpx;color:#ccc">库存：{{goods_detail.inventory}}</view>
 					      </view>
+					 </view>
+					 <view v-if="isExistSpec" class="guige">
+					 	<!-- <view class="title">选择规格：</view> -->
+					 	<!-- <view class="sp">
+					 		<view v-for="(item,index) in goodsData" :class="[index==selectSpec?'on':'']" @tap="setSelectSpec(index)" :key="index">{{item}}</view>
+					 	</view> -->
+					 	<!-- <view class="length" v-if="selectSpec!=null">
+					 		<view class="text">数量</view>
+					 		<view class="number">
+					 			<view class="sub" @tap.stop="sub">
+					 				<view class="icon jian"></view>
+					 			</view>
+					 			<view class="input" @tap.stop="discard">
+					 				<input type="number" v-model="goodsData.number" />
+					 			</view>
+					 			<view class="add"  @tap.stop="add">
+					 				<view class="icon jia"></view>
+					 			</view>
+					 		</view>
+					 	</view> -->
+					 	
+					 	<!-- 规格开始 -->
+					 	<view class="specs" v-if="attr_list">商品选项</view>
+					 	<view class="specs-a" style='display:flex;'>
+					 		<view :class="[option_list_arr[0] == item ? 'specs-e' : 'specs-d']" v-for="(item, index) in attr_key_arr"  :data-spec1="item" @click='changeSpec1($event)'>
+					 			{{item}}
+					 		</view>
+					 	</view>
+					 	<view class="specs-a" style="display:flex;" v-if="attr_list_arr[spec1] != null">
+					 		<view :class="[option_list_arr[1] == item2 ? 'specs-e' : 'specs-d']" v-for="(item2, index) in attr_list_arr[spec1]" :data-spec2="item2"  @click="changeSpec2($event)">
+					 		  {{item2}}
+					 		</view>
+					 	</view>
+					 	<!-- 规格结束 -->
 					 </view>
 					<view class="text">数量</view>
 					<view class="number">
@@ -578,18 +579,16 @@ export default {
 		},
 		// 客服
 		toChat(){
-			// uni.navigateTo({
-			// 	url:"../msg/chat/chat?name=客服008"
-			// })
 			
-			
-			
-			var shop_list = uni.getStorageSync("shop_info_from_server_str_" + this.abotapi.globalData.default_sellerid);
-			console.log('aaaaaaaaaaaaaaaaaaaaaaaaaa====>>>>', shop_list);
-			this.telephone = shop_list.telephone
-			uni.makePhoneCall({
-				phoneNumber: this.telephone,
+			uni.navigateTo({
+				url:"../msg/chat/chat?name=客服008"
 			})
+									
+			// var shop_list = uni.getStorageSync("shop_info_from_server_str_" + this.abotapi.globalData.default_sellerid);
+			// this.telephone = shop_list.telephone
+			// uni.makePhoneCall({
+			// 	phoneNumber: this.telephone,
+			// })
 			
 			
 		},
@@ -1296,7 +1295,8 @@ page {
 			}
 			.guige{
 				border-bottom: 1px solid #bfbfbf;
-				padding-bottom: 20px;
+				padding-bottom: 10px;
+				margin-bottom: 10upx;
 			}
 		}
 		.btn {

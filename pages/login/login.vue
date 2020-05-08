@@ -298,8 +298,8 @@
 										}
 									//===========End================
 				              
-										uni.redirectTo({
-											url: '/pages/index/index'
+										uni.switchTab({
+											url: '/pages/home/home'
 										})
 									}
 								}
@@ -316,7 +316,7 @@
 						console.log("延誉宝服务器解析jscode并返回以下内容：");
 						console.log(request_res);
 						// app.globalData.user_openid = request_res.data.openid;
-						this.abotapi.globalData.tokenstr = request_res.data.tokenstr;
+						// this.abotapi.globalData.tokenstr = request_res.data.tokenstr;
 				    }
 				});
 				

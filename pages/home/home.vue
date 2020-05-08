@@ -21,7 +21,7 @@
 			<!-- 右侧图标按钮 -->
 			<view class="icon-btn">
 				<view class="icon yuyin-home" style="display: none;"></view>
-				<view class="icon tongzhi" @tap="touTiaoList"></view>  <!-- 下版本换为:toMsg -->
+				<view class="icon tongzhi" @tap="toMsg"></view>  <!-- 下版本换为:toMsg -->
 			</view>
 		</view>
 		<!-- 占位 -->
@@ -1003,7 +1003,7 @@ export default {
 		touTiaoList: function (e) {
 		    console.log('点击商户头条进入列表');
 		    uni.navigateTo({
-				url: '/pages/tabBar/home/help/help?sellerid=' + this.abotapi.globalData.default_sellerid
+				url: '/pages/home/help/help?sellerid=' + this.abotapi.globalData.default_sellerid
 		    })
 		},
 		
@@ -1099,7 +1099,7 @@ export default {
 		//消息列表
 		toMsg(){
 			uni.navigateTo({
-				url:'../../msg/msg'
+				url:'../msg/msg'
 			})
 		},
 		//搜索跳转
@@ -1276,7 +1276,7 @@ page{position: relative;background-color: #fff;}
 		}
 	}
 	.icon-btn {
-		width: 120upx;
+		// width: 120upx;
 		height: 60upx;
 		flex-shrink: 0;
 		display: flex;

@@ -83,6 +83,7 @@
 		
 		onLoad:function(options) {
 			var that = this;
+			var userInfo = that.abotapi.get_user_info();
 			if ((!userInfo) || (!userInfo.userid)) {
 				uni.redirectTo({
 					url: '../../login/login',

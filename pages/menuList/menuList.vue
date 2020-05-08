@@ -49,9 +49,7 @@
 	 </view>
 	
 	<view class="good_box" :hidden="hide_good_box"  :style="{left: bus_x + 'px',top:bus_y + 'px'}"> </view>
-	
-	<view>dddd {{!showCartDetail}} 5555</view>
-	
+		
 	<!--遮罩层-->
 	<view class="shade2" :hidden="!showCartDetail" @tap='showCartDetailf' catchtouchmove="true">
 	</view>

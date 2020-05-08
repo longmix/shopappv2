@@ -146,6 +146,7 @@
 			};
 		},
 		onLoad(option) {
+			var that = this;
 			uni.setNavigationBarTitle({
 				title: option.name
 			});
@@ -164,6 +165,10 @@
 				this.recordEnd(e);
 			})
 			// #endif
+			
+			that.abotapi.current_chat_gui = this;
+			that.abotapi.current_chat_handle = this;
+			that.abotapi.current_chat_page = '/pages/msg/chat/chat';
 		},
 		methods:{
 			getMsgList(){
@@ -424,7 +429,63 @@
 			},
 			discard(){
 				return;
-			}
+			},
+			send_text_to_service:function(msg, type){
+				console.log('myuid======00', this.myuid);
+				
+				console.log('msg====0',msg)
+						
+				var content = encodeURIComponent(JSON.stringify(msg))
+				
+				var that = this;
+				
+				var data_params = {
+					   action: 'add',
+				       sellerid: app.globalData.default_sellerid,
+					   chat_msg: content,
+					   from: '11111'
+				     }
+				
+				if(!that.groupid){
+					data_params.userid01 = userInfo.userid;
+					data_params.userid02 = that.userid;
+					data_params.chat_type = 0;
+				} else {
+					data_params.userid01 = userInfo.userid;
+					data_params.userid02 = that.groupid;
+					data_params.chat_type = 4;
+				}
+				
+				
+				
+				
+				
+				
+				uni.request({
+				     url: app.globalData.yanyubao_server_url + '/openapi/ChatData/chat_history',
+				     data:data_params,
+				     header: {
+				       "Content-Type": "application/x-www-form-urlencoded"
+				     },
+				     method: "POST",
+				     success: function (res) {
+				       console.log('chat_history=====add', res);
+				      
+					  if(res.data.code == 0){
+						  uni.showToast({
+						  	title: res.data.msg,
+							duration: 2000,
+							icon: 'none'
+						  })
+					  }else{
+						  // 发送消息
+						  that.screenMsg(msg);
+					  }
+					 
+					  
+				     }
+				   })
+			},
 		}
 	}
 </script>

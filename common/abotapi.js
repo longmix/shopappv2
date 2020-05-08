@@ -61,6 +61,7 @@ module.exports = {
 		//其他配置选项
 		//首页显示附近商家的数量，如果为0则不显示
 		default_shang_list_count_in_front_page:10,
+		navigationBarBackgroundColor_fixed:1,
 		
 		
 		
