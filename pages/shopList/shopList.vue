@@ -225,19 +225,22 @@
 			this.shang_list = shang_list;
 			
 			
+			var coordinate = this.abotapi.get_location(this,this.get_shang_list);
+			console.log('coordinate1',coordinate);
 			
+			this.coordinate = coordinate;
 			
 			
 		},
 		onShow() {
 			//获取经纬度
-			var coordinate = uni.getStorageSync("coordinate");
-			console.log('coordinate155',coordinate);
-			if(coordinate.length != 0){
-				this.get_shang_list
-			}
+			// var coordinate = uni.getStorageSync("coordinate");
+			// console.log('coordinate155',coordinate);
+			// if(coordinate.length != 0){
+			// 	this.get_shang_list();
+			// }
 			
-			this.coordinate = coordinate;
+			// this.coordinate = coordinate;
 			
 			
 			this.get_cata_tag();
@@ -299,7 +302,13 @@
 						
 						
 						if (res.data.code != 1) {
+							
 						  //显示错误信息
+						  uni.showToast({
+						      title: '失败',
+						      duration: 2000,
+							  image:'../../static/img/close.png'
+						  });
 						  return;
 						}
 						if(res.data.xianmai_shang_list.length < shang_num){
