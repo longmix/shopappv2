@@ -90,6 +90,8 @@
 		</view>
 		<!-- 占位 -->
 		<view class="place-bottom"></view>
+		<!-- 著作信息 -->
+		<view class="copyinfo">{{default_copyright_text}}</view>
 	</view>
 </template>
 <script>
@@ -120,6 +122,7 @@
 				],
 				// 工具栏列表
 				gooosList:'',
+				default_copyright_text: ''
 			}
 		},
 		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
@@ -136,6 +139,8 @@
 		},
 		onLoad() {
 			var that = this;
+			
+			that.default_copyright_text = that.abotapi.globalData.default_copyright_text;
 			
 			this.abotapi.set_option_list_str(this, 
 				function(that001, option_list){
@@ -655,5 +660,11 @@
 				}
 			}
 		}
+	}
+	.copyinfo{
+		text-align: center;
+		font-size: 13px;
+		color: #666;
+		margin-bottom: 10upx;
 	}
 </style>

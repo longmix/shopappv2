@@ -51,12 +51,12 @@ module.exports = {
 		// default_sellerid: 'fSNQPajka',
 		
 		//哈哈订
-		//default_sellerid: 'fimmUPUPV',
-		//default_copyright_text:'哈哈订信息科技 版权所有',
+		default_sellerid: 'fimmUPUPV',
+		default_copyright_text:'哈哈订信息科技 版权所有',
 		
 		//腾羽生物
-		default_sellerid: 'fSNQPajka',
-		default_copyright_text:'腾羽生物科技 版权所有',
+		// default_sellerid: 'fSNQPajka',
+		// default_copyright_text:'腾羽生物科技 版权所有',
 		
 		//其他配置选项
 		//首页显示附近商家的数量，如果为0则不显示
