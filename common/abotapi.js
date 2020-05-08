@@ -1050,12 +1050,18 @@ module.exports = {
 			}
    
 		} else if ((url.indexOf('http://') == 0)||(url.indexOf('https://') == 0)) {
-			
-			
-			
-			uni.navigateTo({
-				url: '/pages/h5browser/h5browser?url=' + encodeURIComponent(url) + '&ret_page=' + ret_page,
-			})
+			if (url.indexOf('#redirectTo') != -1){
+				//如果指定了跳转方式为 #redirectTo
+				url = url.replace(/#redirectTo/, '');
+				uni.redirectTo({
+				  url: '/pages/h5browser/h5browser?url=' + encodeURIComponent(url) + '&ret_page=' + ret_page,
+				})
+			}
+			else{
+				uni.navigateTo({
+					url: '/pages/h5browser/h5browser?url=' + encodeURIComponent(url) + '&ret_page=' + ret_page,
+				})
+			}
 		}
 		else if (url.indexOf('miniprogram') == 0) {
 			var arr = url.split(" ");

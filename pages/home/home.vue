@@ -249,7 +249,7 @@ export default {
 			wxa_kefu_bg_color:''
 		};
 	},
-	onPageScroll(e) {
+	onPageScroll: function (e) {
 		//兼容iOS端下拉时顶部漂移
 		this.headerPosition = e.scrollTop>=0?"fixed":"absolute";
 		this.headerTop = e.scrollTop>=0?null:0;
@@ -259,7 +259,7 @@ export default {
 		
 	},
 	//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
-	onPullDownRefresh() {
+	onPullDownRefresh: function () {
 		var that = this;
 		
 		
@@ -277,7 +277,7 @@ export default {
 		}, 1000);
 	},
 	//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
-	onReachBottom() {
+	onReachBottom: function () {
 		var that = this;
 		var page_num = that.page_num;
 		that.page_num ++;
@@ -326,7 +326,11 @@ export default {
 		    },
 		});
 	},
-	onLoad() {
+	onLoad: function (options) {
+		
+		console.log('pages/tabBar/index/index====>>>>', options);
+		
+		
 		var that = this;
 		
 		uni.getSystemInfo({
@@ -336,6 +340,75 @@ export default {
 				
 		    }
 		});
+		
+		//=====判断sellerid和parentid Begin=====
+		var sellerid = null;
+		
+		console.log('sellerid 01：' + sellerid);
+	
+		if (options && options.parentid) {
+		  this.abotapi.set_current_parentid(options.parentid);
+		}
+		else if (options && options.scene) {
+		  var parentid_value = decodeURIComponent(options.scene);
+	
+		  console.log('来自小程序码的推荐者ID：' + parentid_value);
+		  if (parentid_value && (parentid_value.indexOf('parentid_') != -1)) {
+			parentid_value = parentid_value.replace('parentid_', '');
+	
+			this.abotapi.set_current_parentid(parentid_value);
+		  }
+		  else {
+			console.log('推荐者ID：' + parentid_value + '不是 parentid_开头的，默认为sellerid的值');
+	
+			sellerid = options.scene;
+	
+			console.log('sellerid 0101：' + sellerid);
+	
+		  }
+	
+		}
+	
+		if (options || options != null) {
+		  if (!sellerid) {
+			sellerid = options.sellerid;
+			console.log('sellerid 02：' + sellerid);
+		  }
+	
+		  if (!sellerid) {
+			var sellerid_scene = decodeURIComponent(options.scene);
+			if (sellerid_scene && sellerid_scene.indexOf('sellerid_') != -1) {
+			  sellerid = sellerid_scene.replace('sellerid_', '');
+			}
+	
+			console.log('sellerid 03：' + sellerid);
+	
+		  }
+		}
+		if (!sellerid) {
+		  sellerid = this.abotapi.get_sellerid();
+		  console.log('sellerid 04：' + sellerid);
+		}
+	
+		console.log('sellerid 05：' + sellerid);
+	
+		if (!sellerid) {
+		  console.log('!!!!!!缺少商户ID，使用默认的' + this.abotapi.globalData.default_sellerid);
+		  sellerid = this.abotapi.globalData.default_sellerid;
+	
+		}
+	
+		if (this.abotapi.globalData.force_sellerid == 1) {
+		  sellerid = this.abotapi.globalData.default_sellerid;
+		}
+	
+		console.log('sellerid 06：' + sellerid);
+	
+		this.abotapi.globalData.default_sellerid = sellerid
+		this.abotapi.set_sellerid(sellerid);
+		//========  End =======
+			
+			
 		
 		this.abotapi.set_option_list_str(this, this.callback_function);
 		this.abotapi.get_shop_info_from_server(this.callback_func_for_shop_info);
