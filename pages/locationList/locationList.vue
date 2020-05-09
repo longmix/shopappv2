@@ -12,6 +12,14 @@
 				<view class="a"><img style="width: 35rpx;height: 30rpx;" 
 				src="../../static/img/category/weizhi.png" alt="">上海</view>
 			<view class="hui">热门城市</view>
+			<view style="overflow: auto;text-align: center;">
+				<view style="float: left;width: 25%;margin: 10upx;background: red;">123</view>
+				<view style="float: left;width: 25%;margin: 10upx;background: red;">123</view>
+				<view style="float: left;width: 25%;margin: 10upx;background: red;">123</view>
+				<view style="float: left;width: 25%;margin: 10upx;background: red;">123</view>
+				<view style="float: left;width: 25%;margin: 10upx;background: red;">123</view>
+				
+			</view>
 				<table width="450upx">
 					<tr>
 					<td>苏州</td>
