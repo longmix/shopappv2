@@ -854,6 +854,6 @@
 	}
     .bottom{
 		width: 100%;
-		height: 500rpx;
+		height:150rpx;
 	}
 </style>

@@ -340,6 +340,10 @@
 		    	"softinputNavBar":"none"
 		    }
 		}
+        ,{
+            "path" : "pages/locationList/locationList",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
