@@ -167,59 +167,7 @@
 			that.getLastMsg();
 		},
 		methods: {
-			linkSocket: function(){
-				var userInfo = that.abotapi.get_user_info();
-				const socket_io = io(that.abotapi.globalData.socket_server, {path: '/socketio/'})
-			    var that = this;
-				// socket连接后以uid登录
-				var uid = 'chat_app_userid_' + userInfo.userid;
-							
-							
-				console.log('chat_app_userid_=============',uid);
-				
-							
-				socket_io.on('connect', function(){
-					
-					console.log('socket_io====6666',  socket_io.connected);
-					console.log('socket_io====7777',  socket_io);
-					socket_io.emit('login', uid);
-					console.log(111);
-					console.log('注册成功，uid=>'+uid);
-					console.log(111);
-				});
-				
 			
-				
-				socket_io.on('new_msg', function(msg){
-					
-					console.log('msg===main000',msg)
-					
-					//console.log("收到消息："+msg.replace(/&quot;/g,'"'));							
-					msg = msg.replace(/&quot;/g,'"');
-					msg = JSON.parse(msg);
-					msg = JSON.parse(decodeURIComponent(msg));
-					//发的消息只在当前房间显示
-					console.log('msg===main',msg)
-					if(msg){
-						
-						// var current_chat_gui = app.globalData.current_chat_gui
-						
-						// console.log('current_chat_gui===',current_chat_gui)
-						
-						// if(current_chat_gui){
-						// 	current_chat_gui.getNewMsg(msg);
-						// }		
-										
-						that.abotapi.socketMsgHandle(that.chat_help.current_chat_gui, that.chat_help.current_chat_page,msg);
-										
-						that.getLastMsg();
-																				
-						
-					}
-			  
-					
-				});
-			},
 			getLastMsg:function(){
 				var that = this;
 				var userInfo = that.abotapi.get_user_info();
@@ -256,9 +204,18 @@
 			},
 			
 			toChat(chat){
+				
+				var url = 'chat/chat?type=' + chat.chat_type;
+				if(chat.chat_type == 0){
+					url = url + '&userid=' + chat.from_person_detail.userid + '&name=' + chat.from_person_detail.nickname;					
+				} else {
+					url = url + '&groupid=' + chat.groupid;
+				}
+						
 				uni.navigateTo({
-					url:"chat/chat?name="+chat.username
+					url: url ,
 				})
+				
 			}
 		}
 	}

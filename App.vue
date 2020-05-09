@@ -1,7 +1,12 @@
 <script>
+	
+	import aa from 'common/abotapi.js';
 	export default {
+		
+		
 		onLaunch: function () {
 			console.log('App Launch')
+			console.log('aa',this.abotapi.globalData);
 		},
 		onShow: function () {
 			console.log('App Show')

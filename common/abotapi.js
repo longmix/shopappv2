@@ -64,12 +64,54 @@ module.exports = {
 		navigationBarBackgroundColor_fixed:1,
 		
 		
+		version_number: "1.2.0",
+		
+		kefu_telephone:"",
+		kefu_qq:"",
+		kefu_website:"",
+		kefu_gongzhonghao:"",
 		
 		is_shop_cart_in_tabbar: 1,
 		
 		baidu_map_ak: 'OTsGerqQhowGSFOWG8c6p86R',
 		userInfo: {},
 	},
+	
+	current_chat_gui:"",
+	current_chat_page:"", 
+		
+	current_chat_handle: "",
+	
+	
+		
+	socketMsgHandle: function (current_chat_gui, current_chat_page, msg) {
+	   //缓存返回数据
+	   console.log('current_chat_gui',current_chat_gui)
+		  console.log('current_chat_page',current_chat_page)
+		  if(current_chat_gui ){		  
+			  if(current_chat_page=='/pages/chat/chat'){
+				  
+				  current_chat_gui.getNewMsg(msg);
+				  
+			  }	 else if (current_chat_page=='/pages/tree/tree'){
+				  
+				  current_chat_gui.getNewFriends(msg);
+				  
+			  } else if (current_chat_page=='/pages/friendInfo/friendList'){
+					
+				  if(msg.chat_type == 2 || msg.chat_type == 6){
+					  
+					  current_chat_gui.getFriendList(msg);
+				  }				  
+				  
+			  }
+				  
+		  }	
+		  
+	 },
+	 
+	 
+	
 	
 	set_current_weiduke_token: function (weiduke_token) {
 	    if (!weiduke_token) {
@@ -587,6 +629,24 @@ module.exports = {
 		uni.setStorageSync("user_account_info", user_account_info_str);
 				   
 	}, 
+	
+	get_user_account_info: function () {
+	   //缓存返回数据
+	   var user_account_info_str = uni.getStorageSync("user_account_info");
+				   
+	   console.log("获取用户账号数据：" + user_account_info_str + '333333333');
+				   
+	   if (!user_account_info_str) {
+	     return null;
+	   }
+				   
+	   return JSON.parse(user_account_info_str);
+	 },
+	del_user_account_info: function () {
+	   //缓存返回数据
+	   uni.removeStorageSync("user_account_info");
+				   
+	 },
 	 
 	 
 	

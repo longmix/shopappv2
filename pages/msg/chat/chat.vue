@@ -134,6 +134,12 @@
 				VoiceTimer:null,
 				//表情定义
 				showEmji:'',
+				friendInfo: '',
+				cache_msglist: Array,
+				taskUserInfo: {
+					userName: '',
+					headImg: ''
+				},
 				emojiList:[
 					[{"url":"100.gif",alt:"[微笑]"},{"url":"101.gif",alt:"[伤心]"},{"url":"102.gif",alt:"[美女]"},{"url":"103.gif",alt:"[发呆]"},{"url":"104.gif",alt:"[墨镜]"},{"url":"105.gif",alt:"[哭]"},{"url":"106.gif",alt:"[羞]"},{"url":"107.gif",alt:"[哑]"},{"url":"108.gif",alt:"[睡]"},{"url":"109.gif",alt:"[哭]"},{"url":"110.gif",alt:"[囧]"},{"url":"111.gif",alt:"[怒]"},{"url":"112.gif",alt:"[调皮]"},{"url":"113.gif",alt:"[笑]"},{"url":"114.gif",alt:"[惊讶]"},{"url":"115.gif",alt:"[难过]"},{"url":"116.gif",alt:"[酷]"},{"url":"117.gif",alt:"[汗]"},{"url":"118.gif",alt:"[抓狂]"},{"url":"119.gif",alt:"[吐]"},{"url":"120.gif",alt:"[笑]"},{"url":"121.gif",alt:"[快乐]"},{"url":"122.gif",alt:"[奇]"},{"url":"123.gif",alt:"[傲]"}],
 					[{"url":"124.gif",alt:"[饿]"},{"url":"125.gif",alt:"[累]"},{"url":"126.gif",alt:"[吓]"},{"url":"127.gif",alt:"[汗]"},{"url":"128.gif",alt:"[高兴]"},{"url":"129.gif",alt:"[闲]"},{"url":"130.gif",alt:"[努力]"},{"url":"131.gif",alt:"[骂]"},{"url":"132.gif",alt:"[疑问]"},{"url":"133.gif",alt:"[秘密]"},{"url":"134.gif",alt:"[乱]"},{"url":"135.gif",alt:"[疯]"},{"url":"136.gif",alt:"[哀]"},{"url":"137.gif",alt:"[鬼]"},{"url":"138.gif",alt:"[打击]"},{"url":"139.gif",alt:"[bye]"},{"url":"140.gif",alt:"[汗]"},{"url":"141.gif",alt:"[抠]"},{"url":"142.gif",alt:"[鼓掌]"},{"url":"143.gif",alt:"[糟糕]"},{"url":"144.gif",alt:"[恶搞]"},{"url":"145.gif",alt:"[什么]"},{"url":"146.gif",alt:"[什么]"},{"url":"147.gif",alt:"[累]"}],
@@ -147,10 +153,11 @@
 		},
 		onLoad(option) {
 			var that = this;
-			uni.setNavigationBarTitle({
-				title: option.name
-			});
-			this.getMsgList();
+			
+			var userInfo = that.abotapi.get_user_info();
+			
+			
+			// this.getMsgList();
 			//语音自然播放结束
 			this.AUDIO.onEnded((res)=>{
 				this.playMsgid=null;
@@ -166,21 +173,194 @@
 			})
 			// #endif
 			
+			this.myuid = userInfo.userid;
+			this.userid = option.userid;
+			this.chat_type = option.type;
+			
+			
+			
+			that.abotapi.abotRequest({
+				  url: that.abotapi.globalData.yanyubao_server_url + '/openapi/BuddyData/buddy_action',
+				  data: {
+					action: 'user_detail',
+					userid01: userInfo.userid,
+					userid02: that.userid,
+					sellerid: that.abotapi.globalData.default_sellerid					
+				  },
+				  header: {
+					"Content-Type": "application/x-www-form-urlencoded"
+				  },
+				  method: "POST",
+				  success: function (res) {
+					   
+					var	data = res.data;
+					if(data.code == 1){
+						
+						that.friendInfo = data.data
+						 uni.setNavigationBarTitle({
+							title: data.data.nickname
+						 });
+						 that.taskUserInfo.userName = that.friendInfo.nickname;
+						 that.taskUserInfo.headImg = that.friendInfo.headimgurl;
+					 }
+					
+				  }
+			})
+			
+			
+			
 			that.abotapi.current_chat_gui = this;
 			that.abotapi.current_chat_handle = this;
 			that.abotapi.current_chat_page = '/pages/msg/chat/chat';
+			
+			
+			
+			
+			
+			
+			
+		},
+		
+		onShow(){
+			var that = this;
+			var userInfo = that.abotapi.get_user_info();
+			if(that.userid){
+				var cache_msglist = uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+that.userid);			
+			}
+			
+			if(that.groupid){
+				var cache_msglist = uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_groupid_'+that.groupid);
+			}
+			
+			console.log('cache_msglist========0',cache_msglist)
+			
+			that.cache_msglist = cache_msglist ? cache_msglist : [];
+			
+			
+			var data_params = {
+				action: 'unread',
+				sellerid: that.abotapi.globalData.default_sellerid,
+			}
+						
+			if(!that.groupid){
+				data_params.userid01 = that.userid;
+				data_params.userid02 = userInfo.userid;
+				data_params.chat_type = 0;
+			} else {
+				data_params.userid01 = that.groupid;
+				data_params.userid02 = userInfo.userid;
+				data_params.chat_type = 4;
+			}
+			
+			that.abotapi.abotRequest({
+			     url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ChatData/chat_history',
+			     data: data_params,
+			     header: {
+			       "Content-Type": "application/x-www-form-urlencoded"
+			     },
+			     method: "POST",
+			     success: function (res) {
+					  var data = res.data;
+					  if(data.code == 1){
+						  var lastMsgList = data.data;
+						  if(lastMsgList.length>0){
+							  for(var i=0; i<lastMsgList.length; i++){
+																	  
+								that.cache_msglist.push(JSON.parse(lastMsgList[i].chat_msg));
+											  
+							   }
+																						
+							if(that.chat_type == 0){
+								uni.setStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+that.userid, that.cache_msglist);
+							}else{
+								uni.setStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_groupid_'+that.groupid, that.cache_msglist);
+							}
+							
+							  
+							setTimeout(function() {
+								
+					
+								that.getMsgList();
+								
+								// that.getMsgList(option.sesstion);
+							}, 100); 
+							  
+							  var data_params = {
+								action: 'control',
+								control: 'read',
+								sellerid: that.abotapi.globalData.default_sellerid,
+							  }
+								
+							  if(!that.groupid){
+								data_params.userid01 = userInfo.userid;
+								data_params.userid02 = that.userid;
+								data_params.chat_type = 0;
+							  } else {
+								data_params.userid01 =  userInfo.userid;
+								data_params.userid02 = that.groupid;
+								data_params.chat_type = 4;
+							  }
+							  
+							  
+							  uni.request({
+									 url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ChatData/chat_history',
+									 data: data_params,
+									 header: {
+									   "Content-Type": "application/x-www-form-urlencoded"
+									 },
+									 method: "POST",
+									 success: function (res) {
+									   
+									}
+						})
+							  
+					}
+				  }else{
+					
+					  setTimeout(function() {
+					
+						that.getMsgList();
+			
+					  }, 100); 
+				  }					
+			     }
+			   })
 		},
 		methods:{
 			getMsgList(){
 				// 消息列表
-				let list = [
-					{id:0,uid:0,username:"大黑哥",face:"",time:"12:56",type:"text",msg:{content:"为什么温度会相差那么大？"}},
-					{id:1,uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg",time:"12:57",type:"text",msg:{content:"这个是有偏差的，两个温度相差十几二十度是很正常的，如果相差五十度，那即是质量问题了。"}},
-					{id:2,uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg",time:"12:59",type:"voice",msg:{url:"/static/voice/3.aac",length:"00:06"}},
-					{id:3,uid:0,username:"大黑哥",face:"",time:"13:05",type:"voice",msg:{url:"/static/voice/2.mp3",length:"00:06"}},
-					{id:4,uid:0,username:"大黑哥",face:"",time:"13:05",type:"img",msg:{url:"/static/img/goods/p10.jpg",w:200,h:200}},
-					{id:5,uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg",time:"12:59",type:"img",msg:{url:"/static/img/q.jpg",w:1920,h:1080}}
-				]
+				// let list = [
+				// 	{id:0,uid:0,username:"大黑哥",face:"",time:"12:56",type:"text",msg:{content:"为什么温度会相差那么大？"}},
+				// 	{id:1,uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg",time:"12:57",type:"text",msg:{content:"这个是有偏差的，两个温度相差十几二十度是很正常的，如果相差五十度，那即是质量问题了。"}},
+				// 	{id:2,uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg",time:"12:59",type:"voice",msg:{url:"/static/voice/3.aac",length:"00:06"}},
+				// 	{id:3,uid:0,username:"大黑哥",face:"",time:"13:05",type:"voice",msg:{url:"/static/voice/2.mp3",length:"00:06"}},
+				// 	{id:4,uid:0,username:"大黑哥",face:"",time:"13:05",type:"img",msg:{url:"/static/img/goods/p10.jpg",w:200,h:200}},
+				// 	{id:5,uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg",time:"12:59",type:"img",msg:{url:"/static/img/q.jpg",w:1920,h:1080}}
+				// ]
+				
+				let ylist = this.cache_msglist;
+				
+				console.log('cache_msglist========1',ylist)
+				
+				var list = [];
+				// 获取消息中的图片,并处理显示尺寸
+				// for(let i=0;i<list.length;i++){
+				// 	if(list[i].type=='img'){
+				// 		list[i] = this.setPicSize(list[i]);
+				// 		console.log("list[i]: " + JSON.stringify(list[i]));
+				// 		this.msgImgList.push(list[i].msg.url);
+				// 	}
+				// }
+				
+				for (var i = 0; i < ylist.length; i++) {
+					list.push(ylist[i]);
+				}
+				
+				
+				for (var i = 0; i < list.length; i++) {
+					list[i].msg.id = i;
+				}
+				
 				// 获取消息中的图片,并处理显示尺寸
 				for(let i=0;i<list.length;i++){
 					if(list[i].type=='img'){
@@ -189,6 +369,11 @@
 						this.msgImgList.push(list[i].msg.url);
 					}
 				}
+				
+				
+				
+				
+				
 				this.msgList = list;
 				// 滚动到底部
 				this.$nextTick(function() {
@@ -298,24 +483,48 @@
 			},
 			// 发送消息
 			sendMsg(content,type){
+				var userInfo = this.abotapi.get_user_info();
+				var userAcountInfo = this.abotapi.get_user_account_info();
 				//实际应用中，此处应该提交长连接，模板仅做本地处理。
 				var nowDate = new Date();
-				let lastid = this.msgList[this.msgList.length-1].id;
+				// let lastid = this.msgList[this.msgList.length-1].id;
+				let lastid = this.msgList.length > 0 ? this.msgList[this.msgList.length - 1].id : this.msgList.length;
+				
+				
 				lastid++;
-				let msg = {id:lastid,uid:0,username:"大黑哥",face:"",time:nowDate.getHours()+":"+nowDate.getMinutes(),type:type,msg:content};
-				this.screenMsg(msg);
+				let msg = {
+							id:lastid,
+							uid:userInfo.userid,
+							username:userAcountInfo.nickname,
+							face:userAcountInfo.headimgurl,
+							time:nowDate.getHours()+":"+nowDate.getMinutes(),
+							type:type,
+							msg:content,
+						 };
+				// this.screenMsg(msg);
+				this.send_text_to_service(msg, type)
 				// 定时器模拟对方回复,三秒
-				setTimeout(()=>{
-					lastid = this.msgList[this.msgList.length-1].id;
-					lastid++;
-					msg = {id:lastid,uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg",time:nowDate.getHours()+":"+nowDate.getMinutes(),type:type,msg:content};
-					this.screenMsg(msg);
-				},3000)
+				// setTimeout(()=>{
+				// 	lastid = this.msgList[this.msgList.length-1].id;
+				// 	lastid++;
+				// 	msg = {id:lastid,uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg",time:nowDate.getHours()+":"+nowDate.getMinutes(),type:type,msg:content};
+				// 	this.screenMsg(msg);
+				// },3000)
 			},
 			
 			// 处理文字消息
 			addTextMsg(msg){
+				var userInfo = this.abotapi.get_user_info();
 				this.msgList.push(msg);
+				
+				if(this.chat_type==0){
+					uni.setStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+this.userid, this.msgList);	
+				console.log('test===================0',uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+this.userid))	
+					
+				}else{
+					uni.setStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_groupid_'+this.groupid, this.msgList);	
+				console.log('test===================1',uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_groupid_'+this.userid))
+				}
 			},
 			// 处理语音消息
 			addVoiceMsg(msg){
@@ -431,6 +640,8 @@
 				return;
 			},
 			send_text_to_service:function(msg, type){
+				var userInfo = this.abotapi.get_user_info();
+				var userAcountInfo = this.abotapi.get_user_account_info();
 				console.log('myuid======00', this.myuid);
 				
 				console.log('msg====0',msg)
@@ -441,7 +652,7 @@
 				
 				var data_params = {
 					   action: 'add',
-				       sellerid: app.globalData.default_sellerid,
+				       sellerid: that.abotapi.globalData.default_sellerid,
 					   chat_msg: content,
 					   from: '11111'
 				     }
@@ -462,7 +673,7 @@
 				
 				
 				uni.request({
-				     url: app.globalData.yanyubao_server_url + '/openapi/ChatData/chat_history',
+				     url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ChatData/chat_history',
 				     data:data_params,
 				     header: {
 				       "Content-Type": "application/x-www-form-urlencoded"
