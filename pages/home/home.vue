@@ -7,7 +7,7 @@
 			<!-- 定位城市 -->
 			<navigator url="../locationList/locationList" class="addr" :style="{fontSize:current_citynameWidth+'px'}">
 				<view class="icon location"></view>
-				<view>{{current_cityname}}</view>
+				<view style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap; ">{{current_cityname}}</view>
 			</navigator>
 			<!-- 搜索框 -->
 			<view class="input-box">
@@ -453,7 +453,13 @@ export default {
 		//加载活动专区
 		this.loadPromotion();
 	},
-	
+	onShow:function(){
+		
+		var city_name = uni.getStorageSync('city_name');
+		if(city_name){
+			this.current_cityname = city_name;
+		}
+	},
 	
 	
 	
@@ -1307,11 +1313,12 @@ page{position: relative;background-color: #fff;}
 	/*  #endif  */
 
 	.addr {
-		width: 120upx;
+		width: 150upx;
 		height: 60upx;
 		flex-shrink: 0;
 		display: flex;
 		align-items: center;
+		
 		// font-size: 28upx;
 		.icon {
 			height: 60upx;
