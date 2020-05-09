@@ -5,10 +5,10 @@
 		<!-- 顶部导航栏 -->
 		<view v-if="showHeader" class="header" :style="{ position: headerPosition,top:headerTop,opacity: afterHeaderOpacity }">
 			<!-- 定位城市 -->
-			<view class="addr" :style="{fontSize:current_citynameWidth+'px'}">
+			<navigator url="../locationList/locationList" class="addr" :style="{fontSize:current_citynameWidth+'px'}">
 				<view class="icon location"></view>
 				<view>{{current_cityname}}</view>
-			</view>
+			</navigator>
 			<!-- 搜索框 -->
 			<view class="input-box">
 				<input
