@@ -13,49 +13,17 @@
 				src="../../static/img/category/weizhi.png" alt="">上海</view>
 			<view class="hui">热门城市</view>
 			<view style="overflow: auto;text-align: center;">
-				<view style="float: left;width: 25%;margin: 10upx;background: red;">123</view>
-				<view style="float: left;width: 25%;margin: 10upx;background: red;">123</view>
-				<view style="float: left;width: 25%;margin: 10upx;background: red;">123</view>
-				<view style="float: left;width: 25%;margin: 10upx;background: red;">123</view>
-				<view style="float: left;width: 25%;margin: 10upx;background: red;">123</view>
-				
+				<view class=kuai>苏州</view>
+				<view class=kuai>杭州</view>
+				<view class=kuai>南京</view>
+				<view class=kuai>北京</view>
+				<view class=kuai>嘉兴</view>
+				<view class=kuai>无锡</view>
+				<view class=kuai>合肥</view>
+				<view class=kuai>深圳</view>
+				<view class=kuai>广州</view>
 			</view>
-				<table width="450upx">
-					<tr>
-					<td>苏州</td>
-					<td>杭州</td>
-					<td>南京</td>
-					</tr>
-					<tr>
-					<td>北京</td>
-					<td>嘉兴</td>
-					<td>无锡</td>
-					</tr>
-					<tr>
-					<td>合肥</td>
-					<td>深圳</td>
-					<td>广州</td>
-					</tr>
-				</table>
-				
-				<view class="hui">出境热门城市</view>
-					<table width="450upx">
-						<tr>
-						<td>香港</td>
-						<td>泰国</td>
-						<td>巴厘岛</td>
-						</tr>
-						<tr>
-						<td>东京</td>
-						<td>伦敦</td>
-						<td>慕尼黑</td>
-						</tr>
-						<tr>
-						<td>纽约</td>
-						<td>台湾</td>
-						<td>多伦多</td>
-						</tr>
-					</table>
+
 		</view>
 		
 	</view>
@@ -86,6 +54,14 @@
 	float:left;
 	flex-wrap: nowrap;
 }
+.kuai{
+	float: left;
+	width: 25%;
+	margin: 10upx;
+	background: #f7f7f7;
+	border-radius: 10rpx;
+}
+
 .middle{
 	margin:15rpx 30rpx;
 }
@@ -93,7 +69,7 @@
 	margin: 15rpx 30rpx;
 }
 .hui{
-	color: #C0C0C0;
+	color: #666;
 }
 .middle table{
 	margin-top: 15rpx;
