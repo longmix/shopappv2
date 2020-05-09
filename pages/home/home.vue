@@ -637,7 +637,7 @@ export default {
 				}
 				
 				this.cityInfo = data.originalData.result.addressComponent,
-				
+				uni.setStorageSync('address_info', this.cityInfo)
 				// console.log('with', that.data.imageWidth)
 				
 			
@@ -683,7 +683,6 @@ export default {
 		/* 获取前十条商家 */
 		call_back_get_shang_list:function(that,coordinate){
 			//获取全部商家 的金纬度
-			
 			//coordinate = JSON.stringify(coordinate);
 			console.log('coordinatecoordinate',JSON.stringify(coordinate));
 			uni.setStorageSync("coordinate_array", coordinate);

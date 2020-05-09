@@ -5,7 +5,7 @@
 		<!-- 商家搜索 -->
 		<view class="top-input-con"> 
 
-			<view  class="scroll-txt">   
+			<view  class="scroll-txt" @tap="search()">   
 				<icon type="search" size="14" style="margin: 0px 10rpx 0 0"></icon>
 				<text class="scroll-ads">搜索附近商家</text>
 			</view>
@@ -34,7 +34,7 @@
 		
 			<!-- 全部美食按钮 -->
 			<view class="ab" @click="shuaxin()" style="width:25%;float:left;">
-				<text>全部美食</text>
+				<text>附近商家</text>
 				<!-- <image class='local-img' src="../../static/img/xiala.png"></image> -->
 			</view>
 			
@@ -561,6 +561,15 @@
 					url: '/pages/shopDetail/shopDetail?shangid='+shangid
 				});
 			}, 
+			
+			//搜索
+			search: function (view) {
+				var welfareId = view.currentTarget.dataset.value;
+				var url = "/pages/listdetail/listdetail?name=" + welfareId;
+				uni.navigateTo({
+					url: url
+				});
+			},
 			
 			//商户头条
 			yingxiao:function(){
