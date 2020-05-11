@@ -118,7 +118,7 @@
 				uni.setStorageSync('browser_cache_id', id);
 			  
 				uni.navigateTo({
-					url: '/pages/tabBar/home/help_detail/help_detail?id=' + id + '&sellerid=' + that.sellerid
+					url: '/pages/home/help_detail/help_detail?id=' + id + '&sellerid=' + that.sellerid
 				})
 			},
 			

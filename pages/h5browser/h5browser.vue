@@ -42,7 +42,7 @@
 		        if (url_data.length < 2) {
 					//跳转到首页
 					uni.switchTab({
-						url: '/pages/tabBar/home/home'
+						url: '/pages/home/home'
 					})
 		        }
 		
@@ -107,8 +107,8 @@
 		        //判断分享转发的特殊参数
 		        Object.keys(options).forEach(function (key) {
 		
-					//console.log(key, obj[key]);
-					if (key != 'url'){
+				//console.log(key, obj[key]);
+				if (key != 'url'){
 						extra_option_str += key+'='+options[key]+'&';
 					}
 		        });
@@ -135,10 +135,10 @@
 				
 				this.url = decodeURIComponent(options.url)
 		        
-		      }
-				else {	
-					this.url = 'https://www.abot.cn'
-				}
+		    }
+			else {	
+				this.url = 'https://www.abot.cn'
+			}
 		
 		    },
 		methods: {

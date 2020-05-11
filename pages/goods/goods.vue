@@ -563,7 +563,7 @@ export default {
 		touTiaoList: function (e) {
 		    // console.log('点击商户头条进入列表');
 		    uni.navigateTo({
-				url: '/pages/tabBar/home/help/help?sellerid=' + this.abotapi.globalData.default_sellerid
+				url: '/pages/home/help/help?sellerid=' + this.abotapi.globalData.default_sellerid
 		    })
 		},
 		

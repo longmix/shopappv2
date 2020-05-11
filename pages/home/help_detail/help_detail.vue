@@ -346,7 +346,7 @@
 			returnto_toutiao:function(){
 				var that = this;
 				uni.redirectTo({
-					url: '/pages/tabBar/home/help/help?sellerid=' + that.sellerid	
+					url: '/pages/home/help/help?sellerid=' + that.sellerid	
 				})
 			},
 			returnto_index: function () {
@@ -354,11 +354,11 @@
 				var wxa_hidden_shop = JSON.parse(uni.getStorageSync("option_list_str")).wxa_hidden_shop;
 				if (wxa_hidden_shop==1){
 					uni.switchTab({
-						url: '/pages/tabBar/home/home',
+						url: '/pages/home/home',
 					})
 			  }	else{
 					uni.switchTab({
-						url: '/pages/tabBar/home/home?sellerid=' + that.sellerid
+						url: '/pages/home/home?sellerid=' + that.sellerid
 					})
 				}  
 			},
@@ -393,7 +393,7 @@
 			toHomePage: function () {
 				console.log('jjjjj444')
 				uni.switchTab({
-					url:'/pages/tabBar/home/home'
+					url:'/pages/home/home'
 				})
 				
 			},
