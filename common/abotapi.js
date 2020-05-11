@@ -64,54 +64,12 @@ module.exports = {
 		navigationBarBackgroundColor_fixed:1,
 		
 		
-		version_number: "1.2.0",
-		
-		kefu_telephone:"",
-		kefu_qq:"",
-		kefu_website:"",
-		kefu_gongzhonghao:"",
 		
 		is_shop_cart_in_tabbar: 1,
 		
 		baidu_map_ak: 'OTsGerqQhowGSFOWG8c6p86R',
 		userInfo: {},
 	},
-	
-	current_chat_gui:"",
-	current_chat_page:"", 
-		
-	current_chat_handle: "",
-	
-	
-		
-	socketMsgHandle: function (current_chat_gui, current_chat_page, msg) {
-	   //缓存返回数据
-	   console.log('current_chat_gui',current_chat_gui)
-		  console.log('current_chat_page',current_chat_page)
-		  if(current_chat_gui ){		  
-			  if(current_chat_page=='/pages/chat/chat'){
-				  
-				  current_chat_gui.getNewMsg(msg);
-				  
-			  }	 else if (current_chat_page=='/pages/tree/tree'){
-				  
-				  current_chat_gui.getNewFriends(msg);
-				  
-			  } else if (current_chat_page=='/pages/friendInfo/friendList'){
-					
-				  if(msg.chat_type == 2 || msg.chat_type == 6){
-					  
-					  current_chat_gui.getFriendList(msg);
-				  }				  
-				  
-			  }
-				  
-		  }	
-		  
-	 },
-	 
-	 
-	
 	
 	set_current_weiduke_token: function (weiduke_token) {
 	    if (!weiduke_token) {
@@ -629,24 +587,6 @@ module.exports = {
 		uni.setStorageSync("user_account_info", user_account_info_str);
 				   
 	}, 
-	
-	get_user_account_info: function () {
-	   //缓存返回数据
-	   var user_account_info_str = uni.getStorageSync("user_account_info");
-				   
-	   console.log("获取用户账号数据：" + user_account_info_str + '333333333');
-				   
-	   if (!user_account_info_str) {
-	     return null;
-	   }
-				   
-	   return JSON.parse(user_account_info_str);
-	 },
-	del_user_account_info: function () {
-	   //缓存返回数据
-	   uni.removeStorageSync("user_account_info");
-				   
-	 },
 	 
 	 
 	
@@ -690,7 +630,7 @@ module.exports = {
 						uni.setStorageSync('page_type', page_type);
 					}
 			
-					uni.redirectTo({
+					uni.navigateTo({
 						 url: '/pages/login/login',
 					})
 			
@@ -1014,11 +954,11 @@ module.exports = {
 			url = url.replace('%wxa_openid%', this.get_current_openid());
 		}
 		
-		if((url.indexOf("%oneclicklogin%") != -1) || (url.indexOf("%refresh_token%") != -1)) {
+		if(url.indexOf("%oneclicklogin%") != -1){
 			var userInfo = this.get_user_info();
 			if(!userInfo){
 				
-				this.goto_user_login('/pages/home/home', 'switchTab');
+				this.goto_user_login('/pages/tabBar/home/home', 'switchTab');
 				
 				return;
 			}
@@ -1027,13 +967,8 @@ module.exports = {
 			
 			var that = this;
 			
-			var new_url = this.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=one_click_login_str';
-			  if (url.indexOf("%refresh_token%") != -1){
-				new_url = this.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=generate_refresh_token_value_for_other_system';
-			  }
-			
 			uni.request({
-				url: new_url,
+				url: this.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=one_click_login_str',
 				method: 'post',
 				data: {
 				  sellerid: this.get_sellerid(),
@@ -1050,10 +985,6 @@ module.exports = {
 					var oneclicklogin = res.data.oneclicklogin;
 					
 					url = url.replace('%oneclicklogin%', oneclicklogin);
-					
-					if (res.data.refresh_token){
-					  url = url.replace('%refresh_token%', res.data.refresh_token);
-					}
 		
 					that.call_h5browser_or_other_goto_url(url, var_list, ret_page);
 				  }
@@ -1069,6 +1000,7 @@ module.exports = {
    
 		//判断各种跳转条件
 		if (url.indexOf('switchTab') == 0) {
+			console.log('qqqe12345678906541321121212');
 			var arr = url.split(" ");
 			if (arr.length >= 2) {
 				var new_url = arr[1];
@@ -1078,6 +1010,7 @@ module.exports = {
 			}
 		}
 		else if (url.indexOf('navigateTo') == 0) {
+			console.log('qqqe123456789011212125641231564');
 			var arr = url.split(" ");
 			if (arr.length >= 2) {
 				var new_url = arr[1];
@@ -1087,10 +1020,12 @@ module.exports = {
 			}
 		}
 		else if (url == '/pages/index/index' || url == '/pages/category/index' || url == '/pages/cart/cart' || url == '/pages/user/user') {
+			console.log('qqqe12345678901121212741216513');
 			uni.switchTab({
 				url: url,
 			})
 		} else if (url == '/pages/help_detail/help_detail') {
+			console.log('qqqe123456789011212122313321321');
 			var browser_cache_id = uni.getStorageSync('browser_cache_id');
 			if (browser_cache_id) {
 				uni.navigateTo({
@@ -1103,11 +1038,13 @@ module.exports = {
 			}
 		}
 		else if (url == 'duorenpintuan') {
+			console.log('qqqe123456789011212124454012');
 			var url1 = 'https://yanyubao.tseo.cn/Home/DuorenPintuan/pintuan_list/ensellerid/' + this.get_sellerid() + '.html?click_type=Wxa';
 			uni.navigateTo({
 				url: '/pages/h5browser/h5browser?url=' + encodeURIComponent(url1) + '&ret_page=' + ret_page,
 			})
 		} else if (url == 'fenxiangkanjia') {
+			console.log('qqqe123456789011212120000111');
 			var productid = 0;
 			if (var_list && var_list.productid) {
    
@@ -1119,10 +1056,11 @@ module.exports = {
 			}
    
 		} else if ((url.indexOf('http://') == 0)||(url.indexOf('https://') == 0)) {
+			console.log('qqqe1234567890112121210120100',url);
 			if (url.indexOf('#redirectTo') != -1){
 				//如果指定了跳转方式为 #redirectTo
 				url = url.replace(/#redirectTo/, '');
-				uni.redirectTo({
+				uni.navigateTo({
 				  url: '/pages/h5browser/h5browser?url=' + encodeURIComponent(url) + '&ret_page=' + ret_page,
 				})
 			}
@@ -1133,6 +1071,7 @@ module.exports = {
 			}
 		}
 		else if (url.indexOf('miniprogram') == 0) {
+			console.log('qqqe123456789011212121111');
 			var arr = url.split(" ");
 			if (arr.length >= 3) {
 				var appid = arr[2];
@@ -1171,6 +1110,7 @@ module.exports = {
 			}
 		}
 		else {
+			console.log('qqqe12345678901121212');
 			uni.navigateTo({
 				url: url
 			})

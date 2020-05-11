@@ -303,15 +303,17 @@
 										var last_url = uni.getStorageSync('last_url');
 				 
 										console.log('last_url-----', last_url)
-				 
+				 console.log(15545789)
 										var page_type = uni.getStorageSync('page_type');
 										if (last_url) {
 											if (page_type && (page_type == 'switchTab')) {
-				 
+				 console.log('last_url12456-----', last_url)
 												uni.switchTab({
 													url: last_url,
 												})
+												
 											} else {
+												console.log('last_url-----457', last_url)
 												uni.redirectTo({
 													url: last_url,
 												})
