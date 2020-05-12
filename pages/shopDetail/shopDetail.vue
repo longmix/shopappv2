@@ -82,14 +82,14 @@
 				<view class="paidui-a">
 					<view class="icon-title">
 
-						<text class='paidui-c'>我要点餐</text>
+						<text class='paidui-c'>{{user_console_setting.shop_product_title}}</text>
 					</view>
-				<text class='paidui-d'>点餐不用等</text>
+				<text class='paidui-d'>{{user_console_setting.shop_product_tips}}</text>
 				</view>
 				<view class="yuding-a">
-					<view style="font-size:25rpx;">点餐快人一步</view>
-					<navigator :url="'../menuList/menuList?is_waimai=0&title=堂食菜单&xianmai_shangid='  + xianmai_shangid" hover-class="navigator-hover">
-						<view style="background:#E86452;">查看菜单</view>
+					<view style="font-size:25rpx;">{{user_console_setting.shop_product_ad}}</view>
+					<navigator :url="'../menuList/menuList?is_waimai=0&title='+ user_console_setting.shop_product_list_title +'&xianmai_shangid='  + xianmai_shangid" hover-class="navigator-hover">
+						<view style="background:#E86452;">{{user_console_setting.shop_product_btn_ext}}</view>
 					</navigator>
 				</view>
 				<view class="paidui-b">餐厅当前暂停点餐</view>
@@ -102,14 +102,14 @@
 				<view class="paidui-a">
 					<view class="icon-title">
 			
-						<text class='paidui-c'>外卖配送</text>
+						<text class='paidui-c'>{{user_console_setting.waimai_product_title}}</text>
 					</view>
-				<text class='paidui-d'>美食送上门</text>
+				<text class='paidui-d'>{{user_console_setting.waimai_product_tips}}</text>
 				</view>
 				<view class="yuding-a" >
-					<view style="font-size:25rpx;">外卖送到家</view>
-					<navigator style="background:#E86452;" :url="'../menuList/menuList?is_waimai=1&title=外卖菜单&xianmai_shangid=' + xianmai_shangid" hover-class="navigator-hover" >
-						<view >外卖配送</view>
+					<view style="font-size:25rpx;">{{user_console_setting.waimai_product_ad}}</view>
+					<navigator style="background:#E86452;" :url="'../menuList/menuList?is_waimai=1&title='+ user_console_setting.waimai_product_list_title +'&xianmai_shangid=' + xianmai_shangid" hover-class="navigator-hover" >
+						<view >{{user_console_setting.waimai_product_btn_ext}}</view>
 					</navigator>
 				</view>
 				<view class="paidui-b">餐厅当前暂停配送</view>
@@ -163,6 +163,18 @@
 		</view>
 		<view class="bottom">
 			
+		</view>
+		
+		
+		<view class="ps-btn">
+			<view @tap="call_seller">
+				<!-- <image src="../../static/img/addricon.png"></image> -->
+				<view>电话</view>
+			</view>
+			<view @tap="toChat">
+				<!-- <image src="../../static/img/addricon.png"></image> -->
+				<view>客服</view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -226,7 +238,8 @@
 				wxa_kefu_button_icon:'',
 				wxa_kefu_mobile_num:'',
 				wxa_kefu_form_url:'',
-				wxa_kefu_bg_color:''
+				wxa_kefu_bg_color:'',
+				user_console_setting: '',
 			};
 		},
 		onPageScroll(e) {
@@ -264,12 +277,24 @@
 			console.log('eeeeeee',e);
 			this.get_shang_detail(e);
 			
+			this.abotapi.get_xianmaishang_setting_list(this.callback_func_for_xianmaishang_setting_list);
+			
 		},
 		
 		
 		
 		
 		methods: {
+			
+			
+			callback_func_for_xianmaishang_setting_list:function(user_console_setting){
+				
+				console.log('user_console_setting==',user_console_setting);
+				// console.log('xianmaishang_setting_list==',xianmaishang_setting_list);
+				
+				this.user_console_setting = user_console_setting
+				
+			},
 			
 			
 			//商品跳转
@@ -386,7 +411,61 @@
 				        
 				      },
 				    })
-			}
+			},
+			call_seller: function () {
+			    
+			    uni.makePhoneCall({
+					phoneNumber: this.shoplist.telephone,
+			    })
+			},
+			
+			toChat(){
+				var that = this;
+				
+				
+				
+				that.abotapi.abotRequest({
+					url: that.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_shop_info',
+					method: 'post',
+					data: {
+						sellerid: that.globalData.default_sellerid
+					},
+					header: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					},
+					success: function (res) {
+						if (res.data.code == 1) {
+							var shop_list = res.data.data;
+							that.globalData.shop_name = shop_list.shop_name;
+					
+							uni.setStorage({
+								key: 'shop_info_from_server_str_' + that.globalData.default_sellerid,
+								data: shop_list,
+								success: function (res) {
+									console.log('异步保存成功');
+				
+									if (callback_function) {
+										typeof callback_function == "function" && callback_function(shop_list);
+									}	
+								}
+							})
+				      
+						}
+					},
+					fail: function (e) {
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+					},
+				});
+				
+					
+				uni.navigateTo({
+					url: 'chat/chat?type=0&userid=' + chat.from_person_detail.userid + '&name=' + chat.from_person_detail.nickname
+				})
+				
+			},
 		}
 	};
 </script>
@@ -572,7 +651,6 @@
 	}
 	.yuding-a :first-child{
 	  font-size: 28rpx;
-	  color: #fff;
 	}
 	.yuding-a :nth-child(2){
 	  background:rgb(232, 100, 82) none repeat scroll 0% 0%;
@@ -855,5 +933,42 @@
     .bottom{
 		width: 100%;
 		height:150rpx;
+	}
+	.ps-btn{
+		position: fixed;
+		right: 20upx;
+		bottom: 200upx;
+	}
+	.ps-btn :nth-child(1){
+		text-align: center;
+		font-size: 28upx;
+		background: #bfbfbf;
+		color: #fff;
+		width: 90upx;
+		height: 90upx;
+		line-height: 90upx;
+		border-radius: 50%;
+		margin-bottom:20upx;
+	}
+	
+	.ps-btn :nth-child(2){
+		text-align: center;
+		font-size: 28upx;
+		background: #bfbfbf;
+		color: #fff;
+		width: 90upx;
+		height: 90upx;
+		line-height: 90upx;
+		border-radius: 50%;
+	}
+	
+	.ps-btn :nth-child(1) image{
+		width:80upx;
+		height: 80upx;
+	}
+	
+	.ps-btn :nth-child(2) image{
+		width:80upx;
+		height: 80upx;
 	}
 </style>

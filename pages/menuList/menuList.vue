@@ -264,7 +264,12 @@ export default {
 		// console.log('document888',document);
 		var userInfo;
     // 1232 1231 133 191
-	
+		
+		if(options.title){
+			uni.setNavigationBarTitle({
+				title:options.title
+			})
+		}
 		
 		
 		var shopId = options.xianmai_shangid;
@@ -277,9 +282,6 @@ export default {
 		console.log('ppppppppppppppppppppp', options);
 		
 		this.is_waimai = is_waimai;
-
-
-		// var shop = server.selectedShopDetail(shopId);
 
 		console.log('565656', shopId)
 		var that = this;

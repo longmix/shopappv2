@@ -303,12 +303,16 @@ export default {
 			action_type: '',
 			current_spec: '',
 			options_str:'',
-			telephone:''
+			telephone:'',
+			shop_userid: '',
+			shop_name: '',
 			
 		};
 	},
 	onLoad(option) {
 		this.abotapi.set_option_list_str(null, this.abotapi.getColor());
+		
+		this.abotapi.get_shop_info_from_server(this.callback_func_for_shop_info);
 		console.log('44444444444',option);
 		var that = this;
 		
@@ -559,6 +563,13 @@ export default {
 		    })	    
 		},
 		
+		callback_func_for_shop_info:function(shop_info){
+			
+			this.shop_userid = shop_info.userid;
+			this.shop_name = shop_info.shop_name;
+			
+		},
+		
 		//点击商户头条进入列表
 		touTiaoList: function (e) {
 		    // console.log('点击商户头条进入列表');
@@ -580,16 +591,17 @@ export default {
 		// 客服
 		toChat(){
 			
+					
 			uni.navigateTo({
-				url:"../msg/chat/chat?name=客服008"
+				url: "/pages/msg/chat/chat?type=0&userid="  + this.shop_userid + '&name=' + this.shop_name,
 			})
-									
+				
+							
 			// var shop_list = uni.getStorageSync("shop_info_from_server_str_" + this.abotapi.globalData.default_sellerid);
 			// this.telephone = shop_list.telephone
 			// uni.makePhoneCall({
 			// 	phoneNumber: this.telephone,
-			// })
-			
+			// })			
 			
 		},
 		// 分享
@@ -605,9 +617,18 @@ export default {
 			}, 150);
 		},
 		toCart:function(){
-			uni.switchTab({
-				url:'/pages/tabBar/cart/cart'
-			})
+			
+			if(this.abotapi.globalData.is_shop_cart_in_tabbar == 1){
+				uni.switchTab({
+					url:'/pages/cart/cart'
+				})
+			}else{
+				uni.navigateTo({
+					url:'/pages/cart/cart'
+				})
+			}
+			
+			
 		},
 		//收藏
 		keep(){

@@ -37,6 +37,7 @@ module.exports = {
 		weiduke_server_url: 'https://cms.weiduke.com/',
 		yanyubao_server_url: 'https://yanyubao.tseo.cn/',
 		o2owaimai_server_url: 'https://app.tseo.cn/o2owaimai/index.php/',
+		socket_server: 'https://socketio.tseo.cn',
 		
 		// o2owaimai_server_url: 'https://yanyubao.tseo.cn/hahading/index.php/',
 		
@@ -65,12 +66,49 @@ module.exports = {
 		
 		
 		
-		is_shop_cart_in_tabbar: 1,
+		is_shop_cart_in_tabbar: 0,
 		
 		baidu_map_ak: 'OTsGerqQhowGSFOWG8c6p86R',
 		userInfo: {},
 	},
 	
+
+	current_chat_gui:"",
+	current_chat_page:"", 		
+	current_chat_handle: "",
+	
+	
+		
+	socketMsgHandle: function (current_chat_gui, current_chat_page, msg) {
+	   //缓存返回数据
+	   console.log('current_chat_gui',current_chat_gui)
+		  console.log('current_chat_page',current_chat_page)
+		  if(current_chat_gui ){		  
+			  if(current_chat_page=='/pages/msg/msg'){
+				  
+				  current_chat_gui.getLastMsg();
+				  
+			  }	 else if (current_chat_page=='/pages/msg/chat/chat'){
+				  
+				  current_chat_gui.getNewFriends(msg);
+				  
+			  } else if (current_chat_page=='/pages/friendInfo/friendList'){
+					
+				  if(msg.chat_type == 2 || msg.chat_type == 6){
+					  
+					  current_chat_gui.getFriendList(msg);
+				  }				  
+				  
+			  }
+				  
+		  }	
+		  
+	 },
+	 
+	 
+	
+	
+
 	set_current_weiduke_token: function (weiduke_token) {
 	    if (!weiduke_token) {
 			return;
@@ -83,7 +121,7 @@ module.exports = {
 	},
 	
 	get_location: function (that='',call_back_get_shang_list='') {
-		console.log(123456);
+		console.log(1234567);
 		var coordinate = [];
 	    uni.getLocation({
 			
@@ -429,6 +467,66 @@ module.exports = {
 	
 	
 	
+	},
+	get_xianmaishang_setting_list: function (callback_function) {
+		var that = this;
+		console.log('111111111111111 get_xianmaishang_setting_list')
+	
+	    var xianmaishang_setting_list = uni.getStorageSync("get_xianmaishang_setting_list_str_" + this.globalData.default_sellerid);
+		var user_console_setting = uni.getStorageSync("user_console_setting_str_" + this.globalData.default_sellerid);
+	
+	    if (xianmaishang_setting_list) {
+	      
+			//刷新界面
+			typeof callback_function == "function" && callback_function(user_console_setting,xianmaishang_setting_list);
+			return;
+	    }
+	
+	    uni.request({
+			url: that.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/get_setting_list',
+			method: 'post',
+			data: {
+				sellerid: that.globalData.default_sellerid
+			},
+			header: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			success: function (res) {
+				
+				console.log('sssssss',res);
+				if (res.data.code == 1) {
+					var xianmaishang_setting_list = res.data.data;
+					var user_console_setting = res.data.user_console_setting;
+	
+					uni.setStorageSync('get_xianmaishang_setting_list_str_' + that.globalData.default_sellerid, xianmaishang_setting_list);
+					uni.setStorageSync('user_console_setting_str_' + that.globalData.default_sellerid, user_console_setting);
+	
+	
+	
+					if (callback_function) {
+						typeof callback_function == "function" && callback_function(user_console_setting,xianmaishang_setting_list);
+					}
+		// 			uni.setStorage({
+		// 				key: 'get_xianmaishang_setting_list_str_' + that.globalData.default_sellerid,
+		// 				data: xianmaishang_setting_list,
+		// 				success: function (res) {
+		// 					console.log('异步保存成功');
+		
+		// 					if (callback_function) {
+		// 						typeof callback_function == "function" && callback_function(xianmaishang_setting_list);
+		// 					}
+		// 				}
+		// 			})
+	          
+				}
+			},
+			fail: function (e) {
+				uni.showToast({
+					title: '网络异常！',
+					duration: 2000
+				});
+			},
+	    });
 	},
 	
 	get_shop_info_from_server: function (callback_function) {

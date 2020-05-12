@@ -187,6 +187,7 @@
 var ttt = 0;
 //高德SDK
 import bmap from '../../common/SDK/bmap-wx.js';
+import io from '../../common/weapp.socket.io.js'; 
 
 //import abotapi001 from '../../../common/abotapi.js';
 
@@ -246,7 +247,8 @@ export default {
 			wxa_kefu_button_icon:'',
 			wxa_kefu_mobile_num:'',
 			wxa_kefu_form_url:'',
-			wxa_kefu_bg_color:''
+			wxa_kefu_bg_color:'',
+			supplierid: ''
 		};
 	},
 	onPageScroll: function (e) {
@@ -684,10 +686,7 @@ export default {
 			});
 			
 			
-			if(userInfo && userInfo.id){
-				this.linkSocket();
-			}
-			
+				
 			
 		},
 		
@@ -861,21 +860,31 @@ export default {
 		},
 		
 		callback_func_for_shop_info:function(shop_info){
+			var userInfo = this.abotapi.get_user_info();
 			var shop_name = shop_info.shop_name;
+			
+			this.supplierid = shop_info.supplierid;
 			
 			uni.setNavigationBarTitle({
 				title:shop_name
 			})
 			
+			if(userInfo && userInfo.userid){
+				console.log('88888====')
+				this.linkSocket();
+			}
+			
 		},
 		
 		// 建立socket连接
 		linkSocket: function(){
+			 var that = this;
 			var userInfo = that.abotapi.get_user_info();
 			const socket_io = io(that.abotapi.globalData.socket_server, {path: '/socketio/'})
-		    var that = this;
+		   
 			// socket连接后以uid登录
-			var uid = 'chat_app_userid_' + userInfo.userid;
+			
+			var uid = 'chat_app_userid_' + that.supplierid + '_' + userInfo.userid;
 						
 						
 			console.log('chat_app_userid_=============',uid);
@@ -915,7 +924,7 @@ export default {
 									
 					that.abotapi.socketMsgHandle(that.chat_help.current_chat_gui, that.chat_help.current_chat_page,msg);
 									
-					that.getLastMsg();
+					// that.getLastMsg();
 																			
 					
 				}

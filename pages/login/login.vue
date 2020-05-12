@@ -43,6 +43,16 @@
 			</div>
 			
 			
+			<!-- #ifdef MP-WEIXIN -->
+			<div class="otherBox mgb-20">
+				<div class="otherBox-line"></div>
+				<div class="otherBox-text">一键登录</div>
+			</div>
+			<div class="flex flex-center2">
+				<!-- <button open-type="getUserInfo" @getuserinfo="wxLogin" class="btn-round bg-success icon-weixin"></button> -->
+				<button open-type="getPhoneNumber" plain="true"  class="btn-round bg-success icon-weixin" @getphonenumber="btn_wxa_one_click_login"></button>
+			</div>
+			<!-- #endif -->
 			
 			
 			<!-- <view class="btn" @tap="doLogin">登 录</view>
@@ -351,34 +361,32 @@
 			},
 			 
 				
-			btn_one_click_login:function(e){
+				
+			btn_wxa_one_click_login:function(e){
 				var that = this;
 				console.log(e.detail.errMsg)
 				console.log(e.detail.iv)
 				console.log(e.detail.encryptedData)
-		  
-				console.log('uni.login <<<==== btn_one_click_login');
-		  
+					  
+				console.log('uni.login <<<==== btn_wxa_one_click_login');
+					  
 				uni.login({
 					success: function (res) {
-						console.log("btn_one_click_login 获取到的jscode是:" + res.code);
-		  
+						console.log("btn_wxa_one_click_login 获取到的jscode是:" + res.code);
+					  
 						//如果拒绝授权， e.detail.errMsg
 						//console.log(e.detail.errMsg);return;
-		  
-						uni.request({
-							url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=wxa_one_click_login',
-							header: {
-								"Content-Type": "application/x-www-form-urlencoded"
-							},
+					  
+						that.abotapi.abotRequest({
+							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=wxa_one_click_login',
 							method: "POST",
 							dataType: 'json',
 							data: {
 								js_code: res.code,
-								xiaochengxu_appid: this.abotapi.globalData.xiaochengxu_appid,
+								xiaochengxu_appid: that.abotapi.globalData.xiaochengxu_appid,
 								iv: e.detail.iv,
 								encryptedData: e.detail.encryptedData,
-								sellerid: this.abotapi.globalData.default_sellerid,
+								sellerid: that.abotapi.globalData.default_sellerid,
 								parentid: 0,
 							},
 							success: function (res) {
@@ -386,24 +394,26 @@
 			  
 								if (res.data && (res.data.code == 1)) {
 									//更新checkstr和uwid，
-									this.abotapi.globalData.userInfo.userid = res.data.userid;
+									that.abotapi.globalData.userInfo.userid = res.data.userid;
 									//this.abotapi.globalData.userInfo.checkstr = res.data.checkstr;
 				  
 									console.log('一键登录成功，userid:' + res.data.userid);
 									console.log('一键登录成功，userid:' + res.data.openid);
 				  
-									this.abotapi.globalData.userInfo.user_openid = res.data.openid;
-									this.abotapi.globalData.userInfo.userid = res.data.userid;
-									this.abotapi.globalData.userInfo.checkstr = res.data.checkstr;
-									this.abotapi.globalData.userInfo.is_get_userinfo = res.data.is_get_userinfo;
+									that.abotapi.globalData.userInfo.user_openid = res.data.openid;
+									that.abotapi.globalData.userInfo.userid = res.data.userid;
+									that.abotapi.globalData.userInfo.checkstr = res.data.checkstr;
+									that.abotapi.globalData.userInfo.is_get_userinfo = res.data.is_get_userinfo;
 				  
 									//保存openid
-									abotapi.set_current_openid(res.data.openid);
+									that.abotapi.set_current_openid(res.data.openid);
 					  
-									console.log(this.abotapi.globalData.userInfo);
+									console.log(that.abotapi.globalData.userInfo);
 					  
-									abotapi.set_user_info(this.abotapi.globalData.userInfo);
-						  
+									that.abotapi.set_user_info(that.abotapi.globalData.userInfo);
+									
+									that.getUserInfo();
+									
 									uni.showToast({
 										title: res.data.msg,
 										icon: 'success',
@@ -434,9 +444,9 @@
 										return;
 									}
 									//===========End================
-
-									uni.redirectTo({
-										url: '/pages/index/index'
+			
+									uni.switchTab({
+										url: '/pages/home/home'
 									})
 			
 								}else {
@@ -454,12 +464,37 @@
 								}
 							}
 						});
-		  
+					  
 					},
 					fail: function (login_res) {
 						console.log('login.js  uni.login失败。');
 					}
 				});
+			},	
+				
+			//获取用户信息
+			getUserInfo: function () {
+				var userInfo = this.abotapi.get_user_info();
+				var that = this;
+				if(userInfo && userInfo.userid){
+					this.abotapi.abotRequest({
+						url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
+						data: {
+							sellerid: this.abotapi.globalData.default_sellerid,
+							checkstr: userInfo.checkstr,
+							userid: userInfo.userid,
+							appid: this.abotapi.globalData.xiaochengxu_appid,
+						},
+						
+						method: "POST",
+						success: function (res) {
+							console.log('get_user_info====', res);
+							uni.setStorageSync('userDelite',res.data.data)
+					    }
+					})
+						
+				}
+					
 			},
 			
 			goHome:function(){
@@ -528,7 +563,7 @@
 	position: absolute;
 }
 
-.otherBox-text {
+/* .otherBox-text {
 	background-color: #50a8db;
 	text-align: center;
 	padding: 0upx 22upx;
@@ -538,8 +573,22 @@
 	left: 50%;
 	margin-left: -132upx;
 	color: #fff;
+} */
 
+.otherBox-text {
+	text-align: center;
+	padding: 0rpx 22rpx;
+	line-height: 79.2rpx;
+	position: absolute;
+	width: 264rpx;
+	left: 50%;
+	margin-left: -132rpx;
+	color: #444;
+	font-size: 34rpx;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
 }
+
 
 .flexIcon {
 	flex-direction: row;
@@ -587,8 +636,42 @@
 	left: 0upx;
 	right: 0upx;
 }
-	
-	
+
+.mgb-20 {
+	margin-bottom: 48rpx!important;
+}
+.flex-center2 {
+	text-align: center;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	align-items: center;
+}
+
+.btn-round {
+	width: 144upx;
+	height: 144upx;
+	background-color: #f60;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	color: #fff;
+	font-family: iconfont;
+}
+.btn-round:before {
+	font-size: 57.6upx;
+}
+.bg-success {
+	background-color: #28a745!important;
+}
+
+
+
+
 
 
 </style>

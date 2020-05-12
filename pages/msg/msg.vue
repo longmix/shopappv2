@@ -4,11 +4,11 @@
 			<view class="chat" v-for="(chat,index) in latestMsgList" :key="index" v-if="chat.chat_type == 0">
 				<view class="row" @tap="toChat(chat)">
 					<view class="left">
-						<image  :src="chat.from_person_detail.headimgurl"></image>
+						<image v-if="chat.from_person_detail" :src="chat.from_person_detail.headimgurl"></image>
 					</view>
 					<view class="right">
 						<view class="top">
-							<view class="username">{{chat.from_person_detail.nickname}}</view>
+							<view v-if="chat.from_person_detail" class="username">{{chat.from_person_detail.nickname}}</view>
 							<view class="time">{{chat.latest_time}}</view>
 						</view>
 						<view class="bottom">
@@ -165,6 +165,10 @@
 		onLoad() {
 			var that = this;
 			that.getLastMsg();
+				
+			that.abotapi.current_chat_gui = this;
+			that.abotapi.current_chat_handle = this;
+			that.abotapi.current_chat_page = '/pages/msg/msg';
 		},
 		methods: {
 			
@@ -177,7 +181,7 @@
 						action: 'latest_list',
 						userid02: userInfo.userid,
 						checkstr: userInfo.checkstr,
-						sellerid: 'fmXJPaVea',//that.abotapi.globalData.default_sellerid,
+						sellerid: that.abotapi.globalData.default_sellerid, //'fmXJPaVea',
 						chat_type: '0,4',
 				     },
 				     header: {
