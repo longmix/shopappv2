@@ -685,6 +685,20 @@ module.exports = {
 		uni.setStorageSync("user_account_info", user_account_info_str);
 				   
 	}, 
+	
+
+	get_user_account_info: function () {
+	   //缓存返回数据
+	   var user_account_info_str = uni.getStorageSync("user_account_info");
+				   
+	   console.log("获取用户账号数据：" + user_account_info_str + '333333333');
+				   
+	   if (!user_account_info_str) {
+	     return null;
+	   }
+				   
+	   return JSON.parse(user_account_info_str);
+	 },
 	 
 	 
 	

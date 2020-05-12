@@ -420,49 +420,9 @@
 			},
 			
 			toChat(){
-				var that = this;
-				
-				
-				
-				that.abotapi.abotRequest({
-					url: that.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_shop_info',
-					method: 'post',
-					data: {
-						sellerid: that.globalData.default_sellerid
-					},
-					header: {
-						'Content-Type': 'application/x-www-form-urlencoded'
-					},
-					success: function (res) {
-						if (res.data.code == 1) {
-							var shop_list = res.data.data;
-							that.globalData.shop_name = shop_list.shop_name;
-					
-							uni.setStorage({
-								key: 'shop_info_from_server_str_' + that.globalData.default_sellerid,
-								data: shop_list,
-								success: function (res) {
-									console.log('异步保存成功');
-				
-									if (callback_function) {
-										typeof callback_function == "function" && callback_function(shop_list);
-									}	
-								}
-							})
-				      
-						}
-					},
-					fail: function (e) {
-						uni.showToast({
-							title: '网络异常！',
-							duration: 2000
-						});
-					},
-				});
-				
-					
+				var that = this;		
 				uni.navigateTo({
-					url: 'chat/chat?type=0&userid=' + chat.from_person_detail.userid + '&name=' + chat.from_person_detail.nickname
+					url: '/pages/msg/chat/chat?type=0&userid=' + that.shoplist.userid + '&name=' + that.shoplist.name
 				})
 				
 			},
@@ -942,7 +902,7 @@
 	.ps-btn :nth-child(1){
 		text-align: center;
 		font-size: 28upx;
-		background: #bfbfbf;
+		background: #666666;
 		color: #fff;
 		width: 90upx;
 		height: 90upx;
@@ -954,7 +914,7 @@
 	.ps-btn :nth-child(2){
 		text-align: center;
 		font-size: 28upx;
-		background: #bfbfbf;
+		background: #666666;
 		color: #fff;
 		width: 90upx;
 		height: 90upx;
