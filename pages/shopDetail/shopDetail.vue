@@ -88,7 +88,7 @@
 				</view>
 				<view class="yuding-a">
 					<view style="font-size:25rpx;">点餐快人一步</view>
-					<navigator :url="'../menuList/menuList?is_waimai=0&xianmai_shangid='  + xianmai_shangid" hover-class="navigator-hover">
+					<navigator :url="'../menuList/menuList?is_waimai=0&title=堂食菜单&xianmai_shangid='  + xianmai_shangid" hover-class="navigator-hover">
 						<view style="background:#E86452;">查看菜单</view>
 					</navigator>
 				</view>
@@ -107,8 +107,8 @@
 				<text class='paidui-d'>美食送上门</text>
 				</view>
 				<view class="yuding-a" >
-					<view style="font-size:25rpx;">在线点餐</view>
-					<navigator style="background:#E86452;" :url="'../menuList/menuList?is_waimai=1&xianmai_shangid=' + xianmai_shangid" hover-class="navigator-hover" >
+					<view style="font-size:25rpx;">外卖送到家</view>
+					<navigator style="background:#E86452;" :url="'../menuList/menuList?is_waimai=1&title=外卖菜单&xianmai_shangid=' + xianmai_shangid" hover-class="navigator-hover" >
 						<view >外卖配送</view>
 					</navigator>
 				</view>
