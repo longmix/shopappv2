@@ -1,0 +1,40 @@
+{
+  "extEnable": true,
+  "extAppid": "wxfc3ddf7ac2c59963",
+  "directCommit": true,
+  "ext": {
+    "name": "wechat",
+    "attr": {
+      "host": "open.weixin.qq.com",
+      "users": [
+        "user_1",
+        "user_2"
+      ]
+    },
+    "xiaochengxu_appid": "wxfc3ddf7ac2c59963",
+    "force_sellerid_flag": 1,
+    "force_sellerid_value": "fJQzPaqVj",
+    "shop_name": "本地汽车服务",
+    "version_number": "1.4.0",
+    "navigationBarBackgroundColor_fixed": 0,
+    "kefu_telephone": "",
+    "kefu_qq": "",
+    "kefu_website": "",
+    "kefu_gongzhonghao": ""
+  },
+  "extPages": {
+    "pages/index/index": {
+      "navigationBarTitleText": "帮助中心"
+    }
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "本地汽车服务",
+    "navigationBarTextStyle": "white"
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "downloadFile": 10000
+  }
+}
