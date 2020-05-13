@@ -106,8 +106,51 @@ module.exports = {
 	 },
 	 
 	 
+	/**
+	* 坐标转换，百度地图坐标转换成腾讯地图坐标
+	* lng 腾讯经度（pointy）
+	* lat 腾讯纬度（pointx）
+	* 经度>纬度
+	*/
+	bMapToQQMap:function (lng, lat) {
 	
+	    if (lng == null || lng == '' || lat == null || lat == '')
+	        return [lng, lat];
 	
+	    var x_pi = 3.14159265358979324;
+	    var x = parseFloat(lng) - 0.0065;
+	    var y = parseFloat(lat) - 0.006;
+	    var z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * x_pi);
+	    var theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * x_pi);
+	    var lng = (z * Math.cos(theta)).toFixed(7);
+	    var lat = (z * Math.sin(theta)).toFixed(7);
+	
+	    return [lng, lat];
+	
+	},
+	
+	/**
+	* 坐标转换，腾讯地图转换成百度地图坐标
+	* lng 腾讯经度（pointy）
+	* lat 腾讯纬度（pointx）
+	* 经度>纬度
+	*/
+	
+	qqMapToBMap:function(lng, lat) {
+	
+	    if (lng == null || lng == '' || lat == null || lat == '')
+	        return [lng, lat];
+	
+	    var x_pi = 3.14159265358979324;
+	    var x = parseFloat(lng);
+	    var y = parseFloat(lat);
+	    var z = Math.sqrt(x * x + y * y) + 0.00002 * Math.sin(y * x_pi);
+	    var theta = Math.atan2(y, x) + 0.000003 * Math.cos(x * x_pi);
+	    var lng = (z * Math.cos(theta) + 0.0065).toFixed(5);
+	    var lat = (z * Math.sin(theta) + 0.006).toFixed(5);
+	    return [lng, lat];
+	
+	},
 
 	set_current_weiduke_token: function (weiduke_token) {
 	    if (!weiduke_token) {
@@ -121,6 +164,7 @@ module.exports = {
 	},
 	
 	get_location: function (that='',call_back_get_shang_list='') {
+		var that002 = this; 
 		console.log(1234567);
 		var coordinate = [];
 	    uni.getLocation({
@@ -128,8 +172,10 @@ module.exports = {
 	        type: 'wgs84',
 	        success: function (res) {
 				console.log('res123456',res);
-				coordinate['longitude'] = res.longitude;
-				coordinate['latitude'] = res.latitude;
+				
+				var res2 = that002.qqMapToBMap(res.longitude,res.latitude);		
+				coordinate['longitude'] = res2[0];
+				coordinate['latitude'] = res2[1];
 				
 				typeof call_back_get_shang_list == "function" && call_back_get_shang_list(that,coordinate);
 				

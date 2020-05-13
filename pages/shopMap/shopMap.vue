@@ -5,9 +5,13 @@
 		  <map class="map" id="map" :longitude="longitude" :latitude="latitude" scale="14" show-location="true" :markers="markers" bindmarkertap="makertap"></map> 
 		</view> 
 		
-		<view class="name">{{address_name.name}}</view>
-		<view class="adderss">{{address_name.address}}</view>
-		<view @tap="seeRoute" class="seeroute">到这去</view>
+		<view class="btm">
+			<view class="name">{{shopInfo.name}}</view>
+			<view class="adderss">{{shopInfo.address}}</view>
+			<view class="adderss" @tap="call_seller">{{shopInfo.telephone}}</view>
+			<view @tap="seeRoute" class="seeroute">到这去</view>
+		</view>
+		
 	</view>
 </template>
 
@@ -25,16 +29,20 @@
 				longitude: '',
 				rgcData: {},
 				detail:[],
-				address_name: {}
+				shopInfo: {}
 			}
 		},
 		onLoad(options){
 			var that = this;	
-			var markers = [];
+			var markers = [];		
+			var res = that.abotapi.bMapToQQMap(options.longitude,options.latitude);
+			options.longitude = res[0];
+			options.latitude = res[1];
+			
 			markers.push(options);
 						
 			that.markers = markers;
-			that.address_name = options;
+			that.shopInfo = options;
 			that.latitude = options.latitude
 			that.longitude = options.longitude		
 		},
@@ -47,7 +55,12 @@
 			      longitude,
 			      scale: 18
 			    })
-			  }
+			  },
+			  call_seller: function () {			      
+			      uni.makePhoneCall({
+			  		phoneNumber: this.shopInfo.telephone,
+			      })
+			  },
 		}
 		
 	};
@@ -87,5 +100,10 @@
 	  margin-left: 4%;
 	  background: #FFD700;
 	  border-radius: 15rpx;
+	}
+	.btm{
+		position: fixed;
+		width: 100%;
+		bottom: 60upx;
 	}
 </style>
