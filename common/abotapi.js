@@ -90,7 +90,7 @@ module.exports = {
 				  
 			  }	 else if (current_chat_page=='/pages/msg/chat/chat'){
 				  
-				  current_chat_gui.getNewFriends(msg);
+				  current_chat_gui.getNewMsg(msg);
 				  
 			  } else if (current_chat_page=='/pages/friendInfo/friendList'){
 					

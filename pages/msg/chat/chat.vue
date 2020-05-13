@@ -140,6 +140,7 @@
 					userName: '',
 					headImg: ''
 				},
+				pageOn: false,
 				emojiList:[
 					[{"url":"100.gif",alt:"[微笑]"},{"url":"101.gif",alt:"[伤心]"},{"url":"102.gif",alt:"[美女]"},{"url":"103.gif",alt:"[发呆]"},{"url":"104.gif",alt:"[墨镜]"},{"url":"105.gif",alt:"[哭]"},{"url":"106.gif",alt:"[羞]"},{"url":"107.gif",alt:"[哑]"},{"url":"108.gif",alt:"[睡]"},{"url":"109.gif",alt:"[哭]"},{"url":"110.gif",alt:"[囧]"},{"url":"111.gif",alt:"[怒]"},{"url":"112.gif",alt:"[调皮]"},{"url":"113.gif",alt:"[笑]"},{"url":"114.gif",alt:"[惊讶]"},{"url":"115.gif",alt:"[难过]"},{"url":"116.gif",alt:"[酷]"},{"url":"117.gif",alt:"[汗]"},{"url":"118.gif",alt:"[抓狂]"},{"url":"119.gif",alt:"[吐]"},{"url":"120.gif",alt:"[笑]"},{"url":"121.gif",alt:"[快乐]"},{"url":"122.gif",alt:"[奇]"},{"url":"123.gif",alt:"[傲]"}],
 					[{"url":"124.gif",alt:"[饿]"},{"url":"125.gif",alt:"[累]"},{"url":"126.gif",alt:"[吓]"},{"url":"127.gif",alt:"[汗]"},{"url":"128.gif",alt:"[高兴]"},{"url":"129.gif",alt:"[闲]"},{"url":"130.gif",alt:"[努力]"},{"url":"131.gif",alt:"[骂]"},{"url":"132.gif",alt:"[疑问]"},{"url":"133.gif",alt:"[秘密]"},{"url":"134.gif",alt:"[乱]"},{"url":"135.gif",alt:"[疯]"},{"url":"136.gif",alt:"[哀]"},{"url":"137.gif",alt:"[鬼]"},{"url":"138.gif",alt:"[打击]"},{"url":"139.gif",alt:"[bye]"},{"url":"140.gif",alt:"[汗]"},{"url":"141.gif",alt:"[抠]"},{"url":"142.gif",alt:"[鼓掌]"},{"url":"143.gif",alt:"[糟糕]"},{"url":"144.gif",alt:"[恶搞]"},{"url":"145.gif",alt:"[什么]"},{"url":"146.gif",alt:"[什么]"},{"url":"147.gif",alt:"[累]"}],
@@ -223,6 +224,7 @@
 		
 		onShow(){
 			var that = this;
+			that.pageOn = true;
 			var userInfo = that.abotapi.get_user_info();
 			if(that.userid){
 				var cache_msglist = uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+that.userid);			
@@ -325,6 +327,9 @@
 				  }					
 			     }
 			   })
+		},
+		onHide(){
+			this.pageOn = false;
 		},
 		methods:{
 			getMsgList(){
@@ -639,6 +644,54 @@
 			discard(){
 				return;
 			},
+			
+			getNewMsg: function(msg){
+				console.log('getNewMsg=====',msg)
+			    var that = this;			
+				var userInfo = that.abotapi.get_user_info();
+					if(that.pageOn){	
+						
+						// console.log('that.pageOn==',that.pageOn)
+						console.log('00000000')						
+						
+						var is_not_self_msg = true;										
+						
+							if(is_not_self_msg && msg.uid == that.userid){
+								that.screenMsg(msg);
+								console.log('4444444')
+								var data_params = {
+									   action: 'clear_couter_unread',
+								       sellerid: that.abotapi.globalData.default_sellerid,
+								     }
+								
+								if(!that.groupid){
+									data_params.userid01 = that.userid;
+									data_params.userid02 = userInfo.userid;
+									data_params.chat_type = 0;
+								} else {
+									data_params.userid01 = that.groupid;
+									data_params.userid02 = userInfo.userid;
+									data_params.chat_type = 4;
+								}
+								
+								uni.request({
+								     url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ChatData/chat_history',
+								     data:data_params,
+								     header: {
+								       "Content-Type": "application/x-www-form-urlencoded"
+								     },
+								     method: "POST",
+								     success: function (res) {
+								       console.log('ddd', res);
+							
+								     }
+								   })	
+							}						
+						
+					}
+						
+			},
+			
 			send_text_to_service:function(msg, type){
 				var userInfo = this.abotapi.get_user_info();
 				var userAcountInfo = this.abotapi.get_user_account_info();

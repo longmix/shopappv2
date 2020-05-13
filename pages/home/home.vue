@@ -922,7 +922,7 @@ export default {
 					// 	current_chat_gui.getNewMsg(msg);
 					// }		
 									
-					that.abotapi.socketMsgHandle(that.chat_help.current_chat_gui, that.chat_help.current_chat_page,msg);
+					that.abotapi.socketMsgHandle(that.abotapi.current_chat_gui, that.abotapi.current_chat_page,msg);
 									
 					// that.getLastMsg();
 																			
