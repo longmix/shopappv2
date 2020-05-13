@@ -68,6 +68,7 @@
 				that.sellerid = this.abotapi.globalData.default_sellerid;
 			}
 			
+			console.log('this.abotapi.globalData.shop_name=',this.abotapi.globalData.shop_name)
 			uni.setNavigationBarTitle({
 				title: this.abotapi.globalData.shop_name
 			})
