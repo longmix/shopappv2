@@ -343,7 +343,11 @@
         ,{
             "path" : "pages/locationList/locationList",
             "style" : {}
-        }
+        },
+		{
+		    "path" : "pages/shopMap/shopMap",
+		    "style" : {}
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

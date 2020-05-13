@@ -54,7 +54,7 @@
 					 
 				  </view>
 				  <!-- 地址-->
-				  <view style="display: flex;justify-content: space-between;align-items: center;padding: 20upx;">
+				  <navigator :url="'/pages/shopMap/shopMap?address=' + shoplist.address + '&latitude=' + shoplist.latitude + '&longitude=' + shoplist.longitude + '&name=' + shoplist.name + '&id=0'" style="display: flex;justify-content: space-between;align-items: center;padding: 20upx;">
 					  <view style="color:#333;font-size: 28upx;display: flex;align-items: center;">
 						  <image style="width:40upx;height:40upx;" src="../../static/img/user/adress1.png"></image>
 						  <view style="width: 100%;">
@@ -66,7 +66,7 @@
 					  </view>
 					  
 					  
-				  </view>
+				  </navigator>
 			  </view>
 			  <!-- 营业时间 地址结束 -->
 			  
