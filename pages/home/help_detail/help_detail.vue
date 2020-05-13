@@ -67,7 +67,7 @@
 		        
 		        <image class="comment_img comment_right_img" src="../../../static/img/help/comment.png" @tap='toReamrkList'  ></image><!--  @click="get_input_focus()" -->
 		        <view class="comment_num" :hidden="!comment_num">{{comment_num}}</view>
-		        <image class="comment_img comment_right_img" :style="comment_num ? 'margin-left:0':''" :src="isShoucang==true? '../../../../static/img/help/star_on.png': '../../../../static/img/help/star_off.png'" @tap='shoucang' ></image>
+		        <image class="comment_img comment_right_img" :style="comment_num ? 'margin-left:0':''" :src="isShoucang==true? '../../../static/img/help/star_on.png': '../../../static/img/help/star_off.png'" @tap='shoucang' ></image>
 		        <button  class="share" open-type="share"></button>
 		        <image class="comment_img comment_right_img" src="../../../static/img/help/share.png" open-type="share"></image>
 		        <image class="comment_img comment_right_img" @tap="toHomePage" src="../../../static/img/help/home_page.png"></image>
@@ -366,6 +366,13 @@
 			//收藏
 			shoucang: function () {
 				var that = this;
+				var userInfo = that.abotapi.get_user_info();
+				if(!userInfo || !userInfo.userid){
+					var last_url = '/pages/home/help_detail/help_detail?id=' + this.id + '&sellerid=' + this.sellerid;
+					this.abotapi.goto_user_login(last_url, 'normal');
+					return;
+				}
+					
 				var wz_id = that.wz_text.id;
 				console.log(wz_id);
 				var isShoucang = !this.isShoucang;

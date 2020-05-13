@@ -1633,7 +1633,7 @@ page{position: relative;background-color: #fff;}
 }
 
 .toutiao_left image{
-  width:80%;
+  width:60%;
   height:100%;
   float:left;
 }

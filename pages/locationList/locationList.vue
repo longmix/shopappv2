@@ -116,6 +116,9 @@
 	flex-wrap: wrap;
 }
 .kuai{
+
+	float: left;
+	border-radius: 10rpx;
 	width: 21%;
 	background: #fff;
 	margin: 10upx 1.5%;
@@ -123,6 +126,7 @@
 	padding: 10px 0px;
 	border-radius: 10px;
 	border: 1px solid #eee;
+
 }
 .middle{
 	margin:15rpx 30rpx;
@@ -133,8 +137,5 @@
 .hui{
 	color: #666;
 }
-.middle table{
-	margin-top: 15rpx;
-	line-height: 50rpx;
-}
+
 </style>

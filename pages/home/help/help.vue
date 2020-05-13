@@ -1,6 +1,5 @@
-<!-- <template>
-	<view> -->
-		<!-- <import src="../../mars/templates/component.wxml" /> -->
+
+<!-- <import src="../../mars/templates/component.wxml" /> -->
 		
 <template>
 	<view>
@@ -9,14 +8,17 @@
 				<block v-for="(item,artlist_for) in articlelist" :key="artlist_for">
 					<view class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active" @tap="showDetail" :data-id="item.id">
 						<view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-							<image class="weui-media-box__thumb" :src="item.pic" mode="widthFix" style="width: 100%;"/>
+							<image class="weui-media-box__thumb" :src="item.pic" mode="widthFix" style="width:75%;margin:15rpx;"/>
 						</view>
+						
+						
 						<view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
 							<view class="weui-media-box__title">{{item.title}}</view>
 							<view class="weui-media-box__desc">{{item.text}}</view>
 						</view>
 					</view>
 				</block>
+				
 			</view>
 			<view class="weui-panel__ft" style="display:none;">
 				<view class="weui-cell weui-cell_access weui-cell_link">
