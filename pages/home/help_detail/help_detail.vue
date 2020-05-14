@@ -49,7 +49,7 @@
 							<text class="comment_huifu_text" style="">{{items.reply}}</text>
 						</view>
 					</view>
-					<view class="comment_delete" :data-id="items.id" @tap='deleteRemark'  :hidden="openid!==items.wecha_id">
+					<view class="comment_delete" :data-id="items.id" @tap='deleteRemark'  :hidden="userInfo.userid!==items.yanyubao_userid">
 						<image src="../../../static/img/help/delete_red.png" mode="widthFix"></image>
 					</view>
 				  
@@ -107,6 +107,7 @@
 				is_Focus:false,
 				is_OK:false,
 				app_name_chat_title:''
+				
 			}
 		},
 		
@@ -124,92 +125,92 @@
 		    that.theme_color_wenku = this.abotapi.getColor()
 			console.log('colr=====', this.abotapi.getColor())
 		  
-			if (!current_openid){
-				uni.showLoading({
-					title: '正在加载....',
-				});
+			// if (!current_openid){
+			// 	uni.showLoading({
+			// 		title: '正在加载....',
+			// 	});
 			
-				console.log('uni.login <<<==== onLoad <<<==== help_detail');
+			// 	console.log('uni.login <<<==== onLoad <<<==== help_detail');
 				
-				uni.login({
-					success: function (login_res) {
-						console.log("uni.login返回：");
-						console.log(login_res);
+			// 	uni.login({
+			// 		success: function (login_res) {
+			// 			console.log("uni.login返回：");
+			// 			console.log(login_res);
 				
-						if (!login_res.code) {
-							return;
-						}
+			// 			if (!login_res.code) {
+			// 				return;
+			// 			}
 				
-						uni.request({
-							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=wxa_one_click_login',
-							header: {
-								"Content-Type": "application/x-www-form-urlencoded"
-							},
-							method: "POST",
-							dataType: 'json',
-							data: {
-								js_code: login_res.code,
-								xiaochengxu_appid: that.abotapi.globalData.xiaochengxu_appid,
-								sellerid: that.abotapi.get_sellerid(),
-							},
-							success: function (res) {
-								uni.hideLoading();
-								if(res.data.code == 1){
-									current_openid = res.data.openid;
-									that.abotapi.set_current_openid(current_openid);
+			// 			uni.request({
+			// 				url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=wxa_one_click_login',
+			// 				header: {
+			// 					"Content-Type": "application/x-www-form-urlencoded"
+			// 				},
+			// 				method: "POST",
+			// 				dataType: 'json',
+			// 				data: {
+			// 					js_code: login_res.code,
+			// 					xiaochengxu_appid: that.abotapi.globalData.xiaochengxu_appid,
+			// 					sellerid: that.abotapi.get_sellerid(),
+			// 				},
+			// 				success: function (res) {
+			// 					uni.hideLoading();
+			// 					if(res.data.code == 1){
+			// 						current_openid = res.data.openid;
+			// 						that.abotapi.set_current_openid(current_openid);
 				
-									that.__get_img_from_weiduke(options.id, that); 
-									console.log('jjjjss')
-								}else{
-									uni.showModal({
-										title: '确认',
-										content: '小程序服务器异常',
-									});
+			// 						that.__get_img_from_weiduke(options.id, that); 
+			// 						console.log('jjjjss')
+			// 					}else{
+			// 						uni.showModal({
+			// 							title: '确认',
+			// 							content: '小程序服务器异常',
+			// 						});
 					
 
-									//返回上一页
-									uni.navigateBack({
-										delta: 2
-									})
+			// 						//返回上一页
+			// 						uni.navigateBack({
+			// 							delta: 2
+			// 						})
 						  
-								}
-							},
-							fail:function(res){
-								uni.hideLoading();
+			// 					}
+			// 				},
+			// 				fail:function(res){
+			// 					uni.hideLoading();
 					
-								uni.showModal({
-									title: '确认',
-									content: '小程序网络异常',
-								});
+			// 					uni.showModal({
+			// 						title: '确认',
+			// 						content: '小程序网络异常',
+			// 					});
 					
-								//返回上一页
-								uni.navigateBack({
-									delta: 2
-								})
+			// 					//返回上一页
+			// 					uni.navigateBack({
+			// 						delta: 2
+			// 					})
 					
-							}
-						});
+			// 				}
+			// 			});
 								
-					},
-					fail: function (login_res){
-						uni.hideLoading();
+			// 		},
+			// 		fail: function (login_res){
+			// 			uni.hideLoading();
 				
-						console.log("uni.login  fail 返回：");
-						console.log(login_res);
+			// 			console.log("uni.login  fail 返回：");
+			// 			console.log(login_res);
 				
-						uni.showModal({
-							title: '确认',
-							content: '小程序认证异常',
-						});
+			// 			uni.showModal({
+			// 				title: '确认',
+			// 				content: '小程序认证异常',
+			// 			});
 				
-						//返回上一页
-						uni.navigateBack({
-							delta: 2
-						})
-					}
-				})   // End of uni.login
+			// 			//返回上一页
+			// 			uni.navigateBack({
+			// 				delta: 2
+			// 			})
+			// 		}
+			// 	})   // End of uni.login
 			
-			}
+			// }
 			
 			console.log(options);
 			console.log("商户头条id:"+options.id);
@@ -230,9 +231,9 @@
 		
 		
 		onShow: function () {
-			if(!userInfo){
-				userInfo = this.abotapi.get_user_info();
-			}
+			
+			this.userInfo = this.abotapi.get_user_info();
+			
 			uni.showLoading({
 				title: '加载中',
 			})
@@ -415,8 +416,6 @@
 					data: {
 						token: this.abotapi.get_current_weiduke_token(),
 						openid: this.abotapi.get_current_openid(),
-						userid: userInfo.userid,
-						checkstr: userInfo.checkstr,
 						action: 'list',
 						imgid: that.wz_id,
 					},

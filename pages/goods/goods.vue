@@ -7,7 +7,7 @@
 				<view class="back"><view class="icon xiangqian" @tap="back" v-if="showBack"></view></view> 
 				<view class="middle"></view>
 				<view class="icon-btn">
-					<view class="icon tongzhi" @tap="touTiaoList"></view>
+					<view class="icon tongzhi" @tap="toMsg"></view>
 					<view class="icon cart" @tap="toCart"></view>
 				</view>
 			</view>
@@ -18,8 +18,8 @@
 					<view v-for="(anchor,index) in anchorlist" :class="[selectAnchor==index ?'on':'']" :key="index" @tap="toAnchor(index)">{{anchor.name}}</view>
 				</view>
 				<view class="icon-btn">
-					<view class="icon tongzhi" @tap="touTiaoList"></view>      <!-- 下版本-> toMsg -->
-					<view class="icon cart" @tap="joinCart"></view>
+					<view class="icon tongzhi" @tap="toMsg"></view>      <!-- 下版本-> toMsg -->
+					<view class="icon cart" @tap="toCart"></view>
 				</view>
 			</view>
 		</view>

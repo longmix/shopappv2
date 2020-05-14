@@ -165,7 +165,7 @@
 		onLoad() {
 			var that = this;
 			that.getLastMsg();
-				
+			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 			that.abotapi.current_chat_gui = this;
 			that.abotapi.current_chat_handle = this;
 			that.abotapi.current_chat_page = '/pages/msg/msg';

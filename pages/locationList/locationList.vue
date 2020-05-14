@@ -48,7 +48,7 @@
 			
 			var address_info =  uni.getStorageSync('address_info');
 			this.address_info_current = address_info.city; //获取缓存中的当前城市的名称
-			
+			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 			
 			this.get_address_city(); //获取城市列表
 		},

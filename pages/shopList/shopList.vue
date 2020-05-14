@@ -211,7 +211,7 @@
 			}
 			
 		},
-		onLoad() {
+		onLoad(options) {
 			var that = this;
 			uni.getSystemInfo({
 			    success: function (res) {
@@ -220,7 +220,19 @@
 					
 			    }
 			});
-			
+			if(options.fenlei_name){
+				this.fenlei_name = options.fenlei_name;				
+				var xz_cataid = h_cata_lsit[options.fenlei_name]; // 选择的分类id
+				
+				//筛选全部商家的分类id为xz_cataid;
+				var xz_shang_list = [];
+				for(var i in shang_list){
+					if(shang_list[i]['cataid'] == xz_cataid){
+						xz_shang_list.push(shang_list[i]);
+					}
+				}
+				this.sx_shang_list = xz_shang_list;
+			}
 			this.abotapi.set_option_list_str(that,that.abotapi.getColor());
 			
 			var shang_list = uni.getStorageSync("shop_location_list");
@@ -463,7 +475,7 @@
 					this.shaixuan_name = '筛选';
 					
 					var cata_names = cata_list[index];
-					
+
 					this.fenlei_name = cata_names;
 					var xz_cataid = h_cata_lsit[cata_names]; // 选择的分类id
 					
@@ -479,6 +491,8 @@
 					this.fenlei_name = '分类';
 					
 					var spec_names = spec_list[index];
+					
+				
 					
 					this.shaixuan_name = spec_names;
 					var xz_shang_list = [];

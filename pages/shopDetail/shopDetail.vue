@@ -274,6 +274,7 @@
 			
 		},
 		onLoad(e) {
+			var that = this;
 			this.abotapi.set_option_list_str(that,that.abotapi.getColor());
 			this.get_shang_detail(e);
 			

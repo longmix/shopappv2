@@ -7,7 +7,7 @@
 				
 			</view>
 			<view class="icon-btn">
-				<view class="icon tongzhi" @tap="touTiaoList"></view>				<!--下版本替换为: toMsg -->
+				<view class="icon tongzhi" @tap="toMsg"></view>				<!--下版本替换为: toMsg -->
 				<view class="icon setting" @tap="toSetting"></view>
 			</view>
 		</view>

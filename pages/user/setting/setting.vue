@@ -57,12 +57,12 @@
 					<view class="right"><view class="tis"></view><view class="icon xiangyou"></view></view>
 				</view>
 			</view>
-			<view class="list">
-				<view style="text-align: center;" @click="keep_button()">确认修改</view>
-			</view>
-			<view class="list">
-				<view style="text-align: center;" @click="logout()">退出登录</view>
-			</view>
+		</view>
+		<view class="btm-list">
+			<view style="text-align: center;" @click="keep_button()">确认修改</view>
+		</view>
+		<view class="btm-list2">
+			<view style="text-align: center;" @click="logout()">退出登录</view>
 		</view>
 	</view>
 </template>
@@ -83,6 +83,7 @@
 		
 		onLoad:function(options) {
 			var that = this;
+			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 			var userInfo = that.abotapi.get_user_info();
 			if ((!userInfo) || (!userInfo.userid)) {
 				uni.redirectTo({
@@ -324,5 +325,35 @@ page{
 		}
 	}
 }
+
+
+
+.btm-list  view{
+	width: 90%;
+	margin-left: 5%;
+	border-radius: 5px;
+	background-color: #fff;
+	margin-bottom: 20upx;
+	height: 80upx;
+	line-height: 80upx;
+	background-color: #07c160;
+	color:#fff;
+}
+
+
+
+.btm-list2 view{
+	width: 90%;
+	margin-left: 5%;
+	border-radius: 5px;
+	background-color: #fff;
+	margin-bottom: 20upx;
+	height: 80upx;
+	line-height: 80upx;
+	background-color: #fa5151;
+	color:#fff;
+}
+
+
 
 </style>
