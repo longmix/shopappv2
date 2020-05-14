@@ -421,7 +421,7 @@ export default {
 		this.abotapi.get_shop_info_from_server(this.callback_func_for_shop_info);
 		
 		
-		this.abotapi.get_location(this, this.call_back_get_shang_list);
+		//this.abotapi.get_location(this, this.call_back_get_shang_list);
 
 		that.get_flash_ad_list();	
 		that.get_flash_img_list();
@@ -607,6 +607,16 @@ export default {
 			var regeocoding_fail = function (data) {
 				console.log('regeocoding_fail333333', data);
 				console.log('regeocoding_fail44444', that002.baidu_map_ak);
+				
+				//调用显示商家的接口
+				var coordinate = [];
+				coordinate['latitude'] = 31.293216;
+				coordinate['longitude'] = 121.662945;
+				
+				console.log('set virtual coordinate ====>>>>>', coordinate);
+				
+				that002.call_back_get_shang_list(that002, coordinate);
+				
 			};
 			
 			
@@ -619,7 +629,15 @@ export default {
 				this.latitude = this.wxMarkerData[0].latitude;
 				this.longitude = this.wxMarkerData[0].longitude;
 				this.address = this.wxMarkerData[0].address;
+				
 				console.log('address',this.address);
+				
+				//调用显示商家的接口
+				var coordinate = [];
+				coordinate['latitude'] = this.latitude;
+				coordinate['longitude'] = this.longitude;
+				
+				that002.call_back_get_shang_list(that002, coordinate);
 				
 				
 				that002.current_cityname = data.originalData.result.addressComponent.city
