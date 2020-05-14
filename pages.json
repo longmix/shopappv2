@@ -287,7 +287,7 @@
         ,{
             "path" : "pages/home/help/help",
             "style": {
-            	"navigationBarTitleText": "商户头条",
+            	"navigationBarTitleText": "文章列表",
             	"softinputNavBar":"none"
             }
         }
