@@ -177,14 +177,17 @@ module.exports = {
 		}
 		
 	    uni.getLocation({			
-	        //type: 'gcj02',  // 国测局坐标
-			type: 'wgs84',   // GPS坐标 
+	        type: 'gcj02',  // 国测局坐标
+			//type: 'wgs84',   // GPS坐标 
 	        success: function (res) {
 				console.log('res123456',res);
 				
-				var res2 = that002.qqMapToBMap(res.longitude,res.latitude);		
-				coordinate['longitude'] = res2[0];
-				coordinate['latitude'] = res2[1];
+				//var res2 = that002.qqMapToBMap(res.longitude,res.latitude);		
+				//coordinate['longitude'] = res2[0];
+				//coordinate['latitude'] = res2[1];
+				
+				coordinate['longitude'] = res.longitude;
+				coordinate['latitude'] = res.latitude;
 				
 				uni.setStorageSync("coordinate_array", coordinate);
 				
