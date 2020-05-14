@@ -351,14 +351,14 @@
 		 */
 		onUnload: function () {
 		  uni.switchTab({      
-		    url: '/pages/userInfo/userInfo',
+		    url: '/pages/userCenter/user',
 		  })
 		},
 		onLoad: function(options) {
 			var that = this;
 			console.log('options',options);
 			that.abotapi.set_option_list_str(this, this.callback_set_option);
-			
+			that.abotapi.set_option_list_str(this, this.abotapi.getColor());
 			
 		  
 			this.initSystemInfo();

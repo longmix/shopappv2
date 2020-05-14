@@ -670,7 +670,7 @@ export default {
 		
 		addShopCart:function(e){ //添加到购物车
 		
-		
+			
 		    var that = this;
 			var userInfo = this.abotapi.get_user_info();
 			if(!userInfo || !userInfo.userid){
@@ -713,8 +713,11 @@ export default {
 		        success: function (res) {
 		          uni.showToast({
 		            title: '添加成功',
-		
+					success:()=>{
+						that.hideSpec();
+					}
 		          });
+				  
 		        },
 		        fail: function (e) {
 		          uni.showToast({

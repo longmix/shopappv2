@@ -6,6 +6,7 @@
 		
 		onLaunch: function () {
 			console.log('App Launch')
+			this.abotapi.onLaunch02();
 			console.log('aa',this.abotapi.globalData);
 		},
 		onShow: function () {

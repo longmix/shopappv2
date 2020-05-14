@@ -34,6 +34,7 @@
 		},
 		onLoad(options){
 			var that = this;	
+			this.abotapi.set_option_list_str(that,that.abotapi.getColor());
 			var markers = [];		
 			var res = that.abotapi.bMapToQQMap(options.longitude,options.latitude);
 			options.longitude = res[0];

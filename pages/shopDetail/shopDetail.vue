@@ -274,7 +274,7 @@
 			
 		},
 		onLoad(e) {
-			console.log('eeeeeee',e);
+			this.abotapi.set_option_list_str(that,that.abotapi.getColor());
 			this.get_shang_detail(e);
 			
 			this.abotapi.get_xianmaishang_setting_list(this.callback_func_for_xianmaishang_setting_list);

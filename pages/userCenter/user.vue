@@ -86,12 +86,12 @@
 					</view>
 					<view class="text">{{row.name}}</view>
 				</view>
-				<view class="box"  @tap="toPage('/pages/about/about')">
+				<navigator class="box" :url="'/pages/about/about?about=' + about">
 					<view class="img">
-						<image src="../../static/img/search.png"></image>
+						<image src="https://yanyubao.tseo.cn/Tpl/static/images/aboutus.png"></image>
 					</view>
 					<view class="text">{{about}}</view>
-				</view>
+				</navigator>
 			</view>
 		</view>
 		<!-- 占位 -->

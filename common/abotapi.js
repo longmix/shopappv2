@@ -482,6 +482,8 @@ module.exports = {
 	    let extConfig = uni.getExtConfigSync ? uni.getExtConfigSync() : {}
 	
 	    this.globalData.xiaochengxu_appid = extConfig.xiaochengxu_appid;
+		
+		console.log('ttttt444',extConfig)
 	
 	    //强制设置当前的appid
 	    
@@ -514,9 +516,9 @@ module.exports = {
 			this.globalData.version_number = extConfig.version_number;
 	    }
 	
-	    if (extConfig.navigationBarBackgroundColor_fixed) {
+	    // if (extConfig.navigationBarBackgroundColor_fixed) {
 			this.globalData.navigationBarBackgroundColor_fixed = extConfig.navigationBarBackgroundColor_fixed;
-	    }
+	    // }
 	
 	    if (extConfig.kefu_telephone) {
 			this.globalData.kefu_telephone = extConfig.kefu_telephone;

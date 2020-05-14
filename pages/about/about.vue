@@ -96,7 +96,13 @@
 			var that = this;
 			var userInfo = that.abotapi.get_user_info();
 			// userAcountInfo = that.abotapi.get_user_account_info();
+			this.abotapi.set_option_list_str(that,that.abotapi.getColor());
 			
+			if(options.about){
+				uni.setNavigationBarTitle({
+					title: options.about
+				})
+			}
 			
 			uni.getSystemInfo({
 			    success: function (res) {

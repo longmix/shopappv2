@@ -220,6 +220,9 @@
 					
 			    }
 			});
+			
+			this.abotapi.set_option_list_str(that,that.abotapi.getColor());
+			
 			var shang_list = uni.getStorageSync("shop_location_list");
 			
 			this.shang_list = shang_list;

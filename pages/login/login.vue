@@ -667,6 +667,8 @@
 }
 .bg-success {
 	background-color: #28a745!important;
+	color: #fff!important;
+	border: #fff!important;
 }
 
 
