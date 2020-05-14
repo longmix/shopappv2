@@ -1,6 +1,6 @@
 {
-    "name" : "",
-    "appid" : "",
+    "name" : "加载中",
+    "appid" : "__UNI__A79BAA4",
     "description" : "",
     "versionName" : "1.2.0",
     "versionCode" : "100",
@@ -110,7 +110,8 @@
         "uniStatistics" : {
             "enable" : false
         },
-        "title" : "腾羽云商"
+        "title" : "腾羽云商",
+        "template" : "h5_index_template.html"
     },
     "uniStatistics" : {
         "enable" : false

@@ -162,14 +162,23 @@ module.exports = {
 	    //缓存返回数据
 	    uni.setStorageSync("current_weiduke_token", weiduke_token);
 	},
-	
-	get_location: function (that='',call_back_get_shang_list='') {
+	//获取经纬度（国测局坐标）
+	get_location: function (that, call_back_get_shang_list='') {
 		var that002 = this; 
-		console.log(1234567);
-		var coordinate = [];
-	    uni.getLocation({
+		
+		console.log('123456789 get_location');
+		
+		var coordinate = uni.getStorageSync('coordinate_array');
+		if(coordinate){
+			console.log('get_location in cache =====>>>>', coordinate);
 			
-	        type: 'wgs84',
+			typeof call_back_get_shang_list == "function" && call_back_get_shang_list(that, coordinate);
+			return;
+		}
+		
+	    uni.getLocation({			
+	        //type: 'gcj02',  // 国测局坐标
+			type: 'wgs84',   // GPS坐标 
 	        success: function (res) {
 				console.log('res123456',res);
 				
@@ -177,12 +186,34 @@ module.exports = {
 				coordinate['longitude'] = res2[0];
 				coordinate['latitude'] = res2[1];
 				
-				typeof call_back_get_shang_list == "function" && call_back_get_shang_list(that,coordinate);
+				uni.setStorageSync("coordinate_array", coordinate);
+				
+				typeof call_back_get_shang_list == "function" && call_back_get_shang_list(that, coordinate);
+				
+				return;
 				
 	        },
+			fail:function(res){
+				console.log('uni.getLocation fail ====>>>>', res);
+				
+				var coordinate = [];
+				coordinate['latitude'] = 31.293216;
+				coordinate['longitude'] = 121.662945;
+				
+				console.log('set virtual coordinate ====>>>>>', coordinate);
+				
+				typeof call_back_get_shang_list == "function" && call_back_get_shang_list(that, coordinate);
+				
+				return;
+				
+			},
+			complete:function(res){
+				console.log('uni.getLocation complete ====>>>>', res);
+			}
 			
 	    });
-		return coordinate;
+		
+		return;
 	},
 	
 	toRad: function (d) {

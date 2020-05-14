@@ -323,7 +323,7 @@ class BMapWX {
         wx.request({
           url: 'https://api.map.baidu.com/geocoding/v3',
           data: geocodingparam,
-		  dataType : 'JSONP',
+		  //dataType : 'JSONP',
           header: {
             "content-type": "application/json"
           },

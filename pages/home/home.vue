@@ -264,6 +264,11 @@ export default {
 	onPullDownRefresh: function () {
 		var that = this;
 		
+		uni.removeStorageSync("coordinate_array");
+		uni.removeStorageSync("cata_list");
+		uni.removeStorageSync("spec_list");
+		uni.removeStorageSync('all_shang_jingwei_list');
+		
 		
 		that.get_flash_ad_list();
 		that.get_flash_img_list();
@@ -416,24 +421,14 @@ export default {
 		this.abotapi.get_shop_info_from_server(this.callback_func_for_shop_info);
 		
 		
-		var coordinate = this.abotapi.get_location(this,this.call_back_get_shang_list);
-		console.log('coordinate1',coordinate);
-		// if(coordinate.length == 0){
-		// 	console.log('coordinate',123465);
-		// 	var coordinate = [];
-		// 	coordinate['latitude'] = 31.293216;
-		// 	coordinate['longitude'] = 121.662945;
-		// }
-		this.coordinate = coordinate;
-		console.log('coordinate',coordinate);
-		
+		this.abotapi.get_location(this, this.call_back_get_shang_list);
+
 		that.get_flash_ad_list();	
 		that.get_flash_img_list();
 		that.initArticleList();
 		that.get_shop_icon_index();
 		
-		that.get_product_list();	
-		//this.call_back_get_shang_list();
+		that.get_product_list();
 		
 		// #ifdef APP-PLUS
 		this.nVueTitle = uni.getSubNVueById('homeTitleNvue');
@@ -446,10 +441,7 @@ export default {
 		this.showHeader = false;
 		this.statusHeight = plus.navigator.getStatusbarHeight();
 		// #endif
-		console.log('this.coordinate',this.coordinate);
-		if(this.coordinate.length != 0){
-			this.call_back_get_shang_list();
-		}
+		
 		//开启定时器
 		this.Timer();
 		//加载活动专区
@@ -603,15 +595,18 @@ export default {
 			// #ifdef MP-WEIXIN
 				var baidu_map_ak = cb_params.baidu_map_ak_wxa;
 			// #endif
+			
 			var BMap_obj = new bmap.BMapWX({
 				ak: baidu_map_ak
 			});
 			
+			this.baidu_map_ak = baidu_map_ak;
+			
 			var that002 = this;
 			
 			var regeocoding_fail = function (data) {
-				console.log('333333', data);
-				console.log('44444', that.ak);
+				console.log('regeocoding_fail333333', data);
+				console.log('regeocoding_fail44444', that002.baidu_map_ak);
 			};
 			
 			
@@ -691,127 +686,148 @@ export default {
 		},
 		
 		/* 获取前十条商家 */
-		call_back_get_shang_list:function(that,coordinate){
+		call_back_get_shang_list:function(that, coordinate){
 			//获取全部商家 的金纬度
 			//coordinate = JSON.stringify(coordinate);
-			console.log('coordinatecoordinate',JSON.stringify(coordinate));
-			uni.setStorageSync("coordinate_array", coordinate);
+			console.log('coordinatecoordinate===========>>>>', coordinate);
+			
+			
+			
+			
+			that.coordinate = coordinate;
+						
+			var arr = uni.getStorageSync('all_shang_jingwei_list');
+			if(arr){
+				that.set_paixu_shanglist();
+			}
+			else{
+				this.abotapi.abotRequest({
+				    url: this.abotapi.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/get_shang_all_jingwei',
+				    method: 'post',
+				    data: {
+						sellerid:this.abotapi.globalData.default_sellerid,
+				    },
+				    success: function (res) {
+						console.log('get_shang_all_jingwei====>>>>>', res);
+						
+						if (res.data.code != 1) {
+						    //显示错误信息						
+							return;
+						}
+						
+						uni.setStorageSync("cata_list", res.data.all_cata_list);
+						uni.setStorageSync("spec_list", res.data.all_spec_list);
+						uni.setStorageSync('all_shang_jingwei_list', res.data.data);
+						
+						//调用排序算法
+						that.set_paixu_shanglist();
+				    },
+				    fail: function (e) {
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+				    },
+				});
+			}
+			
+		},
+		//给商家排序
+		set_paixu_shanglist:function(){
 			var that = this;
 			
-			this.abotapi.abotRequest({
-			    url: this.abotapi.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/get_shang_all_jingwei',
+			
+			var arr = uni.getStorageSync('all_shang_jingwei_list');
+			
+			var shop_location_list = that.jisuan_juli(arr);
+			
+			console.log('shop_location_list',shop_location_list);
+						
+			function compare(obj1, obj2) {
+			  var val1 = obj1.dis; 
+			  var val2 = obj2.dis;
+			  if (val1 < val2) {
+				return -1;
+			  } else if (val1 > val2) {
+				return 1;
+			  } else {
+				return 0;
+			  }
+			}
+			
+			
+			
+			var paixu_shanglist = shop_location_list.sort(compare);
+			
+			uni.setStorageSync("shop_location_list", paixu_shanglist);
+			
+			//console.log('要魂村的',);
+			var shangid_str = '';//获取商家前十个的商家id
+			for(var i = 0; i < 10;i++){
+				if(!paixu_shanglist[i]){
+					console.log("没有了");
+					break;
+				}
+				shangid_str += paixu_shanglist[i]['xianmai_shangid']+'|';
+			}
+			//排序
+			
+			
+			//用商家id字符串请求获取商家列表
+			that.abotapi.abotRequest({
+			    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/XianmaiShangData/get_shang_list',
 			    method: 'post',
 			    data: {
-					sellerid:this.abotapi.globalData.default_sellerid,
+					sellerid:that.abotapi.globalData.default_sellerid,
+					str: shangid_str,
+					coordinate_json: JSON.stringify(that.coordinate)
 			    },
 			    success: function (res) {
-					console.log('resss',res);
-					uni.setStorageSync("cata_list", res.data.all_cata_list);
-					uni.setStorageSync("spec_list", res.data.all_spec_list);
+					//console.log('get_shang_list===', res.data.xianmai_shang_list);
+					
 					if (res.data.code != 1) {
-					    //显示错误信息
-					
-						return;
-					 }
-					
-					var arr = res.data.data;
-					
-					var shop_location_list = that.jisuan_juli(arr);
-					console.log('shop_location_list',shop_location_list);
-			
-					function compare(obj1, obj2) {
-					  var val1 = obj1.dis; 
-					  var val2 = obj2.dis;
-					  if (val1 < val2) {
-						return -1;
-					  } else if (val1 > val2) {
-						return 1;
-					  } else {
-						return 0;
-					  }
+					  //显示错误信息
+					  return;
 					}
+							
+					var id = 0;
 					
-					
-					
-					var paixu_shanglist = shop_location_list.sort(compare);
-					
-					uni.setStorageSync("shop_location_list", paixu_shanglist);
-					
-					//console.log('要魂村的',);
-					var shangid_str = '';//获取商家前十个的商家id
-					for(var i = 0; i < 10;i++){
-						if(!paixu_shanglist[i]){
-							console.log("没有了");
-							break;
+					for (var shangid in res.data['xianmai_shang_list']) {
+					  //console.log('111111111111111111111111111', res.data['xianmai_shang_list'][shangid]['xianmai_shangid']);
+							
+					  var xianmai_shangid = res.data['xianmai_shang_list'][shangid]['xianmai_shangid'];
+							
+					  var disItem = null;
+					  for (var iii = 0; iii < shop_location_list.length; iii++) {
+						if (shop_location_list[iii]['xianmai_shangid'] == xianmai_shangid) {
+						  disItem = shop_location_list[iii];
+						  break;
 						}
-						shangid_str += paixu_shanglist[i]['xianmai_shangid']+'|';
+					  }
+					  //console.log(disItem);
+							
+					  res.data['xianmai_shang_list'][shangid].dis = disItem.dis_str;
+							
+							
+					  var imgs = [];
+					  if (res.data['xianmai_shang_list'][shangid]['image_list']) {
+						for (var j = 0; j < res.data['xianmai_shang_list'][shangid]['image_list'].length; j++) {
+						  imgs.push(res.data['xianmai_shang_list'][shangid]['image_list'][j].url)
+						}
+					  }
+					  res.data['xianmai_shang_list'][shangid].imgs = imgs;
+					  res.data['xianmai_shang_list'][shangid].address = res.data['xianmai_shang_list'][shangid].address  //.substr(0, 10)
+							
+							
 					}
-					//排序
+							
+					//console.log('iiiiiiiiiiiiiiiii', res.data['xianmai_shang_list']);
+					
+					that.twoArr = res.data['xianmai_shang_list'];
 					
 					
-					//用商家id字符串请求获取商家列表
-					that.abotapi.abotRequest({
-					    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/XianmaiShangData/get_shang_list',
-					    method: 'post',
-					    data: {
-							sellerid:that.abotapi.globalData.default_sellerid,
-							str: shangid_str
-					    },
-					    success: function (res) {
-							//console.log('get_shang_list===', res.data.xianmai_shang_list);
+					
 							
-							if (res.data.code != 1) {
-							  //显示错误信息
-							  return;
-							}
-				
-							var id = 0;
-							
-							for (var shangid in res.data['xianmai_shang_list']) {
-							  //console.log('111111111111111111111111111', res.data['xianmai_shang_list'][shangid]['xianmai_shangid']);
-				
-							  var xianmai_shangid = res.data['xianmai_shang_list'][shangid]['xianmai_shangid'];
-				
-							  var disItem = null;
-							  for (var iii = 0; iii < shop_location_list.length; iii++) {
-								if (shop_location_list[iii]['xianmai_shangid'] == xianmai_shangid) {
-								  disItem = shop_location_list[iii];
-								  break;
-								}
-							  }
-							  //console.log(disItem);
-				
-							  res.data['xianmai_shang_list'][shangid].dis = disItem.dis_str;
-				
-				
-							  var imgs = [];
-							  if (res.data['xianmai_shang_list'][shangid]['image_list']) {
-								for (var j = 0; j < res.data['xianmai_shang_list'][shangid]['image_list'].length; j++) {
-								  imgs.push(res.data['xianmai_shang_list'][shangid]['image_list'][j].url)
-								}
-							  }
-							  res.data['xianmai_shang_list'][shangid].imgs = imgs;
-							  res.data['xianmai_shang_list'][shangid].address = res.data['xianmai_shang_list'][shangid].address  //.substr(0, 10)
-				
-				
-							}
-				
-							//console.log('iiiiiiiiiiiiiiiii', res.data['xianmai_shang_list']);
-							
-							that.twoArr = res.data['xianmai_shang_list'];
-							
-							
-							
-				
-							
-					    },
-					    fail: function (e) {
-							uni.showToast({
-								title: '网络异常！',
-								duration: 2000
-							});
-					    },
-					});
 					
 			    },
 			    fail: function (e) {
@@ -821,6 +837,7 @@ export default {
 					});
 			    },
 			});
+			
 		},
 		
 		//计算距离
