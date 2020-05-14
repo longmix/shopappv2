@@ -154,8 +154,8 @@
 				</view>
 				
 				<view class="danji_shulian">
-					<text class="gm_ovh_1h pt10">数量</text>	
-					<text class="gm_ovh_1h pt10">{{item.amount}}</text>	
+					<text class="gm_ovh_1h pt10">数量</text>
+					<text class="gm_ovh_1h pt10">x {{item.amount}}</text>	
 				</view> 
 		              
 				<view class="danji_shulian" v-if="item.product_take_score">
@@ -224,7 +224,7 @@
 				</view> 
 			</view>
 			
-		    <text style="font-size:28upx;padding-left:3%;">备注</text>
+		    <b><text style="font-size:28upx;padding-left:3%;margin-left: 20upx;">备注</text></b>
 			<view class="p_all bg_white mt10 font_14">
 				<textarea class="min_60" auto-height name="remark" placeholder="如有备注请填写" @input="remarkInput" :value="remark" rows="3"/> 
 			</view>	
@@ -1380,7 +1380,8 @@
 						client: 'wxa',
 						sellerid: this.abotapi.get_sellerid(),    
 						yue_amount: that.balance_dikou,
-						zengkuan_amount: that.balance_zengsong_dikou,
+						zengkuan_amount: that.balance_zengsong_
+						,
 					},
 					method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
 					header: {
@@ -1828,6 +1829,8 @@
 	  justify-content:space-between;
 	  border-bottom: 1upx solid #e5e5e5;
 	  padding:0 20upx;
+	  height:70upx;
+	  margin-top: 10upx;
 	}
 	
 	.heji_con{
@@ -1845,6 +1848,7 @@
 	  margin-bottom:20upx;
 	  width:94%;
 	  margin-left:3%;
+	  margin-top: 30upx;
 	}
 	
 	.b-dikou{
