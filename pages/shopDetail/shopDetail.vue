@@ -92,7 +92,7 @@
 						<view style="background:#E86452;">{{user_console_setting.shop_product_btn_ext}}</view>
 					</navigator>
 				</view>
-				<view class="paidui-b">餐厅当前暂停点餐</view>
+				
 			</view>
 			<!-- 按钮1   end -->
 			
@@ -112,7 +112,7 @@
 						<view >{{user_console_setting.waimai_product_btn_ext}}</view>
 					</navigator>
 				</view>
-				<view class="paidui-b">餐厅当前暂停配送</view>
+				
 			</view>
 			<!-- 按钮2  end -->
 			

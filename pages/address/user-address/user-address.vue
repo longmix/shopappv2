@@ -267,7 +267,7 @@
 			//新增地址
 			add(){
 				uni.navigateTo({
-					url:'/pages/address/address?cartId='+that.cartId+'&action=add&amount='+that.amount+'&productid='+that.productid+'&action='+that.action+'&action_pay='+that.action_pay
+					url:'/pages/address/address?cartId='+this.cartId+'&action=add&amount='+this.amount+'&productid='+this.productid+'&action='+this.action+'&action_pay='+this.action_pay
 				})
 			},
 			

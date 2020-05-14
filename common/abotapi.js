@@ -162,8 +162,20 @@ module.exports = {
 	    //缓存返回数据
 	    uni.setStorageSync("current_weiduke_token", weiduke_token);
 	},
+
+	get_current_weiduke_token: function () {
+	    var weiduke_token = uni.getStorageSync("current_weiduke_token");
+	    console.log("获取weiduke_token：" + weiduke_token);
+	
+	    if (!weiduke_token) {
+			weiduke_token = null;
+	    }
+	
+	    return weiduke_token;
+	},	
 	//获取经纬度（国测局坐标）
 	get_location: function (that, call_back_get_shang_list='') {
+
 		var that002 = this; 
 		
 		console.log('123456789 get_location');
@@ -237,16 +249,6 @@ module.exports = {
 		return dis * 6378137;
 	},
 	
-	get_current_weiduke_token: function () {
-	    var weiduke_token = uni.getStorageSync("current_weiduke_token");
-	    console.log("获取weiduke_token：" + weiduke_token);
-	
-	    if (!weiduke_token) {
-			weiduke_token = null;
-	    }
-	
-	    return weiduke_token;
-	},
     json_add:function(a,b){
  
         if(a==undefined || a.length==0) return b;

@@ -542,7 +542,9 @@
 			                  console.log(data)
 			                };
 			                var success = function (data) {
-			
+		
+		
+								console.log('data==',data);
 			                  wxMarkerData = data.wxMarkerData;
 							  
 							  thats.makers = wxMarkerData;
@@ -597,6 +599,9 @@
 			
 			
 			                var address = thats.address.province_name + thats.address.city_name + thats.address.district_name + thats.address.address;
+							
+							console.log('address===',address);
+			
 			
 			                // 发起geocoding检索请求 
 			                BMap.geocoding({

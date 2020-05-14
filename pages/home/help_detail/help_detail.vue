@@ -63,7 +63,7 @@
 			<view class="comment">
 		     
 				<image class="comment_img comment_write_img" src="../../../static/img/help/write.png"></image>
-		        <input class="comment_input" placeholder="写评论..." confirm-type="send" @confirm="send()" :data-imgid="wz_text.id" v-model="inputValue" type="text"></input> <!--  -->
+		        <input class="comment_input" placeholder="写评论..." confirm-type="send" @confirm="sendRemark()" :data-imgid="wz_text.id" v-model="inputValue" type="text"></input> <!--  -->
 		        
 		        <image class="comment_img comment_right_img" src="../../../static/img/help/comment.png" @tap='toReamrkList'  ></image><!--  @click="get_input_focus()" -->
 		        <view class="comment_num" :hidden="!comment_num">{{comment_num}}</view>
@@ -415,6 +415,8 @@
 					data: {
 						token: this.abotapi.get_current_weiduke_token(),
 						openid: this.abotapi.get_current_openid(),
+						userid: userInfo.userid,
+						checkstr: userInfo.checkstr,
 						action: 'list',
 						imgid: that.wz_id,
 					},
@@ -498,6 +500,8 @@
 								var data = {
 									token: that.abotapi.get_current_weiduke_token(),
 									openid: that.abotapi.get_current_openid(),
+									userid: userInfo.userid,
+									checkstr: userInfo.checkstr,
 									action: 'add',
 									imgid: imgid,
 									content: remark,
@@ -532,13 +536,11 @@
 			},
 				
 			
-			send:function(){
-				this.addRemark();
-			},
 			
+
 			
-			//获取评论内容
-			addRemark:function(){
+			//发送评论内容
+			sendRemark:function(){
 				var that = this;
 				var userInfo = this.abotapi.get_user_info();
 				that.inputValue = this.inputValue;
@@ -612,7 +614,7 @@
 								return;
 							}else{
 								console.log("评论成功,inputValue清空")
-								that.getRemark();
+								that.doSendRemark();
 								that.inputValue = ''
 								that.get_remark_list();
 							}
@@ -622,8 +624,8 @@
 			},
 			
 			
-			//发送评论
-			getRemark:function(){
+			// 执行发送评论
+			doSendRemark:function(){
 				var that = this;
 				var userInfo = this.abotapi.get_user_info();
 				console.log('userInfo',userInfo);
@@ -635,14 +637,13 @@
 					data:{
 						token: that.abotapi.get_current_weiduke_token(),
 						openid: that.abotapi.get_current_openid(),
+						userid:userInfo.userid,
+						checkstr:userInfo.checkstr,
 						action: 'add',
 						imgid: that.wz_id,
 						content:this.inputValue,
 						icon:that.user_info.headimgurl,
-						name:that.user_info.nickname,
-						
-						checkstr:userInfo.checkstr,
-						userid:userInfo.userid
+						name:that.user_info.nickname
 					},
 					success(res) {
 						console.log("res===",res);
@@ -682,8 +683,10 @@
 					url: this.abotapi.globalData.weiduke_server_url + 'index.php/openapi/ArticleImgApi/remark_img',
 					method: 'post',
 					data: {
-						token: this.abotapi.get_current_weiduke_token,
+						token: this.abotapi.get_current_weiduke_token(),
 						openid: this.abotapi.get_current_openid(),
+						userid: userInfo.userid,
+						checkstr: userInfo.checkstr,
 						action: 'del',
 						imgid: that.wz_id,
 						id: e.currentTarget.dataset.id
