@@ -1206,7 +1206,7 @@ module.exports = {
 			}
 		}
 		else if (url.indexOf('navigateTo') == 0) {
-			console.log('qqqe123456789011212125641231564');
+			
 			var arr = url.split(" ");
 			if (arr.length >= 2) {
 				var new_url = arr[1];
@@ -1216,7 +1216,7 @@ module.exports = {
 			}
 		}
 		else if (url == '/pages/index/index' || url == '/pages/category/index' || url == '/pages/cart/cart' || url == '/pages/user/user') {
-			console.log('qqqe12345678901121212741216513');
+			
 			uni.switchTab({
 				url: url,
 			})
@@ -1234,13 +1234,13 @@ module.exports = {
 			}
 		}
 		else if (url == 'duorenpintuan') {
-			console.log('qqqe123456789011212124454012');
+			
 			var url1 = 'https://yanyubao.tseo.cn/Home/DuorenPintuan/pintuan_list/ensellerid/' + this.get_sellerid() + '.html?click_type=Wxa';
 			uni.navigateTo({
 				url: '/pages/h5browser/h5browser?url=' + encodeURIComponent(url1) + '&ret_page=' + ret_page,
 			})
 		} else if (url == 'fenxiangkanjia') {
-			console.log('qqqe123456789011212120000111');
+			
 			var productid = 0;
 			if (var_list && var_list.productid) {
    
@@ -1252,11 +1252,11 @@ module.exports = {
 			}
    
 		} else if ((url.indexOf('http://') == 0)||(url.indexOf('https://') == 0)) {
-			console.log('qqqe1234567890112121210120100',url);
+			
 			if (url.indexOf('#redirectTo') != -1){
 				//如果指定了跳转方式为 #redirectTo
 				url = url.replace(/#redirectTo/, '');
-				uni.navigateTo({
+				uni.redirectTo({
 				  url: '/pages/h5browser/h5browser?url=' + encodeURIComponent(url) + '&ret_page=' + ret_page,
 				})
 			}
@@ -1267,7 +1267,7 @@ module.exports = {
 			}
 		}
 		else if (url.indexOf('miniprogram') == 0) {
-			console.log('qqqe123456789011212121111');
+			
 			var arr = url.split(" ");
 			if (arr.length >= 3) {
 				var appid = arr[2];
