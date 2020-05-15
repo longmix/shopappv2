@@ -64,10 +64,10 @@
 		      </view>
 		      <view>
 		        <text :hidden="item.is_default==0?false:true" @tap="setDefault" :data-id="item.addressid">设置默认</text>
-		        <text :hidden="item.is_default==0?false:true"> | </text>
-		        <text :data-id="item.addressid" @tap="saveAddress($event)">编辑</text>
+		        <text style="letter-spacing: 20upx;":hidden="item.is_default==0?false:true"> | </text>
+		        <text style="letter-spacing:20upx;" :data-id="item.addressid" @tap="saveAddress($event)">编辑</text>
 		        <text> | </text>
-		        <text :data-id="item.addressid" @tap="delAddress($event)">删除</text>
+		        <text style="letter-spacing: 20upx;" :data-id="item.addressid" @tap="delAddress($event)">删除</text>
 		      </view>
 		    </view>
 		  </view>
@@ -278,8 +278,9 @@
 			saveAddress:function (e) {
 				var that = this;
 			    var addressId = e.currentTarget.dataset.id;
+				console.log('that.action==',that.action)
 			    uni.redirectTo({
-					url: '/pages/address/address?action=edit&addressId=' + addressId + '&amount=' + that.amount + '&productid=' + that.productid + '&action=' + that.action + '&action_pay=' + that.action_pay,
+					url: '/pages/address/address?action=edit&addressId=' + addressId + '&amount=' + that.amount + '&productid=' + that.productid + '&action_pay=' + that.action_pay,
 			    }); 
 			},
 			

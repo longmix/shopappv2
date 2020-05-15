@@ -80,11 +80,16 @@
 					<view class="row" v-if="editType=='edit'" @tap="delAddress(address_detail.addressid)">
 						<view class="del">
 							删除收货地址
-						</view>
+						</view><br>
+							
+					</view>						
+					<view class="row" v-if="editType=='edit'" >
+						<button class="baocun"  form-type="submit">
+							保存地址
+						</button>
+					
 					</view>
-					<view class="row">
-						<button formType="submit">保存地址</button>
-					</view>
+					
 					
 				</view>
 					
@@ -141,7 +146,7 @@
 			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 			//获取传递过来的参数
 			console.log('options',options);
-			this.addressid = options.addressid;
+			this.addressid = options.addressId;
 			this.cartId = options.cartId;
 			this.action = options.action;
 			  
@@ -722,9 +727,11 @@
 				justify-content: center;
 				align-items: center;
 				font-size: 36upx;
-				color: #f06c7a;
-				background-color: rgba(255,0,0,0.05);
+				color:#FFFFFF;
+				background-color:#e53f42;
 				border-bottom: solid 1upx #eee;
+				margin-top: 20upx;
+				border-radius:30upx;
 			}
 		}
 	}
@@ -759,15 +766,17 @@
 	}
 	
 	uni-button {
-	  width:80%;
-	  height:50px;
-	  line-height:50px;
-	  position: fixed;
-	  margin-top:20%;
-	  color: #fff;
-	  background-color: #17A8E2;
-	  border-radius:30px;
-	
+	 width: 100%;
+	 height: 100upx;
+	 justify-content: center;
+	 align-items: center;
+	 font-size: 36upx;
+	 color:#FFFFFF;
+	 background-color:#0d7dfc;
+	 border-bottom: solid 1upx #eee;
+	 margin-top: 20upx;	
+	 border-radius:30upx;
+	 border: none;
 	}
 	
 	.picker {

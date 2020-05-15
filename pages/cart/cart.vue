@@ -813,8 +813,8 @@
 				}
 			}
 			.btn{
-				padding: 0 30upx;
-				height: 50upx;
+				padding: 0 20upx;
+				height: 65upx;
 				background-color: #f06c7a;
 				color: #fff;
 				display: flex;
