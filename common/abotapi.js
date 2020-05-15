@@ -685,7 +685,8 @@ module.exports = {
 			var that002 = this;
 				
 			uni.request({
-				url: this.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_shop_option',
+				//url: this.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_shop_option',
+				url: this.globalData.yanyubao_server_url + '/openapi/ShopAppV2Data/get_shop_option',
 				method: 'post',
 				data: {
 					sellerid: this.globalData.default_sellerid
