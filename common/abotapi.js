@@ -1,4 +1,4 @@
-const globalData:{
+const globalData = {
 		weiduke_server_url: 'https://cms.weiduke.com/',
 		yanyubao_server_url: 'https://yanyubao.tseo.cn/',
 		o2owaimai_server_url: 'https://app.tseo.cn/o2owaimai/index.php/',
@@ -640,10 +640,11 @@ module.exports = {
 	    }
 	
 	    uni.request({
-			url: that.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_shop_info',
+			url: that.globalData.yanyubao_server_url + '/openapi/ShopAppV2Data/get_shop_info',
 			method: 'post',
 			data: {
-				sellerid: that.globalData.default_sellerid
+				sellerid: that.globalData.default_sellerid,
+				platform: that.globalData.current_platform
 			},
 			header: {
 				'Content-Type': 'application/x-www-form-urlencoded'
@@ -702,7 +703,8 @@ module.exports = {
 				url: this.globalData.yanyubao_server_url + '/openapi/ShopAppV2Data/get_shop_option',
 				method: 'post',
 				data: {
-					sellerid: this.globalData.default_sellerid
+					sellerid: this.globalData.default_sellerid,
+					platform: this.globalData.current_platform
 				},
 				header: {
 					'Content-Type': 'application/x-www-form-urlencoded'

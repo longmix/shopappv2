@@ -1,5 +1,5 @@
 {
-    "name" : "加载中",
+    "name" : "商城Ver2",
     "appid" : "__UNI__A79BAA4",
     "description" : "",
     "versionName" : "1.2.0",
@@ -124,6 +124,10 @@
     "mp-baidu" : {
         "uniStatistics" : {
             "enable" : false
+        },
+        "appid" : "19900151",
+        "setting" : {
+            "urlCheck" : true
         }
     },
     "mp-qq" : {
