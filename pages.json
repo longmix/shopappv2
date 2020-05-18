@@ -347,6 +347,20 @@
 		{
 		    "path" : "pages/shopMap/shopMap",
 		    "style" : {}
+		},{
+		    "path" : "pages/issue_article/column_group",
+		    "style" : {}
+		},{
+		    "path" : "pages/issue_article/issue_article",
+		    "style" : {}
+		},
+		{
+		    "path" : "pages/issue_article/article_detail",
+		    "style" : {}
+		},
+		{
+		    "path" : "pages/issue_article/article_list",
+		    "style" : {}
 		}
     ],
 	"globalStyle": {
