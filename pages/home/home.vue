@@ -612,6 +612,11 @@ export default {
 				that.navigation_icon_list = cb_params.option_list.navigation_icon_list;
 			}
 			
+			if (cb_params.option_list.default_shang_list_count_in_front_page) {
+			  
+			    that.abotapi.globalData.default_shang_list_count_in_front_page = cb_params.option_list.default_shang_list_count_in_front_page
+			  
+			}
 			
 			
 			//====3、获取经纬度坐标，显示当前城市			
