@@ -412,6 +412,32 @@
 					  
 									that.abotapi.set_user_info(that.abotapi.globalData.userInfo);
 									
+									that.abotapi.abotRequest({
+									     url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=get_user_info',
+									     data: {
+									       sellerid: that.abotapi.globalData.default_sellerid,
+									       checkstr: res.data.checkstr,
+									       userid: res.data.userid,
+									     },
+									     header: {
+									       "Content-Type": "application/x-www-form-urlencoded"
+									     },
+									     method: "POST",
+									     success: function (res) {
+									       console.log('ddd', res);
+									       // console.log('ddd', res.data.code);
+											
+											var	data = res.data;						      
+											 
+											 if(data.code == 1){
+												 
+												 that.abotapi.set_user_account_info(data.data)
+												 
+											 }
+										
+									     }
+									   })
+									
 									that.getUserInfo();
 									
 									uni.showToast({

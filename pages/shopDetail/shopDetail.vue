@@ -421,7 +421,15 @@
 			},
 			
 			toChat(){
-				var that = this;		
+				var that = this;	
+				var userInfo = that.abotapi.get_user_info();
+				if(!userInfo || !userInfo.userid){
+					var last_url = '/pages/shopDetail/shopDetail?shangid=' + that.xianmai_shangid;
+					this.abotapi.goto_user_login(last_url, 'normal');
+					return;
+				}	
+						
+			
 				uni.navigateTo({
 					url: '/pages/msg/chat/chat?type=0&userid=' + that.shoplist.userid + '&name=' + that.shoplist.name
 				})
