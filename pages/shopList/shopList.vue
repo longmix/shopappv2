@@ -213,6 +213,7 @@
 		},
 		onLoad(options) {
 			var that = this;
+			
 			uni.getSystemInfo({
 			    success: function (res) {
 					
@@ -220,6 +221,7 @@
 					
 			    }
 			});
+			
 			if(options.fenlei_name){
 				this.fenlei_name = options.fenlei_name;				
 				var xz_cataid = h_cata_lsit[options.fenlei_name]; // 选择的分类id
@@ -233,7 +235,12 @@
 				}
 				this.sx_shang_list = xz_shang_list;
 			}
-			this.abotapi.set_option_list_str(that,that.abotapi.getColor());
+			
+			this.abotapi.set_option_list_str(this, function(that, option_list){
+
+				that.abotapi.getColor();
+
+			});
 			
 			var shang_list = uni.getStorageSync("shop_location_list");
 			

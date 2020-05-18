@@ -681,12 +681,13 @@ module.exports = {
 	
 	
 	set_option_list_str : function (that, callback_function) {
+		var that002 = this;
 		this.set_shop_option_data(that, function(that, option_data){
 			if(option_data && option_data.code && (option_data.code == 1)){
-				option_list = option_data.option_list;
 				
-				this.globalData.option_list = option_list;
-				console.log(' this.globalData.option_list===========', this.globalData.option_list)
+				var option_list = option_data.option_list;		
+				that002.globalData.option_list = option_list;
+				
 				//刷新界面
 				typeof callback_function == "function" && callback_function(that, option_list);
 			}
