@@ -681,17 +681,30 @@ module.exports = {
 	
 	
 	set_option_list_str : function (that, callback_function) {
+		this.set_shop_option_data(that, function(that, option_data){
+			if(option_data && option_data.code && (option_data.code == 1)){
+				option_list = option_data.option_list;
+				
+				this.globalData.option_list = option_list;
+				console.log(' this.globalData.option_list===========', this.globalData.option_list)
+				//刷新界面
+				typeof callback_function == "function" && callback_function(that, option_list);
+			}
+		});
+		
+	},
+	
+	set_shop_option_data : function (that, callback_function) {
 		
 		var currentTime = (new Date()).getTime();//获取当前时间
 				
-		if (uni.getStorageSync("option_list_str") && (currentTime - uni.getStorageSync("option_list_str_time")) < 3600 * 1000) {
+		if (uni.getStorageSync("shop_option_data") && (currentTime - uni.getStorageSync("shop_option_data_time")) < 3600 * 1000) {
 		  
-			var option_list = JSON.parse(uni.getStorageSync("option_list_str"))
+			var option_data = JSON.parse(uni.getStorageSync("shop_option_data"))
 				
-			this.globalData.option_list = option_list;
-			console.log(' this.globalData.option_list===========', this.globalData.option_list)
+			
 			//刷新界面
-			typeof callback_function == "function" && callback_function(that, option_list);
+			typeof callback_function == "function" && callback_function(that, option_data);
 				
 		} else {
 				
@@ -710,23 +723,20 @@ module.exports = {
 					'Content-Type': 'application/x-www-form-urlencoded'
 				},
 				success: function (res) {
-					var option_list = res.data.option_list;
-				
-					that002.globalData.option_list = option_list;
-				
+					var option_data = res.data;
 				
 					//保存到本地
-					var option_list_str = JSON.stringify(option_list);
+					var shop_option_data = JSON.stringify(option_data);
 				
 					//缓存返回数据
-					uni.setStorageSync("option_list_str", option_list_str);
+					uni.setStorageSync("shop_option_data", shop_option_data);
 					var currentTime = (new Date()).getTime();//获取当前时间
-					uni.setStorageSync("option_list_str_time", currentTime);
+					uni.setStorageSync("shop_option_data_time", currentTime);
 				
-					console.log('保存商城选项：' + option_list_str);
+					console.log('保存商城选项数据：' + shop_option_data);
 				
 					//刷新界面
-					typeof callback_function == "function" && callback_function(that, option_list);
+					typeof callback_function == "function" && callback_function(that, option_data);
 				
 				},
 				fail: function (e) {
@@ -738,7 +748,6 @@ module.exports = {
 			});
 		}
 	},
-	
 	
 	
 	
@@ -949,11 +958,11 @@ module.exports = {
 	
 	getColor:function(){
 		//从本地读取
-	    var option_list_str = uni.getStorageSync("option_list_str");
+	    var shop_option_data = uni.getStorageSync("shop_option_data");
 	
 	    console.log("获取商城选项数据====：" + option_list_str + '333333333');
 	
-	    if (!option_list_str) {
+	    if (!shop_option_data) {
 			//return null;
 	
 			uni.showToast({
@@ -967,7 +976,9 @@ module.exports = {
 	    }
 	    
 	    
-	    var option_list =  JSON.parse(option_list_str);
+	    var option_data =  JSON.parse(shop_option_data);
+		
+		var option_list = option_data.option_list;
 	
 	    this.globalData.option_list = option_list;
 	
