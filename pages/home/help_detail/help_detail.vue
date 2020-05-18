@@ -49,7 +49,7 @@
 							<text class="comment_huifu_text" style="">{{items.reply}}</text>
 						</view>
 					</view>
-					<view class="comment_delete" :data-id="items.id" @tap='deleteRemark'  :hidden="userInfo.userid!==items.yanyubao_userid">
+					<view class="comment_delete" :data-id="items.id" @tap='deleteRemark'  v-if="userInfo.userid==items.yanyubao_userid">
 						<image src="../../../static/img/help/delete_red.png" mode="widthFix"></image>
 					</view>
 				  
