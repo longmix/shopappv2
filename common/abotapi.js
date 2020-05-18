@@ -960,7 +960,7 @@ module.exports = {
 		//从本地读取
 	    var shop_option_data = uni.getStorageSync("shop_option_data");
 	
-	    console.log("获取商城选项数据====：" + option_list_str + '333333333');
+	    //console.log("获取商城选项数据====：", shop_option_data);
 	
 	    if (!shop_option_data) {
 			//return null;
@@ -970,7 +970,6 @@ module.exports = {
 				icon:'loading'
 			});
 	
-			//this.set_option_list_str(this, this.getColor);
 	
 			return;
 	    }
@@ -982,13 +981,15 @@ module.exports = {
 	
 	    this.globalData.option_list = option_list;
 	
-	    console.log('oplist-----', option_list.wxa_shop_nav_bg_color);
-	
 	    //console.log('111111111111111111111111111111::' + this.globalData.navigationBarBackgroundColor_fixed);
 	
 	    if (this.globalData.navigationBarBackgroundColor_fixed != 1){
 	
 			if (option_list && option_list.wxa_shop_nav_font_color && option_list.wxa_shop_nav_bg_color) {
+				
+				console.log('oplist-----', option_list.wxa_shop_nav_bg_color);
+				
+				
 				uni.setNavigationBarColor({
 					frontColor: option_list.wxa_shop_nav_font_color,
 					backgroundColor: option_list.wxa_shop_nav_bg_color,
