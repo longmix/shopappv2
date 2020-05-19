@@ -38,7 +38,8 @@ const globalData = {
 		
 		//购物车在底部导航栏（如果购物车在底部导航栏，请务必选择此项，避免向购物车跳转失败）
 		is_shop_cart_in_tabbar: 0,
-		
+		is_publish_index_in_tabbar: 0, //判断发布的栏目在底部导航  1就是在底部导航
+		is_publish_list_in_tabbar: 0, //判断文章列表在底部导航   1就是在底部导航
 		//======================End=======================
 		
 		//======以下选项可以在服务器端修改，这里是默认值=====
@@ -697,7 +698,7 @@ module.exports = {
 	
 	set_shop_option_data_remove:function(){
 		uni.removeStorageSync('shop_option_data_'.this.globalData.default_sellerid);
-	}
+	},
 	
 	set_shop_option_data : function (that, callback_function) {
 		
