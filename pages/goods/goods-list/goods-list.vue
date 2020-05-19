@@ -12,7 +12,8 @@
 		<view class="goods-list">
 			<view class="product-list">
 				<view class="product" v-if="item.cataid == cataid" v-for="(item,indexs) in goodsList" :key="indexs" @click="toGoods(item.productid)">
-					<image mode="widthFix" :src="item.picture"></image>
+					
+					<image mode="widthFix" :src="item.inventory==0?'../../../static/img/shouqing.png':'item.picture'"></image>
 					<view class="name">{{item.name}}</view>
 					<view class="info">
 						<view class="price">{{item.price}}</view>

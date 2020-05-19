@@ -40,8 +40,8 @@
 				</view>
 			</view>
 			<view class="btn">
-				<view class="joinCart" data-type="addcart" data-status="2" @tap="setModalStatus($event)">加入购物车</view>
-				<view class="buy" data-status="1" @tap="setModalStatus($event)">立即购买</view>
+				<view :class="[goods_detail.inventory == 0? 'joinCart-null':'joinCart']" data-type="addcart" data-status="2" @tap="setModalStatus($event)">加入购物车</view>
+				<view :class="[goods_detail.inventory == 0? 'buy-null':'buy']" data-status="1" @tap="goods_detail.inventory == 0? 'setModalStatus(' + $event+ ')':'' ">立即购买</view>
 			</view>
 		</view>
 		<!-- share弹窗 -->
@@ -229,6 +229,40 @@
 			</view>
 		</view> -->
 		<!-- 详情 -->
+		
+		<view class="re-commend">
+			<view class="re-h">推荐商品</view>
+			   <view class="re-goods" v-for="(item,index) in recommend_product_list" :key="index" @tap="block_tanchuang(item)">
+				   <image :src="item.picture"></image>
+				   <view class="re-txt">{{item.name}}</view>
+				   <view class="re-price">¥{{item.price}}</view>
+			   </view>
+			   
+			   <!-- <view class="re-goods">
+			   				   <image src="../../static/img/goods.jpg"></image>
+			   				   <view class="re-txt">纯银一路鹿有你玫瑰彩金锁骨项链女生日礼物小众设计感ins冷淡风</view>
+			   				   <view class="re-price">$184</view>
+			   </view>
+			   
+			   <view class="re-goods">
+			   				   <image src="../../static/img/goods.jpg"></image>
+			   				   <view class="re-txt">纯银一路鹿有你玫瑰彩金锁骨项链女生日礼物小众设计感ins冷淡风</view>
+			   				   <view class="re-price">$184</view>
+			   </view> -->
+			   
+			   
+		</view>
+		
+		<view class="re-commend">
+			<view class="re-h">热门商品</view>
+			   <view class="re-goods" v-for="(item,index) in recommend_product_list" :key="index">
+				   <image :src="item.picture"></image>
+				   <view class="re-txt">{{item.name}}</view>
+				   <view class="re-price">¥{{item.price}}</view>
+			   </view>
+	    </view>
+		
+		
 		<view class="description">
 			<view class="title">———— 商品详情 ————</view>
 			<view class="content">
@@ -306,6 +340,8 @@ export default {
 			telephone:'',
 			shop_userid: '',
 			shop_name: '',
+			recommend_product_list:[],
+			hot_product_list:null,
 			
 		};
 	},
@@ -349,7 +385,7 @@ export default {
 		
 		
 		
-		
+		this.get_yanyubao_goods_recommend()
 		
 		
 		uni.request({
@@ -429,12 +465,15 @@ export default {
 					
 				}
 		    },
+			
 		    fail: function (e) {
 				uni.showToast({
 					title: '网络异常！',
 					duration: 2000
 				});
 		    },
+			
+			
 		});
 		
 		// #ifdef MP
@@ -541,7 +580,7 @@ export default {
 				  that.goods_detail = res.data.data;
 				  console.log('that.goods_detail',that.goods_detail);
 				  that.describe = that.goods_detail.describe;
-				  
+
 				  that.picture_list = that.goods_detail.picture_list;
 				  that.picture_length = that.goods_detail.picture_list ? that.goods_detail.picture_list.length : 0;		   
 
@@ -789,14 +828,20 @@ export default {
 			]
 			let commentsView = uni.createSelectorQuery().select("#comments");
 			commentsView.boundingClientRect((data) => {
+				
 				let statusbarHeight = 0;
+				
 				//APP内还要计算状态栏高度
 				// #ifdef APP-PLUS
 					statusbarHeight = plus.navigator.getStatusbarHeight()
 				// #endif
+				
 				let headerHeight = uni.upx2px(100);
-				this.anchorlist[1].top = data.top - headerHeight - statusbarHeight;
-				this.anchorlist[2].top = data.bottom - headerHeight - statusbarHeight;
+				
+				if(data){
+					this.anchorlist[1].top = data.top - headerHeight - statusbarHeight;
+					this.anchorlist[2].top = data.bottom - headerHeight - statusbarHeight;
+				}
 				
 			}).exec();
 		},
@@ -838,6 +883,76 @@ export default {
 		},
 		discard() {
 			
+		},
+		
+		//调用接口
+		get_yanyubao_goods_recommend:function(list_type='recommend'){
+			console.log('goods=====>>');
+			
+			var that=this;
+			
+			var post_data = {
+					sellerid:that.abotapi.globalData.default_sellerid,
+					//is_recommend:1,
+					page_num:6
+				};
+			
+			if(list_type == 'recommend'){
+				post_data.is_recommend = 1;
+			}
+			else if(list_type == 'hot'){
+				post_data.is_hot = 1;
+			}
+			
+			
+			this.abotapi.abotRequest({
+				url:'http://yanyubao.tseo.cn/Yanyubao/ShopApp/product_list',
+				method:'post',
+				data:post_data,
+				success(res){
+					console.log('11111111===',res)
+					
+					if(res.data.code == 1){
+						
+						if(list_type == 'recommend'){
+							var recommend_product_list = res.data.product_list;
+							
+							that.recommend_product_list = recommend_product_list;
+							console.log('11111111===',recommend_product_list)
+						}
+						else if(list_type == 'hot'){
+							var hot_product_list = res.data.product_list;
+							
+							that.hot_product_list = hot_product_list;
+							console.log('11111111===',hot_product_list)
+						}
+						
+						
+					}
+					
+				},
+				
+				fail:function(e){
+					uni.showToast({
+					title:'网络异常！',
+					duration:2000
+					});
+				},
+             
+				
+				
+			});
+			
+			
+		},
+		
+		block_tanchuang:function(item){
+			console.log('item',item);
+		
+			uni.navigateTo({
+				
+			    url: 'goods?productid=' + item.productid  //这是跳转到的页面路径，？id=1这些都是传递的数据，可以直接在test页面接受
+			});
 		}
 	},
 	
@@ -1243,12 +1358,29 @@ page {
 			display: flex;
 			align-items: center;
 			font-size: 28upx;
+			background-color: #f06c7a;
 		}
 		.joinCart {
 			background-color: #f0b46c;
 		}
-		.buy {
-			background-color: #f06c7a;
+		.joinCart-null{
+			background-color: #808080;
+			height: 80upx;
+			padding: 0 40upx;
+			color: #fff;
+			display: flex;
+			align-items: center;
+			font-size: 28upx;
+		}
+		.buy-null {
+			height: 80upx;
+			padding: 0 40upx;
+			color: #fff;
+			display: flex;
+			align-items: center;
+			font-size: 28upx;
+			background-color: #808080;
+			opacity: 0.4;
 		}
 	}
 }
@@ -1597,5 +1729,35 @@ margin-left: 40rpx;
 .drawer_image {
   width: 28%;
   height: 200rpx;
+}
+.re-commend	{
+	background-color: white;
+	overflow: hidden;
+}
+.re-h{
+	margin:20upx ;
+}
+.re-goods{
+	float: left;
+	width: 33%;
+}
+.re-goods image{
+	width: 200upx;
+	height:200upx;
+	margin-left: 30upx;
+	border-radius: 20upx;
+}
+.re-txt{
+	font-size: 25upx;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	width: 200upx;
+	margin-left:35upx ;
+}
+.re-price{
+	font-size: 35upx;
+	text-align: center;
+	color: #f47925;
 }
 </style>
