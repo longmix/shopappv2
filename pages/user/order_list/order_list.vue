@@ -378,15 +378,8 @@
 		
 		methods:{
 			callback_set_option: function (that, cb_params) {
-				console.log('getShopOptionAndRefresh+++++:::' + cb_params)
 				
-				//从本地读取
-				var option_list_str = uni.getStorageSync("option_list_str");
-				if (!option_list_str) {
-					return null;
-				}
-				
-				var option_list = JSON.parse(option_list_str);
+				var option_list = cb_params;
 				
 				if (!option_list) {
 					return;

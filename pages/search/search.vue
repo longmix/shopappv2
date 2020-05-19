@@ -100,14 +100,16 @@
 		onLoad: function (options) {
 			var that = this;
 			console.log('11',options);
-			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
-			var option_list_str = uni.getStorageSync("option_list_str");
-			console.log('1114444',option_list_str);
-			var option_list = JSON.parse(option_list_str);
-			console.log('1114444', option_list);
-			if (option_list.wxa_product_list_style) {
-				that.wxa_product_list_style = option_list.wxa_product_list_style
-			}
+			
+			this.abotapi.set_option_list_str(that, function(that002, option_list){
+				this.abotapi.getColor();
+				
+				if (option_list.wxa_product_list_style) {
+					that.wxa_product_list_style = option_list.wxa_product_list_style
+				}
+				
+			});
+			
 			var objectId = options.title;
 			//更改头部标题
 			// uni.setNavigationBarTitle({
@@ -166,9 +168,9 @@
 			// 页面渲染完成
 		},
 		onShow: function () {
-			var option_list_str = uni.getStorageSync("option_list_str");
+			//var option_list_str = uni.getStorageSync("option_list_str");
 		
-		    console.log("获取商城选项数据：" + option_list_str + '333333333');
+		    //console.log("获取商城选项数据：" + option_list_str + '333333333');
 		},
 		onHide: function () {
 			// 页面隐藏

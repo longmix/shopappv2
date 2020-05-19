@@ -352,16 +352,27 @@
 			},
 			returnto_index: function () {
 				var that = this;
-				var wxa_hidden_shop = JSON.parse(uni.getStorageSync("option_list_str")).wxa_hidden_shop;
-				if (wxa_hidden_shop==1){
-					uni.switchTab({
-						url: '/pages/home/home',
-					})
-			  }	else{
-					uni.switchTab({
-						url: '/pages/home/home?sellerid=' + that.sellerid
-					})
-				}  
+				
+				this.abotapi.set_option_list_str(this, function(that002, option_list){
+					var wxa_hidden_shop = option_list.wxa_hidden_shop;
+					
+					if (wxa_hidden_shop==1){
+						uni.switchTab({
+							url: '/pages/home/home',
+						})
+					}
+					else{
+						uni.switchTab({
+							url: '/pages/home/home?sellerid=' + that.sellerid
+						})
+					}
+					
+				});
+				
+				//var wxa_hidden_shop = JSON.parse(uni.getStorageSync("option_list_str")).wxa_hidden_shop;
+				
+				
+				
 			},
 				
 			//收藏
