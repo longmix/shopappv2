@@ -115,7 +115,7 @@
 						<view> 
 							<view style="font-size: 30upx;color:#333;">{{item.name}}</view>
 							<view style="display: flex; align-items:center;justify-content:space-between;">
-								<view style="display: flex;">
+								<view style="display: flex;margin-top: 10upx;">
 									<image v-for="items in item.star_level" :key="items.message" style="width: 40upx;height: 40upx;" src="../../static/img/VIP.png"></image>
 									
 								</view>
@@ -123,7 +123,7 @@
 									{{item.dis}}
 								</view>
 							</view>
-							<view style="font-size: 24upx;color:#666;">{{item.city_name}}|{{item.cata_name}}</view>
+							<view style="font-size: 24upx;color:#666;margin-top: 10upx;">{{item.city_name}}|{{item.cata_name}}</view>
 							<!-- <view v-if="item.spec != ''" style="display: flex;align-items: center;flex-wrap: wrap;">
 								<view v-for="(items,index) in item.spec" :key="index" style="padding:4px 10upx;margin:10upx 10upx 0upx 0upx;border-radius:6upx;background: #ff8000 linear-gradient(to right, rgba(255,255,255,0), rgba(2555,255,255,.5));font-size: 24upx;color:#fff;">{{items}}</view>
 								
@@ -1475,7 +1475,7 @@ export default {
 			if ((url.indexOf("%oneclicklogin%") != -1) || (url.indexOf("%oneclicklogin_hahading%") != -1)
 			  || (url.indexOf("%refresh_token%") != -1)) {
 						
-			  var userInfo = that.abotapi.get_user_info();     
+			  //var userInfo = that.abotapi.get_user_info();     
 						
 			  var request_url = that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=one_click_login_str';
 						
