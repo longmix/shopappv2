@@ -697,16 +697,16 @@ module.exports = {
 	},
 	
 	set_shop_option_data_remove:function(){
-		uni.removeStorageSync('shop_option_data_'.this.globalData.default_sellerid);
+		uni.removeStorageSync('shop_option_data_' + this.globalData.default_sellerid);
 	},
 	
 	set_shop_option_data : function (that, callback_function) {
 		
 		var currentTime = (new Date()).getTime();//获取当前时间
 				
-		if (uni.getStorageSync('shop_option_data_'.this.globalData.default_sellerid) && (currentTime - uni.getStorageSync("shop_option_data_time")) < 3600 * 1000) {
+		if (uni.getStorageSync('shop_option_data_' + this.globalData.default_sellerid) && (currentTime - uni.getStorageSync("shop_option_data_time")) < 3600 * 1000) {
 		  
-			var option_data = JSON.parse(uni.getStorageSync('shop_option_data_'.this.globalData.default_sellerid))
+			var option_data = JSON.parse(uni.getStorageSync('shop_option_data_' + this.globalData.default_sellerid))
 				
 			
 			//刷新界面
@@ -735,7 +735,7 @@ module.exports = {
 					var shop_option_data = JSON.stringify(option_data);
 				
 					//缓存返回数据
-					uni.setStorageSync('shop_option_data_'.this.globalData.default_sellerid, shop_option_data);
+					uni.setStorageSync('shop_option_data_' + that002.globalData.default_sellerid, shop_option_data);
 					var currentTime = (new Date()).getTime();//获取当前时间
 					uni.setStorageSync("shop_option_data_time", currentTime);
 				
@@ -964,7 +964,7 @@ module.exports = {
 	
 	getColor:function(){
 		//从本地读取
-	    var shop_option_data = uni.getStorageSync('shop_option_data_'.this.globalData.default_sellerid);
+	    var shop_option_data = uni.getStorageSync('shop_option_data_' + this.globalData.default_sellerid);
 	
 	    //console.log("获取商城选项数据====：", shop_option_data);
 	
@@ -1039,10 +1039,10 @@ module.exports = {
 	    var that002 = this;
 	
 	    uni.request({
-			url: this.globalData.yanyubao_server_url + 'openapi/FaquanData/get_faquan_setting',
+			url: that002.globalData.yanyubao_server_url + 'openapi/FaquanData/get_faquan_setting',
 			method: 'post',
 			data: {
-				sellerid: this.globalData.default_sellerid
+				sellerid: that002.globalData.default_sellerid
 			},
 			header: {
 				'Content-Type': 'application/x-www-form-urlencoded'

@@ -232,7 +232,7 @@
 		
 		<view class="re-commend">
 			<view class="re-h">推荐商品</view>
-			   <view class="re-goods" v-for="(item,index) in recommend_product_list" :key="index" @tap="block_tanchuang(item)">
+			   <view :class="re-goods" v-for="(item,index) in recommend_product_list" :key="index" @tap="block_tanchuang(item)">
 				   <image :src="item.picture"></image>
 				   <view class="re-txt">{{item.name}}</view>
 				   <view class="re-price">¥{{item.price}}</view>
@@ -255,7 +255,7 @@
 		
 		<view class="re-commend">
 			<view class="re-h">热门商品</view>
-			   <view class="re-goods" v-for="(item,index) in recommend_product_list" :key="index">
+			   <view :class="re-goods" v-for="(item,index) in recommend_product_list" :key="index">
 				   <image :src="item.picture"></image>
 				   <view class="re-txt">{{item.name}}</view>
 				   <view class="re-price">¥{{item.price}}</view>
@@ -342,7 +342,7 @@ export default {
 			shop_name: '',
 			recommend_product_list:[],
 			hot_product_list:null,
-			
+
 		};
 	},
 	onLoad(option) {
@@ -389,11 +389,13 @@ export default {
 		
 		
 		uni.request({
+			
 		    url: this.abotapi.globalData.yanyubao_server_url +  '?g=Yanyubao&m=ShopAppWxa&a=product_detail',
-		    method: 'post',
+		    method: 'POST',
 		    data: {
 				productid:this.productid
 		    },
+			
 		    header: {
 				'Content-Type': 'application/x-www-form-urlencoded'
 		    },
