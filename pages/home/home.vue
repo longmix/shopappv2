@@ -188,6 +188,7 @@ var ttt = 0;
 //高德SDK
 import bmap from '../../common/SDK/bmap-wx.js';
 import io from '../../common/weapp.socket.io.js'; 
+import common from '../../common/common.js'; 
 
 //import abotapi001 from '../../../common/abotapi.js';
 

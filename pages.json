@@ -4,22 +4,22 @@
 			"style": {
 				"navigationBarTextStyle":"black",
 				"enablePullDownRefresh": true,
-				"onReachBottomDistance":50,
-				"app-plus": {
-					"titleNView": false ,//禁用原生导航栏
-					"softinputNavBar":"none"
-				}
+				"onReachBottomDistance":50
+				// "app-plus": {
+				// 	"titleNView": false ,//禁用原生导航栏
+				// 	"softinputNavBar":"none"
+				// }
 			}
 		},
 		{	//商品分类
 			"path": "pages/category/category",
 			"style": {
-				"navigationBarTextStyle":"black",
-				"app-plus": {
-					"titleNView": false ,//禁用原生导航栏
-					"bounce":"none"
+				"navigationBarTextStyle":"black"
+				// "app-plus": {
+				// 	"titleNView": false ,//禁用原生导航栏
+				// 	"bounce":"none"
 					
-				}
+				// }
 			}
 		},
 		{	//购物车
@@ -45,15 +45,15 @@
 				"backgroundTextStyle":"light",
 				"navigationBarBackgroundColor":"#FFFFFF",
 				"backgroundColorTop":"#FFFFFF",
-				"navigationBarTextStyle":"black",
-				"app-plus": {
-					"titleNView": false ,//禁用原生导航栏
-					"subNVues":[{  
-						"id": "userTitleNvue", // 唯一标识  
-						"path": "pages/userCenter/subNvue/userTitleNvue", // 页面路径  
-						"type":"navigationBar"
-					}]
-				}
+				"navigationBarTextStyle":"black"
+				// "app-plus": {
+				// 	"titleNView": false ,//禁用原生导航栏
+				// 	"subNVues":[{  
+				// 		"id": "userTitleNvue", // 唯一标识  
+				// 		"path": "pages/userCenter/subNvue/userTitleNvue", // 页面路径  
+				// 		"type":"navigationBar"
+				// 	}]
+				// }
 			}
 		},
 		{	//商品搜索

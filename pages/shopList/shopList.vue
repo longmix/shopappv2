@@ -117,7 +117,10 @@
 	
 </template>
 
+
+
 <script>
+	import common from '../../common/common.js'; 
 	export default {
 		data() {
 			return {
@@ -247,7 +250,7 @@
 			this.shang_list = shang_list;
 			
 			
-			var coordinate = this.abotapi.get_location(this,this.get_shang_list);
+			var coordinate = common.get_location(this,this.get_shang_list);
 			console.log('coordinate1',coordinate);
 			
 			this.coordinate = coordinate;
