@@ -341,6 +341,20 @@
 				"iconPath": "static/img/tabBar/user.png",
 				"selectedIconPath": "static/img/tabBar/user-on.png",
 				"text": "我的"
+			},{
+		    "path" : "pages/publish/publish_index",
+		    "style" : {}
+			},{
+				"path" : "pages/publish/publish_write",
+				"style" : {}
+			},
+			{
+				"path" : "pages/publish/publish_detail",
+				"style" : {}
+			},
+			{
+				"path" : "pages/publish/publish_list",
+				"style" : {}
 			}
 		]
 	}
