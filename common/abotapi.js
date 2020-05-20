@@ -626,7 +626,10 @@ module.exports = {
 			},
 	    });
 	},
-	
+	get_shop_info_from_server_remove:function(){
+		console.log('iiiiiiiiiiiiiiiiiiiiiiiiiiiiii');
+		uni.removeStorageSync("shop_info_from_server_str_" + this.globalData.default_sellerid);
+	},
 	get_shop_info_from_server: function (callback_function) {
 		var that = this;
 		console.log('111111111111111 get_shop_info_from_server')
@@ -1248,6 +1251,18 @@ module.exports = {
 					url: new_url
 				})
 			}
+		}
+		else if (url.indexOf('redirectTo') == 0) {
+		  var arr = url.split(" ");
+	
+		  console.log('redirectTo ========>>>> ', arr);
+	
+		  if (arr.length >= 2) {
+			var new_url = arr[1];
+			uni.redirectTo({
+			  url: new_url,
+			})
+		  }
 		}
 		else if (url == '/pages/index/index' || url == '/pages/category/index' || url == '/pages/cart/cart' || url == '/pages/user/user') {
 			

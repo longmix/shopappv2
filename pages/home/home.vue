@@ -245,6 +245,7 @@ export default {
 			imgheights: [],
 			current: 0,
 			windowHeight: 0,
+			sugData:'',
 			
 			//客服相关
 			wxa_show_kefu_button:'',
@@ -274,6 +275,7 @@ export default {
 		uni.removeStorageSync("spec_list");
 		uni.removeStorageSync('all_shang_jingwei_list');
 		
+		that.abotapi.get_shop_info_from_server_remove();
 		that.abotapi.set_shop_option_data_remove();
 		that.abotapi.set_shop_option_data(that, that.callback_function_shop_option_data);
 		that.abotapi.get_shop_info_from_server(that.callback_func_for_shop_info);
@@ -344,7 +346,7 @@ export default {
 		});
 	},
 	onLoad: function (options) {
-		
+		this.bindKeyInput();
 		console.log('pages/tabBar/index/index====>>>>', options);
 		
 		
@@ -468,7 +470,47 @@ export default {
 	
 	
 	methods: {
-		
+		bindKeyInput: function() {
+			
+		        var that = this; 
+		        // 新建百度地图对象 
+		        var BMap = new bmap.BMapWX({ 
+		            ak: 'OTsGerqQhowGSFOWG8c6p86R' 
+		        }); 
+				
+		        var fail = function(data) { 
+		            console.log(data) 
+		        }; 
+		        var success = function(data) { 
+		            var sugData = ''; 
+		            for(var i = 0; i < data.result.length; i++) { 
+		                sugData = sugData + data.result[i].name + '\n'; 
+		            } 
+					console.log('sugData',sugData);
+		           
+		            this.sugData = sugData ;
+		            
+		        } 
+				BMap.geocoding({
+									 address: "北京市海淀区上地十街10号", 
+									 fail: fail, 
+									 success: success, 
+									 iconPath: '../../img/marker_red.png', 
+									 iconTapPath: '../../img/marker_red.png' 
+				});
+				
+		       // 发起suggestion检索请求 
+		        BMap.suggestion({ 
+		            query: '内外联大厦881号', 
+		            region: '上海', 
+		            city_limit: true, 
+		            fail: fail, 
+		            success: success 
+		        });
+				 
+				 
+		    },
+
 		callback_function_shop_option_data:function(that, cb_params){
 			
 			if(!cb_params){
