@@ -348,18 +348,18 @@
 		    "path" : "pages/shopMap/shopMap",
 		    "style" : {}
 		},{
-		    "path" : "pages/issue_article/column_group",
+		    "path" : "pages/publish/publish_index",
 		    "style" : {}
 		},{
-		    "path" : "pages/issue_article/issue_article",
+		    "path" : "pages/publish/publish_write",
 		    "style" : {}
 		},
 		{
-		    "path" : "pages/issue_article/article_detail",
+		    "path" : "pages/publish/publish_detail",
 		    "style" : {}
 		},
 		{
-		    "path" : "pages/issue_article/article_list",
+		    "path" : "pages/publish/publish_list",
 		    "style" : {}
 		}
     ],
