@@ -362,6 +362,10 @@
 		    "path" : "pages/publish/publish_list",
 		    "style" : {}
 		}
+        ,{
+            "path" : "pages/myecard/myecard",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

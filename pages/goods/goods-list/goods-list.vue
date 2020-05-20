@@ -13,7 +13,7 @@
 			<view class="product-list">
 				<view class="product" v-if="item.cataid == cataid" v-for="(item,indexs) in goodsList" :key="indexs" @click="toGoods(item.productid)">
 					
-					<image class="shouqing" v-if="item.inventory == 0" src="../../../static/img/shouqing.png" ></image>
+					<image class="shouqing" v-if="item.inventory == 0" src="https://yanyubao.tseo.cn/Tpl/static/images/shouqing.png" ></image>
 					<image mode="widthFix" :src="item.picture"></image>
 					<view class="name">{{item.name}}</view>
 					<view class="info">
