@@ -664,6 +664,11 @@ export default {
 			    that.abotapi.globalData.default_shang_list_count_in_front_page = cb_params.option_list.default_shang_list_count_in_front_page
 			  
 			}
+			if (cb_params.option_list.default_publish_list_count_in_front_page) {
+			  
+			    that.abotapi.globalData.default_publish_list_count_in_front_page = cb_params.option_list.default_publish_list_count_in_front_page
+			  
+			}
 			
 			
 			//====3、获取经纬度坐标，显示当前城市			
@@ -793,9 +798,7 @@ export default {
 			//获取全部商家 的金纬度
 			//coordinate = JSON.stringify(coordinate);
 			console.log('coordinatecoordinate===========>>>>', coordinate);
-			
-			
-			
+						
 			
 			that.coordinate = coordinate;
 						
@@ -837,6 +840,9 @@ export default {
 		},
 		//给商家排序
 		set_paixu_shanglist:function(){
+			
+			
+			
 			var that = this;
 			
 			
@@ -859,14 +865,21 @@ export default {
 			}
 			
 			
-			
+			//开始排序
 			var paixu_shanglist = shop_location_list.sort(compare);
 			
 			uni.setStorageSync("shop_location_list", paixu_shanglist);
 			
+			//排序完成，取最新的10条
+			
+			if(that.abotapi.globalData.default_shang_list_count_in_front_page == 0){
+				return;
+			}
+			
+			
 			//console.log('要魂村的',);
 			var shangid_str = '';//获取商家前十个的商家id
-			for(var i = 0; i < 10;i++){
+			for(var i = 0; i < that.abotapi.globalData.default_shang_list_count_in_front_page; i++){
 				if(!paixu_shanglist[i]){
 					console.log("没有了");
 					break;

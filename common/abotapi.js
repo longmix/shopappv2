@@ -45,6 +45,7 @@ const globalData = {
 		//======以下选项可以在服务器端修改，这里是默认值=====
 		//首页显示附近商家的数量，如果为0则不显示
 		default_shang_list_count_in_front_page:0,
+		default_publish_list_count_in_front_page:0,
 		
 		
 		
