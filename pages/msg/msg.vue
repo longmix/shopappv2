@@ -1,7 +1,28 @@
 <template>
 	<view>
         <view class="chat-list">
-			<view class="chat" v-for="(chat,index) in latestMsgList" :key="index" v-if="chat.chat_type == 0">
+			<view class="chat" v-for="(chat,index) in latestMsgList" :key="index" v-if="chat.chat_type == 1">
+				<view class="row" @tap="toChat(chat)">
+					<view class="left">
+						<image  src="../../static/img/VIP.png"></image>
+					</view>
+					<view class="right">
+						<view class="top">
+							<view class="username">系统消息</view>
+							<view class="time">{{chat.latest_time}}</view>
+						</view>
+						<view class="bottom">
+							<view class="msg" v-if="chat.msg_type == 'text'" v-html="chat.latest_msg"></view>
+							<view class="msg" v-else-if="chat.msg_type == 'img'">[图片]</view>
+							<view class="msg" v-else-if="chat.msg_type == 'redEnvelope'">[红包]</view>
+							<view class="msg" v-else-if="chat.msg_type == 'voice'">[语音]</view>
+							<!-- <view class="msg">{{chat.latest_msg}}</view> -->
+							<view class="tis" v-if="chat.couter_unread>0">{{chat.couter_unread}}</view>
+						</view>
+					</view>
+				</view>
+			</view>
+			<view class="chat" :key="index" v-else-if="chat.chat_type == 0">
 				<view class="row" @tap="toChat(chat)">
 					<view class="left">
 						<image v-if="chat.from_person_detail" :src="chat.from_person_detail.headimgurl"></image>
@@ -17,7 +38,7 @@
 							<view class="msg" v-else-if="chat.msg_type == 'redEnvelope'">[红包]</view>
 							<view class="msg" v-else-if="chat.msg_type == 'voice'">[语音]</view>
 							<!-- <view class="msg">{{chat.latest_msg}}</view> -->
-							<!-- <view class="tis" v-if="chat.tisNum>0">{{chat.tisNum}}</view> -->
+							<view class="tis" v-if="chat.couter_unread>0">{{chat.couter_unread}}</view>
 						</view>
 					</view>
 				</view>
@@ -182,7 +203,7 @@
 						userid02: userInfo.userid,
 						checkstr: userInfo.checkstr,
 						sellerid: that.abotapi.globalData.default_sellerid, //'fmXJPaVea',
-						chat_type: '0,4',
+						chat_type: '0,4,1', //0普通，4群聊，1系统
 				     },
 				     header: {
 				       "Content-Type": "application/x-www-form-urlencoded"

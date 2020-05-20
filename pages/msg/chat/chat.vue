@@ -7,14 +7,14 @@
 					<view class="my" v-if="row.uid==myuid">
 						<view class="left">
 							<view v-if="row.type=='text'" class="bubble">
-								<rich-text :nodes="row.msg.content"></rich-text>
+								<rich-text :nodes="row.msg.content.text"></rich-text>
 							</view>
 							<view v-if="row.type=='voice'" class="bubble voice" @tap="playVoice(row)" :class="playMsgid == row.id?'play':''">
 								<view class="length">{{row.msg.length}}</view>
 								<view class="icon my-voice"></view>
 							</view>
 							<view v-if="row.type=='img'" class="bubble img" @tap="showPic(row)">
-								<image :src="row.msg.url" :style="{'width': row.msg.w+'px','height': row.msg.h+'px'}"></image>
+								<image :src="row.msg.content.text" :style="{'width': row.msg.content.w+'px','height': row.msg.content.h+'px'}"></image>
 							</view>
 						</view>
 						<view class="right">
@@ -31,14 +31,14 @@
 								<view class="name">{{row.username}}</view> <view class="time">{{row.time}}</view>
 							</view>
 							<view v-if="row.type=='text'" class="bubble">
-								<rich-text :nodes="row.msg.content"></rich-text>
+								<rich-text :nodes="row.msg.content.text"></rich-text>
 							</view>
 							<view v-if="row.type=='voice'" class="bubble voice" @tap="playVoice(row)" :class="playMsgid == row.id?'play':''">
 								<view class="icon other-voice"></view>
 								<view class="length">{{row.msg.length}}</view>
 							</view>
 							<view v-if="row.type=='img'" class="bubble img" @tap="showPic(row)">
-								<image :src="row.msg.url" :style="{'width': row.msg.w+'px','height': row.msg.h+'px'}"></image>
+								<image :src="row.msg.content.text" :style="{'width': row.msg.content.w+'px','height': row.msg.content.h+'px'}"></image>
 							</view>
 						</view>
 					</view>
@@ -441,7 +441,7 @@
 					return;
 				}
 				let content = this.replaceEmoji(this.textMsg);
-				let msg = {content:content}
+				let msg = {text:content}
 				this.sendMsg(msg,'text');
 				this.textMsg = '';
 			},
@@ -510,7 +510,7 @@
 							//msg为图片地址
 							var img_url = data.img_url;
 							let msg = {
-									url: img_url
+									text: img_url
 								};
 
 								uni.getImageInfo({  
@@ -572,7 +572,11 @@
 							face:userAcountInfo.headimgurl,
 							time:nowDate.getHours()+":"+nowDate.getMinutes(),
 							type:type,
-							msg:content,
+							msg:{
+								content: content,
+								type: type
+							},
+							
 						 };
 				// this.screenMsg(msg);
 				this.send_text_to_service(msg, type)
@@ -606,8 +610,9 @@
 			// 处理图片消息
 			addImgMsg(msg){
 				var userInfo = this.abotapi.get_user_info();
-				msg.msg = this.setPicSize(msg.msg);
-				this.msgImgList.push(msg.msg.url);
+				console.log('msg=====',msg)
+				msg.msg.content = this.setPicSize(msg.msg.content);
+				this.msgImgList.push(msg.msg.content.text);
 				this.msgList.push(msg);
 				
 				if(this.chat_type==0){
@@ -688,27 +693,63 @@
 			
 			//录音结束(回调文件)
 			recordEnd(e){
+				var that = this;
 				clearInterval(this.recordTimer);
 				if(!this.willStop){
-					plus.io.resolveLocalFileSystemURL( e.tempFilePath, function( entry ) {
-						// 可通过entry对象操作test.html文件 
-						entry.file( function(file){
-							console.log(file.size + '--' + file.name);
-						} );
-					}, function ( e ) {
-						alert( "Resolve file URL failed: " + e.message );
-					} );
+					// plus.io.resolveLocalFileSystemURL( e.tempFilePath, function( entry ) {
+					// 	// 可通过entry对象操作test.html文件 
+					// 	entry.file( function(file){
+					// 		console.log(file.size + '--' + file.name);
+					// 	} );
+					// }, function ( e ) {
+					// 	alert( "Resolve file URL failed: " + e.message );
+					// } );
 					console.log("e: " + JSON.stringify(e));
-					let msg = {
-						length:0,
-						url:e.tempFilePath
-					}
-					let min = parseInt(this.recordLength/60);
-					let sec = this.recordLength%60;
-					min = min<10?'0'+min:min;
-					sec = sec<10?'0'+sec:sec;
-					msg.length = min+':'+sec;
-					this.sendMsg(msg,'voice');
+					
+					
+					uni.uploadFile({
+					    url: that.abotapi.globalData.yanyubao_server_url + '/Yanyubao/ShopApp/upload_image_file_without_user',
+					    filePath: e.tempFilePath,
+					    name: 'file',
+					    header: {
+					      contentType: "multipart/form-data",//按需求增加
+					      'elem': '#up-image',
+					      'accept': 'application/json',
+					      'exts': 'jpg|jpeg|png|gif|mp3'
+					    },
+					    formData: {
+					      //supplierid: app.globalData.current_supplierid,
+					      sellerid: that.abotapi.globalData.default_sellerid,
+					    },
+					    success: function (res) {
+					      var data = JSON.parse(res.data);
+					      if (data.code != 1) {
+					        uni.showToast({
+					          title: data.msg,
+					          duration: 2000
+					        });
+							return;
+						}				
+							 //msg为语音地址
+							var img_url = data.img_url;	
+							
+							let msg = {
+								length:0,
+								url:img_url
+							}
+							let min = parseInt(this.recordLength/60);
+							let sec = this.recordLength%60;
+							min = min<10?'0'+min:min;
+							sec = sec<10?'0'+sec:sec;
+							msg.length = min+':'+sec;
+													
+							that.sendMsg(msg, 'voice');
+					     }
+						
+					})
+					
+					
+					// this.sendMsg(msg,'voice');
 				}else{
 					console.log('取消发送录音');
 				}
