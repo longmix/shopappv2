@@ -24,6 +24,9 @@
 			</view>
 		</view>
 		<!-- 底部菜单 -->
+			<view class="warm" v-if="goods_detail.inventory == 0">
+				该商品已经售罄！！！
+			</view>
 		<view class="footer">
 			<view class="icons">
 				<view class="box" @tap="share">
@@ -40,8 +43,8 @@
 				</view>
 			</view>
 			<view class="btn">
-				<view :class="[goods_detail.inventory == 0? 'joinCart-null':'joinCart']" data-type="addcart" data-status="2" @tap="setModalStatus($event)">加入购物车</view>
-				<view :class="[goods_detail.inventory == 0? 'buy-null':'buy']" data-status="1" @tap="goods_detail.inventory == 0? 'setModalStatus(' + $event+ ')':'' ">立即购买</view>
+				<view :class="[goods_detail.inventory == 0? 'joinCart-null':'joinCart']" data-type="addcart" data-status="2" @tap="goods_detail.inventory == 0?'':setModalStatus($event)">加入购物车</view>
+				<view :class="[goods_detail.inventory == 0? 'buy-null':'buy']" data-status="1" @tap="goods_detail.inventory == 0? '':setModalStatus($event)">立即购买</view>
 			</view>
 		</view>
 		<!-- share弹窗 -->
@@ -232,7 +235,7 @@
 		
 		<view class="re-commend">
 			<view class="re-h">推荐商品</view>
-			   <view :class="re-goods" v-for="(item,index) in recommend_product_list" :key="index" @tap="block_tanchuang(item)">
+			   <view class="re-goods" v-for="(item,index) in recommend_product_list" :key="index" @tap="block_tanchuang(item)">
 				   <image :src="item.picture"></image>
 				   <view class="re-txt">{{item.name}}</view>
 				   <view class="re-price">¥{{item.price}}</view>
@@ -255,7 +258,7 @@
 		
 		<view class="re-commend">
 			<view class="re-h">热门商品</view>
-			   <view :class="re-goods" v-for="(item,index) in recommend_product_list" :key="index">
+			   <view class="re-goods" v-for="(item,index) in recommend_product_list" :key="index">
 				   <image :src="item.picture"></image>
 				   <view class="re-txt">{{item.name}}</view>
 				   <view class="re-price">¥{{item.price}}</view>
@@ -1309,6 +1312,7 @@ page {
 		align-items: center;
 		font-size: 26upx;
 		color: #999;
+		position: relative;
 	}
 }
 .footer {
@@ -1761,5 +1765,17 @@ margin-left: 40rpx;
 	font-size: 35upx;
 	text-align: center;
 	color: #f47925;
+}
+.warm{
+	background-color: #AAAAAA;
+	color: #FFFFFF;
+	text-align: center;
+	position:absolute;
+	z-index:99;
+	position: fixed;
+	bottom: 95upx;
+	width: 100%;
+	font-size: 35upx;
+	
 }
 </style>

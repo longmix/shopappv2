@@ -13,7 +13,8 @@
 			<view class="product-list">
 				<view class="product" v-if="item.cataid == cataid" v-for="(item,indexs) in goodsList" :key="indexs" @click="toGoods(item.productid)">
 					
-					<image mode="widthFix" :src="item.inventory==0?'../../../static/img/shouqing.png':item.picture"></image>
+					<image class="shouqing" v-if="item.inventory == 0" src="../../../static/img/shouqing.png" ></image>
+					<image mode="widthFix" :src="item.picture"></image>
 					<view class="name">{{item.name}}</view>
 					<view class="info">
 						<view class="price">{{item.price}}</view>
@@ -262,6 +263,16 @@
 				image{
 					width: 100%;
 					border-radius: 20upx 20upx 0 0;
+					position: relative;
+				}
+				.shouqing{
+					width: 335upx;
+					height: 335upx;
+					position: absolute;
+					opacity: 0.8;
+					margin: 0 40upx 15upx 0;
+					background-color: #808080;
+					z-index: 2;
 				}
 				.name{
 					width: 92%;
