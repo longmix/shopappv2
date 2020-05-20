@@ -383,22 +383,24 @@
 					this.scrollAnimation = true;
 				});
 			},
+			
+			
 			//处理图片尺寸，如果不处理宽高，新进入页面加载图片时候会闪
-			setPicSize(row){
-				let maxW = uni.upx2px(350);
-				let maxH = uni.upx2px(350);
-				if(row.msg.w>maxW||row.msg.h>maxH){
-					let scale = row.msg.w/row.msg.h;
-					if(row.msg.w>row.msg.h){
-						row.msg.w = maxW;
-						row.msg.h = row.msg.w/scale
-					}else{
-						row.msg.h = maxH;
-						row.msg.w = row.msg.h*scale;
-					}
+			setPicSize(content) {
+				// 让图片最长边等于设置的最大长度，短边等比例缩小，图片控件真实改变，区别于aspectFit方式。
+				let maxW = uni.upx2px(350); //350是定义消息图片最大宽度
+				let maxH = uni.upx2px(350); //350是定义消息图片最大高度
+				console.log('maxW==',maxW);
+				console.log('maxH==',maxH);
+				if (content.w > maxW || content.h > maxH) {
+					let scale = content.w / content.h;
+					content.w = scale > 1 ? maxW : maxH * scale;
+					content.h = scale > 1 ? maxW / scale : maxH;
 				}
-				return row;
+				return content;
 			},
+			
+			
 			// 接受消息(筛选处理)
 			screenMsg(msg){
 				//从长连接处转发给这个方法，进行筛选处理
@@ -471,22 +473,86 @@
 			// 选择图片发送
 			chooseImage(){
 				this.hideEmoji();
+				var that = this;
 				uni.chooseImage({
-					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
-					success: (res)=>{
-						for(let i=0;i<res.tempFilePaths.length;i++){
-							uni.getImageInfo({
-								src: res.tempFilePaths[i],
-								success: (image)=>{
-									console.log(image.width);
-									console.log(image.height);
-									let msg = {url:res.tempFilePaths[i],w:image.width,h:image.height};
-									this.sendMsg(msg,'img');
-								}
-							});
-						}
-					}
-				});
+				 // count: 1, // 默认9
+				  sizeType: ['compressed'], //可以指定是原图还是压缩图，默认二者都有
+				  success: function (res) {		
+					console.log(res,'ddd')								
+					// 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+					var tempFilePaths = res.tempFilePaths;
+					for(let i=0;i<tempFilePaths.length;i++){
+						uni.uploadFile({
+						  url: that.abotapi.globalData.yanyubao_server_url + '/Yanyubao/ShopApp/upload_image_file_without_user', 				 
+						  filePath: tempFilePaths[i],
+						  method: 'post',
+						  header: {
+							// "Content-Type": "multipart/form-data",
+							'elem': '#up-image',            
+							'accept': 'application/json',
+							'exts': 'jpg|jpeg|png|gif'
+						  },
+						  name: "file",
+						  formData: {
+							sellerid: that.abotapi.globalData.default_sellerid,
+						  },
+						  success: (res) => {
+							var data = JSON.parse(res.data);
+							if(data.code != 1){
+							  uni.showToast({
+								title: data.msg,
+								duration: 2000
+							  });
+				
+							  return;
+							}
+						
+							//msg为图片地址
+							var img_url = data.img_url;
+							let msg = {
+									url: img_url
+								};
+
+								uni.getImageInfo({  
+									src: img_url,  
+									success: (image) => {  
+										console.log('image====',image)
+										msg.w = image.width;
+										msg.h = image.height;
+										that.sendMsg(msg, 'img')
+									}							  
+								}); 						
+								
+							
+							
+						  },
+						  fail: function (res) {
+							  
+							console.log('fail');
+										
+						  }
+						})
+					  }
+				  }
+				})
+				
+							
+				// uni.chooseImage({
+				// 	sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+				// 	success: (res)=>{
+				// 		for(let i=0;i<res.tempFilePaths.length;i++){
+				// 			uni.getImageInfo({
+				// 				src: res.tempFilePaths[i],
+				// 				success: (image)=>{
+				// 					console.log(image.width);
+				// 					console.log(image.height);
+				// 					let msg = {url:res.tempFilePaths[i],w:image.width,h:image.height};
+				// 					this.sendMsg(msg,'img');
+				// 				}
+				// 			});
+				// 		}
+				// 	}
+				// });
 			},
 			// 发送消息
 			sendMsg(content,type){
@@ -539,9 +605,19 @@
 			},
 			// 处理图片消息
 			addImgMsg(msg){
-				msg = this.setPicSize(msg);
+				var userInfo = this.abotapi.get_user_info();
+				msg.msg = this.setPicSize(msg.msg);
 				this.msgImgList.push(msg.msg.url);
 				this.msgList.push(msg);
+				
+				if(this.chat_type==0){
+					uni.setStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+this.userid, this.msgList);	
+				console.log('test===================0',uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+this.userid))	
+					
+				}else{
+					uni.setStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_groupid_'+this.groupid, this.msgList);	
+				console.log('test===================1',uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_groupid_'+this.userid))
+				}
 			},
 			// 预览图片
 			showPic(row){
