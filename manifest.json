@@ -21,10 +21,10 @@
             "Share" : {},
             "OAuth" : {},
             "Payment" : {},
-            "Maps" : {},
             "LivePusher" : {},
             "Bluetooth" : {},
-            "VideoPlayer" : {}
+            "VideoPlayer" : {},
+            "Maps" : {}
         },
         /* 模块配置 */
         "distribute" : {
@@ -84,7 +84,9 @@
                         "UniversalLinks" : ""
                     }
                 },
-                "ad" : {}
+                "ad" : {
+                    "csj" : {}
+                }
             }
         },
         "uniStatistics" : {

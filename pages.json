@@ -4,11 +4,15 @@
 			"style": {
 				"navigationBarTextStyle":"black",
 				"enablePullDownRefresh": true,
-				"onReachBottomDistance":50
+				"onReachBottomDistance":50,
 				// "app-plus": {
 				// 	"titleNView": false ,//禁用原生导航栏
 				// 	"softinputNavBar":"none"
 				// }
+				"h5": {
+					"titleNView": false ,//禁用原生导航栏
+					"softinputNavBar":"none"
+				}
 			}
 		},
 		{	//商品分类

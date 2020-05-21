@@ -104,7 +104,7 @@
 		
 		<!-- 实体商家列表 -->
 		<view v-if="twoArr" style='background-color: #f4f4f4;padding-top: 20upx;'>
-			<block v-for="item in twoArr" :key="item.message" style="background-color: #ffffff;">
+			<block v-for="(item,index) in twoArr" :key="index" style="background-color: #ffffff;">
 				
 				<view class="shang_box" @click="toShang_detail($event)" :data-shangid="item.xianmai_shangid">
 					<view style="width:200upx;height:200upx;margin-left: 20upx;">
@@ -116,7 +116,7 @@
 							<view style="font-size: 30upx;color:#333;">{{item.name}}</view>
 							<view style="display: flex; align-items:center;justify-content:space-between;">
 								<view style="display: flex;margin-top: 10upx;">
-									<image v-for="items in item.star_level" :key="items.message" style="width: 40upx;height: 40upx;" src="../../static/img/VIP.png"></image>
+									<image v-for="(items,indexs) in item.star_level" :key="indexs" style="width: 40upx;height: 40upx;" src="../../static/img/VIP.png"></image>
 									
 								</view>
 								<view style="margin-right: 30rpx;font-size: 24upx;">
@@ -129,7 +129,7 @@
 								
 							</view> -->
 							<view v-if="item.spec != ''" style="display: flex;flex-wrap:wrap;">
-								<view v-for="items in item.spec" :key="items" class="youhui-biaoqian">{{items}}</view>
+								<view v-for="(items,indexs) in item.spec" :key="indexs" class="youhui-biaoqian">{{items}}</view>
 								
 								
 							</view>
@@ -322,7 +322,7 @@ export default {
 				'Content-Type': 'application/x-www-form-urlencoded'
 		    },
 		    success: function (res) {
-				console.log('bbafff===', res);
+	
 				
 				if(res.data.code == 1){
 					that.is_OK = false;
@@ -434,7 +434,7 @@ export default {
 		this.abotapi.get_shop_info_from_server(this.callback_func_for_shop_info);
 		
 		
-		//locationapi.get_location(this, this.call_back_get_shang_list);
+		// locationapi.get_location(this, this.call_back_get_shang_list);
 
 		that.get_flash_ad_list();	
 		that.get_flash_img_list();
@@ -678,115 +678,130 @@ export default {
 			// 新建bmap对象
 			// #ifdef H5
 				var baidu_map_ak = cb_params.option_list.baidu_map_ak_h5;
+				
+				
+				
+				
+				
 			// #endif
-			// #ifdef APP-PLUS
+			// #ifdef APP-PLUS-AAA
 				var baidu_map_ak = cb_params.option_list.baidu_map_ak_app;
 			// #endif
-			// #ifdef MP-WEIXIN
+			// #ifdef MP-WEIXIN || APP-PLUS
 				var baidu_map_ak = cb_params.option_list.baidu_map_ak_wxa;
+				
+				
+				var BMap_obj = new bmap.BMapWX({
+					ak: baidu_map_ak
+				});
+				
+				that.baidu_map_ak = baidu_map_ak;
+				
+				var that002 = this;
+				
+				var regeocoding_fail = function (data) {
+					console.log('regeocoding_fail333333', data);
+					console.log('regeocoding_fail44444', that002.baidu_map_ak);
+					
+					//调用显示商家的接口
+					var coordinate = [];
+					coordinate['latitude'] = 31.293216;
+					coordinate['longitude'] = 121.662945;
+					
+					console.log('set virtual coordinate ====>>>>>', coordinate);
+					
+					that002.call_back_get_shang_list(that002, coordinate);
+					
+				};
+				
+				
+				
+				var regeocoding_success = function (data) {
+					console.log('00000111', data);
+					
+					console.log('location---longitude===',data.wxMarkerData[0].longitude)
+					console.log('location---latitude===',data.wxMarkerData[0].latitude)
+					
+					this.wxMarkerData = data.wxMarkerData;
+					this.markers = this.wxMarkerData;
+					this.latitude = this.wxMarkerData[0].latitude;
+					this.longitude = this.wxMarkerData[0].longitude;
+					this.address = this.wxMarkerData[0].address;
+					
+					console.log('address',this.address);
+					
+					//调用显示商家的接口
+					var coordinate = [];
+					coordinate['latitude'] = this.latitude;
+					coordinate['longitude'] = this.longitude;
+					
+					that002.call_back_get_shang_list(that002, coordinate);
+					
+					
+					that002.current_cityname = data.originalData.result.addressComponent.city
+					console.log('this.current_cityname',that002.current_cityname);
+					
+					that002.current_citynameLength = that002.current_cityname.length;
+					console.log('this.current_citynameLength',that002.current_citynameLength);
+					
+					
+					
+					if(that002.current_citynameLength == 2){
+						that002.current_citynameWidth = uni.upx2px(28);
+					}
+					else if(that002.current_citynameLength == 3){
+						that002.current_citynameWidth = uni.upx2px(24);
+					}
+					else if(that002.current_citynameLength == 4){
+						that002.current_citynameWidth = uni.upx2px(20);
+					}
+					
+					this.cityInfo = data.originalData.result.addressComponent,
+					uni.setStorageSync('address_info', this.cityInfo)
+					// console.log('with', that.data.imageWidth)
+					
+				
+					uni.setStorage({
+						key:'current_cityname',
+						data:that002.current_cityname,
+						success:function(){}
+					})
+					
+					
+					uni.setStorage({
+						key:'current_latitude',
+						data:this.wxMarkerData[0].latitude,
+						success:function(){}
+					})
+					
+					
+					uni.setStorage({
+						key:'current_longitude',
+						data:this.wxMarkerData[0].longitude,
+						success:function(){}
+					})
+					
+					uni.setStorage({
+						key:'markers',
+						data:this.wxMarkerData,
+						success:function(){}
+					})
+					
+					
+				    // getCurrentPages()[getCurrentPages().length - 1].onLoad()
+				}
+					
+				BMap_obj.regeocoding({
+					fail: regeocoding_fail,
+					success: regeocoding_success,
+					// coordtype: 'bd09ll'
+				});
+				
+				
+				
+				
 			// #endif
 			
-			var BMap_obj = new bmap.BMapWX({
-				ak: baidu_map_ak
-			});
-			
-			that.baidu_map_ak = baidu_map_ak;
-			
-			var that002 = this;
-			
-			var regeocoding_fail = function (data) {
-				console.log('regeocoding_fail333333', data);
-				console.log('regeocoding_fail44444', that002.baidu_map_ak);
-				
-				//调用显示商家的接口
-				var coordinate = [];
-				coordinate['latitude'] = 31.293216;
-				coordinate['longitude'] = 121.662945;
-				
-				console.log('set virtual coordinate ====>>>>>', coordinate);
-				
-				that002.call_back_get_shang_list(that002, coordinate);
-				
-			};
-			
-			
-			
-			var regeocoding_success = function (data) {
-				console.log('00000111', data);
-				
-				this.wxMarkerData = data.wxMarkerData;
-				this.markers = this.wxMarkerData;
-				this.latitude = this.wxMarkerData[0].latitude;
-				this.longitude = this.wxMarkerData[0].longitude;
-				this.address = this.wxMarkerData[0].address;
-				
-				console.log('address',this.address);
-				
-				//调用显示商家的接口
-				var coordinate = [];
-				coordinate['latitude'] = this.latitude;
-				coordinate['longitude'] = this.longitude;
-				
-				that002.call_back_get_shang_list(that002, coordinate);
-				
-				
-				that002.current_cityname = data.originalData.result.addressComponent.city
-				console.log('this.current_cityname',that002.current_cityname);
-				
-				that002.current_citynameLength = that002.current_cityname.length;
-				console.log('this.current_citynameLength',that002.current_citynameLength);
-				
-				
-				
-				if(that002.current_citynameLength == 2){
-					that002.current_citynameWidth = uni.upx2px(28);
-				}
-				else if(that002.current_citynameLength == 3){
-					that002.current_citynameWidth = uni.upx2px(24);
-				}
-				else if(that002.current_citynameLength == 4){
-					that002.current_citynameWidth = uni.upx2px(20);
-				}
-				
-				this.cityInfo = data.originalData.result.addressComponent,
-				uni.setStorageSync('address_info', this.cityInfo)
-				// console.log('with', that.data.imageWidth)
-				
-			
-				uni.setStorage({
-					key:'current_cityname',
-					data:that002.current_cityname,
-					success:function(){}
-				})
-				
-				
-				uni.setStorage({
-					key:'current_latitude',
-					data:this.wxMarkerData[0].latitude,
-					success:function(){}
-				})
-				
-				
-				uni.setStorage({
-					key:'current_longitude',
-					data:this.wxMarkerData[0].longitude,
-					success:function(){}
-				})
-				
-				uni.setStorage({
-					key:'markers',
-					data:this.wxMarkerData,
-					success:function(){}
-				})
-				
-				
-			    // getCurrentPages()[getCurrentPages().length - 1].onLoad()
-			}
-				
-			BMap_obj.regeocoding({
-				fail: regeocoding_fail,
-				success: regeocoding_success
-			});
 			
 			
 				
@@ -1080,7 +1095,6 @@ export default {
 					page_size:that.page_size,
 			    },
 			    success: function (res) {
-					console.log('bbafff===', res);
 					
 					if(res.data.code == 1){
 						that.is_OK = false;

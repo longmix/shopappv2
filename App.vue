@@ -35,6 +35,8 @@
 	uni-rich-text img{ max-width: 100% !important;}
 </style>
 <style>
+	/*  #ifndef APP-PLUS-NVUE  */
+	
 	*{
 		font-size: 30upx;
 	}
@@ -207,6 +209,6 @@
 	background-color:#d9002f;
 	}
 	
-
+/*  #endif  */
 	
 </style>
