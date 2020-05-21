@@ -1,15 +1,26 @@
 <template>
 	<view>
-		<view class='detail_top' v-if="wz_keyword2">
-			<view class='detail_top_view' v-for="(item,index) in wz_keyword2" :key="index">
-				<view class='biaoqian'>
-					<image :src='item.status==1?"../../../static/img/help/shced1.png":"../../../static/img/help/shced2.png"' @tap="add_tj" :data-text='item.name'></image>
-					<text>{{item.name}}</text>
+		<view class='wz_title'>{{wz_text.title}}</view>
+		
+		<view class="title_box" v-if="form_page == 'publish_list'"><!--   -->
+			 <!-- 头像和昵称 -->
+			<view class="head_img">
+				<image :src="wz_text.user_detail.headimgurl"></image>
+			</view>
+			<view>
+				<b>
+					<view class="nickname">
+						<!-- 昵称 -->
+						{{wz_text.user_detail.nickname}}
+					</view>
+				</b>
+				<view class="cata_name">
+					<!-- 分类名称 -->
+					<view style="font-size: 25upx;line-height: 40upx;">{{wz_text.classname}}</view>
 				</view>
 			</view>
 		</view>
 		
-		<view class='wz_title'>{{wz_text.title}}</view>
 		<view style='margin:32rpx;margin-top:30rpx;margin-bottom:150rpx;padding-bottom:80rpx;'>
 		
 			<view class='datetime' v-if="wxa_show_article_detail_category == 1">
@@ -24,6 +35,9 @@
 						<!-- <view v-html="info" ></view> -->
 						<rich-text :nodes="info"></rich-text>
 					</scroll-view>
+				</view>
+				<view style="margin-top: 10px;" v-for="img_item in wz_text.picture_list" :key="img_item" v-if="form_page == 'publish_list'">
+					<image style="width: 100%;" :src="img_item"></image>
 				</view>
 				<view class="article_bottom">
 					<view style="color:#bfbfbf;">阅读 {{wz_text.click}}</view>
@@ -100,6 +114,7 @@
 				remarkList:'',
 				openid:'',
 				inputValue:'',
+				form_page:'',//用来判断显示头像昵称
 				comment_num:'',
 				info:'',
 				wz_id:'',
@@ -124,7 +139,13 @@
 		    that.wz_id = options.id;
 		    that.theme_color_wenku = this.abotapi.getColor()
 			console.log('colr=====', this.abotapi.getColor())
-		  
+			
+			//跳转过来的页面参数用来判断头像和昵称的显示
+			if(options.form_page){
+				that.form_page = 'publish_list';
+			}
+			
+			
 			// if (!current_openid){
 			// 	uni.showLoading({
 			// 		title: '正在加载....',
@@ -1221,5 +1242,29 @@
 	  margin-top:40rpx;
 	
 	}
-
+.title_box{
+		display: -webkit-flex;
+		display: flex;
+		align-items: center;
+	}
+	.head_img{
+		margin: 20upx;
+	}
+	.head_img image{
+		width: 100upx;
+		height: 100upx;
+		border-radius:5upx;
+	}
+	.nickname{
+		color:#333;
+		font-weight:blod;
+	}
+	.cata_name{
+		margin-top: 10upx;
+		background-color: #18dba6;
+		color: #fff;
+		border-radius:6upx;
+		padding: 2rpx 6rpx;
+		text-align: center;
+	}
 </style>

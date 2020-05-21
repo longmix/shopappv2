@@ -26,22 +26,10 @@
 			</view>
 			<view class="content_img_box">
 				<!-- 图片，有就显示没有就不显示 -->
-				<view class="content_img">
-					<image src="../../static/img/shop/3.jpg"></image>
+				<view class="content_img" v-for="picture_item in item.picture_list" :key="picture_item">
+					<image :src="picture_item"></image>
 				</view>
 				
-				<view class="content_img">
-					<image src="../../static/img/shop/3.jpg"></image>
-				</view>
-				<view class="content_img">
-					<image src="../../static/img/shop/3.jpg"></image>
-				</view>
-				<view class="content_img">
-					<image src="../../static/img/shop/3.jpg"></image>
-				</view>
-				<view class="content_img">
-					<image src="../../static/img/shop/3.jpg"></image>
-				</view>
 			</view>
 			
 			<view style="margin-left:20upx; border: 10upx solid #FFFFFF;">
@@ -65,7 +53,7 @@
 					</view>
 					<view style="color:#2cb2f0;width: 40%;text-align: right;">
 						<!-- 查看详情 -->
-						<view style="font-size: 24rpx;margin-right: 30upx;" @tap="goForum()">查看详情>></view>
+						<view style="font-size: 24rpx;margin-right: 30upx;" @tap="goForum(item.id)">查看详情>></view>
 					</view>
 				</view>
 			</view>
@@ -144,8 +132,9 @@
 		methods: {
 			//跳转文章详情
 			goForum: function(id) {
+				console.log(12456);
 				uni.navigateTo({
-					url: "../../../pageforum/forum/show?id=" + id
+					url: "../home/help_detail/help_detail?id=" + id + '&form_page=publish_list' 
 				})
 			},
 			
