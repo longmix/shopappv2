@@ -15,7 +15,7 @@
 					</b>
 					<view class="cata_name">
 						<!-- 分类名称 -->
-						<view style="font-size: 22upx;line-height: inherit;">{{item.classname}}</view>
+						<view style="font-size: 25upx;line-height: 40upx;">{{item.classname}}</view>
 					</view>
 				</view>
 			</view>
@@ -65,7 +65,7 @@
 					</view>
 					<view style="color:#2cb2f0;width: 40%;text-align: right;">
 						<!-- 查看详情 -->
-						<view style="font-size: 24rpx;margin-right: 30upx;">查看详情>></view>
+						<view style="font-size: 24rpx;margin-right: 30upx;" @tap="goForum()">查看详情>></view>
 					</view>
 				</view>
 			</view>
