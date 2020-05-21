@@ -62,16 +62,16 @@
 							
 						</view>
 						
-						<view style="display: flex;" v-if="item.fieldname == 'imgimg_picture_list'">
+						<view style="" v-if="item.fieldname == 'imgimg_picture_list'">
 							<!-- 上传图片 -->
 							<view style="display: flex;flex-wrap:wrap;">
 								<!-- 放上传的图片 -->
-								<view style="width: 100upx;height: 100upx;position: relative;" v-for="(items,index) in imgArray" :key="items">
+								<view style="width: 32%;height: 250upx;position: relative;" v-for="(items,index) in imgArray" :key="items">
 									<view style="width: 100%;position: absolute;z-index: 9999;">
-										<image @tap="delectImg(index)" style="width: 50upx;height: 50upx;position: absolute;right:0" src="../../static/img/delete_red.png"></image>
+										<image @tap="delectImg(index)"  style="width: 50upx;height: 50upx;position: absolute;right:0" src="../../static/img/delete_red.png"></image>
 									</view>
 									
-									<image style="width: 100%;height: 100upx;" :src="items"></image>
+									<image style="width: 100%;height: 100%;" mode="aspectFit" :src="items"></image>
 								</view>
 								
 								
