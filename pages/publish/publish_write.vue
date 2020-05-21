@@ -43,7 +43,7 @@
 						</view>
 						
 						
-						<view class="uni-textarea" style="padding: 0upx 40upx;" v-if="item.inputtype == 'textarea' && item.fieldname != 'imgimg_content'">
+						<view class="uni-textarea" style="padding: 0upx 40upx;" v-if="item.fieldname == 'imgimg_content' || item.inputtype == 'textarea'">
 							<view style="font-size: 32upx;border-bottom: 1upx solid #EEEEEE;background-color: #FFFFFF;padding: 20upx 0upx;">{{item.displayname}}</view>
 							<textarea :name="item.fieldname" placeholder='请在此填写详细说明' /><!-- placeholder-style="color:#D3D3D3;font-size:15px;" -->
 						</view>
@@ -61,11 +61,30 @@
 							</picker>
 							
 						</view>
-				
+						
+						
 					
 					</block>
 					
-					
+					<view style="display: flex;"><!-- 上传图片 -->
+						<view>
+							<!-- 放上传的图片 -->
+							<view style="width: 100upx;height: 100upx;position: relative;">
+								<view style="width: 100%;position: absolute;z-index: 9999;">
+									<image style="width: 30upx;height: 30upx;position: absolute;right:0" src="../../static/img/delete_red.png"></image>
+								</view>
+								
+								<image style="width: 100%;height: 100upx;" src="../../static/img/add.png"></image>
+							</view>
+							
+						</view>
+						
+						<view style="width: 100upx;height: 100upx;" @tap="uploading_img()">
+							<!-- 上传图片点击的按钮图片 -->
+							<image style="width: 100%;height: 100upx;" src="../../static/img/add.png"></image>
+						</view>
+						
+					</view>
 					<!-- <upimg-box></upimg-box> -->
 					<button formType="submit" style="font-size: 32upx;" :style="{backgroundColor:red}" class="btn-row-submit">{{submit_text}}</button>
 				</form>
@@ -128,11 +147,12 @@
 			
 		onLoad: function (options) {
 			var that = this;
+			console.log(456789132465);
 			console.log("options",options);
 			
 			this.formid = options.classid; //栏目页面跳转带过来的参数  栏目id
 			this.catename = options.name; //栏目页面跳转带过来的参数  栏目名称
-			
+			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 			
 			this.getArticleList()
 			
@@ -147,7 +167,7 @@
 		onShow: function(){
 			var that = this;
 			//判断登录
-			var home_url = '/pages/issue_article/issue_article';
+			var home_url = '/pages/publish/publish_write';
 			this.abotapi.goto_user_login(home_url, 'normal');
 			//end
 			
@@ -230,7 +250,7 @@
 			getArticleList:function(){
 				console.log(123456789);
 				
-				var shop_option_data = uni.getStorageSync('shop_option_data');
+				var shop_option_data = uni.getStorageSync('shop_option_data_' + this.abotapi.globalData.default_sellerid);
 				var json_shop_option_data = JSON.parse(shop_option_data);
 				this.cms_token = json_shop_option_data.option_list.cms_token;
 				console.log('cms_token',this.cms_token);
@@ -297,8 +317,27 @@
 
 				});
 			},
-			
-			
+			    
+			uploading_img:function(){
+				var that = this;
+				uni.chooseImage({
+				    success: function (chooseImageRes) {
+						console.log('chooseImageRes',chooseImageRes);
+				        const tempFilePaths = chooseImageRes.tempFilePaths;
+				        uni.uploadFile({
+				            url: that.abotapi.globalData.yanyubao_server_url + 'index/openapi/ShopAppV2Data/upload_video_or_img', //仅为示例，非真实的接口地址
+				            filePath: tempFilePaths[0],
+				            name: 'file',
+				            formData: {
+				                'user': 'test'
+				            },
+				            success: function (uploadFileRes) {
+				                console.log(uploadFileRes.data);
+				            }
+				        });
+				    }
+				});
+			},
 			bindPickerChangeshengArr: function (e) {
 			    console.log(e);
 				// this.shengIndex = e.detail.value;

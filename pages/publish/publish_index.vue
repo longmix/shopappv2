@@ -39,7 +39,7 @@
 		},
 
 		onLoad: function (option) {
-			
+			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 			this.get_column_group();
 		},
 		onReady: function () {
@@ -81,7 +81,7 @@
 			get_column_group:function(){
 				//获取发布帖子的栏目组
 				
-				var shop_option_data = JSON.parse(uni.getStorageSync('shop_option_data'));
+				var shop_option_data = JSON.parse(uni.getStorageSync('shop_option_data_' + this.abotapi.globalData.default_sellerid));
 				
 				this.publish_img_cata_list = shop_option_data['publish_img_cata_list'];
 				
@@ -91,7 +91,7 @@
 			form_issue:function(e,f){
 				console.log(132);
 				uni.navigateTo({
-					url:'./issue_article?classid=' + e + '&name=' + f,
+					url:'./publish_write?classid=' + e + '&name=' + f,
 				})
 			},
 		},

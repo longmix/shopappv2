@@ -1,31 +1,26 @@
 <template>
 	<view>
-		<view>
+		<view v-for="(item,index) in index_list" :key="item">
 			<view class="title_box">
 				 <!-- 头像和昵称和发布时间 -->
 				<view class="head_img">
-					<image src="../../static/img/shop/3.jpg"></image>
+					<image :src="item.user_detail.headimgurl"></image>
 				</view>
 				<view>
 					<view class="nickname">
 						<!-- 昵称 -->
-						来都来了
+						{{item.user_detail.nickname}}
 					</view>
 					<view class="cata_name">
 						<!-- 分类名称 -->
-						<view style="font-size: 22upx;">测试分类1</view>
+						<view style="font-size: 22upx;">{{item.classname}}</view>
 					</view>
 				</view>
 			</view>
 			
 			<view class="content">
 				<!-- 内容 -->
-				          祖传：中草药特效健骨丸 本产品在几代祖传的基础上，采用现代医学新技术提炼而成，具有见效快、
-						  治愈率高、无副作用的新一代良药。给风湿、类风湿、肩颈腰痛、痛风、哮喘以及各种骨关节疾患者带来福音，
-						  带来了劳动力。被广大患者称之为灵丹仙药（主治）：风湿骨痛、坐骨神经痛、骨质增生、腰间盘突出、腰酸背痛、
-						  颈椎炎、肩周炎、风湿关节炎、手脚麻木、四肢无力、腰肌劳损、跌打扭伤、新旧伤积、骨头坏死、头痛、牙痛、
-						  酸麻胀痛、一切老风湿类风湿、手脚伸屈不便。支气管炎、哮喘、慢性气管炎、肺气肿、痛风等。用法
-						  ：成人每日两次，早晚各一粒，饭后服用。（禁忌）：鲤鱼、竹笋、莲藕、海鲜、浓茶、酸辣食物。
+				{{item.info}}
 			</view>
 			<view class="content_img_box">
 				<!-- 图片，有就显示没有就不显示 -->
@@ -51,19 +46,19 @@
 				<!-- 底部的点赞量和浏览量 -->
 				<view style="font-size: 24upx;color: #333;">
 					<!-- 发布时间 -->
-					05月18日 18:12
+					{{item.updatetime}}
 				</view>
-				<view style="position:absolute;left: 60upx;border-width: 15rpx;border-style: solid;border-color: transparent transparent #ccc #ccc;transform: rotate(135deg);"></view>
-				<view style="display: flex;background-color: #ccc;align-items: center;margin-top: 14upx;">
+				<view style="position:absolute;left: 60upx;border-width: 15rpx;border-style: solid;border-color: transparent transparent #f2f2f2 #f2f2f2;transform: rotate(135deg);"></view>
+				<view style="display: flex;background-color: #f2f2f2;align-items: center;margin-top: 14upx;">
 					<view style="width: 60%;display: flex;align-items: center;padding: 5upx 10upx;">
 						<!-- 点赞和浏览 -->
 						<view style="display: flex;align-items: center;margin-right: 20upx;">
 							<image src="../../static/img/help/comment.png" style="width: 40rpx;height:40rpx;"></image>
-							<view style="color: #333;font-size: 22upx;">323人浏览</view>
+							<view style="color: #333;font-size: 22upx;">{{item.click}}人浏览</view>
 						</view>
 						<view style="display: flex;align-items: center;">
 							<image src="../../static/img/help/comment.png" style="width: 40rpx;height:40rpx;"></image>
-							<view style="color: #333;font-size: 22upx;">323人浏览</view>
+							<view style="color: #333;font-size: 22upx;">{{item.click}}人点赞</view>
 						</view>
 					</view>
 					<view style="color:#2cb2f0;width: 40%;text-align: right;">
@@ -110,6 +105,7 @@
 			console.log('options',options);
 			var that = this;
 			this.get_publish_list();
+			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 			//从服务器端获取相关后台设置
 			// app.set_option_list_str(null, app.getColor());
 			// this.bd_basic_option_str = JSON.parse( uni.getStorageSync('bd_basic_option_str'));
@@ -153,9 +149,9 @@
 			
 			//确认开始搜索
 			get_publish_list: function () {
-				// var shop_option_data = uni.getStorageSync('shop_option_data');
-				// var json_shop_option_data = JSON.parse(shop_option_data);
-				// this.cms_token = json_shop_option_data.option_list.cms_token;
+				var shop_option_data = uni.getStorageSync('shop_option_data_' + this.abotapi.globalData.default_sellerid);
+				var json_shop_option_data = JSON.parse(shop_option_data);
+				this.cms_token = json_shop_option_data.option_list.cms_token;
 				
 				var that = this;
 				this.abotapi.abotRequest({
@@ -172,18 +168,13 @@
 					success: function (res) {
 						console.log("res",res);
 						if(res.data.code == 1){
-							that.is_searchData = true;
 							that.index_list = res.data.data
 						}else{
 							uni.showToast({
 								title: '暂无相关文章',
 								duration: 2000
 							});
-							that.is_searchData = false;
-							that.hotKeyShow = true;
-							that.historyKeyShow = true;
 						}
-						
 					},
 					fail: function (e) {
 						uni.showToast({
