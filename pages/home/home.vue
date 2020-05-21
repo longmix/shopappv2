@@ -188,7 +188,7 @@ var ttt = 0;
 //高德SDK
 import bmap from '../../common/SDK/bmap-wx.js';
 import io from '../../common/weapp.socket.io.js'; 
-import common from '../../common/common.js'; 
+import locationapi from '../../common/locationapi.js'; 
 
 //import abotapi001 from '../../../common/abotapi.js';
 
@@ -434,7 +434,7 @@ export default {
 		this.abotapi.get_shop_info_from_server(this.callback_func_for_shop_info);
 		
 		
-		//this.abotapi.get_location(this, this.call_back_get_shang_list);
+		//locationapi.get_location(this, this.call_back_get_shang_list);
 
 		that.get_flash_ad_list();	
 		that.get_flash_img_list();

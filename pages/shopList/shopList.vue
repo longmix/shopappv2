@@ -39,7 +39,7 @@
 			</view>
 			
 			<!-- 分类按钮 -->
-			<picker class="ab" style="width:25%;" @change="bindPickerChangeFloor($event)" :value="index" :range="cata_list" data-searchType="cataName">
+			<picker class="ab" style="width:25%;" @change="bindPickerChangeFloor($event)"  :range="cata_list" data-searchType="cataName">
 				<view  style="display: flex;justify-content: center;align-items: center;">
 					<view class="picker">
 						<text>{{fenlei_name}}</text>
@@ -55,7 +55,7 @@
 			</view>
 
 			<!-- 筛选按钮 -->
-			<picker class="ab" style="width:25%;" @change="bindPickerChangeFloor($event)" :value="index" :range="spec_list" data-searchType="spec">
+			<picker class="ab" style="width:25%;" @change="bindPickerChangeFloor($event)"  :range="spec_list" data-searchType="spec">
 				<view style="display: flex;justify-content: center;align-items: center;">
 					<view class="picker" style="float:left;" >
 						<text>{{shaixuan_name}}</text>
@@ -68,7 +68,7 @@
 		
 		<!-- 实体商家列表 -->
 		<view style='background-color: #f4f4f4;padding-top: 10upx;'>
-		<block v-for="item in xianmaishang_list" :key="item" style='background-color: #ffffff;'>
+		<block v-for="(item,index) in xianmaishang_list" :key="index" style='background-color: #ffffff;'>
 		<view @click="toShang_detail($event)" :data-shangid="item.xianmai_shangid" style="display: flex;padding: 10upx;margin: 10upx;border-radius: 10upx;background: #fff;">
 			<view style="width:200upx;height:200upx;margin-left: 20upx;">
 				<image style="width:200upx;height:200upx;" :src="item.icon_image"></image>
@@ -120,7 +120,7 @@
 
 
 <script>
-	import common from '../../common/common.js'; 
+	import locationapi from '../../common/locationapi.js'; 
 	export default {
 		data() {
 			return {
@@ -190,7 +190,7 @@
 				wxa_kefu_button_icon:'',
 				wxa_kefu_mobile_num:'',
 				wxa_kefu_form_url:'',
-				wxa_kefu_bg_color:''
+				wxa_kefu_bg_color:'',
 			};
 		},
 		onPageScroll(e) {
@@ -250,7 +250,7 @@
 			this.shang_list = shang_list;
 			
 			
-			var coordinate = common.get_location(this,this.get_shang_list);
+			var coordinate = locationapi.get_location(this,this.get_shang_list);
 			console.log('coordinate1',coordinate);
 			
 			this.coordinate = coordinate;
