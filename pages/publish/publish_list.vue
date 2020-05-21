@@ -1,19 +1,21 @@
 <template>
-	<view>
-		<view v-for="(item,index) in index_list" :key="item">
+	<view style="background:#EFEFF4;">
+		<view v-for="item in index_list" :key="item" style="background: #fff;margin-bottom: 30upx;border-radius: 20upx;">
 			<view class="title_box">
 				 <!-- 头像和昵称和发布时间 -->
 				<view class="head_img">
 					<image :src="item.user_detail.headimgurl"></image>
 				</view>
 				<view>
-					<view class="nickname">
-						<!-- 昵称 -->
-						{{item.user_detail.nickname}}
-					</view>
+					<b>
+						<view class="nickname">
+							<!-- 昵称 -->
+							{{item.user_detail.nickname}}
+						</view>
+					</b>
 					<view class="cata_name">
 						<!-- 分类名称 -->
-						<view style="font-size: 22upx;">{{item.classname}}</view>
+						<view style="font-size: 22upx;line-height: inherit;">{{item.classname}}</view>
 					</view>
 				</view>
 			</view>
@@ -42,7 +44,7 @@
 				</view>
 			</view>
 			
-			<view style="margin-left:20upx;">
+			<view style="margin-left:20upx; border: 10upx solid #FFFFFF;">
 				<!-- 底部的点赞量和浏览量 -->
 				<view style="font-size: 24upx;color: #333;">
 					<!-- 发布时间 -->
@@ -57,13 +59,13 @@
 							<view style="color: #333;font-size: 22upx;">{{item.click}}人浏览</view>
 						</view>
 						<view style="display: flex;align-items: center;">
-							<image src="../../static/img/help/comment.png" style="width: 40rpx;height:40rpx;"></image>
+							<image src="../../static/img/help/dianzan_grey.png" style="width: 40rpx;height:40rpx;"></image>
 							<view style="color: #333;font-size: 22upx;">{{item.click}}人点赞</view>
 						</view>
 					</view>
 					<view style="color:#2cb2f0;width: 40%;text-align: right;">
 						<!-- 查看详情 -->
-						<view style="font-size: 24rpx;">查看详情>></view>
+						<view style="font-size: 24rpx;margin-right: 30upx;">查看详情>></view>
 					</view>
 				</view>
 			</view>
@@ -233,6 +235,9 @@
 </script>
 
 <style>
+	body{
+		background-color:red;
+	}
 	.title_box{
 		display: -webkit-flex;
 		display: flex;
@@ -248,6 +253,7 @@
 	}
 	.nickname{
 		color:#333;
+		font-weight:blod;
 	}
 	.cata_name{
 		margin-top: 10upx;
