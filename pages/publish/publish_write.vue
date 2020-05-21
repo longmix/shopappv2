@@ -55,36 +55,48 @@
 						
 						<view class="input-flex" style="overflow: auto;border-bottom: #DDDDDD 1upx solid;padding:17px 20px 10px" v-if="item.inputtype== 'date' || item.inputtype== 'text' && item.fieldname != 'imgimg_title'">
 							<view class="input-flex-label w60" style="float: left;">{{item.displayname}}<label class="FH" v-if="item.require == 1">*</label></view>
-							<input :type='item.inputtype'  name="item.fieldname" style="float: left;width: 70%;" placeholder="点此输入" value="" v-if="item.inputtype== 'text'"/>
+							<input :type='item.inputtype'  :name="item.fieldname" style="float: left;width: 70%;" placeholder="点此输入" value="" v-if="item.inputtype== 'text'"/>
 							 <picker mode="date" :value="date" :start="startDate" style="margin-left: 55%;margin-top: 6upx;" :type='item.inputtype' :end="endDate" @change="bindDateChange"  :data-fieldname='item.fieldname' v-if="item.inputtype== 'date'">
 								<view class="uni-input">{{date}}</view>
 							</picker>
 							
 						</view>
 						
-						
+						<view style="display: flex;" v-if="item.fieldname == 'imgimg_picture_list'">
+							<!-- 上传图片 -->
+							<view style="display: flex;flex-wrap:wrap;">
+								<!-- 放上传的图片 -->
+								<view style="width: 100upx;height: 100upx;position: relative;" v-for="(items,index) in imgArray" :key="items">
+									<view style="width: 100%;position: absolute;z-index: 9999;">
+										<image @tap="delectImg(index)" style="width: 50upx;height: 50upx;position: absolute;right:0" src="../../static/img/delete_red.png"></image>
+									</view>
+									
+									<image style="width: 100%;height: 100upx;" :src="items"></image>
+								</view>
+								
+								
+								<view style="width: 100upx;height: 100upx;position: relative;" @tap="uploading_img()">
+									<image style="width: 100%;height: 100upx;" src="../../static/img/add.png"></image>
+								</view>
+								<!-- 上传图片点击的按钮图片 -->
+								<!-- <view style="width: 100upx;height: 100upx;" @tap="uploading_img()">
+									
+									<image style="width: 100%;height: 100upx;" src="../../static/img/add.png"></image>
+								</view> -->
+								
+							</view>
+							<!-- 上传图片点击的按钮图片 -->
+							<!-- <view style="width: 100upx;height: 100upx;" @tap="uploading_img()">
+								
+								<input disabled="none" :value="imgArray" :name='item.fieldname'/>
+								<image style="width: 100%;height: 100upx;" src="../../static/img/add.png"></image>
+							</view> -->
+							
+						</view>
 					
 					</block>
 					
-					<view style="display: flex;"><!-- 上传图片 -->
-						<view>
-							<!-- 放上传的图片 -->
-							<view style="width: 100upx;height: 100upx;position: relative;">
-								<view style="width: 100%;position: absolute;z-index: 9999;">
-									<image style="width: 30upx;height: 30upx;position: absolute;right:0" src="../../static/img/delete_red.png"></image>
-								</view>
-								
-								<image style="width: 100%;height: 100upx;" src="../../static/img/add.png"></image>
-							</view>
-							
-						</view>
-						
-						<view style="width: 100upx;height: 100upx;" @tap="uploading_img()">
-							<!-- 上传图片点击的按钮图片 -->
-							<image style="width: 100%;height: 100upx;" src="../../static/img/add.png"></image>
-						</view>
-						
-					</view>
+					
 					<!-- <upimg-box></upimg-box> -->
 					<button formType="submit" style="font-size: 32upx;" :style="{backgroundColor:red}" class="btn-row-submit">{{submit_text}}</button>
 				</form>
@@ -126,6 +138,7 @@
 				red:'red',
 				index:0,
 				data2:'',
+				imgArray:[],//存放上传图片的数组
 				submit_text:'',
 				catename:'',
 				date: currentDate,
@@ -202,7 +215,7 @@
 				
 				var input_value = e.detail.value;
 				input_value.input_youxiaoshijian = this.date;
-				
+				var picture_list = encodeURIComponent(JSON.stringify(this.imgArray));
 				//将checkbox的值追加到要提交的数组上
 				for(var key in that.checkbox_field_value_list){
 					input_value[key] = that.checkbox_field_value_list[key];
@@ -221,7 +234,8 @@
 						userid: userInfo.userid,
 						checkstr: userInfo.checkstr,
 						token: that.cms_token,
-						input_value:input_value
+						input_value:input_value,
+						picture_list:picture_list,
 					},
 					success: function(res) {
 						console.log('ddddddddddddddddd',res);
@@ -234,7 +248,7 @@
 							setTimeout(function(){
 								console.log(1);
 								uni.navigateTo({
-									url:"/pages/index/abotlist?classid="+that.formid
+									url:"/pages/home/home"
 								})
 							},1000)
 						}
@@ -319,25 +333,61 @@
 			},
 			    
 			uploading_img:function(){
+				//上传图片，调用延誉宝接口返回图片存在   that.imgArray
 				var that = this;
+				var userInfo = that.abotapi.get_user_info();
+				
+				//判断已经上传几张，超过9张提示不可以上传
+				var imgArray = that.imgArray;
+				console.log(imgArray.length);
+				if(imgArray.length >= 9){
+					uni.showToast({
+						 title: '最多上传9张',
+						 duration: 2000
+					});
+					return;
+				}
+				
 				uni.chooseImage({
 				    success: function (chooseImageRes) {
 						console.log('chooseImageRes',chooseImageRes);
 				        const tempFilePaths = chooseImageRes.tempFilePaths;
 				        uni.uploadFile({
-				            url: that.abotapi.globalData.yanyubao_server_url + 'index/openapi/ShopAppV2Data/upload_video_or_img', //仅为示例，非真实的接口地址
+				            url: that.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/ShopAppV2Data/upload_video_or_img', //仅为示例，非真实的接口地址
 				            filePath: tempFilePaths[0],
 				            name: 'file',
 				            formData: {
-				                'user': 'test'
+				                'sellerid': that.abotapi.globalData.default_sellerid,
+								'type': 0,
+								'checkstr': userInfo.checkstr,
+								'userid': userInfo.userid,
 				            },
 				            success: function (uploadFileRes) {
-				                console.log(uploadFileRes.data);
+								var JSON_uploadFileRes = JSON.parse(uploadFileRes.data);
+								var imgArray = that.imgArray;
+								
+								imgArray.push(JSON_uploadFileRes.url);
+								
+								that.imgArray = imgArray;
+								
+				                console.log('uploadFileRes==>',that.imgArray);
 				            }
 				        });
 				    }
 				});
 			},
+			
+			delectImg:function(index){
+				//删除上传图片数组里面的某一张图片
+				console.log('删除图片开始获取下标',index);
+				
+				var imgArray = this.imgArray;
+				imgArray.splice(index,1);
+				
+				this.imgArray = imgArray;
+				
+			},
+			
 			bindPickerChangeshengArr: function (e) {
 			    console.log(e);
 				// this.shengIndex = e.detail.value;
