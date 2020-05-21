@@ -235,9 +235,6 @@
 </script>
 
 <style>
-	body{
-		background-color:red;
-	}
 	.title_box{
 		display: -webkit-flex;
 		display: flex;
