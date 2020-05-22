@@ -3,11 +3,6 @@
 		<view>
 			<view class="main-body">
 				<form @submit="formSubmit">
-					<!-- <view class="input_flex" style="overflow: auto;padding:35upx 40upx 20upx 40upx;background-color: #FFFFFF;border-bottom: 1upx solid #DDDDDD;">
-						<view class="input-flex-label w60" style="float: left;">标题<label class="FH">*</label></view>
-						<input style="float: left;width: 70%;margin-top: -4upx;" name="img_title" maxlength="40" placeholder-style="color:#c3c3c3" placeholder="请输入合作需求的标题,5-40个字" />
-					</view> -->
-					
 					<block v-for="item in list" :key="item">
 
 						<view class="box_1" v-if="item.inputtype == 'select'">
@@ -78,19 +73,8 @@
 								<view style="width: 100upx;height: 100upx;position: relative;" @tap="uploading_img()">
 									<image style="width: 100%;height: 100%;" src="../../static/img/add.png"></image>
 								</view>
-								<!-- 上传图片点击的按钮图片 -->
-								<!-- <view style="width: 100upx;height: 100upx;" @tap="uploading_img()">
-									
-									<image style="width: 100%;height: 100upx;" src="../../static/img/add.png"></image>
-								</view> -->
 								
 							</view>
-							<!-- 上传图片点击的按钮图片 -->
-							<!-- <view style="width: 100upx;height: 100upx;" @tap="uploading_img()">
-								
-								<input disabled="none" :value="imgArray" :name='item.fieldname'/>
-								<image style="width: 100%;height: 100upx;" src="../../static/img/add.png"></image>
-							</view> -->
 							
 						</view>
 					
@@ -106,17 +90,9 @@
 </template>
 
 <script>
-	// import pickergroup from "../../components/pickergroup.vue";
-	// import upimgBox from "../../components/upimgbox.vue";
-	// var app = require("../../common/common.js");
-	// var apps = getApp();
-	// var userInfo = app.get_user_info();
 	
 	export default {
-		// components:{
-		// 	pickergroup,
-		// 	upimgBox
-		// },
+		
 		data:function(){
 			
 			const currentDate = this.getDate({
@@ -160,8 +136,6 @@
 			
 		onLoad: function (options) {
 			var that = this;
-			console.log(456789132465);
-			console.log("options",options);
 			
 			this.formid = options.classid; //栏目页面跳转带过来的参数  栏目id
 			this.catename = options.name; //栏目页面跳转带过来的参数  栏目名称
@@ -169,13 +143,7 @@
 			
 			this.getArticleList()
 			
-			// app.set_option_list_str(null, function(){
-			// 	that.bg_color = app.getColor();
-			// 	console.log("bg_color",that.bg_color);
-				
-			// });
 			
-			// console.log("CLASSID",that.formid);
 		},
 		onShow: function(){
 			var that = this;
@@ -211,7 +179,6 @@
 			
 			formSubmit:function(e){
 				var that=this;
-				console.log('e=====',e);
 				
 				var input_value = e.detail.value;
 				input_value.input_youxiaoshijian = this.date;
@@ -220,8 +187,6 @@
 				for(var key in that.checkbox_field_value_list){
 					input_value[key] = that.checkbox_field_value_list[key];
 				}
-				
-				console.log('input_value=====>>>>>', input_value);
 				
 				input_value = encodeURIComponent(JSON.stringify(input_value));			
 				var userInfo = that.abotapi.get_user_info(); 
@@ -238,15 +203,12 @@
 						picture_list:picture_list,
 					},
 					success: function(res) {
-						console.log('ddddddddddddddddd',res);
 						if(res.data.code == 1){
-							
 							
 							uni.showToast({
 								 title: res.data.msg,
 							})
 							setTimeout(function(){
-								console.log(1);
 								uni.navigateTo({
 									url:"/pages/home/home"
 								})
@@ -259,15 +221,14 @@
 			
 			},
 			toCooperationArea:function(){
-				console.log(123);
+				
 			},
 			getArticleList:function(){
-				console.log(123456789);
 				
 				var shop_option_data = uni.getStorageSync('shop_option_data_' + this.abotapi.globalData.default_sellerid);
 				var json_shop_option_data = JSON.parse(shop_option_data);
 				this.cms_token = json_shop_option_data.option_list.cms_token;
-				console.log('cms_token',this.cms_token);
+				
 				var that = this;
 				
 				// 微读客获取文章列表   console.log(apps.globalData.weiduke_server_url);
@@ -281,7 +242,7 @@
 						formid:that.formid
 					},
 					success(res) {
-						console.log('87878787',res);
+						
 						if(res.data.code == 1){
 							var list = res.data.data;							
 							that.submit_text = res.data.submit_text;
@@ -297,22 +258,6 @@
 										}
 										else if(list[i].inputtype == 'checkbox'){
 											
-											console.log('1111111111====>>>>', list[i].options);
-											/*
-											for(var j = 0; j<list[i].options.length; j++){
-												var shiArrKey = {
-													name:j,
-													namestr:list[i].options[j],
-													//checkbox_value:''+ i + '_' + j
-													checkbox_value:''+ i + '___' + list[i].fieldname + '___' + list[i].options[j]
-												};
-												//list[i].options[j].name = j;
-												//list[i].options[j]['namestr'] = list[i].options[j];
-												//list[i].options[j]['checkbox_value'] = ''+ i + '_' + j;
-												
-												list[i].options[j] = shiArrKey;
-												
-											}*/
 										}
 									}
 									
@@ -320,10 +265,7 @@
 								}
 								
 								that.list = list;
-								
-								console.log('的点点滴滴',list)
-								
-								
+							
 								
 							}
 										
@@ -339,7 +281,7 @@
 				
 				//判断已经上传几张，超过9张提示不可以上传
 				var imgArray = that.imgArray;
-				console.log(imgArray.length);
+				
 				if(imgArray.length >= 9){
 					uni.showToast({
 						 title: '最多上传9张',
@@ -350,7 +292,7 @@
 				
 				uni.chooseImage({
 				    success: function (chooseImageRes) {
-						console.log('chooseImageRes',chooseImageRes);
+						
 				        const tempFilePaths = chooseImageRes.tempFilePaths;
 				        uni.uploadFile({
 				            url: that.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/ShopAppV2Data/upload_video_or_img', //仅为示例，非真实的接口地址
@@ -370,7 +312,6 @@
 								
 								that.imgArray = imgArray;
 								
-				                console.log('uploadFileRes==>',that.imgArray);
 				            }
 				        });
 				    }
@@ -379,7 +320,6 @@
 			
 			delectImg:function(index){
 				//删除上传图片数组里面的某一张图片
-				console.log('删除图片开始获取下标',index);
 				
 				var imgArray = this.imgArray;
 				imgArray.splice(index,1);
@@ -389,13 +329,11 @@
 			},
 			
 			bindPickerChangeshengArr: function (e) {
-			    console.log(e);
-				// this.shengIndex = e.detail.value;
-				
+			    
 			    var that = this;
-			    // var region_Val = e.detail.value
+			   
 			    var region_Id = ++e.detail.value;
-			    console.log('123?',region_Id);
+			    
 			    uni.request({
 					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=region_get',
 					data: {
@@ -423,8 +361,7 @@
 							this.shengArr = hArr;
 							this.shengId = hId;
 							
-							console.log('shengArr',this.shengArr);
-							console.log('shengId',this.shengId);
+							
 						}
 					},
 					fail: function () {
@@ -439,7 +376,6 @@
 			},
 			
 			checkboxChange: function (e) {
-				console.log("eeeeeeeeeeeeee===>>>", e);
 				
 				var that = this;
 				var values = e.detail.value;
@@ -452,30 +388,7 @@
 				if(values.length > 0){
 					field_value_str = values.join('|');
 				}
-				
 				that.checkbox_field_value_list[fieldname] = field_value_str;
-				
-				/*
-				for(var i = 0; i < values.length;i++){
-					//that.cityDetail[values[i]].checked = true;
-					var tempstr = values[i];
-					var temp_list = tempstr.split('___');
-					
-					console.log("11111111111111===>>>", temp_list);
-					
-					if(temp_list.length < 3){
-						continue;
-					}
-					
-					fieldname = temp_list[1];
-					
-					field_value_str += temp_list[2]+'|';
-				}
-				
-				that.checkbox_field_value_list[fieldname] = field_value_str;
-				*/
-			   
-				console.log('zzzzzzzz====>>>', that.checkbox_field_value_list);
 			},
 			
 			
@@ -497,11 +410,10 @@
 																																					
 				}
 				
-				console.log('ssss',e)
+				
 			},
 
 			bindDateChange: function(e) {
-				console.log('bindDateChange==',e)
 								
 				this.date = e.target.value;
 			},
@@ -575,17 +487,6 @@
 	.input-flex{
 		/* background: #FFFFFF; */
 	}
-	/* .input-flex input {
-	    display: block;
-	    font-size: 32upx;
-	    line-height: 24upx;
-	    height: 34upx;
-	    min-height: 48upx;
-	    overflow: hidden;
-		position: relative;
-		
-		left: 24%;
-		text-align: right;
-	} */
+	
 	
 </style>

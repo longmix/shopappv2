@@ -39,7 +39,7 @@
 		},
 
 		onLoad: function (option) {
-			this.abotapi.set_shop_option_data(this, callback_function);
+			this.abotapi.set_shop_option_data(this, this.callback_function);
 		},
 		onReady: function () {
 			uni.setNavigationBarTitle({

@@ -1,6 +1,6 @@
 <template>
 	<view style="background:#EFEFF4;">
-		<view v-for="item in index_list" :key="item" style="background: #fff;margin-bottom: 30upx;border-radius: 20upx;">
+		<view v-for="item in index_list" :key="item.id" style="background: #fff;margin-bottom: 30upx;border-radius: 20upx;">
 			<view class="title_box">
 				 <!-- 头像和昵称和发布时间 -->
 				<view class="head_img">
@@ -82,7 +82,7 @@
 				hotKeyList: [],
 				is_more: true,
 				weiduke_resou:'',
-				index_list:'',
+				index_list:[],
 				dianzan_num:0,
 				dianzan_num2:0,
 				num01:'',
@@ -90,14 +90,16 @@
 				cms_token:'',
 				cms_cataid:0,
 				cms_cataname:'文章列表',
-				current_page:1
+				current_page:1,
+				list_title:'文章列表',
+				current_page_size:4,
 			}
 		},
 		
 		
 		onLoad:function(options){
 			console.log('options',options);
-			
+			var that = this;
 			if(options.cataid){
 				this.cms_cataid = options.cataid;
 			}
@@ -108,10 +110,8 @@
 			})
 			
 			
-			var that = this;
 			
-			
-			this.abotapi.set_shop_option_data(this, this.callback_function);
+			that.abotapi.set_shop_option_data(that, that.callback_function);
 			
 			
 			
@@ -181,10 +181,6 @@
 				
 				this.cms_token = shop_option_data.option_list.cms_token;
 				
-				//获取发布帖子的栏目组
-				
-				that.publish_img_cata_list = shop_option_data['publish_img_cata_list'];
-				
 				console.log('当前的CMS Token =====>>>>',  this.cms_token);
 				
 				this.get_publish_list();
@@ -199,7 +195,7 @@
 				})
 			},
 			
-			//确认开始搜索
+			//获取帖子列表
 			get_publish_list: function () {
 				if(!this.cms_token){
 					console.log('get_publish_list 没有 CMS Token');
@@ -213,7 +209,8 @@
 						token:that.cms_token,
 						sellerid: this.abotapi.globalData.default_sellerid,
 						action: 'newlist',
-						page:that.current_page
+						page:that.current_page,
+						page_size:that.current_page_size,
 					};
 					
 				if(that.cms_cataid){
@@ -233,7 +230,11 @@
 					success: function (res) {
 						console.log("res",res);
 						if(res.data.code == 1){
-							that.index_list = res.data.data;
+							
+							for(var i in res.data.data){
+								that.index_list.push(res.data.data[i]);
+							}
+							
 							
 							if(res.data.list_title){
 								that.list_title = res.data.list_title;
