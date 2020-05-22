@@ -43,7 +43,7 @@
 		},
 		onReady: function () {
 			uni.setNavigationBarTitle({
-				title: "请选择合作类型",
+				title: "分类列表",
 			});
 		},
 		onShow: function () {

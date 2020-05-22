@@ -354,7 +354,9 @@
 		    "style" : {}
 		},{
 		    "path" : "pages/publish/publish_index",
-		    "style" : {}
+		    "style" : {
+				"navigationBarTitleText": "分类列表"
+			}
 		},{
 		    "path" : "pages/publish/publish_write",
 		    "style" : {}

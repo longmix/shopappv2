@@ -95,7 +95,7 @@
 				click:'',
 				cms_token:'',
 				cms_cataid:0,
-				cms_cataname:'文章列表',
+				cms_cataname:'内容列表',
 				current_page:1,
 				list_title:'文章列表',
 				current_page_size:4,
