@@ -6,7 +6,7 @@
 			<image @tap="search_article_list()" src="../../static/img/search.png"></image>
 		</view>
 		
-		<view v-for="item in index_list" :key="item.id" style="background: #fff;margin-bottom: 30upx;border-radius: 20upx;">
+		<view v-for="(item,index) in index_list" :key="item.id" style="background: #fff;margin-bottom: 30upx;border-radius: 20upx;">
 			<view class="title_box">
 				 <!-- 头像和昵称和发布时间 -->
 				<view class="head_img">
@@ -26,14 +26,14 @@
 				</view>
 			</view>
 			
-			<view class="content">
+			<view class="content" @tap="goForum(item.id)">
 				<!-- 内容 -->
 				{{item.info}}
 			</view>
 			<view class="content_img_box">
 				<!-- 图片，有就显示没有就不显示 -->
 				<view class="content_img" v-for="picture_item in item.picture_list" :key="picture_item">
-					<image :src="picture_item"></image>
+					<image :src="picture_item" @tap="previewImage(index)"></image>
 				</view>
 				
 			</view>
@@ -203,6 +203,27 @@
 				})
 			},
 			
+			previewImage:function(index) {
+				
+				var index_list = this.index_list;
+				
+				var index_item = index_list[index];
+				
+				var img_list = index_item['picture_list'];
+				
+				
+				//预览图片
+				uni.previewImage({
+					urls: img_list,
+					success: function(data) {
+						console.log('选中了第' + (data.tapIndex + 1) + '个按钮,第' + (data.index + 1) + '张图片');
+					},
+					fail: function(err) {
+						console.log(err.errMsg);
+					}
+				});
+			},
+
 			//获取帖子列表
 			get_publish_list: function (action='') {
 				if(!this.is_get_article_list){
