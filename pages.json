@@ -18,7 +18,8 @@
 		{	//商品分类
 			"path": "pages/category/category",
 			"style": {
-				"navigationBarTextStyle":"black"
+				"navigationBarTextStyle":"black",
+				"navigationBarTitleText":"分类列表"
 				// "app-plus": {
 				// 	"titleNView": false ,//禁用原生导航栏
 				// 	"bounce":"none"

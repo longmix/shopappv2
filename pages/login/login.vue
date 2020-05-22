@@ -123,7 +123,7 @@
 		},
 		onLoad:function(){
 			// this.isWeixin=this.abotapi.isWeixin();		
-		this.abotapi.set_option_list_str(null, this.abotapi.getColor());
+			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 			this.click_check();
 		},
 		methods:{
