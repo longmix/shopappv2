@@ -1,5 +1,11 @@
 <template>
 	<view style="background:#EFEFF4;">
+		<view class="sou" >
+			
+			<input  type="text" placeholder="请输入搜索条件" v-model="search_text"/>
+			<image @tap="search_article_list()" src="../../static/img/search.png"></image>
+		</view>
+		
 		<view v-for="item in index_list" :key="item.id" style="background: #fff;margin-bottom: 30upx;border-radius: 20upx;">
 			<view class="title_box">
 				 <!-- 头像和昵称和发布时间 -->
@@ -93,6 +99,8 @@
 				current_page:1,
 				list_title:'文章列表',
 				current_page_size:4,
+				is_get_article_list:true,//控制触底请求分页的文章列表接口 
+				search_text:'',//搜索的文案
 			}
 		},
 		
@@ -196,7 +204,14 @@
 			},
 			
 			//获取帖子列表
-			get_publish_list: function () {
+			get_publish_list: function (action='') {
+				if(!this.is_get_article_list){
+					uni.showToast({
+						title: '暂无相关文章',
+						duration: 2000
+					});
+					return;
+				}
 				if(!this.cms_token){
 					console.log('get_publish_list 没有 CMS Token');
 					return;
@@ -217,6 +232,12 @@
 					post_data['cataid'] = that.cms_cataid;
 				}
 				
+				if(action){
+					console.log(this.search_text);
+					post_data['action'] = action;
+					post_data['search'] = that.search_text;
+				}
+				
 				//搜索的情况
 				//if(){}
 				
@@ -229,8 +250,13 @@
 					},
 					success: function (res) {
 						console.log("res",res);
+						console.log('is_get_article_list',that.is_get_article_list);
+						
+						
 						if(res.data.code == 1){
-							
+							if(res.data.data.length > that.current_page_size){
+								that.is_get_article_list = false;
+							}
 							for(var i in res.data.data){
 								that.index_list.push(res.data.data[i]);
 							}
@@ -247,10 +273,12 @@
 							
 							
 						}else{
+							that.is_get_article_list = false;
 							uni.showToast({
 								title: '暂无相关文章',
 								duration: 2000
 							});
+							return;
 						}
 					},
 					fail: function (e) {
@@ -262,6 +290,12 @@
 				});
 			},
 			
+			//搜索
+			search_article_list:function(){
+				this.index_list = [];
+				this.current_page = 1;
+				this.get_publish_list('search')
+			},
 			
 			//读取搜索记录缓存
 			doKeySearch: function (e) {
@@ -373,4 +407,28 @@
 		top: -10px;
 
 	}
+	/*搜索框*/
+	.sou{
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		background: #DFDFDF;
+		width: 96%;
+		border-radius: 50upx;
+		margin-left: 2%;
+		margin-top: 20upx;
+		margin-bottom: 20upx;
+		height: 70upx;
+		color: #AAAAAA;
+		z-index: 99999;
+	}
+	.sou image{
+	    margin-right: 20upx;
+		width: 40upx;
+		height:40upx;
+	}
+	.sou input{
+	   margin-left: 20upx;
+	}
+	
 </style>

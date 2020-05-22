@@ -359,6 +359,9 @@
 			{
 				"path" : "pages/myecard/myecard",
 				"style" : {}
+			},{
+		    "path" : "pages/welcome_page/welcome_page",
+		    "style" : {}
 			}
 		]
 	}

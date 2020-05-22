@@ -304,7 +304,8 @@
 				var data = {
 					token: this.abotapi.get_current_weiduke_token(),
 					id: imgid,
-					openid: this.abotapi.get_current_openid()
+					openid: this.abotapi.get_current_openid(),
+					sellerid:this.abotapi.globalData.default_sellerid,
 				};
 				
 				
