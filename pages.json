@@ -364,7 +364,11 @@
 		},
 		{
 		    "path" : "pages/publish/publish_list",
-		    "style" : {}
+		    "style" : {
+		    	"navigationBarTitleText":"文章列表",
+		    	"enablePullDownRefresh": true,
+		    	"onReachBottomDistance":50
+		    }
 		}
         ,{
             "path" : "pages/myecard/myecard",

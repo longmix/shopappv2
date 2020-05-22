@@ -87,15 +87,34 @@
 				dianzan_num2:0,
 				num01:'',
 				click:'',
+				cms_token:'',
+				cms_cataid:0,
+				cms_cataname:'文章列表',
+				current_page:1
 			}
 		},
 		
 		
 		onLoad:function(options){
 			console.log('options',options);
+			
+			if(options.cataid){
+				this.cms_cataid = options.cataid;
+			}
+			
+			
+			uni.setNavigationBarTitle({
+				title:that.list_title
+			})
+			
+			
 			var that = this;
-			this.get_publish_list();
-			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
+			
+			
+			this.abotapi.set_shop_option_data(this, callback_function);
+			
+			
+			
 			//从服务器端获取相关后台设置
 			// app.set_option_list_str(null, app.getColor());
 			// this.bd_basic_option_str = JSON.parse( uni.getStorageSync('bd_basic_option_str'));
@@ -128,8 +147,50 @@
 				}
 			});
 		},
+		onShow:function(){
+			
+		},
+		onPullDownRefresh:function(){
+			this.current_page = 1;
+			this.get_publish_list();
+			
+			
+			setTimeout(function() {
+				uni.stopPullDownRefresh();
+			}, 1000);
+			
+		},
+		//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
+		onReachBottom: function () {
+			var that = this;
+			
+			
+			var page_num = that.current_page;
+			
+			that.current_page ++;
+			
+			this.get_publish_list();
+			
+			
+			
+		},
 		
 		methods: {
+			callback_function:function(that, shop_option_data){
+				that.abotapi.getColor();
+				
+				this.cms_token = shop_option_data.option_list.cms_token;
+				
+				//获取发布帖子的栏目组
+				
+				that.publish_img_cata_list = shop_option_data['publish_img_cata_list'];
+				
+				console.log('当前的CMS Token =====>>>>',  this.cms_token);
+				
+				this.get_publish_list();
+				
+			},
+			
 			//跳转文章详情
 			goForum: function(id) {
 				console.log(12456);
@@ -140,26 +201,50 @@
 			
 			//确认开始搜索
 			get_publish_list: function () {
-				var shop_option_data = uni.getStorageSync('shop_option_data_' + this.abotapi.globalData.default_sellerid);
-				var json_shop_option_data = JSON.parse(shop_option_data);
-				this.cms_token = json_shop_option_data.option_list.cms_token;
+				if(!this.cms_token){
+					console.log('get_publish_list 没有 CMS Token');
+					return;
+				}
+				
 				
 				var that = this;
-				this.abotapi.abotRequest({
-					url: that.abotapi.globalData.weiduke_server_url + 'openapi/ArticleImgApi/article_list',
-					method: 'post',
-					data: {
+				
+				var post_data = {
 						token:that.cms_token,
 						sellerid: this.abotapi.globalData.default_sellerid,
 						action: 'newlist',
-					},
+						page:that.current_page
+					};
+					
+				if(that.cms_cataid){
+					post_data['cataid'] = that.cms_cataid;
+				}
+				
+				//搜索的情况
+				//if(){}
+				
+				this.abotapi.abotRequest({
+					url: that.abotapi.globalData.weiduke_server_url + 'openapi/ArticleImgApi/article_list',
+					method: 'post',
+					data: post_data,
 					header: {
 						'Content-Type': 'application/x-www-form-urlencoded'
 					},
 					success: function (res) {
 						console.log("res",res);
 						if(res.data.code == 1){
-							that.index_list = res.data.data
+							that.index_list = res.data.data;
+							
+							if(res.data.list_title){
+								that.list_title = res.data.list_title;
+								
+								uni.setNavigationBarTitle({
+									title:that.list_title
+								})
+							}
+							
+							
+							
 						}else{
 							uni.showToast({
 								title: '暂无相关文章',
