@@ -347,7 +347,8 @@ export default {
 		});
 	},
 	onLoad: function (options) {
-		this.bindKeyInput();
+		///this.bindKeyInput();
+		
 		console.log('pages/tabBar/index/index====>>>>', options);
 		
 		
@@ -471,6 +472,7 @@ export default {
 	
 	
 	methods: {
+		//这只是一个测试函数
 		bindKeyInput: function() {
 			
 		        var that = this; 
@@ -510,7 +512,7 @@ export default {
 		        });
 				 
 				 
-		    },
+		},
 
 		callback_function_shop_option_data:function(that, cb_params){
 			
@@ -537,7 +539,7 @@ export default {
 			    
 			      that.wxa_product_list_style = cb_params.option_list.wxa_product_list_style
 			    
-			  }
+			}
 			if (cb_params.option_list.wxa_shop_toutiao_icon) {
 			  
 			    that.wxa_shop_toutiao_icon = cb_params.option_list.wxa_shop_toutiao_icon
