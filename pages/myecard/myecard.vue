@@ -1,11 +1,11 @@
 <template style="padding: 0upx;margin: 0upx;">
 	<view >
-		<view style="margin-left: 5%;" class="c">
+		<view :style="[{'background-image':'url('+ item.card_data.card_bg_img +')' }]" class="c">
 			<view class="a">
-				<image :src = "item.card_name" style="width: 100upx;height: 100upx;"></image>
+				<image :src = "item.card_data.card_logo" style="width: 100upx;height: 100upx;"></image>
 				<view style="">
-					<view>dsfsdfds</view>
-					<view>dsfsdfds</view>
+					<view>{{item.card_data.card_name}}</view>
+					<view>{{item.card_data.card_desc}}</view>
 				</view>
 			</view>
 			<view style="text-align: right;padding-right: 57px;color: #000000;margin-top:165upx;padding-right: 170upx;">
@@ -36,12 +36,9 @@
 	//调用接口
 	methods:{
 		
-		
-		
-		
 		callback_function_shop_option_data:function(that, option_data){
 			console.log('option_data========',option_data)
-			
+			that.item = option_data;
 		}
        	
 	},
@@ -52,15 +49,15 @@
 	.a{
 		display: flex;
 		align-items: center;
-		color: #fff;
+		color:#007AFF;
 		margin-left: 20upx;
 		margin-top: 50upx;
 	}
 	.c{
-		background-image: url(../../static/img/card.png);
+		margin-left: 5%;
 		width: 90%;
 		height: 400upx;
-		border-top:1px solid ;
+		border-top:1px solid #fff;
 		background-size: 100% 100%;
 		border-radius: 25upx;
 	}
