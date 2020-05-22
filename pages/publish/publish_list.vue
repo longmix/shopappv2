@@ -104,14 +104,14 @@
 			
 			
 			uni.setNavigationBarTitle({
-				title:that.list_title
+				title:this.list_title
 			})
 			
 			
 			var that = this;
 			
 			
-			this.abotapi.set_shop_option_data(this, callback_function);
+			this.abotapi.set_shop_option_data(this, this.callback_function);
 			
 			
 			
