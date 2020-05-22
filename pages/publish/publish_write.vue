@@ -70,7 +70,7 @@
 								</view>
 								
 								
-								<view style="width: 100upx;height: 100upx;position: relative;" @tap="uploading_img()">
+								<view style="width: 250upx;height: 250upx;position: relative;" @tap="uploading_img()">
 									<image style="width: 100%;height: 100%;" src="../../static/img/add.png"></image>
 								</view>
 								
