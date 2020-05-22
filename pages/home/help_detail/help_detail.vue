@@ -39,6 +39,12 @@
 				<view style="margin-top: 10px;" v-for="img_item in wz_text.picture_list" :key="img_item" v-if="form_page == 'publish_list'">
 					<image style="width: 100%;" :src="img_item"></image>
 				</view>
+				
+				<!-- 自定义属性 -->
+				<view v-for="value_item in wz_text.value_list" :key="value_item">
+					{{value_item.displayname}}：{{value_item.fieldvalue}}
+				</view>
+				
 				<view class="article_bottom">
 					<view style="color:#bfbfbf;">阅读 {{wz_text.click}}</view>
 					<view @tap='doArticleDianzan'><image style="width:30rpx;height:30rpx;margin-right:15rpx"  :src="isDianzan ? '../../../../static/img/help/dianzan_red.png' : '../../../../static/img/help/dianzan_grey.png'"></image><text :style="isDianzan ? 'color:#d81e06' : 'color:#bfbfbf'" style="font-size:30upx">{{dianzanNum}}</text></view>
