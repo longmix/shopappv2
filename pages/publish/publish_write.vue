@@ -5,7 +5,41 @@
 			<view class="main-body">
 				<form @submit="formSubmit">
 					<block v-for="item in list" :key="item.fieldname">
-
+						<!-- 帖子的固定字段开始 -->
+						<block v-if="form_type == 3">
+							<view class="input_flex" v-if="item.fieldname == 'imgimg_title'" style="overflow: auto;padding:35upx 40upx 20upx 40upx;background-color: #FFFFFF;border-bottom: 1upx solid #DDDDDD;">
+								<view class="input-flex-label w60" style="float: left;">标题<label class="FH">*</label></view>
+								<input style="float: left;width: 70%;margin-top: -4upx;" name="imgimg_title" maxlength="40" placeholder-style="color:#c3c3c3" placeholder="请输入合作需求的标题,5-40个字" />
+							</view>
+							
+							<view class="uni-textarea" style="padding: 0upx 40upx;" v-if="item.fieldname == 'imgimg_content'">
+								<view style="font-size: 32upx;border-bottom: 1upx solid #EEEEEE;background-color: #FFFFFF;padding: 20upx 0upx;">{{item.displayname}}</view>
+								<textarea :name="item.fieldname" placeholder='请在此填写详细说明' /><!-- placeholder-style="color:#D3D3D3;font-size:15px;" -->
+							</view>
+							
+							<view style="" v-if="item.fieldname == 'imgimg_picture_list'">
+								<!-- 上传图片 -->
+								<view style="display: flex;flex-wrap:wrap;">
+									<!-- 放上传的图片 -->
+									<view style="width: 32%;height: 250upx;position: relative;" v-for="(items,index) in imgArray" :key="items">
+										<view style="width: 100%;position: absolute;z-index: 9999;">
+											<image @tap="delectImg(index)"  style="width: 50upx;height: 50upx;position: absolute;right:0" src="../../static/img/delete_red.png"></image>
+										</view>
+										
+										<image style="width: 100%;height: 100%;" mode="aspectFit" :src="items"></image>
+									</view>
+									
+									
+									<view style="width: 250upx;height: 250upx;position: relative;" @tap="uploading_img()">
+										<image style="width: 100%;height: 100%;" src="../../static/img/add.png"></image>
+									</view>
+									
+								</view>
+								
+							</view>
+						</block>
+						<!-- 帖子的固定字段结束 -->
+						
 						<view class="box_1" v-if="item.inputtype == 'select'">
 							<picker @change="bindPickerChange" :value="index" :range="item.options" :data-fieldname="item.fieldname">
 								<view style="overflow: auto;">
@@ -39,15 +73,12 @@
 						</view>
 						
 						
-						<view class="uni-textarea" style="padding: 0upx 40upx;" v-if="item.fieldname == 'imgimg_content' || item.inputtype == 'textarea'">
+						<view class="uni-textarea" style="padding: 0upx 40upx;" v-if="item.fieldname != 'imgimg_content' && item.inputtype == 'textarea'">
 							<view style="font-size: 32upx;border-bottom: 1upx solid #EEEEEE;background-color: #FFFFFF;padding: 20upx 0upx;">{{item.displayname}}</view>
 							<textarea :name="item.fieldname" placeholder='请在此填写详细说明' /><!-- placeholder-style="color:#D3D3D3;font-size:15px;" -->
 						</view>
 						
-						<view class="input_flex" v-if="item.fieldname == 'imgimg_title'" style="overflow: auto;padding:35upx 40upx 20upx 40upx;background-color: #FFFFFF;border-bottom: 1upx solid #DDDDDD;">
-							<view class="input-flex-label w60" style="float: left;">标题<label class="FH">*</label></view>
-							<input style="float: left;width: 70%;margin-top: -4upx;" name="imgimg_title" maxlength="40" placeholder-style="color:#c3c3c3" placeholder="请输入合作需求的标题,5-40个字" />
-						</view>
+						
 						
 						<view class="input-flex" style="overflow: auto;border-bottom: #DDDDDD 1upx solid;padding:17px 20px 10px" v-if="item.inputtype== 'date' || item.inputtype== 'text' && item.fieldname != 'imgimg_title'">
 							<view class="input-flex-label w60" style="float: left;">{{item.displayname}}<label class="FH" v-if="item.require == 1">*</label></view>
@@ -58,32 +89,13 @@
 							
 						</view>
 						
-						<view style="" v-if="item.fieldname == 'imgimg_picture_list'">
-							<!-- 上传图片 -->
-							<view style="display: flex;flex-wrap:wrap;">
-								<!-- 放上传的图片 -->
-								<view style="width: 32%;height: 250upx;position: relative;" v-for="(items,index) in imgArray" :key="items">
-									<view style="width: 100%;position: absolute;z-index: 9999;">
-										<image @tap="delectImg(index)"  style="width: 50upx;height: 50upx;position: absolute;right:0" src="../../static/img/delete_red.png"></image>
-									</view>
-									
-									<image style="width: 100%;height: 100%;" mode="aspectFit" :src="items"></image>
-								</view>
-								
-								
-								<view style="width: 250upx;height: 250upx;position: relative;" @tap="uploading_img()">
-									<image style="width: 100%;height: 100%;" src="../../static/img/add.png"></image>
-								</view>
-								
-							</view>
-							
-						</view>
+						
 					
 					</block>
 					
 					
 					<!-- <upimg-box></upimg-box> -->
-					<button formType="submit" style="font-size: 32upx;" :style="{backgroundColor:red}" class="btn-row-submit">{{submit_text}}</button>
+					<button formType="submit" :style="{backgroundColor:red + 'font-size: 32upx'}" class="btn-row-submit">{{submit_text}}</button>
 				</form>
 			</view>
 		</view>
@@ -116,13 +128,14 @@
 				index:0,
 				data2:'',
 				imgArray:[],//存放上传图片的数组
-				submit_text:'',
+				submit_text:'提交信息',
 				catename:'',
 				date: currentDate,
 				input_youxiaoshijian: '',
 				bg_color:'',
 				checkbox_field_value_list:[],
 				form_type:3,
+				submit_url:'', //即将提交表单的url 如果没有就用默认
 			}
 			
 		},
@@ -138,9 +151,13 @@
 			
 		onLoad: function (options) {
 			var that = this;
-			
+			console.log('options====>',options);
 			if(options.form_type){
 				this.form_type = options.form_type;
+			}
+			
+			if(options.submit_url){
+				this.submit_url = options.submit_url;
 			}
 			
 			this.formid = options.classid; //栏目页面跳转带过来的参数  栏目id
@@ -236,7 +253,7 @@
 				this.cms_token = json_shop_option_data.option_list.cms_token;
 				
 				var that = this;
-				
+				console.log('that.form_type=======>',that.form_type);
 				//form_type 判断那个url
 				var url = '';
 				if(that.form_type == 1){
@@ -244,8 +261,7 @@
 					url = that.abotapi.globalData.yanyubao_server_url+'openapi/SupplierData/supplier_input_list';
 					
 					var post_data = {
-						token: that.cms_token,
-						formid:that.formid
+						sellerid: that.abotapi.globalData.default_sellerid,
 					};
 					
 				}else if(that.form_type == 2){
@@ -253,6 +269,7 @@
 					url = that.abotapi.globalData.weiduke_server_url+'openapi/SelfformData/get_selfform_option';
 					
 					var post_data = {
+						selfform_type: 'selfform',
 						token: that.cms_token,
 						formid:that.formid
 					};
@@ -262,12 +279,13 @@
 					url = that.abotapi.globalData.weiduke_server_url+'openapi/SelfformData/get_selfform_option';
 					
 					var post_data = {
+						selfform_type: 'img_classify',
 						token: that.cms_token,
 						formid:that.formid
 					};
 				}
 				
-				
+				console.log('url=======>',url);
 				// 微读客获取文章列表   console.log(apps.globalData.weiduke_server_url);
 				//http://192.168.0.88/weiduke_cms/index.php/openapi/ArticleImgApi/article_list?token=gwcuuk1411034699&cataid=22&page=0
 				uni.request({
@@ -278,25 +296,33 @@
 					success(res) {
 						
 						if(res.data.code == 1){
-							var list = res.data.data;							
-							that.submit_text = res.data.submit_text;
-								for(var i=0; i<list.length; i++){
-									
-									if(list[i].options){
+							var list = res.data.data;
+							if(res.data.submit_text){
+								that.submit_text = res.data.submit_text;
+							}
+							
+							console.log('list========>',list);
+							
+							for(var i=0; i<list.length; i++){
+								
+								if(list[i].options){
+									if(that.form_type != 1){
 										list[i].options = list[i].options.split('|');
-										
-										list[i].index = 0;
-										
-										if(list[i].inputtype == 'select'){
-											list[i].options.unshift('');
-										}
-										else if(list[i].inputtype == 'checkbox'){
-											
-										}
 									}
 									
-																						
+									
+									list[i].index = 0;
+									
+									if(list[i].inputtype == 'select'){
+										list[i].options.unshift('');
+									}
+									else if(list[i].inputtype == 'checkbox'){
+										
+									}
 								}
+								
+																					
+							}
 								
 								that.list = list;
 							
