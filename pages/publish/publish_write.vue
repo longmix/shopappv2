@@ -1,9 +1,10 @@
 <template>
 	<view>
+		
 		<view>
 			<view class="main-body">
 				<form @submit="formSubmit">
-					<block v-for="item in list" :key="item">
+					<block v-for="item in list" :key="item.fieldname">
 
 						<view class="box_1" v-if="item.inputtype == 'select'">
 							<picker @change="bindPickerChange" :value="index" :range="item.options" :data-fieldname="item.fieldname">
@@ -121,6 +122,7 @@
 				input_youxiaoshijian: '',
 				bg_color:'',
 				checkbox_field_value_list:[],
+				form_type:3,
 			}
 			
 		},
@@ -136,6 +138,10 @@
 			
 		onLoad: function (options) {
 			var that = this;
+			
+			if(options.form_type){
+				this.form_type = options.form_type;
+			}
 			
 			this.formid = options.classid; //栏目页面跳转带过来的参数  栏目id
 			this.catename = options.name; //栏目页面跳转带过来的参数  栏目名称
@@ -231,16 +237,44 @@
 				
 				var that = this;
 				
+				//form_type 判断那个url
+				var url = '';
+				if(that.form_type == 1){
+					//会员扩展属性 延誉宝
+					url = that.abotapi.globalData.yanyubao_server_url+'openapi/SupplierData/supplier_input_list';
+					
+					var post_data = {
+						token: that.cms_token,
+						formid:that.formid
+					};
+					
+				}else if(that.form_type == 2){
+					//CMS万能表单  微读客
+					url = that.abotapi.globalData.weiduke_server_url+'openapi/SelfformData/get_selfform_option';
+					
+					var post_data = {
+						token: that.cms_token,
+						formid:that.formid
+					};
+					
+				}else if(that.form_type == 3){
+					//帖子属性   微读客
+					url = that.abotapi.globalData.weiduke_server_url+'openapi/SelfformData/get_selfform_option';
+					
+					var post_data = {
+						token: that.cms_token,
+						formid:that.formid
+					};
+				}
+				
+				
 				// 微读客获取文章列表   console.log(apps.globalData.weiduke_server_url);
 				//http://192.168.0.88/weiduke_cms/index.php/openapi/ArticleImgApi/article_list?token=gwcuuk1411034699&cataid=22&page=0
 				uni.request({
-					url:that.abotapi.globalData.weiduke_server_url+'openapi/SelfformData/get_selfform_option',
+					url:url,
 					method:'POST',
 					header:{'Content-Type': 'application/x-www-form-urlencoded'},
-					data:{
-						token: that.cms_token,
-						formid:that.formid
-					},
+					data:post_data,
 					success(res) {
 						
 						if(res.data.code == 1){

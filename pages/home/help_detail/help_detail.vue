@@ -300,7 +300,7 @@
 				//   id:options.id,
 				//   action:'detail'
 				// };
-				var url = this.abotapi.globalData.weiduke_server_url + '/openapi/ArticleImgApi/article_detail.shtml';
+				var url = this.abotapi.globalData.weiduke_server_url + 'openapi/ArticleImgApi/article_detail';
 				var data = {
 					token: this.abotapi.get_current_weiduke_token(),
 					id: imgid,
