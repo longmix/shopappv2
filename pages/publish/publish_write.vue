@@ -76,7 +76,7 @@
 								
 								
 								<view style="width: 100upx;height: 100upx;position: relative;" @tap="uploading_img()">
-									<image style="width: 100%;height: 100upx;" src="../../static/img/add.png"></image>
+									<image style="width: 100%;height: 100%;" src="../../static/img/add.png"></image>
 								</view>
 								<!-- 上传图片点击的按钮图片 -->
 								<!-- <view style="width: 100upx;height: 100upx;" @tap="uploading_img()">

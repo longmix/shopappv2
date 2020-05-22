@@ -10,7 +10,7 @@
 				
 				<view class="flexlist-desc">{{item.brief}}</view>
 			</view>
-			<image class="flexlist-img" src="../../static/img/x_right.png"></image>
+			<image class="flexlist-img" src="../../static/img/x_right.png" style="width: 50upx;height: 50upx;margin: 10upx;"></image>
 		</view>
 		<!-- {{bd_basic_option_str.weiduke_token}}
 		{{weiduke_classify.data.name}} -->
@@ -99,8 +99,8 @@
 
 <style>
 	.flexlist-img{
-		width: 40upx;
-		height: 40upx;
+		width: 100upx;
+		height: 100upx;
 		/* border-radius: 100upx; */
 	}
 	.flexlist-imgbox{
@@ -117,6 +117,7 @@
 
 	}
 	.flexlist-title{
+		line-height: 60upx;
 		font-size: 32upx;
 	}
 	.flexlist-desc {
