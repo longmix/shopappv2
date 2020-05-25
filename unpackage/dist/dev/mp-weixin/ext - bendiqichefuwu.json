@@ -16,20 +16,58 @@
     "force_sellerid_value": "fJQzPaqVj",
     "shop_name": "本地汽车服务",
     "version_number": "1.4.0",
-    "navigationBarBackgroundColor_fixed": 0,
+    "navigationBarBackgroundColor_fixed": 1,
     "kefu_telephone": "",
     "kefu_qq": "",
     "kefu_website": "",
     "kefu_gongzhonghao": ""
   },
   "extPages": {
-    "pages/index/index": {
-      "navigationBarTitleText": "帮助中心"
+    "pages/publish/publish_list": {
+      "navigationBarTitleText": "分类信息"
     }
+  },
+  "tabBar": {
+    "color": "#333333",
+    "selectedColor": "#f06c7a",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "iconPath": "static/img/tabBar/home.png",
+        "selectedIconPath": "static/img/tabBar/home-on.png",
+        "text": "优选"
+      },
+      {
+        "pagePath": "pages/publish/publish_list",
+        "iconPath": "static/img/tabBar/imglist.png",
+        "selectedIconPath": "static/img/tabBar/imglist-on.png",
+        "text": "分类信息"
+      },
+      {
+        "pagePath": "pages/publish/publish_index",
+        "iconPath": "static/img/tabBar/publish.png",
+        "selectedIconPath": "static/img/tabBar/publish-on.png",
+        "text": "发布"
+      },
+      {
+        "pagePath": "pages/shopList/shopList",
+        "iconPath": "static/img/tabBar/cart.png",
+        "selectedIconPath": "static/img/tabBar/cart-on.png",
+        "text": "品质商家"
+      },
+      {
+        "pagePath": "pages/userCenter/user",
+        "iconPath": "static/img/tabBar/user.png",
+        "selectedIconPath": "static/img/tabBar/user-on.png",
+        "text": "我的"
+      }
+    ]
   },
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarBackgroundColor": "#ff0000",
     "navigationBarTitleText": "本地汽车服务",
     "navigationBarTextStyle": "white"
   },
