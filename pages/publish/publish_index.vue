@@ -120,7 +120,7 @@
 				}else{
 					
 					uni.navigateTo({
-						url:'./publish_write?cataid=' + e + '&name=' + f + '&form_type='+this.form_type,
+						url:'./publish_write?cataid=' + e + '&name=' + f ,
 					})
 				}
 				

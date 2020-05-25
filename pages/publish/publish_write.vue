@@ -152,6 +152,8 @@
 		onLoad: function (options) {
 			var that = this;
 			this.form_typ = 3;
+			console.log('options',options);
+			console.log('456789',this.form_typ);
 			if(options.form_type){
 				this.form_type = options.form_type;
 			}

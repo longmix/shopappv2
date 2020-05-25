@@ -77,8 +77,11 @@
 </template>
 
 <script>
-	
+	import publishList from '../../components/publish-list/publish-list.vue';
 	export default {
+		components:{
+			publishList
+		},
 		data() {
 			return {
 				bd_basic_option_str:'',
