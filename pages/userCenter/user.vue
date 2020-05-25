@@ -7,8 +7,8 @@
 				
 			</view>
 			<view class="icon-btn">
-				<view class="icon tongzhi" @tap="toMsg"></view>				<!--下版本替换为: toMsg -->
-				<view class="icon setting" @tap="toSetting"></view>
+				<view class="icon tongzhi" @tap="toMsg" :style="{color: wxa_shop_nav_bg_color == '#FFFFFF' ? '#333' : ''}"></view>				<!--下版本替换为: toMsg -->
+				<view class="icon setting" @tap="toSetting" :style="{color: wxa_shop_nav_bg_color == '#FFFFFF' ? '#333' : ''}"></view>
 			</view>
 		</view>
 		<!-- 占位 -->
@@ -22,8 +22,8 @@
 			</view>
 			<!-- 昵称,个性签名 -->
 			<view class="right">
-				<view class="username" :style="{color:wxa_shop_nav_font_color=='#000000' ? '#333' : 'wxa_shop_nav_font_color'}"><label v-if="user_info">{{user_info.nickname}}</label><label @click="toLogin" v-else>请点击此处登录</label></view>
-				<view class="signature" :style="{color:wxa_shop_nav_font_color=='#000000' ? '#333' : 'wxa_shop_nav_font_color'}"><label v-if="user_info && user_info.signature !=null">{{user_info.signature}}</label><label v-if="user_info.signature == null"></label></view>
+				<view class="username" :style="{color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}"><label v-if="user_info">{{user_info.nickname}}</label><label @click="toLogin" v-else>请点击此处登录</label></view>
+				<view class="signature" :style="{color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}"><label v-if="user_info && user_info.signature !=null">{{user_info.signature}}</label><label v-if="user_info.signature == null"></label></view>
 			</view>
 			<!-- 二维码按钮 -->
 			<view class="erweima" @tap="toMyQR">

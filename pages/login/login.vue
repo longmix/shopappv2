@@ -439,7 +439,7 @@
 									     }
 									   })
 									
-									that.getUserInfo();
+									// that.getUserInfo();
 									
 									uni.showToast({
 										title: res.data.msg,
@@ -552,7 +552,7 @@
 			formSubmit:function(e){
 				var that=this;
 				
-				that.btn_user_login();
+				// that.btn_user_login();
 			}
 		}
 	}
