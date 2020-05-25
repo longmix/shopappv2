@@ -151,7 +151,7 @@
 			
 		onLoad: function (options) {
 			var that = this;
-			console.log('options====>',options);
+			
 			if(options.form_type){
 				this.form_type = options.form_type;
 			}
@@ -171,7 +171,7 @@
 		onShow: function(){
 			var that = this;
 			//判断登录
-			var home_url = '/pages/publish/publish_write';
+			var home_url = '/pages/publish/publish_write?classid='+this.formid+'&name='+this.catename+'&submit_url='+this.submit_url+'&form_type='+this.form_type;
 			this.abotapi.goto_user_login(home_url, 'normal');
 			//end
 			
@@ -212,30 +212,57 @@
 				}
 				
 				input_value = encodeURIComponent(JSON.stringify(input_value));			
-				var userInfo = that.abotapi.get_user_info(); 
-				uni.request({
-					url:that.abotapi.globalData.weiduke_server_url+'openapi/ArticleImgApi/add_article_item',
-					method:'POST',
-					header:{'Content-Type': 'application/x-www-form-urlencoded'},
-					data:{
+				var userInfo = that.abotapi.get_user_info();
+				
+				if(that.form_type == 1){
+					var submit_url = that.abotapi.globalData.yanyubao_server_url+'index.php/Yanyubao/ShopAppWxa/user_set_ext_info_list';
+					
+					var post_data = {
+						
+					}
+					
+				}else if(that.form_type == 2){
+					var submit_url = that.abotapi.globalData.weiduke_server_url+'index.php/openapi/SelfformData/submit_data_url_selfform';
+					
+					var post_data = {
+						
+					}
+					
+				}else if(that.form_type == 3){
+					var submit_url = that.abotapi.globalData.weiduke_server_url+'index.php/openapi/ArticleImgApi/add_article_item';
+					
+					var post_data = {
 						classid:that.formid,
 						userid: userInfo.userid,
 						checkstr: userInfo.checkstr,
 						token: that.cms_token,
 						input_value:input_value,
 						picture_list:picture_list,
-					},
+					}
+					
+				}
+				
+				if(that.submit_url){
+					var submit_url = that.submit_url;
+				}
+				
+				uni.request({
+					url:submit_url,
+					method:'POST',
+					header:{'Content-Type': 'application/x-www-form-urlencoded'},
+					data:post_data,
 					success: function(res) {
 						if(res.data.code == 1){
 							
 							uni.showToast({
 								 title: res.data.msg,
-							})
+							});
 							setTimeout(function(){
-								uni.navigateTo({
-									url:"/pages/home/home"
-								})
-							},1000)
+								
+								uni.switchTab({
+									url:"../home/home"
+								});
+							},1000);
 						}
 										
 					}
@@ -253,7 +280,7 @@
 				this.cms_token = json_shop_option_data.option_list.cms_token;
 				
 				var that = this;
-				console.log('that.form_type=======>',that.form_type);
+				
 				//form_type 判断那个url
 				var url = '';
 				if(that.form_type == 1){
@@ -285,8 +312,8 @@
 					};
 				}
 				
-				console.log('url=======>',url);
-				// 微读客获取文章列表   console.log(apps.globalData.weiduke_server_url);
+				
+				// 微读客获取文章列表  
 				//http://192.168.0.88/weiduke_cms/index.php/openapi/ArticleImgApi/article_list?token=gwcuuk1411034699&cataid=22&page=0
 				uni.request({
 					url:url,
@@ -300,8 +327,6 @@
 							if(res.data.submit_text){
 								that.submit_text = res.data.submit_text;
 							}
-							
-							console.log('list========>',list);
 							
 							for(var i=0; i<list.length; i++){
 								

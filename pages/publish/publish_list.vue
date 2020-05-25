@@ -106,7 +106,7 @@
 		
 		
 		onLoad:function(options){
-			console.log('options',options);
+			
 			var that = this;
 			if(options.cataid){
 				this.cms_cataid = options.cataid;
@@ -121,37 +121,16 @@
 			
 			that.abotapi.set_shop_option_data(that, that.callback_function);
 			
-			
-			
-			//从服务器端获取相关后台设置
-			// app.set_option_list_str(null, app.getColor());
-			// this.bd_basic_option_str = JSON.parse( uni.getStorageSync('bd_basic_option_str'));
-			// console.log("bd_basic_option_str111",this.bd_basic_option_str);
-			
-			//获取服务器返回的热搜词
-			// if (this.bd_basic_option_str.weiduke_resou) {
-			    
-			// 	that.weiduke_resou = this.bd_basic_option_str.weiduke_resou
-			// 	console.log('weiduke_resou',that.weiduke_resou);
-			// 	that.hotKeyList = that.weiduke_resou.split(' ');
-			//     console.log('resou',that.hotKeyList);
-			// }
-			
-			//获取用户搜索记录
-			// var historyKeyList = uni.getStorageSync('historyKeyList_cache');	
-			// that.historyKeyList = historyKeyList ? historyKeyList : []
-			// console.log('56565', that.historyKeyList)
-			
 			uni.getSystemInfo({
 				//获取手机信息
 				success:res => {
 					//获取手机各种参数
-					console.log("手机参数",res);
+					
 					//设置父元素(overall)高度  swiper不会自适应高度 需要设置固定高度
 					this.width_overall = res.windowWidth;
-					console.log("width_overall ====",this.width_overall);
+					
 					that.num01 = this.width_overall*0.4;
-					console.log("num01",that.num01);
+					
 				}
 			});
 		},
@@ -189,15 +168,13 @@
 				
 				this.cms_token = shop_option_data.option_list.cms_token;
 				
-				console.log('当前的CMS Token =====>>>>',  this.cms_token);
-				
 				this.get_publish_list();
 				
 			},
 			
 			//跳转文章详情
 			goForum: function(id) {
-				console.log(12456);
+				
 				uni.navigateTo({
 					url: "../home/help_detail/help_detail?id=" + id + '&form_page=publish_list' 
 				})
@@ -254,7 +231,7 @@
 				}
 				
 				if(action){
-					console.log(this.search_text);
+					
 					post_data['action'] = action;
 					post_data['search'] = that.search_text;
 				}
@@ -270,9 +247,6 @@
 						'Content-Type': 'application/x-www-form-urlencoded'
 					},
 					success: function (res) {
-						console.log("res",res);
-						console.log('is_get_article_list',that.is_get_article_list);
-						
 						
 						if(res.data.code == 1){
 							if(res.data.data.length > that.current_page_size){
@@ -336,7 +310,7 @@
 			
 			//获取用户输入的搜索值
 			searchValueInput: function (e) {
-				console.log('e',e);
+				
 				var that = this;
 			    var value = e.detail.value;
 				that.searchValue = value,

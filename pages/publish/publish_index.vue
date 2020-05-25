@@ -34,12 +34,14 @@
 				category_list: '',
 				bd_basic_option_str:"",
 				publish_img_cata_list:'',
+				show_type:'',
 			}
 			
 		},
 
 		onLoad: function (option) {
 			this.abotapi.set_shop_option_data(this, this.callback_function);
+			this.show_type = option.show_type; //判断点击进入发布页面或者帖子列表
 		},
 		onReady: function () {
 			uni.setNavigationBarTitle({
@@ -84,14 +86,21 @@
 				
 				that.publish_img_cata_list = shop_option_data['publish_img_cata_list'];
 				
-				console.log('publish_img_cata_list==>获取发帖栏目',this.publish_img_cata_list);
 			},
 			
 			form_issue:function(e,f){
-				console.log(132);
-				uni.navigateTo({
-					url:'./publish_write?classid=' + e + '&name=' + f,
-				})
+				
+				if(this.show_type && this.show_type == 'list'){
+					//跳转到帖子列表页面 （publish_list）
+					uni.navigateTo({
+						url:'./publish_list?cataid=' + e + '&name=' + f,
+					})
+				}else{
+					uni.navigateTo({
+						url:'./publish_write?classid=' + e + '&name=' + f,
+					})
+				}
+				
 			},
 		},
 	}
