@@ -228,6 +228,10 @@ export default {
 			flash_img_list:null,
 			index_icon_list:null,
 			
+			roll_picture:0,
+			pingpu_picture:0,
+			navigation_icon:0,
+			
 			yingxiao_list:'',
 			page_num:1,
 			page_size:5,
@@ -271,6 +275,8 @@ export default {
 	onPullDownRefresh: function () {
 		var that = this;
 		
+		console.log('onPullDownRefresh=====>>>>>');
+		
 		uni.removeStorageSync("coordinate_array");
 		uni.removeStorageSync("cata_list");
 		uni.removeStorageSync("spec_list");
@@ -280,15 +286,6 @@ export default {
 		that.abotapi.set_shop_option_data_remove();
 		that.abotapi.set_shop_option_data(that, that.callback_function_shop_option_data);
 		that.abotapi.get_shop_info_from_server(that.callback_func_for_shop_info);
-		
-		
-		that.get_flash_ad_list();
-		that.get_flash_img_list();
-		that.initArticleList();
-		that.get_shop_icon_index();
-		
-		that.get_product_list();
-		
 		
 		
 		setTimeout(function() {
@@ -309,17 +306,13 @@ export default {
 			});
 			return;
 		}
-		uni.request({
+		this.abotapi.abotRequest({
 		    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
-		    method: 'post',
 		    data: {
 				sellerid:this.abotapi.globalData.default_sellerid,
 				sort: 1,
 				page: that.page_num,
 				page_size:that.page_size,
-		    },
-		    header: {
-				'Content-Type': 'application/x-www-form-urlencoded'
 		    },
 		    success: function (res) {
 	
@@ -436,13 +429,6 @@ export default {
 		
 		
 		// locationapi.get_location(this, this.call_back_get_shang_list);
-
-		that.get_flash_ad_list();	
-		that.get_flash_img_list();
-		that.initArticleList();
-		that.get_shop_icon_index();
-		
-		that.get_product_list();
 		
 // #ifdef APP-PLUS
 		this.nVueTitle = uni.getSubNVueById('homeTitleNvue');
@@ -671,6 +657,16 @@ export default {
 			    that.abotapi.globalData.default_publish_list_count_in_front_page = cb_params.option_list.default_publish_list_count_in_front_page
 			  
 			}
+			
+			
+			that.get_flash_ad_list();
+			that.get_flash_img_list();
+			that.initArticleList();
+			that.get_shop_icon_index();
+			
+			that.get_product_list();
+			
+			
 			
 			
 			//====3、获取经纬度坐标，显示当前城市			
@@ -1086,6 +1082,8 @@ export default {
 		
 		//猜你喜欢
 		get_product_list:function(){
+			console.log('get_product_list=====>>>>>');
+			
 			var that = this;
 			this.abotapi.abotRequest({
 			    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
@@ -1121,12 +1119,16 @@ export default {
 		get_flash_ad_list:function(){
 			var that = this;
 			
+			console.log('get_flash_ad_list=====>>>>>', that.roll_picture);
+			
 			if(that.roll_picture == -1){
+				console.log('that.roll_picture=====>>>>>', that.roll_picture);
+				
 				that.flash_ad_list = that.roll_picture_list;
 				return;
 			}
 			
-			uni.request({						
+			this.abotapi.abotRequest({						
 			    url: this.abotapi.globalData.yanyubao_server_url +  '?g=Yanyubao&m=ShopAppWxa&a=get_flash_ad_list',
 			    method: 'post',
 			    data: {
@@ -1155,12 +1157,16 @@ export default {
 		get_flash_img_list:function(){
 			var that = this;
 			
+			console.log('get_flash_img_list=====>>>>>', that.pingpu_picture);
+			
+			
+			
 			if(that.pingpu_picture == -1){
 				that.flash_img_list = that.pingpu_picture_list;
 				return;
 			}
 			
-			uni.request({									
+			this.abotapi.abotRequest({									
 			    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_flash_img_list',
 			    method: 'post',
 			    data: {
@@ -1243,7 +1249,7 @@ export default {
 		//商户头条
 		yingxiao:function(){
 			var that = this;
-			uni.request({
+			this.abotapi.abotRequest({
 				url : this.abotapi.globalData.weiduke_server_url + '?g=Home&m=Yanyubao&a=yingxiao',
 				method:'POST',
 				data: {
