@@ -1,7 +1,7 @@
 <template>
 	<view style='background-color: #f4f4f4;padding-top: 10upx;'>
-	<block v-for="item in xianmaishang_list" :key="item" style='background-color: #ffffff;'>
-	<view @click="toShang_detail($event)" :data-shangid="item.xianmai_shangid" style="display: flex;padding: 10upx;margin: 10upx;border-radius: 10upx;background: #fff;">
+	<block v-for="(item, index) in xianmaishangList" :key="index" style='background-color: #ffffff;'>
+	<view @click="toShangDetail($event)" :data-shangid="item.xianmai_shangid" style="display: flex;padding: 10upx;margin: 10upx;border-radius: 10upx;background: #fff;">
 		<view style="width:200upx;height:200upx;margin-left: 20upx;">
 			<image style="width:200upx;height:200upx;" :src="item.icon_image"></image>
 		</view>
@@ -10,7 +10,7 @@
 				<view style="font-size: 30upx;color:#333;">{{item.name}}</view>
 				<view style="display: flex; align-items:center;justify-content:space-between;">
 					<view style="display: flex;">
-						<image v-for="items in item.star_level" :key="items" style="width: 40upx;height: 40upx;" src="../../static/img/VIP.png"></image>
+						<image v-for="(items,indexs) in item.star_level" :key="indexs" style="width: 40upx;height: 40upx;" src="../../static/img/VIP.png"></image>
 						
 					</view>
 					<view style="margin-right: 30rpx;font-size: 24upx;">
@@ -46,15 +46,53 @@
 
 <script>
 	export default {
-		name: 'shop-list',
-		prop() {
-			return {
-				xianmaishang_list:'',
-			};
+		name: 'shop-list',	
+		props: {
+			xianmaishangList:'',
+		},
+		onLoad() {
+			var that = this;
+	
+		},
+		methods:{
+			toShangDetail:function(e){
+				this.$emit('toShangDetail',e);
+			}
 		}
+		
 	}
 </script>
 
 <style>
+	.a{
+		font-size:15px;
+		color:#8eaf60;
+		border:1px solid #8eaf60;
+		width:30%;
+		text-align:center;
+		border-radius:13px;
+		margin-left:145px;
+		float:right;
+	}
+	.youhui-biaoqian {
+		font-size: 24upx;
+		margin-bottom: 10upx;
+		border: 1px solid #666;
+		text-align: center;
+		color: #555;
+		border-radius: 6rpx;
+		padding: 2px 5px;
+		margin-right: 10rpx;
+	}
+	.youhui{
+		width: 76rpx;
+		background: red linear-gradient(to right, rgba(255,255,255,0), rgba(2555,255,255,.5));
+		display: inline-block;
+		text-align: center;
+		color: #fff;
+		border-radius: 6rpx;
+		margin-right: 10rpx;
+	
+	}
 
 </style>

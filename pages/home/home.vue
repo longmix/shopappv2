@@ -103,10 +103,11 @@
 		</view> -->
 		
 		<!-- 实体商家列表 -->
-		<view v-if="twoArr" style='background-color: #f4f4f4;padding-top: 20upx;'>
+		<shopList v-if="twoArr" :xianmaishangList="twoArr" @toShangDetail="toShangDetail"></shopList>
+		<!-- <view v-if="twoArr" style='background-color: #f4f4f4;padding-top: 20upx;'>
 			<block v-for="(item,index) in twoArr" :key="index" style="background-color: #ffffff;">
 				
-				<view class="shang_box" @click="toShang_detail($event)" :data-shangid="item.xianmai_shangid">
+				<view class="shang_box" @click="toShangDetail($event)" :data-shangid="item.xianmai_shangid">
 					<view style="width:200upx;height:200upx;margin-left: 20upx;">
 						
 						<image style="width:200upx;height:200upx;" :src="item.icon_image"></image>
@@ -124,10 +125,10 @@
 								</view>
 							</view>
 							<view style="font-size: 24upx;color:#666;margin-top: 10upx;">{{item.city_name}}|{{item.cata_name}}</view>
-							<!-- <view v-if="item.spec != ''" style="display: flex;align-items: center;flex-wrap: wrap;">
+							 <view v-if="item.spec != ''" style="display: flex;align-items: center;flex-wrap: wrap;">
 								<view v-for="(items,index) in item.spec" :key="index" style="padding:4px 10upx;margin:10upx 10upx 0upx 0upx;border-radius:6upx;background: #ff8000 linear-gradient(to right, rgba(255,255,255,0), rgba(2555,255,255,.5));font-size: 24upx;color:#fff;">{{items}}</view>
 								
-							</view> -->
+							</view> 
 							<view v-if="item.spec != ''" style="display: flex;flex-wrap:wrap;">
 								<view v-for="(items,indexs) in item.spec" :key="indexs" class="youhui-biaoqian">{{items}}</view>
 								
@@ -137,7 +138,7 @@
 					</view>
 				</view>
 			</block>
-		</view>
+		</view> -->
 		<!-- 实体商家结束 -->
 		
 		<!-- 商品列表 -->
@@ -189,10 +190,14 @@ var ttt = 0;
 import bmap from '../../common/SDK/bmap-wx.js';
 import io from '../../common/weapp.socket.io.js'; 
 import locationapi from '../../common/locationapi.js'; 
+import shopList from '../../components/shop-list/shop-list.vue';
 
 //import abotapi001 from '../../../common/abotapi.js';
 
 export default {
+	components:{
+		shopList
+	},
 	data() {
 		return {
 			ak: "",	//填写申请到的ak，从shop_option中获取 baidu_map_ak_wxa这个属性
@@ -1441,7 +1446,7 @@ export default {
 			});
 		},
 		//实体商家跳转
-		toShang_detail(e) {
+		toShangDetail(e) {
 			console.log('rrxfff===',e.currentTarget.dataset.shangid);
 			var shangid = e.currentTarget.dataset.shangid;
 			uni.navigateTo({
