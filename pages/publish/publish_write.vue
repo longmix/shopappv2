@@ -151,16 +151,16 @@
 			
 		onLoad: function (options) {
 			var that = this;
-			
+			this.form_typ = 3;
 			if(options.form_type){
 				this.form_type = options.form_type;
 			}
-			
+			console.log('this.form_type',this.form_type);
 			if(options.submit_url){
 				this.submit_url = options.submit_url;
 			}
 			
-			this.formid = options.classid; //栏目页面跳转带过来的参数  栏目id
+			this.formid = options.cataid; //栏目页面跳转带过来的参数  栏目id
 			this.catename = options.name; //栏目页面跳转带过来的参数  栏目名称
 			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 			
@@ -174,7 +174,7 @@
 			var home_url = '/pages/publish/publish_write?classid='+this.formid+'&name='+this.catename+'&submit_url='+this.submit_url+'&form_type='+this.form_type;
 			this.abotapi.goto_user_login(home_url, 'normal');
 			//end
-			
+			 
 		},
 		onReady: function () {
 			uni.setNavigationBarTitle({
@@ -204,31 +204,66 @@
 				var that=this;
 				
 				var input_value = e.detail.value;
-				input_value.input_youxiaoshijian = this.date;
+				//input_value.input_youxiaoshijian = this.date;
 				var picture_list = encodeURIComponent(JSON.stringify(this.imgArray));
 				//将checkbox的值追加到要提交的数组上
 				for(var key in that.checkbox_field_value_list){
 					input_value[key] = that.checkbox_field_value_list[key];
 				}
 				
+				for(var key in e.detail.value){
+					
+					for(var keys in that.list){
+						console.log('456',key);
+						console.log('123',that.list);
+						if(key == that.list[keys]['fieldname']){
+							if(that.list[keys]['require'] == 1){
+								//判断是否为必填（是）
+								if(!e.detail.value[key]){
+									uni.showToast({
+										title:'请填写'+that.list[keys]['displayname']
+									})
+									return;
+								}
+							}
+						}
+						
+					}
+					
+				}
+				
+				
 				input_value = encodeURIComponent(JSON.stringify(input_value));			
 				var userInfo = that.abotapi.get_user_info();
 				
-				if(that.form_type == 1){
+				if(that.form_type == 1){//延誉宝会员扩展属性
 					var submit_url = that.abotapi.globalData.yanyubao_server_url+'index.php/Yanyubao/ShopAppWxa/user_set_ext_info_list';
 					
 					var post_data = {
-						
+						sellerid:that.abotapi.globalData.default_sellerid,
+						userid: userInfo.userid,
+						checkstr: userInfo.checkstr,
 					}
-					
-				}else if(that.form_type == 2){
+					console.log('e.detail.value',e.detail.value);
+					for(var key in e.detail.value){
+						
+						post_data[key] = e.detail.value[key];
+					}
+					console.log(post_data);
+				}else if(that.form_type == 2){//微读客的万能表单
 					var submit_url = that.abotapi.globalData.weiduke_server_url+'index.php/openapi/SelfformData/submit_data_url_selfform';
 					
 					var post_data = {
+						token:that.cms_token,
+						formid:that.formid,
+						openid:this.abotapi.globalData.getOpenid,
+					}
+					for(var key in e.detail.value){
 						
+						post_data[key] = e.detail.value[key];
 					}
 					
-				}else if(that.form_type == 3){
+				}else if(that.form_type == 3){//微读客的帖子
 					var submit_url = that.abotapi.globalData.weiduke_server_url+'index.php/openapi/ArticleImgApi/add_article_item';
 					
 					var post_data = {

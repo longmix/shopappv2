@@ -44,6 +44,12 @@
 			
 			this.abotapi.set_shop_option_data(this, this.callback_function);
 			
+			if(option.show_type){
+				this.show_type = option.show_type; //判断点击进入发布页面或者帖子列表
+			}
+			if(option.form_type){
+				this.form_type = option.form_type;
+			}
 		},
 		onReady: function () {
 			uni.setNavigationBarTitle({
@@ -112,8 +118,9 @@
 						url:'./publish_list?cataid=' + e + '&name=' + f,
 					})
 				}else{
+					
 					uni.navigateTo({
-						url:'./publish_write?classid=' + e + '&name=' + f,
+						url:'./publish_write?cataid=' + e + '&name=' + f + '&form_type='+this.form_type,
 					})
 				}
 				
