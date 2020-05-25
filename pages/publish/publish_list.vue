@@ -6,7 +6,16 @@
 			<image @tap="search_article_list()" src="../../static/img/search.png"></image>
 		</view>
 		
-		<view v-for="(item,index) in index_list" :key="item.id" style="background: #fff;margin-bottom: 30upx;border-radius: 20upx;">
+		<view class="nav-icon-con">
+			
+				<view style="" v-for="(item,index) in publish_img_cata_list " :key="item.classid">
+					<image class="nav-icon-list" :src="item.icon"></image>
+					<view style="font-size: 24upx;">{{item.name}}</view>
+				</view>
+
+		</view>
+		
+		<view v-for="(item,index) in index_list" :key="item.id" style="background: #fff;margin-bottom: 20upx;">
 			<view class="title_box">
 				 <!-- 头像和昵称和发布时间 -->
 				<view class="head_img">
@@ -21,7 +30,7 @@
 					</b>
 					<view class="cata_name">
 						<!-- 分类名称 -->
-						<view style="font-size: 25upx;line-height: 40upx;">{{item.classname}}</view>
+						<view style="font-size: 20upx;line-height:35upx;">{{item.classname}}</view>
 					</view>
 				</view>
 			</view>
@@ -45,8 +54,8 @@
 					{{item.updatetime}}
 				</view>
 				<view style="position:absolute;left: 60upx;border-width: 15rpx;border-style: solid;border-color: transparent transparent #f2f2f2 #f2f2f2;transform: rotate(135deg);"></view>
-				<view style="display: flex;background-color: #f2f2f2;align-items: center;margin-top: 14upx;">
-					<view style="width: 60%;display: flex;align-items: center;padding: 5upx 10upx;">
+				<view style="display: flex;background-color: #f2f2f2;align-items: center;margin-top: 14upx;margin-bottom: 15upx;">
+					<view style="width: 60%;display: flex;align-items: center;padding: 10upx 10upx;">
 						<!-- 点赞和浏览 -->
 						<view style="display: flex;align-items: center;margin-right: 20upx;">
 							<image src="../../static/img/help/comment.png" style="width: 40rpx;height:40rpx;"></image>
@@ -169,6 +178,12 @@
 				this.cms_token = shop_option_data.option_list.cms_token;
 				
 				this.get_publish_list();
+				
+				//取帖子分类列表
+			
+				this.publish_img_cata_list = shop_option_data.publish_img_cata_list;
+				console.log('aaaaaaa====',this.publish_img_cata_list);
+			
 				
 			},
 			
@@ -363,6 +378,8 @@
 		border-radius:6upx;
 		padding: 2rpx 6rpx;
 		text-align: center;
+		width: 50%;
+		
 	}
 	.content{
 		display: -webkit-box;
@@ -425,5 +442,31 @@
 	.sou input{
 	   margin-left: 20upx;
 	}
-	
+	.nav-icon-con{
+		margin-top: 30upx;
+		margin-bottom: 30upx;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		font-size: 28upx;
+		background-color: #FFFFFF;
+		padding:inherit;
+	}
+	.nav-icon-con > view{
+		width: 20%;
+		margin-top: 3%;
+		text-align: center;
+	}
+	.nav-icon-list{		
+		width: 70upx;
+		height: 70upx;
+	}
+	.nav-icon-a{
+		text-align: center;
+	}
+	.nav-icon-a view{
+		/* margin-top: 20upx; */
+		text-align: center;
+		font-size: 28upx;
+	}
 </style>
