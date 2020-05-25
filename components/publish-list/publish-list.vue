@@ -1,20 +1,79 @@
 <template>
-	<view>123</view>
+	<view>
+		<view v-for="(item,index) in index_list" :key="item.id" style="background: #fff;margin-bottom: 20upx;">
+			<view class="title_box">
+				 <!-- 头像和昵称和发布时间 -->
+				<view class="head_img">
+					<image :src="item.user_detail.headimgurl"></image>
+				</view>
+				<view>
+					<b>
+						<view class="nickname">
+							<!-- 昵称 -->
+							{{item.user_detail.nickname}}
+						</view>
+					</b>
+					<view class="cata_name">
+						<!-- 分类名称 -->
+						<view style="font-size: 20upx;line-height:35upx;">{{item.classname}}</view>
+					</view>
+				</view>
+			</view>
+			
+			<view class="content" @tap="goForum(item.id)">
+				<!-- 内容 -->
+				{{item.info}}
+			</view>
+			<view class="content_img_box">
+				<!-- 图片，有就显示没有就不显示 -->
+				<view class="content_img" v-for="picture_item in item.picture_list" :key="picture_item">
+					<image :src="picture_item" @tap="previewImage(index)"></image>
+				</view>
+				
+			</view>
+			
+			<view style="margin-left:20upx; border: 10upx solid #FFFFFF;">
+				<!-- 底部的点赞量和浏览量 -->
+				<view style="font-size: 24upx;color: #333;">
+					<!-- 发布时间 -->
+					{{item.updatetime}}
+				</view>
+				<view style="position:absolute;left: 60upx;border-width: 15rpx;border-style: solid;border-color: transparent transparent #f2f2f2 #f2f2f2;transform: rotate(135deg);"></view>
+				<view style="display: flex;background-color: #f2f2f2;align-items: center;margin-top: 14upx;margin-bottom: 15upx;">
+					<view style="width: 60%;display: flex;align-items: center;padding: 10upx 10upx;">
+						<!-- 点赞和浏览 -->
+						<view style="display: flex;align-items: center;margin-right: 20upx;">
+							<image src="../../static/img/help/comment.png" style="width: 40rpx;height:40rpx;"></image>
+							<view style="color: #333;font-size: 22upx;">{{item.click}}人浏览</view>
+						</view>
+						<view style="display: flex;align-items: center;">
+							<image src="../../static/img/help/dianzan_grey.png" style="width: 40rpx;height:40rpx;"></image>
+							<view style="color: #333;font-size: 22upx;">{{item.click}}人点赞</view>
+						</view>
+					</view>
+					<view style="color:#2cb2f0;width: 40%;text-align: right;">
+						<!-- 查看详情 -->
+						<view style="font-size: 24rpx;margin-right: 30upx;" @tap="goForum(item.id)">查看详情>></view>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
 </template>
 
 <script>
 	export default {
 		name: 'shop-list',	
 		props: {
-			xianmaishangList:'',
+			index_list:'',
 		},
 		onLoad() {
 			var that = this;
 	
 		},
 		methods:{
-			toShangDetail:function(e){
-				this.$emit('toShangDetail',e);
+			goForum:function(e){
+				this.$emit('goForum',e);
 			}
 		}
 		
@@ -22,5 +81,134 @@
 </script>
 
 <style>
+	.title_box{
+		display: -webkit-flex;
+		display: flex;
+		align-items: center;
+	}
+	.head_img{
+		margin: 20upx;
+	}
+	.head_img image{
+		width: 100upx;
+		height: 100upx;
+		border-radius:5upx;
+	}
+	.nickname{
+		color:#333;
+		font-weight:blod;
+	}
+	.cata_name{
+		margin-top: 10upx;
+		background-color: #18dba6;
+		color: #fff;
+		border-radius:6upx;
+		padding: 2rpx 6rpx;
+		text-align: center;
+		width: 50%;
+		
+	}
+	.content{
+		display: -webkit-box;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		word-break: break-all;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 3;
+		margin: 0 20upx;
+	}
+	.content_img_box{
+		display: flex;
+		flex-wrap:wrap;
+	}
+	.content_img{
+		width: 19%;
+		height: 160rpx;
+		
+		margin-right: 1%;
+		
+		margin: 10upx 20upx;
+	}
+	.content_img image{
+		width: 100%;
+		height: 160rpx;
+		border-radius: 10rpx;
+		
+	}
+	.kuang{
+		position: absolute;
+		content: "";
+		border-width: 20rpx;
+		border-style: solid;
+		border-color: transparent transparent #f2f2f2 #f2f2f2;
+		transform: rotate(135deg);
+		left: 35px;
+		top: -10px;
 	
+	}
+	/*搜索框*/
+	.sou{
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		background: #DFDFDF;
+		width: 96%;
+		border-radius: 50upx;
+		margin-left: 2%;
+		margin-top: 20upx;
+		margin-bottom: 20upx;
+		height: 70upx;
+		color: #AAAAAA;
+		z-index: 99999;
+	}
+	.sou image{
+	    margin-right: 20upx;
+		width: 40upx;
+		height:40upx;
+	}
+	.sou input{
+	   margin-left: 20upx;
+	}
+	.nav-icon-con{
+		margin-top: 30upx;
+		margin-bottom: 30upx;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		font-size: 28upx;
+		background-color: #FFFFFF;
+		padding:inherit;
+	}
+	.nav-icon-con > view{
+		width: 20%;
+		margin-top: 3%;
+		text-align: center;
+	}
+	.nav-icon-list{		
+		width: 70upx;
+		height: 70upx;
+	}
+	.nav-icon-a{
+		text-align: center;
+	}
+	.nav-icon-a view{
+		/* margin-top: 20upx; */
+		text-align: center;
+		font-size: 28upx;
+	}
+	.fabu_button{
+		position: absolute;
+		bottom: 42px;
+		right: 8px;
+		background: #f44444;
+		border-radius: 54%;
+		padding: 5px;
+		height: 30px;
+		width: 30px;
+		font-size: 14px;
+		color: #fff;
+		text-align: center;
+		line-height: 30px;
+	
+	}
 </style>

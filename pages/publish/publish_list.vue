@@ -1,5 +1,8 @@
 <template>
 	<view style="background:#EFEFF4;">
+		<view class="fabu_button" @tap="toPublish_index()">
+			发布
+		</view>
 		<view class="sou" >
 			
 			<input  type="text" placeholder="请输入搜索条件" v-model="search_text"/>
@@ -14,65 +17,7 @@
 				</view>
 
 		</view>
-		
-		<view v-for="(item,index) in index_list" :key="item.id" style="background: #fff;margin-bottom: 20upx;">
-			<view class="title_box">
-				 <!-- 头像和昵称和发布时间 -->
-				<view class="head_img">
-					<image :src="item.user_detail.headimgurl"></image>
-				</view>
-				<view>
-					<b>
-						<view class="nickname">
-							<!-- 昵称 -->
-							{{item.user_detail.nickname}}
-						</view>
-					</b>
-					<view class="cata_name">
-						<!-- 分类名称 -->
-						<view style="font-size: 20upx;line-height:35upx;">{{item.classname}}</view>
-					</view>
-				</view>
-			</view>
-			
-			<view class="content" @tap="goForum(item.id)">
-				<!-- 内容 -->
-				{{item.info}}
-			</view>
-			<view class="content_img_box">
-				<!-- 图片，有就显示没有就不显示 -->
-				<view class="content_img" v-for="picture_item in item.picture_list" :key="picture_item">
-					<image :src="picture_item" @tap="previewImage(index)"></image>
-				</view>
-				
-			</view>
-			
-			<view style="margin-left:20upx; border: 10upx solid #FFFFFF;">
-				<!-- 底部的点赞量和浏览量 -->
-				<view style="font-size: 24upx;color: #333;">
-					<!-- 发布时间 -->
-					{{item.updatetime}}
-				</view>
-				<view style="position:absolute;left: 60upx;border-width: 15rpx;border-style: solid;border-color: transparent transparent #f2f2f2 #f2f2f2;transform: rotate(135deg);"></view>
-				<view style="display: flex;background-color: #f2f2f2;align-items: center;margin-top: 14upx;margin-bottom: 15upx;">
-					<view style="width: 60%;display: flex;align-items: center;padding: 10upx 10upx;">
-						<!-- 点赞和浏览 -->
-						<view style="display: flex;align-items: center;margin-right: 20upx;">
-							<image src="../../static/img/help/comment.png" style="width: 40rpx;height:40rpx;"></image>
-							<view style="color: #333;font-size: 22upx;">{{item.click}}人浏览</view>
-						</view>
-						<view style="display: flex;align-items: center;">
-							<image src="../../static/img/help/dianzan_grey.png" style="width: 40rpx;height:40rpx;"></image>
-							<view style="color: #333;font-size: 22upx;">{{item.click}}人点赞</view>
-						</view>
-					</view>
-					<view style="color:#2cb2f0;width: 40%;text-align: right;">
-						<!-- 查看详情 -->
-						<view style="font-size: 24rpx;margin-right: 30upx;" @tap="goForum(item.id)">查看详情>></view>
-					</view>
-				</view>
-			</view>
-		</view>
+		<publishList :index_list="index_list" @goForum="goForum"></publishList>
 	</view>
 </template>
 
@@ -124,7 +69,7 @@
 				this.cms_cataid = options.cataid;
 			}
 			
-			
+			console.log('options',options);
 			// uni.setNavigationBarTitle({
 			// 	title:this.list_title
 			// })
@@ -218,7 +163,23 @@
 					}
 				});
 			},
-
+			//发布按钮跳转
+			toPublish_index:function(){
+				uni.switchTab({
+					url:'./publish_index'
+				})
+				console.log(this.abotapi.globalData.is_publish_index_in_tabbar);
+				// if(this.abotapi.globalData.is_publish_index_in_tabbar == 1){
+				// 	uni.switchTab({
+				// 		url:'./publish_index'
+				// 	});
+				// }else{
+				// 	uni.navigateTo({
+				// 		url:'./publish_index'
+				// 	})
+				// }
+				
+			},
 			//获取帖子列表
 			get_publish_list: function (action='') {
 				if(!this.is_get_article_list){
@@ -471,5 +432,20 @@
 		/* margin-top: 20upx; */
 		text-align: center;
 		font-size: 28upx;
+	}
+	.fabu_button{
+		position: absolute;
+		bottom: 42px;
+		right: 8px;
+		background: #f44444;
+		border-radius: 54%;
+		padding: 5px;
+		height: 30px;
+		width: 30px;
+		font-size: 14px;
+		color: #fff;
+		text-align: center;
+		line-height: 30px;
+
 	}
 </style>

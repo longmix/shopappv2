@@ -95,7 +95,7 @@
 					
 					
 					<!-- <upimg-box></upimg-box> -->
-					<button formType="submit" :style="{backgroundColor:red + 'font-size: 32upx'}" class="btn-row-submit">{{submit_text}}</button>
+					<button formType="submit" :style="{backgroundColor:wxa_shop_nav_bg_color + ';font-size: 32upx'}" class="btn-row-submit">{{submit_text}}</button>
 				</form>
 			</view>
 		</view>
@@ -136,6 +136,7 @@
 				checkbox_field_value_list:[],
 				form_type:3,
 				submit_url:'', //即将提交表单的url 如果没有就用默认
+				wxa_shop_nav_bg_color:'',
 			}
 			
 		},
@@ -165,7 +166,8 @@
 			this.formid = options.cataid; //栏目页面跳转带过来的参数  栏目id
 			this.catename = options.name; //栏目页面跳转带过来的参数  栏目名称
 			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
-			
+			this.wxa_shop_nav_bg_color = this.abotapi.globalData.option_list.wxa_shop_nav_bg_color;
+			console.log('this.wxa_shop_nav_bg_color',this.wxa_shop_nav_bg_color);
 			this.getArticleList()
 			
 			
