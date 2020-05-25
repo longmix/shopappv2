@@ -42,6 +42,7 @@
 				<navigator class="cl-black pointer flex-1" style="margin-top: 30upx;text-align: right;font-size: 34upx;" url="/pages/login/login_by_password">账号密码登录</navigator>
 			</div>
 			
+			<view>返回首页</view>
 			
 			<!-- #ifdef MP-WEIXIN -->
 			<div class="otherBox mgb-20">

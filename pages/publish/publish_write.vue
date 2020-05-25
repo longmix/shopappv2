@@ -172,9 +172,18 @@
 		},
 		onShow: function(){
 			var that = this;
-			//判断登录
-			var home_url = '/pages/publish/publish_write?classid='+this.formid+'&name='+this.catename+'&submit_url='+this.submit_url+'&form_type='+this.form_type;
-			this.abotapi.goto_user_login(home_url, 'normal');
+			//判断登录			
+			var userInfo = that.abotapi.get_user_info();		
+			if(!userInfo || !userInfo.userid){
+				var last_url = '/pages/publish/publish_write?classid='+this.formid+'&name='+this.catename+'&submit_url='+this.submit_url+'&form_type='+this.form_type;
+				if(this.abotapi.globalData.is_publish_index_in_tabbar == 1){
+					this.abotapi.goto_user_login(last_url, 'switchTab');
+				}else{
+					this.abotapi.goto_user_login(last_url, 'normal');
+				}				
+			}
+			
+			
 			//end
 			 
 		},

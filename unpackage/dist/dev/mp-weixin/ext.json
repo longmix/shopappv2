@@ -21,12 +21,10 @@
     "kefu_qq": "",
     "kefu_website": "",
     "kefu_gongzhonghao": "",
-
-    "default_copyright_text":"本地汽车服务 版权所有",
-    
-    "is_shop_cart_in_tabbar":0,
-    "is_publish_index_in_tabbar":0,
-    "is_publish_list_in_tabbar":0
+    "default_copyright_text": "本地汽车服务 版权所有",
+    "is_shop_cart_in_tabbar": 0,
+    "is_publish_index_in_tabbar": 0,
+    "is_publish_list_in_tabbar": 0
   },
   "extPages": {
     "pages/publish/publish_list": {

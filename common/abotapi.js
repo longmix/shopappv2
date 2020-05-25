@@ -467,6 +467,10 @@ module.exports = {
 			},
 	    });
 	},
+	get_xianmaishang_setting_list_remove:function(){		
+		uni.removeStorageSync("get_xianmaishang_setting_list_str_" + this.globalData.default_sellerid);
+		uni.removeStorageSync("user_console_setting_str_" + this.globalData.default_sellerid);
+	},
 	get_shop_info_from_server_remove:function(){
 		console.log('iiiiiiiiiiiiiiiiiiiiiiiiiiiiii');
 		uni.removeStorageSync("shop_info_from_server_str_" + this.globalData.default_sellerid);
