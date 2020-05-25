@@ -51,6 +51,7 @@
 				num01:'',
 				click:'',
 				cms_token:'',
+				my_collect:'', //判断是不是收藏的
 				cms_cataid:0,
 				cms_cataname:'内容列表',
 				current_page:1,
@@ -63,13 +64,19 @@
 		
 		
 		onLoad:function(options){
+			console.log('options',options);
+			if(options.my_collect){
+				this.my_collect = options.my_collect;
+				var last_url = '/pages/publish/publish_list?my_collect=my_collect';
+				this.abotapi.goto_user_login(last_url, 'switchTab');
+			}
 			
 			var that = this;
 			if(options.cataid){
 				this.cms_cataid = options.cataid;
 			}
 			
-			console.log('options',options);
+			
 			// uni.setNavigationBarTitle({
 			// 	title:this.list_title
 			// })
@@ -215,6 +222,20 @@
 					post_data['search'] = that.search_text;
 				}
 				
+				
+				if(this.my_collect == 'my_collect'){
+					var openid = uni.setStorageSync("current_openid");
+					var userInfo = this.abotapi.get_user_info();
+					var post_data = {
+							token:that.cms_token,
+							sellerid: this.abotapi.globalData.default_sellerid,
+							userid:userInfo.userid,
+							action: 'my_collect',
+							openid:openid,
+							page:that.current_page,
+							page_size:that.current_page_size,
+						};
+				}
 				//搜索的情况
 				//if(){}
 				

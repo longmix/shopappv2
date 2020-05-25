@@ -104,6 +104,7 @@
 		
 		<!-- 实体商家列表 -->
 		<shopList v-if="twoArr" :xianmaishangList="twoArr" @toShangDetail="toShangDetail"></shopList>
+		<publishList v-if="index_list" :index_list="index_list" @goForum="goForum"></publishList>
 		<!-- <view v-if="twoArr" style='background-color: #f4f4f4;padding-top: 20upx;'>
 			<block v-for="(item,index) in twoArr" :key="index" style="background-color: #ffffff;">
 				
@@ -191,12 +192,13 @@ import bmap from '../../common/SDK/bmap-wx.js';
 import io from '../../common/weapp.socket.io.js'; 
 import locationapi from '../../common/locationapi.js'; 
 import shopList from '../../components/shop-list/shop-list.vue';
-
+import publishList from '../../components/publish-list/publish-list.vue';
 //import abotapi001 from '../../../common/abotapi.js';
 
 export default {
 	components:{
-		shopList
+		shopList,
+		publishList
 	},
 	data() {
 		return {
@@ -245,7 +247,7 @@ export default {
 			city: '北京',
 			
 			coordinate:'',
-			
+			index_list:[],
 			Promotion: [],
 			//猜你喜欢列表
 			twoArr:'',
@@ -346,9 +348,11 @@ export default {
 	},
 	onLoad: function (options) {
 		///this.bindKeyInput();
-		
+		var that = this;
+		that.abotapi.set_shop_option_data(that, that.callback_function);
 		console.log('pages/tabBar/index/index====>>>>', options);
 		
+		this.get_publish_list();
 		
 		var that = this;
 		
@@ -463,6 +467,20 @@ export default {
 	
 	
 	methods: {
+		callback_function:function(that, shop_option_data){
+			that.abotapi.getColor();
+			console.log('shop_option_data',shop_option_data);
+			this.cms_token = shop_option_data.option_list.cms_token;
+			this.default_publish_list_count_in_front_page = shop_option_data.option_list.default_publish_list_count_in_front_page;
+			
+		},
+		//跳转文章详情
+		goForum: function(id) {
+			
+			uni.navigateTo({
+				url: "../home/help_detail/help_detail?id=" + id + '&form_page=publish_list' 
+			})
+		},
 		//这只是一个测试函数
 		bindKeyInput: function() {
 			
@@ -504,7 +522,40 @@ export default {
 				 
 				 
 		},
-
+		get_publish_list:function(){
+			
+			var that = this;
+			var post_data = {
+				token:this.cms_token,
+				sellerid: this.abotapi.globalData.default_sellerid,
+				action: 'newlist',
+				page:1,
+				page_size:this.default_publish_list_count_in_front_page,
+			}
+			
+			this.abotapi.abotRequest({
+				url: that.abotapi.globalData.weiduke_server_url + 'openapi/ArticleImgApi/article_list',
+				method: 'post',
+				data: post_data,
+				header: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+				},
+				success: function (res) {
+					console.log('that.index_list',res);
+					if(res.data.code == 1){
+						
+						that.index_list = res.data.data;
+						console.log('that.index_list',that.index_list);
+					}
+				},
+				fail: function (e) {
+					uni.showToast({
+						title: '网络异常！',
+						duration: 2000
+					});
+				},
+			});
+		},
 		callback_function_shop_option_data:function(that, cb_params){
 			
 			if(!cb_params){
