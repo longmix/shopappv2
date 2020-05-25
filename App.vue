@@ -70,6 +70,23 @@
 			if (extConfig.kefu_gongzhonghao) {
 			  this.abotapi.globalData.kefu_gongzhonghao = extConfig.kefu_gongzhonghao;
 			}
+			
+			
+			if (extConfig.default_copyright_text) {
+			  this.abotapi.globalData.default_copyright_text = extConfig.default_copyright_text;
+			}
+			
+			if (extConfig.is_shop_cart_in_tabbar) {
+			  this.abotapi.globalData.is_shop_cart_in_tabbar = extConfig.is_shop_cart_in_tabbar;
+			}
+			if (extConfig.is_publish_index_in_tabbar) {
+			  this.abotapi.globalData.is_publish_index_in_tabbar = extConfig.is_publish_index_in_tabbar;
+			}
+			if (extConfig.is_publish_list_in_tabbar) {
+			  this.abotapi.globalData.is_publish_list_in_tabbar = extConfig.is_publish_list_in_tabbar;
+			}
+			
+			
 		
 			//以下是更多扩展使用
 			if (extConfig.is_ziliaoku_app) {
