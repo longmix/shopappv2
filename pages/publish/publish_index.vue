@@ -40,8 +40,10 @@
 		},
 
 		onLoad: function (option) {
-			this.abotapi.set_shop_option_data(this, this.callback_function);
 			this.show_type = option.show_type; //判断点击进入发布页面或者帖子列表
+			
+			this.abotapi.set_shop_option_data(this, this.callback_function);
+			
 		},
 		onReady: function () {
 			uni.setNavigationBarTitle({
@@ -83,9 +85,23 @@
 				that.abotapi.getColor();
 				
 				//获取发布帖子的栏目组
+				if(that.show_type && that.show_type == 'list'){
+					that.publish_img_cata_list = shop_option_data['publish_img_cata_list'];
+					return;
+				}
 				
-				that.publish_img_cata_list = shop_option_data['publish_img_cata_list'];
+				that.publish_img_cata_list = [];
 				
+				var list001 = shop_option_data['publish_img_cata_list'];
+				for(var i=0; i<list001.length; i++){
+					var item001 = list001[i];
+					
+					if(item001 && item001.publish_type && (item001.publish_type == 'private')){
+						continue;
+					}
+					
+					that.publish_img_cata_list.push(item001);
+				}
 			},
 			
 			form_issue:function(e,f){

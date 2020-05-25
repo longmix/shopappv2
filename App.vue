@@ -6,8 +6,80 @@
 		
 		onLaunch: function () {
 			console.log('App Launch')
-			this.abotapi.onLaunch02();
+
 			console.log('aa',this.abotapi.globalData);
+			
+			
+// #ifdef MP-WEIXIN || MP-ALIPAY || MP-BAIDU || MP-TOUTIAO
+			
+			
+			let extConfig = uni.getExtConfigSync ? uni.getExtConfigSync() : {}
+			
+			this.abotapi.globalData.xiaochengxu_appid = extConfig.xiaochengxu_appid;
+		
+			//强制设置当前的appid
+			
+			// const accountInfo = uni.getAccountInfoSync();
+			
+			// if (accountInfo && accountInfo.miniProgram && accountInfo.miniProgram.appId) {
+			//   this.abotapi.globalData.xiaochengxu_appid = accountInfo.miniProgram.appId;
+			// }
+			
+			console.log('当前小程序为：' + this.abotapi.globalData.xiaochengxu_appid);
+		
+		
+			this.abotapi.globalData.force_sellerid = 0;
+		
+			if (extConfig.force_sellerid_flag == 1) {
+			  this.abotapi.globalData.force_sellerid = 1;
+			  this.abotapi.globalData.default_sellerid = extConfig.force_sellerid_value;
+			}
+		
+			if (extConfig.shop_name){
+			  console.log("444444", extConfig.shop_name)
+			  this.abotapi.globalData.shop_name = extConfig.shop_name;
+		
+			  uni.setNavigationBarTitle({
+				title: this.abotapi.globalData.shop_name
+			  })
+		
+			}
+			if (extConfig.version_number) {
+			  this.abotapi.globalData.version_number = extConfig.version_number;
+			}
+		
+			if (extConfig.navigationBarBackgroundColor_fixed) {
+			  this.abotapi.globalData.navigationBarBackgroundColor_fixed = extConfig.navigationBarBackgroundColor_fixed;
+			}
+		
+		
+			
+		
+			if (extConfig.kefu_telephone) {
+			  this.abotapi.globalData.kefu_telephone = extConfig.kefu_telephone;
+			}
+			if (extConfig.kefu_qq) {
+			  this.abotapi.globalData.kefu_qq = extConfig.kefu_qq;
+			}
+			if (extConfig.kefu_qq) {
+			  this.abotapi.globalData.kefu_qq = extConfig.kefu_qq;
+			}
+			if (extConfig.kefu_website) {
+			  this.abotapi.globalData.kefu_website = extConfig.kefu_website;
+			}
+			if (extConfig.kefu_gongzhonghao) {
+			  this.abotapi.globalData.kefu_gongzhonghao = extConfig.kefu_gongzhonghao;
+			}
+		
+			//以下是更多扩展使用
+			if (extConfig.is_ziliaoku_app) {
+			  this.abotapi.globalData.is_ziliaoku_app = extConfig.is_ziliaoku_app;
+			}
+			if (extConfig.is_o2o_app) {
+			  this.abotapi.globalData.is_o2o_app = extConfig.is_o2o_app;
+			}
+			
+// #endif
 		},
 		onShow: function () {
 			console.log('App Show')

@@ -113,9 +113,9 @@
 			}
 			
 			
-			uni.setNavigationBarTitle({
-				title:this.list_title
-			})
+			// uni.setNavigationBarTitle({
+			// 	title:this.list_title
+			// })
 			
 			
 			

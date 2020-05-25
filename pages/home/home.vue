@@ -444,7 +444,7 @@ export default {
 		
 		that.get_product_list();
 		
-		// #ifdef APP-PLUS
+// #ifdef APP-PLUS
 		this.nVueTitle = uni.getSubNVueById('homeTitleNvue');
 		this.nVueTitle.onMessage(res => {
 			let type = res.data.type;
@@ -454,7 +454,7 @@ export default {
 		});
 		this.showHeader = false;
 		this.statusHeight = plus.navigator.getStatusbarHeight();
-		// #endif
+// #endif
 		
 		//开启定时器
 		this.Timer();
@@ -1293,15 +1293,12 @@ export default {
 				return;
 			}
 			
-			uni.request({
-				url:this.abotapi.globalData.yanyubao_server_url+'?g=Yanyubao&m=ShopAppWxa&a=get_shop_icon_index',
-				method:'POST',
-				header:{'Content-Type': 'application/x-www-form-urlencoded'},
+			that.abotapi.abotRequest({
+				url:that.abotapi.globalData.yanyubao_server_url+'?g=Yanyubao&m=ShopAppWxa&a=get_shop_icon_index',
 				data:{
-					sellerid:this.abotapi.globalData.default_sellerid,
+					sellerid:that.abotapi.globalData.default_sellerid,
 				},
 				success(res) {
-					// console.log('87878787',res);
 					var data = res.data;
 					console.log("data===",data);
 					if(data.code == 1){
