@@ -326,7 +326,11 @@ export default {
 			// #endif
 			//轮播主图数据
 			picture_list:'',
-			goods_detail:'',
+			goods_detail:{
+				name:'',
+				price: '',
+				inventory:''
+			},
 			//轮播图下标
 			currentSwiper: 0,
 			anchorlist:[],//导航条锚点

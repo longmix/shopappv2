@@ -26,7 +26,7 @@
 			<view class='datetime' v-if="wxa_show_article_detail_category == 1">
 				<view class='yuanchuang'>分类：{{wz_text.classname}}</view>
 				<view class='guge'>{{app_name_chat_title}}</view>
-				<view class='yuanchuang' style='margin-left:15px;'>{{wz_text.uptatetime}}</view>
+				<view class='yuanchuang' style='margin-left:15px;'>{{wz_text.updatetime}}</view>
 			</view>
 			<view class='wenzhang_detail'>
 				<!-- <import src="../../wxParse/wxParse.wxml"/> -->
@@ -114,7 +114,15 @@
 				userInfo:'',
 				wz_keyword2:'',
 				wz_title:'',
-				wz_text:'',
+				wz_text:{
+					title:'',
+					classname:'',
+					click:'',
+					updatetime: '',
+					user_detail:{
+						nickname:''
+					}
+				},
 				wxa_show_article_detail_category:'',
 				isDianzan:'',
 				dianzanNum:'',
