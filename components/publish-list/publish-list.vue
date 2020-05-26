@@ -79,6 +79,9 @@
 		methods:{
 			goForum:function(e){
 				this.$emit('goForum',e);
+			},
+			previewImage:function(index){
+				this.$emit('previewImage',index);
 			}
 		}
 		

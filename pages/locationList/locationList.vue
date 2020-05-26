@@ -2,8 +2,8 @@
 	<view>
 		<view class="head">
 			<image src="../../static/img/addricon.png" style="width:40upx;height: 40upx;margin-left:20rpx ;"></image>
-			<view>
-			  当前位置:{{address_info_current}}
+			<view style="margin-left: 20upx ;">
+			  <view style="color: #808080;display:inline-block;">当前位置：</view>{{address_info_current}}
 			</view>
 		      <!-- <view calss="right">切换区县<img style="width: 35rpx; height: 33rpx;"
 			   src="../../static/img/category/down.png" alt=""></view> -->

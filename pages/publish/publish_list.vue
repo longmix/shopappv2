@@ -1,9 +1,9 @@
 <template>
-	<view style="background:#EFEFF4;">
+	<view style="background:#EFEFF4;border-top: 1px solid #EFEFF4;">
 		<view class="fabu_button" @tap="toPublish_index()">
 			发布
 		</view>
-		<view class="sou" >
+		<view class="sou">
 			
 			<input  type="text" placeholder="请输入搜索条件" v-model="search_text"/>
 			<image @tap="search_article_list()" src="../../static/img/search.png"></image>
@@ -17,7 +17,7 @@
 				</view>
 
 		</view>
-		<publishList :index_list="index_list" @goForum="goForum"></publishList>
+		<publishList :index_list="index_list" @goForum="goForum" @previewImage="previewImage"></publishList>
 	</view>
 </template>
 
@@ -382,7 +382,7 @@
 		width: 96%;
 		border-radius: 50upx;
 		margin-left: 2%;
-		margin-top: 20upx;
+		margin-top: 30upx;
 		margin-bottom: 20upx;
 		height: 70upx;
 		color: #AAAAAA;

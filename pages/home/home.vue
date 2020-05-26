@@ -104,7 +104,7 @@
 		
 		<!-- 实体商家列表 -->
 		<shopList v-if="twoArr" :xianmaishangList="twoArr" @toShangDetail="toShangDetail"></shopList>
-		<publishList v-if="index_list" :index_list="index_list" @goForum="goForum"></publishList>
+		<publishList v-if="index_list" :index_list="index_list" @goForum="goForum" @previewImage="previewImage"></publishList>
 		<!-- <view v-if="twoArr" style='background-color: #f4f4f4;padding-top: 20upx;'>
 			<block v-for="(item,index) in twoArr" :key="index" style="background-color: #ffffff;">
 				
@@ -463,6 +463,27 @@ export default {
 			uni.navigateTo({
 				url: "../home/help_detail/help_detail?id=" + id + '&form_page=publish_list' 
 			})
+		},
+		// 预览图片
+		previewImage:function(index) {
+			
+			var index_list = this.index_list;
+			
+			var index_item = index_list[index];
+			
+			var img_list = index_item['picture_list'];
+			
+			
+			//预览图片
+			uni.previewImage({
+				urls: img_list,
+				success: function(data) {
+					console.log('选中了第' + (data.tapIndex + 1) + '个按钮,第' + (data.index + 1) + '张图片');
+				},
+				fail: function(err) {
+					console.log(err.errMsg);
+				}
+			});
 		},
 		//这只是一个测试函数
 		bindKeyInput: function() {
