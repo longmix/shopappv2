@@ -337,8 +337,6 @@ export default {
 		that.abotapi.set_shop_option_data(that, that.callback_function);
 		console.log('pages/tabBar/index/index====>>>>', options);
 		
-		this.get_publish_list();
-		
 		var that = this;
 		
 		uni.getSystemInfo({
@@ -457,7 +455,7 @@ export default {
 			console.log('shop_option_data',shop_option_data);
 			this.cms_token = shop_option_data.option_list.cms_token;
 			this.default_publish_list_count_in_front_page = shop_option_data.option_list.default_publish_list_count_in_front_page;
-			
+			this.get_publish_list();
 		},
 		//跳转文章详情
 		goForum: function(id) {

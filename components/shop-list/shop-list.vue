@@ -1,5 +1,5 @@
 <template>
-	<view style='background-color: #f4f4f4;padding-top: 10upx;'>
+	<view style='background-color: #f4f4f4;padding-top: 10upx;padding-bottom: 5upx;'>
 	<block v-for="(item, index) in xianmaishangList" :key="index" style='background-color: #ffffff;'>
 	<view @click="toShangDetail($event)" :data-shangid="item.xianmai_shangid" style="display: flex;padding: 10upx;margin: 10upx;border-radius: 10upx;background: #fff;">
 		<view style="width:200upx;height:200upx;margin-left: 20upx;">

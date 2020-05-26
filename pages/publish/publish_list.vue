@@ -425,7 +425,7 @@
 	}
 	.fabu_button{
 		position: fixed;
-		bottom: 42px;
+		bottom: 80px;
 		right: 8px;
 		background: #f44444;
 		border-radius: 54%;

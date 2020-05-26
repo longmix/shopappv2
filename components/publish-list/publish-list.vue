@@ -1,6 +1,6 @@
 <template>
-	<view>
-		<view v-for="(item,index) in index_list" :key="item.id" style="background: #fff;margin-bottom: 20upx;">
+	<view style="background-color: #f4f4f4;padding: 1px 0px 1px 0px;">
+		<view v-for="(item,index) in index_list" :key="item.id" style="background: #fff;margin: 8upx;border-radius: 8upx;">
 			<view class="title_box">
 				 <!-- 头像和昵称和发布时间 -->
 				<view class="head_img">
