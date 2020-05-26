@@ -268,6 +268,10 @@ export default {
 		var that = this;
 		
 		console.log('onPullDownRefresh=====>>>>>');
+		uni.showToast({
+			title: '数据更新中……',
+			icon:'loading'
+		});
 		
 		uni.removeStorageSync("coordinate_array");
 		uni.removeStorageSync("cata_list");
@@ -282,6 +286,7 @@ export default {
 		that.get_publish_list();
 		setTimeout(function() {
 			uni.stopPullDownRefresh();
+			uni.hideToast();
 		}, 1000);
 	},
 	
