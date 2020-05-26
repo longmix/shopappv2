@@ -192,14 +192,20 @@
 				{{goods_detail.name}}
 			</view>
 		</view>
-		<!-- 服务-规格选择 -->
-		<view class="info-box spec">
-			<view class="row" @tap="showService">
-				<view class="text">商品属性</view>
-				<view class="content"><view class="serviceitem">{{goods_detail.brief}}</view></view>
+		
+		<!-- 商品属性 -->
+		<view class="info-box spec" v-if="attribute_list && attribute_list.length>0">
+			<view class="text">商品属性</view>
+			<view class="row" @tap="showService">			
+				<view class="content">
+					<view class="serviceitem" v-if="index < 3" v-for="(item,index) in attribute_list">{{item.name}}: {{item.value}}</view>
+				</view>
 				<view class="arrow"><view class="icon xiangyou"></view></view>
 			</view>
-			<view class="row" @tap="showSpec(false)" v-if="isExistSpec">
+		</view>
+		<!-- 服务-规格选择 -->	
+		<view class="info-box spec" v-if="isExistSpec">		
+			<view class="row" @tap="showSpec(false)">
 				<view class="text">选择规格</view>
 				<view class="content">
 					
@@ -1211,6 +1217,11 @@ page {
 			color: #a2a2a2;
 			.serviceitem{
 				margin-right: 10upx;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				width: 60%;
+				margin-top: 10upx;
 			}
 			.sp {
 				width: 100%;
