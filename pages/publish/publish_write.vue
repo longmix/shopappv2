@@ -294,10 +294,8 @@
 					var submit_url = that.submit_url;
 				}
 				
-				uni.request({
+				that.abotapi.abotRequest({
 					url:submit_url,
-					method:'POST',
-					header:{'Content-Type': 'application/x-www-form-urlencoded'},
 					data:post_data,
 					success: function(res) {
 						if(res.data.code == 1){
@@ -311,6 +309,9 @@
 									url:"../home/home"
 								});
 							},1000);
+						}else if(res.data.code == -1){
+							console.log('登录超时');
+							return;
 						}
 										
 					}
@@ -363,7 +364,7 @@
 				
 				// 微读客获取文章列表  
 				//http://192.168.0.88/weiduke_cms/index.php/openapi/ArticleImgApi/article_list?token=gwcuuk1411034699&cataid=22&page=0
-				uni.request({
+				that.abotapi.abotRequest({
 					url:url,
 					method:'POST',
 					header:{'Content-Type': 'application/x-www-form-urlencoded'},
@@ -467,7 +468,7 @@
 			   
 			    var region_Id = ++e.detail.value;
 			    
-			    uni.request({
+			    that.abotapi.abotRequest({
 					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=region_get',
 					data: {
 						region_id: ++region_Id,

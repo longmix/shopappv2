@@ -277,7 +277,7 @@
 		</view> -->
 		<!-- 详情 -->
 		
-		<view class="re-commend" v-if="recommend_product_list">
+		<view class="re-commend" v-if="recommend_product_list.length != 0">
 			<view class="re-h">推荐商品</view>
 			   <view class="re-goods" v-for="(item,index) in recommend_product_list" :key="index" :data-productid="item.productid" @tap="block_tanchuang">
 				   <image :src="item.picture"></image>
@@ -288,8 +288,8 @@
 			   
 		</view>
 		
-		<view class="re-commend" v-if="hot_product_list">
-			<view class="re-h">热门商品</view>
+		<view class="re-commend" v-if="hot_product_list.length != 0">
+			<view class="re-h">热销商品</view>
 			   <view class="re-goods" v-for="(item,index) in hot_product_list" :key="index" :data-productid="item.productid" @tap="block_tanchuang">
 				   <image :src="item.picture"></image>
 				   <view class="re-txt">{{item.name}}</view>
@@ -381,7 +381,7 @@ export default {
 			shop_userid: '',
 			shop_name: '',
 			recommend_product_list:[],
-			hot_product_list:null,
+			hot_product_list:[],
 			jietijiage_youhui_data:'',
 			jietijiage:'',
 			huiyuanzhekou_youhui_data:'',
@@ -964,7 +964,7 @@ export default {
 				method:'post',
 				data:post_data,
 				success(res){
-					//console.log('11111111===',res)
+					console.log('11111111===',res)
 					
 					if(res.data.code == 1){
 						
@@ -982,8 +982,20 @@ export default {
 						}
 						
 						
+					}else{
+						if(list_type == 'recommend'){
+							
+							that.recommend_product_list = [];
+							
+						}
+						else if(list_type == 'hot'){
+							
+							that.hot_product_list = [];
+							
+						}
 					}
-					
+					console.log('recommend_product_list',that.recommend_product_list);
+					console.log('hot_product_list',that.hot_product_list);
 				},
 				
 				fail:function(e){
@@ -1952,7 +1964,7 @@ margin-left: 40rpx;
 	margin-left:35upx ;
 }
 .re-price{
-	font-size: 35upx;
+	font-size: 28upx;
 	text-align: center;
 	color: #f47925;
 }

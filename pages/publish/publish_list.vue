@@ -216,30 +216,28 @@
 						'Content-Type': 'application/x-www-form-urlencoded'
 					},
 					success: function (res) {
+						if(res.data.list_title){
+							that.list_title = res.data.list_title;
+							
+							uni.setNavigationBarTitle({
+								title:that.list_title
+							})
+						}
+						
+						if(res.data.data.length > that.current_page_size){
+							that.is_get_article_list = false;
+						}
+						
 						
 						if(res.data.code == 1){
-							if(res.data.data.length > that.current_page_size){
-								that.is_get_article_list = false;
-							}
+							
 							for(var i in res.data.data){
 								that.index_list.push(res.data.data[i]);
 							}
 							
-							
-							if(res.data.list_title){
-								that.list_title = res.data.list_title;
-								
-								uni.setNavigationBarTitle({
-									title:that.list_title
-								})
-							}
-							
-							
-							
 						}else{
-							that.is_get_article_list = false;
 							uni.showToast({
-								title: '暂无相关文章',
+								title: '暂无更多文章',
 								duration: 2000
 							});
 							return;
