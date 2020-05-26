@@ -143,24 +143,7 @@
 		<!-- 实体商家结束 -->
 		
 		<!-- 商品列表 -->
-		<view class="goods-list" style="margin-top: 40upx;">
-			<!-- <view class="title">
-				<image src="/static/img/hua.png"></image>
-				猜你喜欢
-				<image src="/static/img/hua.png"></image>
-			</view> -->
-			<view class="product-list">
-				<view class="product" v-for="(product,index) in productList" :key="index" @click="toGoods(product)">
-					<image mode="widthFix" :src="product.picture"></image>
-					<view class="name">{{ product.name }}</view>
-					<view class="info">
-						<view class="price">{{ product.price }}</view>
-						<view class="slogan">{{ product.slogan }}</view>
-					</view>
-				</view>
-			</view>
-			<view class="loading-text"><label v-if="!productList">{{ loadingText }}</label></view>
-		</view>
+		<productList :productsList="productList" :loadingText="loadingText" :showKucunSale="wxa_show_kucun_in_list" @toGoods="toGoods"></productList>
 		
 		<!-- 客服按钮 -->
 		<view class="u-tap-btn" v-if="wxa_show_kefu_button==1">
@@ -193,12 +176,13 @@ import io from '../../common/weapp.socket.io.js';
 import locationapi from '../../common/locationapi.js'; 
 import shopList from '../../components/shop-list/shop-list.vue';
 import publishList from '../../components/publish-list/publish-list.vue';
-//import abotapi001 from '../../../common/abotapi.js';
+import productList from '../../components/product-list/product-list.vue'
 
 export default {
 	components:{
 		shopList,
-		publishList
+		publishList,
+		productList
 	},
 	data() {
 		return {
@@ -266,6 +250,7 @@ export default {
 			wxa_kefu_mobile_num:'',
 			wxa_kefu_form_url:'',
 			wxa_kefu_bg_color:'',
+			wxa_show_kucun_in_list: '',
 			supplierid: ''
 		};
 	},
@@ -1489,9 +1474,8 @@ export default {
 			// uni.showToast({ title: e.title, icon: 'none' });
 		},
 		//商品跳转
-		toGoods(e) {
-			console.log('rrxfff===',e);
-			var productid = e.productid;
+		toGoods(productItem) {
+			var productid = productItem.productid;
 			uni.navigateTo({
 				url: '/pages/goods/goods?productid='+productid
 			});
