@@ -279,7 +279,7 @@ export default {
 		that.abotapi.set_shop_option_data(that, that.callback_function_shop_option_data);
 		that.abotapi.get_shop_info_from_server(that.callback_func_for_shop_info);
 		that.abotapi.get_xianmaishang_setting_list_remove();
-		
+		that.get_publish_list();
 		setTimeout(function() {
 			uni.stopPullDownRefresh();
 		}, 1000);

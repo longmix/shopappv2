@@ -383,7 +383,8 @@ export default {
 		
 		
 		
-		this.get_yanyubao_goods_recommend()
+		this.get_yanyubao_goods_recommend('recommend');
+		this.get_yanyubao_goods_recommend('hot');
 		
 		
 		uni.request({
@@ -886,7 +887,7 @@ export default {
 		},
 		
 		//调用接口
-		get_yanyubao_goods_recommend:function(list_type='recommend'){
+		get_yanyubao_goods_recommend:function(list_type=''){
 			console.log('goods=====>>');
 			
 			var that=this;
@@ -910,7 +911,7 @@ export default {
 				method:'post',
 				data:post_data,
 				success(res){
-					console.log('11111111===',res)
+					//console.log('11111111===',res)
 					
 					if(res.data.code == 1){
 						
@@ -918,13 +919,13 @@ export default {
 							var recommend_product_list = res.data.product_list;
 							
 							that.recommend_product_list = recommend_product_list;
-							console.log('11111111===',recommend_product_list)
+							
 						}
 						else if(list_type == 'hot'){
 							var hot_product_list = res.data.product_list;
 							
 							that.hot_product_list = hot_product_list;
-							console.log('11111111===',hot_product_list)
+							
 						}
 						
 						
@@ -946,12 +947,12 @@ export default {
 			
 		},
 		
-		block_tanchuang:function(item){
-			console.log('item',item);
+		block_tanchuang:function(productid){
+			console.log('productid',productid);
 		
 			uni.navigateTo({
 				
-			    url: 'goods?productid=' + item.productid  //这是跳转到的页面路径，？id=1这些都是传递的数据，可以直接在test页面接受
+			    url: 'goods?productid=' + productid  //这是跳转到的页面路径，？id=1这些都是传递的数据，可以直接在test页面接受
 			});
 		}
 	},
