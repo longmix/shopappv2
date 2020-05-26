@@ -195,7 +195,9 @@
 		<view class="info-box spec" v-if="attribute_list && attribute_list.length>0">
 			<view class="row" @tap="showService">			
 				<view class="content">
-					<view class="serviceitem" v-if="index < 3" v-for="(item,index) in attribute_list">{{item.name}}: {{item.value}}</view>
+					<view class="serviceitem" v-if="index < 3" v-for="(item,index) in attribute_list">
+					 <view>{{item.name}}</view> {{item.value}}
+					</view>
 				</view>
 				<view class="arrow"><view class="icon xiangyou"></view></view>
 			</view>
@@ -1399,8 +1401,13 @@ page {
 				overflow: hidden;
 				white-space: nowrap;
 				text-overflow: ellipsis;
-				width: 60%;
+				width: 58%;
 				margin-top: 10upx;
+				view {
+					color: #000;
+					display: inline-block;
+					margin-right: 20upx;
+				}
 			}
 			.sp {
 				width: 100%;
