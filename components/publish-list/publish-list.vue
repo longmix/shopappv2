@@ -40,15 +40,20 @@
 				</view>
 				<view style="position:absolute;left: 60upx;border-width: 15rpx;border-style: solid;border-color: transparent transparent #f2f2f2 #f2f2f2;transform: rotate(135deg);"></view>
 				<view style="display: flex;background-color: #f2f2f2;align-items: center;margin-top: 14upx;margin-bottom: 15upx;">
-					<view style="width: 60%;display: flex;align-items: center;padding: 10upx 10upx;">
+					<view style="width: 100%;display: flex;align-items: center;padding: 10upx 10upx;">
 						<!-- 点赞和浏览 -->
-						<view style="display: flex;align-items: center;margin-right: 20upx;">
-							<image src="../../static/img/help/comment.png" style="width: 40rpx;height:40rpx;"></image>
-							<view style="color: #333;font-size: 22upx;">{{item.click}}人浏览</view>
+						<view style="display: flex;align-items: center;margin-right: 20upx;width:33%;">
+							<image src="../../static/img/help/click_view.png" style="width: 40rpx;height:40rpx;"></image>
+							<view style="color: #333;font-size: 22upx;margin-left: 10upx;">{{item.click}}人浏览</view>
 						</view>
-						<view style="display: flex;align-items: center;">
+						<view style="display: flex;align-items: center;margin-right: 20upx;width:33%;">
 							<image src="../../static/img/help/dianzan_grey.png" style="width: 40rpx;height:40rpx;"></image>
-							<view style="color: #333;font-size: 22upx;">{{item.click}}人点赞</view>
+							<view style="color: #333;font-size: 22upx;margin-left: 10upx;">{{item.dianzan_num}}人点赞</view>
+						</view>
+						
+						<view style="display: flex;align-items: center;width:33%;">
+							<image src="../../static/img/help/comment.png" style="width: 40rpx;height:40rpx;"></image>
+							<view style="color: #333;font-size: 22upx;margin-left: 10upx;">{{item.remark_num}}人评论</view>
 						</view>
 					</view>
 					<view style="color:#2cb2f0;width: 40%;text-align: right;">
@@ -105,7 +110,7 @@
 		border-radius:6upx;
 		padding: 2rpx 6rpx;
 		text-align: center;
-		width: 50%;
+		width: 100%;
 		
 	}
 	.content{

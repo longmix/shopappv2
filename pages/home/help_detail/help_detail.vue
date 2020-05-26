@@ -47,7 +47,8 @@
 				
 				<view class="article_bottom">
 					<view style="color:#bfbfbf;">阅读 {{wz_text.click}}</view>
-					<view @tap='doArticleDianzan'><image style="width:30rpx;height:30rpx;margin-right:15rpx"  :src="isDianzan ? '../../../../static/img/help/dianzan_red.png' : '../../../../static/img/help/dianzan_grey.png'"></image><text :style="isDianzan ? 'color:#d81e06' : 'color:#bfbfbf'" style="font-size:30upx">{{dianzanNum}}</text></view>
+					<view @tap='doArticleDianzan'><image style="width:30rpx;height:30rpx;margin-right:15rpx"  src="../../../static/img/help/dianzan_grey.png"></image>
+					<text style="font-size:30upx">{{wz_text.dianzan_num}}</text></view>
 				</view> 
 			</view>
 			
@@ -137,7 +138,7 @@
 		  
 			console.log('options==>>',options);
 			var that = this
-			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
+			//this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 			this.abotapi.set_option_list_str(that, that.callback_set_option);
 			userInfo = this.abotapi.get_user_info();
 			var current_openid = this.abotapi.get_current_openid();
@@ -148,7 +149,7 @@
 			
 			//跳转过来的页面参数用来判断头像和昵称的显示
 			if(options.form_page){
-				that.form_page = 'publish_list';
+				that.form_page = options.form_page; //'publish_list'
 			}
 			
 			
@@ -282,7 +283,7 @@
 		methods: {
 			callback_set_option: function (that, cb_params) {
 				console.log('getShopOptionAndRefresh+++++:::' + cb_params)
-				
+				that.abotapi.getColor();
 				var that = this;
 				var option_list = cb_params;
 				console.log('option_list===', option_list)
@@ -770,7 +771,7 @@
 					method: 'post',
 					data: {
 						token: this.abotapi.get_current_weiduke_token(),
-						openid: this.abotapi.get_current_openid(),
+						openid: this.abotapi.getOpenid(),
 						action: action,
 						imgid: that.wz_id,
 						dianzan_type:1,

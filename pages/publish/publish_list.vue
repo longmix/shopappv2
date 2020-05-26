@@ -65,23 +65,11 @@
 		
 		onLoad:function(options){
 			console.log('options',options);
-			if(options.my_collect){
-				this.my_collect = options.my_collect;
-				var last_url = '/pages/publish/publish_list?my_collect=my_collect';
-				this.abotapi.goto_user_login(last_url, 'switchTab');
-			}
 			
 			var that = this;
 			if(options.cataid){
 				this.cms_cataid = options.cataid;
 			}
-			
-			
-			// uni.setNavigationBarTitle({
-			// 	title:this.list_title
-			// })
-			
-			
 			
 			that.abotapi.set_shop_option_data(that, that.callback_function);
 			
@@ -102,7 +90,9 @@
 			
 		},
 		onPullDownRefresh:function(){
+			console.log(123465);
 			this.current_page = 1;
+			this.index_list = [];
 			this.get_publish_list();
 			
 			
@@ -172,20 +162,15 @@
 			},
 			//发布按钮跳转
 			toPublish_index:function(){
-				uni.switchTab({
-					url:'./publish_index'
-				})
-				console.log(this.abotapi.globalData.is_publish_index_in_tabbar);
-				// if(this.abotapi.globalData.is_publish_index_in_tabbar == 1){
-				// 	uni.switchTab({
-				// 		url:'./publish_index'
-				// 	});
-				// }else{
-				// 	uni.navigateTo({
-				// 		url:'./publish_index'
-				// 	})
-				// }
-				
+				if(this.abotapi.globalData.is_publish_index_in_tabbar == 1){
+					uni.switchTab({
+						url:'./publish_index'
+					})
+				}else{
+					uni.navigateTo({
+						url:'./publish_index'
+					})
+				}
 			},
 			//获取帖子列表
 			get_publish_list: function (action='') {
@@ -221,23 +206,6 @@
 					post_data['action'] = action;
 					post_data['search'] = that.search_text;
 				}
-				
-				
-				if(this.my_collect == 'my_collect'){
-					var openid = uni.setStorageSync("current_openid");
-					var userInfo = this.abotapi.get_user_info();
-					var post_data = {
-							token:that.cms_token,
-							sellerid: this.abotapi.globalData.default_sellerid,
-							userid:userInfo.userid,
-							action: 'my_collect',
-							openid:openid,
-							page:that.current_page,
-							page_size:that.current_page_size,
-						};
-				}
-				//搜索的情况
-				//if(){}
 				
 				this.abotapi.abotRequest({
 					url: that.abotapi.globalData.weiduke_server_url + 'openapi/ArticleImgApi/article_list',
@@ -455,7 +423,7 @@
 		font-size: 28upx;
 	}
 	.fabu_button{
-		position: absolute;
+		position: fixed;
 		bottom: 42px;
 		right: 8px;
 		background: #f44444;
@@ -469,4 +437,5 @@
 		line-height: 30px;
 
 	}
+	
 </style>

@@ -337,6 +337,12 @@
 				"softinputNavBar":"none"
 			}
 		},{
+		    "path" : "pages/publish/my_publish",
+		    "style" : {
+				"navigationBarTitleText": "帖子列表",
+				"softinputNavBar":"none"
+			}
+		},{
 		    "path" : "pages/publish/publish_write",
 		    "style" : {}
 		},

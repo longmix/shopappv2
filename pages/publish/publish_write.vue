@@ -153,8 +153,8 @@
 		onLoad: function (options) {
 			var that = this;
 			this.form_typ = 3;
-			console.log('options',options);
-			console.log('456789',this.form_typ);
+			//console.log('options',options);
+			
 			if(options.form_type){
 				this.form_type = options.form_type;
 			}
@@ -615,7 +615,7 @@
 	.uni-textarea textarea{
 		padding: 8upx 8upx 0upx 0upx;
 		font-size: 35upx;
-		color: #AAAAAA;
+		
 	}
 	.input-flex{
 		/* background: #FFFFFF; */
