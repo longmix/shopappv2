@@ -48,7 +48,8 @@
 			  this.abotapi.globalData.version_number = extConfig.version_number;
 			}
 		
-			if (extConfig.navigationBarBackgroundColor_fixed) {
+		
+			if (extConfig.navigationBarBackgroundColor_fixed != 'undefined') {
 			  this.abotapi.globalData.navigationBarBackgroundColor_fixed = extConfig.navigationBarBackgroundColor_fixed;
 			}
 		

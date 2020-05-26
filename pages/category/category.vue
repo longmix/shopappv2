@@ -3,7 +3,7 @@
 		<!-- 状态栏 -->
 		<view class="status" :style="{position:headerPosition}"></view>
         <view class="header" :style="{position:headerPosition}">
-			<view class="addr" :style="{fontSize:current_citynameWidth+'px'}"><view class="icon location"></view>{{current_cityname}}</view>
+			
 			<view class="input-box">
 				<input placeholder="默认关键字" placeholder-style="color:#c0c0c0;" @tap="toSearch()"/>
 				<view class="icon search"></view>
@@ -59,8 +59,7 @@
 			return {
 				showCategoryIndex:0,
 				headerPosition:"fixed",
-				current_cityname:'',
-				current_citynameWidth:'',
+
 				//分类列表
 				categoryList:'',
 				cataList:'',
@@ -134,21 +133,7 @@
 				//====1、更新界面的颜色
 				that.abotapi.getColor();
 				
-				// uni.getStorageSync('current_cityname');
-				that.current_cityname = uni.getStorageSync('current_cityname');
-				console.log("that.current_cityname",that.current_cityname);
-				
-				var current_citynameLength = that.current_cityname.length;
-				
-				if(current_citynameLength == 2){
-					that.current_citynameWidth = uni.upx2px(28);
-				}
-				else if(current_citynameLength == 3){
-					that.current_citynameWidth = uni.upx2px(24);
-				}
-				else if(current_citynameLength == 4){
-					that.current_citynameWidth = uni.upx2px(20);
-				}
+			
 			},
 			
 			//消息列表

@@ -261,7 +261,7 @@ module.exports = {
 		uni.setStorageSync("openid",openid)
 	},
 	getOpenid:function(openid){
-		uni.getStorageSync("openid")
+		return uni.getStorageSync("openid")
 	},
 	getLoginCode:function(){
 		return uni.getStorageSync("loginCode");
@@ -835,7 +835,7 @@ module.exports = {
 	
 	    this.globalData.option_list = option_list;
 	
-	    //console.log('111111111111111111111111111111::' + this.globalData.navigationBarBackgroundColor_fixed);
+	    // console.log('111111111111111111111111111111::' + this.globalData.navigationBarBackgroundColor_fixed);
 	
 	    if (this.globalData.navigationBarBackgroundColor_fixed != 1){
 	

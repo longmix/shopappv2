@@ -91,9 +91,9 @@
 			<view class="mask"></view>
 			<view class="layer2" @tap.stop="discard">
 				<view class="content">
-					<view class="row" v-for="(item,index) in goodsData.service" :key="index">
+					<view class="row" v-for="(item,index) in attribute_list" :key="index">
 						<view class="title">{{item.name}}</view>
-						<view class="description">{{item.description}}</view>
+						<view class="description">{{item.value}}</view>
 					</view>
 				</view>
 				<view class="btn"><view class="button" @tap="hideService">完成</view></view>
@@ -195,7 +195,7 @@
 		<!-- 服务-规格选择 -->
 		<view class="info-box spec">
 			<view class="row" @tap="showService">
-				<view class="text">服务</view>
+				<view class="text">商品属性</view>
 				<view class="content"><view class="serviceitem">{{goods_detail.brief}}</view></view>
 				<view class="arrow"><view class="icon xiangyou"></view></view>
 			</view>
@@ -240,19 +240,7 @@
 				   <view class="re-txt">{{item.name}}</view>
 				   <view class="re-price">¥{{item.price}}</view>
 			   </view>
-			   
-			   <!-- <view class="re-goods">
-			   				   <image src="../../static/img/goods.jpg"></image>
-			   				   <view class="re-txt">纯银一路鹿有你玫瑰彩金锁骨项链女生日礼物小众设计感ins冷淡风</view>
-			   				   <view class="re-price">$184</view>
-			   </view>
-			   
-			   <view class="re-goods">
-			   				   <image src="../../static/img/goods.jpg"></image>
-			   				   <view class="re-txt">纯银一路鹿有你玫瑰彩金锁骨项链女生日礼物小众设计感ins冷淡风</view>
-			   				   <view class="re-price">$184</view>
-			   </view> -->
-			   
+  
 			   
 		</view>
 		
@@ -333,6 +321,7 @@ export default {
 			attr_list_arr: [],
 			attr_key_arr: [],
 			attr_list: [],
+			attribute_list: [],
 			picture_length: 0,
 			amount: 1,
 			buys:'立即购买',
@@ -412,7 +401,7 @@ export default {
 
 					that.picture_list = that.goods_detail.picture_list;
 					that.picture_length = that.goods_detail.picture_list ? that.goods_detail.picture_list.length : 0;
-					
+					that.attribute_list = that.goods_detail.attribute_list;
 					
 					 var attr_list = that.goods_detail.attr_list
 					 

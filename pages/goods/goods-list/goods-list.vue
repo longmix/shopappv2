@@ -9,34 +9,24 @@
 		<!-- 占位 -->
 		<view class="place"></view>
 		<!-- 商品列表 -->
-		<view class="goods-list">
-			<view class="product-list">
-				<view class="product" v-if="item.cataid == cataid" v-for="(item,indexs) in goodsList" :key="indexs" @click="toGoods(item.productid)">
-					
-					<image class="shouqing" v-if="item.inventory == 0" src="https://yanyubao.tseo.cn/Tpl/static/images/shouqing.png" ></image>
-					<image mode="widthFix" :src="item.picture"></image>
-					<view class="name">{{item.name}}</view>
-					<view class="info">
-						<view class="price">{{item.price}}</view>
-						<!-- <view class="slogan">{{item.seller_name}}</view> -->
-					</view>
-				</view>
-			</view>
-			<view v-if="!goodsList" class="loading-text">{{loadingText}}</view>
-		</view>
+		<productList :productsList="goodsList" :cataid="cataid" :loadingText="loadingText" :showKucunSale="wxa_show_kucun_in_list" @toGoods="toGoods"></productList>
+		
 	</view>
 </template>
 
 <script>
+	import productList from '../../../components/product-list/product-list.vue'
 	var app = getApp();
 	var cataid;
 	export default {
+		components:{
+			productList
+		},
 		data() {
 			return {
 				cataid:'',
 				goodsList:'',
 				sorts:1,
-				
 				loadingText:"暂无商品",
 				headerTop:"0px",
 				headerPosition:"fixed",
@@ -45,6 +35,7 @@
 					{text:"销量",selected:false,orderbyicon:false,orderby:0},
 					{text:"价格",selected:false,orderbyicon:false,orderby:0}
 				],
+				wxa_show_kucun_in_list: ''
 			};
 		},
 		onLoad: function (option) { //option为object类型，会序列化上个页面传递的参数
@@ -59,6 +50,7 @@
 				title: title
 			});
 			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
+			this.abotapi.set_option_list_str(this,this.callback_set_option_list_str);
 			this.cataid = option.cataid;
 			//兼容H5下排序栏位置
 			// #ifdef H5
@@ -115,7 +107,13 @@
 			}
 		},
 		methods:{
-			
+			callback_set_option_list_str:function(that,cb_params){
+				var that = this;
+				if(!cb_params){
+					return;
+				}
+				that.wxa_show_kucun_in_list = cb_params.wxa_show_kucun_in_list		
+			},
 			//获取商品列表
 			reload(){
 				var that = this;
@@ -154,14 +152,10 @@
 				});
 			},
 			//商品跳转
-			toGoods(e){
-				console.log('xxxafff===',e);
-				
-				// var productid = e.productid;
-				
-				// uni.showToast({title: '商品'+e.goods_id,icon:"none"});
+			toGoods(productItem) {
+				var productid = productItem.productid;
 				uni.navigateTo({
-					url: '/pages/goods/goods?productid='+ e
+					url: '/pages/goods/goods?productid='+productid
 				});
 			},
 			//排序类型   sort值选项(5:最新、3:销量、4:价格) 
@@ -238,71 +232,5 @@
 		height: 100upx;
 
 	}
-.goods-list{
-		.loading-text{
-			width: 100%;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			// height: 60upx;
-			color: #979797;
-			font-size: 24upx;
-		}
-		.product-list{
-			width: 92%;
-			padding: 0 4% 3vw 4%; 
-			display: flex;
-			justify-content: space-between;
-			flex-wrap: wrap;
-			.product{
-				width: 48%;
-				border-radius: 20upx;
-				background-color: #fff;
-				margin: 0 0 15upx 0;
-				box-shadow: 0upx 5upx 25upx rgba(0,0,0,0.1);
-				image{
-					width: 100%;
-					border-radius: 20upx 20upx 0 0;
-					position: relative;
-				}
-				.shouqing{
-					width: 335upx;
-					height: 335upx;
-					position: absolute;
-					opacity: 0.8;
-					margin: 0 40upx 15upx 0;
-					background-color: #808080;
-					z-index: 2;
-				}
-				.name{
-					width: 92%;
-					margin: 10upx 4%;
-					display: -webkit-box;
-					-webkit-box-orient: vertical;
-					-webkit-line-clamp: 2;
-					text-align: justify;
-					overflow: hidden;
-					font-size: 30upx;
-				}
-				.info{
-					display: flex;
-					justify-content: space-between;
-					align-items: flex-end;
-					width: 92%;
-					padding: 10upx 4% 10upx 4%;
-					
-					.price{
-						color: #e65339;
-						font-size: 30upx;
-						font-weight: 600;
-					}
-					.slogan{
-						color: #807c87;
-						font-size: 24upx;
-					}
-				}
-			}
-			
-		}
-	}
+
 </style>
