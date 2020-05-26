@@ -121,7 +121,7 @@
 									<image v-for="(items,indexs) in item.star_level" :key="indexs" style="width: 40upx;height: 40upx;" src="../../static/img/VIP.png"></image>
 									
 								</view>
-								<view style="margin-right: 30rpx;font-size: 24upx;">
+								<view style="margin-right: 30upx;font-size: 24upx;">
 									{{item.dis}}
 								</view>
 							</view>
@@ -1818,10 +1818,10 @@ page{position: relative;background-color: #fff;}
   height:50px;
   float:left;
   font-size:13px;
-  line-height:50rpx;
+  line-height:50upx;
   color:black;
   overflow: hidden;
-  letter-spacing: 3rpx;
+  letter-spacing: 3upx;
   text-overflow: ellipsis;
 }
 
@@ -1987,8 +1987,32 @@ page{position: relative;background-color: #fff;}
 		border: 1px solid #666;
 		text-align: center;
 		color: #555;
-		border-radius: 6rpx;
+		border-radius: 6upx;
 		padding: 2px 5px;
-		margin-right: 10rpx;
+		margin-right: 10upx;
+	}
+	.u-tap-btn {
+	  position:fixed;
+	  right:20upx;
+	  bottom:150upx;
+	  border:0upx;
+	}
+	
+	.u-go-home2 {
+	  display:flex;
+	  flex-direction:row;
+	  justify-content:center;
+	  border-radius:80upx;
+	  width:110upx;
+	  height:110upx;
+	  border:0px solid #eee;
+	  font-size:20upx;
+	  /*box-shadow:0px 4upx 8upx rgba(0,0,0,0.35);*/
+	  z-index:2;
+	  opacity:1;
+	  margin-bottom:20upx;
+	  /*background:#44b549;*/
+	  align-items:center;
+	
 	}
 </style>
