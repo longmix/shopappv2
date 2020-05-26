@@ -239,9 +239,9 @@
 		</view> -->
 		<!-- 详情 -->
 		
-		<view class="re-commend">
+		<view class="re-commend" v-if="recommend_product_list">
 			<view class="re-h">推荐商品</view>
-			   <view class="re-goods" v-for="(item,index) in recommend_product_list" :key="index" @tap="block_tanchuang(item)">
+			   <view class="re-goods" v-for="(item,index) in recommend_product_list" :key="index" :data-productid="item.productid" @tap="block_tanchuang">
 				   <image :src="item.picture"></image>
 				   <view class="re-txt">{{item.name}}</view>
 				   <view class="re-price">¥{{item.price}}</view>
@@ -250,9 +250,9 @@
 			   
 		</view>
 		
-		<view class="re-commend">
+		<view class="re-commend" v-if="hot_product_list">
 			<view class="re-h">热门商品</view>
-			   <view class="re-goods" v-for="(item,index) in recommend_product_list" :key="index">
+			   <view class="re-goods" v-for="(item,index) in hot_product_list" :key="index" :data-productid="item.productid" @tap="block_tanchuang">
 				   <image :src="item.picture"></image>
 				   <view class="re-txt">{{item.name}}</view>
 				   <view class="re-price">¥{{item.price}}</view>

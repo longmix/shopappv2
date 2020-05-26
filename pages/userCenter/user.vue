@@ -135,6 +135,9 @@
 		},
 		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
 		onPullDownRefresh() {
+			this.onShow();
+			
+			
 		    setTimeout(function () {
 		        uni.stopPullDownRefresh();
 		    }, 1000);
@@ -153,7 +156,7 @@
 			// #endif
 			
 			// #ifdef APP-PLUS
-				that.about = '关于app';
+				that.about = '关于APP';
 			// #endif
 			
 			// #ifdef MP-WEIXIN
@@ -163,7 +166,7 @@
 			
 			that.default_copyright_text = that.abotapi.globalData.default_copyright_text;
 			
-			this.abotapi.set_option_list_str(this, 
+			that.abotapi.set_option_list_str(that, 
 				function(that001, option_list){
 					that.abotapi.getColor();
 					
@@ -174,29 +177,7 @@
 				}
 			);
 			
-			uni.request({
-			    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_shop_icon_usercenter',
-			    method: 'post',
-			    data: {
-					sellerid: this.abotapi.globalData.default_sellerid,
-				},
-			    header: {
-					'Content-Type': 'application/x-www-form-urlencoded'
-			    },
-			    success: function (res) {
-					console.log('kaafff===', res);
-					var productlist = res.data.data;
-					console.log('akafff===', productlist);
-					that.gooosList = productlist
-				  
-			    },
-			    fail: function (e) {
-					uni.showToast({
-						title: '网络异常！',
-						duration: 2000
-					});
-			    },
-			});
+			
 			that.getPage();
 			this.statusHeight = 0;
 			// #ifdef APP-PLUS
@@ -218,9 +199,29 @@
 		onShow(){
 			var that = this;
 
-			that.userInfo  = this.abotapi.get_user_info();
-
-			that.getPage();
+			
+			
+			
+			that.abotapi.abotRequest({
+			    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_shop_icon_usercenter',
+			    data: {
+					sellerid: this.abotapi.globalData.default_sellerid,
+				},
+			    success: function (res) {
+					console.log('kaafff===', res);
+					var productlist = res.data.data;
+					console.log('akafff===', productlist);
+					that.gooosList = productlist
+				  
+			    },
+			    fail: function (e) {
+					uni.showToast({
+						title: '网络异常！',
+						duration: 2000
+					});
+			    },
+			});
+			
 			
 			uni.getStorage({
 				key: 'UserInfo',
@@ -242,29 +243,26 @@
 			//获取用户信息
 			getPage: function () {
 				var that = this;
-				var userInfo = that.userInfo
+
+				var userInfo = that.abotapi.get_user_info();
 				
 				console.log('getpage--userInfo==',userInfo)
 				
 				if(userInfo && userInfo.userid){
-					uni.request({
-						url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
+					that.abotapi.abotRequest({
+						url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
 						data: {
-							sellerid: this.abotapi.globalData.default_sellerid,
+							sellerid: that.abotapi.globalData.default_sellerid,
 							checkstr: userInfo.checkstr,
 							userid: userInfo.userid,
-							appid: this.abotapi.globalData.xiaochengxu_appid,
+							appid: that.abotapi.globalData.xiaochengxu_appid,
 						},
-						header: {
-							"Content-Type": "application/x-www-form-urlencoded"
-						},
-						method: "POST",
 						success: function (res) {
 							console.log('ddd', res);
 				
 							if (res.data.code == "-1") {
 								var last_url = '/pages/user/index';
-								this.abotapi.goto_user_login(last_url, 'normal');
+								that.abotapi.goto_user_login(last_url, 'normal');
 							} else {
 								var data = res.data;
 								that.user_info = data.data;
