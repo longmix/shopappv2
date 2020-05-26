@@ -270,7 +270,7 @@
 							  
 							//保存openid
 							that.abotapi.set_current_openid(request_res.data.openid);
-							that.abotapi.setOpenid('userid_openid_' + res.data.userid);
+							that.abotapi.setOpenid('userid_openid_' + request_res.data.userid);
 							
 							console.log('更新缓存的用户信息:');
 							console.log(that.abotapi.globalData.userInfo);
