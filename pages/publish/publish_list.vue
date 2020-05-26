@@ -38,6 +38,7 @@
 				catId:0,
 				brandId: 0,
 				focus: false,
+				publish_img_cata_list:[],
 				hotKeyShow: true,
 				historyKeyShow: true,
 				searchValue: '',
