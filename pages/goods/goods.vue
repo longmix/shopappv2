@@ -170,9 +170,7 @@
 			
 		</view>
 		
-		
-		
-		
+
 		<!-- 商品主图轮播 -->
 		<view class="swiper-box">
 			<swiper circular="true" autoplay="true" @change="swiperChange">
@@ -195,7 +193,6 @@
 		
 		<!-- 商品属性 -->
 		<view class="info-box spec" v-if="attribute_list && attribute_list.length>0">
-			<view class="text">商品属性</view>
 			<view class="row" @tap="showService">			
 				<view class="content">
 					<view class="serviceitem" v-if="index < 3" v-for="(item,index) in attribute_list">{{item.name}}: {{item.value}}</view>
@@ -213,9 +210,48 @@
 						<view>{{spec1}} {{spec2}}</view>
 					</view>
 				</view>
-				<view class="arrow"><view class="icon xiangyou"></view></view>
+				<view class="arrow">
+					<view class="icon xiangyou"></view>
+				</view>
 			</view>
 		</view>
+		
+		 <!-- 会员折扣价 -->
+		  <view>
+		 	<view class="drpt_0" :style="{display:huiyuanzhekou==1?'block':'none'}">
+		     <view class="yhmc">{{huiyuanzhekou_youhui_name}}</view>
+		     <view class="drpt_1" v-for="(item, index) in huiyuanzhekou_youhui_data" :key="index">
+		       <view class="yh_1">{{item.level_name}} <text class="yh_1_1">￥{{item.level_price}}</text> </view>
+		     </view>
+		   </view>
+		 
+		   <view class="drpt_0" :style="{display:duorenpintuan==1?'block':'none'}">
+		     <view class="yhmc">多人拼团</view>
+		     <view class="drpt_2">
+		       <view class="yh_1">商品可多人拼团
+		         <text @tap='cataChat' id='pintuan'>查看更多>></text>
+		       </view>
+		     </view>
+		   </view>
+		 
+		   <view class="drpt_0" :style="{display:sharekanjia==1?'block':'none'}">
+		     <view class="yhmc">分享砍价</view>
+		     <view class="drpt_2">
+		       <view class="yh_1">商品可分享砍价
+		         <text @tap='cataChat' id='kanjia'>查看更多>></text>
+		       </view>
+		     </view>
+		   </view>
+		   <view class="drpt_0" :style="{display:xianshimiaosha==1?'block':'none'}">
+		     <view class="yhmc">限时秒杀</view>
+		     <view class="drpt_2">
+		       <view class="yh_1">商品可限时秒杀
+		         <text @tap='cataChat' id='miaosha'>查看更多>></text>
+		       </view>
+		     </view>
+		   </view>
+		 </view>
+		
 		<!-- 评价 -->
 		<!-- <view class="info-box comments" id="comments">
 			<view class="row">
@@ -340,6 +376,17 @@ export default {
 			shop_name: '',
 			recommend_product_list:[],
 			hot_product_list:null,
+			jietijiage_youhui_data:'',
+			jietijiage:'',
+			huiyuanzhekou_youhui_data:'',
+			huiyuanzhekou_youhui_name:'',
+			huiyuanzhekou:'',
+			pintuan_url:'',
+			duorenpintuan:'',
+			kanjia_url:'',
+			sharekanjia:'',
+			miaosha_url:'',
+			xianshimiaosha:''
 
 		};
 	},
@@ -954,7 +1001,138 @@ export default {
 				
 			    url: 'goods?productid=' + productid  //这是跳转到的页面路径，？id=1这些都是传递的数据，可以直接在test页面接受
 			});
-		}
+		},
+		loadCataXiangqing:function(){
+		    var that = this;
+		
+		
+		
+		    that.abotapi.abotRequest({
+		      url: that.abotapi.globalData.yanyubao_server_url +'index.php/Yanyubao/ShopAppWxa/product_detail_youhui',
+		      method: 'post',
+		      data: {
+		        productid:that.productid,
+		        //'productid': '2039',
+		        sellerid: that.abotapi.get_sellerid()
+		      },
+		      header: {
+		        'Content-Type': 'application/x-www-form-urlencoded'
+		      },
+		      success: function (res) {
+		        //--init data 
+		        var code = res.data.code;
+		        if (code >= 0) {
+		          var xiangqing = res.data.data;
+		          var cataArr = [];
+		          for (var i = 0; i < xiangqing.length; i++) {
+		            cataArr.push(xiangqing[i].youhui_type);
+		          }
+		          
+		          if (cataArr.indexOf("jietijiage")>-1){
+		            var cata_key = cataArr.indexOf("jietijiage");
+					that.jietijiage_youhui_data = xiangqing[cata_key].youhui_data;
+					that.jietijiage = 1;		            
+		          }
+		
+		          if (cataArr.indexOf("huiyuanzhekou") > -1) {
+		            var cata_key = cataArr.indexOf("huiyuanzhekou");
+					that.huiyuanzhekou_youhui_data = xiangqing[cata_key].youhui_data;
+					that.huiyuanzhekou_youhui_name = xiangqing[cata_key].youhui_name;
+					that.huiyuanzhekou = 1
+		            
+		          }
+		
+		
+		
+		          if (cataArr.indexOf("duorenpintuan") > -1) {
+		            var cata_key = cataArr.indexOf("duorenpintuan");
+		            console.log(cata_key);
+					that.pintuan_url = xiangqing[cata_key].url;
+					that.duorenpintuan = 1;
+		          }
+		          if (cataArr.indexOf("sharekanjia") > -1) {
+		            var cata_key = cataArr.indexOf("sharekanjia");
+		            console.log(cata_key);
+					that.kanjia_url = xiangqing[cata_key].url;
+					that.sharekanjia = 1
+		          }
+		          if (cataArr.indexOf("xianshimiaosha") > -1) {
+		            var cata_key = cataArr.indexOf("xianshimiaosha");
+		            that.miaosha_url = xiangqing[cata_key].url;
+					that.xianshimiaosha = 1;
+		          }
+		        } else {
+		          uni.showToast({
+		            title: res.data.msg,
+		            duration: 2000,
+		          });
+		        }
+		      },
+		      error: function (e) {
+		        uni.showToast({
+		          title: '网络异常！',
+		          duration: 2000,
+		        });
+		      },
+		    });
+		  },
+		  
+		  cataChat:function(e){
+		      console.log(e); 
+		      console.log(e.currentTarget.id);
+		  
+		      var that = this;
+		  
+		      var userInfo = that.abotapi.get_user_info();
+		  
+		      
+		      if ((!userInfo) || (!userInfo.userid)) {
+		        var last_url = null;
+		        var page_type = 'normal';
+		  
+		        if (that.productid) {
+		          last_url = '/pages/product/detail?productid=' + that.productid;
+		        }
+		        that.abotapi.goto_user_login(last_url);
+		  
+		        return;
+		      }
+		      var cata_id = e.currentTarget.id;
+		  
+		      var join_flag = '?';
+		      if (cata_id=="pintuan"){
+		        if (that.pintuan_url.indexOf("?") != -1) {
+		          join_flag = '&';
+		        }
+		        var url = that.pintuan_url + join_flag+'click_type=Wxa'
+		        //var url = 'https://yanyubao.tseo.cn/Home/DuorenPintuan/jiantuan_list/productid/3969.html?click_type=Wxa'
+		        //var url = 'http://192.168.0.205/yanyubao_server/index.php?g=Home&m=DuorenPintuan&a=jiantuan_list&productid=318&click_type=Wxa'
+		                  
+		        console.log(url);
+		        uni.navigateTo({
+		          url: '../h5browser/h5browser?url=' + encodeURIComponent(url)
+		        });
+		      } else if (cata_id == "kanjia") {
+		        if (that.kanjia_url.indexOf("?") != -1) {
+		          join_flag = '&';
+		        }
+		        var url = that.kanjia_url + join_flag +'click_type=Wxa'
+		        console.log(url);
+		        uni.navigateTo({
+		          url: '../h5browser/h5browser?url=' + encodeURIComponent(url)
+		        });
+		      } else if (cata_id == "miaosha") {
+		        if (that.miaosha_url.indexOf("?") != -1) {
+		          join_flag = '&';
+		        }
+		        var url = that.miaosha_url + join_flag +'click_type=Wxa'
+		        console.log(url);
+		        uni.navigateTo({
+		          url: '../h5browser/h5browser?url=' + encodeURIComponent(url)
+		        });
+		      }
+		  
+		    },
 	},
 	
 	filters: {
