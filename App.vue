@@ -1,21 +1,32 @@
 <script>
 	
-	import aa from 'common/abotapi.js';
+	import abot_data from 'abot_data.js';
 	export default {
 		
 		
 		onLaunch: function () {
 			console.log('App Launch')
 
-			console.log('aa',this.abotapi.globalData);
+			console.log('aa===>>>', abot_data);
+			
+			this.abotapi.globalData = abot_data.globalData;
+			
+			uni.setNavigationBarTitle({
+				title:this.abotapi.globalData.default_shopname
+			})
 			
 			
 // #ifdef MP-WEIXIN || MP-ALIPAY || MP-BAIDU || MP-TOUTIAO
 			
 			
-			let extConfig = uni.getExtConfigSync ? uni.getExtConfigSync() : {}
+			let extConfig = uni.getExtConfigSync ? uni.getExtConfigSync() : {};
 			
-			this.abotapi.globalData.xiaochengxu_appid = extConfig.xiaochengxu_appid;
+			
+			console.log('获取对象extConfig===>>>>', extConfig);
+			
+			if(extConfig.xiaochengxu_appid){
+				this.abotapi.globalData.xiaochengxu_appid = extConfig.xiaochengxu_appid;
+			}
 		
 			//强制设置当前的appid
 			
