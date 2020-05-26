@@ -11,7 +11,7 @@
 		
 		<view class="nav-icon-con">
 			
-				<view style="" v-for="(item,index) in publish_img_cata_list " :key="item.classid">
+				<view style="" v-for="(item,index) in publish_img_cata_list " :key="item.classid" :data-cataid="item.classid" @click="get_publish_cata_list">
 					<image class="nav-icon-list" :src="item.icon"></image>
 					<view style="font-size: 24upx;">{{item.name}}</view>
 				</view>
@@ -121,14 +121,14 @@
 			callback_function:function(that, shop_option_data){
 				that.abotapi.getColor();
 				
-				this.cms_token = shop_option_data.option_list.cms_token;
+				that.cms_token = shop_option_data.option_list.cms_token;
 				
-				this.get_publish_list();
+				that.get_publish_list();
 				
 				//取帖子分类列表
 			
-				this.publish_img_cata_list = shop_option_data.publish_img_cata_list;
-				console.log('aaaaaaa====',this.publish_img_cata_list);
+				that.publish_img_cata_list = shop_option_data.publish_img_cata_list;
+				console.log('aaaaaaa====',that.publish_img_cata_list);
 			
 				
 			},
@@ -252,6 +252,17 @@
 						});
 					},
 				});
+			},
+			
+			//点击导航传递cataid获取帖子
+			get_publish_cata_list:function(e){
+				
+				this.cms_cataid = e.currentTarget.dataset.cataid;
+				
+				this.index_list = [];
+				this.current_page = 1;
+				this.is_get_article_list = true;
+				this.get_publish_list();
 			},
 			
 			//搜索
