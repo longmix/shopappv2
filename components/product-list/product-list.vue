@@ -17,7 +17,7 @@
 				</view>
 			</view>
 			<!-- cataid没有传值时 -->
-			<view class="product" v-else v-for="(item,indexs) in productsList" :key="indexs" @click="toGoods(item)">
+			<view class="product" v-else  :key="indexs" @click="toGoods(item)">
 				
 				<image class="shouqing" v-if="item.inventory == 0" src="https://yanyubao.tseo.cn/Tpl/static/images/shouqing.png" ></image>
 				<image mode="widthFix" :src="item.picture"></image>
