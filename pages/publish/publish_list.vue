@@ -416,11 +416,13 @@
 		font-size: 28upx;
 		background-color: #FFFFFF;
 		padding:inherit;
+		padding: 20upx;
 	}
 	.nav-icon-con > view{
 		width: 20%;
 		margin-top: 3%;
 		text-align: center;
+	
 	}
 	.nav-icon-list{		
 		width: 70upx;
