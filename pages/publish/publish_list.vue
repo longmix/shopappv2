@@ -175,6 +175,7 @@
 			},
 			//获取帖子列表
 			get_publish_list: function (action='') {
+				
 				if(!this.is_get_article_list){
 					uni.showToast({
 						title: '暂无相关文章',
@@ -224,18 +225,17 @@
 							})
 						}
 						
-						if(res.data.data.length > that.current_page_size){
-							that.is_get_article_list = false;
-						}
-						
-						
 						if(res.data.code == 1){
-							
+							if(res.data.data.length < that.current_page_size){
+								that.is_get_article_list = false;
+							}
 							for(var i in res.data.data){
 								that.index_list.push(res.data.data[i]);
 							}
 							
 						}else{
+							that.is_get_article_list = false;
+							
 							uni.showToast({
 								title: '暂无更多文章',
 								duration: 2000

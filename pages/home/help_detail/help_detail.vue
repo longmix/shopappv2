@@ -47,15 +47,16 @@
 				
 				<view class="article_bottom">
 					<view style="color:#bfbfbf;">阅读 {{wz_text.click}}</view>
+					<!-- 点赞 -->
 					<view style="display: flex;">
 						<view @tap='doArticleDianzan' :data-zantype="1" style='margin-right: 20upx;'>
-							<image style="width:30rpx;height:30rpx;margin-right:15rpx"  src="../../../static/img/help/dianzan_grey.png"></image>
+							<image style="width:30rpx;height:30rpx;margin-right:15rpx"  :src="dianzan_status == 0 || dianzan_status == 2 ? '../../../static/img/help/dianzan_grey.png':'../../../static/img/help/dianzan_red.png'"></image>
 							<text style="font-size:30upx">{{wz_text.dianzan_num}}</text>
 						</view>
 						
 						<view @tap='doArticleDianzan' :data-zantype="2">
-							<image style="width:30rpx;height:30rpx;margin-right:15rpx"  src="../../../static/img/help/dianzan02_grey.png"></image>
-							<text style="font-size:30upx">{{wz_text.dianzan_num}}</text>
+							<image style="width:30rpx;height:30rpx;margin-right:15rpx"  :src="dianzan_status == 0 || dianzan_status == 1 ? '../../../static/img/help/dianzan02_grey.png':'../../../static/img/help/dianzan02_red.png'"></image>
+							<text style="font-size:30upx">{{wz_text.dianzan_num2}}</text>
 						</view>
 					</view>
 					
@@ -116,6 +117,7 @@
 				headlineItem_img:'',
 				content:'',
 				title:'',
+				dianzan_status:'', //点赞状态  1为点赞 2位踩 0都没有
 				id:0,
 				listid:0,
 				sellerid:'',//如何获取listid和sellerid？？？
@@ -158,7 +160,7 @@
 			var that = this
 			//this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 			this.abotapi.set_option_list_str(that, that.callback_set_option);
-			userInfo = this.abotapi.get_user_info();
+			var userInfo = this.abotapi.get_user_info();
 			var current_openid = this.abotapi.get_current_openid();
 			
 		    that.wz_id = options.id;
@@ -337,16 +339,15 @@
 					  
 						that.wz_text = res.data.data;
 						that.wz_keyword2 = wz_keyword;
-						that.wz_title = res.data.data.title
-					  
+						that.wz_title = res.data.data.title;
+						that.dianzan_status = res.data.data.dianzan_status;
 					  // uni.setNavigationBarTitle({
 					  //   title: res.data.data.title
 					  // })
 					
 						var is_col = that.wz_text.is_col;
-						if (is_col == 1) {
-							var isShoucang = !that.isShoucang;
-							that.isShoucang = isShoucang
+						if (is_col && is_col == 1) {
+							that.isShoucang = is_col
 						}
 						that.info = res.data.data.info;
 					}
@@ -384,6 +385,24 @@
 			//评论输入框获取焦点判断是否登录
 			is_login:function(){
 				console.log('获取焦点！！！！');
+				//判断是否登录
+				var userInfo = that.abotapi.get_user_info();
+				if(!userInfo || !userInfo.userid){
+					uni.showModal({
+						title:'只有登录才可以评论',
+						success:function(){
+							if(that.form_page && that.form_page == 'publish_list'){
+								var last_url = '/pages/home/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid + '&form_page=publish_list';
+							}else{
+								var last_url = '/pages/home/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid;
+							}
+							
+							that.abotapi.goto_user_login(last_url, 'normal');
+							return;
+						}
+					})
+					
+				}
 			},
 			
 			show_share_btn: function () {
@@ -442,9 +461,10 @@
 							}
 							
 							that.abotapi.goto_user_login(last_url, 'normal');
-							return;
+							
 						}
 					})
+					return;
 				}
 					
 				var wz_id = that.wz_text.id;
@@ -455,13 +475,15 @@
 				
 				var url = this.abotapi.globalData.weiduke_server_url + 'index.php/openapi/ArticleImgApi/collect_my_update.shtml';
 				var data = {
+					userid:userInfo.userid,
+					checkstr:userInfo.checkstr,
 					token: this.abotapi.get_current_weiduke_token(),
 					openid: this.abotapi.get_current_openid(),
 					id: wz_id
 				};
 				var cbSuccess = function (res) {
 					if (res.data.code == 1) {
-			     
+						that.__get_img_from_weiduke(that.wz_id,that);
 					}
 				};
 				var cbError = function (res) {
@@ -483,10 +505,13 @@
 			//获取评论列表
 			get_remark_list: function () {
 				var that = this;
+				var userInfo = this.abotapi.get_user_info();
 				uni.request({
 					url: this.abotapi.globalData.weiduke_server_url + '/openapi/ArticleImgApi/remark_img',
 					method: 'post',
 					data: {
+						userid:userInfo.userid,
+						checkstr:userInfo.checkstr,
 						token: this.abotapi.get_current_weiduke_token(),
 						openid: this.abotapi.get_current_openid(),
 						action: 'list',
@@ -537,7 +562,7 @@
 				var that = this;
 				var remark = e.detail.value;
 				var imgid = e.currentTarget.dataset.imgid
-				userInfo = this.abotapi.get_user_info();
+				var userInfo = this.abotapi.get_user_info();
 				if(!userInfo || !userInfo.userid){
 					uni.navigateTo({
 						url: '/pages/login/login',
@@ -814,22 +839,34 @@
 				}
 				
 				
-				var tongjiid = e.currentTarget.dataset.tongjiid
+				var tongjiid = e.currentTarget.dataset.tongjiid;
+				var dianzan_type = e.currentTarget.dataset.zantype;
 				console.log('eeeeeeee',e);
-				if(!that.isDianzan){
-					var action = 'add'
+				
+				if(that.dianzan_status && that.dianzan_status != 0){
+					if(that.dianzan_status == 1 && dianzan_type == 2){
+						var action = 'add';
+					}else if (that.dianzan_status == 2 && dianzan_type == 1){
+						var action = 'add';
+					}else{
+						var action = 'del';
+					}
+					
+					
 				}else{
-					var action = 'del'
+					var action = 'add';
 				}
 				uni.request({
 					url: this.abotapi.globalData.weiduke_server_url + 'openapi/ArticleImgApi/dianzan_img',
 					method: 'post',
 					data: {
+						userid:userInfo.userid,
+						checkstr:userInfo.checkstr,
 						token: this.abotapi.get_current_weiduke_token(),
 						openid: this.abotapi.get_current_openid(),
 						action: action,
 						imgid: that.wz_id,
-						dianzan_type:1,
+						dianzan_type:dianzan_type,
 					},
 					header: {
 						'Content-Type': 'application/x-www-form-urlencoded'
@@ -838,7 +875,8 @@
 						console.log('opopop',res);
 						var data = res.data;
 						if (data.code == 1) {
-							that.getArticleDianzan()
+							that.dianzan_status = dianzan_type;
+							that.__get_img_from_weiduke(that.wz_id,that);
 						}
 					}
 				})
