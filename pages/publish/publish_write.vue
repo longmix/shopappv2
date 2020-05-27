@@ -279,7 +279,7 @@
 					var post_data = {
 						token:that.cms_token,
 						formid:that.formid,
-						openid:this.abotapi.globalData.getOpenid,
+						openid:this.abotapi.get_current_openid(),
 					}
 					for(var key in e.detail.value){
 						

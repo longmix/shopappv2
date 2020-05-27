@@ -223,7 +223,7 @@
 				
 				
 				if(this.my_collect == 'my_collect'){
-					var openid = this.abotapi.getOpenid();
+					var openid = this.abotapi.get_current_openid();
 					var userInfo = this.abotapi.get_user_info();
 					var post_data = {
 							token:that.cms_token,
@@ -237,7 +237,7 @@
 				}
 				
 				if(this.my_collect == 'my_publish'){
-					var openid = this.abotapi.getOpenid();
+					var openid = this.abotapi.get_current_openid();
 					var userInfo = this.abotapi.get_user_info();
 					var post_data = {
 							token:that.cms_token,

@@ -193,9 +193,9 @@
 					
 							console.log('更新缓存的用户信息:');
 							console.log(that.abotapi.globalData.userInfo);
-	  
+
 							that.abotapi.set_user_info(that.abotapi.globalData.userInfo);						  
-							that.abotapi.setOpenid('userid_openid_' + request_res.data.userid);
+							that.abotapi.set_current_openid('userid_openid_' + request_res.data.userid);
 
 							that.abotapi.abotRequest({
 							     url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=get_user_info',

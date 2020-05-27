@@ -826,7 +826,7 @@
 					method: 'post',
 					data: {
 						token: this.abotapi.get_current_weiduke_token(),
-						openid: this.abotapi.getOpenid(),
+						openid: this.abotapi.get_current_openid(),
 						action: action,
 						imgid: that.wz_id,
 						dianzan_type:1,

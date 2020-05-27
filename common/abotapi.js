@@ -201,12 +201,6 @@ module.exports = {
 	setAuthCodeLong:function($authcode){
 		uni.setStorageSync("authcodeLong",$authcode);
 	},
-	setOpenid:function(openid){
-		uni.setStorageSync("openid",openid)
-	},
-	getOpenid:function(openid){
-		return uni.getStorageSync("openid")
-	},
 	getLoginCode:function(){
 		return uni.getStorageSync("loginCode");
 	},

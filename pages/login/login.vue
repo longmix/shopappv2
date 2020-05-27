@@ -239,7 +239,7 @@
 					return;
 			    }
 				
-				uni.request({
+				that.abotapi.abotRequest({
 				    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=login',
 				    header: {
 						"Content-Type": "application/x-www-form-urlencoded"
@@ -269,8 +269,14 @@
 							that.abotapi.globalData.userInfo.checkstr = request_res.data.checkstr;
 							  
 							//保存openid
-							that.abotapi.set_current_openid(request_res.data.openid);
-							that.abotapi.setOpenid('userid_openid_' + request_res.data.userid);
+							if(request_res.data.openid){
+								that.abotapi.set_current_openid(request_res.data.openid);
+							}
+							else{
+								that.abotapi.set_current_openid('userid_openid_' + request_res.data.userid);
+							}
+							
+							
 							
 							console.log('更新缓存的用户信息:');
 							console.log(that.abotapi.globalData.userInfo);
@@ -410,7 +416,6 @@
 				  
 									//保存openid
 									that.abotapi.set_current_openid(res.data.openid);
-									that.abotapi.setOpenid('userid_openid_' + res.data.userid);
 					  
 									console.log(that.abotapi.globalData.userInfo);
 					  
