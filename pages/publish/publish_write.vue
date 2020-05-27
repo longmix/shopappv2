@@ -151,7 +151,11 @@
 		    },
 			
 		onLoad: function (options) {
+			console.log('sssssss',1)
 			var that = this;
+			
+			
+			
 			this.form_typ = 3;
 			//console.log('options',options);
 			
@@ -165,26 +169,32 @@
 			
 			this.formid = options.cataid; //栏目页面跳转带过来的参数  栏目id
 			this.catename = options.name; //栏目页面跳转带过来的参数  栏目名称
-			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
-			this.wxa_shop_nav_bg_color = this.abotapi.globalData.option_list.wxa_shop_nav_bg_color;
-			console.log('this.wxa_shop_nav_bg_color',this.wxa_shop_nav_bg_color);
-			this.getArticleList()
+			
+			this.abotapi.set_option_list_str(that, function(that002, shop_option_data){
+				that002.abotapi.getColor();
+				
+				that002.wxa_shop_nav_bg_color = shop_option_data.wxa_shop_nav_bg_color;
+				console.log('that002.wxa_shop_nav_bg_color',that002.wxa_shop_nav_bg_color);
+			});
+			
+			
+			
+			//判断登录
+			var userInfo = that.abotapi.get_user_info();		
+			if(!userInfo || !userInfo.userid){
+				var last_url = '/pages/publish/publish_write?classid='+this.formid+'&name='+this.catename+'&submit_url='+this.submit_url+'&form_type='+this.form_type;
+				
+				this.abotapi.goto_user_login(last_url, 'normal');
+								
+			}
 			
 			
 		},
 		onShow: function(){
+			console.log('sssssss',2)
 			var that = this;
-			//判断登录			
-			var userInfo = that.abotapi.get_user_info();		
-			if(!userInfo || !userInfo.userid){
-				var last_url = '/pages/publish/publish_write?classid='+this.formid+'&name='+this.catename+'&submit_url='+this.submit_url+'&form_type='+this.form_type;
-				if(this.abotapi.globalData.is_publish_index_in_tabbar == 1){
-					this.abotapi.goto_user_login(last_url, 'switchTab');
-				}else{
-					this.abotapi.goto_user_login(last_url, 'normal');
-				}				
-			}
 			
+			this.getArticleList()
 			
 			//end
 			 
@@ -310,6 +320,16 @@
 								});
 							},1000);
 						}else if(res.data.code == -1){
+							
+							uni.showModal({
+								title:'登录超时',
+								content: '请重新登录',
+								success: function (res) {
+									var last_url = '/pages/home/home';
+									that.abotapi.goto_user_login(last_url, 'switchTab');
+								}
+							})
+							
 							console.log('登录超时');
 							return;
 						}

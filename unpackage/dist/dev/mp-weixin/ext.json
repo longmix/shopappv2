@@ -16,14 +16,14 @@
     "force_sellerid_value": "fJQzPaqVj",
     "shop_name": "本地汽车服务",
     "version_number": "1.4.0",
-    "navigationBarBackgroundColor_fixed": 0,
+    "navigationBarBackgroundColor_fixed": 1,
     "kefu_telephone": "",
     "kefu_qq": "",
     "kefu_website": "",
     "kefu_gongzhonghao": "",
     "default_copyright_text": "本地汽车服务 版权所有",
     "is_shop_cart_in_tabbar": 0,
-    "is_publish_index_in_tabbar": 1,
+    "is_publish_index_in_tabbar": 0,
     "is_publish_list_in_tabbar": 1
   },
   "extPages": {
@@ -50,10 +50,10 @@
         "text": "分类信息"
       },
       {
-        "pagePath": "pages/publish/publish_index",
+        "pagePath": "pages/category/category",
         "iconPath": "static/img/tabBar/publish.png",
         "selectedIconPath": "static/img/tabBar/publish-on.png",
-        "text": "发布"
+        "text": "商品分类"
       },
       {
         "pagePath": "pages/shopList/shopList",

@@ -47,8 +47,18 @@
 				
 				<view class="article_bottom">
 					<view style="color:#bfbfbf;">阅读 {{wz_text.click}}</view>
-					<view @tap='doArticleDianzan'><image style="width:30rpx;height:30rpx;margin-right:15rpx"  src="../../../static/img/help/dianzan_grey.png"></image>
-					<text style="font-size:30upx">{{wz_text.dianzan_num}}</text></view>
+					<view style="display: flex;">
+						<view @tap='doArticleDianzan' :data-zantype="1" style='margin-right: 20upx;'>
+							<image style="width:30rpx;height:30rpx;margin-right:15rpx"  src="../../../static/img/help/dianzan_grey.png"></image>
+							<text style="font-size:30upx">{{wz_text.dianzan_num}}</text>
+						</view>
+						
+						<view @tap='doArticleDianzan' :data-zantype="2">
+							<image style="width:30rpx;height:30rpx;margin-right:15rpx"  src="../../../static/img/help/dianzan02_grey.png"></image>
+							<text style="font-size:30upx">{{wz_text.dianzan_num}}</text>
+						</view>
+					</view>
+					
 				</view> 
 			</view>
 			
@@ -84,7 +94,7 @@
 			<view class="comment">
 		     
 				<image class="comment_img comment_write_img" src="../../../static/img/help/write.png"></image>
-		        <input class="comment_input" placeholder="写评论..." confirm-type="send" @confirm="sendRemark()" :data-imgid="wz_text.id" v-model="inputValue" type="text"></input> <!--  -->
+		        <input @focus="is_login" class="comment_input" placeholder="写评论..." confirm-type="send" @confirm="sendRemark()" :data-imgid="wz_text.id" v-model="inputValue" type="text"></input> <!--  -->
 		        
 		        <image class="comment_img comment_right_img" src="../../../static/img/help/comment.png" @tap='toReamrkList'  ></image><!--  @click="get_input_focus()" -->
 		        <view class="comment_num" :hidden="!comment_num">{{comment_num}}</view>
@@ -371,6 +381,11 @@
 					}
 				}
 			},
+			//评论输入框获取焦点判断是否登录
+			is_login:function(){
+				console.log('获取焦点！！！！');
+			},
+			
 			show_share_btn: function () {
 				console.log('aaaaa');
 				//显示分享页面
@@ -417,9 +432,19 @@
 				var that = this;
 				var userInfo = that.abotapi.get_user_info();
 				if(!userInfo || !userInfo.userid){
-					var last_url = '/pages/home/help_detail/help_detail?id=' + this.id + '&sellerid=' + this.sellerid;
-					this.abotapi.goto_user_login(last_url, 'normal');
-					return;
+					uni.showModal({
+						title:'只有登录才可以收藏',
+						success:function(){
+							if(that.form_page && that.form_page == 'publish_list'){
+								var last_url = '/pages/home/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid + '&form_page=publish_list';
+							}else{
+								var last_url = '/pages/home/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid;
+							}
+							
+							that.abotapi.goto_user_login(last_url, 'normal');
+							return;
+						}
+					})
 				}
 					
 				var wz_id = that.wz_text.id;
@@ -768,7 +793,29 @@
 			//执行文章点赞或取消:
 			doArticleDianzan:function(e){
 				var that = this;
+				
+				//判断是否登录
+				var userInfo = that.abotapi.get_user_info();
+				if(!userInfo || !userInfo.userid){
+					uni.showModal({
+						title:'只有登录才可以点赞',
+						success:function(){
+							if(that.form_page && that.form_page == 'publish_list'){
+								var last_url = '/pages/home/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid + '&form_page=publish_list';
+							}else{
+								var last_url = '/pages/home/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid;
+							}
+							
+							that.abotapi.goto_user_login(last_url, 'normal');
+							return;
+						}
+					})
+					
+				}
+				
+				
 				var tongjiid = e.currentTarget.dataset.tongjiid
+				console.log('eeeeeeee',e);
 				if(!that.isDianzan){
 					var action = 'add'
 				}else{
