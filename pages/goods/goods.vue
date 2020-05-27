@@ -115,40 +115,7 @@
 					        <view style="font-size:26rpx;color:#ccc">库存：{{goods_detail.inventory}}</view>
 					      </view>
 					 </view>
-					 <view v-if="isExistSpec" class="guige">
-					 	<!-- <view class="title">选择规格：</view> -->
-					 	<!-- <view class="sp">
-					 		<view v-for="(item,index) in goodsData" :class="[index==selectSpec?'on':'']" @tap="setSelectSpec(index)" :key="index">{{item}}</view>
-					 	</view> -->
-					 	<!-- <view class="length" v-if="selectSpec!=null">
-					 		<view class="text">数量</view>
-					 		<view class="number">
-					 			<view class="sub" @tap.stop="sub">
-					 				<view class="icon jian"></view>
-					 			</view>
-					 			<view class="input" @tap.stop="discard">
-					 				<input type="number" v-model="goodsData.number" />
-					 			</view>
-					 			<view class="add"  @tap.stop="add">
-					 				<view class="icon jia"></view>
-					 			</view>
-					 		</view>
-					 	</view> -->
-					 	
-					 	<!-- 规格开始 -->
-					 	<view class="specs" v-if="attr_list">商品选项</view>
-					 	<view class="specs-a" style='display:flex;'>
-					 		<view :class="[option_list_arr[0] == item ? 'specs-e' : 'specs-d']" v-for="(item, index) in attr_key_arr"  :data-spec1="item" @click='changeSpec1($event)'>
-					 			{{item}}
-					 		</view>
-					 	</view>
-					 	<view class="specs-a" style="display:flex;" v-if="attr_list_arr[spec1] != null">
-					 		<view :class="[option_list_arr[1] == item2 ? 'specs-e' : 'specs-d']" v-for="(item2, index) in attr_list_arr[spec1]" :data-spec2="item2"  @click="changeSpec2($event)">
-					 		  {{item2}}
-					 		</view>
-					 	</view>
-					 	<!-- 规格结束 -->
-					 </view>
+					 
 					<view class="text">数量</view>
 					<view class="number">
 					  	<view class="sub" >
@@ -202,8 +169,28 @@
 				<view class="arrow"><view class="icon xiangyou"></view></view>
 			</view>
 		</view>
+		
+		<view v-if="isExistSpec" class="guige">
+			
+			<!-- 规格开始 -->
+			<view class="specs" v-if="attr_list">商品选项</view>
+			<view class="specs-a" style='display:flex;'>
+				<view :class="[option_list_arr[0] == item ? 'specs-e' : 'specs-d']" v-for="(item, index) in attr_key_arr"  :data-spec1="item" @click='changeSpec1($event)'>
+					{{item}}
+				</view>
+			</view>
+			<view class="specs-a" style="display:flex;" v-if="attr_list_arr[spec1] != null">
+				<view :class="[option_list_arr[1] == item2 ? 'specs-e' : 'specs-d']" v-for="(item2, index) in attr_list_arr[spec1]" :data-spec2="item2"  @click="changeSpec2($event)">
+				  {{item2}}
+				</view>
+			</view>
+			<!-- 规格结束 -->
+		</view>
+		
+		
+		
 		<!-- 服务-规格选择 -->	
-		<view class="info-box spec" v-if="isExistSpec">		
+		<!-- <view class="info-box spec" v-if="isExistSpec">		
 			<view class="row" @tap="showSpec(false)">
 				<view class="text">选择规格</view>
 				<view class="content">
@@ -216,10 +203,17 @@
 					<view class="icon xiangyou"></view>
 				</view>
 			</view>
-		</view>
+		</view> -->
 		
-		 <!-- 会员折扣价 -->
-		  <view>
+		<!-- 促销活动 -->
+		  <view class="block_ladder">
+			<view class="drpt_0" :style="{display:jietijiage==1?'block':'none'}">
+			  <view class="yhmc">阶梯价格</view>
+			  <view class="drpt_1" v-for="(item, index) in jietijiage_youhui_data" wx:key="id">
+				<view class="yh_1">{{item.min}}件-{{item.max}}件 <text class="yh_1_1">{{item.price/100}}元</text> </view>
+			  </view>
+			</view>
+			 <!-- 会员折扣价 -->
 		 	<view class="drpt_0" :style="{display:huiyuanzhekou==1?'block':'none'}">
 		     <view class="yhmc">{{huiyuanzhekou_youhui_name}}</view>
 		     <view class="drpt_1" v-for="(item, index) in huiyuanzhekou_youhui_data" :key="index">
@@ -529,6 +523,8 @@ export default {
 			
 			
 		});
+		
+		this.loadCataXiangqing();
 		
 		// #ifdef MP
 		//小程序隐藏返回按钮
@@ -1109,7 +1105,7 @@ export default {
 		        var page_type = 'normal';
 		  
 		        if (that.productid) {
-		          last_url = '/pages/product/detail?productid=' + that.productid;
+		          last_url = '/pages/goods/goods?productid=' + that.productid;
 		        }
 		        that.abotapi.goto_user_login(last_url);
 		  
@@ -1516,6 +1512,9 @@ page {
 		color: #999;
 		position: relative;
 	}
+	.content{
+		padding-bottom: 70upx;
+	}
 }
 .footer {
 	position: fixed;
@@ -1657,11 +1656,7 @@ page {
 				float: left;
 				font-size: 36upx;
 			}
-			.guige{
-				border-bottom: 1px solid #bfbfbf;
-				padding-bottom: 10px;
-				margin-bottom: 10upx;
-			}
+			
 		}
 		.btn {
 			width: 100%;
@@ -1873,6 +1868,12 @@ page {
 	}
 }
 
+.guige{
+	border-bottom: 1px solid #bfbfbf;
+	padding-bottom: 10px;
+	margin-bottom: 10upx;
+	background-color: #fff;
+	}
 
 .specs{
 	  padding-left: 5%;
@@ -1980,4 +1981,70 @@ margin-left: 40rpx;
 	font-size: 35upx;
 	
 }
+.block_ladder{
+	.yh_1{
+	margin: 0;
+	outline: 0 none;
+	padding: 0;
+	}
+	.yh_1_1{
+	  color:#E3170D;
+	  width: 30%;
+	display: block;
+	float: right;
+	
+	}
+	.drpt_0 {
+	    margin: 1%;
+	    width: 98%;
+	    border-bottom: 1rpx solid #eee;
+	    /*box-shadow: 0rpx 2rpx 2rpx #888888;*/
+	    display: none;
+	    outline: 0 none;
+	    padding: 0;
+	    overflow:hidden;
+	}
+	.yhmc {
+	    margin-left: 20rpx;
+	    margin-top: 20rpx;
+	    font-size: 28rpx;
+	    height: 40rpx;
+	    line-height: 40rpx;
+	    border: 2rpx solid #E3170D;
+	    border-radius: 6rpx;
+	    padding: 2rpx 8rpx;
+	    color: #E3170D;
+	    top: 30rpx;
+	    left: 30rpx;
+	    float: left;
+	    max-width: 25%;
+	}
+	.drpt_1 {
+	    width: 70%;
+	    height: auto;
+	    padding-top: 6rpx;
+	    padding-bottom: 6rpx;
+	    padding-right: 2%;
+	    float: right;
+	    text-align: right;
+	    font-size: 28rpx;
+	    color: #666;
+	}
+	.drpt_2 {
+	    width: 60%;
+	    height: auto;
+	    padding-top: 30rpx;
+	    padding-bottom: 30rpx;
+	    margin-right: 4%;
+	    float: right;
+	    text-align: right;
+	    font-size: 30rpx;
+	    color: #666;
+	}
+	.drpt_2 text{
+	  color: blue;
+	  font-size: 26rpx;
+	}
+}
+
 </style>

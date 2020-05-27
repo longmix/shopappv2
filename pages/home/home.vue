@@ -104,53 +104,19 @@
 		
 		<!-- 实体商家列表 -->
 		<shopList v-if="twoArr" :xianmaishangList="twoArr" @toShangDetail="toShangDetail"></shopList>
-		<publishList v-if="index_list" :index_list="index_list" @goForum="goForum" @previewImage="previewImage"></publishList>
-		<!-- <view v-if="twoArr" style='background-color: #f4f4f4;padding-top: 20upx;'>
-			<block v-for="(item,index) in twoArr" :key="index" style="background-color: #ffffff;">
-				
-				<view class="shang_box" @click="toShangDetail($event)" :data-shangid="item.xianmai_shangid">
-					<view style="width:200upx;height:200upx;margin-left: 20upx;">
-						
-						<image style="width:200upx;height:200upx;" :src="item.icon_image"></image>
-					</view>
-					<view style="width:100%;margin-left: 20upx;">
-						<view> 
-							<view style="font-size: 30upx;color:#333;">{{item.name}}</view>
-							<view style="display: flex; align-items:center;justify-content:space-between;">
-								<view style="display: flex;margin-top: 10upx;">
-									<image v-for="(items,indexs) in item.star_level" :key="indexs" style="width: 40upx;height: 40upx;" src="../../static/img/VIP.png"></image>
-									
-								</view>
-								<view style="margin-right: 30upx;font-size: 24upx;">
-									{{item.dis}}
-								</view>
-							</view>
-							<view style="font-size: 24upx;color:#666;margin-top: 10upx;">{{item.city_name}}|{{item.cata_name}}</view>
-							 <view v-if="item.spec != ''" style="display: flex;align-items: center;flex-wrap: wrap;">
-								<view v-for="(items,index) in item.spec" :key="index" style="padding:4px 10upx;margin:10upx 10upx 0upx 0upx;border-radius:6upx;background: #ff8000 linear-gradient(to right, rgba(255,255,255,0), rgba(2555,255,255,.5));font-size: 24upx;color:#fff;">{{items}}</view>
-								
-							</view> 
-							<view v-if="item.spec != ''" style="display: flex;flex-wrap:wrap;">
-								<view v-for="(items,indexs) in item.spec" :key="indexs" class="youhui-biaoqian">{{items}}</view>
-								
-								
-							</view>
-						</view>
-					</view>
-				</view>
-			</block>
-		</view> -->
 		<!-- 实体商家结束 -->
-		
+		<publishList v-if="index_list" :index_list="index_list" @goForum="goForum" @previewImage="previewImage"></publishList>
+			
 		<!-- 商品列表 -->
 		<view style="font-size:30upx;text-align: center;
-padding: 30upx auto;
-display: block;
-height: 80upx;
-width: 100%;
-">———— 最新上架 ————</view>
-		<productList :productsList="productList" :loadingText="loadingText" :showKucunSale="wxa_show_kucun_in_list" @toGoods="toGoods"></productList>
+			padding: 30upx auto;
+			display: block;
+			height: 80upx;
+			width: 100%;
+		">———— 最新上架 ————</view>
+		<productList v-if="!wxa_hidden_product_list || wxa_hidden_product_list==0" :productsList="productList" :loadingText="loadingText" :showKucunSale="wxa_show_kucun_in_list" @toGoods="toGoods"></productList>
 		
+
 		<!-- 客服按钮 -->
 		<view class="u-tap-btn" v-if="wxa_show_kefu_button==1">
 			<block v-if="wxa_kefu_button_type==1">
@@ -257,6 +223,7 @@ export default {
 			wxa_kefu_form_url:'',
 			wxa_kefu_bg_color:'',
 			wxa_show_kucun_in_list: '',
+			wxa_hidden_product_list:'',
 			supplierid: ''
 		};
 	},
@@ -352,7 +319,7 @@ export default {
 		
 		uni.getSystemInfo({
 		    success: function (res) {
-				
+				console.log('getSystemInfo==',res)
 				that.windowHeight = res.windowHeight;
 				
 		    }
