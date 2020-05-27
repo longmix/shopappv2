@@ -114,8 +114,7 @@
 			height: 80upx;
 			width: 100%;
 		">———— 最新上架 ————</view>
-		<productList v-if="!wxa_hidden_product_list || wxa_hidden_product_list==0" :productsList="productList" :loadingText="loadingText" :showKucunSale="wxa_show_kucun_in_list" @toGoods="toGoods"></productList>
-		
+		<productList v-if="!wxa_hidden_product_list || wxa_hidden_product_list==0" :productsList="productList" :loadingText="loadingText" :showKucunSale="wxa_show_kucun_in_list" @toGoods="toGoods"></productList>	
 
 		<!-- 客服按钮 -->
 		<view class="u-tap-btn" v-if="wxa_show_kefu_button==1">
@@ -213,6 +212,7 @@ export default {
 			imgheights: [],
 			current: 0,
 			windowHeight: 0,
+			windowWidth: 0,
 			sugData:'',
 			
 			//客服相关
@@ -320,6 +320,7 @@ export default {
 		uni.getSystemInfo({
 		    success: function (res) {
 				console.log('getSystemInfo==',res)
+				that.windowWidth = res.windowWidth;
 				that.windowHeight = res.windowHeight;
 				
 		    }
@@ -1500,7 +1501,7 @@ export default {
 		      ratio = imgwidth / imgheight;
 		    console.log(imgwidth, imgheight)
 		    //计算的高度值  
-		    var viewHeight = this.windowHeight / ratio;
+		    var viewHeight = (this.windowWidth * 2 * 0.92)/ ratio;
 		    var imgheight = viewHeight;
 		    var imgheights = this.imgheights;
 		    //把每一张图片的对应的高度记录到数组里  

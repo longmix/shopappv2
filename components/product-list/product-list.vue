@@ -7,7 +7,7 @@
 				<image class="shouqing" v-if="item.inventory == 0" src="https://yanyubao.tseo.cn/Tpl/static/images/shouqing.png" ></image>
 				<image mode="widthFix" :src="item.picture"></image>
 				<view class="name">{{item.name}}</view>
-				<view class="kucun-sale" v-if="showKucunSale">
+				<view class="kucun-sale" v-if="showKucunSale==1">
 					<view>销量：{{item.sale_volume}}</view>
 					<view>库存：{{item.inventory}}</view>
 				</view>
@@ -22,7 +22,7 @@
 				<image class="shouqing" v-if="item.inventory == 0" src="https://yanyubao.tseo.cn/Tpl/static/images/shouqing.png" ></image>
 				<image mode="widthFix" :src="item.picture"></image>
 				<view class="name">{{item.name}}</view>
-				<view class="kucun-sale" v-if="showKucunSale">
+				<view class="kucun-sale" v-if="showKucunSale==1">
 					<view>销量：{{item.sale_volume}}</view>
 					<view>库存：{{item.inventory}}</view>
 				</view>

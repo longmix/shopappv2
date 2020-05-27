@@ -112,7 +112,8 @@
 					      <view class="mingcheng">
 					        <view>{{goods_detail.name}}</view>
 					        <view style="font-size:29rpx;color:red">¥ {{goods_detail.price}}</view>
-					        <view style="font-size:26rpx;color:#ccc">库存：{{goods_detail.inventory}}</view>
+							<view style="font-size:26rpx;color:color:#333;" v-if="wxa_show_kucun_xiaoliang==1">销量：{{goods_detail.sale_volume}}</view>
+							<view style="font-size:26rpx;color:#ccc" v-if="wxa_show_kucun_xiaoliang==1">库存：{{goods_detail.inventory}}</view>
 					      </view>
 					 </view>
 					 
@@ -386,13 +387,13 @@ export default {
 			kanjia_url:'',
 			sharekanjia:'',
 			miaosha_url:'',
-			xianshimiaosha:''
+			xianshimiaosha:'',
+			wxa_show_kucun_xiaoliang: ''
 
 		};
 	},
 	onLoad(option) {
-		this.abotapi.set_option_list_str(null, this.abotapi.getColor());
-		
+		this.abotapi.set_option_list_str(this, this.callback_set_option_list_str);
 		this.abotapi.get_shop_info_from_server(this.callback_func_for_shop_info);
 		console.log('44444444444',option);
 		var that = this;
@@ -650,6 +651,18 @@ export default {
 		
 		      },
 		    })	    
+		},
+		
+		callback_set_option_list_str:function(that,cb_params){
+			this.abotapi.getColor();
+			if(!cb_params){
+				return;
+			}
+			if (cb_params.wxa_show_kucun_xiaoliang) {
+			  
+			    this.wxa_show_kucun_xiaoliang = cb_params.wxa_show_kucun_xiaoliang;
+			  
+			}
 		},
 		
 		callback_func_for_shop_info:function(shop_info){
