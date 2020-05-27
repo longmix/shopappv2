@@ -1,7 +1,7 @@
 <template>
 	<view>
 		123
-		<!-- <block v-if="video_url">
+		<block v-if="video_url">
 			<video @tap='start_and_stop_other_videos()' :src="video_url"  :poster='video_cover_url' :controls="true" :autoplay="video_autoplay" :bindloadedmetadata="videometa" :style="{width:videometa_width_height[0]+'upx', height:videometa_width_height[1] + 'rpx'}">
 			</video>
 		</block>
@@ -46,7 +46,7 @@
 		        
 		    </block>
 		
-		</view> -->
+		</view>
 	</view>
 </template>
 
