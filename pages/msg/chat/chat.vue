@@ -151,10 +151,9 @@
 		},
 		onLoad(option) {
 			var that = this;
-			
 			var userInfo = that.abotapi.get_user_info();
 			
-			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
+			this.abotapi.set_option_list_str(this, this.abotapi.getColor());
 			// this.getMsgList();
 			//语音自然播放结束
 			this.AUDIO.onEnded((res)=>{

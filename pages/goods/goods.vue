@@ -692,18 +692,15 @@ export default {
 		},
 		// 客服
 		toChat(){
-			
-					
+			var userInfo = this.abotapi.get_user_info();
+			if(!userInfo || !userInfo.userid){				
+				var last_url = '/pages/goods/goods?' + this.options_str;
+				this.abotapi.goto_user_login(last_url,'normal');
+				return;
+			}				
 			uni.navigateTo({
 				url: "/pages/msg/chat/chat?type=0&userid="  + this.shop_userid + '&name=' + this.shop_name,
-			})
-				
-							
-			// var shop_list = uni.getStorageSync("shop_info_from_server_str_" + this.abotapi.globalData.default_sellerid);
-			// this.telephone = shop_list.telephone
-			// uni.makePhoneCall({
-			// 	phoneNumber: this.telephone,
-			// })			
+			})					
 			
 		},
 		// 分享
@@ -777,7 +774,7 @@ export default {
 			var userInfo = this.abotapi.get_user_info();
 			if(!userInfo || !userInfo.userid){
 				
-				var last_url = '/pages/goods/goods?' + that.options_str;;
+				var last_url = '/pages/goods/goods?' + that.options_str;
 				this.abotapi.goto_user_login(last_url,'normal');
 				return;
 			}

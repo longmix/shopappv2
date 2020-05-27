@@ -139,7 +139,7 @@
 			//消息列表
 			toMsg(){
 				uni.navigateTo({
-					url:'../../msg/msg'
+					url:'/pages/msg/msg'
 				})
 			},
 			
