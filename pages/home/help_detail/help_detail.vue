@@ -189,7 +189,7 @@
 			// 				return;
 			// 			}
 				
-			// 			uni.request({
+			// 			this.abotapi.abotRequest({
 			// 				url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=wxa_one_click_login',
 			// 				header: {
 			// 					"Content-Type": "application/x-www-form-urlencoded"
@@ -506,7 +506,7 @@
 			get_remark_list: function () {
 				var that = this;
 				var userInfo = this.abotapi.get_user_info();
-				uni.request({
+				this.abotapi.abotRequest({
 					url: this.abotapi.globalData.weiduke_server_url + '/openapi/ArticleImgApi/remark_img',
 					method: 'post',
 					data: {
@@ -569,7 +569,7 @@
 					})
 					return;
 				}else{
-					uni.request({
+					this.abotapi.abotRequest({
 						url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
 						data: {
 							sellerid: this.abotapi.get_sellerid(),
@@ -681,7 +681,7 @@
 					})
 					return;
 				}
-				uni.request({
+				this.abotapi.abotRequest({
 					url:this.abotapi.globalData.yanyubao_server_url +"?g=Yanyubao&m=ShopAppWxa&a=get_user_info",
 					data:{
 						sellerid: this.abotapi.get_sellerid(),
@@ -727,7 +727,23 @@
 				var userInfo = this.abotapi.get_user_info();
 				console.log('userInfo',userInfo);
 				
-				uni.request({
+				if(!userInfo){
+					uni.showModal({
+						title:'请先登录',
+						content:'请先登录'
+					})
+					return;
+				}
+				
+				if(!userInfo.nickname){
+					userInfo.nickname = '';
+				}
+				
+				if(!userInfo.headimgurl){
+					userInfo.headimgurl = '';
+				}
+				
+				that.abotapi.abotRequest({
 					url:that.abotapi.globalData.weiduke_server_url+'openapi/ArticleImgApi/remark_img',
 					method:'POST',
 					header:{'Content-Type': 'application/x-www-form-urlencoded'},
@@ -739,8 +755,8 @@
 						action: 'add',
 						imgid: that.wz_id,
 						content:this.inputValue,
-						icon:that.user_info.headimgurl,
-						name:that.user_info.nickname
+						icon:userInfo.headimgurl,
+						name:userInfo.nickname
 					},
 					success(res) {
 						console.log("res===",res);
@@ -776,7 +792,7 @@
 				}
 				
 				var that = this;
-				uni.request({
+				this.abotapi.abotRequest({
 					url: this.abotapi.globalData.weiduke_server_url + 'index.php/openapi/ArticleImgApi/remark_img',
 					method: 'post',
 					data: {
@@ -856,7 +872,7 @@
 				}else{
 					var action = 'add';
 				}
-				uni.request({
+				this.abotapi.abotRequest({
 					url: this.abotapi.globalData.weiduke_server_url + 'openapi/ArticleImgApi/dianzan_img',
 					method: 'post',
 					data: {
@@ -887,7 +903,7 @@
 			//获取文章点赞
 			getArticleDianzan:function(){
 				var that = this;
-				uni.request({
+				this.abotapi.abotRequest({
 					url: this.abotapi.globalData.weiduke_server_url + 'index.php/openapi/ArticleImgApi/dianzan_img',
 					method: 'post',
 					data: {
