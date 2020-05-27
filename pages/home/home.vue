@@ -143,6 +143,12 @@
 		<!-- 实体商家结束 -->
 		
 		<!-- 商品列表 -->
+		<view style="font-size:30upx;text-align: center;
+padding: 30upx auto;
+display: block;
+height: 80upx;
+width: 100%;
+">———— 最新上架 ————</view>
 		<productList :productsList="productList" :loadingText="loadingText" :showKucunSale="wxa_show_kucun_in_list" @toGoods="toGoods"></productList>
 		
 		<!-- 客服按钮 -->
