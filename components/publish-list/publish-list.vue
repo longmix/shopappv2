@@ -15,7 +15,7 @@
 					</b>
 					<view class="cata_name">
 						<!-- 分类名称 -->
-						<view style="font-size: 20upx;line-height:35upx;">{{item.classname}}</view>
+						<view style="">{{item.classname}}</view>
 					</view>
 				</view>
 			</view>
@@ -113,8 +113,8 @@
 		border-radius:6upx;
 		padding: 2rpx 6rpx;
 		text-align: center;
-		width: 100%;
-		
+		font-size:28upx;
+		display: inline-block;
 	}
 	.content{
 		display: -webkit-box;
