@@ -249,7 +249,7 @@ export default {
 		uni.removeStorageSync("coordinate_array");
 		uni.removeStorageSync("cata_list");
 		uni.removeStorageSync("spec_list");
-		uni.removeStorageSync('all_shang_jingwei_list');
+		//uni.removeStorageSync('all_shang_jingwei_list');
 		
 		that.abotapi.get_shop_info_from_server_remove();
 		that.abotapi.set_shop_option_data_remove();
@@ -863,7 +863,13 @@ export default {
 			that.coordinate = coordinate;
 						
 			var arr = uni.getStorageSync('all_shang_jingwei_list');
-			if(arr){
+			var arr_save_time = uni.getStorageSync('all_shang_jingwei_list_save_time');
+			
+			var currentTime = (new Date()).getTime();//获取当前时间
+			
+			console.log('call_back_get_shang_list currentTime======>>>>'+currentTime);
+			
+			if(arr && (currentTime - arr_save_time) < 2*60*60*1000 ){
 				that.set_paixu_shanglist();
 			}
 			else{
@@ -884,6 +890,7 @@ export default {
 						uni.setStorageSync("cata_list", res.data.all_cata_list);
 						uni.setStorageSync("spec_list", res.data.all_spec_list);
 						uni.setStorageSync('all_shang_jingwei_list', res.data.data);
+						uni.setStorageSync('all_shang_jingwei_list_save_time', currentTime);
 						
 						//调用排序算法
 						that.set_paixu_shanglist();

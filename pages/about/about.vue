@@ -162,6 +162,15 @@
 		},
 		methods: {
 			clearStorage:function(){
+				
+				uni.removeStorageSync("coordinate_array");
+				uni.removeStorageSync("cata_list");
+				uni.removeStorageSync("spec_list");
+				
+				uni.removeStorageSync('all_shang_jingwei_list');
+				
+				
+				
 			    uni.removeStorage({
 			      key: 'latestMsgList_cache',
 			      success(res) {
