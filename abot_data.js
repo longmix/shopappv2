@@ -36,7 +36,7 @@ const globalData = {
 		//current_platform : 'h5',
 		
 		//固定导航栏的背景色，如果为0，则使用服务器端的配置
-		navigationBarBackgroundColor_fixed:1,
+		navigationBarBackgroundColor_fixed:0,
 		
 		//购物车在底部导航栏（如果购物车在底部导航栏，请务必选择此项，避免向购物车跳转失败）
 		is_shop_cart_in_tabbar: 0,

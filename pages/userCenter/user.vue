@@ -168,11 +168,11 @@
 			
 			that.abotapi.set_option_list_str(that, 
 				function(that001, option_list){
-					that.abotapi.getColor();
+					that001.abotapi.getColor();
 					
-						that.wxa_shop_nav_bg_color  = option_list.wxa_shop_nav_bg_color;
+						that001.wxa_shop_nav_bg_color  = option_list.wxa_shop_nav_bg_color;
 						
-						that.wxa_shop_nav_font_color = option_list.wxa_shop_nav_font_color
+						that001.wxa_shop_nav_font_color = option_list.wxa_shop_nav_font_color
 				
 				}
 			);

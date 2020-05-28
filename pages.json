@@ -43,18 +43,18 @@
 		{	//用户主页
 			"path": "pages/userCenter/user",
 			"style": {
-				"enablePullDownRefresh": true,
+				"enablePullDownRefresh": false,
 				"backgroundTextStyle":"light",
 				"backgroundColorTop":"#FFFFFF",
-				"titleNView": true ,
-				"app-plus": {
-					"titleNView": false ,//禁用原生导航栏
-					"subNVues":[{  
-						"id": "userTitleNvue", // 唯一标识  
-						"path": "pages/userCenter/subNvue/userTitleNvue", // 页面路径  
-						"type":"navigationBar"
-					}]
-				}
+				"titleNView": true 
+				// "app-plus": {
+				// 	"titleNView": false ,//禁用原生导航栏
+				// 	"subNVues":[{  
+				// 		"id": "userTitleNvue", // 唯一标识  
+				// 		"path": "pages/userCenter/subNvue/userTitleNvue", // 页面路径  
+				// 		"type":"navigationBar"
+				// 	}]
+				// }
 			}
 		},
 		{	//商品搜索
@@ -144,7 +144,12 @@
 				"navigationBarTitleText":"我的订单",
 				"navigationBarBackgroundColor":"#f8f8f8",
 				"backgroundColorTop":"#f3f3f3",
-				"backgroundColorBottom":"#ffffff"
+				"backgroundColorBottom":"#ffffff",
+				"titleNView": true,
+				"app-plus": {
+					
+					"subNVues":false
+				}
 			}
         }
 		,{	//订单列表

@@ -356,6 +356,15 @@
 		},
 		onLoad: function(options) {
 			var that = this;
+			
+			var userInfo =  that.abotapi.get_user_info();
+			
+			if(!userInfo || !userInfo.userid){
+				var last_url = '/pages/user/order_list/order_list?currentTab=' + options.currentTab + '&type=' + options.otype;
+				that.abotapi.goto_user_login(last_url, 'normal');
+				return;
+			}
+			
 			console.log('options',options);
 			that.abotapi.set_option_list_str(this, this.callback_set_option);
 			that.abotapi.set_option_list_str(this, this.abotapi.getColor());
