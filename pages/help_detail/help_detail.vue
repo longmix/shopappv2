@@ -50,12 +50,12 @@
 					<!-- 点赞 -->
 					<view style="display: flex;">
 						<view @tap='doArticleDianzan' :data-zantype="1" style='margin-right: 20upx;'>
-							<image style="width:30rpx;height:30rpx;margin-right:15rpx"  :src="dianzan_status == 0 || dianzan_status == 2 ? '../../../static/img/help/dianzan_grey.png':'../../../static/img/help/dianzan_red.png'"></image>
+							<image style="width:30rpx;height:30rpx;margin-right:15rpx"  :src="dianzan_status == 0 || dianzan_status == 2 ? '../../static/img/help/dianzan_grey.png':'../../static/img/help/dianzan_red.png'"></image>
 							<text style="font-size:30upx">{{wz_text.dianzan_num}}</text>
 						</view>
 						
 						<view @tap='doArticleDianzan' :data-zantype="2">
-							<image style="width:30rpx;height:30rpx;margin-right:15rpx"  :src="dianzan_status == 0 || dianzan_status == 1 ? '../../../static/img/help/dianzan02_grey.png':'../../../static/img/help/dianzan02_red.png'"></image>
+							<image style="width:30rpx;height:30rpx;margin-right:15rpx"  :src="dianzan_status == 0 || dianzan_status == 1 ? '../../static/img/help/dianzan02_grey.png':'../../static/img/help/dianzan02_red.png'"></image>
 							<text style="font-size:30upx">{{wz_text.dianzan_num2}}</text>
 						</view>
 					</view>
@@ -72,7 +72,7 @@
 					<view style="width:97%;">
 						<view class="comment_list_right" style="">
 							<text class="comment_list_username">{{items.name}}</text>
-							<!-- <view @tap="doDianzan" data-tongjiid="{{item.tongjiid}}"><image class="comment_list_dianzan" src="../../../../static/img/help/dianzan_grey.png" style="margin-right:20rpx;"></image><text style="font-size:26rpx;">222</text></view> -->
+							<!-- <view @tap="doDianzan" data-tongjiid="{{item.tongjiid}}"><image class="comment_list_dianzan" src="../../../static/img/help/dianzan_grey.png" style="margin-right:20rpx;"></image><text style="font-size:26rpx;">222</text></view> -->
 						</view>
 						<view class="comment_text">{{items.message}}</view>
 						<!-- <view class="comment_time">{{item.createtime}}</view> -->
@@ -82,7 +82,7 @@
 						</view>
 					</view>
 					<view class="comment_delete" :data-id="items.id" @tap='deleteRemark'  v-if="userInfo.userid==items.yanyubao_userid">
-						<image src="../../../static/img/help/delete_red.png" mode="widthFix"></image>
+						<image src="../../static/img/help/delete_red.png" mode="widthFix"></image>
 					</view>
 				  
 				</view>
@@ -94,16 +94,16 @@
 		
 			<view class="comment">
 		     
-				<image class="comment_img comment_write_img" src="../../../static/img/help/write.png"></image>
+				<image class="comment_img comment_write_img" src="../../static/img/help/write.png"></image>
 		        <input @focus="is_login" class="comment_input" placeholder="写评论..." confirm-type="send" @confirm="sendRemark()" :data-imgid="wz_text.id" v-model="inputValue" type="text"></input> <!--  -->
 		        
-		        <image class="comment_img comment_right_img" src="../../../static/img/help/comment.png" @tap='toReamrkList'  ></image><!--  @click="get_input_focus()" -->
+		        <image class="comment_img comment_right_img" src="../../static/img/help/comment.png" @tap='toReamrkList'  ></image><!--  @click="get_input_focus()" -->
 		        <view class="comment_num" :hidden="!comment_num">{{comment_num}}</view>
-		        <image class="comment_img comment_right_img" :style="comment_num ? 'margin-left:0':''" :src="isShoucang==true ?  '../../../static/img/help/star_on.png': '../../../static/img/help/star_off.png'" @tap='shoucang' ></image>
+		        <image class="comment_img comment_right_img" :style="comment_num ? 'margin-left:0':''" :src="isShoucang==true ?  '../../static/img/help/star_on.png': '../../static/img/help/star_off.png'" @tap='shoucang' ></image>
 		        <button  class="share" open-type="share"></button>
-		        <image class="comment_img comment_right_img" src="../../../static/img/help/share.png" open-type="share"></image>
-		        <image class="comment_img comment_right_img" @tap="toHomePage" src="../../../static/img/help/home_page.png"></image>
-				<!-- <image class="comment_img comment_right_img" src="../../../../static/img/help/friends.png"></image> -->
+		        <image class="comment_img comment_right_img" src="../../static/img/help/share.png" open-type="share"></image>
+		        <image class="comment_img comment_right_img" @tap="toHomePage" src="../../static/img/help/home_page.png"></image>
+				<!-- <image class="comment_img comment_right_img" src="../../../static/img/help/friends.png"></image> -->
 		     </view>
 		</view>
 	</view>
