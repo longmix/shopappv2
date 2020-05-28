@@ -113,7 +113,6 @@
 		border-radius:6upx;
 		padding: 2rpx 6rpx;
 		text-align: center;
-		width: 80upx;
 		font-size:28upx;
 		display: inline-block;
 	}
