@@ -140,7 +140,7 @@
 			goForum: function(id) {
 				
 				uni.navigateTo({
-					url: "../home/help_detail/help_detail?id=" + id + '&form_page=publish_list' 
+					url: "/pages/help_detail/help_detail?id=" + id + '&form_page=publish_list' 
 				})
 			},
 			

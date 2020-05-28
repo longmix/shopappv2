@@ -254,7 +254,7 @@
 			}
         }
         ,{
-            "path" : "pages/goods/ratings/ratings",
+            "path" : "pages/product/ratings/ratings",
             "style" : {
 				"navigationBarTitleText":"商品评论",
 				"enablePullDownRefresh": true,
@@ -268,14 +268,14 @@
             "style" : {}
         }
         ,{
-            "path" : "pages/home/help/help",
+            "path" : "pages/help/help",
             "style": {
             	"navigationBarTitleText": "文章列表",
             	"softinputNavBar":"none"
             }
         }
         ,{
-            "path" : "pages/home/help_detail/help_detail",
+            "path" : "pages/help_detail/help_detail",
             "style": {
             	"navigationBarTitleText": "文章详情",
             	"softinputNavBar":"none"

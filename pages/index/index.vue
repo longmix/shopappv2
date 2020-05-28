@@ -446,7 +446,7 @@ export default {
 		goForum: function(id) {
 			
 			uni.navigateTo({
-				url: "../home/help_detail/help_detail?id=" + id + '&form_page=publish_list' 
+				url: "/pages/help_detail/help_detail?id=" + id + '&form_page=publish_list' 
 			})
 		},
 		// 预览图片
@@ -1367,7 +1367,7 @@ export default {
 		touTiaoList: function (e) {
 		    console.log('点击商户头条进入列表');
 		    uni.navigateTo({
-				url: '/pages/home/help/help?sellerid=' + this.abotapi.globalData.default_sellerid
+				url: '/pages/help/help?sellerid=' + this.abotapi.globalData.default_sellerid
 		    })
 		},
 		
