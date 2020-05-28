@@ -87,7 +87,7 @@
 				console.log(e);
 				uni.setStorageSync('city_name',e);
 				uni.switchTab({
-					url:'../home/home'
+					url:'../index/index'
 				});
 			}
 		}

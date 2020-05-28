@@ -85,7 +85,7 @@
 			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 			if(userInfo && userInfo.userid){
 				uni.switchTab({
-					url: '/pages/home/home'
+					url: '/pages/index/index'
 				})
 			}
 			this.click_check();
@@ -258,7 +258,7 @@
 							//===========End================
 				
 										uni.switchTab({
-											url: '../home/home'
+											url: '../index/index'
 										})
 									}
 								}

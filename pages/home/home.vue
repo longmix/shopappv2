@@ -1483,7 +1483,7 @@ export default {
 		toGoods(productItem) {
 			var productid = productItem.productid;
 			uni.navigateTo({
-				url: '/pages/goods/goods?productid='+productid
+				url: '/pages/product/detail?productid='+productid
 			});
 		},
 		//实体商家跳转
@@ -1526,7 +1526,7 @@ export default {
 		//首页导航图标、轮播图、平面广告跳转
 		toAdDetails:function(url){
 			
-			// var home_url = '/pages/home/home';
+			// var home_url = '/pages/index/index';
 			// this.abotapi.goto_user_login(home_url, 'switchTab');
 			
 			var that = this;

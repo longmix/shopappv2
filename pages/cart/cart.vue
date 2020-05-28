@@ -240,7 +240,7 @@
 			toGoods(e){
 				// uni.showToast({title: '商品'+e});
 				uni.navigateTo({
-					url: '/pages/goods/goods?productid='+e 
+					url: '/pages/product/detail?productid='+e 
 				});
 			},
 			//跳转确认订单页面
@@ -272,7 +272,7 @@
 				
 				//存回data
 				uni.navigateTo({
-					url: '/pages/order/confirmation?productid=' + encodeURIComponent(JSON.stringify(proId)),
+					url: '/pages/order/pay?productid=' + encodeURIComponent(JSON.stringify(proId)),
 				})
 			},
 			//删除商品

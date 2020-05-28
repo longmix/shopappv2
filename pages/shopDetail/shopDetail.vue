@@ -303,7 +303,7 @@
 				console.log('rrxfff===',e);
 				var productid = e.productid;
 				uni.navigateTo({
-					url: '/pages/goods/goods?productid='+productid
+					url: '/pages/product/detail?productid='+productid
 				});
 			},
 			

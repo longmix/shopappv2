@@ -321,12 +321,12 @@
 								if (action_pay == 'direct_buy') {
 									uni.redirectTo({
 										//url: '../../order/pay?productid=' + productid + "&buynum=" + buynum,
-										url: '/pages/order/confirmation?amount=' + that.amount + "&productid=" + that.productid + "&action=direct_buy",
+										url: '/pages/order/pay?amount=' + that.amount + "&productid=" + that.productid + "&action=direct_buy",
 									});
 									//    return false;
 								} else {
 									uni.redirectTo({
-										url: '/pages/order/confirmation?amount=' + that.amount + "&productid=" + that.productid,
+										url: '/pages/order/pay?amount=' + that.amount + "&productid=" + that.productid,
 									});
 								}
 								uni.showToast({

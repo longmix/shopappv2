@@ -316,7 +316,7 @@
 							setTimeout(function(){
 								
 								uni.switchTab({
-									url:"../home/home"
+									url:"../index/index"
 								});
 							},1000);
 						}else if(res.data.code == -1){
@@ -325,7 +325,7 @@
 								title:'登录超时',
 								content: '请重新登录',
 								success: function (res) {
-									var last_url = '/pages/home/home';
+									var last_url = '/pages/index/index';
 									that.abotapi.goto_user_login(last_url, 'switchTab');
 								}
 							})

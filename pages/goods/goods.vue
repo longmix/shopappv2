@@ -694,7 +694,7 @@ export default {
 		toChat(){
 			var userInfo = this.abotapi.get_user_info();
 			if(!userInfo || !userInfo.userid){				
-				var last_url = '/pages/goods/goods?' + this.options_str;
+				var last_url = '/pages/product/detail?' + this.options_str;
 				this.abotapi.goto_user_login(last_url,'normal');
 				return;
 			}				
@@ -774,7 +774,7 @@ export default {
 			var userInfo = this.abotapi.get_user_info();
 			if(!userInfo || !userInfo.userid){
 				
-				var last_url = '/pages/goods/goods?' + that.options_str;
+				var last_url = '/pages/product/detail?' + that.options_str;
 				this.abotapi.goto_user_login(last_url,'normal');
 				return;
 			}
@@ -787,7 +787,7 @@ export default {
 		
 		    if (e.currentTarget.dataset.status == 1){
 		
-		      var new_url = '/pages/order/confirmation?amount=' + that.amount + "&productid=" + that.goods_detail.productid + "&action=direct_buy";
+		      var new_url = '/pages/order/pay?amount=' + that.amount + "&productid=" + that.goods_detail.productid + "&action=direct_buy";
 		
 		      uni.navigateTo({
 		        url: new_url,
@@ -846,7 +846,7 @@ export default {
 				data:tmpList,
 				success: () => {
 					uni.navigateTo({
-						url:'/pages/order/confirmation'
+						url:'/pages/order/pay'
 					})
 				}
 			})
@@ -966,7 +966,7 @@ export default {
 			
 			
 			this.abotapi.abotRequest({
-				url:'http://yanyubao.tseo.cn/Yanyubao/ShopApp/product_list',
+				url:this.abotapi.globalData.yanyubao_server_url+'Yanyubao/ShopApp/product_list',
 				method:'post',
 				data:post_data,
 				success(res){
@@ -1115,7 +1115,7 @@ export default {
 		        var page_type = 'normal';
 		  
 		        if (that.productid) {
-		          last_url = '/pages/goods/goods?productid=' + that.productid;
+		          last_url = '/pages/product/detail?productid=' + that.productid;
 		        }
 		        that.abotapi.goto_user_login(last_url);
 		  
@@ -1130,8 +1130,7 @@ export default {
 		        }
 		        var url = that.pintuan_url + join_flag+'click_type=Wxa'
 		        //var url = 'https://yanyubao.tseo.cn/Home/DuorenPintuan/jiantuan_list/productid/3969.html?click_type=Wxa'
-		        //var url = 'http://192.168.0.205/yanyubao_server/index.php?g=Home&m=DuorenPintuan&a=jiantuan_list&productid=318&click_type=Wxa'
-		                  
+  
 		        console.log(url);
 		        uni.navigateTo({
 		          url: '../h5browser/h5browser?url=' + encodeURIComponent(url)

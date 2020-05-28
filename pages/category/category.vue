@@ -188,7 +188,7 @@
 			toCategory(cataid, cata_name){
 				// uni.setStorageSync('catName',e.name);
 				uni.navigateTo({
-					url: '/pages/goods/goods-list/goods-list?cataid='+cataid+'&cata_name=' + cata_name
+					url: '/pages/product/goods-list/goods-list?cataid='+cataid+'&cata_name=' + cata_name
 				});
 			},
 			//搜索跳转

@@ -346,7 +346,7 @@
 									//===========End================
 				              
 										uni.switchTab({
-											url: '/pages/home/home'
+											url: '/pages/index/index'
 										})
 									}
 								}
@@ -481,7 +481,7 @@
 									//===========End================
 			
 									uni.switchTab({
-										url: '/pages/home/home'
+										url: '/pages/index/index'
 									})
 			
 								}else {
@@ -535,7 +535,7 @@
 			goHome:function(){
 				var that=this;
 				uni.switchTab({
-					url:'/pages/home/home'
+					url:'/pages/index/index'
 				});
 				
 				// abotapi.goHome();

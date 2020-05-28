@@ -953,7 +953,7 @@ export default {
 		
 		    var total = this.total
 		    uni.navigateTo({
-		      url: '/pages/order/confirmation?shopId=' + this.shopId + '&total=' + this.total + '&cart_count=' + this.cart_count + '&is_waimai=' + this.is_waimai + '&from_o2owaimai=1' 
+		      url: '/pages/order/pay?shopId=' + this.shopId + '&total=' + this.total + '&cart_count=' + this.cart_count + '&is_waimai=' + this.is_waimai + '&from_o2owaimai=1' 
 		    })
 		  },
 		

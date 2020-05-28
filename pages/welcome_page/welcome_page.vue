@@ -108,7 +108,7 @@ export default {
 			if (url_data.length < 3) {
 				//跳转到首页
 				uni.switchTab({
-					url: '../home/home'
+					url: '../index/index'
 				})
 				return;
 			}

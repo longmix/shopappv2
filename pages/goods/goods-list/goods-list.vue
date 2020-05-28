@@ -155,7 +155,7 @@
 			toGoods(productItem) {
 				var productid = productItem.productid;
 				uni.navigateTo({
-					url: '/pages/goods/goods?productid='+productid
+					url: '/pages/product/detail?productid='+productid
 				});
 			},
 			//排序类型   sort值选项(5:最新、3:销量、4:价格) 

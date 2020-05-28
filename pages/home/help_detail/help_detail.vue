@@ -436,12 +436,12 @@
 					
 					if (wxa_hidden_shop==1){
 						uni.switchTab({
-							url: '/pages/home/home',
+							url: '/pages/index/index',
 						})
 					}
 					else{
 						uni.switchTab({
-							url: '/pages/home/home?sellerid=' + that.sellerid
+							url: '/pages/index/index?sellerid=' + that.sellerid
 						})
 					}
 					
@@ -508,7 +508,7 @@
 			toHomePage: function () {
 				console.log('jjjjj444')
 				uni.switchTab({
-					url:'/pages/home/home'
+					url:'/pages/index/index'
 				})
 				
 			},

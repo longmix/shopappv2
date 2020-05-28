@@ -42,7 +42,7 @@
 		        if (url_data.length < 2) {
 					//跳转到首页
 					uni.switchTab({
-						url: '/pages/home/home'
+						url: '/pages/index/index'
 					})
 		        }
 		

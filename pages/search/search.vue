@@ -20,7 +20,7 @@
 			<block v-if="wxa_product_list_style == 1">
 				<view class="">
 	    
-					<navigator  class="logo_info navigator" :url="'/pages/goods/goods?productid='+item.productid" v-for="(item,index) in shopList" :key="index"  :data-productid="item.productid" style="margin:10px;">
+					<navigator  class="logo_info navigator" :url="'/pages/product/detail?productid='+item.productid" v-for="(item,index) in shopList" :key="index"  :data-productid="item.productid" style="margin:10px;">
 						<view class="logo_pic" style="margin-top:18rpx;">
 							<image :src="item.picture" style="width:180rpx;height:180rpx;"></image>
 						</view>
@@ -48,7 +48,7 @@
 	
 			<block  v-if="wxa_product_list_style != 1" v-for="(items,index) in shopList" :key="index"  :data-productid="items.productid">
 				<view class="ban">
-					<navigator :url="'/pages/goods/goods?productid='+items.productid" class="cover flex-wrp">
+					<navigator :url="'/pages/product/detail?productid='+items.productid" class="cover flex-wrp">
 						<image class="banner" :src="items.picture" mode="widthFix"></image>
 						<view class="act-item ellipsis">
 							<text class="type">{{items.name}}</text>

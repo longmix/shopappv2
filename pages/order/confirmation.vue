@@ -376,13 +376,13 @@
 				}
 				params_str = params_str.substr(0, params_str.length - 1);
 			
-				last_url = '/pages/order/confirmation?'+params_str;
+				last_url = '/pages/order/pay?'+params_str;
 				console.log("last_url",last_url);
 				console.log("params_str",params_str);
 			}
 			console.log("productid",that.productid);
 			if (!last_url && options.productid) {
-				last_url = '/pages/goods/goods?productid=' + options.productid;
+				last_url = '/pages/product/detail?productid=' + options.productid;
 				that.last_url = last_url
 			}
 			

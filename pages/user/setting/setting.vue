@@ -109,7 +109,7 @@
 				uni.clearStorageSync();
 				
 				uni.switchTab({
-					url: '../../home/home'
+					url: '../../index/index'
 				})
 				
 			},
