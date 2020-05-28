@@ -1,6 +1,6 @@
 {	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{	//主页
-			"path": "pages/home/home",
+			"path": "pages/index/index",
 			"style": {
 				"enablePullDownRefresh": true,
 				"onReachBottomDistance":50,
@@ -68,7 +68,7 @@
 			}
 		},
 		{	//商品列表
-            "path" : "pages/goods/goods-list/goods-list",
+            "path" : "pages/product/goods-list/goods-list",
             "style" : {
 				"navigationBarTitleText" : "商品列表",
 				"enablePullDownRefresh": true,
@@ -78,7 +78,7 @@
 			}
         },
 		{	//商品详情
-		    "path" : "pages/goods/goods",
+		    "path" : "pages/product/detail",
 		    "style" : {
 				"navigationBarTitleText" : "商品详情",
 				"onReachBottomDistance":50,
@@ -132,7 +132,7 @@
 			}
 		}
         ,{
-            "path" : "pages/order/confirmation",
+            "path" : "pages/order/pay",
             "style": {
             	"navigationBarTitleText": "确认订单",
 				"softinputNavBar":"none"
@@ -385,7 +385,7 @@
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
 		"list": [{
-				"pagePath": "pages/home/home",
+				"pagePath": "pages/index/index",
 				"iconPath": "static/img/tabBar/home.png",
 				"selectedIconPath": "static/img/tabBar/home-on.png",
 				"text": "首页"

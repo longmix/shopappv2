@@ -974,7 +974,7 @@ module.exports = {
 			var userInfo = this.get_user_info();
 			if(!userInfo){
 				
-				this.goto_user_login('/pages/tabBar/home/home', 'switchTab');
+				this.goto_user_login('/pages/tabBar/index/index', 'switchTab');
 				
 				return;
 			}
