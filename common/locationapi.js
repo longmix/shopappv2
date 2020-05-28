@@ -1,69 +1,86 @@
 
 import bmap from './SDK/bmap-wx.js';
 import abotapi from './abotapi.js';
+
+
 module.exports = {
 	
 	//获取经纬度（国测局坐标）
-	get_location: function (that, call_back_get_shang_list='') {
+	get_location: function (that, callback_function='') {
 	
 		var that002 = this; 
 		
 		console.log('123456789 get_location');
 		
-		var coordinate = uni.getStorageSync('coordinate_array');
-		// if(coordinate){
-		// 	console.log('get_location in cache =====>>>>', coordinate);
+		let locationData = uni.getStorageSync('locationData');
+		if(locationData){
+			console.log('get_location in cache =====>>>>', locationData);
 			
-		// 	typeof call_back_get_shang_list == "function" && call_back_get_shang_list(that, coordinate);
-		// 	return;
-		// }else{
-		
-			var coordinate = [];
+			typeof callback_function == "function" && callback_function(that, locationData);
+			return;
+		}else{
+			
+
 			var regeocoding_success = function (data) {
-				console.log('regeocoding_success test===', data);
+				console.log('regeocoding_success locationapi===', data);
 				
 				console.log('location---longitude===',data.wxMarkerData[0].longitude)
 				console.log('location---latitude===',data.wxMarkerData[0].latitude)
 				
-				let wxMarkerData = data.wxMarkerData;
+				let locationData = data.wxMarkerData[0];
+				
+				let pointArr = [locationData.longitude, locationData.latitude];
+				
+				
+				let translate = that002.gcj2bd(locationData.latitude,locationData.longitude);
+				
+				locationData.latitude = translate[0];
+				locationData.longitude = translate[1];
+				
+				locationData.addressComponent = data.originalData.result.addressComponent;
 							
-				console.log('address',this.address);
 				
-				//调用显示商家的接口
+				//缓存位置信息					
+				uni.setStorageSync('locationData', locationData)
 				
-				
-				uni.setStorageSync('address_info', this.cityInfo)
-				
-				uni.setStorageSync("coordinate_array", coordinate);			
-				// console.log('with', that.data.imageWidth)			
+				typeof callback_function == "function" && callback_function(that, locationData);
+				return;		
 			};
 			
 			
-			
+			// 失败返回默认位置信息
 			var regeocoding_fail = function(res){
-				console.log('uni.getLocation fail test====>>>>', res);
+				console.log('uni.getLocation fail locationapi====>>>>', res);
 				
-				var coordinate = [];
-				coordinate['latitude'] = 31.293216;
-				coordinate['longitude'] = 121.662945;
+				let locationData = [];
+			
+				locationData['latitude'] = 31.293216;
+				locationData['longitude'] = 121.662945;
 				
-				console.log('set virtual coordinate ====>>>>>', coordinate);
+				console.log('set virtual coordinate ====>>>>>', locationData);
 				
-				typeof call_back_get_shang_list == "function" && call_back_get_shang_list(that, coordinate);
-				
+				typeof callback_function == "function" && callback_function(that, locationData);				
 				return;
 				
 			};
 			var regeocoding_complete = function(res){
-				console.log('uni.getLocation complete test ====>>>>', res);
+				console.log('uni.getLocation complete locationapi ====>>>>', res);
 			};
 			
 			/* 获取定位地理位置 */
 			// 新建bmap对象
-			// #ifdef MP-WEIXIN
+			// #ifdef H5
+				var baidu_map_ak = cb_params.option_list.baidu_map_ak_h5;
+			// #endif
+			
+			// #ifdef APP-PLUS-AAA
+				var baidu_map_ak = cb_params.option_list.baidu_map_ak_app;
+			// #endif
+			
+			// #ifdef MP-WEIXIN || APP-PLUS
 				var baidu_map_ak = that.abotapi.globalData.option_list.baidu_map_ak_wxa;
 			// #endif
-			var baidu_map_ak = that.abotapi.globalData.option_list.baidu_map_ak_wxa;
+			
 			
 			var BMap_obj = new bmap.BMapWX({
 				ak: baidu_map_ak
@@ -76,14 +93,82 @@ module.exports = {
 				complete: regeocoding_complete
 			});
 
-		// typeof call_back_get_shang_list == "function" && call_back_get_shang_list(that, data);
-		
-		// return;	
+		}
 	},
 	
+	get_location_remove:function(){
+		uni.removeStorageSync("locationData");
+	},
 	
-	
-	
+	pi: 3.14159265358979324,
+	a: 6378245.0,
+	ee: 0.00669342162296594323,
+	x_pi: 3.14159265358979324*3000.0/180.0,
+	 
+	 
+	//世界大地坐标转为百度坐标
+	wgs2bd:function (lat,lon) {
+	    var wgs2gcjR = this.wgs2gcj(lat, lon);
+	    var gcj2bdR = this.gcj2bd(wgs2gcjR[0], wgs2gcjR[1]);
+	    return gcj2bdR;
+	},
+	 
+	gcj2bd:function (lat,lon) {
+	    var x = lon, y = lat;
+	    var z = Math.sqrt(x * x + y * y) + 0.00002 * Math.sin(y * this.x_pi);
+	    var theta = Math.atan2(y, x) + 0.000003 * Math.cos(x * this.x_pi);
+	    var bd_lon = z * Math.cos(theta) + 0.0065;
+	    var bd_lat = z * Math.sin(theta) + 0.006;
+	    var result = [];
+	    result.push(bd_lat);
+	    result.push(bd_lon);
+	    return result;
+	},
+	 
+	bd2gcj:function (lat,lon) {
+	    var x = lon - 0.0065, y = lat - 0.006;
+	    var z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * this.x_pi);
+	    var theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * this.x_pi);
+	    var gg_lon = z * Math.cos(theta);
+	    var gg_lat = z * Math.sin(theta);
+	    var result = [];
+	    result.push(gg_lat);
+	    result.push(gg_lon);
+	    return result;
+	},
+	 
+	wgs2gcj:function (lat,lon) {
+	    var dLat = this.transformLat(lon - 105.0, lat - 35.0);
+	    var dLon = this.transformLon(lon - 105.0, lat - 35.0);
+	    var radLat = lat / 180.0 * this.pi;
+	    var magic = Math.sin(radLat);
+	    magic = 1 - this.ee * magic * magic;
+	    var sqrtMagic = Math.sqrt(magic);
+	    dLat = (dLat * 180.0) / ((this.a * (1 - this.ee)) / (magic * sqrtMagic) * this.pi);
+	    dLon = (dLon * 180.0) / (this.a / sqrtMagic * Math.cos(radLat) * this.pi);
+	    var mgLat = lat + dLat;
+	    var mgLon = lon + dLon;
+	    var result = [];
+	    result.push(mgLat);
+	    result.push(mgLon);
+	    return result;
+	},
+	 
+	transformLat:function (lat,lon) {
+	    var ret = -100.0 + 2.0 * lat + 3.0 * lon + 0.2 * lon * lon + 0.1 * lat * lon + 0.2 * Math.sqrt(Math.abs(lat));
+	    ret += (20.0 * Math.sin(6.0 * lat * this.pi) + 20.0 * Math.sin(2.0 * lat * this.pi)) * 2.0 / 3.0;
+	    ret += (20.0 * Math.sin(lon * this.pi) + 40.0 * Math.sin(lon / 3.0 * this.pi)) * 2.0 / 3.0;
+	    ret += (160.0 * Math.sin(lon / 12.0 * this.pi) + 320 * Math.sin(lon * this.pi  / 30.0)) * 2.0 / 3.0;
+	    return ret;
+	},
+	 
+	transformLon:function (lat,lon) {
+	    var ret = 300.0 + lat + 2.0 * lon + 0.1 * lat * lat + 0.1 * lat * lon + 0.1 * Math.sqrt(Math.abs(lat));
+	    ret += (20.0 * Math.sin(6.0 * lat * this.pi) + 20.0 * Math.sin(2.0 * lat * this.pi)) * 2.0 / 3.0;
+	    ret += (20.0 * Math.sin(lat * this.pi) + 40.0 * Math.sin(lat / 3.0 * this.pi)) * 2.0 / 3.0;
+	    ret += (150.0 * Math.sin(lat / 12.0 * this.pi) + 300.0 * Math.sin(lat / 30.0 * this.pi)) * 2.0 / 3.0;
+	    return ret;
+	},
 	
 	
 	
