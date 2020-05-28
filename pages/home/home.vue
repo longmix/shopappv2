@@ -399,7 +399,7 @@ export default {
 		this.abotapi.get_shop_info_from_server(this.callback_func_for_shop_info);
 		
 		
-		// locationapi.get_location(this, this.call_back_get_shang_list);
+		// locationapi.get_location(this, this.call_back_get_shang_list2);
 		
 // #ifdef APP-PLUS
 		this.nVueTitle = uni.getSubNVueById('homeTitleNvue');
@@ -417,6 +417,8 @@ export default {
 		this.Timer();
 		//加载活动专区
 		this.loadPromotion();
+		
+		locationapi.get_location(this, this.call_back_get_shang_list2);
 	},
 	onShow:function(){
 		
@@ -429,6 +431,10 @@ export default {
 	
 	
 	methods: {
+		call_back_get_shang_list2:function(that,cb_params){
+			console.log('call_back_get_shang_list2--cb_params==',cb_params)
+		},
+		
 		callback_function:function(that, shop_option_data){
 			that.abotapi.getColor();
 			console.log('shop_option_data',shop_option_data);
@@ -844,6 +850,8 @@ export default {
 				
 			
 		},
+		
+		
 		
 		/* 获取前十条商家 */
 		call_back_get_shang_list:function(that, coordinate){
@@ -1977,8 +1985,8 @@ page{position: relative;background-color: #fff;}
 	  flex-direction:row;
 	  justify-content:center;
 	  border-radius:80upx;
-	  width:110upx;
-	  height:110upx;
+	  width:130upx;
+	  height:130upx;
 	  border:0px solid #eee;
 	  font-size:20upx;
 	  /*box-shadow:0px 4upx 8upx rgba(0,0,0,0.35);*/

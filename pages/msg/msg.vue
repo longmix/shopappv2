@@ -221,7 +221,6 @@
 							 that.latestMsgList = [];
 						 }
 						 
-						 console.log('that.latestMsgList==',that.latestMsgList[0].from_person_detail.headimgurl);
 						 uni.setStorageSync('latestMsgList_cache',that.latestMsgList);
 						 
 				     }

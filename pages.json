@@ -366,6 +366,10 @@
 		    "path" : "pages/welcome_page/welcome_page",
 		    "style" : {}
 		}
+        ,{
+            "path" : "pages/user/nickName/nickNameEdit",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

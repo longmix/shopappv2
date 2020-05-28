@@ -20,7 +20,7 @@ module.exports = {
 		
 			var coordinate = [];
 			var regeocoding_success = function (data) {
-				console.log('00000111', data);
+				console.log('regeocoding_success test===', data);
 				
 				console.log('location---longitude===',data.wxMarkerData[0].longitude)
 				console.log('location---latitude===',data.wxMarkerData[0].latitude)
@@ -41,7 +41,7 @@ module.exports = {
 			
 			
 			var regeocoding_fail = function(res){
-				console.log('uni.getLocation fail ====>>>>', res);
+				console.log('uni.getLocation fail test====>>>>', res);
 				
 				var coordinate = [];
 				coordinate['latitude'] = 31.293216;
@@ -55,21 +55,15 @@ module.exports = {
 				
 			};
 			var regeocoding_complete = function(res){
-				console.log('uni.getLocation complete ====>>>>', res);
+				console.log('uni.getLocation complete test ====>>>>', res);
 			};
 			
 			/* 获取定位地理位置 */
 			// 新建bmap对象
-			// #ifdef H5
-				var baidu_map_ak = abotapi.globalData.option_list.baidu_map_ak_h5;
-			// #endif
-			// #ifdef APP-PLUS
-				var baidu_map_ak = abotapi.globalData.option_list.baidu_map_ak_app;
-			// #endif
 			// #ifdef MP-WEIXIN
-				var baidu_map_ak = abotapi.globalData.option_list.baidu_map_ak_wxa;
+				var baidu_map_ak = that.abotapi.globalData.option_list.baidu_map_ak_wxa;
 			// #endif
-			
+			var baidu_map_ak = that.abotapi.globalData.option_list.baidu_map_ak_wxa;
 			
 			var BMap_obj = new bmap.BMapWX({
 				ak: baidu_map_ak
@@ -81,52 +75,10 @@ module.exports = {
 				success: regeocoding_success,
 				complete: regeocoding_complete
 			});
+
+		// typeof call_back_get_shang_list == "function" && call_back_get_shang_list(that, data);
 		
-		// }
-		
-	  //   uni.getLocation({			
-	  //       type: 'gcj02',  // 国测局坐标
-			// //type: 'wgs84',   // GPS坐标 
-	  //       success: function (res) {
-			// 	console.log('res123456',res);
-				
-			// 	//var res2 = that002.qqMapToBMap(res.longitude,res.latitude);		
-			// 	//coordinate['longitude'] = res2[0];
-			// 	//coordinate['latitude'] = res2[1];
-				
-			// 	coordinate['longitude'] = res.longitude;
-			// 	coordinate['latitude'] = res.latitude;
-				
-			// 	uni.setStorageSync("coordinate_array", coordinate);
-				
-			// 	typeof call_back_get_shang_list == "function" && call_back_get_shang_list(that, coordinate);
-				
-			// 	return;
-				
-	  //       },
-			// fail:function(res){
-			// 	console.log('uni.getLocation fail ====>>>>', res);
-				
-			// 	var coordinate = [];
-			// 	coordinate['latitude'] = 31.293216;
-			// 	coordinate['longitude'] = 121.662945;
-				
-			// 	console.log('set virtual coordinate ====>>>>>', coordinate);
-				
-			// 	typeof call_back_get_shang_list == "function" && call_back_get_shang_list(that, coordinate);
-				
-			// 	return;
-				
-			// },
-			// complete:function(res){
-			// 	console.log('uni.getLocation complete ====>>>>', res);
-			// }
-			
-	  //   });
-		
-		typeof call_back_get_shang_list == "function" && call_back_get_shang_list(that, data);
-		
-		return;	
+		// return;	
 	},
 	
 	

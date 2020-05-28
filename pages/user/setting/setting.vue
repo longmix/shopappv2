@@ -8,10 +8,10 @@
 					<image :src="user_info.headimgurl" style="width: 100upx;" mode="aspectFit"></image>
 					</view><view class="icon xiangyou"></view></view>
 				</view>
-				<view class="row">
+				<navigator url='/pages/user/nickName/nickNameEdit' class="row">
 					<view class="title">昵称</view>
-					<view class="right"><view class="tis"> <input type="text" :value="user_info.nickname" style="text-align: right;margin-right: 32upx;" name="nickname" @input="nameInput"/></view></view>
-				</view>
+					<view class="right"><view class="tis"> <input type="text" :value="user_info.nickname" style="text-align: right;margin-right: 32upx;" name="nickname" /></view></view>
+				</navigator>
 				<view class="row">
 					<view class="title">个性签名</view>
 					<view class="right"><view class="tis">{{user_info.signature}}</view><view class="icon xiangyou"></view></view>
