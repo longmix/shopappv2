@@ -1,6 +1,6 @@
 {
   "extEnable": true,
-  "extAppid": "wxe6565fced2f812da",
+  "extAppid": "wxfc3ddf7ac2c59963",
   "directCommit": true,
   "ext": {
     "name": "wechat",
@@ -11,18 +11,18 @@
         "user_2"
       ]
     },
-    "xiaochengxu_appid": "wxe6565fced2f812da",
+    "xiaochengxu_appid": "wxfc3ddf7ac2c59963",
     "force_sellerid_flag": 1,
-    "force_sellerid_value": "pQNNmSkaq",
-    "shop_name": "延誉电商",
+    "force_sellerid_value": "fJQzPaqVj",
+    "shop_name": "本地汽车服务",
     "version_number": "1.4.0",
-    "navigationBarBackgroundColor_fixed": 1,
+    "navigationBarBackgroundColor_fixed": 0,
     "kefu_telephone": "",
     "kefu_qq": "",
     "kefu_website": "",
     "kefu_gongzhonghao": "",
-    "default_copyright_text": "延誉电商 - 延誉宝 @ 版权所有",
-    "is_shop_cart_in_tabbar": 1,
+    "default_copyright_text": "本地汽车服务 版权所有",
+    "is_shop_cart_in_tabbar": 0,
     "is_publish_index_in_tabbar": 0,
     "is_publish_list_in_tabbar": 1
   },
@@ -50,10 +50,10 @@
         "text": "分类信息"
       },
       {
-        "pagePath": "pages/category/category",
+        "pagePath": "pages/publish/publish_index",
         "iconPath": "static/img/tabBar/publish.png",
         "selectedIconPath": "static/img/tabBar/publish-on.png",
-        "text": "商品分类"
+        "text": "发布"
       },
       {
         "pagePath": "pages/shopList/shopList",
