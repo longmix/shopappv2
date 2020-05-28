@@ -386,19 +386,26 @@
 			is_login:function(){
 				console.log('获取焦点！！！！');
 				//判断是否登录
-				var userInfo = that.abotapi.get_user_info();
+				var userInfo = this.abotapi.get_user_info();
 				if(!userInfo || !userInfo.userid){
 					uni.showModal({
 						title:'只有登录才可以评论',
-						success:function(){
-							if(that.form_page && that.form_page == 'publish_list'){
-								var last_url = '/pages/home/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid + '&form_page=publish_list';
-							}else{
-								var last_url = '/pages/home/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid;
+						success:function(res){
+							if(res.cancel){
+								//取消
+								return;
+							}else if(res.confirm){
+								//确认
+								if(that.form_page && that.form_page == 'publish_list'){
+									var last_url = '/pages/home/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid + '&form_page=publish_list';
+								}else{
+									var last_url = '/pages/home/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid;
+								}
+								
+								that.abotapi.goto_user_login(last_url, 'normal');
+								return;
 							}
 							
-							that.abotapi.goto_user_login(last_url, 'normal');
-							return;
 						}
 					})
 					
@@ -453,14 +460,19 @@
 				if(!userInfo || !userInfo.userid){
 					uni.showModal({
 						title:'只有登录才可以收藏',
-						success:function(){
-							if(that.form_page && that.form_page == 'publish_list'){
-								var last_url = '/pages/home/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid + '&form_page=publish_list';
-							}else{
-								var last_url = '/pages/home/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid;
+						success:function(res){
+							if(res.cancel){
+								return;
+							}else if(res.confirm){
+								if(that.form_page && that.form_page == 'publish_list'){
+									var last_url = '/pages/home/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid + '&form_page=publish_list';
+								}else{
+									var last_url = '/pages/home/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid;
+								}
+								
+								that.abotapi.goto_user_login(last_url, 'normal');
+								return;
 							}
-							
-							that.abotapi.goto_user_login(last_url, 'normal');
 							
 						}
 					})
@@ -505,13 +517,13 @@
 			//获取评论列表
 			get_remark_list: function () {
 				var that = this;
-				var userInfo = this.abotapi.get_user_info();
+				//var userInfo = this.abotapi.get_user_info();
 				this.abotapi.abotRequest({
 					url: this.abotapi.globalData.weiduke_server_url + '/openapi/ArticleImgApi/remark_img',
 					method: 'post',
 					data: {
-						userid:userInfo.userid,
-						checkstr:userInfo.checkstr,
+						// userid:userInfo.userid,
+						// checkstr:userInfo.checkstr,
 						token: this.abotapi.get_current_weiduke_token(),
 						openid: this.abotapi.get_current_openid(),
 						action: 'list',
@@ -840,15 +852,20 @@
 				if(!userInfo || !userInfo.userid){
 					uni.showModal({
 						title:'只有登录才可以点赞',
-						success:function(){
-							if(that.form_page && that.form_page == 'publish_list'){
-								var last_url = '/pages/home/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid + '&form_page=publish_list';
-							}else{
-								var last_url = '/pages/home/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid;
+						success:function(res){
+							if(res.cancel){
+								return;
+							}else if(res.confirm){
+								if(that.form_page && that.form_page == 'publish_list'){
+									var last_url = '/pages/home/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid + '&form_page=publish_list';
+								}else{
+									var last_url = '/pages/home/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid;
+								}
+								
+								that.abotapi.goto_user_login(last_url, 'normal');
+								return;
 							}
 							
-							that.abotapi.goto_user_login(last_url, 'normal');
-							return;
 						}
 					})
 					

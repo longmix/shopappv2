@@ -10,7 +10,10 @@
 		</view>
 		
 		<view class="nav-icon-con">
-			
+				<view :data-cataid="0" @click="get_publish_cata_list">
+					<image class="nav-icon-list" src="../../static/img/user/point.png"></image>
+					<view style="font-size: 24upx;">全部</view>
+				</view>
 				<view style="" v-for="(item,index) in publish_img_cata_list " :key="item.classid" :data-cataid="item.classid" @click="get_publish_cata_list">
 					<image class="nav-icon-list" :src="item.icon"></image>
 					<view style="font-size: 24upx;">{{item.name}}</view>
@@ -254,8 +257,12 @@
 			
 			//点击导航传递cataid获取帖子
 			get_publish_cata_list:function(e){
+				if(e.currentTarget.dataset.cataid && e.currentTarget.dataset.cataid != 0){
+					this.cms_cataid = e.currentTarget.dataset.cataid;
+				}else{
+					this.cms_cataid = '';
+				}
 				
-				this.cms_cataid = e.currentTarget.dataset.cataid;
 				
 				this.index_list = [];
 				this.current_page = 1;
