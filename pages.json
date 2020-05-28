@@ -298,6 +298,7 @@
 		{
 		    "path" : "pages/shopList/shopList",
 		    "style": {
+				"enablePullDownRefresh": true,
 		    	"navigationBarTitleText": "商家列表",
 		    	"softinputNavBar":"none"
 		    }

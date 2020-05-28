@@ -122,7 +122,7 @@
 		<!-- 功能按钮结束-->
 		
 		<!-- 优惠 -->
-		<view style="border-bottom:6px solid #eee;">
+		<view style="border-bottom:6px solid #eee;" v-if="shoplist.youhui_title != ''">
 			<view class="icon-title2">
 			  <image src="../../static/img/category/youhui.png"></image>
 			  <view class='biaoti'>优惠活动</view>
@@ -143,23 +143,23 @@
 		</block>
 		</view>
 		<!--商家简介-->
-		<view style="border-bottom:6px solid #eee;">
-		<view class="icon-title2">
-		  <image src="../../static/img/category/jianjie.png"></image>
-		  <view class='biaoti'>商家简介</view>
-		</view>
-		<block v-if="shoplist.brief == ''">
-			<view style="text-align: center;color:#ccc;font-size:16px;">暂无简介</view>
-			<view style="padding-bottom: 21px;color: red;width: 94%;margin-left: 13px;" >
-			  <text style="width:20px;"></text>
+		<view style="border-bottom:6px solid #eee;" v-if="shoplist.brief != ''">
+			<view class="icon-title2">
+			  <image src="../../static/img/category/jianjie.png"></image>
+			  <view class='biaoti'>商家简介</view>
 			</view>
-		</block>
+			<block v-if="shoplist.brief == ''">
+				<view style="text-align: center;color:#ccc;font-size:16px;">暂无简介</view>
+				<view style="padding-bottom: 21px;color: red;width: 94%;margin-left: 13px;" >
+				  <text style="width:20px;"></text>
+				</view>
+			</block>
 		
-		<block v-if="shoplist.brief != ''">
-		<view style="padding-top:5px;padding-bottom: 24rpx;color: #666;width: 94%;margin: 0 auto;font-size:14px;text-indent: 54rpx;">
-		  <text>{{shoplist.brief}}</text>
-		</view>
-		</block>
+			<block v-if="shoplist.brief != ''">
+				<view style="padding-top:5px;padding-bottom: 24rpx;color: #666;width: 94%;margin: 0 auto;font-size:14px;text-indent: 54rpx;">
+				  <text>{{shoplist.brief}}</text>
+				</view>
+			</block>
 		</view>
 		<view class="bottom">
 			

@@ -156,27 +156,7 @@
 				wxa_kefu_bg_color:'',
 			};
 		},
-		onPageScroll(e) {
-			//兼容iOS端下拉时顶部漂移
-			this.headerPosition = e.scrollTop>=0?"fixed":"absolute";
-			this.headerTop = e.scrollTop>=0?null:0;
-			this.statusTop = e.scrollTop>=0?null:-this.statusHeight+'px';
-			
-			
-			
-		},
-		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
-		onPullDownRefresh() {
-			
-		},
-		//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
-		onReachBottom() {
-			console.log(this.is_xiala);
-			if(this.is_xiala == 0){
-				this.jiazai();
-			}
-			
-		},
+		
 		onLoad(options) {
 			var that = this;
 			
@@ -240,7 +220,47 @@
 			
 		},
 		
-		
+		onPageScroll(e) {
+			//兼容iOS端下拉时顶部漂移
+			this.headerPosition = e.scrollTop>=0?"fixed":"absolute";
+			this.headerTop = e.scrollTop>=0?null:0;
+			this.statusTop = e.scrollTop>=0?null:-this.statusHeight+'px';
+			
+			
+			
+		},
+		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
+		onPullDownRefresh() {
+			var that = this;
+			
+			console.log('onPullDownRefresh=====>>>>>');
+			uni.showToast({
+				title: '数据更新中……',
+				icon:'loading'
+			});
+			 
+			
+			uni.removeStorageSync('locationData');
+			uni.removeStorageSync('shop_location_list');
+			that.xianmaishang_list = [];
+			that.page = 1;
+			that.sx_shang_list = [];
+			locationapi.get_location(that, that.cx_paixu_shang_list);
+			
+			
+			setTimeout(function() {
+				uni.stopPullDownRefresh();
+				uni.hideToast();
+			}, 2000);
+		},
+		//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
+		onReachBottom() {
+			console.log(this.is_xiala);
+			if(this.is_xiala == 0){
+				this.jiazai();
+			}
+			
+		},
 		
 		methods: {
 			
@@ -270,7 +290,8 @@
 				
 				var star = (page - 1) * shang_num;
 				var end = page * shang_num;
-				
+				console.log('star',star);
+				console.log('end',end);
 				var threeArr = shang_list.slice(star, end); //返回特定的数组
 				
 				
@@ -307,7 +328,7 @@
 						
 						for (var shangid in res.data['xianmai_shang_list']) {
 						  
-								
+							
 						  var xianmai_shangid = res.data['xianmai_shang_list'][shangid]['xianmai_shangid'];
 								
 						  var disItem = null;
@@ -356,6 +377,90 @@
 				
 			},
 			
+			//重新排序（重新获取经纬度）
+			cx_paixu_shang_list:function(that,locationData){
+				
+				console.log('重新排序开始============>>>>>>',locationData);
+				var that = this;
+				
+				var coordinate = [];
+				coordinate['latitude'] = locationData.latitude;
+				coordinate['longitude'] = locationData.longitude;
+				//经纬度  点方法获取
+				that.coordinate = coordinate; //经纬度
+				
+				that.set_paixu_shanglist();
+				
+			},
+			
+			//给商家排序
+			set_paixu_shanglist:function(){
+				
+				var that = this;
+				var arr = uni.getStorageSync('all_shang_jingwei_list'); //获取商家经纬度
+				
+				var shop_location_list = that.jisuan_juli(arr);
+				
+				console.log('shop_location_list',shop_location_list);
+							
+				
+				
+				//开始排序
+				var paixu_shanglist = shop_location_list.sort(compare);
+				console.log('paixu_shanglist',paixu_shanglist);
+				function compare(obj1, obj2) {
+				  var val1 = obj1.dis; 
+				  var val2 = obj2.dis;
+				  if (val1 < val2) {
+					return -1;
+				  } else if (val1 > val2) {
+					return 1;
+				  } else {
+					return 0;
+				  }
+				}
+				
+				uni.setStorageSync("shop_location_list", paixu_shanglist);
+				
+				
+				that.shang_list = uni.getStorageSync("shop_location_list");
+				
+				that.get_shang_list();
+				
+			},
+			//计算距离
+			jisuan_juli:function(arr){
+				console.log('计算距离开始');
+				
+				var dis = 0
+				var shop_location_list = [];
+				var that = this;
+				
+				for (var index in arr) {
+					if (!isNaN(index)) {
+					  
+						dis = that.abotapi.getDisance(that.coordinate['latitude'], that.coordinate['longitude'], arr[index]['latitude'], arr[index]['longitude']);
+						
+						arr[index]['dis'] = dis;
+						
+						dis = Math.ceil(dis)
+						
+						var dis_str = '';
+						if (dis < 1000) {
+						  dis_str = dis + '米'
+						}
+					
+						else {
+						  dis_str = (dis / 1000).toFixed(1) + '公里'
+						}
+						
+						arr[index]['dis_str'] = dis_str;
+						
+						shop_location_list.push(arr[index])
+					}
+				}
+				return shop_location_list;
+			},
 			//加载更多
 			jiazai:function(){
 				var page = this.page;

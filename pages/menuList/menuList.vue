@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-	 <view class="header" @tap="toPageIndex">
+	 <view class="header" @tap="toPageIndex" :style="{backgroundColor:wxa_shop_nav_bg_color}">
 	
 	  <view class="header-item1">
 	    <view class="header-item2">
@@ -175,6 +175,7 @@ export default {
 			finger:{},
 			busPos:{},
 			animationData:'',
+			wxa_shop_nav_bg_color:'',
 		};
 	},
 	onPageScroll(e) {
@@ -464,7 +465,12 @@ export default {
 		this.busPos['x'] = 27.185;//购物车的位置
 		this.busPos['y'] = this.hh - 32;
 
-
+		this.abotapi.set_option_list_str(that, function(that002, shop_option_data){
+			that002.abotapi.getColor();
+			
+			that002.wxa_shop_nav_bg_color = shop_option_data.wxa_shop_nav_bg_color;
+			console.log('that002.wxa_shop_nav_bg_color',that002.wxa_shop_nav_bg_color);
+		});
 	},
 	
 	
@@ -1075,8 +1081,8 @@ export default {
 
 .header{
   margin: 0; 
-  border-radius: 8px;
-  background:#92929e linear-gradient(to right, rgba(255,255,255,0), rgba(2555,255,255,.5));
+  // border-radius: 8px;
+  // background:#92929e linear-gradient(to right, rgba(255,255,255,0), rgba(2555,255,255,.5));
 }
 .header-item1{
   display: flex;
