@@ -201,7 +201,7 @@
 		},
 		onReady: function () {
 			uni.setNavigationBarTitle({
-				title: this.catename,
+				title: '发布 - '+this.catename,
 			})
 		},
 		methods: {
@@ -325,8 +325,15 @@
 								title:'登录超时',
 								content: '请重新登录',
 								success: function (res) {
-									var last_url = '/pages/index/index';
-									that.abotapi.goto_user_login(last_url, 'switchTab');
+									
+									that.abotapi.del_user_info();
+									
+									
+									if(res.confirm){
+										var last_url = '/pages/index/index';
+										that.abotapi.goto_user_login(last_url, 'switchTab');
+									}
+									
 								}
 							})
 							
