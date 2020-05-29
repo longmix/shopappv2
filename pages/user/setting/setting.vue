@@ -9,8 +9,8 @@
 					</view><view class="icon xiangyou"></view></view>
 				</view>
 				<navigator url='/pages/user/nickName/nickNameEdit' class="row">
-					<view class="title">昵称</view>
-					<view class="right"><view class="tis"> <input type="text" :value="user_info.nickname" style="text-align: right;margin-right: 32upx;" name="nickname" /></view></view>
+					<view class="row">昵称</view>
+					<view class="right"><view class="tis">{{userAcountInfo.fenxiao_info.nickname}}</view></view>
 				</navigator>
 				<view class="row">
 					<view class="title">个性签名</view>
@@ -75,14 +75,15 @@
 		data() {
 			return {
 				user_info:'',
-				nickname:''
-				
+				nickname:'',
+				userAcountInfo:''
 			};
 		},
 		
 		
 		onLoad:function(options) {
 			var that = this;
+			this.userAcountInfo = this.abotapi.get_user_account_info();
 			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 			var userInfo = that.abotapi.get_user_info();
 			if ((!userInfo) || (!userInfo.userid)) {

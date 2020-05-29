@@ -5,7 +5,7 @@
 		</view>
 		
 		
-		<button class="keep_button" type="primary" bindtap="keep_button"> 保存 </button>
+		<button class="keep_button" type="primary" @tap="keep_button"> 保存 </button>
 
 	</view>
 </template>
@@ -16,46 +16,34 @@
 			return {
 				name:'',
 				nickname:'',
-				
+				userAcountInfo: '',
 			};
 		},
 		onLoad(options) {
 			
-			this.abotapi.get_shop_info_from_server(this.callback_get_shop_info_from_server);
+	
+			this.abotapi.getColor()
+			this.userAcountInfo = this.abotapi.get_user_account_info();
+			this.nickname = this.userAcountInfo.fenxiao_info.nickname || '';
+			this.name = this.nickname;
 			
 		},
 		methods:{
-			 nameInput: function(e) {
-			      //console.log('昵称是='+e.detail.value);
-			      var that = this;
-			    if (e.detail.value == that.nickname){
-			      that.name = e.detail.value;
-			      }else{
-			      that.nickname = e.detail.value;
-			      }
-			  },
 			  
-			  callback_get_shop_info_from_server:function(cb_params){
-				  if(!cb_params){
-					  return;
-				  }
-				  
-				  console.log('cb_params=====',cb_params)
-				  
-			  },
+			 
 			  keep_button:function(){
 			    var that = this;
-			    console.log('that.data.nickname', that.data.nickname);
-			    console.log('that.data.name', that.data.name);
-			    if(that.data.name==that.data.nickname){
+			    console.log('that.data.nickname', that.nickname);
+			    console.log('that.data.name', that.name);
+			    if(that.name==that.nickname){
 			      uni.showToast({
 			        title: '保存成功',
 			        icon: 'success',
 			        duration: 2000
 			      });
-			      // uni.redirectTo({
-			      //   url: '../userinfo/userinfo'
-			      // })
+			      uni.redirectTo({
+			        url: '/pages/user/setting/setting'
+			      })
 			      return;
 			    }
 			    
@@ -64,7 +52,7 @@
 			
 			
 			    that.abotapi.abotRequest({
-			      url: that.abotapi.globalData.http_server + '?g=Yanyubao&m=ShopAppWxa&a=user_info_save',
+			      url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=user_info_save',
 			      header: {  
 			                "Content-Type": "application/x-www-form-urlencoded"  
 			              }, 
@@ -77,17 +65,19 @@
 			      },    
 			      success:function(res){
 			        console.log('success',res);
-			        if(res.data.code == 1){
-			          uni.showToast({
-			              title: res.data.msg,
-			              icon: 'success',
-			              duration: 2000
-			          })
-			          uni.redirectTo({
-			            url: '../userinfo/userinfo'
-			          
-			          })
-			          return;
+			        if(res.data.code == 1){						
+						that.userAcountInfo.fenxiao_info.nickname = that.nickname;
+						that.abotapi.set_user_account_info(that.userAcountInfo)	
+
+						uni.showToast({
+						  title: res.data.msg,
+						  icon: 'success',
+						  duration: 2000
+						})
+						uni.redirectTo({
+						url: '/pages/user/setting/setting'
+						})
+						return;
 			        }
 			        else{
 			          uni.showToast({
