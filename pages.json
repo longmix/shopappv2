@@ -371,9 +371,6 @@
 		,{
 		    "path" : "pages/welcome_page/welcome_page",
 		    "style" : {}
-		},{
-		    "path" : "cms/discover/discover",
-		    "style" : {}
 		}
         ,{
             "path" : "pages/user/nickName/nickNameEdit",
