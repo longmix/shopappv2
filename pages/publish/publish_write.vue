@@ -30,8 +30,8 @@
 									</view>
 									
 									
-									<view style="width: 250upx;height: 250upx;position: relative;" @tap="uploading_img()">
-										<image style="width: 100%;height: 100%;" src="../../static/img/add.png"></image>
+									<view style="margin: 2px;width: 250upx;height: 250upx;position: relative;" @tap="uploading_img()">
+										<image style="width: 100%;height: 100%;border: 1px solid #eee;" src="../../static/img/add.png"></image>
 									</view>
 									
 								</view>
@@ -95,8 +95,28 @@
 					
 					
 					<!-- <upimg-box></upimg-box> -->
+					<view style="display: flex;"> 
+					
+						<checkbox-group name='fabu_xuzhi'>
+								<checkbox value="1">
+									
+								</checkbox>
+						</checkbox-group>
+						<view>我已阅读并同意<text @click="knows" style="color: #007AFF;">《发布须知》</text></view>
+					</view>
 					<button formType="submit" :style="{backgroundColor:wxa_shop_nav_bg_color + ';font-size: 32upx'}" class="btn-row-submit">{{submit_text}}</button>
 				</form>
+				
+				<!-- 发布须知的弹层 -->
+				<view class="zhezhao" v-if="know==true"></view>
+				<view class="kcrzxy" v-if="know==true">
+				    <view class="kcrzxyhd" :style="{background:wxa_shop_nav_bg_color + ';font-size:26upx;'}">发布须知</view>
+				    <scroll-view scrollY class="kcrzxybd" style="height: 600rpx;">
+				        <textarea :value="publish_write_fabu_xuzhi" style="width: 100%;" auto-height='true'></textarea>
+				    </scroll-view>
+				    <view @click="knows" class="queren" :style="{background:wxa_shop_nav_bg_color + ';font-size:26upx;'}">确定</view>
+				</view>
+				
 			</view>
 		</view>
 	</view>
@@ -115,6 +135,7 @@
 			return {
 				pageData:{},
 				formid:'',
+				know:false,
 				hezuodiqu: [],
 				tigongziyuan:[],
 				xunqiuziyuan:[],
@@ -137,6 +158,7 @@
 				form_type:3,
 				submit_url:'', //即将提交表单的url 如果没有就用默认
 				wxa_shop_nav_bg_color:'',
+				publish_write_fabu_xuzhi:'',//发帖须知
 			}
 			
 		},
@@ -162,19 +184,24 @@
 			if(options.form_type){
 				this.form_type = options.form_type;
 			}
-			console.log('this.form_type',this.form_type);
+			
 			if(options.submit_url){
 				this.submit_url = options.submit_url;
 			}
+			if(options.form_type == 2){
+				this.formid = options.formid; //栏目页面跳转带过来的参数  栏目id
+			}else{
+				this.formid = options.cataid; //栏目页面跳转带过来的参数  栏目id
+			}
 			
-			this.formid = options.cataid; //栏目页面跳转带过来的参数  栏目id
 			this.catename = options.name; //栏目页面跳转带过来的参数  栏目名称
 			
 			this.abotapi.set_option_list_str(that, function(that002, shop_option_data){
+				console.log('shop_option_data',shop_option_data);
 				that002.abotapi.getColor();
-				
+				that002.publish_write_fabu_xuzhi = shop_option_data.publish_write_fabu_xuzhi;
 				that002.wxa_shop_nav_bg_color = shop_option_data.wxa_shop_nav_bg_color;
-				console.log('that002.wxa_shop_nav_bg_color',that002.wxa_shop_nav_bg_color);
+				
 			});
 			
 			
@@ -224,6 +251,15 @@
 			
 			
 			formSubmit:function(e){
+				
+				if(e.detail.value.fabu_xuzhi[0] != 1){
+					uni.showToast({
+						title:'请勾选发布须知',
+					})
+					return;
+				}
+				
+				
 				var that=this;
 				
 				var input_value = e.detail.value;
@@ -348,6 +384,13 @@
 			},
 			toCooperationArea:function(){
 				
+			},
+			//关闭发布须知的遮罩层
+			knows: function(e) {
+					var know = this.know;
+					
+					this.know = !know;
+					
 			},
 			getArticleList:function(){
 				
@@ -591,15 +634,16 @@
 	}
 	
 	.btn-row-submit{
-		width: 80%;
-		margin-left: 10%;
-		background-color: #FF4500;
-		border: none;
-		color: white;
-		text-align: center;
-		display: inline-block;
-		border-radius: 40upx;
-		font-size: 40upx;
+		width: 90%;
+		margin-left: 5%;
+		border-radius: 5px;
+		background-color: #fff;
+		margin-bottom: 20rpx;
+		height: 80rpx;
+		line-height: 80rpx;
+		background-color: #07c160;
+		color: #fff;
+
 	}
 	.input-flex-label{
 	    width: 30%;
@@ -649,5 +693,71 @@
 		/* background: #FFFFFF; */
 	}
 	
+	.zhezhao {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	background: rgba(0,0,0,0.7);
+	z-index: 998;
 	
+	}
+	.kcrzxy {
+	width: 70%;
+	left: 50%;
+	top: 15%;
+	position: fixed;
+	transform: translate(-50%,0);
+	background: #fff;
+	border-radius: 10px;
+	z-index: 999;
+	
+	}
+	
+	.kcrzxyhd {
+	text-align: center;
+	font-size: 30rpx;
+	background: #f44444;
+	height: 70rpx;
+	line-height: 70rpx;
+	color: white;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	
+	}
+	
+	.kcrzxybd {
+	font-size: 28rpx;
+	padding: 20rpx 30rpx;
+	box-sizing: border-box;
+	
+	}
+	
+	scroll-view {
+	display: block;
+	width: 100%;
+	
+	}
+	
+	.queren {
+	position: relative;
+	height: 70rpx;
+	width: 30%;
+	left: 35%;
+	font-size: 30rpx;
+	line-height: 70rpx;
+	text-align: center;
+	color: white;
+	background: #f44444;
+	border-radius: 10rpx;
+	margin: 5px 0;
+	
+	}
+
+
+
+
+
+
 </style>

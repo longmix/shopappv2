@@ -72,6 +72,19 @@
 				</view>
 			</view>
 		</view>
+		
+		<!-- 视频组件 -->
+		<view v-if="wxa_show_video_player == 1">
+		   <video object-fit='fill' :src="wxa_video_player_url" :poster='wxa_video_screen_url'
+			controls="true" :autoplay="false"
+			:style="{width:videometa_width_height[0] + 'rpx;height:' + videometa_width_height[1] + 'rpx;'}"
+			@loadedmetadata="videometa($event)"
+			enable-play-gesture="true"
+			>
+			</video>
+		</view>
+		
+		
 		<!-- 广告图 -->
 		<view v-for="(tab,index) in flash_img_list" :key="index" @click="toAdDetails(tab.url)">
 			<view class="banner" >
@@ -108,12 +121,7 @@
 		<publishList v-if="index_list" :index_list="index_list" @goForum="goForum" @previewImage="previewImage"></publishList>
 			
 		<!-- 商品列表 -->
-		<view style="font-size:30upx;text-align: center;
-			padding: 30upx auto;
-			display: block;
-			height: 80upx;
-			width: 100%;
-		">———— 最新上架 ————</view>
+		<view style="font-size:30upx;text-align: center;color:#ccc;padding: 30upx auto;display: block;height: 80upx;width: 100%;">———— 最新上架 ————</view>
 		<productList v-if="!wxa_hidden_product_list || wxa_hidden_product_list==0" :productsList="productList" :loadingText="loadingText" :showKucunSale="wxa_show_kucun_in_list" @toGoods="toGoods"></productList>	
 
 		<!-- 客服按钮 -->
@@ -175,7 +183,10 @@ export default {
 			current_citynameWidth:'',
 			wxa_shop_toutiao_icon:'',
 			is_shangjia:1,
-			
+			wxa_video_player_url:'', //视频相关路径
+			wxa_video_screen_url:'', //视频相关路径
+			wxa_show_video_player:0, //视频是否启用
+			videometa_width_height:'',
 			showHeader:true,
 			afterHeaderOpacity: 1,//不透明度
 			headerPosition: 'fixed',
@@ -511,6 +522,34 @@ export default {
 				 
 				 
 		},
+		videometa:function(e){
+			console.log('videometa======>>>>>', e);
+			
+			var imgwidth = e.detail.width;
+			var imgheight = e.detail.height;
+		
+		
+			//宽高比  
+			var ratio = imgwidth / imgheight;
+		
+			console.log(imgwidth, imgheight)
+		
+			var current_view_width = 750;
+		
+			current_view_width = current_view_width;
+		
+			//计算的高度值  
+			var current_view_height = current_view_width / ratio;
+		
+		
+			//赋值给前端
+			var videometa_width_height = [current_view_width, current_view_height];
+		
+			console.log('videometa_width_height====>>>>', videometa_width_height);
+			
+			this.videometa_width_height = videometa_width_height;
+			
+		},
 		get_publish_list:function(){
 			
 			var that = this;
@@ -711,140 +750,7 @@ export default {
 			
 			that.get_product_list();
 			
-			
-			
-			
-			//====3、获取经纬度坐标，显示当前城市			
-			console.log("百度地图AK：" + cb_params.option_list.baidu_map_ak_wxa);
-				
-			/* 获取定位地理位置 */
-			// 新建bmap对象
-			// #ifdef H5
-				var baidu_map_ak = cb_params.option_list.baidu_map_ak_h5;
-				
-				
-				
-				
-				
-			// #endif
-			// #ifdef APP-PLUS-AAA
-				var baidu_map_ak = cb_params.option_list.baidu_map_ak_app;
-			// #endif
-			// #ifdef MP-WEIXIN || APP-PLUS
-				var baidu_map_ak = cb_params.option_list.baidu_map_ak_wxa;
-				
-				
-				var BMap_obj = new bmap.BMapWX({
-					ak: baidu_map_ak
-				});
-				
-				that.baidu_map_ak = baidu_map_ak;
-				
-				var that002 = this;
-				
-				var regeocoding_fail = function (data) {
-					console.log('regeocoding_fail333333', data);
-					console.log('regeocoding_fail44444', that002.baidu_map_ak);
-					
-					//调用显示商家的接口
-					var coordinate = [];
-					coordinate['latitude'] = 31.293216;
-					coordinate['longitude'] = 121.662945;
-					
-					console.log('set virtual coordinate ====>>>>>', coordinate);
-					
-					that002.call_back_get_shang_list(that002, coordinate);
-					
-				};
-				
-				
-				
-				var regeocoding_success = function (data) {
-					console.log('00000111', data);
-					
-					console.log('location---longitude===',data.wxMarkerData[0].longitude)
-					console.log('location---latitude===',data.wxMarkerData[0].latitude)
-					
-					this.wxMarkerData = data.wxMarkerData;
-					this.markers = this.wxMarkerData;
-					this.latitude = this.wxMarkerData[0].latitude;
-					this.longitude = this.wxMarkerData[0].longitude;
-					this.address = this.wxMarkerData[0].address;
-					
-					console.log('address',this.address);
-					
-					//调用显示商家的接口
-					var coordinate = [];
-					coordinate['latitude'] = this.latitude;
-					coordinate['longitude'] = this.longitude;
-					
-					that002.call_back_get_shang_list(that002, coordinate);
-					
-					
-					that002.current_cityname = data.originalData.result.addressComponent.city
-					console.log('this.current_cityname',that002.current_cityname);
-					
-					that002.current_citynameLength = that002.current_cityname.length;
-					console.log('this.current_citynameLength',that002.current_citynameLength);
-					
-					
-					
-					if(that002.current_citynameLength == 2){
-						that002.current_citynameWidth = uni.upx2px(28);
-					}
-					else if(that002.current_citynameLength == 3){
-						that002.current_citynameWidth = uni.upx2px(24);
-					}
-					else if(that002.current_citynameLength == 4){
-						that002.current_citynameWidth = uni.upx2px(20);
-					}
-					
-					this.cityInfo = data.originalData.result.addressComponent,
-					uni.setStorageSync('address_info', this.cityInfo)
-					// console.log('with', that.data.imageWidth)
-					
-				
-					uni.setStorage({
-						key:'current_cityname',
-						data:that002.current_cityname,
-						success:function(){}
-					})
-					
-					
-					uni.setStorage({
-						key:'current_latitude',
-						data:this.wxMarkerData[0].latitude,
-						success:function(){}
-					})
-					
-					
-					uni.setStorage({
-						key:'current_longitude',
-						data:this.wxMarkerData[0].longitude,
-						success:function(){}
-					})
-					
-					uni.setStorage({
-						key:'markers',
-						data:this.wxMarkerData,
-						success:function(){}
-					})
-					
-					
-				    // getCurrentPages()[getCurrentPages().length - 1].onLoad()
-				}
-					
-				BMap_obj.regeocoding({
-					fail: regeocoding_fail,
-					success: regeocoding_success,
-					// coordtype: 'bd09ll'
-				});
-				
-				
-				
-				
-			// #endif
-			
+			that.call_back_get_shang_list();
 			
 			
 				
@@ -854,14 +760,10 @@ export default {
 		
 		
 		/* 获取前十条商家 */
-		call_back_get_shang_list:function(that, coordinate){
-			//获取全部商家 的金纬度
-			//coordinate = JSON.stringify(coordinate);
-			console.log('coordinatecoordinate===========>>>>', coordinate);
-						
+		call_back_get_shang_list:function(){
 			
-			that.coordinate = coordinate;
-						
+			var that = this;
+			
 			var arr = uni.getStorageSync('all_shang_jingwei_list');
 			var arr_save_time = uni.getStorageSync('all_shang_jingwei_list_save_time');
 			
@@ -870,7 +772,9 @@ export default {
 			console.log('call_back_get_shang_list currentTime======>>>>'+currentTime);
 			
 			if(arr && (currentTime - arr_save_time) < 2*60*60*1000 ){
-				that.set_paixu_shanglist();
+				
+				locationapi.get_location(that, that.set_paixu_shanglist);
+				//that.set_paixu_shanglist();
 			}
 			else{
 				this.abotapi.abotRequest({
@@ -893,7 +797,8 @@ export default {
 						uni.setStorageSync('all_shang_jingwei_list_save_time', currentTime);
 						
 						//调用排序算法
-						that.set_paixu_shanglist();
+						locationapi.get_location(that, that.set_paixu_shanglist);
+						//that.set_paixu_shanglist();
 				    },
 				    fail: function (e) {
 						uni.showToast({
@@ -906,9 +811,13 @@ export default {
 			
 		},
 		//给商家排序
-		set_paixu_shanglist:function(){
+		set_paixu_shanglist:function(that,locationData){
+			console.log('locationData=======>>>>',locationData);
+			var coordinate = [];
+			coordinate['latitude'] = locationData.latitude;
+			coordinate['longitude'] = locationData.longitude;
 			
-			
+			that.coordinate = coordinate;
 			
 			var that = this;
 			

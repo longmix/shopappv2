@@ -1,6 +1,6 @@
 <template>
 	<view style="background:#EFEFF4;border-top: 1px solid #EFEFF4;">
-		<view class="fabu_button" @tap="toPublish_index()">
+		<view class="fabu_button" @tap="toPublish_index()" v-if="publish_hiddend_btn_for_write">
 			发布
 		</view>
 		<view class="sou">
@@ -10,16 +10,25 @@
 		</view>
 		
 		<view class="nav-icon-con">
-				<view :data-cataid="0" @click="get_publish_cata_list">
-					<image class="nav-icon-list" src="../../static/img/user/point.png"></image>
-					<view style="font-size: 24upx;">全部</view>
-				</view>
 				<view style="" v-for="(item,index) in publish_img_cata_list " :key="item.classid" :data-cataid="item.classid" @click="get_publish_cata_list">
 					<image class="nav-icon-list" :src="item.icon"></image>
 					<view style="font-size: 24upx;">{{item.name}}</view>
 				</view>
 
 		</view>
+		
+		<!-- 文字导航 -->
+		<view style="display: flex;background-color: #FFFFFF;">
+			<view :data-cataid="0" @click="get_publish_cata_list" style="color: #999;font-size: 30upx;text-align: center;width: 15%;height:60upx;line-height: 60upx;">
+				<view>全部</view>
+			</view>
+			<scroll-view scroll-x="true" enable-flex="true" class="kcrzxybd" style="height:60upx;display: flex;white-space: nowrap;">
+				
+					<view v-for="(item,index) in publish_img_cata_list " :key="item.classid" class="scroll-view" :data-cataid="item.classid" @click="get_publish_cata_list">{{item.name}}</view>
+					
+			</scroll-view>
+		</view>
+		
 		<publishList :index_list="index_list" @goForum="goForum" @previewImage="previewImage"></publishList>
 	</view>
 </template>
@@ -51,6 +60,7 @@
 				weiduke_resou:'',
 				index_list:[],
 				dianzan_num:0,
+				publish_hiddend_btn_for_write:0,//发帖按钮
 				dianzan_num2:0,
 				num01:'',
 				click:'',
@@ -122,16 +132,22 @@
 		
 		methods: {
 			callback_function:function(that, shop_option_data){
+				console.log('aaaaaaa====',shop_option_data);
 				that.abotapi.getColor();
 				
 				that.cms_token = shop_option_data.option_list.cms_token;
 				
+				if(shop_option_data.option_list.publish_hiddend_btn_for_write){
+					that.publish_hiddend_btn_for_write = shop_option_data.option_list.publish_hiddend_btn_for_write; //是否显示发帖按钮
+				}
+				
+				
 				that.get_publish_list();
 				
-				//取帖子分类列表
+				//取帖子分类列表publish_hiddend_btn_for_write__checkbox
 			
 				that.publish_img_cata_list = shop_option_data.publish_img_cata_list;
-				console.log('aaaaaaa====',that.publish_img_cata_list);
+				
 			
 				
 			},
@@ -348,8 +364,6 @@
 		border-radius:6upx;
 		padding: 2rpx 6rpx;
 		text-align: center;
-		width: 50%;
-		
 	}
 	.content{
 		display: -webkit-box;
@@ -414,7 +428,7 @@
 	}
 	.nav-icon-con{
 		margin-top: 30upx;
-		margin-bottom: 30upx;
+		margin-bottom: 15upx;
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
@@ -456,5 +470,14 @@
 		line-height: 30px;
 
 	}
-	
+	.scroll-view{
+		color: #999;
+		font-size: 30upx;
+		text-align: center;
+		min-width: 25%;
+		max-width:25%;
+		max-height:60upx;
+		min-height:60upx;
+		line-height: 60upx;
+	}
 </style>

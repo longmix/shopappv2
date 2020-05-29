@@ -188,17 +188,22 @@
 
 			});
 			
-			var shang_list = uni.getStorageSync("shop_location_list");
+			// var shang_list = uni.getStorageSync("shop_location_list");
 			
-			this.shang_list = shang_list;
+			// this.shang_list = shang_list;
+			
+			// this.get_shang_list();
+			
+			
 			
 			
 			// var coordinate = locationapi.get_location(this,this.get_shang_list);
-			this.get_shang_list();
+			
 			// console.log('coordinate1',coordinate);
 			
 			// this.coordinate = coordinate;
 			
+			locationapi.get_location(that, that.cx_paixu_shang_list);
 			
 		},
 		onShow() {
