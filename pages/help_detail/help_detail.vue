@@ -1405,6 +1405,9 @@
 	.wenzhang-meihua{
 		font-size: 30upx;
 		margin-top: 10upx;
-		border-bottom: 1upx solid #c3c3c3;
+		margin: auto;
+		padding-bottom: 10upx;
+		padding-top: 10upx;
+		border-top: 1upx solid #eee;
 	}
 </style>

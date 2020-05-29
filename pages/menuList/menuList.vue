@@ -14,19 +14,21 @@
 	
 	 </view>
 	 <view class="body">
-	  <scroll-view class="body-col" scroll-y="true" :style="{height:menuHeight + 'px'}">
+		 <view class="kongkong" v-if="menu_list.length == 0">
+		 			<image style="width:50%;" mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/empty_cart.png"></image>
+		 			<view style="font-size: 28upx;color: #666;">这个商家真的很懒，暂时还没有商品上架~</view>   
+		 </view>
+		 <block v-else>
+	  <scroll-view  class="body-col" scroll-y="true" :style="{height:menuHeight + 'px'}">
 	    <view class="body-section" :class="[selectOrder==m1.id?'active':'']" v-for="(m1, index) in menu_list"  :data-cate="'z' + m1.id" :data-selectorder="m1.id" @tap="clickMenu">
 	     <view>{{m1.package}}</view>
 	    </view>
 	  </scroll-view>
 	  <scroll-view scroll-y="true" class="body-block" @scroll="onGoodsScroll" :style="{height:menuHeight + 'px'}" :scroll-into-view="toView"  scroll-with-animation="true">
 		  
-		  <view class="kongkong" v-if="menu_list.length == 0">
-			<image style="width: 550upx;height: 550upx;" src="https://yanyubao.tseo.cn/Tpl/static/images/empty_cart.png"></image>
-			<view>这个商家真的很懒，暂时还没有商品上架~</view>   
-		  </view>
 		  
-	     <view v-else class="body-content"  v-for="(m1,idx1) in menu_list">
+		  
+	     <view  class="body-content"  v-for="(m1,idx1) in menu_list">
 	      <view class="title" :id="'z' + m1.id">{{m1.package}}</view>
 	        <view class="content-item" v-for="(m2, idx2) in m1.menu">
 	          <image :src="m2.img"  class="content-item-img"></image>
@@ -52,6 +54,7 @@
 	        </view>
 	    </view>
 	  </scroll-view>
+	  </block>
 	 </view>
 	
 	<view class="good_box" :hidden="hide_good_box"  :style="{left: bus_x + 'px',top:bus_y + 'px'}"> </view>
@@ -1705,6 +1708,9 @@ font-size: 24rpx;
   font-size: 28rpx;
 }
 .kongkong{
-	margin-top: 50upx;
+	text-align: center;
+	position: fixed;
+	left: 16%;
+	top: 20%;
 }
 </style>
