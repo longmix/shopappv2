@@ -20,7 +20,13 @@
 	    </view>
 	  </scroll-view>
 	  <scroll-view scroll-y="true" class="body-block" @scroll="onGoodsScroll" :style="{height:menuHeight + 'px'}" :scroll-into-view="toView"  scroll-with-animation="true">
-	     <view class="body-content"  v-for="(m1,idx1) in menu_list">
+		  
+		  <view class="kongkong" v-if="menu_list.length == 0">
+			<image style="width: 550upx;height: 550upx;" src="https://yanyubao.tseo.cn/Tpl/static/images/empty_cart.png"></image>
+			<view>这个商家真的很懒，暂时还没有商品上架~</view>   
+		  </view>
+		  
+	     <view v-else class="body-content"  v-for="(m1,idx1) in menu_list">
 	      <view class="title" :id="'z' + m1.id">{{m1.package}}</view>
 	        <view class="content-item" v-for="(m2, idx2) in m1.menu">
 	          <image :src="m2.img"  class="content-item-img"></image>
@@ -351,7 +357,7 @@ export default {
 	   
 			if (data.menu == '') {
 			  
-			  uni.showModal({
+/* 			  uni.showModal({
 				title: '提示',
 				content: '暂时没有商品，请等待...',
 				success(res) {
@@ -369,7 +375,7 @@ export default {
 				  }
 				}
 			  })
-			  return;
+			  return; */
 			}
 
 			var menu_list = data.menu;
@@ -386,7 +392,7 @@ export default {
 
 
 
-			var selectOrder = data.menu[0].id		
+			var selectOrder = data.menu[0] ? data.menu[0].id : 0;
 			that.menu_list = menu_list;
 			that.selectOrder = selectOrder;
 
@@ -1697,5 +1703,8 @@ font-size: 24rpx;
   background: #FEFBF2;
   color: #F3B33E !important;
   font-size: 28rpx;
+}
+.kongkong{
+	margin-top: 50upx;
 }
 </style>

@@ -41,7 +41,7 @@
 				</view>
 				
 				<!-- 自定义属性 -->
-				<view v-for="value_item in wz_text.value_list" :key="value_item">
+				<view class="wenzhang-meihua" v-for="value_item in wz_text.value_list" :key="value_item">
 					{{value_item.displayname}}：{{value_item.fieldvalue}}
 				</view>
 				
@@ -1089,6 +1089,7 @@
 	  padding:32rpx;
 	  /*box-shadow:#EDEDED 2rpx 2rpx 15rpx 6rpx;
 	  margin-top: 70rpx;*/
+	  font-weight: bold;
 	}
 	.datetime{
 	  margin-left:10rpx;
@@ -1390,8 +1391,8 @@
 		border-radius:5upx;
 	}
 	.nickname{
-		color:#333;
-		font-weight:blod;
+		color:#515151;
+		font-size: 28upx;
 	}
 	.cata_name{
 		margin-top: 10upx;
@@ -1400,5 +1401,10 @@
 		border-radius:6upx;
 		padding: 2rpx 6rpx;
 		text-align: center;
+	}
+	.wenzhang-meihua{
+		font-size: 30upx;
+		margin-top: 10upx;
+		border-bottom: 1upx solid #c3c3c3;
 	}
 </style>

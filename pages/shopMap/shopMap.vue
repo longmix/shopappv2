@@ -72,7 +72,7 @@
 
 <style>
 	.map_container{ 
-	    height: 300px; 
+	    height: 500px; 
 	    width: 100%; 
 	} 
 	

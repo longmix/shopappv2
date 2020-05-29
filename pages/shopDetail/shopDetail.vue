@@ -47,7 +47,7 @@
 					  
 					  <view style="color:#333;font-size: 28upx;display: flex;align-items: center;">
 						  <image style="width: 30upx;height: 30upx;" src="../../static/img/share/time1.png"></image>
-						  <span style="margin-left: 25upx;">营业时间|{{shoplist.yingyeshijian}}</span>
+						  <span style="margin-left: 25upx;">营业时间 | {{shoplist.yingyeshijian}}</span>
 					  </view>
 					  <image style="width: 30upx;height: 30upx;" src="../../static/img/user/point.png"></image>
 						
@@ -489,6 +489,7 @@
 		font-size: 9px;
 		width: 40%;
 		text-align: center;
+		margin-top: 20upx;
 	}
 	
 	

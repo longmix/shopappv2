@@ -815,7 +815,7 @@ module.exports = {
 			var cms_faquan_setting = JSON.parse(uni.getStorageSync("cms_faquan_setting"))
 	
 			//this.globalData.cms_faquan_setting = cms_faquan_setting;
-			console.log(' this.globalData.option_list===========', this.globalData.cms_faquan_setting)
+			console.log(' this.globalData.option_list===========', cms_faquan_setting)
 			//刷新界面
 			typeof callback_function == "function" && callback_function(that, cms_faquan_setting);
 	
