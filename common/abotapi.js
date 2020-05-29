@@ -373,7 +373,7 @@ module.exports = {
 				console.log('sssssss',res);
 				if (res.data.code == 1) {
 					var xianmaishang_setting_list = res.data.data;
-					var user_console_setting = res.data.user_console_setting;
+					var user_console_setting = res.data.data.user_console_setting;
 	
 					uni.setStorageSync('get_xianmaishang_setting_list_str_' + that.globalData.default_sellerid, xianmaishang_setting_list);
 					uni.setStorageSync('user_console_setting_str_' + that.globalData.default_sellerid, user_console_setting);
