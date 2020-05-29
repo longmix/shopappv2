@@ -200,7 +200,7 @@
 			var that = this;
 
 			
-			
+			that.getPage();
 			
 			that.abotapi.abotRequest({
 			    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_shop_icon_usercenter',

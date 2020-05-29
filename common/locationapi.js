@@ -69,29 +69,31 @@ module.exports = {
 			
 			/* 获取定位地理位置 */
 			// 新建bmap对象
+			var baidu_map_ak;
 			// #ifdef H5
-				var baidu_map_ak = cb_params.option_list.baidu_map_ak_h5;
+				baidu_map_ak = cb_params.option_list.baidu_map_ak_h5;
 			// #endif
 			
 			// #ifdef APP-PLUS-AAA
-				var baidu_map_ak = cb_params.option_list.baidu_map_ak_app;
+				baidu_map_ak = cb_params.option_list.baidu_map_ak_app;
 			// #endif
 			
 			// #ifdef MP-WEIXIN || APP-PLUS
-				var baidu_map_ak = that.abotapi.globalData.option_list.baidu_map_ak_wxa;
+				baidu_map_ak = that.abotapi.globalData.option_list.baidu_map_ak_wxa;
+				
+				var BMap_obj = new bmap.BMapWX({
+					ak: baidu_map_ak
+				});
+							
+				BMap_obj.regeocoding({
+					fail: regeocoding_fail,
+					success: regeocoding_success,
+					complete: regeocoding_complete
+				});
 			// #endif
 			
 			
-			var BMap_obj = new bmap.BMapWX({
-				ak: baidu_map_ak
-			});
 			
-			
-			BMap_obj.regeocoding({
-				fail: regeocoding_fail,
-				success: regeocoding_success,
-				complete: regeocoding_complete
-			});
 
 		}
 	},

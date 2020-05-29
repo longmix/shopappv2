@@ -89,7 +89,8 @@
 				kefu_website: '',
 				kefu_gongzhonghao: '',
 				version_number: '',
-				jubao_link_url: ''
+				jubao_link_url: '',
+				about_title: '',
 			}
 		},
 		onLoad(options){
@@ -102,6 +103,7 @@
 				uni.setNavigationBarTitle({
 					title: options.about
 				})
+				that.about_title = options.about;
 			}
 			
 			uni.getSystemInfo({
@@ -125,35 +127,8 @@
 			that.version_number = that.abotapi.globalData.version_number;
 			
 			
-			that.abotapi.get_shop_info_from_server(that.get_shop_info_callback)
-			
-			// uni.request({
-			//   url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_shop_info',
-			//   method: 'post',
-			//   data: {
-			//     sellerid: that.abotapi.globalData.default_sellerid
-			//   },
-			//   header: {
-			//     'Content-Type': 'application/x-www-form-urlencoded'
-			//   },
-			//   success: function (res) {
-			//     if (res.data.code == 1) {
-			//       var shop_info_from_server = res.data.data;
+			that.abotapi.get_shop_info_from_server(that.callback_func_for_shop_info)
 				
-			//       console.log('shop_list===',shop_info_from_server);
-			// 		that.shop_info_from_server = shop_info_from_server
-			     
-			      
-			//     }
-			//   },
-			//   fail: function (e) {
-			//     uni.showToast({
-			//       title: '网络异常！',
-			//       duration: 2000
-			//     });
-			//   },
-			// });
-			
 			
 			that.abotapi.set_option_list_str(that, that.callback_function);
 			
@@ -210,24 +185,16 @@
 			  		return;
 			  	}
 			  	
-			  	that.jubao_link_url = cb_params.jubao_link_url;
+			  	that.jubao_link_url = '/pages/publish/publish_write?form_type=2&token='+cb_params.cms_token+'&formid='+cb_params.fankui_formid;
 			  	
 			  	
 			  },
 			  
 			  
-			  get_shop_info_callback:function(shop_info){
-				var that = this;
-				if(!shop_info){
-					return;
-				}
-				
-				that.shop_info_from_server = shop_info
-				  
-			  },
+
 			  
 			  mytiaozhuan: function (e) {
-			  	
+					that = this;
 			  	
 			  		var url = e.currentTarget.dataset.url;
 			  		console.log('user mytiaozhuan准备跳转：' + url);
@@ -293,7 +260,7 @@
 			  				  url = url.replace('%wxa_openid%', that.abotapi.get_current_openid());
 			  				}
 			  	
-			  				that.that.abotapi.call_h5browser_or_other_goto_url(url, var_list);
+			  				that.abotapi.call_h5browser_or_other_goto_url(url, var_list);
 			  	
 			  				return;
 			  	
@@ -316,16 +283,43 @@
 			  	
 			  		};
 			  	
-			  		that.that.abotapi.call_h5browser_or_other_goto_url(url, var_list, 'user_index');		
+			  		that.abotapi.call_h5browser_or_other_goto_url(url, var_list, 'user_index');		
+			  	
+			  },
+			  
+			  callback_func_for_shop_info:function(shop_info){
+				if(!shop_info){
+					return;
+				}
+				
+				this.shop_info_from_server = shop_info;
+				
+			  	this.shop_userid = shop_info.userid;
+			  	this.shop_name = shop_info.shop_name;
 			  	
 			  },
 			  
 			  //拨打客服电话
 			    call_seller: function () {
 			      
-			      uni.makePhoneCall({
-			        phoneNumber: this.shop_info_from_server.telephone,
-			      })
+				  // #ifdef MP-WEIXIN
+						var userInfo = this.abotapi.get_user_info();
+						if(!userInfo || !userInfo.userid){				
+							var last_url = '/pages/about/about?about=' + this.about_title;
+							this.abotapi.goto_user_login(last_url,'normal');
+							return;
+						}				
+						uni.navigateTo({
+							url: "/pages/msg/chat/chat?type=0&userid="  + this.shop_userid + '&name=' + this.shop_name,
+						})	
+				  // #endif
+				  
+				  // #ifdef APP-PLUS
+						uni.makePhoneCall({
+						  phoneNumber: this.shop_info_from_server.telephone,
+						})
+				  // #endif
+			      
 			    },
 		},
 		
