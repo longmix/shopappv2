@@ -351,7 +351,7 @@
 		 */
 		onUnload: function () {
 		  uni.switchTab({      
-		    url: '/pages/userCenter/user',
+		    url: '/pages/user/user',
 		  })
 		},
 		onLoad: function(options) {

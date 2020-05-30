@@ -29,19 +29,22 @@
   "extPages": {
     "pages/publish/publish_list": {
       "navigationBarTitleText": "分类信息"
+    },
+    "pages/user/user": {
+      "navigationBarTitleText": "个人中心"
     }
   },
   "tabBar": {
-    "color": "#333333",
-    "selectedColor": "#f06c7a",
+    "color": "#515151",
+    "selectedColor": "#d81e06",
     "borderStyle": "black",
     "backgroundColor": "#ffffff",
     "list": [
       {
-        "pagePath": "pages/home/home",
+        "pagePath": "pages/index/index",
         "iconPath": "static/img/tabBar/home.png",
         "selectedIconPath": "static/img/tabBar/home-on.png",
-        "text": "优选"
+        "text": "首页"
       },
       {
         "pagePath": "pages/publish/publish_list",
@@ -51,18 +54,18 @@
       },
       {
         "pagePath": "pages/category/category",
-        "iconPath": "static/img/tabBar/publish.png",
-        "selectedIconPath": "static/img/tabBar/publish-on.png",
-        "text": "商品分类"
+        "iconPath": "static/img/tabBar/category.png",
+        "selectedIconPath": "static/img/tabBar/category-on.png",
+        "text": "商品导购"
       },
       {
         "pagePath": "pages/shopList/shopList",
         "iconPath": "static/img/tabBar/cart.png",
         "selectedIconPath": "static/img/tabBar/cart-on.png",
-        "text": "品质商家"
+        "text": "服务网点"
       },
       {
-        "pagePath": "pages/userCenter/user",
+        "pagePath": "pages/user/user",
         "iconPath": "static/img/tabBar/user.png",
         "selectedIconPath": "static/img/tabBar/user-on.png",
         "text": "我的"
@@ -71,8 +74,8 @@
   },
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#ff0000",
-    "navigationBarTitleText": "本地汽车服务",
+    "navigationBarBackgroundColor": "#f37404",
+    "navigationBarTitleText": "延誉电商",
     "navigationBarTextStyle": "white"
   },
   "networkTimeout": {

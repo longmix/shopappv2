@@ -7,8 +7,8 @@
 				
 			</view>
 			<view class="icon-btn">
-				<view class="icon tongzhi" @tap="touTiaoList"></view>				<!--下版本替换为: toMsg -->
-				<view class="icon setting" @tap="toSetting"></view>
+				<view class="icon tongzhi" @tap="toMsg" :style="{color: wxa_shop_nav_bg_color == '#FFFFFF' ? '#333' : ''}"></view>				<!--下版本替换为: toMsg -->
+				<view class="icon setting" @tap="toSetting" :style="{color: wxa_shop_nav_bg_color == '#FFFFFF' ? '#333' : ''}"></view>
 			</view>
 		</view>
 		<!-- 占位 -->
@@ -22,8 +22,8 @@
 			</view>
 			<!-- 昵称,个性签名 -->
 			<view class="right">
-				<view class="username"><label v-if="user_info">{{user_info.nickname}}</label><label @click="toLogin" v-else>请点击此处登录</label></view>
-				<view class="signature"><label v-if="user_info">{{user_info.signature}}</label><label v-if="user_info.signature == null"></label></view>
+				<view class="username" :style="{color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}"><label v-if="user_info">{{user_info.nickname}}</label><label @click="toLogin" v-else>请点击此处登录</label></view>
+				<view class="signature" :style="{color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}"><label v-if="user_info && user_info.signature !=null">{{user_info.signature}}</label><label v-if="user_info.signature == null"></label></view>
 			</view>
 			<!-- 二维码按钮 -->
 			<view class="erweima" @tap="toMyQR">
@@ -53,16 +53,16 @@
 			<view class="balance-info">
 				<view class="left">
 					<view class="box">
-						<view class="num">{{fenxiao_info.balance_yuan}}</view>
+						<view class="num">{{userInfo && userInfo.userid ? fenxiao_info.balance_yuan : '0.00'}}</view>
 						<view class="text">余额</view>
 					</view>
 					
 					<view class="box">
-						<view class="num">{{fenxiao_info.balance_zengsong_yuan}}</view>
+						<view class="num">{{userInfo && userInfo.userid ? fenxiao_info.balance_zengsong_yuan : '0.00'}}</view>
 						<view class="text">赠款</view>
 					</view>
 					<view class="box">
-						<view class="num">{{fenxiao_info.score}}</view>
+						<view class="num">{{userInfo && userInfo.userid ? fenxiao_info.score : '0'}}</view>
 						<view class="text">积分</view>
 					</view>
 				</view>
@@ -86,10 +86,18 @@
 					</view>
 					<view class="text">{{row.name}}</view>
 				</view>
+				<navigator class="box" :url="'/pages/about/about?about=' + about">
+					<view class="img">
+						<image src="https://yanyubao.tseo.cn/Tpl/static/images/aboutus.png"></image>
+					</view>
+					<view class="text">{{about}}</view>
+				</navigator>
 			</view>
 		</view>
 		<!-- 占位 -->
 		<view class="place-bottom"></view>
+		<!-- 著作信息 -->
+		<view class="copyinfo">{{default_copyright_text}}</view>
 	</view>
 </template>
 <script>
@@ -104,6 +112,7 @@
 				headerTop:null,
 				statusTop:null,
 				showHeader:true,
+				productid:0,
 				//个人信息,
 				user_info:'',
 				fenxiao_info:'',
@@ -119,12 +128,14 @@
 				],
 				// 工具栏列表
 				gooosList:'',
+				default_copyright_text: '',
+				about: '',
+				userInfo: ''
 			}
 		},
 		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
 		onPullDownRefresh() {
-			
-			
+			this.onShow();
 			
 			
 		    setTimeout(function () {
@@ -140,7 +151,22 @@
 		onLoad() {
 			var that = this;
 			
-			this.abotapi.set_option_list_str(this, 
+			// #ifdef H5
+				that.about = '关于我们';
+			// #endif
+			
+			// #ifdef APP-PLUS
+				that.about = '关于APP';
+			// #endif
+			
+			// #ifdef MP-WEIXIN
+				that.about = '关于小程序'
+			// #endif
+			
+			
+			that.default_copyright_text = that.abotapi.globalData.default_copyright_text;
+			
+			that.abotapi.set_option_list_str(that, 
 				function(that001, option_list){
 					that001.abotapi.getColor();
 					
@@ -151,15 +177,36 @@
 				}
 			);
 			
-			uni.request({
+			
+			that.getPage();
+			this.statusHeight = 0;
+			// #ifdef APP-PLUS
+			this.showHeader = false;
+			this.statusHeight = plus.navigator.getStatusbarHeight();
+			// #endif
+		},
+		onReady(){
+			//此处，演示,每次页面初次渲染都把登录状态重置
+			uni.setStorage({
+				key: 'UserInfo',
+				data: false,
+				success: function () {
+				},
+				fail:function(e){
+				}
+			});
+		},
+		onShow(){
+			var that = this;
+
+			
+			that.getPage();
+			
+			that.abotapi.abotRequest({
 			    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_shop_icon_usercenter',
-			    method: 'post',
 			    data: {
 					sellerid: this.abotapi.globalData.default_sellerid,
 				},
-			    header: {
-					'Content-Type': 'application/x-www-form-urlencoded'
-			    },
 			    success: function (res) {
 					console.log('kaafff===', res);
 					var productlist = res.data.data;
@@ -175,30 +222,6 @@
 			    },
 			});
 			
-			//that.get_current_user_info_from_server();
-			
-			this.statusHeight = 0;
-			// #ifdef APP-PLUS
-			this.showHeader = false;
-			this.statusHeight = plus.navigator.getStatusbarHeight();
-			// #endif
-			
-		},
-		onReady(){
-			//此处，演示,每次页面初次渲染都把登录状态重置
-			uni.setStorage({
-				key: 'UserInfo',
-				data: false,
-				success: function () {
-				},
-				fail:function(e){
-				}
-			});
-		},
-		onShow(){
-			var that = this;
-			
-			that.get_current_user_info_from_server();
 			
 			uni.getStorage({
 				key: 'UserInfo',
@@ -218,29 +241,28 @@
 		},
 		methods: {
 			//获取用户信息
-			get_current_user_info_from_server: function () {
-				var userInfo = this.abotapi.get_user_info();
+			getPage: function () {
 				var that = this;
+
+				var userInfo = that.abotapi.get_user_info();
+				
+				console.log('getpage--userInfo==',userInfo)
 				
 				if(userInfo && userInfo.userid){
-					uni.request({
-						url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
+					that.abotapi.abotRequest({
+						url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
 						data: {
-							sellerid: this.abotapi.globalData.default_sellerid,
+							sellerid: that.abotapi.globalData.default_sellerid,
 							checkstr: userInfo.checkstr,
 							userid: userInfo.userid,
-							appid: this.abotapi.globalData.xiaochengxu_appid,
+							appid: that.abotapi.globalData.xiaochengxu_appid,
 						},
-						header: {
-							"Content-Type": "application/x-www-form-urlencoded"
-						},
-						method: "POST",
 						success: function (res) {
 							console.log('ddd', res);
 				
 							if (res.data.code == "-1") {
 								var last_url = '/pages/user/index';
-								this.abotapi.goto_user_login(last_url, 'normal');
+								that.abotapi.goto_user_login(last_url, 'normal');
 							} else {
 								var data = res.data;
 								that.user_info = data.data;
@@ -250,6 +272,8 @@
 							}
 					    }
 					})	
+				}else{
+					that.user_info = '';
 				}
 			},
 			
@@ -267,7 +291,7 @@
 				uni.setStorageSync('tbIndex',index);
 				uni.setStorageSync('tbOtype',row);
 				uni.navigateTo({
-					url:'/pages/user/order_list/order_list?tbindex='+index+'&otype='+row
+					url:'/pages/user/order_list/order_list?currentTab='+index+'&otype='+row
 				}) 
 			},
 			toSetting(){
@@ -311,9 +335,93 @@
 				})
 			},
 			toPage(url){
+				// var var_list = Object();
+				// console.log('toAdDetails- to url ====>>>>>>', url);
+				
+				// this.abotapi.call_h5browser_or_other_goto_url(url);
+				var last_url = '/pages/user/user';
+				this.abotapi.goto_user_login(last_url, 'switchTab');
+				
+				var that = this;
+				
 				var var_list = Object();
-				console.log('toAdDetails- to url ====>>>>>>', url);
-				this.abotapi.call_h5browser_or_other_goto_url(url, var_list, '');
+				//var url = e.currentTarget.dataset.string;
+			
+				if (url.indexOf("%ensellerid%") != -1) {
+				  url = url.replace('%ensellerid%', app.get_sellerid());
+				}
+			
+			
+				if ((url.indexOf("%oneclicklogin%") != -1) || (url.indexOf("%oneclicklogin_hahading%") != -1)
+				  || (url.indexOf("%refresh_token%") != -1)) {
+			
+				  var userInfo = that.abotapi.get_user_info();     
+			
+				  var request_url = that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=one_click_login_str';
+			
+				  if (url.indexOf("%oneclicklogin_hahading%") != -1){
+					request_url = that.abotapi.globalData.yanyubao_server_url + 'openapi/UserData/one_click_login_str';
+				  }
+			
+				  if (url.indexOf("%refresh_token%") != -1) {
+					  console.log('123',456);
+					request_url = that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=generate_refresh_token_value_for_other_system';
+				  }
+				  console.log('request_url', request_url);
+				  console.log('url', url);
+				  wx.request({
+					url: request_url,
+					method: 'post',
+					
+					data: {
+					  sellerid: that.abotapi.globalData.default_sellerid,
+					  checkstr: userInfo.checkstr,
+					  userid: userInfo.userid
+					},
+					
+					header: {
+					  'Content-Type': 'application/x-www-form-urlencoded'
+					},
+					success: function (res) {
+					  //--init data   
+					  console.log('dddddddddddddd',res);     
+					  var code = res.data.code;
+					
+					  if (code == 1) {
+						var oneclicklogin = res.data.oneclicklogin;
+			
+						url = url.replace('%oneclicklogin%', res.data.oneclicklogin);
+						url = url.replace('%oneclicklogin_hahading%', res.data.oneclicklogin);
+			
+						if (res.data.refresh_token) {
+						  url = url.replace('%refresh_token%', res.data.refresh_token);
+						}
+						console.log('url1111',url);
+						that.abotapi.call_h5browser_or_other_goto_url(url, var_list);
+			
+						return;
+			
+					  } else {
+						wx.showToast({
+						  title: '非法操作.',
+						  duration: 2000
+						});
+					  }
+					},
+					error: function (e) {
+					  wx.showToast({
+						title: '网络异常！',
+						duration: 2000
+					  });
+					}
+				  });
+			
+				  return;
+			
+				};
+			
+				that.abotapi.call_h5browser_or_other_goto_url(url, var_list);   
+				
 			}
 		}
 	} 
@@ -580,5 +688,11 @@
 				}
 			}
 		}
+	}
+	.copyinfo{
+		text-align: center;
+		font-size: 13px;
+		color: #666;
+		margin-bottom: 10upx;
 	}
 </style>

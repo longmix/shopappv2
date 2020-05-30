@@ -41,8 +41,9 @@
 			}
 		},
 		{	//用户主页
-			"path": "pages/userCenter/user",
+			"path": "pages/user/user",
 			"style": {
+				"navigationBarTitleText" : "个人中心",
 				"enablePullDownRefresh": false,
 				"backgroundTextStyle":"light",
 				"backgroundColorTop":"#FFFFFF",
@@ -51,7 +52,7 @@
 				// 	"titleNView": false ,//禁用原生导航栏
 				// 	"subNVues":[{  
 				// 		"id": "userTitleNvue", // 唯一标识  
-				// 		"path": "pages/userCenter/subNvue/userTitleNvue", // 页面路径  
+				// 		"path": "pages/user/subNvue/userTitleNvue", // 页面路径  
 				// 		"type":"navigationBar"
 				// 	}]
 				// }
@@ -386,8 +387,8 @@
 		"backgroundColorBottom":"#ffffff"
 	},
 	"tabBar": {
-		"color": "#333333",
-		"selectedColor": "#f06c7a",
+		"color": "#515151",
+		"selectedColor": "#d81e06",
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
 		"list": [{
@@ -409,7 +410,7 @@
 				"text": "商家"
 			},
 			{
-				"pagePath": "pages/userCenter/user",
+				"pagePath": "pages/user/user",
 				"iconPath": "static/img/tabBar/user.png",
 				"selectedIconPath": "static/img/tabBar/user-on.png",
 				"text": "我的"

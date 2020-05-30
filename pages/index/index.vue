@@ -78,7 +78,7 @@
 		   <video object-fit='fill' :src="wxa_video_player_url" :poster='wxa_video_screen_url'
 			controls="true" :autoplay="false"
 			:style="{width:videometa_width_height[0] + 'rpx;height:' + videometa_width_height[1] + 'rpx;'}"
-			@loadedmetadata="videometa($event)"
+			@loadedmetadata="videometa_auto_set($event)"
 			enable-play-gesture="true"
 			>
 			</video>
@@ -522,8 +522,8 @@ export default {
 				 
 				 
 		},
-		videometa:function(e){
-			console.log('videometa======>>>>>', e);
+		videometa_auto_set:function(e){
+			console.log('videometa_auto_set======>>>>>', e);
 			
 			var imgwidth = e.detail.width;
 			var imgheight = e.detail.height;
@@ -536,7 +536,9 @@ export default {
 		
 			var current_view_width = 750;
 		
-			current_view_width = current_view_width;
+			//current_view_width = current_view_width;
+			
+			console.log('current_view_width====>>>>', current_view_width);
 		
 			//计算的高度值  
 			var current_view_height = current_view_width / ratio;
@@ -1431,7 +1433,7 @@ export default {
 		    //把每一张图片的对应的高度记录到数组里  
 		    imgheights[e.target.dataset.id] = uni.upx2px(imgheight);
 	
-		    console.log(imgheights);
+		    console.log('id===>>>'+e.target.dataset.id+", imgheights====>>>", imgheights);
 		
 	
 		     this.imgheights = imgheights
