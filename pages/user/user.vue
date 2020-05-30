@@ -123,6 +123,10 @@
 		},
 		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
 		onPullDownRefresh() {
+			
+			
+			
+			
 		    setTimeout(function () {
 		        uni.stopPullDownRefresh();
 		    }, 1000);
@@ -138,11 +142,11 @@
 			
 			this.abotapi.set_option_list_str(this, 
 				function(that001, option_list){
-					that.abotapi.getColor();
+					that001.abotapi.getColor();
 					
-						that.wxa_shop_nav_bg_color  = option_list.wxa_shop_nav_bg_color;
+						that001.wxa_shop_nav_bg_color  = option_list.wxa_shop_nav_bg_color;
 						
-						that.wxa_shop_nav_font_color = option_list.wxa_shop_nav_font_color
+						that001.wxa_shop_nav_font_color = option_list.wxa_shop_nav_font_color
 				
 				}
 			);
@@ -170,12 +174,15 @@
 					});
 			    },
 			});
-			that.getPage();
+			
+			//that.get_current_user_info_from_server();
+			
 			this.statusHeight = 0;
 			// #ifdef APP-PLUS
 			this.showHeader = false;
 			this.statusHeight = plus.navigator.getStatusbarHeight();
 			// #endif
+			
 		},
 		onReady(){
 			//此处，演示,每次页面初次渲染都把登录状态重置
@@ -190,7 +197,9 @@
 		},
 		onShow(){
 			var that = this;
-			that.getPage();
+			
+			that.get_current_user_info_from_server();
+			
 			uni.getStorage({
 				key: 'UserInfo',
 				success: (res)=>{
@@ -209,9 +218,10 @@
 		},
 		methods: {
 			//获取用户信息
-			getPage: function () {
+			get_current_user_info_from_server: function () {
 				var userInfo = this.abotapi.get_user_info();
 				var that = this;
+				
 				if(userInfo && userInfo.userid){
 					uni.request({
 						url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
