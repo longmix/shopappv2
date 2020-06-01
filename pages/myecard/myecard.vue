@@ -1,11 +1,11 @@
 <template style="padding: 0upx;margin: 0upx;">
 	<view >
-		<view :style="[{'background-image':'url('+ item.card_data.card_bg_img +')' }]" class="c">
+		<view :style="[{'background-image':'url('+ card_data_option.card_bg_img +')' }]" class="c">
 			<view class="a">
-				<image :src = "item.card_data.card_logo" style="width: 100upx;height: 100upx;"></image>
+				<image :src = "card_data_option.card_logo" style="width: 100upx;height: 100upx;"></image>
 				<view style="">
-					<view>{{item.card_data.card_name}}</view>
-					<view>{{item.card_data.card_desc}}</view>
+					<view>{{card_data_option.card_name}}</view>
+					<view>{{card_data_option.card_desc}}</view>
 				</view>
 			</view>
 			<view style="text-align: right;padding-right: 57px;color: #000000;margin-top:165upx;padding-right: 170upx;">
@@ -21,7 +21,7 @@
 	export default {
 		data() {
 			return {
-				item:'',
+				card_data_option:[],
 			}
 		},
 		onLoad(option){
@@ -37,8 +37,14 @@
 	methods:{
 		
 		callback_function_shop_option_data:function(that, option_data){
-			console.log('option_data========',option_data)
-			that.item = option_data;
+			console.log('option_data========',option_data);
+			
+			that.abotapi.getColor();
+			
+			that.card_data_option = option_data.card_data;
+			
+			
+			
 		}
        	
 	},

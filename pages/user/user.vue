@@ -80,7 +80,7 @@
 		<view class="toolbar">
 			<view class="title">我的工具栏</view>
 			<view class="list">
-				<view class="box" v-for="(row,index) in user_function_list" :key="index" @tap="toPage(row.url)">
+				<view class="box" v-for="(row,index) in user_function_list" :key="index" @tap="goto_user_function(row.url)">
 					<view class="img">
 						<image :src="row.src"></image>
 					</view>
@@ -362,93 +362,32 @@
 					url:'/pages/user/deposit/deposit'
 				})
 			},
-			toPage(url){
-				// var var_list = Object();
-				// console.log('toAdDetails- to url ====>>>>>>', url);
+			goto_user_function(url){
 				
-				// this.abotapi.call_h5browser_or_other_goto_url(url);
-				var last_url = '/pages/user/user';
-				this.abotapi.goto_user_login(last_url, 'switchTab');
+				
+				var last_url = 'switchTab /pages/user/user';
+				
+				var userInfo = this.abotapi.get_user_info();
+				if (!userInfo) {
+				  this.abotapi.goto_user_login(last_url);
+			
+				  return;
+				}
+				
+				//如果需要用户授权头像和昵称
+				if(this.abotapi.goto_get_userinfo(last_url)){
+				  return;
+				}
+				
 				
 				var that = this;
 				
 				var var_list = Object();
 				//var url = e.currentTarget.dataset.string;
-			
-				if (url.indexOf("%ensellerid%") != -1) {
-				  url = url.replace('%ensellerid%', app.get_sellerid());
-				}
-			
-			
-				if ((url.indexOf("%oneclicklogin%") != -1) || (url.indexOf("%oneclicklogin_hahading%") != -1)
-				  || (url.indexOf("%refresh_token%") != -1)) {
-			
-				  var userInfo = that.abotapi.get_user_info();     
-			
-				  var request_url = that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=one_click_login_str';
-			
-				  if (url.indexOf("%oneclicklogin_hahading%") != -1){
-					request_url = that.abotapi.globalData.yanyubao_server_url + 'openapi/UserData/one_click_login_str';
-				  }
-			
-				  if (url.indexOf("%refresh_token%") != -1) {
-					  console.log('123',456);
-					request_url = that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=generate_refresh_token_value_for_other_system';
-				  }
-				  console.log('request_url', request_url);
-				  console.log('url', url);
-				  wx.request({
-					url: request_url,
-					method: 'post',
-					
-					data: {
-					  sellerid: that.abotapi.globalData.default_sellerid,
-					  checkstr: userInfo.checkstr,
-					  userid: userInfo.userid
-					},
-					
-					header: {
-					  'Content-Type': 'application/x-www-form-urlencoded'
-					},
-					success: function (res) {
-					  //--init data   
-					  console.log('dddddddddddddd',res);     
-					  var code = res.data.code;
-					
-					  if (code == 1) {
-						var oneclicklogin = res.data.oneclicklogin;
-			
-						url = url.replace('%oneclicklogin%', res.data.oneclicklogin);
-						url = url.replace('%oneclicklogin_hahading%', res.data.oneclicklogin);
-			
-						if (res.data.refresh_token) {
-						  url = url.replace('%refresh_token%', res.data.refresh_token);
-						}
-						console.log('url1111',url);
-						that.abotapi.call_h5browser_or_other_goto_url(url, var_list);
-			
-						return;
-			
-					  } else {
-						wx.showToast({
-						  title: '非法操作.',
-						  duration: 2000
-						});
-					  }
-					},
-					error: function (e) {
-					  wx.showToast({
-						title: '网络异常！',
-						duration: 2000
-					  });
-					}
-				  });
-			
-				  return;
-			
-				};
-			
-				that.abotapi.call_h5browser_or_other_goto_url(url, var_list);   
+				
+				console.log('url1111',url);
+				that.abotapi.call_h5browser_or_other_goto_url(url, var_list);
+							
 				
 			}
 		}
