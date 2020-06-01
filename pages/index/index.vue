@@ -736,9 +736,9 @@ export default {
 			    that.abotapi.globalData.default_shang_list_count_in_front_page = cb_params.option_list.default_shang_list_count_in_front_page
 			  
 			}
-			
-			if(cb_params.shop_option_data.option_list.cms_token){
-				that.cms_token = cb_params.shop_option_data.option_list.cms_token;
+			 
+			if(cb_params.option_list.cms_token){
+				that.cms_token = cb_params.option_list.cms_token;
 			}
 			
 			if (cb_params.option_list.default_publish_list_count_in_front_page) {

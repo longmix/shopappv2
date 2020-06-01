@@ -1,6 +1,6 @@
 <template>
 	<view style="background:#EFEFF4;border-top: 1px solid #EFEFF4;">
-		<view class="fabu_button" @tap="toPublish_index()" v-if="publish_hiddend_btn_for_write">
+		<view class="fabu_button" @tap="toPublish_index()" v-if="publish_hiddend_btn_for_write != 1">
 			发布
 		</view>
 		<view class="sou">
@@ -85,7 +85,7 @@
 				this.cms_cataid = options.cataid;
 			}
 			
-			that.abotapi.set_shop_option_data(that, that.callback_function);
+			
 			
 			uni.getSystemInfo({
 				//获取手机信息
@@ -101,7 +101,10 @@
 			});
 		},
 		onShow:function(){
-			
+			var that = this;
+			that.current_page = 1;
+			that.index_list = [];
+			that.abotapi.set_shop_option_data(that, that.callback_function);
 		},
 		onPullDownRefresh:function(){
 			console.log(123465);
@@ -140,13 +143,13 @@
 				if(shop_option_data.option_list.publish_hiddend_btn_for_write){
 					that.publish_hiddend_btn_for_write = shop_option_data.option_list.publish_hiddend_btn_for_write; //是否显示发帖按钮
 				}
-				
+				that.publish_img_cata_list = shop_option_data.publish_img_cata_list;
 				
 				that.get_publish_list();
 				
 				//取帖子分类列表publish_hiddend_btn_for_write__checkbox
 			
-				that.publish_img_cata_list = shop_option_data.publish_img_cata_list;
+				
 				
 			
 				

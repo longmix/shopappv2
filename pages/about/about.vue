@@ -185,7 +185,7 @@
 			  		return;
 			  	}
 			  	
-			  	that.jubao_link_url = '/pages/publish/publish_write?form_type=2&token='+cb_params.cms_token+'&formid='+cb_params.fankui_formid;
+			  	that.jubao_link_url = '/pages/publish/publish_write?form_type=2&token='+cb_params.cms_token+'&formid='+cb_params.fankui_form_id;
 			  	
 			  	
 			  },
@@ -282,7 +282,7 @@
 			  		  return;
 			  	
 			  		};
-			  	
+			  	console.log('url===》',url);
 			  		that.abotapi.call_h5browser_or_other_goto_url(url, var_list, 'user_index');		
 			  	
 			  },

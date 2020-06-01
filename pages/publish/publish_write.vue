@@ -7,14 +7,14 @@
 					<block v-for="item in list" :key="item.fieldname">
 						<!-- 帖子的固定字段开始 -->
 						<block v-if="form_type == 3">
-							<view class="input_flex" v-if="item.fieldname == 'imgimg_title'" style="overflow: auto;padding:35upx 40upx 20upx 40upx;background-color: #FFFFFF;border-bottom: 1upx solid #DDDDDD;">
+							<view class="input_flex" v-if="item.fieldname == 'imgimg_title'" style="overflow: auto;padding:35upx 40upx 20upx 40upx;background-color: #FFFFFF;border-bottom: 1upx solid #EEEEEE;">
 								<view class="input-flex-label w60" style="float: left;">标题<label class="FH">*</label></view>
 								<input style="float: left;width: 70%;margin-top: -4upx;" name="imgimg_title" maxlength="40" placeholder-style="color:#c3c3c3" placeholder="请输入合作需求的标题,5-40个字" />
 							</view>
 							
-							<view class="uni-textarea" style="padding: 0upx 40upx;" v-if="item.fieldname == 'imgimg_content'">
-								<view style="font-size: 32upx;border-bottom: 1upx solid #EEEEEE;background-color: #FFFFFF;padding: 20upx 0upx;">{{item.displayname}}</view>
-								<textarea :name="item.fieldname" placeholder='请在此填写详细说明' /><!-- placeholder-style="color:#D3D3D3;font-size:15px;" -->
+							<view class="uni-textarea" style="" v-if="item.fieldname == 'imgimg_content'">
+								<view style="padding: 16rpx 34rpx;font-size: 32upx;background-color: #FFFFFF;">{{item.displayname}}</view>
+								<textarea style="padding: 16rpx 34rpx;" :name="item.fieldname" placeholder='请在此填写详细说明' /><!-- placeholder-style="color:#D3D3D3;font-size:15px;" -->
 							</view>
 							
 							<view style="" v-if="item.fieldname == 'imgimg_picture_list'">
@@ -30,7 +30,7 @@
 									</view>
 									
 									
-									<view style="margin: 2px;width: 250upx;height: 250upx;position: relative;" @tap="uploading_img()">
+									<view style="margin: 2px 10px 2px 17px;width: 250upx;height: 250upx;position: relative;" @tap="uploading_img()">
 										<image style="width: 100%;height: 100%;border: 1px solid #eee;" src="../../static/img/add.png"></image>
 									</view>
 									
@@ -95,9 +95,9 @@
 					
 					
 					<!-- <upimg-box></upimg-box> -->
-					<view style="display: flex;"> 
+					<view style="display: flex;font-size: 24rpx;color: #999;align-items: center;margin-top: 16rpx;margin-bottom: 16rpx;padding-left: 34rpx;"> 
 					
-						<checkbox-group name='fabu_xuzhi'>
+						<checkbox-group name='fabu_xuzhi' style="zoom:55%;margin-right: 8rpx;">
 								<checkbox value="1">
 									
 								</checkbox>
@@ -173,7 +173,7 @@
 		    },
 			
 		onLoad: function (options) {
-			console.log('sssssss',1)
+			console.log('sssssss',options)
 			var that = this;
 			
 			
@@ -188,7 +188,7 @@
 			if(options.submit_url){
 				this.submit_url = options.submit_url;
 			}
-			if(options.form_type == 2){
+			if(options.form_type && options.form_type == 2){
 				this.formid = options.formid; //栏目页面跳转带过来的参数  栏目id
 			}else{
 				this.formid = options.cataid; //栏目页面跳转带过来的参数  栏目id
@@ -352,7 +352,7 @@
 							setTimeout(function(){
 								
 								uni.switchTab({
-									url:"../index/index"
+									url:"../publish/publish_list"
 								});
 							},1000);
 						}else if(res.data.code == -1){
@@ -375,6 +375,10 @@
 							
 							console.log('登录超时');
 							return;
+						}else{
+							uni.showToast({
+								title:res.data.msg,
+							})
 						}
 										
 					}
@@ -681,7 +685,7 @@
 	}
 	.uni-textarea{
 		background: #FFFFFF;
-		border-bottom: 1px solid #DDDDDD;
+		border-bottom: 1px solid #EEEEEE;
 	}
 	
 	.uni-textarea textarea{
