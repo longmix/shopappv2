@@ -624,7 +624,7 @@ module.exports = {
 	   /**
 	    * page_type normal/switchTab
 	    */
-	goto_user_login: function (last_url, page_type){
+	goto_user_login: function (last_url, var_list=null, ret_page=''){
 		var userInfo = this.get_user_info();
 		console.log('goto_user_login:');
 		console.log(userInfo);
@@ -632,26 +632,35 @@ module.exports = {
 		if ((!userInfo) || (!userInfo.userid)) {
 			console.log('goto_user_login:222222222222');
  
-			uni.showToast({
-				title: '请先登录',
-				icon: 'none',
-				duration: 1000,
-				success: function () {
+			return uni.showModal({
+				title: '提示',
+				content:'请先登录',
+				showCancel: false,
+				success: function (res) {
 	 
 					if (last_url) {
-						uni.setStorageSync('last_url', last_url);
-						uni.setStorageSync('page_type', page_type);
+						//uni.setStorageSync('last_url', last_url);
+						//uni.setStorageSync('page_type', page_type);
+						
+						uni.setStorageSync('login_last_url', last_url);
+						uni.setStorageSync('login_var_list', var_list);
+						uni.setStorageSync('login_ret_page', ret_page);
 					}
 			
-					uni.navigateTo({
+					uni.redirectTo({
 						 url: '/pages/login/login',
 					})
 			
-					uni.hideToast();
 				}
 			})
-			return;
+			
 		}; 
+		
+		console.log('goto_user_login:333333333');
+		
+		this.call_h5browser_or_other_goto_url(last_url, var_list, ret_page);
+	
+		return;
 	},
 	
 	
