@@ -5,44 +5,49 @@
 				<view class="row"  @click="upLoad()">
 					<view class="title">头像</view>
 					<view class="right"><view class="tis">
-					<image :src="user_info.headimgurl" style="width: 100upx;" mode="aspectFit"></image>
+					<image :src="userAcountInfo.headimgurl" style="width: 100upx;" mode="aspectFit"></image>
 					</view><view class="icon xiangyou"></view></view>
 				</view>
+				
 				<navigator url='/pages/user/nickName/nickNameEdit' class="row">
-					<view class="row">昵称</view>
-					<view class="right"><view class="tis">{{userAcountInfo.fenxiao_info.nickname}}</view></view>
+					<view class="title">昵称</view>
+					<view class="right"><view class="tis">{{userAcountInfo.fenxiao_info.nickname}}</view><view class="icon xiangyou"></view></view>
+				</navigator>	
+				
+				
+				<navigator url='/pages/user/accountEdit/accountEdit' class="row">
+					<view class="title">账号密码</view>
+					<view class="right"><view class="tis"></view><view class="icon xiangyou"></view></view>
 				</navigator>
-				<view class="row">
-					<view class="title">个性签名</view>
-					<view class="right"><view class="tis">{{user_info.signature}}</view><view class="icon xiangyou"></view></view>
-				</view>
-				<view class="row">
+				
+				<navigator url='/pages/user/updateMobile/updateMobile' class="row">
+					<view class="title">更换手机号</view>
+					<view class="right"><view class="tis">{{userAcountInfo.mobile}}</view><view class="icon xiangyou"></view></view>
+				</navigator>
+				
+				
+			</view>
+			<view class="list">			
+				<navigator url='/pages/user/address/address' class="row">
 					<view class="title">收货地址</view>
 					<view class="right"><view class="tis"></view><view class="icon xiangyou"></view></view>
-				</view>
-				<view class="row">
-					<view class="title">账户安全</view>
+				</navigator>
+				
+				<navigator url='/pages/user/myQR/myQR' class="row">
+					<view class="title">我的二维码</view>
 					<view class="right"><view class="tis"></view><view class="icon xiangyou"></view></view>
-				</view>
+				</navigator>
+				
+				<navigator url='/pages/user/order_list/order_list?currentTab=0&otype=0' class="row">
+					<view class="title">我的订单</view>
+					<view class="right"><view class="tis"></view><view class="icon xiangyou"></view></view>
+				</navigator>
+				
 			</view>
 			<view class="list">
 				<view class="row">
-					<view class="title">通知提醒</view>
+					<view class="title">当前版本</view>
 					<view class="right"><view class="tis"></view><view class="icon xiangyou"></view></view>
-				</view>
-				<view class="row">
-					<view class="title">支付设置</view>
-					<view class="right"><view class="tis"></view><view class="icon xiangyou"></view></view>
-				</view>
-				<view class="row">
-					<view class="title">通用</view>
-					<view class="right"><view class="tis"></view><view class="icon xiangyou"></view></view>
-				</view>
-			</view>
-			<view class="list">
-				<view class="row">
-					<view class="title">版本升级</view>
-					<view class="right"><view class="tis">v1.0.0</view><view class="icon xiangyou"></view></view>
 				</view>
 				<view class="row">
 					<view class="title">清除缓存</view>
@@ -52,15 +57,15 @@
 					<view class="title">问题反馈</view>
 					<view class="right"><view class="tis"></view><view class="icon xiangyou"></view></view>
 				</view>
-				<view class="row">
+				<navigator url="/pages/about/about" class="row">
 					<view class="title">关于商城</view>
 					<view class="right"><view class="tis"></view><view class="icon xiangyou"></view></view>
-				</view>
+				</navigator>
 			</view>
 		</view>
-		<view class="btm-list">
+		<!-- <view class="btm-list">
 			<view style="text-align: center;" @click="keep_button()">确认修改</view>
-		</view>
+		</view> -->
 		<view class="btm-list2">
 			<view style="text-align: center;" @click="logout()">退出登录</view>
 		</view>
@@ -83,7 +88,6 @@
 		
 		onLoad:function(options) {
 			var that = this;
-			this.userAcountInfo = this.abotapi.get_user_account_info();
 			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 			var userInfo = that.abotapi.get_user_info();
 			if ((!userInfo) || (!userInfo.userid)) {
@@ -91,8 +95,10 @@
 					url: '../../login/login',
 				})
 				return;
-			  }
-			that.getPage();
+			}
+			this.userAcountInfo = this.abotapi.get_user_account_info();
+			console.log('userAcountInfo==',this.userAcountInfo);
+
 		},
 		methods: {
 			//退出登录
@@ -115,37 +121,6 @@
 				
 			},
 			
-			//获取用户信息
-			getPage: function () {
-				var that = this;
-				if(userInfo && userInfo.userid){
-					uni.request({
-						url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
-						data: {
-							sellerid: this.abotapi.globalData.default_sellerid,
-							checkstr: userInfo.checkstr,
-							userid: userInfo.userid,
-							appid: this.abotapi.globalData.xiaochengxu_appid,
-						},
-						header: {
-							"Content-Type": "application/x-www-form-urlencoded"
-						},
-						method: "POST",
-						success: function (res) {
-							console.log('ddd', res);
-				
-							if (res.data.code == "-1") {
-								var last_url = '/pages/user/index';
-								this.abotapi.goto_user_login(last_url, 'normal');
-							} else {
-								var data = res.data;
-								that.user_info = data.data;
-								console.log('data2==>>',that.user_info);
-							}
-					    }
-					})	
-				}
-			},
 			
 			
 			showType(tbIndex){
@@ -259,7 +234,8 @@
 											icon: 'success',
 											duration: 2000
 										});
-										that.user_info.headimgurl = obj.img_url;
+										that.userAcountInfo.headimgurl = obj.img_url;
+										that.abotapi.set_user_account_info(that.userAcountInfo);
 									}
 								});
 							}

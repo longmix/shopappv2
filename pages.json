@@ -373,10 +373,22 @@
 		    "path" : "pages/welcome_page/welcome_page",
 		    "style" : {}
 		}
+		// ,{
+		//     "path" : "cms/discover/discover",
+		//     "style" : {}
+		// }
         ,{
             "path" : "pages/user/nickName/nickNameEdit",
             "style" : {}
         }
+		,{
+            "path" : "pages/user/accountEdit/accountEdit",
+            "style" : {}
+        }
+		,{
+		    "path" : "pages/user/updateMobile/updateMobile",
+		    "style" : {}
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

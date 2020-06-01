@@ -75,7 +75,7 @@
 						  duration: 2000
 						})
 						uni.redirectTo({
-						url: '/pages/user/setting/setting'
+							url: '/pages/user/setting/setting'
 						})
 						return;
 			        }
