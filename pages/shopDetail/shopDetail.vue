@@ -165,17 +165,17 @@
 			
 		</view>
 		
-		
+		<view @tap="isShoucang==1?Shoucang('del',0):Shoucang('add',1)" class="home-p">
+			<image v-if="isShoucang == 0" src="../../static/img/help/star_off.png"></image>
+			<image v-if="isShoucang == 1" src="../../static/img/help/star_on.png"></image>
+			<!-- <view>分享</view> -->
+		</view>
 		<view class="ps-btn">
-			<view @tap="share_shang_detail">
-				<image src="../../static/img/help/star_off.png" open-type="share"></image>
-				<!-- <image src="../../static/img/help/star_on.png"></image> -->
-				<!-- <view>分享</view> -->
-			</view>
+			
 			
 			<view @tap="share_shang_detail">
 				<!-- <image src="../../static/img/addricon.png"></image> -->
-				<view open-type="share">分享</view>
+				<view>分享</view>
 			</view>
 			<view @tap="call_seller" style="margin-bottom: 20rpx;">
 				<!-- <image src="../../static/img/addricon.png"></image> -->
@@ -214,7 +214,7 @@
 				shoplist: '',
 				shang_faquan_list: '',
 				spec: '',
-				
+				isShoucang:0,
 				showHeader:true,
 				afterHeaderOpacity: 1,//不透明度
 				headerPosition: 'fixed',
@@ -289,6 +289,9 @@
 			this.get_shang_detail(e);
 			
 			this.abotapi.get_xianmaishang_setting_list(this.callback_func_for_xianmaishang_setting_list);
+			
+		},
+		onShow() {
 			
 		},
 		
@@ -383,7 +386,103 @@
 				});
 				  
 			  },
-			  
+			 //查看商家是否被当前用户收藏
+			 get_user_data_option:function(){
+			 	
+			 	var that = this;
+			 	var userInfo = that.abotapi.get_user_info();
+			 	var post_data = {
+			 		userid : userInfo.userid,
+			 		sellerid : this.abotapi.globalData.default_sellerid,
+			 		checkstr : userInfo.checkstr,
+			 		key : this.shoplist.xianmai_shangid,
+					type : 'xianmai_shang_favorite',
+			 	}
+			 	
+			 	this.abotapi.abotRequest({
+			 		url: that.abotapi.globalData.yanyubao_server_url + '/Yanyubao/ShopApp/get_user_data_option',
+			 		method: 'post',
+			 		data: post_data,
+			 		header: {
+			 			'Content-Type': 'application/x-www-form-urlencoded'
+			 		},
+			 		success: function (res) {
+			 			console.log('that.index_list',res);
+			 			
+			 			if(res.data.code == 1){
+			 				
+			 				that.isShoucang = res.data.value;
+			 				
+			 			}
+			 		},
+			 		fail: function (e) {
+			 			uni.showToast({
+			 				title: '网络异常！',
+			 				duration: 2000
+			 			});
+			 		},
+			 	});
+			 },
+			//收藏
+			Shoucang:function(action,val){
+				
+				var that = this;
+				var userInfo = this.abotapi.get_user_info();
+				
+				if(!userInfo || !userInfo.userid){
+					uni.showModal({
+						title:'只有登录才可以收藏',
+						success:function(res){
+							if(res.cancel){
+								return;
+							}else if(res.confirm){
+								
+								var last_url = '/pages/shopDetail/shopDetail?shangid=' + that.xianmai_shangid;
+								that.abotapi.goto_user_login(last_url, 'normal');
+								return;
+							}
+							
+						}
+					})
+					return;
+				}
+				
+				var post_data = {
+					userid : userInfo.userid,
+					sellerid : this.abotapi.globalData.default_sellerid,
+					action : action,
+					checkstr : userInfo.checkstr,
+					val : val,
+					xianmaishangid : this.shoplist.xianmai_shangid,
+				}
+				
+				this.abotapi.abotRequest({
+					url: that.abotapi.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/my_favorite',
+					method: 'post',
+					data: post_data,
+					header: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					},
+					success: function (res) {
+						console.log('that.index_list',res);
+						
+						if(res.data.code == 1){
+							
+							uni.showToast({
+								title:res.data.msg,
+							})
+							that.get_user_data_option();
+						}
+					},
+					fail: function (e) {
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+					},
+				});
+			},
+			
 			//获取商家详情
 			get_shang_detail:function(options){
 				console.log('options===', options)
@@ -439,7 +538,7 @@
 						that.shang_faquan_list = data.shang_faquan_list;
 						that.spec = spec;
 				        
-				
+						that.get_user_data_option(); //获取这个商家是否被收藏
 				        
 				        // var latitude_longitude = {
 				        //   latitude : data.latitude,
@@ -996,5 +1095,34 @@
 	.ps-btn :nth-child(2) image{
 		width:80upx;
 		height: 80upx;
+	}
+	.home-p{
+		display: flex;
+		-webkit-box-orient: vertical;
+		-webkit-box-direction: normal;
+		-webkit-flex-direction: column;
+		flex-direction: column;
+		-webkit-box-align: center;
+		-webkit-align-items: center;
+		align-items: center;
+		-webkit-justify-content: space-around;
+		justify-content: space-around;
+		background: #666666;
+		width: 90rpx;
+		height: 90rpx;
+		position: fixed;
+		z-index: 100;
+		right: 20rpx;
+		color: #fff;
+		font-size: 24rpx;
+		border-radius: 50%;
+		bottom: 110rpx;
+
+
+	}
+	.home-p image{
+		width: 60%;
+		height: 60%;
+
 	}
 </style>
