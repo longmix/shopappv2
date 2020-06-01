@@ -21,23 +21,23 @@
 			</view> -->
 		<form class="loginBox"  id="login-form" @submit="formSubmit" :report-submit="true">
 			
-			<view class="flexIcon">
+			<view class="flexIcon" :style="{border:'1px solid ' + wxa_shop_nav_bg_color}">
 				<view class="flexIcon-icon iconfont icon-phone_light flexIcon-icon-current"></view>
-				<input type="text" class="flexIcon-text" placeholder-class="cl-white" name="telephone" @input="phoneInput" placeholder-style="color: rgba(255,255,255,0.8);" placeholder="请输入手机号码" />
+				<input type="text" class="flexIcon-text" placeholder-class="cl-white" name="telephone" @input="phoneInput" placeholder-style="color: #999;" placeholder="请输入手机号码" />
 			</view>
 				  
-			<view class="flexIcon">
+			<view class="flexIcon" :style="{border:'1px solid ' + wxa_shop_nav_bg_color}">
 			  <view class="flexIcon-icon iconfont icon-moban flexIcon-icon-current"></view>
 				<image @click="click_check" :src="img_checkcode_url" mode="widthFix" class="img_checkcode"></image>
-				<input type="text" class="flexIcon-text" placeholder-class="cl-white" name="telephone" @input="imgInput" placeholder-style="color: rgba(255,255,255,0.8);" placeholder="请输入答案" />
+				<input type="text" class="flexIcon-text" placeholder-class="cl-white" name="telephone" @input="imgInput" placeholder-style="color: #999;" placeholder="请输入答案" />
 			</view>
-			<view class="flexIcon">
+			<view class="flexIcon" :style="{border:'1px solid ' + wxa_shop_nav_bg_color}">
 				<view class="flexIcon-icon iconfont icon-password flexIcon-icon-current"></view>
-				<button type="primary"  @click="send_btn" :disabled="disabled" class="send_btn">{{second}}</button>
-				<input type="text" class="flexIcon-text"  name="password"  placeholder-class="cl-white" @input="telInput" placeholder-style="color: rgba(255,255,255,0.8);"  placeholder="请输入手机验证码" />
+				<button type="primary"  @click="send_btn" :disabled="disabled" :style="{background:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" class="send_btn">{{second}}</button>
+				<input type="text" class="flexIcon-text"  name="password"  placeholder-class="cl-white" @input="telInput" placeholder-style="color: #999;"  placeholder="请输入手机验证码" />
 			</view>
 			<div></div>
-			<button type="primary"  formType="submit" open-type="getUserInfo" class="btn-row-submit" style="width: 92%;background: #2E85D8;" @click="btn_user_login">登陆</button>
+			<button type="primary"  formType="submit" open-type="getUserInfo" class="btn-row-submit" :style="{background:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" style="width: 92%;background: #2E85D8;" @click="btn_user_login">登陆</button>
 			<div class="flex mgb-20">
 				<navigator class="cl-black pointer flex-1" style="margin-top: 30upx;text-align: right;font-size: 34upx;" url="/pages/login/login_by_password">账号密码登录</navigator>
 			</div>
@@ -124,15 +124,38 @@
 				timer001: 60,
 				js_code: '',
 				tokenstr :'',
-				formId:''
+				formId:'',
+				wxa_shop_nav_bg_color: '',
+				wxa_shop_nav_font_color: ''
 			}
 		},
 		onLoad:function(){
 			// this.isWeixin=this.abotapi.isWeixin();		
 			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
+			
+			this.abotapi.set_option_list_str(this, this.callback_set_option_list_str);
+			
 			this.click_check();
 		},
 		methods:{
+			
+			callback_set_option_list_str:function(that,cb_params){
+				that.abotapi.getColor();
+				if(!cb_params){
+					return;
+				}
+				
+				if(cb_params.wxa_shop_nav_bg_color){
+					that.wxa_shop_nav_bg_color = cb_params.wxa_shop_nav_bg_color
+				}
+				
+				if(cb_params.wxa_shop_nav_font_color){
+					that.wxa_shop_nav_font_color = cb_params.wxa_shop_nav_font_color
+				}
+				
+				console.log('')
+			},
+			
 			phoneInput:function(e){
 				//console.log('Phone=',e)
 				this.mobile = e.detail.value;
@@ -636,7 +659,7 @@
 
 .flexIcon {
 	flex-direction: row;
-	background-color: #2e85d8;
+	background-color: #FFFFFF;
 	margin-bottom: 44upx;
 	border-radius: 44upx;
 	padding: 22upx 22upx;
@@ -737,6 +760,21 @@
 		height: 60%;
 	}
 
+input::input-placeholder{
+	color: #999999;
+}
+
+input::-ms-input-placeholder{
+	color: #999999;
+}
+
+input::-webkit-input-placeholder{
+	color: #999999;
+}
+
+input::-moz-placeholder{
+	color: #999999;
+}
 
 
 

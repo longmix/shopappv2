@@ -7,26 +7,26 @@
 			</div>
 		</div>
 		<form class="loginBox"  id="login-form" @submit="formSubmit" :report-submit="true">
-			<view class="flexIcon">
+			<view class="flexIcon" :style="{border:'1px solid ' + wxa_shop_nav_bg_color}">
 				<view class="flexIcon-icon iconfont icon-phone_light flexIcon-icon-current"></view>
-				<input type="text" class="flexIcon-text" placeholder-class="cl-white" name="telephone" @input="accountInput" placeholder="请输入账号" />
+				<input type="text" class="flexIcon-text" placeholder-style="color: #999;" name="telephone" @input="accountInput" placeholder="请输入账号" />
 			</view>
 	  
 	  
-			<view class="flexIcon">
+			<view class="flexIcon" :style="{border:'1px solid ' + wxa_shop_nav_bg_color}">
 				<view class="flexIcon-icon iconfont icon-password flexIcon-icon-current"></view>
-				<input type="password" class="flexIcon-text"  name="password"  placeholder-class="cl-white" @input="passInput"  placeholder="请输入密码" />
+				<input type="password" class="flexIcon-text"  name="password"  placeholder-style="color: #999;" @input="passInput"  placeholder="请输入密码" />
 			</view>
 	  
 	  
-			<view class="flexIcon">
+			<view class="flexIcon" :style="{border:'1px solid ' + wxa_shop_nav_bg_color}">
 			<view class="flexIcon-icon iconfont icon-moban flexIcon-icon-current"></view>
 				<image @click="click_check" :src="img_checkcode_url"  class="img_checkcode" mode="widthFix" style="width: 30%;"></image>
-				<input type="text" class="flexIcon-text" placeholder-class="cl-white" name="telephone" @input="imgInput" placeholder="请输入答案" />
+				<input type="text" class="flexIcon-text" placeholder-style="color: #999;" name="telephone" @input="imgInput" placeholder="请输入答案" />
 			</view>
 	  
 			<div></div>
-			<button type="primary"  formType="submit" open-type="getUserInfo" class="btn-row-submit" @click="btn_user_login">登陆</button>
+			<button type="primary" :style="{background:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" formType="submit" open-type="getUserInfo" class="btn-row-submit" @click="btn_user_login">登陆</button>
 			<div class="flex mgb-20">
 				<navigator class="cl-black pointer flex-1" style="margin-top: 30upx;text-align: right;font-size: 34upx;" url="/pages/login/login">手机验证码登录</navigator>
 			</div>
@@ -76,7 +76,9 @@
 				js_code: '',
 				tokenstr :'',
 				password: '',
-				account: ''
+				account: '',
+				wxa_shop_nav_bg_color: '',
+				wxa_shop_nav_font_color: ''
 			}
 		},
 		onLoad:function(){
@@ -89,10 +91,26 @@
 				})
 			}
 			this.click_check();
-			
+			this.abotapi.set_option_list_str(this, this.callback_set_option_list_str);
 			
 		},
 		methods:{
+			callback_set_option_list_str:function(that,cb_params){
+				that.abotapi.getColor();
+				if(!cb_params){
+					return;
+				}
+				
+				if(cb_params.wxa_shop_nav_bg_color){
+					that.wxa_shop_nav_bg_color = cb_params.wxa_shop_nav_bg_color
+				}
+				
+				if(cb_params.wxa_shop_nav_font_color){
+					that.wxa_shop_nav_font_color = cb_params.wxa_shop_nav_font_color
+				}
+				
+			},
+			
 			accountInput:function(e){
 				//console.log('Phone=',e)
 				this.account = e.detail.value;
@@ -381,7 +399,7 @@
 
 .flexIcon {
 	flex-direction: row;
-	background-color: #2e85d8;
+	background-color: #FFFFFF;
 	margin-bottom: 44upx;
 	border-radius: 44upx;
 	padding: 22upx 22upx;
@@ -395,7 +413,6 @@
 }
 
 .flexIcon-text {
-	color: #fff;
 	border: 0;
 	flex: 1;
 	background:inherit;
