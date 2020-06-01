@@ -50,13 +50,13 @@
         "pagePath": "pages/publish/publish_list",
         "iconPath": "static/img/tabBar/imglist.png",
         "selectedIconPath": "static/img/tabBar/imglist-on.png",
-        "text": "分类信息"
+        "text": "开店创业"
       },
       {
         "pagePath": "pages/category/category",
         "iconPath": "static/img/tabBar/category.png",
         "selectedIconPath": "static/img/tabBar/category-on.png",
-        "text": "商品导购"
+        "text": "臻选商城"
       },
       {
         "pagePath": "pages/shopList/shopList",
