@@ -230,7 +230,7 @@ export default {
 			//客服相关
 			wxa_show_kefu_button:'',
 			wxa_kefu_button_type:'',
-			wap_kefu_bg_no_color_flag:0,
+			wxa_kefu_bg_no_color_flag:0,
 			wxa_kefu_button_icon:'',
 			wxa_kefu_mobile_num:'',
 			wxa_kefu_form_url:'',
@@ -707,8 +707,9 @@ export default {
 			    that.wxa_kefu_bg_color = cb_params.option_list.wxa_kefu_bg_color
 			}
 			
-			if(cb_params.option_list.wap_kefu_bg_no_color_flag){
-				that.wap_kefu_bg_no_color_flag = cb_params.option_list.wap_kefu_bg_no_color_flag
+			if(cb_params.option_list.wxa_kefu_bg_no_color_flag){
+				that.wxa_kefu_bg_no_color_flag = cb_params.option_list.wxa_kefu_bg_no_color_flag;
+				that.wxa_kefu_bg_color = '';
 			}
 			
 			//更多选项（ShopAppV2）
