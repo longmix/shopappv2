@@ -49,14 +49,14 @@
 					<view class="title">当前版本</view>
 					<view class="right"><view class="tis"></view><view class="icon xiangyou"></view></view>
 				</view>
-				<view class="row">
+				<view class="row" @tap="clearStorage">
 					<view class="title">清除缓存</view>
 					<view class="right"><view class="tis"></view><view class="icon xiangyou"></view></view>
 				</view>
-				<view class="row">
+				<navigator :url="jubao_link_url" class="row">
 					<view class="title">问题反馈</view>
 					<view class="right"><view class="tis"></view><view class="icon xiangyou"></view></view>
-				</view>
+				</navigator>
 				<navigator url="/pages/about/about" class="row">
 					<view class="title">关于商城</view>
 					<view class="right"><view class="tis"></view><view class="icon xiangyou"></view></view>
@@ -81,14 +81,15 @@
 			return {
 				user_info:'',
 				nickname:'',
-				userAcountInfo:''
+				userAcountInfo:'',
+				jubao_link_url: ''
 			};
 		},
 		
 		
 		onLoad:function(options) {
 			var that = this;
-			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
+			this.abotapi.set_option_list_str(this, this.abotapi.getColor());
 			var userInfo = that.abotapi.get_user_info();
 			if ((!userInfo) || (!userInfo.userid)) {
 				uni.redirectTo({
@@ -97,7 +98,7 @@
 				return;
 			}
 			this.userAcountInfo = this.abotapi.get_user_account_info();
-			console.log('userAcountInfo==',this.userAcountInfo);
+			that.jubao_link_url = that.abotapi.jump_to_fankui_url();
 
 		},
 		methods: {
@@ -242,6 +243,10 @@
 						});
 					}
 				});
+			},
+			
+			clearStorage:function(){
+				this.abotapi.clearStorage();
 			},
 			
 		}

@@ -1146,4 +1146,53 @@ module.exports = {
    
 	},
 	
+	jump_to_fankui_url:function(){
+		let url
+		this.set_option_list_str(this,function(that,cb_params){
+			url = '/pages/publish/publish_write?form_type=2&token='+cb_params.cms_token+'&formid='+cb_params.fankui_form_id;	
+		});
+		return url;
+	},
+	
+	// 清除缓存
+	clearStorage:function(){
+		uni.removeStorageSync('shop_option_data_' + this.globalData.default_sellerid);
+		uni.removeStorageSync("coordinate_array");
+		uni.removeStorageSync("cata_list");
+		uni.removeStorageSync("spec_list");
+		
+		uni.removeStorageSync('all_shang_jingwei_list');
+			
+	    uni.removeStorage({
+	      key: 'latestMsgList_cache',
+	      success(res) {
+	        uni.showToast({
+	          icon: 'none',
+	          title: '清除成功',
+	        })
+	      }
+	    })
+	
+	    uni.removeStorage({
+	      key: 'friendList_cache',
+	      success(res) {
+	        uni.showToast({
+	          icon: 'none',
+	          title: '清除成功',
+	        })
+	      }
+	    }) 
+		
+		uni.removeStorage({
+		  key: 'shop_info_from_server_str_' + this.get_sellerid(),
+		  success(res) {
+		    uni.showToast({
+		      icon: 'none',
+		      title: '清除成功',
+		    })
+		  }
+		}) 
+	  },
+	
+	
 }

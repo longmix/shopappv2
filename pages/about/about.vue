@@ -129,69 +129,18 @@
 			
 			that.abotapi.get_shop_info_from_server(that.callback_func_for_shop_info)
 				
+			that.jubao_link_url = that.abotapi.jump_to_fankui_url();
 			
-			that.abotapi.set_option_list_str(that, that.callback_function);
 			
 			
 			
 		},
 		methods: {
-			clearStorage:function(){
-				
-				uni.removeStorageSync("coordinate_array");
-				uni.removeStorageSync("cata_list");
-				uni.removeStorageSync("spec_list");
-				
-				uni.removeStorageSync('all_shang_jingwei_list');
-				
-				
-				
-			    uni.removeStorage({
-			      key: 'latestMsgList_cache',
-			      success(res) {
-			        uni.showToast({
-			          icon: 'none',
-			          title: '清除成功',
-			        })
-			      }
-			    })
-			
-			    uni.removeStorage({
-			      key: 'friendList_cache',
-			      success(res) {
-			        uni.showToast({
-			          icon: 'none',
-			          title: '清除成功',
-			        })
-			      }
-			    }) 
-				
-				uni.removeStorage({
-				  key: 'shop_info_from_server_str_' + that.abotapi.get_sellerid(),
-				  success(res) {
-				    uni.showToast({
-				      icon: 'none',
-				      title: '清除成功',
-				    })
-				  }
-				}) 
-			  },
-			  
-			  callback_function:function(that, cb_params){
-			  	
-			  	console.log('cb_params===', cb_params)
-			  	
-			  	if(!cb_params){				
-			  		return;
-			  	}
-			  	
-			  	that.jubao_link_url = '/pages/publish/publish_write?form_type=2&token='+cb_params.cms_token+'&formid='+cb_params.fankui_form_id;
-			  	
-			  	
-			  },
+			clearStorage:function(){		
+				this.abotapi.clearStorage();
+			},
 			  
 			  
-
 			  
 			  mytiaozhuan: function (e) {
 					that = this;
