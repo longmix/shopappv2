@@ -80,7 +80,7 @@
 		<view class="toolbar">
 			<view class="title">我的工具栏</view>
 			<view class="list">
-				<view class="box" v-for="(row,index) in gooosList" :key="index" @tap="toPage(row.url)">
+				<view class="box" v-for="(row,index) in user_function_list" :key="index" @tap="toPage(row.url)">
 					<view class="img">
 						<image :src="row.src"></image>
 					</view>
@@ -127,27 +127,16 @@
 					
 				],
 				// 工具栏列表
-				gooosList:'',
+				user_function_list:'',
 				default_copyright_text: '',
 				about: '',
-				userInfo: ''
+				userInfo: '',
+				
+				user_center_function_list_icon_type:0,
+				user_center_function_list_icon_list:[]
 			}
 		},
-		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
-		onPullDownRefresh() {
-			this.onShow();
-			
-			
-		    setTimeout(function () {
-		        uni.stopPullDownRefresh();
-		    }, 1000);
-		},
-		onPageScroll(e){
-			//兼容iOS端下拉时顶部漂移
-			this.headerPosition = e.scrollTop>=0?"fixed":"absolute";
-			this.headerTop = e.scrollTop>=0?null:0;
-			this.statusTop = e.scrollTop>=0?null:-this.statusHeight+'px';
-		},
+		
 		onLoad() {
 			var that = this;
 			
@@ -170,15 +159,23 @@
 				function(that001, option_list){
 					that001.abotapi.getColor();
 					
-						that001.wxa_shop_nav_bg_color  = option_list.wxa_shop_nav_bg_color;
+					that001.wxa_shop_nav_bg_color  = option_list.wxa_shop_nav_bg_color;
 						
-						that001.wxa_shop_nav_font_color = option_list.wxa_shop_nav_font_color
+					that001.wxa_shop_nav_font_color = option_list.wxa_shop_nav_font_color;
+					
+					that.user_center_function_list_icon_type = option_list.user_center_function_list_icon_type;
+					if(option_list.user_center_function_list_icon_type == -1){
+						that.user_center_function_list_icon_list = option_list.user_center_function_list_icon_list;
+					}
+					
+					that001.get_current_userinfo();
+					
+					that001.get_user_function_list();
 				
 				}
 			);
+						
 			
-			
-			that.getPage();
 			this.statusHeight = 0;
 			// #ifdef APP-PLUS
 			this.showHeader = false;
@@ -200,29 +197,6 @@
 			var that = this;
 
 			
-			that.getPage();
-			
-			that.abotapi.abotRequest({
-			    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_shop_icon_usercenter',
-			    data: {
-					sellerid: this.abotapi.globalData.default_sellerid,
-				},
-			    success: function (res) {
-					console.log('kaafff===', res);
-					var productlist = res.data.data;
-					console.log('akafff===', productlist);
-					that.gooosList = productlist
-				  
-			    },
-			    fail: function (e) {
-					uni.showToast({
-						title: '网络异常！',
-						duration: 2000
-					});
-			    },
-			});
-			
-			
 			uni.getStorage({
 				key: 'UserInfo',
 				success: (res)=>{
@@ -239,14 +213,37 @@
 				}
 			});
 		},
+		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
+		onPullDownRefresh() {
+			
+			this.abotapi.set_option_list_str(this,
+				function(that001, option_list){					
+					
+					that001.get_current_userinfo();
+					
+					that001.get_user_function_list();
+				
+				}
+			);
+			
+		    setTimeout(function () {
+		        uni.stopPullDownRefresh();
+		    }, 1000);
+		},
+		onPageScroll(e){
+			//兼容iOS端下拉时顶部漂移
+			this.headerPosition = e.scrollTop>=0?"fixed":"absolute";
+			this.headerTop = e.scrollTop>=0?null:0;
+			this.statusTop = e.scrollTop>=0?null:-this.statusHeight+'px';
+		},
 		methods: {
 			//获取用户信息
-			getPage: function () {
+			get_current_userinfo: function () {
 				var that = this;
 
 				var userInfo = that.abotapi.get_user_info();
 				
-				console.log('getpage--userInfo==',userInfo)
+				console.log('get_current_userinfo--userInfo==',userInfo)
 				
 				if(userInfo && userInfo.userid){
 					that.abotapi.abotRequest({
@@ -275,6 +272,37 @@
 				}else{
 					that.user_info = '';
 				}
+			},
+			get_user_function_list:function(){
+				var that = this;
+				
+				console.log('user_center_function_list_icon_type=====>>>>>>>'+ that.user_center_function_list_icon_type);
+				
+				if(that.user_center_function_list_icon_type == -1){
+					that.user_function_list = that.user_center_function_list_icon_list;
+					
+					return;
+				}
+				
+				that.abotapi.abotRequest({
+				    url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_shop_icon_usercenter',
+				    data: {
+						sellerid: that.abotapi.globalData.default_sellerid,
+					},
+				    success: function (res) {
+						console.log('kaafff===', res);
+						that.user_function_list = res.data.data;
+						console.log('akafff===', that.user_function_list);
+					  
+				    },
+				    fail: function (e) {
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+				    },
+				});
+				
 			},
 			
 			
