@@ -167,7 +167,17 @@
 		
 		
 		<view class="ps-btn">
-			<view @tap="call_seller">
+			<view @tap="share_shang_detail">
+				<image src="../../static/img/help/star_off.png" open-type="share"></image>
+				<!-- <image src="../../static/img/help/star_on.png"></image> -->
+				<!-- <view>分享</view> -->
+			</view>
+			
+			<view @tap="share_shang_detail">
+				<!-- <image src="../../static/img/addricon.png"></image> -->
+				<view open-type="share">分享</view>
+			</view>
+			<view @tap="call_seller" style="margin-bottom: 20rpx;">
 				<!-- <image src="../../static/img/addricon.png"></image> -->
 				<view>电话</view>
 			</view>
@@ -326,6 +336,52 @@
 		
 			     this.imgheights = imgheights
 			   
+			  },
+			  
+			  //分享
+			  onShareAppMessage:function(){
+				  
+				console.log('==================>>>');
+				var that = this;
+				return {
+					title: '商家详情',
+					path: 'pages/shopDetail/shopDetail?shangid='+that.shangid,
+					imageUrl:that.shoplist.pic,
+					success: function(res) {
+					// 分享成功
+						uni.showToast({
+							title: '转发成功',
+							icon: 'success',
+							duration: 2000
+						})
+					},
+					fail: function(res) {
+						// 分享失败
+						uni.showToast({
+							title: '转发失败',
+							icon: 'success',
+							duration: 2000
+						})
+					}
+				}
+				
+				
+				uni.share({
+				    provider: "weixin",
+				    scene: "WXSceneSession",
+				    type: 0,
+				    href: "http://uniapp.dcloud.io/",
+				    title: "uni-app分享",
+				    summary: "我正在使用HBuilderX开发uni-app，赶紧跟我一起来体验！",
+				    imageUrl: "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/uni@2x.png",
+				    success: function (res) {
+				        console.log("success:" + JSON.stringify(res));
+				    },
+				    fail: function (err) {
+				        console.log("fail:" + JSON.stringify(err));
+				    }
+				});
+				  
 			  },
 			  
 			//获取商家详情

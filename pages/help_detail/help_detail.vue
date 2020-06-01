@@ -101,7 +101,14 @@
 		        <view class="comment_num" :hidden="!comment_num">{{comment_num}}</view>
 		        <image class="comment_img comment_right_img" :style="comment_num ? 'margin-left:0':''" :src="isShoucang==true ?  '../../static/img/help/star_on.png': '../../static/img/help/star_off.png'" @tap='shoucang' ></image>
 		        <button  class="share" open-type="share"></button>
-		        <image class="comment_img comment_right_img" src="../../static/img/help/share.png" open-type="share"></image>
+				<!-- #ifdef MP-WEIXIN || APP-PLUS -->
+				<image class="comment_img comment_right_img" src="../../static/img/help/share.png" open-type="share"></image>
+				<!-- #endif -->
+				
+		        <!-- #ifdef H5 -->
+		        <image class="comment_img comment_right_img" src="../../static/img/help/share.png" @tap="share_publish"></image>
+		        <!-- #endif -->
+				
 		        <image class="comment_img comment_right_img" @tap="toHomePage" src="../../static/img/help/home_page.png"></image>
 				<!-- <image class="comment_img comment_right_img" src="../../../static/img/help/friends.png"></image> -->
 		     </view>
@@ -359,11 +366,12 @@
 					//========End====================
 			},
 			onShareAppMessage: function () {
+				console.log('==================>>>');
 				var that = this;
 				return {
-					title: '' + that.data.wz_text.title,
-					path: 'pages/help_detail/help_detail?id='+that.data.id,
-					imageUrl:that.data.wz_text.pic,
+					title: '' + that.wz_text.title,
+					path: 'pages/help_detail/help_detail?id='+that.id,
+					imageUrl:that.wz_text.pic,
 					success: function(res) {
 					// 分享成功
 						uni.showToast({
@@ -382,6 +390,17 @@
 					}
 				}
 			},
+			
+			//h5点击分享触发
+			share_publish:function(){
+				console.log('==================>>>h5');
+				uni.showModal({
+					title:'请点击浏览器菜单中的分享按钮',
+					showCancel:false,
+				})
+				return;
+			},
+			
 			//评论输入框获取焦点判断是否登录
 			is_login:function(){
 				console.log('获取焦点！！！！');

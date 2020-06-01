@@ -227,9 +227,7 @@
 			 
 		},
 		onReady: function () {
-			uni.setNavigationBarTitle({
-				title: '发布 - '+this.catename,
-			})
+			
 		},
 		methods: {
 			
@@ -449,6 +447,11 @@
 							var list = res.data.data;
 							if(res.data.submit_text){
 								that.submit_text = res.data.submit_text;
+							}
+							if(res.data.title){
+								uni.setNavigationBarTitle({
+									title: res.data.title,
+								})
 							}
 							
 							for(var i=0; i<list.length; i++){

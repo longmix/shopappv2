@@ -9,7 +9,7 @@
 	          <text style="display:block;color:#fff;">{{shoplist.name}}</text>    
 	        </text>
 	    </view>
-	    <image class="return-index" src="../../static/img/shouye.svg"></image>
+	    <image class="return-index" src="../../static/img/shouye.svg" @click="toShang_shouye"></image>
 	  </view>
 	
 	 </view>
@@ -590,6 +590,17 @@ export default {
 		
 		
 		  },
+		  
+		  //右上角小房子返回商家首页
+		  toShang_shouye:function(){
+			  var that = this;
+			  var shangid = that.shopId;
+			  uni.redirectTo({
+			  	url:'../shopDetail/shopDetail?shangid=' + shangid,
+			  })
+			 
+		  },
+		  
 		  hiddenCartDetailf: function () {
 			  
 			  this.showCartDetail = false;
