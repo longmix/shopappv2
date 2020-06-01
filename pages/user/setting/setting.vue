@@ -47,7 +47,7 @@
 			<view class="list">
 				<view class="row">
 					<view class="title">当前版本</view>
-					<view class="right"><view class="tis"></view><view class="icon xiangyou"></view></view>
+					<view class="right"><view class="tis">{{version_number}}</view><view class="icon xiangyou"></view></view>
 				</view>
 				<view class="row" @tap="clearStorage">
 					<view class="title">清除缓存</view>
@@ -82,14 +82,18 @@
 				user_info:'',
 				nickname:'',
 				userAcountInfo:'',
-				jubao_link_url: ''
+				jubao_link_url: '',
+				version_number: '',
 			};
 		},
 		
 		
 		onLoad:function(options) {
 			var that = this;
-			this.abotapi.set_option_list_str(this, this.abotapi.getColor());
+			this.abotapi.set_option_list_str(this, function(that,cb_params){
+				that.abotapi.getColor();
+			});
+			that.version_number = that.abotapi.globalData.version_number;
 			var userInfo = that.abotapi.get_user_info();
 			if ((!userInfo) || (!userInfo.userid)) {
 				uni.redirectTo({
