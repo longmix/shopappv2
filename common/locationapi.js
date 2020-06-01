@@ -71,11 +71,11 @@ module.exports = {
 			// 新建bmap对象
 			var baidu_map_ak;
 			// #ifdef H5
-				baidu_map_ak = cb_params.option_list.baidu_map_ak_h5;
+				baidu_map_ak = that.abotapi.globalData.option_list.baidu_map_ak_h5;
 			// #endif
 			
 			// #ifdef APP-PLUS-AAA
-				baidu_map_ak = cb_params.option_list.baidu_map_ak_app;
+				baidu_map_ak = that.abotapi.globalData.option_list.baidu_map_ak_app;
 			// #endif
 			
 			// #ifdef MP-WEIXIN || APP-PLUS
