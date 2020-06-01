@@ -267,7 +267,7 @@ export default {
 		that.abotapi.set_shop_option_data(that, that.callback_function_shop_option_data);
 		that.abotapi.get_shop_info_from_server(that.callback_func_for_shop_info);
 		that.abotapi.get_xianmaishang_setting_list_remove();
-		that.get_publish_list();
+		
 		setTimeout(function() {
 			uni.stopPullDownRefresh();
 			uni.hideToast();
@@ -322,8 +322,8 @@ export default {
 	},
 	onLoad: function (options) {
 		///this.bindKeyInput();
-		var that = this;
-		that.abotapi.set_shop_option_data(that, that.callback_function);
+		var that = this;	
+		
 		console.log('pages/tabBar/index/index====>>>>', options);
 		
 		var that = this;
@@ -446,13 +446,6 @@ export default {
 			console.log('call_back_get_shang_list2--cb_params==',cb_params)
 		},
 		
-		callback_function:function(that, shop_option_data){
-			that.abotapi.getColor();
-			console.log('shop_option_data',shop_option_data);
-			this.cms_token = shop_option_data.option_list.cms_token;
-			this.default_publish_list_count_in_front_page = shop_option_data.option_list.default_publish_list_count_in_front_page;
-			this.get_publish_list();
-		},
 		//跳转文章详情
 		goForum: function(id) {
 			
@@ -597,7 +590,6 @@ export default {
 			//var userInfo = that.abotapi.get_user_info();
 			
 			
-			
 			//====1、更新界面的颜色
 			that.abotapi.getColor();
 			
@@ -738,6 +730,11 @@ export default {
 			    that.abotapi.globalData.default_shang_list_count_in_front_page = cb_params.option_list.default_shang_list_count_in_front_page
 			  
 			}
+			
+			if(cb_params.shop_option_data.option_list.cms_token){
+				that.cms_token = cb_params.shop_option_data.option_list.cms_token;
+			}
+			
 			if (cb_params.option_list.default_publish_list_count_in_front_page) {
 			  
 			    that.abotapi.globalData.default_publish_list_count_in_front_page = cb_params.option_list.default_publish_list_count_in_front_page
@@ -754,7 +751,7 @@ export default {
 			
 			that.call_back_get_shang_list();
 			
-			
+			that.get_publish_list();
 				
 			
 		},

@@ -254,7 +254,7 @@
 				
 				if(e.detail.value.fabu_xuzhi[0] != 1){
 					uni.showToast({
-						title:'请勾选发布须知',
+						title:'请阅读发布须知',
 					})
 					return;
 				}
