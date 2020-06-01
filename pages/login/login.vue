@@ -42,7 +42,12 @@
 				<navigator class="cl-black pointer flex-1" style="margin-top: 30upx;text-align: right;font-size: 34upx;" url="/pages/login/login_by_password">账号密码登录</navigator>
 			</div>
 			
-			<view class="home-p" @tap="goHome()">返回首页</view>
+			<view class="home-p" @tap="goHome()">
+				<image src="../../static/img/shouye.svg"></image>
+				<view>
+					首页
+				</view>
+			</view>
 			
 			<!-- #ifdef MP-WEIXIN -->
 			<div class="otherBox mgb-20">
@@ -51,7 +56,7 @@
 			</div>
 			<div class="flex flex-center2">
 				<!-- <button open-type="getUserInfo" @getuserinfo="wxLogin" class="btn-round bg-success icon-weixin"></button> -->
-				<button open-type="getPhoneNumber" plain="true"  class="btn-round bg-success icon-weixin" @getphonenumber="btn_wxa_one_click_login"></button>
+				<button open-type="getPhoneNumber" plain="true" class="btn-round bg-success icon-weixin" @getphonenumber="btn_wxa_one_click_login"></button>
 			</div>
 			<!-- #endif -->
 			
@@ -711,11 +716,13 @@
 }
 
 .home-p{
-	text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-around;
 	background: #f00;
 	width: 120upx;
 	height: 120upx;
-	line-height: 120upx;
 	position: fixed;
 	z-index: 100;
 	right: 60upx;
@@ -724,6 +731,11 @@
 	border-radius: 50%;
 	bottom: 120upx;
 }
+
+.home-p image{
+		width: 60%;
+		height: 60%;
+	}
 
 
 
