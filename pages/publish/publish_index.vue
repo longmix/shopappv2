@@ -117,13 +117,17 @@
 				}
 				//获取发布帖子的栏目组
 				if(that.show_type && that.show_type == 'list'){
-					that.publish_img_cata_list = shop_option_data['publish_img_cata_list'];
+					that.publish_img_cata_list = shop_option_data.option_list.publish_img_cata_list;
 					return;
 				}
 				
 				that.publish_img_cata_list = [];
 				
-				var list001 = shop_option_data['publish_img_cata_list'];
+				var list001 = [];
+				if(that.publish_img_cata_list){
+					list001 = that.publish_img_cata_list;
+				}
+				
 				for(var i=0; i<list001.length; i++){
 					var item001 = list001[i];
 					

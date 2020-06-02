@@ -83,7 +83,7 @@
 				
 				var shop_option_data = JSON.parse(uni.getStorageSync('shop_option_data'));
 				
-				this.publish_img_cata_list = shop_option_data['publish_img_cata_list'];
+				this.publish_img_cata_list = shop_option_data.option_list.publish_img_cata_list;
 				
 				console.log('publish_img_cata_list==>获取发帖栏目',this.publish_img_cata_list);
 			},

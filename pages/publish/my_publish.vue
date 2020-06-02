@@ -135,7 +135,7 @@
 				
 				//取帖子分类列表
 			
-				this.publish_img_cata_list = shop_option_data.publish_img_cata_list;
+				this.publish_img_cata_list = shop_option_data.option_list.publish_img_cata_list;
 				console.log('aaaaaaa====',this.publish_img_cata_list);
 			
 				

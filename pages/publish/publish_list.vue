@@ -143,7 +143,7 @@
 				if(shop_option_data.option_list.publish_hiddend_btn_for_write){
 					that.publish_hiddend_btn_for_write = shop_option_data.option_list.publish_hiddend_btn_for_write; //是否显示发帖按钮
 				}
-				that.publish_img_cata_list = shop_option_data.publish_img_cata_list;
+				that.publish_img_cata_list = shop_option_data.option_list.publish_img_cata_list;
 				
 				that.get_publish_list();
 				
