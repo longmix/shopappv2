@@ -803,49 +803,27 @@
 			    var userInfo = this.abotapi.get_user_info();
 			
 			    console.log('userInfo==',userInfo);
-			
-			    if(!userInfo){
-			      uni.showToast({
-			        title: '请先登录',
-			        icon: 'none',
-			        duration: 1000,
-			        success:function(){
-			          
-			
-			          uni.setStorageSync('get_userinfo_last_url', '/cms/discover/discover');
-			          if (that.current_self_in_tabbar == 1){
-			            uni.setStorageSync('get_userinfo_page_type', 'switchTab');
-			          }
-			          else{
-			            uni.setStorageSync('get_userinfo_page_type', 'normal');
-			          }
-			          
-			
-			          uni.navigateTo({
-			            url: '/pages/login/login',
-			          })
-			        }
-			      })
-			    }
-			
-			    var is_get_userinfo = userInfo.is_get_userinfo;
-			    if (!is_get_userinfo) {
-			
-			      uni.setStorageSync('get_userinfo_last_url', '/cms/discover/discover');
-			
-			      if (that.current_self_in_tabbar == 1) {
-			        uni.setStorageSync('get_userinfo_page_type', 'switchTab');
-			      }
-			      else {
-			        uni.setStorageSync('get_userinfo_page_type', 'normal');
-			      }
-			
-			      uni.navigateTo({
-			        url: '/pages/login/login_get_userinfo',
-			      });
-			
-			      return;
-			    }
+				
+				if (!userInfo) {
+				  uni.showModal({
+				    title: '提示',
+					content:'请先登陆后再点赞',
+				    success: function (res) {
+						if(res.confirm){
+							
+							if (this.data.current_self_in_tabbar == 1) {
+								that.abotapi.goto_user_login('switchTab /cms/discover/discover');
+							}
+							else{
+								that.abotapi.goto_user_login('/cms/discover/discover');
+							}
+						}						
+						return;						
+				    },
+				  })
+				  
+				  return;
+				}
 			
 			    that.abotapi.abotRequest({
 			      url: this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/faquan_collect',
@@ -902,55 +880,33 @@
 				console.log('============>>>>>', userInfo);
 			
 			    if (!userInfo) {
-			      uni.showToast({
-			        title: '请先登录',
-			        icon: 'none',
-			        duration: 1000,
-			        success: function () {
-			
-			          uni.setStorageSync('get_userinfo_last_url', '/cms/discover/discover');
-			
-			          if (that.current_self_in_tabbar == 1) {
-			            uni.setStorageSync('get_userinfo_page_type', 'switchTab');
-			          }
-			          else {
-			            uni.setStorageSync('get_userinfo_page_type', 'normal');
-			          }
-			
-			          uni.navigateTo({
-			            url: '/pages/login/login',
-			          })
-			        }
+			      uni.showModal({
+			        title: '提示',
+					content:'请先登陆后再点赞',
+			        success: function (res) {
+						if(res.confirm){
+							
+							if (this.data.current_self_in_tabbar == 1) {
+								that.abotapi.goto_user_login('switchTab /cms/discover/discover');
+							}
+							else{
+								that.abotapi.goto_user_login('/cms/discover/discover');
+							}
+							
+							
+						}
+						
+						return;
+						
+			        },
+					
+					
 			      })
 			
 			      return;
 			    }
 			
-			    var is_get_userinfo = userInfo.is_get_userinfo;
-				
-				console.log('============>>>>>', is_get_userinfo);
-				
-			    if (!is_get_userinfo) {
-						console.log('============>>>>>11111111111111111');
-					
-			
-			      uni.setStorageSync('get_userinfo_last_url', '/cms/discover/discover');
-			      
-			      if (that.current_self_in_tabbar == 1) {
-			        uni.setStorageSync('get_userinfo_page_type', 'switchTab');
-			      }
-			      else {
-			        uni.setStorageSync('get_userinfo_page_type', 'normal');
-			      }
-			
-			      uni.navigateTo({
-			        url: '/pages/get_userinfo/login_get_userinfo',
-			      });
-			
-			      return;
-			    }
-			
-			    uni.request({
+			    that.abotapi.abotRequest({
 			      url: this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/faquan_like',
 			      method: 'post',
 			      data: {
