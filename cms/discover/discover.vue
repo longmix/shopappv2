@@ -158,7 +158,7 @@
 	          <view style="clear:both;"></view>
 	
 	           <view v-if="!is_my_discover_collection && !is_my_discover" class="list-address fz-10 m-t-5"> <!-- 004  -->
-	              <view @tap="disable ? '' : oneClickSave" class='download-con' 
+	              <view @tap="disabled ? '' : oneClickSave" class='download-con' 
 	                :data-index='idx' :data-type='item.type' 
 	                :style="{display:faquan_one_click_to_save_show}">
 	                <image class="download-img" src="../../static/img/download.png"></image>一键保存</view>
@@ -329,12 +329,7 @@
 			
 		},
 		onShow(){
-			var userInfo = this.abotapi.get_user_info();
-			    
-			if(!userInfo || !userInfo.is_get_userinfo){
-			  console.log('userInfo========1',userInfo)
-			  userInfo = this.abotapi.get_user_info();
-			}
+			
 		
 		
 			this.__getFaquanList();
