@@ -1,321 +1,318 @@
 <template>
-	
+
 	<!--pages/login/login.wxml-->
-	<view class="page" style='width:100%;overflow-x:hidden;background:#fff;' :style="{height:windowHeight+'px'}"> 
-	<view class='box'>
-	 <image :src="shop_list.icon" mode="widthFix"></image>
+	<view class="page" style='width:100%;overflow-x:hidden;background:#fff;' :style="{height:windowHeight+'px'}">
+		<view class='box'>
+			<image :src="shop_list.icon" mode="widthFix"></image>
+		</view>
+
+
+
+		<view class='shouquan-con'>
+			<view class='open-con'>
+				<open-data type="userAvatarUrl" class="userinfo-avatar"></open-data>
+				<open-data type="userNickName" class="userinfo-userNickName"></open-data>
+			</view>
+
+			<image class="shouquan-a" mode="widthFix" src="../../static/img/double_arrow_right.png"></image>
+			<image class="shouquan-b" src="../../static/img/wxa.png"></image>
+		</view>
+
+
+		<button open-type="getUserInfo" plain="true" @getuserinfo="btn_one_click_get_userinfo" class="check_btn2" style="background-color:#07C160; color:#ffffff;border:1px solid #fff;">授权获取头像和昵称</button>
 	</view>
-	
-	
-	
-	 <view class='shouquan-con'>
-	  <view class='open-con'>
-	    <open-data type="userAvatarUrl" class="userinfo-avatar" ></open-data>
-	    <open-data type="userNickName" class="userinfo-userNickName" ></open-data>
-	  </view>
-	   
-	  <image class="shouquan-a" mode="widthFix" src="../../static/img/double_arrow_right.png"></image>
-	  <image class="shouquan-b" src="../../static/img/wxa.png"></image>
-	 </view>
-	
-	
-	<button open-type="getUserInfo" plain="true" @getuserinfo="btn_one_click_get_userinfo" class="check_btn2" style="background-color:#07C160; color:#ffffff;border:1px solid #fff;">授权获取头像和昵称</button>
-	</view>
-	
+
 </template>
 
 <script>
-export default{
-	  data(){
-		  return{
-			  second: '发送短信',
-			  mobile: "",
-			  disabled: false,
-			  timer001: 60,
-			  js_code: '',
-			  tokenstr :'',
-			  show_mobile_login:0,
-			  shop_list:'',
-			  windowHeight:''
-		  };
-    },
-	
-	
-	  onShow: function () {
-	
-	  },
-	  onLoad: function (options) {
-	    this.abotapi.set_option_list_str(null, this.abotapi.getColor());
-	    
-	    var that = this;
-	
-	   this.abotapi.get_shop_info_from_server(function (shop_info_list) {
-	   
-	        that.shop_list = shop_info_list;
-	   
-	    });
-	
-	    
-	
-	    uni.getSystemInfo({
-	      success(res) {
-	       
-	          that.windowHeight = res.windowHeight;
-	
-	      }
-	    })
-	
-	    console.log('options', options)
-	
-	    if(options.retpage){
-	      //var url = 'http://192.168.0.87:8080/chouheji/pages/chouheji/chouheji_index?sellerid=%ensellerid%&openid=%wxa_openid%';
-	      
-	        that.retpage ='/pages/h5browser/h5browser?url=' + options.retpage;
-	   
-	    }
-	
-	  },
-	  methods:{
-		  btn_one_click_get_userinfo: function (e) {
-		    var that = this;
-		    console.log(e.detail.errMsg)
-		    console.log(e.detail.iv)
-		    console.log(e.detail.encryptedData)
-		    
-		    console.log('one_click_get_userinfo', e);
-		    console.log('wx.login <<<==== btn_one_click_login');
-		  	
-		    uni.login({
-		      success: (res)=>{
-		        console.log("btn_one_click_login 获取到的jscode是:" + res.code);
-		  	
-		  		var that = this;
-		        that.abotapi.abotRequest({
-		          url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=wxa_get_userinfo',
-		          header: {
-		            "Content-Type": "application/x-www-form-urlencoded"
-		          },
-		          method: "POST",
-		          dataType: 'json',
-		          data: {
-		            js_code: res.code,
-		            xiaochengxu_appid: that.abotapi.globalData.xiaochengxu_appid,
-		            iv: e.detail.iv,
-		            encryptedData: e.detail.encryptedData,
-		            sellerid: that.abotapi.get_sellerid(),
-		            parentid: that.abotapi.get_current_parentid(),
-		          },
-		          success: function (res) {
-		            console.log('一键获取头像和昵称成功' + res);
-		  	
-		            if (res.data && (res.data.code == 1)) {
-		  	
-		              that.abotapi.globalData.userInfo = that.abotapi.get_user_info();
-		  	
-		              console.log('已经保存的用户信息：', that.abotapi.globalData.userInfo);
-		  	
-		              that.abotapi.globalData.userInfo.is_get_userinfo = 1;
-		              that.abotapi.set_user_info(that.abotapi.globalData.userInfo); 
-		  	
-		  	
-		            uni.showToast({
-		                title: '授权成功',
-		                icon: 'success',
-		                duration: 2000
-		              })
-		  	
-		              var last_url = uni.getStorageSync('get_userinfo_last_url');
-		  	
-		              console.log('last_url-----', last_url)
-		              var page_type = uni.getStorageSync('get_userinfo_page_type');
-		  	
-		  	
-		              uni.removeStorageSync('get_userinfo_last_url');
-		              uni.removeStorageSync('get_userinfo_page_type');
-		  	
-		              //如果打开这个页面时候指定了返回的URL
-		              if(that.retpage){
-		                last_url = that.retpage
-		                console.log('last_url===================1111', last_url)
-		                that.abotapi.call_h5browser_or_other_goto_url(last_url);
-		                return;
-		  	
-		              }
-		  	
-		  	
-		              
-		                uni.reLaunch({
-		                  url: "/pages/index/index"
-		                });
-		  	
-		                return;
-		              
-		              
-		            }
-		            else {
-		              //一键登录返回错误代码
-		              uni.showModal({
-		                title: '提示',
-		                content: res.data.msg,
-		                showCancel:false,
-		                success(res) {
-		                  if (res.confirm) {
-		                    console.log('用户点击确定')
-		                  }
-		                }
-		              })
-		  	
-		            }
-		          }
-		        });
-		  	
-		      },
-		      fail: function (login_res) {
-		        console.log('一键获取用户头像和昵称失败。');
-		      }
-		  	
-		    });
-		  },
-	  }
-	
-	}	
-	
+	export default {
+		data() {
+			return {
+				second: '发送短信',
+				mobile: "",
+				disabled: false,
+				timer001: 60,
+				js_code: '',
+				tokenstr: '',
+				show_mobile_login: 0,
+				shop_list: '',
+				windowHeight: ''
+			};
+		},
+
+
+		onShow: function() {
+
+		},
+		onLoad: function(options) {
+			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
+
+			var that = this;
+
+			this.abotapi.get_shop_info_from_server(function(shop_info_list) {
+
+				that.shop_list = shop_info_list;
+
+			});
+
+
+
+			uni.getSystemInfo({
+				success(res) {
+
+					that.windowHeight = res.windowHeight;
+
+				}
+			})
+
+			console.log('options', options)
+
+			if (options.retpage) {
+				//that.retpage = '/pages/h5browser/h5browser?url=' + options.retpage;
+				that.retpage = options.retpage;
+			}
+			else{
+				that.retpage =  uni.getStorageSync('get_userinfo_last_url');
+				uni.removeStorageSync('get_userinfo_last_url');
+			}
+
+		},
+		methods: {
+			btn_one_click_get_userinfo: function(e) {
+				var that = this;
+				console.log(e.detail.errMsg)
+				console.log(e.detail.iv)
+				console.log(e.detail.encryptedData)
+
+				console.log('one_click_get_userinfo', e);
+				console.log('wx.login <<<==== btn_one_click_login');
+
+				uni.login({
+					success: (res) => {
+						console.log("btn_one_click_login 获取到的jscode是:" + res.code);
+
+						var that = this;
+						that.abotapi.abotRequest({
+							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=wxa_get_userinfo',
+							header: {
+								"Content-Type": "application/x-www-form-urlencoded"
+							},
+							method: "POST",
+							dataType: 'json',
+							data: {
+								js_code: res.code,
+								xiaochengxu_appid: that.abotapi.globalData.xiaochengxu_appid,
+								iv: e.detail.iv,
+								encryptedData: e.detail.encryptedData,
+								sellerid: that.abotapi.get_sellerid(),
+								parentid: that.abotapi.get_current_parentid(),
+							},
+							success: function(res) {
+								console.log('一键获取头像和昵称成功' + res);
+
+								if (res.data && (res.data.code == 1)) {
+
+									that.abotapi.globalData.userInfo = that.abotapi.get_user_info();
+
+									console.log('已经保存的用户信息：', that.abotapi.globalData.userInfo);
+
+									that.abotapi.globalData.userInfo.is_get_userinfo = 1;
+									that.abotapi.set_user_info(that.abotapi.globalData.userInfo);
+
+
+									uni.showToast({
+										title: '授权成功',
+										icon: 'success',
+										duration: 1000,
+										success:function(){
+											
+										}
+									})
+									
+									//如果打开这个页面时候指定了返回的URL
+									if (that.retpage) {										
+										that.abotapi.call_h5browser_or_other_goto_url(that.retpage);
+										return;
+									}
+									
+									uni.reLaunch({
+										url: "/pages/index/index"
+									});
+
+									return;
+
+
+								} else {
+									//一键登录返回错误代码
+									uni.showModal({
+										title: '提示',
+										content: res.data.msg,
+										showCancel: false,
+										success(res) {
+											if (res.confirm) {
+												console.log('用户点击确定')
+											}
+										}
+									})
+
+								}
+							}
+						});
+
+					},
+					fail: function(login_res) {
+						console.log('一键获取用户头像和昵称失败。');
+					}
+
+				});
+			},
+		}
+
+	}
 </script>
 
 <style>
-	
 	/* pages/update_mobile/update_mobile.wxss */
-	page{
-	    background-color:#F0F0F0;
-	    font-size:28rpx;
+	page {
+		background-color: #F0F0F0;
+		font-size: 28rpx;
 	}
-	
+
 	.box {
-	  width:100%;
-	  text-align: center;
-	  margin: 20rpx;
+		width: 100%;
+		text-align: center;
+		margin: 20rpx;
 	}
-	.box image{
-	  width:180rpx;
-	  height:180rpx;
+
+	.box image {
+		width: 180rpx;
+		height: 180rpx;
 	}
-	
-	.from-list{
-	    width:100%;
-	   
+
+	.from-list {
+		width: 100%;
+
 	}
-	
-	.section1{
-	width:90%;
-	height:96rpx;
-	line-height:48px;
-	background-color:#fff;
-	margin:40rpx auto 0;
-	border-bottom:1px solid #ECECEC;
-	border:1px solid #17A8E2;
-	border-radius:21px;
-	
+
+	.section1 {
+		width: 90%;
+		height: 96rpx;
+		line-height: 48px;
+		background-color: #fff;
+		margin: 40rpx auto 0;
+		border-bottom: 1px solid #ECECEC;
+		border: 1px solid #17A8E2;
+		border-radius: 21px;
+
 	}
-	.section1 input{
-	    width:80%;
-	    height:80rpx;
-	    padding:3px 20px;
+
+	.section1 input {
+		width: 80%;
+		height: 80rpx;
+		padding: 3px 20px;
 	}
-	.section2{
-	    width:90%;
-	    height:96rpx;
-	    background-color:#fff;
-	    margin:40rpx auto 0;
-	    position:relative;
-	    border:1px solid #17A8E2;
-	    border-radius:21px;
+
+	.section2 {
+		width: 90%;
+		height: 96rpx;
+		background-color: #fff;
+		margin: 40rpx auto 0;
+		position: relative;
+		border: 1px solid #17A8E2;
+		border-radius: 21px;
 	}
-	.section2 input{
-	    width:50%;
-	    height:80rpx;
-	    padding:3px 20px;
-	    margin:0 0 0;
+
+	.section2 input {
+		width: 50%;
+		height: 80rpx;
+		padding: 3px 20px;
+		margin: 0 0 0;
 	}
-	.send_btn{
-	    width:240rpx;
-	    height:80rpx;
-	    line-height:80rpx;
-	    position:absolute;
-	    top:8rpx;
-	    left:60%;
-	    font-size:28rpx;
+
+	.send_btn {
+		width: 240rpx;
+		height: 80rpx;
+		line-height: 80rpx;
+		position: absolute;
+		top: 8rpx;
+		left: 60%;
+		font-size: 28rpx;
 	}
-	.section3{
-	    width:90%;
-	    height:96rpx;
-	    background-color:#fff;
-	    margin:40rpx auto 0;
-	    position:relative;
-	    border:1px solid #17A8E2;
-	    border-radius:21px;
+
+	.section3 {
+		width: 90%;
+		height: 96rpx;
+		background-color: #fff;
+		margin: 40rpx auto 0;
+		position: relative;
+		border: 1px solid #17A8E2;
+		border-radius: 21px;
 	}
-	.section3 image{
-	    width:30%;
-	    height:68rpx;
-	    line-height:60rpx;
-	    padding-top:13rpx;
-	    margin-left:-9rpx;
-	
-	    
+
+	.section3 image {
+		width: 30%;
+		height: 68rpx;
+		line-height: 60rpx;
+		padding-top: 13rpx;
+		margin-left: -9rpx;
+
+
 	}
-	.section3 input{
-	    width:55%;
-	    height:80rpx;
-	    margin:3px 20px;
-	    float:left;
+
+	.section3 input {
+		width: 55%;
+		height: 80rpx;
+		margin: 3px 20px;
+		float: left;
 	}
-	
-	.check_btn2{
-	    margin:50px auto;
-	    width:80%;
-	    height:40px;
-	    background-color:#07C160;
-	    line-height:40px;
-	    color:#FFF;
-	    border:1px solid #fff;
+
+	.check_btn2 {
+		margin: 50px auto;
+		width: 80%;
+		height: 40px;
+		background-color: #07C160;
+		line-height: 40px;
+		color: #FFF;
+		border: 1px solid #fff;
 	}
-	
+
 	.userinfo-avatar {
-	  display:block;
-	width:126rpx;
-	height:126rpx;
-	border-radius:50%;
-	border:1px solid #fff;
-	box-shadow:3px 3px 10px rgba(0,0,0,0.2);
-	overflow:hidden;
-	
+		display: block;
+		width: 126rpx;
+		height: 126rpx;
+		border-radius: 50%;
+		border: 1px solid #fff;
+		box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+		overflow: hidden;
+
 	}
-	.userinfo-userNickName{
-	  color: #666;
-	  text-align:center;
+
+	.userinfo-userNickName {
+		color: #666;
+		text-align: center;
 	}
-	
-	.shouquan-con{
-	  display:flex;
-	  justify-content:space-between;
-	  align-items:center;
-	  padding:0 17%;
-	  margin-top: 100rpx;
+
+	.shouquan-con {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0 17%;
+		margin-top: 100rpx;
 	}
-	
-	.open-con{
-	  display:flex;
-	  flex-direction:column;
-	  align-content:center;
+
+	.open-con {
+		display: flex;
+		flex-direction: column;
+		align-content: center;
 	}
-	.shouquan-a{
-	  width: 60rpx;
+
+	.shouquan-a {
+		width: 60rpx;
 	}
-	
-	.shouquan-b{
-	  width:126rpx;
-	height:126rpx;
-	
+
+	.shouquan-b {
+		width: 126rpx;
+		height: 126rpx;
+
 	}
-	
 </style>

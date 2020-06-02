@@ -667,7 +667,7 @@ module.exports = {
 	   * page_type normal/switchTab
 	   * 获取用户的头像和昵称
 	   */
-	  goto_get_userinfo: function (last_url, page_type){
+	  goto_get_userinfo: function (last_url){
 	    var userInfo = this.get_user_info();
 	    if (!userInfo){
 	      return false;
@@ -678,7 +678,6 @@ module.exports = {
 	    if (!is_get_userinfo) {
 	      if (last_url) {
 	        uni.setStorageSync('get_userinfo_last_url', last_url);
-	        uni.setStorageSync('get_userinfo_page_type', page_type);
 	      }
 	      
 	      uni.navigateTo({

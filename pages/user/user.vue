@@ -365,7 +365,7 @@
 			goto_user_function(url){
 				
 				
-				var last_url = 'switchTab /pages/myecard/myecard';
+				var last_url = 'switchTab /pages/user/user';
 				
 				var userInfo = this.abotapi.get_user_info();
 				if (!userInfo) {
@@ -374,10 +374,10 @@
 				  return;
 				}
 				
-				/* //如果需要用户授权头像和昵称
+				//如果需要用户授权头像和昵称
 				if(this.abotapi.goto_get_userinfo(last_url)){
 				  return;
-				} */
+				}
 				
 				
 				var that = this;
