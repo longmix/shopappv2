@@ -371,7 +371,11 @@
         ,{
             "path" : "pages/user/nickName/nickNameEdit",
             "style" : {}
-        }
+        },
+		{
+		    "path" : "cms/discover/discover",
+		    "style" : {}
+		}
 		// ,{
 		//     "path" : "cms/discover/discover",
 		//     "style" : {}
