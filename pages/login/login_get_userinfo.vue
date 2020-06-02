@@ -1,7 +1,7 @@
 <template>
 	
 	<!--pages/login/login.wxml-->
-	<view class="page" style='width:100%;overflow-x:hidden;background:#fff;'> <!-- :style="{height:windowHeight+'rpx';} -->
+	<view class="page" style='width:100%;overflow-x:hidden;background:#fff;' :style="{height:windowHeight+'px'}"> 
 	<view class='box'>
 	 <image :src="shop_list.icon" mode="widthFix"></image>
 	</view>
@@ -35,7 +35,8 @@ export default{
 			  js_code: '',
 			  tokenstr :'',
 			  show_mobile_login:0,
-			  shop_list:''
+			  shop_list:'',
+			  windowHeight:''
 		  };
     },
 	
@@ -60,7 +61,6 @@ export default{
 	      success(res) {
 	       
 	          that.windowHeight = res.windowHeight;
-	      
 	
 	      }
 	    })
@@ -75,151 +75,108 @@ export default{
 	    }
 	
 	  },
-	
-	
-	
-	
-	  btn_one_click_get_userinfo: function (e) {
-	    var that = this;
-	    console.log(e.detail.errMsg)
-	    console.log(e.detail.iv)
-	    console.log(e.detail.encryptedData)
-	    
-	    console.log('one_click_get_userinfo', e);
-	    console.log('wx.login <<<==== btn_one_click_login');
-	
-	    uni.login({
-	      success: function (res) {
-	        console.log("btn_one_click_login 获取到的jscode是:" + res.code);
-	
-	
-	        this.abotapi.abotRequest({
-	          url: app.globalData.http_server + '?g=Yanyubao&m=ShopAppWxa&a=wxa_get_userinfo',
-	          header: {
-	            "Content-Type": "application/x-www-form-urlencoded"
-	          },
-	          method: "POST",
-	          dataType: 'json',
-	          data: {
-	            js_code: res.code,
-	            xiaochengxu_appid: app.globalData.xiaochengxu_appid,
-	            iv: e.detail.iv,
-	            encryptedData: e.detail.encryptedData,
-	            sellerid: app.get_sellerid(),
-	            parentid: app.get_current_parentid(),
-	          },
-	          success: function (res) {
-	            console.log('一键获取头像和昵称成功' + res);
-	
-	            if (res.data && (res.data.code == 1)) {
-	
-	              app.globalData.userInfo = app.get_user_info();
-	
-	              console.log('已经保存的用户信息：', app.globalData.userInfo);
-	
-	              app.globalData.userInfo.is_get_userinfo = 1;
-	              app.set_user_info(app.globalData.userInfo); 
-	
-	
-	            uni.showToast({
-	                title: '授权成功',
-	                icon: 'success',
-	                duration: 2000
-	              })
-	
-	              var last_url = uni.getStorageSync('get_userinfo_last_url');
-	
-	              console.log('last_url-----', last_url)
-	              var page_type = uni.getStorageSync('get_userinfo_page_type');
-	
-	
-	              uni.removeStorageSync('get_userinfo_last_url');
-	              uni.removeStorageSync('get_userinfo_page_type');
-	
-	              //如果打开这个页面时候指定了返回的URL
-	              if(that.retpage){
-	                last_url = that.retpage
-	                console.log('last_url===================1111', last_url)
-	                app.call_h5browser_or_other_goto_url(last_url);
-	                return;
-	
-	              }
-	
-	
-	              if (app.globalData.is_ziliaoku_app == 1) {
-	                wx.reLaunch({
-	                  url: "/cms/index/index"
-	                });
-	
-	                return;
-	              }
-	
-	
-	              if (that.fromPage == 'share-detail') {
-	                uni.navigateBack({
-	                  delta: 1
-	                })
-	              }
-	
-	              if (last_url){
-	                console.log('last_url===================2222', last_url);
-	                console.log('last_url===================3333', page_type);
-	
-	                if (page_type == 'switchTab'){
-	                  console.log('last_url===================aaaaa');
-	
-	                  uni.switchTab({
-	                    url: last_url
-	                  })
-	                }
-	                else{
-	                  console.log('last_url===================bbbbb');
-	
-	                 this.abotapi.abcall_h5browser_or_other_goto_url(last_url);
-	                }
-	                
-	                
-	                return;
-	
-	              }
-	
-	              console.log('last_url===================ccccc');
-	              
-	
-	              uni.switchTab({
-	                url: '/pages/user/user'
-	              })
-	
-	              
-	            }
-	            else {
-	              //一键登录返回错误代码
-	              uni.showModal({
-	                title: '提示',
-	                content: res.data.msg,
-	                showCancel:false,
-	                success(res) {
-	                  if (res.confirm) {
-	                    console.log('用户点击确定')
-	                  }
-	                }
-	              })
-	
-	            }
-	          }
-	        });
-	
-	      },
-	      fail: function (login_res) {
-	        console.log('一键获取用户头像和昵称失败。');
-	      }
-	
-	    });
-	  },
-	
-	
-	
-	
+	  methods:{
+		  btn_one_click_get_userinfo: function (e) {
+		    var that = this;
+		    console.log(e.detail.errMsg)
+		    console.log(e.detail.iv)
+		    console.log(e.detail.encryptedData)
+		    
+		    console.log('one_click_get_userinfo', e);
+		    console.log('wx.login <<<==== btn_one_click_login');
+		  	
+		    uni.login({
+		      success: (res)=>{
+		        console.log("btn_one_click_login 获取到的jscode是:" + res.code);
+		  	
+		  		var that = this;
+		        that.abotapi.abotRequest({
+		          url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=wxa_get_userinfo',
+		          header: {
+		            "Content-Type": "application/x-www-form-urlencoded"
+		          },
+		          method: "POST",
+		          dataType: 'json',
+		          data: {
+		            js_code: res.code,
+		            xiaochengxu_appid: that.abotapi.globalData.xiaochengxu_appid,
+		            iv: e.detail.iv,
+		            encryptedData: e.detail.encryptedData,
+		            sellerid: that.abotapi.get_sellerid(),
+		            parentid: that.abotapi.get_current_parentid(),
+		          },
+		          success: function (res) {
+		            console.log('一键获取头像和昵称成功' + res);
+		  	
+		            if (res.data && (res.data.code == 1)) {
+		  	
+		              that.abotapi.globalData.userInfo = that.abotapi.get_user_info();
+		  	
+		              console.log('已经保存的用户信息：', that.abotapi.globalData.userInfo);
+		  	
+		              that.abotapi.globalData.userInfo.is_get_userinfo = 1;
+		              that.abotapi.set_user_info(that.abotapi.globalData.userInfo); 
+		  	
+		  	
+		            uni.showToast({
+		                title: '授权成功',
+		                icon: 'success',
+		                duration: 2000
+		              })
+		  	
+		              var last_url = uni.getStorageSync('get_userinfo_last_url');
+		  	
+		              console.log('last_url-----', last_url)
+		              var page_type = uni.getStorageSync('get_userinfo_page_type');
+		  	
+		  	
+		              uni.removeStorageSync('get_userinfo_last_url');
+		              uni.removeStorageSync('get_userinfo_page_type');
+		  	
+		              //如果打开这个页面时候指定了返回的URL
+		              if(that.retpage){
+		                last_url = that.retpage
+		                console.log('last_url===================1111', last_url)
+		                that.abotapi.call_h5browser_or_other_goto_url(last_url);
+		                return;
+		  	
+		              }
+		  	
+		  	
+		              
+		                uni.reLaunch({
+		                  url: "/pages/index/index"
+		                });
+		  	
+		                return;
+		              
+		              
+		            }
+		            else {
+		              //一键登录返回错误代码
+		              uni.showModal({
+		                title: '提示',
+		                content: res.data.msg,
+		                showCancel:false,
+		                success(res) {
+		                  if (res.confirm) {
+		                    console.log('用户点击确定')
+		                  }
+		                }
+		              })
+		  	
+		            }
+		          }
+		        });
+		  	
+		      },
+		      fail: function (login_res) {
+		        console.log('一键获取用户头像和昵称失败。');
+		      }
+		  	
+		    });
+		  },
+	  }
 	
 	}	
 	

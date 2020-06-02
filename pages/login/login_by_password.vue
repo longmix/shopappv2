@@ -1,9 +1,13 @@
 <template>
-	<view class="loginBg">
+	<view class="loginBg" :style="{height:screenHeight + 'px'}" style="padding-bottom: 70upx;">
 		<div class="h30"></div>
 		<div class="flex-center ">
 			<div @click="goHome()" class="flex-center">
-				<image src="../../static/img/log.png"  style="width: 150upx;"  mode="widthFix"  class="wh-60"></image>
+				<image v-if="wxa_login_hide_shop_logo != 1" src="../../static/img/log.png"  style="width: 150upx;"  mode="widthFix"  class="wh-60"></image>
+				<view v-if="wxa_login_show_shop_name && wxa_login_show_shop_name==1" class="">{{shop_info.name}}</view>
+				<view v-if="wxa_login_show_memo_text && wxa_login_show_memo_text==1" style='text-align:left;margin:50rpx 30rpx;color:#666; font-size:32rpx;display:block;' >
+					<text>{{memo_text_content}}</text>
+				</view>
 			</div>
 		</div>
 		<form class="loginBox"  id="login-form" @submit="formSubmit" :report-submit="true">
@@ -78,11 +82,23 @@
 				password: '',
 				account: '',
 				wxa_shop_nav_bg_color: '',
-				wxa_shop_nav_font_color: ''
+				wxa_shop_nav_font_color: '',
+				shop_info: '',
+				screenHeight:'',
+				wxa_login_hide_shop_logo:'',
+				wxa_login_show_shop_name:'',
+				wxa_login_show_memo_text:'',
+				memo_text_content:'',
 			}
 		},
 		onLoad:function(){
-		
+			var that = this;
+			uni.getSystemInfo({
+			    success: function (res) {
+					console.log('getSystemInfo==',res)
+					that.screenHeight = res.screenHeight;			
+			    }
+			});
 			var userInfo = this.abotapi.get_user_info();
 			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 			if(userInfo && userInfo.userid){
@@ -92,7 +108,7 @@
 			}
 			this.click_check();
 			this.abotapi.set_option_list_str(this, this.callback_set_option_list_str);
-			
+			this.abotapi.get_shop_info_from_server(this.callback_func_for_shop_info);
 		},
 		methods:{
 			callback_set_option_list_str:function(that,cb_params){
@@ -109,6 +125,30 @@
 					that.wxa_shop_nav_font_color = cb_params.wxa_shop_nav_font_color
 				}
 				
+				if(cb_params.wxa_login_hide_shop_logo){
+					that.wxa_login_hide_shop_logo = cb_params.wxa_login_hide_shop_logo
+				}
+				
+				if(cb_params.wxa_login_show_shop_name){
+					that.wxa_login_show_shop_name = cb_params.wxa_login_show_shop_name
+				}
+				
+				if(cb_params.wxa_login_show_memo_text){
+					that.wxa_login_show_memo_text = cb_params.wxa_login_show_memo_text
+				}
+				
+				if(cb_params.wxa_login_memo_text){
+					that.memo_text_content = cb_params.wxa_login_memo_text
+				}	
+				
+			},
+			
+			callback_func_for_shop_info:function(shop_info){
+							console.log('shop_info',shop_info);
+				if(!shop_info){
+					return;
+				}
+				this.shop_info = shop_info;
 			},
 			
 			accountInput:function(e){
@@ -349,7 +389,7 @@
 	margin-top: 60upx;
 }
 .btn-row-submit{
-	width: 100%;
+	width: 84%;
 }
 	
 .send_btn{
@@ -404,6 +444,8 @@
 	border-radius: 44upx;
 	padding: 22upx 22upx;
 	align-items: center;
+	width: 80%;
+	margin-left: 7%;
 }
 
 .flexIcon-icon {
@@ -421,14 +463,13 @@
 }
  
 .loginBox {
-	position: absolute;
+	/* position: absolute;
 	top: 50%;
 	left: 22upx;
 	right: 22upx;
 	margin-top: -330upx;
 	padding: 33upx 22upx;
-
-	border-radius: 44upx;
+	border-radius: 44upx; */
 }
 
 .loginBg {
@@ -441,6 +482,12 @@
 	right: 0upx;
 }
 
-
+.cl-black{
+	margin-top: 15px;
+	text-align: right;
+	font-size: 17px;
+	width: 86%;
+	margin-left: 7%;
+}
 
 </style>

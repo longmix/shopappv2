@@ -663,6 +663,33 @@ module.exports = {
 		return;
 	},
 	
+	 /**
+	   * page_type normal/switchTab
+	   * 获取用户的头像和昵称
+	   */
+	  goto_get_userinfo: function (last_url, page_type){
+	    var userInfo = this.get_user_info();
+	    if (!userInfo){
+	      return false;
+	    }
+	
+	    var is_get_userinfo = userInfo.is_get_userinfo;
+	    console.log('is_get_userinfo', is_get_userinfo)
+	    if (!is_get_userinfo) {
+	      if (last_url) {
+	        uni.setStorageSync('get_userinfo_last_url', last_url);
+	        uni.setStorageSync('get_userinfo_page_type', page_type);
+	      }
+	      
+	      uni.navigateTo({
+	        url: '/pages/login/login_get_userinfo',
+	      });
+	
+	      return true;
+	    }
+	
+	    return false;
+	  },
 	
 	getUserInfo: function (cb) {
 	    var that = this
