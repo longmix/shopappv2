@@ -25,6 +25,18 @@
 				// }
 			}
 		},
+		{	//商品超级分类
+			"path": "pages/category/category2",
+			"style": {
+				"navigationBarTitleText":"超级分类",
+				"enablePullDownRefresh": true
+				// "app-plus": {
+				// 	"titleNView": false ,//禁用原生导航栏
+				// 	"bounce":"none"
+					
+				// }
+			}
+		},
 		{	//购物车
 			"path": "pages/cart/cart",
 			"style": {
