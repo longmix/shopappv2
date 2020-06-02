@@ -43,6 +43,11 @@
 					<view class="right"><view class="tis"></view><view class="icon xiangyou"></view></view>
 				</navigator>
 				
+				<navigator url='/pages/user/keep/keep' class="row">
+					<view class="title">我的收藏</view>
+					<view class="right"><view class="tis"></view><view class="icon xiangyou"></view></view>
+				</navigator>
+				
 			</view>
 			<view class="list">
 				<view class="row">

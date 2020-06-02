@@ -401,8 +401,8 @@ export default {
 		var options_str = '';
 		
 		//如果当前访问者没有登录或者注册，那么分析转发过来的链接是否带有推荐者信息
+		var userInfo = that.abotapi.get_user_info();
 		if(option.userid){
-			var userInfo = that.abotapi.get_user_info();
 	
 			if ((!userInfo) || (!userInfo.userid)) {
 				that.abotapi.set_current_parentid(options.userid);
@@ -521,9 +521,41 @@ export default {
 					duration: 2000
 				});
 		    },
-			
-			
+
 		});
+
+		if (userInfo && userInfo.userid){
+			uni.request({
+			  url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_favorite',
+			  method: 'post',
+			  data: {
+				productid: this.productid,
+				userid: userInfo.userid,
+				checkstr: userInfo.checkstr,
+				sellerid: this.abotapi.get_sellerid(),
+			  },
+			  header: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			  },
+			  success: (res) => {
+				//--init data 
+				var code = res.data.code;
+
+				if (code == 1) {			
+					this.isKeep = true;			 
+				}else{
+					this.isKeep = false;
+				}
+				
+			  },
+			  error: function (e) {
+				uni.showToast({
+				  title: '网络异常！',
+				  duration: 2000,
+				});
+			  },
+			});
+		  }
 		
 		this.loadCataXiangqing();
 		
@@ -654,15 +686,17 @@ export default {
 		},
 		
 		callback_set_option_list_str:function(that,cb_params){
-			this.abotapi.getColor();
+			that.abotapi.getColor();
+			
 			if(!cb_params){
 				return;
 			}
 			if (cb_params.wxa_show_kucun_xiaoliang) {
 			  
-			    this.wxa_show_kucun_xiaoliang = cb_params.wxa_show_kucun_xiaoliang;
+			    that.wxa_show_kucun_xiaoliang = cb_params.wxa_show_kucun_xiaoliang;
 			  
 			}
+	
 		},
 		
 		callback_func_for_shop_info:function(shop_info){
@@ -731,7 +765,50 @@ export default {
 		},
 		//收藏
 		keep(){
-			this.isKeep = this.isKeep?false:true;
+			
+			var userInfo = this.abotapi.get_user_info();
+			if ((!userInfo) || (!userInfo.userid)) {
+		
+			  var last_url = null;
+			  var page_type = 'normal';
+		
+			  if (that.productid) {
+				last_url = '/pages/product/detail?productid=' + that.productid;
+			  }
+			  this.abotapi.goto_user_login(last_url);	
+			  return;
+			}
+			
+			uni.request({
+			  url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=favorite', 
+			  method:'post',
+			  data: {
+				userid: userInfo.userid,
+				checkstr: userInfo.checkstr,
+				sellerid: this.abotapi.get_sellerid(),
+				productid: this.productid,
+			  },
+			  header: {
+				'Content-Type':  'application/x-www-form-urlencoded'
+			  },
+			  success: (res) => {
+				console.log('favorite===',res)
+				var info = res.data.msg;
+				if (info == "收藏成功") {			
+					this.isKeep = true;			 
+				}
+				else if (info == "取消成功") {
+					this.isKeep = false;
+				}
+				uni.showToast({
+				  title: info,
+				  icon: 'success',
+				  duration: 5000
+				})
+			  },
+			});
+
+			
 		},
 		
 		//立即购买

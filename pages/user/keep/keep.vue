@@ -1,33 +1,33 @@
 <template>
 	<view>
 		<view class="tabr" :style="{top:headerTop}">
-			<view :class="{on:typeClass=='goods'}" @tap="switchType('goods')">商品({{goodsList.length}})</view>
+			<view :class="{on:typeClass=='goods'}" @tap="switchType('goods')">商品({{collection_products.length}})</view>
 			<view :class="{on:typeClass=='shop'}"  @tap="switchType('shop')">店铺({{shopList.length}})</view>
 			<view class="border" :class="typeClass"></view>
 		</view>
 		<view class="place" ></view>
 		<view class="list">
-			<!-- 优惠券列表 -->
+			<!-- 商品列表 -->
 			<view class="sub-list goods" :class="subState">
-				<view class="tis" v-if="goodsList.length==0">没有数据~</view>
-				<view class="row" v-for="(row,index) in goodsList" :key="index" >
+				<view class="tis" v-if="collection_products.length==0">没有数据~</view>
+				<view class="row" v-for="(row,index) in collection_products" :key="index" >
 					<!-- 删除按钮 -->
-					<view class="menu" @tap.stop="deleteCoupon(row.id,goodsList)">
+					<view class="menu" @tap.stop="deleteCollectionProducts(row.favoriteid,collection_products)">
 						<view class="icon shanchu"></view>
 					</view>
 					<!-- content -->
 					<view class="carrier" :class="[typeClass=='goods'?theIndex==index?'open':oldIndex==index?'close':'':'']" @touchstart="touchStart(index,$event)" @touchmove="touchMove(index,$event)" @touchend="touchEnd(index,$event)">
 						<view class="goods-info" @tap="toGoods(row)">
 							<view class="img">
-								<image :src="row.img"></image>
+								<image :src="row.productInfo.picture"></image>
 							</view>
 							<view class="info">
-								<view class="title">{{row.name}}</view>
+								<view class="title">{{row.productInfo.name}}</view>
 								<view class="price-number">
 									<view class="keep-num">
-										905人收藏
+										<!-- 905人收藏 -->
 									</view>
-									<view class="price">￥{{row.price}}</view>
+									<view class="price">￥{{row.productInfo.price}}</view>
 									
 								</view>
 							</view>
@@ -35,11 +35,12 @@
 					</view>
 				</view>
 			</view>
+			<!-- 店铺列表 -->
 			<view class="sub-list shop" :class="subState">
 				<view class="tis" v-if="shopList.length==0">没有数据~</view>
 				<view class="row" v-for="(row,index) in shopList" :key="index" >
 					<!-- 删除按钮 -->
-					<view class="menu" @tap.stop="deleteCoupon(row.id,shopList)">
+					<view class="menu" @tap.stop="deleteFavorite(row.xianmai_shangid,shopList)">
 						<view class="icon shanchu"></view>
 					</view>
 					<!-- content -->
@@ -65,17 +66,8 @@
 	export default {
 		data() {
 			return {
-				goodsList:[
-					{id:1,img:'/static/img/goods/p1.jpg',name:'商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题',spec:'规格:S码',price:127.5,number:1,selected:false},
-					{id:2,img:'/static/img/goods/p1.jpg',name:'商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题',spec:'规格:S码',price:127.5,number:1,selected:false},
-					{id:3,img:'/static/img/goods/p1.jpg',name:'商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题',spec:'规格:S码',price:127.5,number:1,selected:false},
-				],
-				shopList:[
-					{id:1,name:"冰鲜专卖店",img:"/static/img/shop/1.jpg"},
-					{id:2,name:"果蔬天下",img:"/static/img/shop/2.jpg"},
-					{id:3,name:"办公耗材用品店",img:"/static/img/shop/3.jpg"},
-					{id:4,name:"天天看好书",img:"/static/img/shop/4.jpg"}
-				],
+				shopList:[],
+				collection_products:[],
 				headerTop:0,
 				//控制滑动效果
 				typeClass:'goods',
@@ -106,8 +98,86 @@
 					}
 				},1);
 			// #endif
+			
+			this.abotapi.set_option_list_str(this, this.callback_func_set_option_list_str);
+			
+			
+			
 		},
 		methods: {
+			
+			callback_func_set_option_list_str:function(that,cb_params){
+				that.abotapi.getColor();
+				if(!cb_params){
+					return;
+				}				
+				
+				this.getCollectionProducts();
+				this.getMyFavorite();		
+				
+			},
+			// 获取商品收藏
+			getCollectionProducts(){
+				var userInfo = this.abotapi.get_user_info();
+				this.abotapi.abotRequest({
+					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=collection_products',
+					method: 'post',
+					data: {
+						userid : userInfo.userid,
+						sellerid : this.abotapi.globalData.default_sellerid,
+						checkstr : userInfo.checkstr,	
+					},
+					header: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					},
+					success: (res) => {					
+						if(res.data.code == 1){
+							
+							this.collection_products = res.data.data;
+						
+						}
+					},
+					fail: function (e) {
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+					},
+				});
+			},
+			
+			// 获取店铺收藏
+			getMyFavorite(){
+				var userInfo = this.abotapi.get_user_info();
+				this.abotapi.abotRequest({
+					url: this.abotapi.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/my_favorite',
+					method: 'post',
+					data: {
+						userid : userInfo.userid,
+						sellerid : this.abotapi.globalData.default_sellerid,
+						action : 'list',
+						checkstr : userInfo.checkstr,	
+					},
+					header: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					},
+					success: (res) => {
+						
+						if(res.data.code == 1){
+							
+							this.shopList = res.data.data
+						}
+					},
+					fail: function (e) {
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+					},
+				});
+			},
+			
+			
 			switchType(type){
 				if(this.typeClass==type){
 					return ;
@@ -174,17 +244,38 @@
 				this.isStop = false;
 			},
 			
-			//删除商品
-			deleteCoupon(id,List){
-				let len = List.length;
-				for(let i=0;i<len;i++){
-					if(id==List[i].id){
-						List.splice(i, 1);
-						break;
-					}
-				}
-				this.oldIndex = null;
-				this.theIndex = null;
+			//删除商品收藏
+			deleteCollectionProducts(favoriteid,List){
+				var userInfo = this.abotapi.get_user_info();
+				this.abotapi.abotRequest({
+					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=del_collect_product',
+					method: 'post',
+					data: {
+						userid : userInfo.userid,
+						sellerid : this.abotapi.globalData.default_sellerid,
+						checkstr : userInfo.checkstr,	
+						favoriteid: favoriteid
+					},
+					header: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					},
+					success: (res) => {	
+						
+						console.log('deleteCollectionProducts',res)
+						
+						// if(res.data.code == 1){
+							
+						// 	this.collection_products = res.data.data;
+						
+						// }
+					},
+					fail: function (e) {
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+					},
+				});
 			},
 			
 			discard() {

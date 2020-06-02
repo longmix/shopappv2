@@ -1907,8 +1907,8 @@ page{position: relative;background-color: #fff;}
 	  flex-direction:row;
 	  justify-content:center;
 	  border-radius:80upx;
-	  width:130upx;
-	  height:130upx;
+	  width:110upx;
+	  height:110upx;
 	  border:0px solid #eee;
 	  font-size:20upx;
 	  /*box-shadow:0px 4upx 8upx rgba(0,0,0,0.35);*/
@@ -1917,6 +1917,12 @@ page{position: relative;background-color: #fff;}
 	  margin-bottom:20upx;
 	  /*background:#44b549;*/
 	  align-items:center;
-	
 	}
+.u-go-home2 image {
+	height: 80upx;
+	width: 80upx;
+	position: absolute;
+	left: 16upx;
+}
+
 </style>
