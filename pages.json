@@ -17,7 +17,8 @@
 		{	//商品分类
 			"path": "pages/category/category",
 			"style": {
-				"navigationBarTitleText":"分类列表"
+				"navigationBarTitleText":"分类列表",
+				"enablePullDownRefresh": true
 				// "app-plus": {
 				// 	"titleNView": false ,//禁用原生导航栏
 				// 	"bounce":"none"

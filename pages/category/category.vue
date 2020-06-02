@@ -79,51 +79,9 @@
 		},
 		onLoad() {
 			this.abotapi.set_option_list_str(this, this.callback_function);
-			
-			var that = this;
-			uni.request({
-				url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_cata_level2',
-				method:'post',
-				data: {
-				 // 'cataid': 'fXiNUPaWV',
-				  sellerid: this.abotapi.globalData.default_sellerid
-				},
-				header: {
-					'Content-Type':  'application/x-www-form-urlencoded'
-				},
-				success: function (res) {
-					if(res.data.code == 1) { 
-						// var that = this;
-						that.categoryList = res.data.data;
-						console.log("categoryList",that.categoryList);
-						// var typeTree = that.categoryList[0].sub_cata;
-						var Goods_cataid = that.categoryList[0].cataid;
-                        that.currType = Goods_cataid;
-						console.log("that.currType",that.currType);
-						
-						that.get_cataList();
-						
-						
-						
-					} else {
-						uni.showToast({
-							title:res.data.err,
-							duration:2000,
-						});
-					}    
-				},
-				error:function(e){
-					uni.showToast({
-						title:'网络异常！',
-						duration:2000,
-					});
-				},
-	
-			});
-			
+
 			// that.tapType();
-			
-			
+
 			
 		},
 		methods: {
@@ -132,8 +90,47 @@
 				var that = this;
 				//====1、更新界面的颜色
 				that.abotapi.getColor();
+				uni.request({
+					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_cata_level2',
+					method:'post',
+					data: {
+					 // 'cataid': 'fXiNUPaWV',
+					  sellerid: this.abotapi.globalData.default_sellerid
+					},
+					header: {
+						'Content-Type':  'application/x-www-form-urlencoded'
+					},
+					success: function (res) {
+						if(res.data.code == 1) { 
+							// var that = this;
+							that.categoryList = res.data.data;
+							that.showCategoryIndex = 0;
+							console.log("categoryList",that.categoryList);
+							// var typeTree = that.categoryList[0].sub_cata;
+							var Goods_cataid = that.categoryList[0].cataid;
+				            that.currType = Goods_cataid;
+							console.log("that.currType",that.currType);
+							
+							that.get_cataList();
+							
+							
+							
+						} else {
+							uni.showToast({
+								title:res.data.err,
+								duration:2000,
+							});
+						}    
+					},
+					error:function(e){
+						uni.showToast({
+							title:'网络异常！',
+							duration:2000,
+						});
+					},
+					
+				});
 				
-			
 			},
 			
 			//消息列表
@@ -253,7 +250,15 @@
 			// 		});
 			// 	}
 			// }
-		}
+		},
+		onPullDownRefresh: function () {
+		  console.log('下拉刷新==============')
+		  
+		  this.abotapi.set_option_list_str(this, this.callback_function);
+		  // app.set_option_list_str(this, this.getShopOptionAndRefresh);
+		  //停止当前页面的下拉刷新
+		  uni.stopPullDownRefresh();
+		},
 	}
 </script>
 <style lang="scss">

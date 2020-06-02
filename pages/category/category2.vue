@@ -55,7 +55,7 @@
 								</view>
 							</view>
 						  
-							<view style="float:right;margin-top: 8rpx;"><image style="padding:0 10px;width:36rpx;height:36rpx;" @tap.prevent="addCart" src="../../images/car.png" :data-productid="item.productid"></image></view>
+							<view style="float:right;margin-top: 8rpx;"><image style="padding:0 10px;width:36rpx;height:36rpx;" @tap.prevent="addCart" src="../../img/car.png" :data-productid="item.productid"></image></view>
 						</navigator>
 					  
 						</view>
