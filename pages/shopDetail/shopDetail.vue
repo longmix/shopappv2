@@ -177,10 +177,16 @@
 		<view class="ps-btn">
 
 
-			<view @tap="share_shang_detail">
+			<view>
 				<!-- <image src="../../static/img/addricon.png"></image> -->
-				<view>分享</view>
+				<!-- #ifdef MP-WEIXIN || APP-PLUS --> 
+				<button style="padding-left: 0;padding-right: 0;" open-type="share">分享</button>
+				<!-- #endif -->
+				<!-- #ifdef H5 --> 
+				<button style="padding-left: 0;padding-right: 0;" @click="share_shang_detail">分享</button>
+				<!-- #endif -->
 			</view>
+			
 			<view @tap="call_seller" style="margin-bottom: 20rpx;">
 				<!-- <image src="../../static/img/addricon.png"></image> -->
 				<view>电话</view>
@@ -194,7 +200,12 @@
 </template>
 
 <script>
+	import discoverList from '../../components/discover-list/discover-list.vue';
+	
 	export default {
+		components:{
+			discoverList
+		},
 		data() {
 			return {
 				ak: "", //填写申请到的ak，从shop_option中获取 baidu_map_ak_wxa这个属性
@@ -255,6 +266,9 @@
 				wxa_kefu_form_url: '',
 				wxa_kefu_bg_color: '',
 				user_console_setting: '',
+				
+				//商家评论相关
+				current_faquanList: [],
 			};
 		},
 		
@@ -287,6 +301,7 @@
 
 		},
 		onShow() {
+			this.__getFaquanList();
 
 		},
 		onPageScroll(e) {
@@ -306,6 +321,8 @@
 		
 		
 			this.abotapi.get_xianmaishang_setting_list(this.callback_func_for_xianmaishang_setting_list);
+			
+			this.__getFaquanList();
 		
 		
 			setTimeout(function() {
@@ -320,12 +337,13 @@
 		onShareAppMessage: function() {
 			
 			var that = this;
+			
 			return {
-				title: '商家详情',
-				path: 'pages/shopDetail/shopDetail?shangid=' + that.shangid,
-				imageUrl: that.current_shang_detail.pic,
+				title: that.current_shang_detail.name,
+				path: 'pages/shopDetail/shopDetail?shangid='+that.current_xianmai_shangid,
+				imageUrl:'',
 				success: function(res) {
-					// 分享成功
+				// 分享成功
 					uni.showToast({
 						title: '转发成功',
 						icon: 'success',
@@ -341,23 +359,7 @@
 					})
 				}
 			}
-
-
-			uni.share({
-				provider: "weixin",
-				scene: "WXSceneSession",
-				type: 0,
-				href: "http://uniapp.dcloud.io/",
-				title: "uni-app分享",
-				summary: "我正在使用HBuilderX开发uni-app，赶紧跟我一起来体验！",
-				imageUrl: "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/uni@2x.png",
-				success: function(res) {
-					console.log("success:" + JSON.stringify(res));
-				},
-				fail: function(err) {
-					console.log("fail:" + JSON.stringify(err));
-				}
-			});
+			
 
 		},
 
@@ -365,6 +367,16 @@
 
 
 		methods: {
+			//h5点击分享触发
+			share_shang_detail:function(){
+				console.log('==================>>>h5');
+				uni.showModal({
+					title:'请点击浏览器菜单中的分享按钮',
+					showCancel:false,
+				})
+				
+				return;
+			},
 
 
 			callback_func_for_xianmaishang_setting_list: function(user_console_setting) {
@@ -425,11 +437,7 @@
 
 				this.abotapi.abotRequest({
 					url: that.abotapi.globalData.yanyubao_server_url + '/Yanyubao/ShopApp/get_user_data_option',
-					method: 'post',
 					data: post_data,
-					header: {
-						'Content-Type': 'application/x-www-form-urlencoded'
-					},
 					success: function(res) {
 						console.log('that.index_list', res);
 
@@ -530,6 +538,15 @@
 					method: "POST",
 					success: function(res) {
 						console.log('xiangqing', res);
+						
+						if(res.data.code == 0){
+							uni.showToast({
+								title:res.data.msg,
+							})
+							return;
+						}
+						
+						
 						var data = res.data.data;
 						
 						if(!data){
@@ -607,6 +624,64 @@
 					url: '/pages/msg/chat/chat?type=0&userid=' + that.current_shang_detail.userid + '&name=' + that.current_shang_detail.name
 				})
 
+			},
+			
+			//获取发圈
+			__getFaquanList:function(){
+							  
+			  var that = this;
+						
+			  var current_faquanid = this.current_faquanid;
+			  
+			  var post_url = this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/get_faquan_list';
+						
+			  if(this.is_my_discover){
+				post_url = this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/get_faquan_list_by_userid';
+			  }
+			  else if(this.is_my_discover_collection){
+				post_url = this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/get_faquan_collect_list';
+			  }
+							
+						
+						
+			  var post_data = {
+				appid: this.abotapi.globalData.xiaochengxu_appid,
+				sellerid: this.abotapi.get_sellerid(),
+				extend_id:this.current_xianmai_shangid,
+			  };
+							
+			  
+						
+			  
+							
+			  this.abotapi.abotRequest({
+				url: post_url,
+				method: 'post',
+				data: post_data,
+				header: {
+				  'Content-Type': 'application/x-www-form-urlencoded'
+				},
+				success: function (res) {
+				  var faquanList = res.data.data;
+						
+				  console.log('__getFaquanList===>>>>faquanList====>>>', faquanList)
+						
+				  if (res.data.code == 1) {
+			 
+					  that.faquanList = that.faquanList.concat(faquanList);
+					  that.page = that.page + 1;
+					
+				  }
+				},
+				fail: function (e) {
+				  uni.showToast({
+					title: '网络异常！',
+					duration: 2000
+				  });
+				},
+			  })
+						
+						
 			},
 		}
 	};

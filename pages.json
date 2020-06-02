@@ -391,6 +391,11 @@
 		    "style" : {}
 		}
 		,{
+			"path" : "cms/publish/publish",
+		    "style" : {}
+		}
+		,
+		{
 			"path" : "pages/login/login_get_userinfo",
 		    "style" : {}
 		}

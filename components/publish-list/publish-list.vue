@@ -68,7 +68,7 @@
 
 <script>
 	export default {
-		name: 'shop-list',	
+		name: 'publish-list',	
 		props: {
 			index_list:'',
 		},
