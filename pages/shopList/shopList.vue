@@ -247,10 +247,15 @@
 			
 			uni.removeStorageSync('locationData');
 			uni.removeStorageSync('shop_location_list');
+			
+			that.abotapi.get_xianmaishang_setting_list_remove();
+			
 			that.xianmaishang_list = [];
 			that.page = 1;
 			that.sx_shang_list = [];
 			locationapi.get_location(that, that.cx_paixu_shang_list);
+			
+			
 			
 			
 			setTimeout(function() {

@@ -321,6 +321,7 @@
 		    "path" : "pages/shopDetail/shopDetail",
 		    "style": {
 		    	"navigationBarTitleText": "商家详情",
+				"enablePullDownRefresh": true,
 		    	"softinputNavBar":"none"
 		    }
 		},

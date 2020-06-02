@@ -359,7 +359,7 @@ module.exports = {
 			return;
 	    }
 	
-	    uni.request({
+	    this.abotRequest({
 			url: that.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/get_setting_list',
 			method: 'post',
 			data: {
