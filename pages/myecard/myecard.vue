@@ -1,5 +1,5 @@
 <template style="padding: 0upx;margin: 0upx;">
-	<view >
+	<view>
 		<view :style="[{'background-image':'url('+ card_data_option.card_bg_img +')' }]" class="c">
 			<view class="a">
 				<image :src = "card_data_option.card_logo" style="width: 100upx;height: 100upx;"></image>
@@ -11,6 +11,49 @@
 			<view style="text-align: right;padding-right: 57px;color: #000000;margin-top:165upx;padding-right: 170upx;">
 				<b>F1212121111</b>
 			</view>
+		</view>
+		
+		<view>
+			<view class="mid-tips">
+				<view class="mid-level">会员等级</view>
+				<view>风度翩翩</view>
+			</view>
+			
+			<view class="mid-tips">
+				<view class="mid-level">会员等级</view>
+				<view>风度翩翩</view>
+			</view>
+			
+			<view class="mid-tips">
+				<view class="mid-level">会员等级</view>
+				<view>风度翩翩</view>
+			</view>
+			
+			<view class="mid-tips">
+				<view class="mid-level">会员等级</view>
+				<view>风度翩翩</view>
+			</view>
+			
+		</view>
+		
+		<view class="mid-imgs">
+			<image src="../../static/img/VIP.png"></image>
+			<view class="mid-nm">最新资讯</view>
+		</view>
+		
+		<view class="mid-imgs">
+			<image src="../../static/img/VIP.png"></image>
+			<view class="mid-nm">最新资讯</view>
+		</view>
+		
+		<view class="mid-imgs">
+			<image src="../../static/img/VIP.png"></image>
+			<view class="mid-nm">最新资讯</view>
+		</view>
+		
+		<view class="mid-imgs">
+			<image src="../../static/img/VIP.png"></image>
+			<view class="mid-nm">最新资讯</view>
 		</view>
 		
 	</view>
@@ -67,6 +110,28 @@
 		background-size: 100% 100%;
 		border-radius: 25upx;
 	}
+	.mid-tips{
+		margin-top: 20rpx;
+		display:inline-block;
+		width: 25%;
+		text-align: center;
+		overflow: hidden;
+		line-height: 50rpx;
+	}
+	.mid-level{
+		font-size: 24rpx;
+		color: #808080;
+	}
+	.mid-imgs image{
+		width: 200rpx;
+		height: 200rpx;
+	}
+	.mid-imgs{
+		text-align: center;
+		display: inline-block;
+		width: 25%;
+	}
+
 </style>
 
 
