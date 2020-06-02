@@ -1,9 +1,9 @@
 <template>
 	
 	<!--pages/login/login.wxml-->
-	<view class="page" style='width:100%;overflow-x:hidden;height:{{windowHeight}}px;background:#fff;'>
+	<view class="page" style='width:100%;overflow-x:hidden;background:#fff;'> <!-- :style="{height:windowHeight+'rpx';} -->
 	<view class='box'>
-	 <image src='{{shop_list.icon}}' mode="widthFix"></image>
+	 <image :src="shop_list.icon" mode="widthFix"></image>
 	</view>
 	
 	
@@ -14,8 +14,8 @@
 	    <open-data type="userNickName" class="userinfo-userNickName" ></open-data>
 	  </view>
 	   
-	  <image class="shouquan-a" mode="widthFix" src="../../images/double_arrow_right.png"></image>
-	  <image class="shouquan-b" src="../../images/wxa.png"></image>
+	  <image class="shouquan-a" mode="widthFix" src="../../static/img/double_arrow_right.png"></image>
+	  <image class="shouquan-b" src="../../static/img/wxa.png"></image>
 	 </view>
 	
 	
@@ -25,44 +25,42 @@
 </template>
 
 <script>
-	// pages/check_login/check_login.js
-	var app = getApp();
-	
-	
-	
-	Page({
-	  data: {
-	    second: '发送短信',
-	    mobile: "",
-	    disabled: false,
-	    timer001: 60,
-	    js_code: '',
-	    tokenstr :'',
-	    show_mobile_login:0
-	  },
+export default{
+	  data(){
+		  return{
+			  second: '发送短信',
+			  mobile: "",
+			  disabled: false,
+			  timer001: 60,
+			  js_code: '',
+			  tokenstr :'',
+			  show_mobile_login:0,
+			  shop_list:''
+		  };
+    },
 	
 	
 	  onShow: function () {
 	
 	  },
 	  onLoad: function (options) {
-	    app.set_option_list_str(null, app.getColor());
+	    this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 	    
 	    var that = this;
 	
-	    app.get_shop_info_from_server(function (shop_info_list) {
-	      that.setData({
-	        shop_list: shop_info_list,
-	      });
+	   this.abotapi.get_shop_info_from_server(function (shop_info_list) {
+	   
+	        that.shop_list = shop_info_list;
+	   
 	    });
 	
 	    
 	
-	    wx.getSystemInfo({
+	    uni.getSystemInfo({
 	      success(res) {
-	        that.setData({
-	          windowHeight: res.windowHeight
-	        })
+	       
+	          that.windowHeight = res.windowHeight;
+	      
 	
 	      }
 	    })
@@ -71,9 +69,9 @@
 	
 	    if(options.retpage){
 	      //var url = 'http://192.168.0.87:8080/chouheji/pages/chouheji/chouheji_index?sellerid=%ensellerid%&openid=%wxa_openid%';
-	      that.setData({
-	        retpage: '/pages/h5browser/h5browser?url=' + options.retpage
-	      })
+	      
+	        that.retpage ='/pages/h5browser/h5browser?url=' + options.retpage;
+	   
 	    }
 	
 	  },
@@ -90,12 +88,12 @@
 	    console.log('one_click_get_userinfo', e);
 	    console.log('wx.login <<<==== btn_one_click_login');
 	
-	    wx.login({
+	    uni.login({
 	      success: function (res) {
 	        console.log("btn_one_click_login 获取到的jscode是:" + res.code);
 	
 	
-	        wx.request({
+	        this.abotapi.abotRequest({
 	          url: app.globalData.http_server + '?g=Yanyubao&m=ShopAppWxa&a=wxa_get_userinfo',
 	          header: {
 	            "Content-Type": "application/x-www-form-urlencoded"
@@ -123,24 +121,24 @@
 	              app.set_user_info(app.globalData.userInfo); 
 	
 	
-	              wx.showToast({
+	            uni.showToast({
 	                title: '授权成功',
 	                icon: 'success',
 	                duration: 2000
 	              })
 	
-	              var last_url = wx.getStorageSync('get_userinfo_last_url');
+	              var last_url = uni.getStorageSync('get_userinfo_last_url');
 	
 	              console.log('last_url-----', last_url)
-	              var page_type = wx.getStorageSync('get_userinfo_page_type');
+	              var page_type = uni.getStorageSync('get_userinfo_page_type');
 	
 	
-	              wx.removeStorageSync('get_userinfo_last_url');
-	              wx.removeStorageSync('get_userinfo_page_type');
+	              uni.removeStorageSync('get_userinfo_last_url');
+	              uni.removeStorageSync('get_userinfo_page_type');
 	
 	              //如果打开这个页面时候指定了返回的URL
-	              if(that.data.retpage){
-	                last_url = that.data.retpage
+	              if(that.retpage){
+	                last_url = that.retpage
 	                console.log('last_url===================1111', last_url)
 	                app.call_h5browser_or_other_goto_url(last_url);
 	                return;
@@ -157,8 +155,8 @@
 	              }
 	
 	
-	              if (that.data.fromPage == 'share-detail') {
-	                wx.navigateBack({
+	              if (that.fromPage == 'share-detail') {
+	                uni.navigateBack({
 	                  delta: 1
 	                })
 	              }
@@ -170,14 +168,14 @@
 	                if (page_type == 'switchTab'){
 	                  console.log('last_url===================aaaaa');
 	
-	                  wx.switchTab({
+	                  uni.switchTab({
 	                    url: last_url
 	                  })
 	                }
 	                else{
 	                  console.log('last_url===================bbbbb');
 	
-	                  app.call_h5browser_or_other_goto_url(last_url);
+	                 this.abotapi.abcall_h5browser_or_other_goto_url(last_url);
 	                }
 	                
 	                
@@ -188,7 +186,7 @@
 	              console.log('last_url===================ccccc');
 	              
 	
-	              wx.switchTab({
+	              uni.switchTab({
 	                url: '/pages/user/user'
 	              })
 	
@@ -196,7 +194,7 @@
 	            }
 	            else {
 	              //一键登录返回错误代码
-	              wx.showModal({
+	              uni.showModal({
 	                title: '提示',
 	                content: res.data.msg,
 	                showCancel:false,
@@ -222,9 +220,8 @@
 	
 	
 	
-	})
 	
-	
+	}	
 	
 </script>
 

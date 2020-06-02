@@ -376,10 +376,10 @@
 		    "path" : "cms/discover/discover",
 		    "style" : {}
 		}
-		// ,{
-		//     "path" : "cms/discover/discover",
-		//     "style" : {}
-		// }
+		,{
+			"path" : "pages/login/login_get_userinfo",
+		    "style" : {}
+		}
 		,{
             "path" : "pages/user/accountEdit/accountEdit",
             "style" : {}
