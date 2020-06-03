@@ -265,7 +265,7 @@
 						<view v-if="item.buyer_memo != ''">备注：{{item.buyer_memo}}</view>
 						<view  class="btn_b">
 							<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid&'balance_zengsong_dikou='+item.coupon_price&'balance_dikou='+item.yue_price" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
-							<view v-if="item.status=='3'" class="font_12 btn_min fl_r mr_5" @click="pingjia" :data-orderid='item.orderid' :data-xianmaishangid='item.order_option.hahading_order_xianmai_shangid'>立即评价</view>
+							<view v-if="item.status=='5'" class="font_12 btn_min fl_r mr_5" @click="pingjia" :data-orderid='item.orderid' :data-xianmaishangid='item.order_option.hahading_order_xianmai_shangid'>立即评价</view>
 						</view>
 					</view>
 				</swiper-item>
@@ -412,6 +412,28 @@
 			//立即评价
 			pingjia:function(e){
 				console.log('eeeeeeeeeeeee',e);
+				var orderid = e.currentTarget.dataset.orderid;
+				var xianmaishangid = e.currentTarget.dataset.xianmaishangid;
+				
+				uni.showActionSheet({
+				      itemList: ['照片', '视频'],
+				      success(res) {
+				        console.log(res.tapIndex)
+				        if ((res.tapIndex == 0)) {
+				          uni.navigateTo({
+				            url: '../../../cms/publish/publish?publishtype=image&orderid=' + orderid + '&xianmai_shangid=' + xianmaishangid,
+				          })
+				        } else {
+				          uni.navigateTo({
+				            url: '../../../cms/publish/publish?publishtype=video&orderid=' + orderid + '&xianmai_shangid=' + xianmaishangid,
+				          })
+				        }
+				      },
+				      fail(res) {
+				        console.log(res.errMsg)
+				      }
+				    })
+				
 			},
 			
 			//取消订单

@@ -124,7 +124,18 @@
 		</view>
 
 		<!-- 功能按钮结束-->
-
+	<discoverList 
+	:faquanList="current_faquanList"
+	@fanquaDianzan="fanquaDianzan"
+	@fanquanCollect="fanquanCollect"
+	@onShareAppMessage="onShareAppMessage">
+	<!-- @bigImg="bigImg"
+	@videometa="videometa"
+	@change_faquan_status="change_faquan_status"
+	@oneClickSave="oneClickSave" 
+	@copyText="copyText"
+	@img_or_video_download="img_or_video_download" -->
+	</discoverList>
 		<!-- 优惠 -->
 		<view style="border-bottom:6px solid #eee;" v-if="current_shang_detail.youhui_title != ''">
 			<view class="icon-title2">
@@ -648,6 +659,7 @@
 				appid: this.abotapi.globalData.xiaochengxu_appid,
 				sellerid: this.abotapi.get_sellerid(),
 				extend_id:this.current_xianmai_shangid,
+				faquan_type:1,
 			  };
 							
 			  
@@ -668,7 +680,7 @@
 						
 				  if (res.data.code == 1) {
 			 
-					  that.faquanList = that.faquanList.concat(faquanList);
+					  that.current_faquanList = faquanList;
 					  that.page = that.page + 1;
 					
 				  }
@@ -683,6 +695,167 @@
 						
 						
 			},
+			
+			//发圈点赞
+			fanquaDianzan: function (e) {
+			  console.log('e=======', e)
+			  var that = this;
+			  var faquanid = e.target.dataset.faquanid;
+			  var index = e.target.dataset.index;
+						
+			  var userInfo = this.abotapi.get_user_info();
+							
+							console.log('============>>>>>', userInfo);
+						
+			  if (!userInfo) {
+			    uni.showModal({
+			      title: '提示',
+								content:'请先登陆后再点赞',
+			      success: function (res) {
+					if(res.confirm){
+						
+						if (this.data.current_self_in_tabbar == 1) {
+							that.abotapi.goto_user_login('switchTab /cms/discover/discover');
+						}
+						else{
+							that.abotapi.goto_user_login('/cms/discover/discover');
+						}
+						
+						
+					}
+					
+					return;
+									
+			      },
+								
+								
+			    })
+						
+			    return;
+			  }
+						
+			  that.abotapi.abotRequest({
+			    url: this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/faquan_like',
+			    method: 'post',
+			    data: {
+			      sellerid: this.abotapi.get_sellerid(),
+			      userid: userInfo ? userInfo.userid : '',
+			      faquanid: faquanid,
+			    },
+			    header: {
+			      'Content-Type': 'application/x-www-form-urlencoded'
+			    },
+			    success: function (res) {
+			      if (res.data.code == 1) {
+						
+			        if (that.current_faquanList[index].has_like == '0') {
+						
+			          that.current_faquanList[index].has_like = "1";
+			          ++that.current_faquanList[index].like_num;
+			        
+			        } else {
+						
+			          that.current_faquanList[index].has_like = "0";
+			          --that.current_faquanList[index].like_num;
+			         
+			        }
+						
+			       
+			          that.current_faquanList = that.current_faquanList;
+			    
+						
+			      }
+						
+			    },
+			    fail: function (e) {
+			      uni.showToast({
+			        title: '网络异常！',
+			        duration: 2000
+			      });
+			    },
+			  })
+			},
+			
+			//发圈收藏
+			fanquanCollect:function(e){
+			  console.log('e=======',e)
+			  var that = this;
+			  var faquanid = e.target.dataset.faquanid;
+			  var index = e.target.dataset.index;
+							
+							console.log('================fanquanCollect=====>>>>index====>>>>>', index);
+						
+			  var userInfo = this.abotapi.get_user_info();
+						
+			  console.log('userInfo==',userInfo);
+							
+							if (!userInfo) {
+							  uni.showModal({
+							    title: '提示',
+								content:'请先登陆后再点赞',
+							    success: function (res) {
+									if(res.confirm){
+										
+										if (this.data.current_self_in_tabbar == 1) {
+											that.abotapi.goto_user_login('switchTab /cms/discover/discover');
+										}
+										else{
+											that.abotapi.goto_user_login('/cms/discover/discover');
+										}
+									}						
+									return;						
+							    },
+							  })
+							  
+							  return;
+							}
+						
+			  that.abotapi.abotRequest({
+			    url: this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/faquan_collect',
+			    data: {
+			      sellerid: this.abotapi.get_sellerid(),
+			      userid: userInfo ? userInfo.userid : '',
+			      faquanid: faquanid,
+			    },
+			    success: function (res) {
+						
+			      if(res.data.code == 1){
+									console.log('=====================>>>>index====>>>>>', index);
+			        if (that.current_faquanList[index].has_collect == '0'){
+			          that.current_faquanList[index].has_collect = "1"
+									++that.current_faquanList[index].collect_num;
+			          uni.showToast({
+			            title: '收藏成功！',
+			            duration: 2000
+			          });
+			        }else{
+			          that.current_faquanList[index].has_collect = "0"
+									--that.current_faquanList[index].collect_num;
+			          uni.showToast({
+			            title: '取消收藏成功！',
+			            duration: 2000
+			          });
+			        }
+			        
+			  
+			       that.current_faquanList = that.current_faquanList;
+				
+			         
+			      }
+			    
+			    },
+			    fail: function (e) {
+			      uni.showToast({
+			        title: '网络异常！',
+			        duration: 2000
+			      });
+			    },
+			  })
+			},
+						
+			
+			
+			
 		}
 	};
 </script>

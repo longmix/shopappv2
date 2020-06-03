@@ -1181,11 +1181,7 @@ margin-top: 20rpx;
   width:15%;
 }
 
-.download-img{
-  width:28rpx;
-  height:28rpx;
-  margin-right:10rpx;
-}
+
 
 
 
