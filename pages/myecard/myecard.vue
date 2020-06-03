@@ -196,7 +196,7 @@
 
 
 		<!-- 新增插件 begin -->
-		<view class="{{plugin_list}}">
+		<view :class="plugin_list">
 		  <block v-for="(item,index) in plugin_data_list" key="item.id" >
 			<navigator :url="item.url" open-type="navigate" v-if="item.type == 'url'">
 			  <view class="weui_cell">
@@ -210,7 +210,7 @@
 
 			<view  v-elif="item.type == 'tel'" class="weui_cell" @tap="callTel" :data-tel="item.tel">
 			  <view class="weui_cell_bd">
-				<view class="weui_cell_bd_p" style="{{item.title_style}}"> {{item.title}} </view>
+				<view class="weui_cell_bd_p" :style="item.title_style"> {{item.title}} </view>
 			  </view>
 
 			  <view class="with_arrow"></view>
@@ -230,7 +230,7 @@
 		<!-- 新增插件 end -->
 
 
-
+ 
 		<view class="info_list">
 		<!--
 		  <navigator url="../payment/payment" open-type="navigate">
@@ -354,7 +354,7 @@
 		</view>
 
 
-		<view class="{{changefootnav}}" style="border: solid 2px {{ecard_option_list.ecard_shop_nav_bg_color}};background-color: {{ecard_option_list.ecard_shop_nav_bg_color}};" @tap="payMoney">
+		<view :class="changefootnav" :style="border: solid 2px {{ecard_option_list.ecard_shop_nav_bg_color}};background-color: {{ecard_option_list.ecard_shop_nav_bg_color}};" @tap="payMoney">
 		  <!-- <image src="../../images/fk.png" style="width:100%;height:100%;"></image> -->
 		  <image v-if="ecard_option_list.ecard_shop_nav_font_color == '#000000'"
 			src="https://yanyubao.tseo.cn/Tpl/static/images/ecard_module_icon/fukuan3.svg" style="width:50px;height:50px;margin: 5px;" />
@@ -475,10 +475,10 @@
 		      title: '信息读取中……',
 		    });
 		
-		    var url = app.globalData.http_server + '/index.php?g=Yanyubao&m=Xiaochengxu&a=one_click_login_str';
+		    var url = this.abotapi.globalData.http_server + '/index.php?g=Yanyubao&m=Xiaochengxu&a=one_click_login_str';
 		    var data = {
 		      uwid: userInfo.uwid,
-		      sellerid: app.get_sellerid(),
+		      sellerid: this.abotapi.get_sellerid(),
 		      checkstr: userInfo.checkstr,
 		    }
 		
@@ -492,7 +492,7 @@
 		        console.log('0000000')
 		
 		        var url = 'https://yanyubao.tseo.cn/Home/OnlineChat/chat.html?ensellerid=';
-		        url += app.get_sellerid();
+		        url += this.abotapi.get_sellerid();
 		        url += '&oneclicklogin='+res.data.oneclicklogin;
 		
 		        uni.navigateTo({
@@ -518,7 +518,7 @@
 		      uni.hideLoading()
 		
 		    };
-		    app.httpPost(url, data, cbSuccess1, cbError1);
+		    this.abotapi.httpPost(url, data, cbSuccess1, cbError1);
 		  }
 		},
 		
@@ -531,7 +531,7 @@
 		
 		  clearStorge:function(){
 		    uni.clearStorageSync();
-		    console.log('清空完成，sellerid：'+app.get_sellerid());
+		    console.log('清空完成，sellerid：'+this.abotapi.get_sellerid());
 		  },
 		  openLocation: function () {
 		    
@@ -545,7 +545,7 @@
 		    //console.log('111111111111111111:' +app.globalData.xiaochengxu_appid);
 		
 		    uni.setNavigationBarTitle({
-		      title: app.globalData.shop_name
+		      title: this.abotapi.globalData.shop_name
 		    })
 		
 		    // const accountInfo = uni.getAccountInfoSync()
@@ -598,20 +598,20 @@
 		    }
 		
 		    if (!sellerid) {
-		      sellerid = app.get_sellerid();
+		      sellerid = this.abotapi.get_sellerid();
 		      console.log('sellerid 04：' + sellerid);
 		    }
 		
 		    console.log('sellerid 05：' + sellerid);
 		
 		    if(!sellerid){
-		      console.log('!!!!!!缺少商户ID，使用默认的' + app.globalData.default_sellerid);
+		      console.log('!!!!!!缺少商户ID，使用默认的' + this.abotapi.globalData.default_sellerid);
 		      /*uni.navigateTo({
 		        url: '../index/index?q=' + encodeURIComponent('https://yanyubao.tseo.cn/unia/?sellerid=' + app.globalData.default_sellerid)
 		      });
 		      return;*/
 		
-		      sellerid = app.globalData.default_sellerid;
+		      sellerid = this.abotapi.globalData.default_sellerid;
 		      
 		    }
 		
@@ -623,8 +623,8 @@
 		    //console.log('0000000000000000000000000000:' + extConfig.force_sellerid_value);
 		
 		    //=======================End============
-		    app.globalData.sellerid = sellerid
-		    app.set_sellerid(sellerid);
+		    this.abotapi.globalData.sellerid = sellerid
+		    this.abotapi.set_sellerid(sellerid);
 		    console.log('当前sellerid:'+sellerid+"，来自请求"+q);
 		       
 		/*
@@ -636,9 +636,9 @@
 		    }*/
 		    
 		    //调用应用实例的方法获取全局数据
-		    console.log("index:onLoad:app.getUserInfo:");
+		    console.log("index:onLoad:this.abotapi.getUserInfo:");
 		
-		    var userInfo = app.get_user_info();
+		    var userInfo = this.abotapi.get_user_info();
 		
 		    console.log(userInfo);
 		    console.log(83838383)
@@ -667,13 +667,13 @@
 		
 		   this.abotapi.globalData.sellerid = sellerid
 		
-		    console.log("准备获取uwid[" + app.globalData.userInfo.uwid + "]的商户[" + app.globalData.sellerid + "]会员卡信息");
+		    console.log("准备获取uwid[" + this.abotapi.globalData.userInfo.uwid + "]的商户[" + this.abotapi.globalData.sellerid + "]会员卡信息");
 		
 		    uni.showLoading({
 		      title: '数据加载中……',
 		    });
 		
-		    var url = app.globalData.http_server + '/index.php?g=Yanyubao&m=Xiaochengxu&a=get_user_card';
+		    var url = this.abotapi.globalData.http_server + '/index.php?g=Yanyubao&m=Xiaochengxu&a=get_user_card';
 		    var data = {
 		      sellerid: sellerid,
 		      checkstr: userInfo.checkstr,
@@ -689,7 +689,7 @@
 		
 		      if (res.data.code == -1) {
 		        //删除本地存储的用户数据
-		        app.del_user_info();
+		        this.abotapi.del_user_info();
 		
 		        //console.log(app.get_user_info());
 		        //console.log(app.globalData.userInfo);
@@ -708,42 +708,42 @@
 		          card_desc ='';
 		        }
 		        
-		          that.card_no = res.data.data.card_no,
-		          that.card_name = res.data.data.card_name,
-		          that.card_name_color = res.data.data.card_name_color,
-		          that.card_desc = card_desc,
-		          that.card_desc_color = res.data.data.card_desc_color,
-		          that.level_name = res.data.data.level_name,
-		          that.member_score = res.data.data.member_score,
-		          that.quan_count = res.data.data.youhui_count,
-		          that.youhui_count =  res.data.data.youhui_count,
-		          that.score_log_count =  res.data.data.score_log_count,
-		          that.youhui_new_count =  res.data.data.youhui_new_count,
-		          that.hongbao_count =  res.data.data.hongbao_count,
-		          that.card_no_color =  res.data.data.card_no_color,
-		          that.card_bg_img =  res.data.data.card_bg_img,
-		          that.card_logo =  res.data.data.card_logo,
-		          that.balance =  res.data.data.balance,
-		          that.shang_name =  res.data.data.shang_name,
-		          that.shang_address =  res.data.data.shang_address,
-		          that.shang_telephone =  res.data.data.shang_telephone,
+		          that.card_no = res.data.data.card_no;
+		          that.card_name = res.data.data.card_name;
+		          that.card_name_color = res.data.data.card_name_color;
+		          that.card_desc = card_desc;
+		          that.card_desc_color = res.data.data.card_desc_color;
+		          that.level_name = res.data.data.level_name;
+		          that.member_score = res.data.data.member_score;
+		          that.quan_count = res.data.data.youhui_count;
+		          that.youhui_count =  res.data.data.youhui_count;
+		          that.score_log_count =  res.data.data.score_log_count;
+		          that.youhui_new_count =  res.data.data.youhui_new_count;
+		          that.hongbao_count =  res.data.data.hongbao_count;
+		          that.card_no_color =  res.data.data.card_no_color;
+		          that.card_bg_img =  res.data.data.card_bg_img;
+		          that.card_logo =  res.data.data.card_logo;
+		          that.balance =  res.data.data.balance;
+		          that.shang_name =  res.data.data.shang_name;
+		          that.shang_address =  res.data.data.shang_address;
+		          that.shang_telephone =  res.data.data.shang_telephone;
 		          //copyright_info: res.data.data.copyright_info,
-		          that.latitude =  res.data.data.latitude,
-		          that.longitude =  res.data.data.longitude,
+		          that.latitude =  res.data.data.latitude;
+		          that.longitude =  res.data.data.longitude;
 		      
 		
 		        if (res.data.data.shang_plugin_list) {
 		
 		         
 		            that.plugin_list =  'plugin_list',
-		            that.plugin_data_list = res.data.data.shang_plugin_xiaochengxu_list
+		            that.plugin_data_list = res.data.data.shang_plugin_xiaochengxu_list;
 		    
 		        }
 		
 		        uni.request({
-		          url: app.globalData.http_server + '/index.php?g=Yanyubao&m=Xiaochengxu&a=about_supplier',
+		          url: this.abotapi.globalData.http_server + '/index.php?g=Yanyubao&m=Xiaochengxu&a=about_supplier',
 		          data: {
-		            sellerid: app.get_sellerid(),
+		            sellerid: this.abotapi.get_sellerid(),
 		            checkstr: userInfo.checkstr,
 		            uwid: userInfo.uwid,
 		            userid: userInfo.userid
@@ -782,7 +782,7 @@
 		        this.abotapi.globalData.userInfo.usersn = res.data.data.usersn;
 		        
 		        console.log('获取会员卡信息成功：');
-		        console.log(app.globalData.userInfo);
+		        console.log(this.abotapi.globalData.userInfo);
 		      }
 		
 		    };
@@ -901,7 +901,7 @@
 		    var data = {
 		      id: 'seller',
 		      action: 'list',
-		      sellerid: app.get_sellerid(),
+		      sellerid: this.abotapi.get_sellerid(),
 		      currentpage: 1
 		    };
 		
@@ -1028,7 +1028,7 @@
 		  touTiaoList:function(e){
 		    console.log('点击商户头条进入列表');
 		    uni.navigateTo({
-		      url: '../help/help?sellerid=' + app.globalData.sellerid
+		      url: '../help/help?sellerid=' + this.abotapi.globalData.sellerid
 		      
 		    })
 		  },
@@ -1039,7 +1039,7 @@
 		
 		    var id = e.currentTarget.dataset.id;
 		    uni.navigateTo({
-		      url: '../help_detail/help_detail?id=' + id + '&sellerid=' + app.globalData.sellerid
+		      url: '../help_detail/help_detail?id=' + id + '&sellerid=' + this.abotapi.globalData.sellerid
 		      
 		    })
 		  },
