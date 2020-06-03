@@ -356,11 +356,11 @@
 				that.ucid = options.ucid
 			}
 			
-			// if (options.productid) {
-			// 	uni.setStorageSync("cache_options", JSON.stringify(options));
-			// } else {
-			// 	options = JSON.parse(uni.getStorageSync("cache_options"));
-			// }
+			if (options.productid) {
+				uni.setStorageSync("cache_options", JSON.stringify(options));
+			} else {
+				options = JSON.parse(uni.getStorageSync("cache_options"));
+			}
 			
 			var last_url = '';
 			
