@@ -1045,11 +1045,11 @@ module.exports = {
 			url = url.replace('%wxa_openid%', this.get_current_openid());
 		}
 		
-		if(url.indexOf("%oneclicklogin%") != -1){
+		if((url.indexOf("%oneclicklogin%") != -1) || (url.indexOf("%refresh_token%") != -1)) {
 			var userInfo = this.get_user_info();
 			if(!userInfo){
 				
-				this.goto_user_login('/pages/tabBar/index/index', 'switchTab');
+				this.goto_user_login('/pages/index/index', 'switchTab');
 				
 				return;
 			}
@@ -1058,8 +1058,14 @@ module.exports = {
 			
 			var that = this;
 			
+			var new_url = this.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=one_click_login_str';
+			
+		  if (url.indexOf("%refresh_token%") != -1){
+			new_url = this.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=generate_refresh_token_value_for_other_system';
+		  }
+			
 			uni.request({
-				url: this.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=one_click_login_str',
+				url: new_url,
 				method: 'post',
 				data: {
 				  sellerid: this.get_sellerid(),
@@ -1073,9 +1079,14 @@ module.exports = {
 				  //--init data        
 				  var code = res.data.code;
 				  if (code == 1) {
-					var oneclicklogin = res.data.oneclicklogin;
+					  
+					if(res.data.oneclicklogin){
+						url = url.replace('%oneclicklogin%', oneclicklogin);
+					}
 					
-					url = url.replace('%oneclicklogin%', oneclicklogin);
+					if (res.data.refresh_token){
+					  url = url.replace('%refresh_token%', res.data.refresh_token);
+					}
 		
 					that.call_h5browser_or_other_goto_url(url, var_list, ret_page);
 				  }
