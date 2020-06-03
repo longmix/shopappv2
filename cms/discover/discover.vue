@@ -884,7 +884,7 @@
 			      that.disabled = true;
 			
 			
-			    uni.showLoading({
+			    uni.showLoading({ 
 			      title: '正在下载……',
 			    })
 			
