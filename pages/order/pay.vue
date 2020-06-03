@@ -306,7 +306,9 @@
 			var that = this;
 			console.log('order/pay 参数：', options);
 			
-			
+			this.abotapi.set_option_list_str(this, ()=>{
+				this.abotapi.getColor();
+			});
 			
 			// #ifdef H5
 				options.productid = encodeURIComponent(options.productid);
@@ -354,11 +356,11 @@
 				that.ucid = options.ucid
 			}
 			
-			if (options.productid) {
-				uni.setStorageSync("cache_options", JSON.stringify(options));
-			} else {
-				options = JSON.parse(uni.getStorageSync("cache_options"));
-			}
+			// if (options.productid) {
+			// 	uni.setStorageSync("cache_options", JSON.stringify(options));
+			// } else {
+			// 	options = JSON.parse(uni.getStorageSync("cache_options"));
+			// }
 			
 			var last_url = '';
 			
@@ -388,7 +390,10 @@
 			
 			if(last_url){
 				that.last_url = last_url
-				that.abotapi.goto_user_login(last_url, 'normal');
+				var userInfo = this.abotapi.get_user_info();
+				if(!userInfo && !userInfo.userid){
+					that.abotapi.goto_user_login(last_url, 'normal');
+				}		
 			}
 			
 			if (options.price_type){
