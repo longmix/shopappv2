@@ -23,7 +23,9 @@
 			
 	
 			this.abotapi.getColor()
+			
 			this.userAcountInfo = this.abotapi.get_user_account_info();
+			
 			this.nickname = this.userAcountInfo.fenxiao_info.nickname || '';
 			this.name = this.nickname;
 			
@@ -53,10 +55,6 @@
 			
 			    that.abotapi.abotRequest({
 			      url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=user_info_save',
-			      header: {  
-			                "Content-Type": "application/x-www-form-urlencoded"  
-			              }, 
-			      method: "POST",  
 			      data: {
 			         nickname:that.nickname,
 			         checkstr:userInfo.checkstr,
@@ -65,6 +63,7 @@
 			      },    
 			      success:function(res){
 			        console.log('success',res);
+					
 			        if(res.data.code == 1){						
 						that.userAcountInfo.fenxiao_info.nickname = that.nickname;
 						that.abotapi.set_user_account_info(that.userAcountInfo)	
@@ -74,10 +73,32 @@
 						  icon: 'success',
 						  duration: 2000
 						})
-						uni.redirectTo({
-							url: '/pages/user/setting/setting'
-						})
+						
+						//更新用户信息
+						that.abotapi.abotRequest({
+						  url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
+						  data: {
+						     checkstr:userInfo.checkstr,
+						     userid:userInfo.userid,
+						     sellerid: that.abotapi.globalData.default_sellerid
+						  },    
+						  success:function(res){
+							  
+						    console.log('success',res);
+							
+							if(res.data && res.data.data && (res.data.data.code == 1)){
+								that.abotapi.set_user_account_info(data.data);
+							}
+							
+							uni.redirectTo({
+								url: '/pages/user/setting/setting'
+							})
+							
+						  }
+						});
+						
 						return;
+						
 			        }
 			        else{
 			          uni.showToast({

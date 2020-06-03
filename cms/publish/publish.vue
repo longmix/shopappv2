@@ -75,6 +75,7 @@
 		},
 		
 		onLoad: function (options) {
+			//1、获取选项
 			if (options.publishtype) {
 				this.publishtype = options.publishtype;
 			}
@@ -88,45 +89,45 @@
 			}
 			
 			
-			this.abotapi.getFaquanSetting(this, this.callback_xieyi_content);
-			
-		},
-		
-		onShow: function () {
-			
+			//2、判断是否登录
 			var userInfo = this.abotapi.get_user_info();
 			
 			var that = this;
-		
+					
 			console.log('userInfo---------2', userInfo)
-		
+					
 			if (!userInfo || !userInfo.userid) {
 				uni.showToast({
 					title: '请先登录',
 					icon: 'none',
 					duration: 1000,
 				});
-
-				var last_url = '/cms/publish/publish?publishtype=' + that.publishtype;
+			
+				//var last_url = '/cms/publish/publish?publishtype=' + that.publishtype;
+				
+				var last_url = '/cms/discover/discover';
+				
 				that.abotapi.goto_user_login(last_url, 'normal');
 				return;
 			}
+			
+			var last_url = '/cms/discover/discover';
+			
+			//3、如果需要用户授权头像和昵称
+			if(this.abotapi.goto_get_userinfo(last_url)){
+			  return;
+			}
+			
+			
+			
+			//4、获取发圈设置
+			this.abotapi.getFaquanSetting(this, this.callback_xieyi_content);
+			
+		},
 		
-		
-		// 	var is_get_userinfo = userInfo.is_get_userinfo;
-		
-		
-		// 	if (!is_get_userinfo) {
-
-		// 		wx.setStorageSync('last_url', '/cms/publish/publish?publishtype=' + that.data.publishtype);
-
-		// 		wx.redirectTo({
-		// 			url: '/pages/login/login_get_userinfo',
-		// 		});
-
-		// 		return;
-		// 	}
-
+		onShow: function () {
+			
+			
 		},
 		
 		onHide: function () {

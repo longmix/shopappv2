@@ -30,7 +30,11 @@
 				<input type="text" class="flexIcon-text"  name="password"  placeholder-class="cl-white" @input="telInput" placeholder-style="color: #999;"  placeholder="请输入手机验证码" />
 			</view>
 			<div></div>
-			<button type="primary"  formType="submit" open-type="getUserInfo" class="btn-row-submit" :style="{background:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" style="width: 84%;background: #2E85D8;" @click="btn_user_login">登陆</button>
+			<button type="primary"  formType="submit" 
+				open-type="getUserInfo" class="btn-row-submit" 
+				:style="{background:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" 
+				style="width: 84%;background: #2E85D8;" 
+				@click="btn_user_login">登陆</button>
 			<div class="flex mgb-20">
 				<navigator class="cl-black pointer flex-1" url="/pages/login/login_by_password">账号密码登录</navigator>
 			</div>
@@ -274,6 +278,7 @@
 			btn_user_login: function () {
 			    console.log('getUserInfo button click, and get following msg');
 			    // console.log(userinfo);
+				
 				var that = this;
 			    if (!this.mobile) {
 					uni.showToast({
@@ -361,59 +366,81 @@
 									
 									var	data = res.data;						      
 									 
-									 if(data.code == 1){
-										 
-										 that.abotapi.set_user_account_info(data.data)
-										 
-									 }
+									if(data.code == 1){
+										that.abotapi.set_user_account_info(data.data);
+										
+										// #ifndef MP-WEIXIN
+										//单独处理 is_get_userinfo
+										
+										
+										// #endif
+										
+										
+										
+										
+									}
+									
+									
+									
+									
+									
+									//========显示登录成功的提示================
+									
+									uni.showModal({
+										title: '提示',
+										content: request_res.data.msg,
+										showCancel: false,
+										success: function (res) {
+											//console.log("回调结果"+res.code);
+											if (res.confirm) {		 
+												
+												
+											}
+											
+											//=======检查登录成功之后的跳转=======
+											var login_last_url = uni.getStorageSync('login_last_url');
+											
+											if (login_last_url) {
+												var var_list = uni.getStorageSync('login_var_list');
+												var ret_page = uni.getStorageSync('login_ret_page');
+												
+												that.abotapi.call_h5browser_or_other_goto_url(login_last_url, var_list, ret_page);
+												
+												uni.removeStorageSync('login_last_url');
+												uni.removeStorageSync('login_var_list');
+												uni.removeStorageSync('login_ret_page');
+												 
+												return;
+												
+												//===========End================
+											}									
+											else{
+												uni.switchTab({
+													url: '/pages/index/index'
+												})
+											}
+											
+											
+										}
+									});
+									
+									//================= End ====================
+									
+									
+									
+									
+									
 	
 							     }
 							   })
 							  
 				 
 				        
-							uni.showModal({
-								title: '提示',
-								content: request_res.data.msg,
-								showCancel: false,
-								success: function (res) {
-									//console.log("回调结果"+res.code);
-									if (res.confirm) {		 
-									//=======检查登录成功之后的跳转=======
-										var last_url = uni.getStorageSync('last_url');
-				 
-										console.log('last_url-----', last_url)
-				 console.log(15545789)
-										var page_type = uni.getStorageSync('page_type');
-										if (last_url) {
-											if (page_type && (page_type == 'switchTab')) {
-				 console.log('last_url12456-----', last_url)
-												uni.switchTab({
-													url: last_url,
-												})
-												
-											} else {
-												console.log('last_url-----457', last_url)
-												uni.redirectTo({
-													url: last_url,
-												})
-											}
-				 
-											uni.removeStorageSync('last_url');
-											uni.removeStorageSync('page_type');
-				 
-											return;
-										}
-									//===========End================
-				              
-										uni.switchTab({
-											url: '/pages/index/index'
-										})
-									}
-								}
-							});
+							
 						} else {
+							
 							console.log(request_res);
+							
 							uni.showToast({
 								title: '登录失败',
 								icon: 'fail',
@@ -517,33 +544,25 @@
 									})
 				  
 									//=======检查登录成功之后的跳转=======
-									var last_url = uni.getStorageSync('last_url');
-				 
-									console.log('last_url-----', last_url)
-				 
-									var page_type = uni.getStorageSync('page_type');
-									if (last_url) {
-										if (page_type && (page_type == 'switchTab')) {
-				 
-											uni.switchTab({
-												url: last_url,
-											})
-										} else {
-											uni.redirectTo({
-												url: last_url,
-											})
-										}
-				 
-										uni.removeStorageSync('last_url');
-										uni.removeStorageSync('page_type');
-				 
-										return;
+									
+									var login_last_url = uni.getStorageSync('login_last_url');
+									
+									if (login_last_url) {
+										var var_list = uni.getStorageSync('login_var_list');
+										var ret_page = uni.getStorageSync('login_ret_page');
+										
+										that.abotapi.call_h5browser_or_other_goto_url(login_last_url, var_list, ret_page);
+										
+										uni.removeStorageSync('login_last_url');
+										uni.removeStorageSync('login_var_list');
+										uni.removeStorageSync('login_ret_page');
 									}
-									//===========End================
-			
-									uni.switchTab({
-										url: '/pages/index/index'
-									})
+									else{
+										uni.switchTab({
+											url: '/pages/index/index'
+										})
+									}
+									
 			
 								}else {
 									//一键登录返回错误代码
@@ -743,7 +762,7 @@
 }
 .flex-center{
 	text-align: center;
-	margin-top: 60upx;
+	margin: 60upx auto;
 }
 .flex-center2 {
 	text-align: center;

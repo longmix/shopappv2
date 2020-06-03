@@ -18,12 +18,14 @@
 			<!-- 头像 -->
 			<view class="left">
 				<label v-if="user_info"><image :src="user_info.headimgurl"></image></label>
-				<label v-else><image src=""></image></label>
+				<label v-else><image src="https://yanyubao.tseo.cn/Tpl/static/images/touxiang-white.png"></image></label>
 			</view>
 			<!-- 昵称,个性签名 -->
 			<view class="right">
-				<view class="username" :style="{color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}"><label v-if="user_info">{{user_info.nickname}}</label><label @click="toLogin" v-else>请点击此处登录</label></view>
-				<view class="signature" :style="{color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}"><label v-if="user_info && user_info.signature !=null">{{user_info.signature}}</label><label v-if="user_info.signature == null"></label></view>
+				<view class="username" :style="{color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}">
+					<label v-if="user_info">{{user_info.nickname}}</label><label @click="toLogin" v-else>请点击此处登录</label></view>
+				<view class="signature" :style="{color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}">
+					<label v-if="user_info && user_info.signature !=null">{{user_info.signature}}</label><label v-if="user_info.signature == null"></label></view>
 			</view>
 			<!-- 二维码按钮 -->
 			<view class="erweima" @tap="toMyQR">
@@ -372,12 +374,7 @@
 				  this.abotapi.goto_user_login(last_url);
 			
 				  return;
-				}
-				
-				//如果需要用户授权头像和昵称
-				if(this.abotapi.goto_get_userinfo(last_url)){
-				  return;
-				}
+				}			
 				
 				
 				var that = this;

@@ -2,7 +2,7 @@
 	<view>
 		<view class="content">
 			<view class="list">
-				<view class="row"  @click="upLoad()">
+				<view class="row"  @click="upLoadTouxiang()">
 					<view class="title">头像</view>
 					<view class="right"><view class="tis">
 					<image :src="userAcountInfo.headimgurl" style="width: 100upx;" mode="aspectFit"></image>
@@ -107,6 +107,7 @@
 				return;
 			}
 			this.userAcountInfo = this.abotapi.get_user_account_info();
+			
 			that.jubao_link_url = that.abotapi.jump_to_fankui_url();
 
 		},
@@ -204,7 +205,7 @@
 			},
 			
 			//修改头像
-			upLoad:function(){
+			upLoadTouxiang:function(){
 				var that=this;
 				uni.chooseImage({
 					success: function(chooseImageRes) {
@@ -226,7 +227,7 @@
 								var obj = JSON.parse(res.data);
 								console.log('obj',obj);
 								
-								uni.request({
+								that.abotapi.abotRequest({
 									url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=set_image_headimgurl', 
 									data: {
 										sellerid: that.abotapi.globalData.default_sellerid,
@@ -234,18 +235,36 @@
 										userid: userInfo.userid,
 										img_url: obj.img_url
 									},
-									header: {
-										"Content-Type": "application/x-www-form-urlencoded"
-									},
-									method: "POST",
 									success: function (res) {
 										uni.showToast({
 											title: res.data.msg,
 											icon: 'success',
 											duration: 2000
 										});
-										that.userAcountInfo.headimgurl = obj.img_url;
-										that.abotapi.set_user_account_info(that.userAcountInfo);
+										
+										//that.userAcountInfo.headimgurl = obj.img_url;
+										//that.abotapi.set_user_account_info(that.userAcountInfo);
+										
+										//更新用户信息
+										that.abotapi.abotRequest({
+										  url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
+										  data: {
+										     checkstr:userInfo.checkstr,
+										     userid:userInfo.userid,
+										     sellerid: that.abotapi.globalData.default_sellerid
+										  },    
+										  success:function(res){
+											  
+										    console.log('success',res);
+											
+											if(res.data && res.data.data && (res.data.data.code == 1)){
+												that.abotapi.set_user_account_info(data.data);
+											}
+										  }
+										});
+										
+										
+										
 									}
 								});
 							}

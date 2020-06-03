@@ -674,17 +674,57 @@ module.exports = {
 	    }
 	
 	    var is_get_userinfo = userInfo.is_get_userinfo;
-	    console.log('is_get_userinfo', is_get_userinfo)
+	    console.log('goto_get_userinfo ====>>>>  is_get_userinfo', is_get_userinfo)
+		
 	    if (!is_get_userinfo) {
 	      if (last_url) {
 	        uni.setStorageSync('get_userinfo_last_url', last_url);
 	      }
-	      
+		  
+		  //如果不是在微信平台上，获取头像和昵称没有意义，跳转到个人设置界面去补充
+		  // #ifndef MP-WEIXIN
+		  //单独处理 is_get_userinfo：如果登录的时候已经获取了，那么不再提示设置头像和昵称
+		  var user_account_info = this.get_user_account_info();
+		  if(user_account_info && user_account_info.fenxiao_info){
+			  if(user_account_info.fenxiao_info.nickname && user_account_info.fenxiao_info.headimgurl){
+				  userInfo.is_get_userinfo = 1;
+				  this.set_user_info(userInfo);
+				  
+				  return false;
+			  }
+			
+			//否则跳转到个人设置界面
+			uni.showModal({
+				title:'提示',
+				content:'请先设置头像和昵称',
+				showCancel:false,
+				success:function(res){
+					if(res.confirm){
+						
+					}
+					
+					uni.navigateTo({
+					  url: '/pages/user/setting/setting',
+					});
+				}
+			})
+			
+			return true;
+			 
+		  }
+		  
+		  // #endif
+		  
+		  
+		  
+	      // #ifdef MP-WEIXIN
 	      uni.navigateTo({
 	        url: '/pages/login/login_get_userinfo',
 	      });
 	
 	      return true;
+		  // #endif
+		  
 	    }
 	
 	    return false;

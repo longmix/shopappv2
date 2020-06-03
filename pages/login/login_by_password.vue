@@ -262,10 +262,6 @@
 							       checkstr: request_res.data.checkstr,
 							       userid: request_res.data.userid,
 							     },
-							     header: {
-							       "Content-Type": "application/x-www-form-urlencoded"
-							     },
-							     method: "POST",
 							     success: function (res) {
 							       console.log('ddd', res);
 							       // console.log('ddd', res.data.code);
@@ -290,33 +286,29 @@
 								success: function (res) {
 									//console.log("回调结果"+res.code);
 									if (res.confirm) {		 
-										//=======检查登录成功之后的跳转=======
-										var last_url = uni.getStorageSync('last_url');
-					 
-										console.log('last_url-----', last_url)
-					 
-										var page_type = uni.getStorageSync('page_type');
-										if (last_url) {
-											if (page_type && (page_type == 'switchTab')) {
-					 
-												uni.switchTab({
-													url: last_url,
-												})
-											}else {
-												uni.redirectTo({
-													url: last_url,
-												})
-											}
-					 
-											uni.removeStorageSync('last_url');
-											uni.removeStorageSync('page_type');
-					 
-											return;
-										}
-							//===========End================
-				
+										
+									}
+									
+									//=======检查登录成功之后的跳转=======
+									var login_last_url = uni.getStorageSync('login_last_url');
+									
+									if (login_last_url) {
+										var var_list = uni.getStorageSync('login_var_list');
+										var ret_page = uni.getStorageSync('login_ret_page');
+										
+										that.abotapi.call_h5browser_or_other_goto_url(login_last_url, var_list, ret_page);
+										
+										uni.removeStorageSync('login_last_url');
+										uni.removeStorageSync('login_var_list');
+										uni.removeStorageSync('login_ret_page');
+										 
+										return;
+										
+										//===========End================
+									}									
+									else{
 										uni.switchTab({
-											url: '../index/index'
+											url: '/pages/index/index'
 										})
 									}
 								}
@@ -386,7 +378,7 @@
 
 .flex-center{
 	text-align: center;
-	margin-top: 60upx;
+	margin: 60upx auto;
 }
 .btn-row-submit{
 	width: 84%;
