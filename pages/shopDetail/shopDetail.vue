@@ -427,33 +427,35 @@
 
 				var that = this;
 				var userInfo = that.abotapi.get_user_info();
-				var post_data = {
-					userid: userInfo.userid,
-					sellerid: this.abotapi.globalData.default_sellerid,
-					checkstr: userInfo.checkstr,
-					key: this.current_shang_detail.current_xianmai_shangid,
-					type: 'xianmai_shang_favorite',
+				if(userInfo && userInfo.userid){
+					var post_data = {
+						userid: userInfo.userid,
+						sellerid: this.abotapi.globalData.default_sellerid,
+						checkstr: userInfo.checkstr,
+						key: this.current_shang_detail.current_xianmai_shangid,
+						type: 'xianmai_shang_favorite',
+					}
+					
+					this.abotapi.abotRequest({
+						url: that.abotapi.globalData.yanyubao_server_url + '/Yanyubao/ShopApp/get_user_data_option',
+						data: post_data,
+						success: function(res) {
+							console.log('that.index_list', res);
+					
+							if (res.data.code == 1) {
+					
+								that.isShoucang = res.data.value;
+					
+							}
+						},
+						fail: function(e) {
+							uni.showToast({
+								title: '网络异常！',
+								duration: 2000
+							});
+						},
+					});
 				}
-
-				this.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + '/Yanyubao/ShopApp/get_user_data_option',
-					data: post_data,
-					success: function(res) {
-						console.log('that.index_list', res);
-
-						if (res.data.code == 1) {
-
-							that.isShoucang = res.data.value;
-
-						}
-					},
-					fail: function(e) {
-						uni.showToast({
-							title: '网络异常！',
-							duration: 2000
-						});
-					},
-				});
 			},
 			//收藏
 			Shoucang: function(action, val) {
@@ -483,8 +485,7 @@
 					userid: userInfo.userid,
 					sellerid: this.abotapi.globalData.default_sellerid,
 					action: action,
-					checkstr: userInfo.checkstr,
-					val: val,
+					checkstr: userInfo.checkstr,					
 					xianmaishangid: this.current_shang_detail.current_xianmai_shangid,
 				}
 
