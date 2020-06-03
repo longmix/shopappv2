@@ -46,7 +46,7 @@
 					<!-- content -->
 					<view class="carrier" :class="[typeClass=='shop'?theIndex==index?'open':oldIndex==index?'close':'':'']" @touchstart="touchStart(index,$event)" @touchmove="touchMove(index,$event)" @touchend="touchEnd(index,$event)">
 						<view class="left">
-							<image :src="row.img"></image>
+							<image :src="row.img_list[0].picture"></image>
 						</view>
 						<view class="right">
 							<view class="name">
@@ -116,6 +116,11 @@
 				this.getMyFavorite();		
 				
 			},
+			
+			getgoods(){
+				console.log('getgoods===');
+			},
+			
 			// 获取商品收藏
 			getCollectionProducts(){
 				var userInfo = this.abotapi.get_user_info();
@@ -166,6 +171,8 @@
 						if(res.data.code == 1){
 							
 							this.shopList = res.data.data
+							
+							console.log('shopList===',this.shopList)
 						}
 					},
 					fail: function (e) {
@@ -182,6 +189,9 @@
 				if(this.typeClass==type){
 					return ;
 				}
+				
+				type=='goods' ? this.getCollectionProducts() : this.getMyFavorite();
+				
 				uni.pageScrollTo({
 					scrollTop:0,
 					duration:0
@@ -277,6 +287,42 @@
 					},
 				});
 			},
+			
+			deleteFavorite(id,List){
+				this.abotapi.abotRequest({
+					url: this.abotapi.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/my_favorite',
+					method: 'post',
+					data: {
+						userid: userInfo.userid,
+						sellerid: this.abotapi.globalData.default_sellerid,
+						action: action,
+						checkstr: userInfo.checkstr,
+						val: val,
+						xianmaishangid: this.current_shang_detail.current_xianmai_shangid,
+					},
+					header: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					},
+					success: function(res) {
+						console.log('that.index_list', res);
+				
+						if (res.data.code == 1) {
+				
+							uni.showToast({
+								title: res.data.msg,
+							})
+							that.get_user_data_option();
+						}
+					},
+					fail: function(e) {
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+					},
+				});
+			},
+			
 			
 			discard() {
 				//丢弃
