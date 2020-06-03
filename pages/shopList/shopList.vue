@@ -245,7 +245,7 @@
 			});
 			 
 			
-			uni.removeStorageSync('locationData');
+			locationapi.get_location_remove();
 			uni.removeStorageSync('shop_location_list');
 			
 			that.abotapi.get_xianmaishang_setting_list_remove();

@@ -41,11 +41,10 @@
 				<!-- <button style="padding-left: 0;padding-right: 0;" open-type="share">分享</button> -->
 				<!-- #endif -->
 				<!-- #ifdef H5 --> 
-				<view class="box" @tap="share">
+				<view class="box" @tap="share_shang_detail">
 					<view class="icon fenxiang"></view>
 					<view class="text">分享</view>
 				</view>
-				<button style="padding-left: 0;padding-right: 0;" @click="share_shang_detail">分享</button>
 				<!-- #endif -->
 				
 				
@@ -1250,6 +1249,17 @@ export default {
 		      }
 		  
 		    },
+			
+			//h5点击分享触发
+			share_shang_detail:function(){
+				console.log('==================>>>h5');
+				uni.showModal({
+					title:'请点击浏览器菜单中的分享按钮',
+					showCancel:false,
+				})
+				
+				return;
+			},
 	},
 	
 	onShareAppMessage: function () {
