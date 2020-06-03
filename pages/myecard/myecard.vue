@@ -1,5 +1,381 @@
 <template style="padding: 0upx;margin: 0upx;">
 	<view>
+		<view :style="[{'background-image':'url('+ card_data_option.card_bg_img +')' }]" class="c">
+			<view class="a">
+				<image :src = "card_data_option.card_logo" style="width: 100upx;height: 100upx;border-radius: 50%;overflow: hidden;"></image>
+				<view style="margin-left:30rpx;line-height: 50rpx;">
+					<view>{{card_data_option.card_name}}</view>
+					<view>{{card_data_option.card_desc}}</view>
+				</view>
+			</view>
+			<view style="text-align: right;padding-right: 57px;color: #000000;margin-top:165upx;padding-right: 170upx;">
+				<b>{{card_data_option.card_no}}</b>
+			</view>
+		</view>
+		
+		<view style="text-align: center;">
+			<view class="mid-tips" style="border-right: 1rpx solid #c5c5c5;">
+				<view class="mid-level">会员等级</view>
+				<view>{{card_data_option.level_name}}</view>
+			</view>
+			
+			<view class="mid-tips" style="border-right: 1rpx solid #c5c5c5;">
+				<view class="mid-level">卡内余额</view>
+				<view>{{card_data_option.balance}}</view>
+			</view>
+			
+			<view class="mid-tips" style="border-right: 1rpx solid #c5c5c5;">
+				<view class="mid-level">可用积分</view>
+				<view>{{card_data_option.member_score}}</view>
+			</view>
+			
+			<view class="mid-tips">
+				<view class="mid-level">优惠券</view>
+				<view>{{card_data_option.youhui_count}}</view>
+			</view>
+			
+		</view>
+		
+		<view class="mid-imgs" v-for="(item, index)  in get_ecard_option_list" :key="index">
+			<image src="../../static/img/VIP.png"></image>
+			<view class="mid-nm">最新资讯</view>
+		</view>
+		<view class="mid-bdmw">
+			<image src="https://yanyubao.tseo.cn/Tpl/static/images/ecard_module_icon/fukuan.svg"></image>
+		</view>
+		
+		
+		
+		
+				
+				
+
+		<!--商户头条start-->
+		<view class="toutiao" v-if="ecard_option_list.ecard_show_toutiao == 1"> 
+		   
+			 <view class="toutiao_left" @tap="touTiaoList" >
+			 <image src="ecard_option_list.ecard_shop_toutiao_icon"></image>
+		</view>
+
+		<block v-if="ecard_option_list.ecard_shop_toutiao_flash_line == 1">
+		   <swiper class="toutiao_right" vertical="true" autoplay="true" circular="true" interval="2000" v-if="!ecard_shop_toutiao_flash_line||ecard_shop_toutiao_flash_line!=2">
+			<swiper-item v-for="(item,index) in articlelist">
+			<view class="toutiao_right" @tap="touTiaoList" :data-id="toutiao_item_id">
+			<text>{{item.title}}</text>
+			</view>
+			</swiper-item>
+		</swiper>
+		</block>
+
+		<block v-if="ecard_option_list.ecard_shop_toutiao_flash_line==2">
+		<swiper class="toutiao_right2" vertical="true" autoplay="true" circular="true" interval="2000" >
+			<swiper-item v-for="(item,index) in articlelist2" @tap="touTiaoList">
+				<view>•  {{item[0].title}}</view>
+				<view>•  {{item[1].title}}</view>
+			</swiper-item>
+		</swiper>
+		</block>
+
+		   </view>
+		   <!--商户头条end-->
+
+		<!-- 九宫格图标 begin -->
+		<view class='icon-box'>
+		 <navigator url="pages/help/help" open-type="navigate" v-if="ecard_option_list.ecard_nav_show_toutiao == 1">
+		  <view class='icon-list'>
+		   <image src='https://yanyubao.tseo.cn/Tpl/static/images/ecard_module_icon/zixun.svg'></image>
+		   <view class='icon-text'><text>最新资讯</text></view>
+		  </view>
+		 </navigator>
+
+
+		 <navigator url="../payment/payment" open-type="navigate" v-if="ecard_option_list.ecard_nav_show_maidan == 1">
+		  <view class='icon-list'>
+		   <image src='https://yanyubao.tseo.cn/Tpl/static/images/ecard_module_icon/fukuan.svg'></image>
+		   <view class='icon-text'><text>余额付款</text></view>
+		  </view>
+		 </navigator>
+		 
+		 
+
+		 <navigator url="pages/balance_log/balance_log" open-type="navigate" v-if="ecard_option_list.ecard_nav_show_balance_log == 1">
+		  <view class='icon-list'>
+		   <image src='https://yanyubao.tseo.cn/Tpl/static/images/ecard_module_icon/yue.svg'></image>
+		   <view class='icon-text'><text>余额明细</text></view>
+		  </view>
+		 </navigator>
+
+		  <navigator url="pages/score/score" open-type="navigate" v-if="ecard_option_list.ecard_nav_show_score_log == 1">
+		  <view class='icon-list'>
+		   <image src='https://yanyubao.tseo.cn/Tpl/static/images/ecard_module_icon/jifen.svg'></image>
+		   <view class='icon-text'><text>积分记录</text></view>
+		  </view>
+		 </navigator>
+
+		 <navigator url="pages/mycoupons/mycoupons" open-type="navigate" v-if="ecard_option_list.ecard_nav_show_youhui_list == 1">
+		  <view class='icon-list'>
+		   <image src='https://yanyubao.tseo.cn/Tpl/static/images/ecard_module_icon/youhuiquan.svg'></image>
+		   <view class='icon-text'><text>优惠列表</text></view>
+		  </view>
+		 </navigator>
+
+		  <navigator url="pages/coupons/coupons" open-type="navigate" v-if="ecard_option_list.ecard_nav_show_youhui_new == 1">
+		  <view class='icon-list'>
+		   <image src='https://yanyubao.tseo.cn/Tpl/static/images/ecard_module_icon/youhui.svg'></image>
+		   <view class='icon-text'><text>最新优惠</text></view>
+		  </view>
+		 </navigator>
+
+		 <navigator url="../score_shop/score_shop" open-type="navigate" v-if="ecard_option_list.ecard_nav_show_score_shop == 1">
+		  <view class='icon-list'>
+		   <image src='https://yanyubao.tseo.cn/Tpl/static/images/ecard_module_icon/shangcheng.svg'></image>
+		   <view class='icon-text'><text>积分商城</text></view>
+		  </view>
+		 </navigator>
+		 <navigator url="../biz_card/biz_card" open-type="navigate" v-if="ecard_option_list.ecard_nav_show_biz_card == 1">
+		  <view class='icon-list'>
+		   <image src='https://yanyubao.tseo.cn/Tpl/static/images/ecard_module_icon/mingpian.svg'></image>
+		   <view class='icon-text'><text>电子名片</text></view>
+		  </view>
+		 </navigator>
+
+		 <navigator url="../userinfo/userinfo" open-type="navigate" v-if="ecard_option_list.ecard_nav_show_profile == 1">
+		  <view class='icon-list'>
+		   <image src='https://yanyubao.tseo.cn/Tpl/static/images/ecard_module_icon/shezhi.svg'></image>
+		   <view class='icon-text'><text>个人资料</text></view>
+		  </view>
+		  </navigator>
+
+		  <navigator url="../about/about" open-type="navigate" v-if="ecard_option_list.ecard_nav_show_aboutus == 1">
+		  <view class='icon-list'>
+		   <image src='https://yanyubao.tseo.cn/Tpl/static/images/ecard_module_icon/guanyuwomen.svg'></image>
+		   <view class='icon-text'><text>关于我们</text></view>
+		  </view>
+		 </navigator>
+
+
+		</view>
+
+		<view class='icon-box'>
+		 
+		 
+
+
+		  <view  class='icon-list' v-if="ecard_option_list.ecard_show_kefu_button==1">
+			<view v-if="ecard_option_list.ecard_kefu_button_type == 1" @tap="shangPhoneClick2">
+			  <image src='https://yanyubao.tseo.cn/Tpl/static/images/ecard_module_icon/icon-6.png'></image>
+			  <view class='icon-text'><text>联系客服</text></view>
+			</view>
+			<view v-elif="ecard_option_list.ecard_kefu_button_type == 2" @tap="goToOtherPage">
+			  <image src='https://yanyubao.tseo.cn/Tpl/static/images/ecard_module_icon/icon-6.png'></image>
+			  <view class='icon-text'><text>联系客服</text></view>
+			</view>
+			<view v-elif="ecard_option_list.ecard_kefu_button_type == 3">
+			  <button class="u-go-home2" openType="contact" :style="{'background-color':unia_kefu_bg_color}">
+				  <image src='https://yanyubao.tseo.cn/Tpl/static/images/ecard_module_icon/icon-6.png'></image>
+				  <view class='icon-text'><text>联系客服</text></view>
+			  </button>     
+			</view>
+		  </view>
+		</view>
+
+		<!-- 九宫格图标 end -->
+
+		<div style="clear:both;display:block; height:30rpx;">
+
+		</div>
+
+
+		<!-- 商户风采图片 begin -->
+		<view class="supplier-image-list" v-if="shanghu_img_list && ecard_option_list.ecard_show_index_icon == 1">
+		  <!-- <view class="supplier-border"></view> -->
+			   <image  :src='item' class="supplier-img"  mode="widthFix" v-for="(item,index) in shanghu_img_list" key="index"></image>    
+		</view>
+		<!-- 商户风采图片 end -->
+
+
+
+		<!-- 新增插件 begin -->
+		<view :class="plugin_list">
+		  <block v-for="(item,index) in plugin_data_list" key="item.id" >
+			<navigator :url="item.url" open-type="navigate" v-if="item.type == 'url'">
+			  <view class="weui_cell">
+				<view class="weui_cell_bd">
+				  <view class="weui_cell_bd_p" :style="item.title_style">{{item.title}}</view>
+				</view>
+
+				<view class="with_arrow"></view>
+			  </view>
+			</navigator>
+
+			<view  v-elif="item.type == 'tel'" class="weui_cell" @tap="callTel" :data-tel="item.tel">
+			  <view class="weui_cell_bd">
+				<view class="weui_cell_bd_p" :style="item.title_style"> {{item.title}} </view>
+			  </view>
+
+			  <view class="with_arrow"></view>
+			</view>
+
+			<view  v-elif="item.type == 'miniprog'" class="weui_cell" @tap="toOther" :data-envVersion="item.envVersion" :data-appid="item.appId" :data-path="item.path">
+			  <view class="weui_cell_bd">
+				<view class="weui_cell_bd_p" :style="item.title_style"> {{item.title}} </view>
+			  </view>
+
+			  <view class="with_arrow"></view>
+			</view>
+
+		  </block>
+
+		</view>
+		<!-- 新增插件 end -->
+
+
+ 
+		<view class="info_list">
+		<!--
+		  <navigator url="../payment/payment" open-type="navigate">
+			<view class="weui_cell">
+			  <view class="weui_cell_bd">
+				<view class="weui_cell_bd_p"> 付款和申请积分</view>
+			  </view>
+			  <view class="badge" style="background: #FFA500;"></view>
+			  <view class="with_arrow"></view>
+			</view>
+		  </navigator>
+		  -->
+		  <navigator url="../balance_log/balance_log" open-type="navigate">
+			<view class="weui_cell">
+			  <view class="weui_cell_bd">
+				<view class="weui_cell_bd_p"> 余额明细 </view>
+			  </view>
+			  <view class="badge">{{score_log_count}}</view>
+			  <view class="with_arrow"></view>
+			</view>
+		  </navigator>
+		<!--
+			<navigator url="../score_shop/score_shop" open-type="navigate">
+			<view class="weui_cell">
+			  <view class="weui_cell_bd">
+				<view class="weui_cell_bd_p"> 积分商城 </view>
+			  </view>
+			  <view></view>
+			  <view class="with_arrow"></view>
+			</view>
+		  </navigator>
+		-->
+		  <navigator url="../score/score" open-type="navigate">
+			<view class="weui_cell">
+			  <view class="weui_cell_bd">
+				<view class="weui_cell_bd_p"> 积分记录 </view>
+			  </view>
+			  <view class="badge">{{score_log_count}}</view>
+			  <view class="with_arrow"></view>
+			</view>
+		  </navigator>
+		  <navigator url="../mycoupons/mycoupons" open-type="navigate">
+			<view class="weui_cell">
+			  <view class="weui_cell_bd">
+				<view class="weui_cell_bd_p"> 我的优惠 </view>
+			  </view>
+			  <view class="badge">{{youhui_count}}</view>
+			  <view class="with_arrow"></view>
+			</view>
+		  </navigator>
+		  <navigator url="../coupons/coupons" open-type="navigate">
+			<view class="weui_cell">
+			  <view class="weui_cell_bd">
+				<view class="weui_cell_bd_p"> 领优惠券 </view>
+			  </view>
+			  <view class="badge">{{youhui_new_count}}</view>
+			  <view class="with_arrow"></view>
+			</view>
+		  </navigator>
+		  <!--<navigator url="">
+					<view class="weui_cell">               
+						<view class="weui_cell_bd">
+							<view class="weui_cell_bd_p"> 我的红包 </view>
+						</view>
+						<view  class="badge">{{hongbao_count}}</view>
+						<view class="with_arrow"></view>
+					</view>
+				</navigator>
+
+		  <navigator url="../about/about" open-type="navigate">
+			<view class="weui_cell">
+			  <view class="weui_cell_bd">
+				<view class="weui_cell_bd_p"> 关于我们 </view>
+			  </view>
+			  <view class="with_arrow"></view>
+			</view>
+		  </navigator>
+		-->
+		</view>
+
+		<view class="info_list">
+		  <navigator v-if="ecard_option_list.ecard_show_index_swiper == 1" url="../mycard/mycard" open-type="navigate">
+			<view class="weui_cell">
+			  <view class="weui_cell_bd">
+				<view class="weui_cell_bd_p"> 会员卡列表 </view>
+			  </view>
+
+			  <view class="with_arrow"></view>
+			</view>
+		  </navigator>
+
+		  <navigator url="../about_applet/about_applet" open-type="navigate">
+			<view class="weui_cell">
+			  <view class="weui_cell_bd">
+				<view class="weui_cell_bd_p"> 关于小程序 </view>
+			  </view>
+
+			  <view class="with_arrow"></view>
+			</view>
+		  </navigator>
+
+
+
+		</view>
+
+		<view style='font-size:15px; margin:10px;position:relative;' @tap='shangPhoneClick' v-if="ecard_option_list.ecard_show_index_phone == 1">
+		 <image src="../../static/img/mobile.png" style="width:30px;height:30px;margin-left:-5px;"></image>
+		  <view style='position:absolute;top:5px;left:35px;'>{{shang_telephone}}</view>
+		</view>
+
+		<view style='font-size:15px; margin:10px;position:relative;' v-if="ecard_option_list.ecard_show_index_address == 1">
+		  <image src="https://yanyubao.tseo.cn/Tpl/static/images/ecard_module_iconfont-shouhuodizhi.png" style="width:25px;height:25px;"></image>
+
+		  <view style='position:absolute;top:-5px;left:35px; font-size:13px;' @tap="openLocation">{{shang_address}}</view>
+		</view>
+
+
+		<view style='font-size:15px; margin:10px;position:relative;' v-if="ecard_option_list.ecard_show_copyright_text == 1">
+		 
+		  <view style='position:absolute;top:10px;text-align: center;width: 100%;color: #666;' >Copyright © {{ecard_option_list.ecard_copyright_text}}</view>
+		</view>
+
+
+		<view :class="changefootnav"   @tap="payMoney"><!-- :style="{'border': solid 2rpx ecard_option_list.ecard_shop_nav_bg_color;'background-color':ecard_option_list.ecard_shop_nav_bg_color;}" -->
+		  <!-- <image src="../../images/fk.png" style="width:100%;height:100%;"></image> -->
+		  <image v-if="ecard_option_list.ecard_shop_nav_font_color == '#000000'"
+			src="https://yanyubao.tseo.cn/Tpl/static/images/ecard_module_icon/fukuan3.svg" style="width:50px;height:50px;margin: 5px;" />
+		  <image src="https://yanyubao.tseo.cn/Tpl/static/images/ecard_module_icon/fukuan2.svg" style="width:50px;height:50px;margin: 5px;" />
+
+		</view>
+
+
+		<view style="display:block; height:50rpx;">
+		</view>
+
+
+
+
+
+
+		
+		
+		
+		
+
 	</view>
 </template>
 
@@ -10,16 +386,287 @@
 			return {
 				card_data_option:[],
 				get_ecard_option_list:[],
-				toutiao_item_id:''
+				toutiao_item_id:'',
+				mode:'aspectFit',
+				userInfo: {},
+				headlineItem :'电子会员卡',
+				hidden: true,
+				nocancel: false,
+				changefootnav:'footnav',
+				plugin_list:'',
+				shanghu_img_list:'',
+				plugin_data_list:'',
+				score_log_count:'',
+				youhui_count:'',
+				youhui_new_count:'',
+				
 			}
 		},
-		onLoad(option){
-			
-		
-		
+		onLoad(options){
 			
 			this.abotapi.set_shop_option_data(this, this.callback_function_shop_option_data);
 			
+			
+			
+			    //console.log('111111111111111111:' +app.globalData.xiaochengxu_appid);
+			
+			    uni.setNavigationBarTitle({
+			      title: this.abotapi.globalData.shop_name
+			    })
+			
+			    // const accountInfo = uni.getAccountInfoSync()
+			    // console.log(accountInfo);
+			    // console.log(accountInfo.miniProgram.appId) // 小程序 appId
+			    // console.log(accountInfo.plugin.appId) // 插件 appId
+			    // console.log(accountInfo.plugin.version) // 插件版本号， 'a.b.c' 这样的形式
+			
+			    var that = this
+			    
+			    //console.log(encodeURIComponent('https://yanyubao.tseo.cn/unia/?sellerid=pQNNmSkaq'));
+			    //console.log(decodeURIComponent(encodeURIComponent('https://yanyubao.tseo.cn/unia/?sellerid=pQNNmSkaq')));return;
+			    
+			    //请求服务器,刷新卡券信息
+			    console.log('网页参数如下:');
+			    console.log(options); //console.log(options.sellerid);
+			
+			    var q = options.q;
+			    var sellerid = null;
+			
+			    //q = 'https%3A%2F%2Fyanyubao.tseo.cn%2Funia%2F%3Fsellerid%3DpXzizSkVa';
+			
+			    //console.log(typeof(q));
+			    if (typeof(q) != 'undefined') {
+			      console.log('获取到带参二维码参数q：'+q);
+			      q = decodeURIComponent(q);
+			      console.log('decodeURI转码后的q：'+q);
+			
+			      sellerid = q.replace('https://yanyubao.tseo.cn/unia/?sellerid=', '');
+			      if(sellerid.length > 20){
+			        sellerid = sellerid.replace('https%3A%2F%2Fyanyubao.tseo.cn%2Funia%2F%3Fsellerid%3D', '');
+			      }
+			      
+			      console.log('从q参数得到的sellerid：'+sellerid);
+			      
+			    }
+			    
+			    console.log('sellerid 01：' + sellerid);
+			    //if (!sellerid && typeof (sellerid) != "undefined" && sellerid != 0){
+			    if (!sellerid) {
+			      sellerid = options.sellerid;
+			      console.log('sellerid 02：' + sellerid);
+			      
+			    }
+			
+			    if (!sellerid) {
+			      sellerid = options.scene;
+			      console.log('sellerid 03：' + sellerid);
+			
+			    }
+			
+			    if (!sellerid) {
+			      sellerid = this.abotapi.get_sellerid();
+			      console.log('sellerid 04：' + sellerid);
+			    }
+			
+			    console.log('sellerid 05：' + sellerid);
+			
+			    if(!sellerid){
+			      console.log('!!!!!!缺少商户ID，使用默认的' + this.abotapi.globalData.default_sellerid);
+			      /*uni.navigateTo({
+			        url: '../index/index?q=' + encodeURIComponent('https://yanyubao.tseo.cn/unia/?sellerid=' + app.globalData.default_sellerid)
+			      });
+			      return;*/
+			
+			      sellerid = this.abotapi.globalData.default_sellerid;
+			      
+			    }
+			
+			    //==============读取扩展配置==============
+			    let extConfig = uni.getExtConfigSync ? uni.getExtConfigSync() : {}
+			    if(extConfig.force_sellerid_flag == 1){
+			      sellerid = extConfig.force_sellerid_value;
+			    }
+			    //console.log('0000000000000000000000000000:' + extConfig.force_sellerid_value);
+			
+			    //=======================End============
+			    this.abotapi.globalData.sellerid = sellerid
+			    this.abotapi.set_sellerid(sellerid);
+			    console.log('当前sellerid:'+sellerid+"，来自请求"+q);
+			       
+			/*
+			    var sellerid = options.sellerid;
+			    if (typeof(sellerid) == 'undefined') {
+			      uni.navigateTo({
+			        url: '../index/index?sellerid=pQNNmSkaq'
+			      })      
+			    }*/
+			    
+			    //调用应用实例的方法获取全局数据
+			    console.log("index:onLoad:this.abotapi.getUserInfo:");
+			
+			    var userInfo = this.abotapi.get_user_info();
+			
+			    console.log(userInfo);
+			    console.log(83838383)
+			    //更新数据
+			  
+			      that.userInfo = userInfo;
+			 
+			
+			
+			    //检查用户是否绑手机号码 
+			    if ((!userInfo) || (!userInfo.userid) || (userInfo.userid == 0)) {
+					
+			      that.hidden = false;
+			    
+			    }
+			
+			    if (!userInfo){
+			      userInfo = new Object();
+			      userInfo.uwid = 0;
+			      userInfo.userid = 0;
+			      userInfo.checkstr = '';
+			
+			    }
+			
+			
+			
+			   this.abotapi.globalData.sellerid = sellerid
+			
+			    console.log("准备获取uwid[" + this.abotapi.globalData.userInfo.uwid + "]的商户[" + this.abotapi.globalData.sellerid + "]会员卡信息");
+			
+			    uni.showLoading({
+			      title: '数据加载中……',
+			    });
+			
+			    var url = this.abotapi.globalData.yanyubao_server_url + '/index.php?g=Yanyubao&m=Xiaochengxu&a=get_user_card';
+			    var data = {
+			      sellerid: sellerid,
+			      checkstr: userInfo.checkstr,
+			      uwid: userInfo.uwid,
+			      userid: userInfo.userid,
+			      //data_unia_str: encodeURI(JSON.stringify(app.globalData.userInfo))  //用于更新服务器端用户的头像和昵称
+			    };
+			
+			    var cbSuccess = function (res) {
+			      uni.hideLoading();
+			
+			      console.log('8888888888888888',res);
+			
+			      if (res.data.code == -1) {
+			        //删除本地存储的用户数据
+			        this.abotapi.del_user_info();
+			
+			        //console.log(app.get_user_info());
+			        //console.log(app.globalData.userInfo);
+			        console.log('asaaaaaaaaaaaaaaaaaaa');
+			
+			        uni.redirectTo({
+			          url: '../help/help'
+			        });
+			        return;
+			      }
+			      else if (res.data.code == 1) {
+			        console.log(22222222222222222222);
+			        console.log(res.data.data.card_name);
+			        var card_desc = res.data.data.card_desc
+			        if (card_desc==null){
+			          card_desc ='';
+			        }
+			        
+			          that.card_no = res.data.data.card_no;
+			          that.card_name = res.data.data.card_name;
+			          that.card_name_color = res.data.data.card_name_color;
+			          that.card_desc = card_desc;
+			          that.card_desc_color = res.data.data.card_desc_color;
+			          that.level_name = res.data.data.level_name;
+			          that.member_score = res.data.data.member_score;
+			          that.quan_count = res.data.data.youhui_count;
+			          that.youhui_count =  res.data.data.youhui_count;
+			          that.score_log_count =  res.data.data.score_log_count;
+			          that.youhui_new_count =  res.data.data.youhui_new_count;
+			          that.hongbao_count =  res.data.data.hongbao_count;
+			          that.card_no_color =  res.data.data.card_no_color;
+			          that.card_bg_img =  res.data.data.card_bg_img;
+			          that.card_logo =  res.data.data.card_logo;
+			          that.balance =  res.data.data.balance;
+			          that.shang_name =  res.data.data.shang_name;
+			          that.shang_address =  res.data.data.shang_address;
+			          that.shang_telephone =  res.data.data.shang_telephone;
+			          //copyright_info: res.data.data.copyright_info,
+			          that.latitude =  res.data.data.latitude;
+			          that.longitude =  res.data.data.longitude;
+			      
+			 
+			        if (res.data.data.shang_plugin_list) {
+			
+			         
+			            that.plugin_list =  'plugin_list';
+			            that.plugin_data_list = res.data.data.shang_plugin_xiaochengxu_list;
+			    
+			        }
+			
+			        uni.request({
+			          url: this.abotapi.globalData.http_server + '/index.php?g=Yanyubao&m=Xiaochengxu&a=about_supplier',
+			          data: {
+			            sellerid: this.abotapi.get_sellerid(),
+			            checkstr: userInfo.checkstr,
+			            uwid: userInfo.uwid,
+			            userid: userInfo.userid
+			          },
+			          header: {
+			            "Content-Type": "application/x-www-form-urlencoded"
+			          },
+			          method: "POST",
+			          success: function (res) {
+			            uni.hideLoading();
+			
+			
+			            console.log(res.data);
+			            // that.setData({
+			            //   supplier_info: res.data.data,
+			            //   currentTab: 0
+			            // });
+			
+			            if(res.data.data && res.data.data.shanghu_image_list){
+			              
+			                that.shanghu_img_list =  res.data.data.shanghu_image_list;
+			            
+			            }
+			          }
+			        })
+			
+			        uni.setNavigationBarTitle({
+			          title: that.data.shang_name //页面标题为服务器返回数据
+			        })
+			
+			        uni.setStorage({
+			          key: "supplierInfo",
+			          data: res.data.data
+			        })
+			
+			        this.abotapi.globalData.userInfo.usersn = res.data.data.usersn;
+			        
+			        console.log('获取会员卡信息成功：');
+			        console.log(this.abotapi.globalData.userInfo);
+			      }
+			
+			    };
+			    var cbError = function (res) {
+			      uni.hideLoading();
+			    };
+			   // this.abotapi.httpPost(url, data, cbSuccess, cbError);
+			    //===========End============
+			
+			
+			
+			
+			    //请求服务器，并根据服务器返回，做不同的页面显示
+			    this.abotapi.set_option_list_str(this, this.callback_function);
+			
+			    //app.set_option_list_str(null, app.getColor());
+			
+			  
 			
 		},
 	//调用接口
@@ -30,7 +677,7 @@
 			
 			that.abotapi.getColor();
 			
-			that.card_data_option = option_data.card_data;
+			// that.card_data_option = option_data.card_data;
 			
 			this.abotapi.abotRequest({
 			    url:that.abotapi.globalData.yanyubao_server_url+'index.php?g=Yanyubao&m=Xiaochengxu&a=get_user_card',
@@ -40,10 +687,13 @@
 					sellerid : 'pQNNmSkaq'
 				},
 			    success(res){
-			        console.log("aaaaaaa",res)
+			        console.log("et_user_car==============",res)
 					
 					var data = res.data.data;
 					that.card_data_option = data;
+					
+					
+					// console.log("card_data_option.card_bg_img",that.card_data_option.card_bg_img)
 			    },
 			    fail(error){
 			        console.log("bbbbbbbbbbbb",error)
@@ -99,7 +749,7 @@
 		      title: '信息读取中……',
 		    });
 		
-		    var url = this.abotapi.globalData.http_server + '/index.php?g=Yanyubao&m=Xiaochengxu&a=one_click_login_str';
+		    var url = this.abotapi.globalData.http_server + 'index.php?g=Yanyubao&m=Xiaochengxu&a=one_click_login_str';
 		    var data = {
 		      uwid: userInfo.uwid,
 		      sellerid: this.abotapi.get_sellerid(),
@@ -165,266 +815,7 @@
 		      latitude: Number(this.data.latitude)
 		    })
 		  },
-		  onLoad: function (options) {
-		    //console.log('111111111111111111:' +app.globalData.xiaochengxu_appid);
-		
-		    uni.setNavigationBarTitle({
-		      title: this.abotapi.globalData.shop_name
-		    })
-		
-		    // const accountInfo = uni.getAccountInfoSync()
-		    // console.log(accountInfo);
-		    // console.log(accountInfo.miniProgram.appId) // 小程序 appId
-		    // console.log(accountInfo.plugin.appId) // 插件 appId
-		    // console.log(accountInfo.plugin.version) // 插件版本号， 'a.b.c' 这样的形式
-		
-		    var that = this
-		    
-		    //console.log(encodeURIComponent('https://yanyubao.tseo.cn/unia/?sellerid=pQNNmSkaq'));
-		    //console.log(decodeURIComponent(encodeURIComponent('https://yanyubao.tseo.cn/unia/?sellerid=pQNNmSkaq')));return;
-		    
-		    //请求服务器,刷新卡券信息
-		    console.log('网页参数如下:');
-		    console.log(options); //console.log(options.sellerid);
-		
-		    var q = options.q;
-		    var sellerid = null;
-		
-		    //q = 'https%3A%2F%2Fyanyubao.tseo.cn%2Funia%2F%3Fsellerid%3DpXzizSkVa';
-		
-		    //console.log(typeof(q));
-		    if (typeof(q) != 'undefined') {
-		      console.log('获取到带参二维码参数q：'+q);
-		      q = decodeURIComponent(q);
-		      console.log('decodeURI转码后的q：'+q);
-		
-		      sellerid = q.replace('https://yanyubao.tseo.cn/unia/?sellerid=', '');
-		      if(sellerid.length > 20){
-		        sellerid = sellerid.replace('https%3A%2F%2Fyanyubao.tseo.cn%2Funia%2F%3Fsellerid%3D', '');
-		      }
-		      
-		      console.log('从q参数得到的sellerid：'+sellerid);
-		      
-		    }
-		    
-		    console.log('sellerid 01：' + sellerid);
-		    //if (!sellerid && typeof (sellerid) != "undefined" && sellerid != 0){
-		    if (!sellerid) {
-		      sellerid = options.sellerid;
-		      console.log('sellerid 02：' + sellerid);
-		      
-		    }
-		
-		    if (!sellerid) {
-		      sellerid = options.scene;
-		      console.log('sellerid 03：' + sellerid);
-		
-		    }
-		
-		    if (!sellerid) {
-		      sellerid = this.abotapi.get_sellerid();
-		      console.log('sellerid 04：' + sellerid);
-		    }
-		
-		    console.log('sellerid 05：' + sellerid);
-		
-		    if(!sellerid){
-		      console.log('!!!!!!缺少商户ID，使用默认的' + this.abotapi.globalData.default_sellerid);
-		      /*uni.navigateTo({
-		        url: '../index/index?q=' + encodeURIComponent('https://yanyubao.tseo.cn/unia/?sellerid=' + app.globalData.default_sellerid)
-		      });
-		      return;*/
-		
-		      sellerid = this.abotapi.globalData.default_sellerid;
-		      
-		    }
-		
-		    //==============读取扩展配置==============
-		    let extConfig = uni.getExtConfigSync ? uni.getExtConfigSync() : {}
-		    if(extConfig.force_sellerid_flag == 1){
-		      sellerid = extConfig.force_sellerid_value;
-		    }
-		    //console.log('0000000000000000000000000000:' + extConfig.force_sellerid_value);
-		
-		    //=======================End============
-		    this.abotapi.globalData.sellerid = sellerid
-		    this.abotapi.set_sellerid(sellerid);
-		    console.log('当前sellerid:'+sellerid+"，来自请求"+q);
-		       
-		/*
-		    var sellerid = options.sellerid;
-		    if (typeof(sellerid) == 'undefined') {
-		      uni.navigateTo({
-		        url: '../index/index?sellerid=pQNNmSkaq'
-		      })      
-		    }*/
-		    
-		    //调用应用实例的方法获取全局数据
-		    console.log("index:onLoad:this.abotapi.getUserInfo:");
-		
-		    var userInfo = this.abotapi.get_user_info();
-		
-		    console.log(userInfo);
-		    console.log(83838383)
-		    //更新数据
-		  
-		      that.userInfo = userInfo;
 		 
-		
-		
-		    //检查用户是否绑手机号码 
-		    if ((!userInfo) || (!userInfo.userid) || (userInfo.userid == 0)) {
-				
-		      that.hidden = false;
-		    
-		    }
-		
-		    if (!userInfo){
-		      userInfo = new Object();
-		      userInfo.uwid = 0;
-		      userInfo.userid = 0;
-		      userInfo.checkstr = '';
-		
-		    }
-		
-		
-		
-		   this.abotapi.globalData.sellerid = sellerid
-		
-		    console.log("准备获取uwid[" + this.abotapi.globalData.userInfo.uwid + "]的商户[" + this.abotapi.globalData.sellerid + "]会员卡信息");
-		
-		    uni.showLoading({
-		      title: '数据加载中……',
-		    });
-		
-		    var url = this.abotapi.globalData.http_server + '/index.php?g=Yanyubao&m=Xiaochengxu&a=get_user_card';
-		    var data = {
-		      sellerid: sellerid,
-		      checkstr: userInfo.checkstr,
-		      uwid: userInfo.uwid,
-		      userid: userInfo.userid,
-		      //data_unia_str: encodeURI(JSON.stringify(app.globalData.userInfo))  //用于更新服务器端用户的头像和昵称
-		    };
-		
-		    var cbSuccess = function (res) {
-		      uni.hideLoading();
-		
-		      console.log(res);
-		
-		      if (res.data.code == -1) {
-		        //删除本地存储的用户数据
-		        this.abotapi.del_user_info();
-		
-		        //console.log(app.get_user_info());
-		        //console.log(app.globalData.userInfo);
-		        console.log('asaaaaaaaaaaaaaaaaaaa');
-		
-		        uni.redirectTo({
-		          url: '../help/help'
-		        });
-		        return;
-		      }
-		      else if (res.data.code == 1) {
-		        console.log(22222222222222222222);
-		        console.log(res.data.data.card_name);
-		        var card_desc = res.data.data.card_desc
-		        if (card_desc==null){
-		          card_desc ='';
-		        }
-		        
-		          that.card_no = res.data.data.card_no;
-		          that.card_name = res.data.data.card_name;
-		          that.card_name_color = res.data.data.card_name_color;
-		          that.card_desc = card_desc;
-		          that.card_desc_color = res.data.data.card_desc_color;
-		          that.level_name = res.data.data.level_name;
-		          that.member_score = res.data.data.member_score;
-		          that.quan_count = res.data.data.youhui_count;
-		          that.youhui_count =  res.data.data.youhui_count;
-		          that.score_log_count =  res.data.data.score_log_count;
-		          that.youhui_new_count =  res.data.data.youhui_new_count;
-		          that.hongbao_count =  res.data.data.hongbao_count;
-		          that.card_no_color =  res.data.data.card_no_color;
-		          that.card_bg_img =  res.data.data.card_bg_img;
-		          that.card_logo =  res.data.data.card_logo;
-		          that.balance =  res.data.data.balance;
-		          that.shang_name =  res.data.data.shang_name;
-		          that.shang_address =  res.data.data.shang_address;
-		          that.shang_telephone =  res.data.data.shang_telephone;
-		          //copyright_info: res.data.data.copyright_info,
-		          that.latitude =  res.data.data.latitude;
-		          that.longitude =  res.data.data.longitude;
-		      
-		 
-		        if (res.data.data.shang_plugin_list) {
-		
-		         
-		            that.plugin_list =  'plugin_list';
-		            that.plugin_data_list = res.data.data.shang_plugin_xiaochengxu_list;
-		    
-		        }
-		
-		        uni.request({
-		          url: this.abotapi.globalData.http_server + '/index.php?g=Yanyubao&m=Xiaochengxu&a=about_supplier',
-		          data: {
-		            sellerid: this.abotapi.get_sellerid(),
-		            checkstr: userInfo.checkstr,
-		            uwid: userInfo.uwid,
-		            userid: userInfo.userid
-		          },
-		          header: {
-		            "Content-Type": "application/x-www-form-urlencoded"
-		          },
-		          method: "POST",
-		          success: function (res) {
-		            uni.hideLoading();
-		
-		
-		            console.log(res.data);
-		            // that.setData({
-		            //   supplier_info: res.data.data,
-		            //   currentTab: 0
-		            // });
-		
-		            if(res.data.data && res.data.data.shanghu_image_list){
-		              
-		                that.shanghu_img_list =  res.data.data.shanghu_image_list;
-		            
-		            }
-		          }
-		        })
-		
-		        uni.setNavigationBarTitle({
-		          title: that.data.shang_name //页面标题为服务器返回数据
-		        })
-		
-		        uni.setStorage({
-		          key: "supplierInfo",
-		          data: res.data.data
-		        })
-		
-		        this.abotapi.globalData.userInfo.usersn = res.data.data.usersn;
-		        
-		        console.log('获取会员卡信息成功：');
-		        console.log(this.abotapi.globalData.userInfo);
-		      }
-		
-		    };
-		    var cbError = function (res) {
-		      uni.hideLoading();
-		    };
-		   this.abotapi.httpPost(url, data, cbSuccess, cbError);
-		    //===========End============
-		
-		
-		
-		
-		    //请求服务器，并根据服务器返回，做不同的页面显示
-		    this.abotapi.set_option_list_str(this, this.callback_function);
-		
-		    //app.set_option_list_str(null, app.getColor());
-		
-		  },
 		
 		  // callback_function callback_function callback_function
 		  callback_function: function (that, cb_params) {
@@ -484,7 +875,7 @@
 		
 		      //首页滚动广告
 		      uni.request({
-		        url: this.abotapi.globalData.http_server + '?g=Yanyubao&m=ShopAppunia&a=get_flash_ad_list',
+		        url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppunia&a=get_flash_ad_list',
 		        method: 'post',
 		        data: {
 		          sellerid: this.abotapi.get_sellerid(),
@@ -521,7 +912,7 @@
 		  initArticleList: function () {
 		    var that = this
 		    //=====更新商户头条=================
-		    var url = this.abotapi.globalData.http_weiduke_server + '?g=Home&m=Yanyubao&a=yingxiao';//+ app.globalData.sellerid;
+		    var url = this.abotapi.globalData.weiduke_server_url + '?g=Home&m=Yanyubao&a=yingxiao';//+ app.globalData.sellerid;
 		    var data = {
 		      id: 'seller',
 		      action: 'list',
@@ -546,12 +937,12 @@
 		
 		    
 		        _this.articlelist = res.data.data;
-		        _this.loading = !_this.data.loading;
+		        _this.loading = !_this.loading;
 		      
 		
-		      if (_this.data.ecard_option_list && 
-		        _this.data.ecard_option_list.ecard_shop_toutiao_flash_line &&
-		        (_this.data.ecard_option_list.ecard_shop_toutiao_flash_line == 2)) {  
+		      if (_this.ecard_option_list && 
+		        _this.ecard_option_list.ecard_shop_toutiao_flash_line &&
+		        (_this.ecard_option_list.ecard_shop_toutiao_flash_line == 2)) {  
 		        
 		          var list = res.data.data;
 		          var articlelist2 = [];
