@@ -1,0 +1,284 @@
+<template>
+	<view>
+		<view class="list-box clearfix" v-for=" (item,idx) in faquanList" :key="idx">
+		        <view class='list-con'> <!-- 001 -->
+		            <image class="list-avatar" :src="item.headlogo" ></image> 
+		            <view class="list-item">  <!-- 002 -->
+		                <view @tap="fanquaDianzan" :data-id="item.faquanid">  <!-- 003 -->
+		                    <view class="list-type">
+		                      <view class="list-zan-a" v-if="is_my_discover != 1">
+		
+		                        <image class='list-zan' :data-faquanid='item.faquanid' :data-index='idx' @tap="fanquaDianzan" :src="faquanList[idx].has_like == 0 ? '../../static/img/help/dianzan_grey.png' : '../../static/img/help/dianzan_red.png'"></image>
+		                        <view style="color:#707070;">{{item.like_num}}</view>
+		
+		                        <image @tap="fanquanCollect" :data-faquanid='item.faquanid' :data-index='idx' class='list-zan' :src="faquanList[idx].has_collect == 0 ? '../../static/img/help/star_off.png' : '../../static/img/help/star_on.png'"></image>
+		                        <view style="color:#707070;">{{item.collect_num}}</view>
+		
+		                      </view>
+		
+		                      
+		
+		                    </view>
+		                    <view class="list-name" :data-id="item.faquanid">{{item.username}}</view>               
+		                    <text class="list-des" @tap="copyText" :data-text="item.text" :data-id="item.faquanid">{{item.text}}</text>
+		
+		                    <view v-if="item.type == 0">  
+		                         <image v-for="(item2,index2) in item.img_or_video_list" :key="index2" lazy-load="true"  @tap='bigImg' mode="aspectFill" :data-index="idx" :data-index2="idx2"  class="list-image"  :src="item2.url"  :data-id="item.faquanid"></image>                        
+		                    </view>
+		
+		                    <view v-else>
+		                        <video v-for="(item2,index2) in item.img_or_video_list" :key="index2"
+		
+		                        :data-id="item2.imgid" :data-index="item2.index"
+		                        @tap='start_and_stop_other_videos' 
+		                        :src="item2.url"  :poster='item2.video_img'
+		                        controls="true"
+		                        @loadedmetadata="videometa"
+		                        style="{width:videometa_width_height_list[item2.index][0] + 'upx',height:videometa_width_height_list[item2.index][1] + 'upx'}"></video>
+		                        {{item2.index}}
+		                    </view>
+		                    
+		                </view>  <!-- End of 003  -->
+		                
+		                <view class="pb-time">{{item.createtime}}</view>
+		
+		
+		                <block v-if="is_my_discover_collection || is_my_discover">
+		                  <view class="" style="margin-left: 0;height: 40rpx;line-height: 40rpx;font-size: 26rpx;text-align: left;color:#666;">
+		                      
+		                      <block  v-if="(faquan_tag_status == 1) && (item.tag_count > 0) ">
+		                        <view><text style="font-weight:bold;">标签</text>  
+		                          <block v-for="(item,index) in tag" :key="index"  :data-index="index"
+		                              style="font-size: 26rpx;height: 30rpx;line-height: 30rpx;"><text style="margin-left:20rpx;">{{item3}}</text></block>
+		                        </view>
+		                        
+		                      </block>
+		                      
+		                  </view>
+		                </block>
+		                <block v-if="is_my_discover">
+		                  <view class="" style="margin-left: 0;height: 40rpx;line-height: 40rpx;font-size: 26rpx;text-align: left;color:#666;">
+		                      <view><text style="font-weight:bold;">点赞</text> <text style="margin-left:20rpx;">{{item.like_num}}</text>
+		                      </view>  
+		                  </view>
+		                  <view class="" style="margin-left: 0;height: 40rpx;line-height: 40rpx;font-size: 26rpx;text-align: left;color:#666;">
+		                      <view><text style="font-weight:bold;">收藏</text> <text style="margin-left:20rpx;">{{item.collect_num}}</text>
+		                      </view>  
+		                  </view>
+		                  <view class="" style="margin-left: 0;height: 40rpx;line-height: 40rpx;font-size: 26rpx;text-align: left;color:#666;">
+		                      <view><text style="font-weight:bold;">状态</text> <text style="margin-left:20rpx;">{{item.status_str}}</text>
+		                      </view>  
+		                  </view>
+		
+		                  <view class="" style="margin-left: 0;height: 40rpx;line-height: 40rpx;font-size: 26rpx;text-align: left;color:#666;" v-if="item.status != 1">
+		                      <view><text style="font-weight:bold;">备注</text> <text style="margin-left:20rpx;">{{item.memo}}</text>
+		                      </view>  
+		                  </view>
+		
+		                  <view class="" style="margin-left: 0;height: 40rpx;line-height: 40rpx;font-size: 26rpx;text-align: left;color:#666;">
+		                      <view><text style="font-weight:bold;">操作</text>
+		                        <block v-if="item.status == 4">
+		                        <text style="margin-left:20rpx; color:blue;" :data-faquanid='item.faquanid' data-status='1' @tap="change_faquan_status">显示</text>
+		                        </block>
+		                        <block>
+		                          <text style="margin-left:20rpx; color:blue;" :data-faquanid='item.faquanid' data-status='4' @tap="change_faquan_status">隐藏</text>
+		                        </block>
+		
+		                        <text style="margin-left:40rpx; color:blue;" :data-faquanid='item.faquanid' data-status='3' @tap="change_faquan_status">删除</text>
+		                      </view>  
+		                  </view>
+		
+		                </block>
+		                <block v-if="(is_my_discover_collection != 1) && (is_my_discover != 1)">
+		                
+		
+		                  <block  v-if="(faquan_tag_status == 1) && (item.tag_count > 0) ">
+		                    <view class="list-botton tab-con clearfix" style="margin-left: 0;height: 60rpx;line-height: 60rpx;">
+		                      <view class=""  v-for='(item,index) in tag' :key="index"  :data-index="index"
+		                          style="font-size: 26rpx;height: 30rpx;line-height: 30rpx;">{{item3}}</view>
+		                    </view>
+		                  </block>
+		
+		                </block>
+		
+		
+		
+		
+		            </view>  <!-- End of 002  -->
+		          </view> <!-- End of 001  -->
+		        
+		          <view style="clear:both;"></view>
+		
+		           <view v-if="!is_my_discover_collection && !is_my_discover" class="list-address fz-10 m-t-5"> <!-- 004  -->
+		              <view @tap="disabled ? '' : oneClickSave" class='download-con' 
+		                :data-index='idx' :data-type='item.type' 
+		                :style="{display:faquan_one_click_to_save_show}">
+		                <image class="download-img" src="../../static/img/download.png"></image>一键保存</view>
+		
+		
+		
+		              <!-- <view class="list-icon-text vm" bindtap='clickBtn' data-id="{{item.id}}">分享</view> -->
+		              
+		                <view class="share_box" >
+		                <image class="share-img" src="../../static/img/share.png"></image>
+		                  <view class="share_hide">
+		                    
+		                      <view style='width:74rpx;'>分享</view>
+		                    <button class="share" :data-id="item.faquanid" open-type="share"></button> 
+		                  </view>
+		                </view>
+		
+		          </view>
+		
+		
+		        </view>
+	</view>
+</template>
+
+<script>
+	export default {
+		name: "discover-list",
+		props: {
+			faquanList:'',
+			is_my_discover:0,
+			is_my_discover_collection:0,
+			faquan_tag_status:0,
+			disabled:false,
+		},
+		methods:{
+			fanquaDianzan:function(fanquaDianzan){
+				this.$emit('fanquaDianzan',fanquaDianzan);
+			},
+			copyText:function(copyText){
+				this.$emit('copyText',copyText);
+			},
+			bigImg:function(bigImg){
+				this.$emit('bigImg',bigImg);
+			},
+			start_and_stop_other_videos:function(e){
+				this.$emit('start_and_stop_other_videos',e);
+			},
+			videometa:function(e){
+				this.$emit('videometa',e);
+			},
+			change_faquan_status:function(e){
+				this.$emit('change_faquan_status',e);
+			},
+			oneClickSave:function(e){
+				this.$emit('oneClickSave',e);
+			},
+			fanquanCollect:function(e){
+				this.$emit('fanquanCollect',e);
+			}
+			
+		}
+	}
+</script>
+
+<style lang="scss">
+	.list-box {
+	  margin-top: 50rpx;
+	  padding:0 5%; 
+	  font-size:32rpx;
+	  border-bottom:20rpx solid #eee;
+	  padding-bottom:20rpx;
+	}
+	.list-con{
+	    border-bottom: 2rpx solid #eee;
+	}
+	.list-avatar {
+	  float: left;
+	  width: 30px;
+	  height: 30px;
+	  border-radius: 50%;
+	  margin-right: 10px;
+	}
+	.list-item {
+	  position: relative;
+	  padding: 10px 0;
+	  width:90%;
+	  margin-left:12%;
+	}
+	
+	.list-item::last {
+	  border: none;
+	}
+	.list-type {
+	  position: absolute;
+	  right: 0;
+	  top: 10px;
+	  color: #bfbfbf;
+	  display: flex;
+	  font-size:34rpx;
+	  align-items:center;
+	}
+	
+	.list-type-money {
+	  background: #ffa404;
+	  color: #fff;
+	}
+	.list-zan-a{
+	  display: flex;
+	  align-items:center;
+	}
+	.list-zan{
+	  width: 34rpx;
+	  height: 34rpx;
+	  margin-left: 20rpx
+	}
+	.list-name {
+	  height: 40rpx;
+	  line-height: 40rpx;
+	  font-size: 28rpx;
+	  color: #6798E9;
+	  font-weight: bold;
+	  overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+	}
+	.list-des {
+	  margin-top: 10px;
+	  line-height: 1.5;
+	  color: #444;
+	  font-size: 28rpx;
+	}
+	.list-image {
+	  margin-top: 10px;
+	  margin-right: 5px;
+	  width:190rpx;
+	  height: 190rpx;
+	}
+	.share-img{
+	  width:28rpx;
+	  height:28rpx;
+	}
+	.share_box{
+	width:100rpx;
+	height:60rpx;
+	float: right;
+	position: relative;
+	line-height:60rpx;
+	display:flex;
+	align-items:center;
+	}
+	.share_hide{
+	  width:62rpx;
+	  height:60rpx;
+	  position: absolute;
+	  overflow: hidden;
+	  top: 0;
+	  right: 0;
+	  color: #333;
+	  font-size:28rpx;
+	}
+	.share_hide image{
+	  width: 100%;
+	  height: 100%;
+	}
+	.share{
+	  width:70rpx;
+	  height:70rpx;
+	  position: absolute;
+	  top:-5rpx;
+	  left:-5rpx;
+	  background:transparent;
+	}
+</style>
