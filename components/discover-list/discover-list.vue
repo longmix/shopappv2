@@ -4,7 +4,7 @@
 		        <view class='list-con'> <!-- 001 -->
 		            <image class="list-avatar" :src="item.headlogo" ></image> 
 		            <view class="list-item">  <!-- 002 -->
-		                <view @tap="fanquaDianzan" :data-id="item.faquanid">  <!-- 003 -->
+		                <view :data-id="item.faquanid">
 		                    <view class="list-type">
 		                      <view class="list-zan-a" v-if="is_my_discover != 1">
 		
@@ -110,10 +110,10 @@
 		          <view style="clear:both;"></view>
 		
 		           <view v-if="!is_my_discover_collection && !is_my_discover" class="list-address fz-10 m-t-5"> <!-- 004  -->
-		              <view @tap="disabled ? '' : oneClickSave" class='download-con' 
+		              <view @tap="oneClickSave" class='download-con' 
 		                :data-index='idx' :data-type='item.type' 
 		                :style="{display:faquan_one_click_to_save_show}">
-		                <image class="download-img" src="../../static/img/download.png"></image>一键保存</view>
+		                <image class="download-img" src="../../static/img/download.png"></image>一键保存{{item.type}}</view>
 		
 		
 		
@@ -169,8 +169,13 @@
 			},
 			fanquanCollect:function(e){
 				this.$emit('fanquanCollect',e);
-			}
-			
+			},
+			onShareAppMessage:function(e){
+				this.$emit('onShareAppMessage',e);
+			},
+			img_or_video_download:function(e){
+				this.$emit('img_or_video_download',e);
+			},
 		}
 	}
 </script>

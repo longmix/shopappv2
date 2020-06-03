@@ -109,7 +109,10 @@
 		onPullDownRefresh:function(){
 			console.log(123465);
 			this.current_page = 1;
-			this.index_list = [];
+			if(this.is_get_article_list){
+				this.index_list = [];
+			}
+			
 			this.get_publish_list();
 			
 			

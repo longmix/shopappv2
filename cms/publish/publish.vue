@@ -26,8 +26,11 @@
 		  <view class='pub-btn-con'>
 		    <view class='pub-btn' @click="publishIdea">立即发布</view>
 		    <checkbox-group @change="checkBox" class="" v-if="faquan_xieyi_status=='1'">
-		      <label class='pub-xieyi'>
-		        <checkbox :value="checked"  :checked="checked"/>完成立即发布表示同意 
+			  <label class='pub-xieyi' v-if="faquan_xieyi_show_directly == 1">
+				<checkbox :value="checked"  :checked="checked"/>我已阅读并同意以下协议
+			  </label>
+		      <label class='pub-xieyi'  v-if="faquan_xieyi_show_directly == 0">
+		        <checkbox :value="checked"  :checked="checked"/>完成立即发布表示同意
 				<view @click='readAgreement' style='float:right'>《发布许可协议》</view> 
 		      </label>
 		    </checkbox-group >
@@ -47,9 +50,21 @@
 		
 		    </view>
 		    <view class="wx-popup-btn">
-		      <text class="btn-ok" bindtap='selectAgree'>同意协议</text>
+		      <text class="btn-ok" @click='selectAgree'>同意协议</text>
 		    </view>
 		  </view>
+		</view>
+		
+		<view class='' v-if="faquan_xieyi_show_directly == 1">
+		    <view class="wx-popup-title">{{faquan_xieyi_title}}</view>
+		    <view class="wx-popup-subtitle" style="display:none;"></view>
+		    <view class="wx-popup-con">
+		      
+		    <scroll-view scroll-y class="a-1" :scroll-left="scrollLeft" bindscrolltolower="lower" style="height: 600rpx;">     
+		     <text>{{faquan_xieyi_content}}</text>
+		    </scroll-view>  
+		    </view>
+		
 		</view>
 	</view>
 </template>
@@ -66,8 +81,10 @@
 				checked: true,
 				disable: false,
 				publishtype:'image',
-				faquan_xieyi_status:'',
+				faquan_xieyi_status:1,
 				faquan_xieyi_title:'',
+				faquan_xieyi_content:'',
+				faquan_xieyi_show_directly:1,
 				video:'',
 				xianmai_shangid:'',
 				orderid:'',
@@ -138,7 +155,7 @@
 		},
 		methods: {
 			callback_xieyi_content: function (that, cms_faquan_setting) {
-			
+			console.log('cms_faquan_setting',cms_faquan_setting);
 				that.abotapi.getColor();
 			    
 				if (!cms_faquan_setting) {
@@ -155,7 +172,7 @@
 			    }
 			
 			    if (cms_faquan_setting.faquan_xieyi_title) {
-			      
+			      console.log('cms_faquan_setting.faquan_xieyi_title',cms_faquan_setting.faquan_xieyi_title);
 					that.faquan_xieyi_title = cms_faquan_setting.faquan_xieyi_title;
 			    }
 			
@@ -164,7 +181,11 @@
 			     
 					that.faquan_xieyi_content = cms_faquan_setting.faquan_xieyi_content;
 			    }
-			
+				if (cms_faquan_setting.faquan_xieyi_show_directly) {
+				  
+					that.faquan_xieyi_show_directly = cms_faquan_setting.faquan_xieyi_show_directly;
+				  
+				}
 			
 			},
 			  

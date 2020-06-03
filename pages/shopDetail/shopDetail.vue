@@ -424,7 +424,7 @@
 
 			//查看商家是否被当前用户收藏
 			get_user_data_option: function() {
-
+				console.log('this.current_shang_detail.xianmai_shangid',this.current_shang_detail.xianmai_shangid);
 				var that = this;
 				var userInfo = that.abotapi.get_user_info();
 				if(userInfo && userInfo.userid){
@@ -432,7 +432,7 @@
 						userid: userInfo.userid,
 						sellerid: this.abotapi.globalData.default_sellerid,
 						checkstr: userInfo.checkstr,
-						key: this.current_shang_detail.current_xianmai_shangid,
+						key: this.current_shang_detail.xianmai_shangid,
 						type: 'xianmai_shang_favorite',
 					}
 					
@@ -442,10 +442,10 @@
 						success: function(res) {
 							console.log('that.index_list', res);
 					
-							if (res.data.code == 1) {
-					
+							if (res.data.code == 1 && res.data.value) {
+								
 								that.isShoucang = res.data.value;
-					
+								
 							}
 						},
 						fail: function(e) {
@@ -575,7 +575,6 @@
 						
 
 						that.get_user_data_option(); //获取这个商家是否被收藏
-
 						// var latitude_longitude = {
 						//   latitude : data.latitude,
 						//   longitude : data.longitude,

@@ -74,6 +74,8 @@
 	@oneClickSave="oneClickSave" 
 	@fanquanCollect="fanquanCollect"
 	@copyText="copyText"
+	@onShareAppMessage="onShareAppMessage"
+	@img_or_video_download="img_or_video_download"
 	>
 	</discoverList>
 	<!-- End of 004  -->
@@ -139,7 +141,8 @@
 				img_or_video_list:'',
 				item2:'',
 	            tag:'',
-				idx2:''
+				idx2:'',
+				disabled:false,
 			};
 		},
 		onLoad(options) {
@@ -756,15 +759,16 @@
 			
 			        if(res.data.code == 1){
 						console.log('=====================>>>>index====>>>>>', index);
-			
 			          if (that.faquanList[index].has_collect == '0'){
 			            that.faquanList[index].has_collect = "1"
+						++that.faquanList[index].collect_num;
 			            uni.showToast({
 			              title: '收藏成功！',
 			              duration: 2000
 			            });
 			          }else{
 			            that.faquanList[index].has_collect = "0"
+						--that.faquanList[index].collect_num;
 			            uni.showToast({
 			              title: '取消收藏成功！',
 			              duration: 2000
@@ -772,7 +776,7 @@
 			          }
 			          
 			    
-			            that.faquanList = that.faquanList;
+			         that.faquanList = that.faquanList;
 	
 			           
 			        }
@@ -840,15 +844,15 @@
 			      success: function (res) {
 			        if (res.data.code == 1) {
 			
-			          if (that.faquanList[idx].has_like == '0') {
+			          if (that.faquanList[index].has_like == '0') {
 			
-			            that.faquanList[idx].has_like = "1";
-			            ++that.faquanList[idx].like_num;
+			            that.faquanList[index].has_like = "1";
+			            ++that.faquanList[index].like_num;
 			          
 			          } else {
 			
-			            that.faquanList[idx].has_like = "0";
-			            --that.faquanList[idx].like_num;
+			            that.faquanList[index].has_like = "0";
+			            --that.faquanList[index].like_num;
 			           
 			          }
 			
@@ -871,10 +875,10 @@
 			//一键保存
 			  oneClickSave:function(e){
 			    console.log('准备下载====>>>>', e);
-			
+				var that = this;
 			    var index = e.target.dataset.index;
 			    var type = e.target.dataset.type;
-			    var img_or_video_list = this.data.faquanList[index].img_or_video_list;
+			    var img_or_video_list = this.faquanList[index].img_or_video_list;
 			
 			
 			      that.disabled = true;
@@ -884,16 +888,18 @@
 			      title: '正在下载……',
 			    })
 			
-			    if(type == 0 ){
-			      this.img_or_video_download(type, img_or_video_list);
-			    }
+			    
+			    this.img_or_video_download(type, img_or_video_list);
+			   
 			    
 			  },
 			
 			  img_or_video_download: function (type, img_or_video_list, i=0){
+				  
 			    var that = this;   
 			    var file_url = this.abotapi.globalData.http_server + 'openapi/FaquanData/download_file?url=' + encodeURIComponent(img_or_video_list[i].url);
-			  
+			  console.log('file_url',file_url);
+			  console.log('img_or_video_list',img_or_video_list);
 			    uni.downloadFile({
 			      url: file_url, //仅为示例，并非真实的资源
 			      success(res) {
