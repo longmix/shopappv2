@@ -354,13 +354,14 @@
 			
 			if (options.ucid) {
 				that.ucid = options.ucid
+				
+				options = JSON.parse(uni.getStorageSync("cache_options"));
+				
+			}else{
+				uni.setStorageSync("cache_options", JSON.stringify(options));
 			}
 			
-			if (options.productid) {
-				uni.setStorageSync("cache_options", JSON.stringify(options));
-			} else {
-				options = JSON.parse(uni.getStorageSync("cache_options"));
-			}
+			
 			
 			var last_url = '';
 			
