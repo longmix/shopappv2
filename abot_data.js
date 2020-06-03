@@ -11,20 +11,9 @@ const globalData = {
 		xiaochengxu_appid: 'wx00d1e2843c3b3f77',
 		
 		
-		// default_sellerid : 'fyJSPaVja',
-		// default_sellerid : 'pQNNmSkaq',	
-		
-		// default_sellerid: 'fSNQPajka',
-		
-		//哈哈订
-		//default_shopname: '哈哈订',
-		// default_sellerid: 'fimmUPUPV',
-		// default_copyright_text:'哈哈订信息科技 版权所有',
-		
-		//腾羽生物
-		default_shopname: '腾羽云商',
-		default_sellerid: 'fSNQPajka',
-		default_copyright_text:'腾羽生物科技 版权所有',
+		default_shopname: '本地汽车服务',
+		default_sellerid: 'fJQzPaqVj',
+		default_copyright_text:'本地汽车服务APP @ 版权所有',
 		
 		//=======以下配置项在发布版本的时候确定，服务器端配置无效===
 		

@@ -782,8 +782,8 @@
 	align-items: center;
 	justify-content: space-around;
 	background: #f00;
-	width: 120upx;
-	height: 120upx;
+	width: 130upx;
+	height: 130upx;
 	position: fixed;
 	z-index: 100;
 	right: 60upx;

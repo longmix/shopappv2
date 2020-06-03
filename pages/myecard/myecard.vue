@@ -337,7 +337,7 @@
 		</view>
 
 		<view style='font-size:15px; margin:10px;position:relative;' @tap='shangPhoneClick' v-if="ecard_option_list.ecard_show_index_phone == 1">
-		 <image src="../../static/img/mobile.png" style="width:30px;height:30px;margin-left:-5px;"></image>
+		 <image src="https://yanyubao.tseo.cn/Tpl/static/ecard_module/mobile.png" style="width:30px;height:30px;margin-left:-5px;"></image>
 		  <view style='position:absolute;top:5px;left:35px;'>{{shang_telephone}}</view>
 		</view>
 

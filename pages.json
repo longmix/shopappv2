@@ -376,7 +376,10 @@
 		}
         ,{
             "path" : "pages/myecard/myecard",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText":"会员卡",
+				"enablePullDownRefresh": true
+			}
         }
 		,{
 		    "path" : "pages/welcome_page/welcome_page",
