@@ -1,4 +1,4 @@
-<template style="padding: 0upx;margin: 0upx;">
+<!-- <template style="padding: 0upx;margin: 0upx;">
 	<view>
 		<view :style="[{'background-image':'url('+ card_data_option.card_bg_img +')' }]" class="c">
 			<view class="a">
@@ -171,7 +171,7 @@
 			  <view class='icon-text'><text>联系客服</text></view>
 			</view>
 			<view v-elif="ecard_option_list.ecard_kefu_button_type == 3">
-			  <button class="u-go-home2" openType="contact" :style="background-color:unia_kefu_bg_color">
+			  <button class="u-go-home2" openType="contact" :style="{'background-color':unia_kefu_bg_color}">
 				  <image src='https://yanyubao.tseo.cn/Tpl/static/images/ecard_module_icon/icon-6.png'></image>
 				  <view class='icon-text'><text>联系客服</text></view>
 			  </button>     
@@ -354,7 +354,7 @@
 		</view>
 
 
-		<view :class="changefootnav" :style="border: solid 2px {{ecard_option_list.ecard_shop_nav_bg_color}};background-color: {{ecard_option_list.ecard_shop_nav_bg_color}};" @tap="payMoney">
+		<view :class="changefootnav" style="border: solid 2px" :style="{ecard_option_list.ecard_shop_nav_bg_color, 'background-color': ecard_option_list.ecard_shop_nav_bg_color}" @tap="payMoney">
 		  <!-- <image src="../../images/fk.png" style="width:100%;height:100%;"></image> -->
 		  <image v-if="ecard_option_list.ecard_shop_nav_font_color == '#000000'"
 			src="https://yanyubao.tseo.cn/Tpl/static/images/ecard_module_icon/fukuan3.svg" style="width:50px;height:50px;margin: 5px;" />
@@ -644,7 +644,7 @@
 		    console.log(83838383)
 		    //更新数据
 		  
-		      that.userInfo = userInfo,
+		      that.userInfo = userInfo;
 		 
 		
 		
@@ -731,11 +731,11 @@
 		          that.latitude =  res.data.data.latitude;
 		          that.longitude =  res.data.data.longitude;
 		      
-		
+		 
 		        if (res.data.data.shang_plugin_list) {
 		
 		         
-		            that.plugin_list =  'plugin_list',
+		            that.plugin_list =  'plugin_list';
 		            that.plugin_data_list = res.data.data.shang_plugin_xiaochengxu_list;
 		    
 		        }
@@ -876,7 +876,7 @@
 		
 		          //that.initProductData(data);
 		          
-		            that.imgUrls = banner,
+		            that.imgUrls = banner;
 		        
 		          //endInitData
 		        },
@@ -921,8 +921,8 @@
 		       this.abotapi.set_current_weiduke_token(res.data.token);
 		
 		    
-		        _this.articlelist = res.data.data,
-		        _this.loading = !_this.data.loading,
+		        _this.articlelist = res.data.data;
+		        _this.loading = !_this.data.loading;
 		      
 		
 		      if (_this.data.ecard_option_list && 
@@ -936,7 +936,7 @@
 		            articlelist2.push(arr);     
 		          }
 				  
-		          _this.articlelist2 = articlelist2,
+		          _this.articlelist2 = articlelist2;
 		      
 		           
 		        }
@@ -1043,6 +1043,8 @@
 		      
 		    })
 		  },
+
+		},
 		  onShareAppMessage: function () {
 		    var that = this;
 		    return {
@@ -1051,8 +1053,6 @@
 		      path: 'pages/index/index?usersn=' + that.data.usersn,
 		    }
 		  }
-		}),
-	},
 	}
 </script>
 
@@ -1185,4 +1185,4 @@
 		margin-left: 200upx;
 	}
 </style>
- -->
+ --> 
