@@ -17,7 +17,7 @@
 					</view>
 					<!-- content -->
 					<view class="carrier" :class="[typeClass=='goods'?theIndex==index?'open':oldIndex==index?'close':'':'']" @touchstart="touchStart(index,$event)" @touchmove="touchMove(index,$event)" @touchend="touchEnd(index,$event)">
-						<view class="goods-info" @tap="toGoods(row)">
+						<view class="goods-info" @tap="toProduct(row)">
 							<view class="img">
 								<image :src="row.productInfo.picture"></image>
 							</view>
@@ -44,7 +44,7 @@
 						<view class="icon shanchu"></view>
 					</view>
 					<!-- content -->
-					<view class="carrier" :class="[typeClass=='shop'?theIndex==index?'open':oldIndex==index?'close':'':'']" @touchstart="touchStart(index,$event)" @touchmove="touchMove(index,$event)" @touchend="touchEnd(index,$event)">
+					<view class="carrier" @tap="toShangDetail(row)" :class="[typeClass=='shop'?theIndex==index?'open':oldIndex==index?'close':'':'']" @touchstart="touchStart(index,$event)" @touchmove="touchMove(index,$event)" @touchend="touchEnd(index,$event)">
 						<view class="left">
 							<image :src="row.img_list[0].picture"></image>
 						</view>
@@ -332,6 +332,20 @@
 				});
 			},
 			
+			toProduct(productItem){
+				var productid = productItem.productid;
+				uni.navigateTo({
+					url: '/pages/product/detail?productid='+productid
+				});
+			},
+			
+			//实体商家跳转
+			toShangDetail(shopItem) {
+				var shangid = shopItem.xianmai_shangid;
+				uni.navigateTo({
+					url: '/pages/shopDetail/shopDetail?shangid='+shangid
+				});
+			},
 			
 			discard() {
 				//丢弃
