@@ -140,6 +140,10 @@
 							
 							this.collection_products = res.data.data;
 						
+						}else{
+							
+							this.collection_products = [];
+							
 						}
 					},
 					fail: function (e) {
@@ -170,9 +174,10 @@
 						
 						if(res.data.code == 1){
 							
-							this.shopList = res.data.data
-							
-							console.log('shopList===',this.shopList)
+							this.shopList = res.data.data;
+						
+						} else {
+							this.shopList = [];
 						}
 					},
 					fail: function (e) {
@@ -256,7 +261,10 @@
 			
 			//删除商品收藏
 			deleteCollectionProducts(favoriteid,List){
-				var userInfo = this.abotapi.get_user_info();
+				var userInfo = this.abotapi.get_user_info();			
+				var favoriteidArr = [];
+				favoriteidArr.push(favoriteid);
+				
 				this.abotapi.abotRequest({
 					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=del_collect_product',
 					method: 'post',
@@ -264,7 +272,7 @@
 						userid : userInfo.userid,
 						sellerid : this.abotapi.globalData.default_sellerid,
 						checkstr : userInfo.checkstr,	
-						favoriteid: favoriteid
+						favoriteid: encodeURIComponent(JSON.stringify(favoriteidArr))
 					},
 					header: {
 						'Content-Type': 'application/x-www-form-urlencoded'
@@ -273,11 +281,13 @@
 						
 						console.log('deleteCollectionProducts',res)
 						
-						// if(res.data.code == 1){
-							
-						// 	this.collection_products = res.data.data;
+						if(res.data.code == 1){
+							uni.showToast({
+								title: res.data.msg,
+							})
+							this.getCollectionProducts();
 						
-						// }
+						}
 					},
 					fail: function (e) {
 						uni.showToast({
@@ -288,30 +298,29 @@
 				});
 			},
 			
-			deleteFavorite(id,List){
+			deleteFavorite(xianmai_shangid,List){
+				var userInfo = this.abotapi.get_user_info();
 				this.abotapi.abotRequest({
 					url: this.abotapi.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/my_favorite',
 					method: 'post',
 					data: {
 						userid: userInfo.userid,
 						sellerid: this.abotapi.globalData.default_sellerid,
-						action: action,
+						action: 'del',
 						checkstr: userInfo.checkstr,
-						val: val,
-						xianmaishangid: this.current_shang_detail.current_xianmai_shangid,
+						xianmaishangid: xianmai_shangid,
 					},
 					header: {
 						'Content-Type': 'application/x-www-form-urlencoded'
 					},
-					success: function(res) {
+					success: (res) => {
 						console.log('that.index_list', res);
 				
 						if (res.data.code == 1) {
-				
 							uni.showToast({
 								title: res.data.msg,
 							})
-							that.get_user_data_option();
+							this.getMyFavorite();
 						}
 					},
 					fail: function(e) {
