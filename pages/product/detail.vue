@@ -29,10 +29,26 @@
 			</view>
 		<view class="footer">
 			<view class="icons">
+			
+				
+				<!-- #ifdef MP-WEIXIN || APP-PLUS -->
+				
+				<button class="box share-btn" open-type="share">
+					<view class="icon fenxiang"></view>
+					<view class="text">分享</view>
+					<!-- <button class="text" open-type="share">分享</button> -->
+				</button>
+				<!-- <button style="padding-left: 0;padding-right: 0;" open-type="share">分享</button> -->
+				<!-- #endif -->
+				<!-- #ifdef H5 --> 
 				<view class="box" @tap="share">
 					<view class="icon fenxiang"></view>
 					<view class="text">分享</view>
 				</view>
+				<button style="padding-left: 0;padding-right: 0;" @click="share_shang_detail">分享</button>
+				<!-- #endif -->
+				
+				
 				<view class="box" @tap="toChat">
 					<view class="icon kefu"></view>		<!-- 下版本改为   -->
 					<view class="text">客服</view>
@@ -375,6 +391,7 @@ export default {
 			telephone:'',
 			shop_userid: '',
 			shop_name: '',
+			shop_info: '',
 			recommend_product_list:[],
 			hot_product_list:[],
 			jietijiage_youhui_data:'',
@@ -700,7 +717,7 @@ export default {
 		},
 		
 		callback_func_for_shop_info:function(shop_info){
-			
+			this.shop_info = shop_info;
 			this.shop_userid = shop_info.userid;
 			this.shop_name = shop_info.shop_name;
 			
@@ -1233,6 +1250,37 @@ export default {
 		      }
 		  
 		    },
+	},
+	
+	onShareAppMessage: function () {
+	    var that = this;
+	
+	    var share_title = that.goods_detail.name;
+	    if(share_title.length > 22){
+	      share_title = share_title.substr(0, 20) + '...';
+	    }
+	
+	    var share_path = '/pages/product/detail?productid=' + that.productid + '&sellerid' + this.abotapi.get_sellerid();
+	
+	    var userInfo = this.abotapi.get_user_info();
+	
+	    if (userInfo && userInfo.userid) {
+	      share_path += '&userid='+userInfo.userid;
+	    }
+	
+	    var share_img = this.shop_info.icon;
+	
+	    return {
+	      title: share_title + ' ￥' + that.goods_detail.price,
+	      path: share_path,
+	      imageUrl : share_img,
+	      success: function (res) {
+	        // 分享成功
+	      },
+	      fail: function (res) {
+	        // 分享失败
+	      }
+	    }
 	},
 	
 	filters: {
@@ -2131,6 +2179,16 @@ margin-left: 40rpx;
 	  color: blue;
 	  font-size: 26rpx;
 	}
+}
+.share-btn::after{
+	border: none;
+
+}
+
+.share-btn{
+	line-height: normal;
+	background-color: transparent;
+	padding:0,
 }
 
 </style>
