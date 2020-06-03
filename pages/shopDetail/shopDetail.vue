@@ -169,7 +169,7 @@
 
 		</view>
 
-		<view @tap="isShoucang==1?Shoucang('del',0):Shoucang('add',1)" class="home-p">
+		<view @tap="isShoucang==1?Shoucang('del'):Shoucang('add')" class="home-p">
 			<image v-if="isShoucang == 0" src="../../static/img/help/star_off.png"></image>
 			<image v-if="isShoucang == 1" src="../../static/img/help/star_on.png"></image>
 			<!-- <view>分享</view> -->
@@ -458,7 +458,7 @@
 				}
 			},
 			//收藏
-			Shoucang: function(action, val) {
+			Shoucang: function(action) {
 
 				var that = this;
 				var userInfo = this.abotapi.get_user_info();
