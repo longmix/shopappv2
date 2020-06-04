@@ -154,28 +154,19 @@
         ,{	//订单列表
             "path" : "pages/user/order_list/order_list",
             "style" : {
-				"navigationBarTitleText":"我的订单",
-				"navigationBarBackgroundColor":"#f8f8f8",
-				"backgroundColorTop":"#f3f3f3",
-				"backgroundColorBottom":"#ffffff"
+				"navigationBarTitleText":"我的订单"
 			}
         }
 		,{	//订单列表
 		    "path" : "pages/user/orderDetail/orderDetail",
 		    "style" : {
-				"navigationBarTitleText":"订单详情",
-				"navigationBarBackgroundColor":"#f8f8f8",
-				"backgroundColorTop":"#f3f3f3",
-				"backgroundColorBottom":"#ffffff"
+				"navigationBarTitleText":"订单详情"
 			}
 		}
         ,{	//用户设置
             "path" : "pages/user/setting/setting",
             "style" : {
-				"navigationBarBackgroundColor":"#f8f8f8",
-				"navigationBarTitleText":"我的设置",
-				"backgroundColorTop":"#ffffff",
-				"backgroundColorBottom":"#f3f3f3"
+				"navigationBarTitleText":"我的设置"
 			}
         }
         ,{
@@ -197,9 +188,7 @@
         ,{
             "path" : "pages/msg/chat/chat",
             "style" : {
-				"navigationBarBackgroundColor":"#f2f2f2",
-				"backgroundColorTop":"#e5e5e5",
-				"backgroundColorBottom":"#e5e5e5",
+				"navigationBarTitleText": "对话",
 				"app-plus":{
 					"softinputNavBar":"none",
 					"bounce":"none"
@@ -227,43 +216,33 @@
         ,{
             "path" : "pages/user/address/address",
             "style" : {
-				"navigationBarTitleText":"地址管理",
-				"backgroundColorTop":"#ffffff",
-				"backgroundColorBottom":"#ffffff"
+				"navigationBarTitleText":"地址管理"
 			}
         }
         ,{
             "path" : "pages/user/address/edit/edit",
             "style" : {
 
-				"navigationBarTitleText":"编辑收件人地址",
-				"backgroundColorTop":"#ffffff",
-				"backgroundColorBottom":"#ffffff"
+				"navigationBarTitleText":"编辑收件人地址"
 			}
         }
         ,{
             "path" : "pages/user/deposit/deposit",
             "style" : {
-				"navigationBarTitleText":"充值",
-				"backgroundColorTop":"#ffffff",
-				"backgroundColorBottom":"#ffffff"
+				"navigationBarTitleText":"充值"
 			}
         }
         ,{
             "path" : "pages/pay/payment/payment",
             "style" : {
-				"navigationBarTitleText":"订单支付",
-				"backgroundColorTop":"#ffffff",
-				"backgroundColorBottom":"#ffffff"
+				"navigationBarTitleText":"订单支付"
 			}
         }
         ,{
             "path" : "pages/pay/success/success",
             "style" : {
 
-				"navigationBarTitleText":"支付成功",
-				"backgroundColorTop":"#ffffff",
-				"backgroundColorBottom":"#ffffff"
+				"navigationBarTitleText":"支付成功"
 			}
         }
         ,{
@@ -271,9 +250,7 @@
             "style" : {
 				"navigationBarTitleText":"商品评论",
 				"enablePullDownRefresh": true,
-				"onReachBottomDistance":50,
-				"backgroundColorTop":"#ffffff",
-				"backgroundColorBottom":"#ffffff"
+				"onReachBottomDistance":50
 			}
         }
         ,{

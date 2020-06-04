@@ -181,7 +181,7 @@
 	.box {
 		width: 100%;
 		text-align: center;
-		margin: 20rpx;
+		margin: 60rpx auto;
 	}
 
 	.box image {

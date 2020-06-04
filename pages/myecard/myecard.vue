@@ -58,7 +58,7 @@
 
 			<block v-if="ecard_option_list.ecard_shop_toutiao_flash_line == 1">
 				<swiper class="toutiao_right" vertical="true" autoplay="true" circular="true" interval="2000" v-if="!ecard_shop_toutiao_flash_line||ecard_shop_toutiao_flash_line!=2">
-					<swiper-item v-for="(item,index) in articlelist">
+					<swiper-item v-for="(item,index) in articlelist" :key="index">
 						<view class="toutiao_right" @tap="touTiaoList" :data-id="toutiao_item_id">
 							<text>{{articlelist.title}}</text>
 						</view>
@@ -68,7 +68,7 @@
 
 			<block v-if="ecard_option_list.ecard_shop_toutiao_flash_line==2">
 				<swiper class="toutiao_right2" vertical="true" autoplay="true" circular="true" interval="2000">
-					<swiper-item v-for="(item,index) in articlelist2" @tap="touTiaoList">
+					<swiper-item v-for="(item,index) in articlelist2" :key="index" @tap="touTiaoList">
 						<view>• {{item[0].title}}</view>
 						<view>• {{item[1].title}}</view>
 					</swiper-item>
@@ -103,7 +103,7 @@
 
 		<!-- 新增插件 begin -->
 		<view :class="plugin_list">
-			<block v-for="(item,index) in plugin_data_list" key="item.id">
+			<block v-for="(item,index) in plugin_data_list" :key="index">
 				<navigator :url="item.url" open-type="navigate" v-if="item.type == 'url'">
 					<view class="weui_cell">
 						<view class="weui_cell_bd">

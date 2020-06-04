@@ -32,7 +32,7 @@
 			<div></div>
 			<button type="primary" :style="{background:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" formType="submit" open-type="getUserInfo" class="btn-row-submit" @click="btn_user_login">登陆</button>
 			<div class="flex mgb-20">
-				<navigator class="cl-black pointer flex-1" style="margin-top: 30upx;text-align: right;font-size: 34upx;" open-type="redirect" url="/pages/login/login">手机验证码登录</navigator>
+				<navigator class="cl-black pointer flex-1" open-type="redirect" url="/pages/login/login">忘记密码？手机验证码登录</navigator>
 			</div>
 		</form>
 	</view>
@@ -476,11 +476,12 @@
 }
 
 .cl-black{
-	margin-top: 15px;
+	margin-top: 30rpx;
 	text-align: right;
-	font-size: 17px;
+	font-size: 30rpx;
 	width: 86%;
 	margin-left: 7%;
+	color:#555555;
 }
 
 </style>

@@ -36,7 +36,7 @@
 				style="width: 84%;background: #2E85D8;" 
 				@click="btn_user_login">登陆</button>
 			<div class="flex mgb-20">
-				<navigator class="cl-black pointer flex-1" open-type="redirect" url="/pages/login/login_by_password">账号密码登录</navigator>
+				<navigator class="cl-black pointer flex-1" open-type="redirect" url="/pages/login/login_by_password">手机不在身边？账号密码登录</navigator>
 			</div>
 			
 			<view class="home-p" :style="{background:wxa_shop_nav_bg_color}" @tap="goHome()">
@@ -818,11 +818,12 @@
 	}
 
 .cl-black{
-	margin-top: 15px;
+	margin-top: 30rpx;
 	text-align: right;
-	font-size: 17px;
+	font-size: 30rpx;
 	width: 86%;
 	margin-left: 7%;
+	color:#555555;
 }
 
 input::input-placeholder{

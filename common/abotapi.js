@@ -611,7 +611,7 @@ module.exports = {
 	   //缓存返回数据
 	   var user_account_info_str = uni.getStorageSync("user_account_info");
 				   
-	   console.log("获取用户账号数据：" + user_account_info_str + '333333333');
+	   //console.log("获取用户账号数据：" + user_account_info_str + '333333333');
 				   
 	   if (!user_account_info_str) {
 	     return null;
@@ -626,7 +626,7 @@ module.exports = {
 		//缓存返回数据
 		var user_info_str = uni.getStorageSync("wxa_user_info");
 				   
-		console.log("获取小程序用户数据：" + user_info_str + '333333333');
+		//console.log("获取小程序用户数据：" + user_info_str + '333333333');
 				   
 		if (!user_info_str) {
 			return null;
@@ -867,7 +867,7 @@ module.exports = {
 	
 	    this.globalData.option_list = option_list;
 	
-	    // console.log('111111111111111111111111111111::' + this.globalData.navigationBarBackgroundColor_fixed);
+	    console.log('111111111111111111111111111111::' + this.globalData.navigationBarBackgroundColor_fixed);
 	
 	    if (this.globalData.navigationBarBackgroundColor_fixed != 1){
 	

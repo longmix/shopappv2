@@ -143,8 +143,7 @@
 	}
 	
 	page{
-		background: #ffffff;
-		background: #fff; 
+		background: #FFFFFF;
 		font-family: '微软雅黑';
 	}
 	

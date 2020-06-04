@@ -79,8 +79,7 @@
 
 <script>
 	var abotapi = require("../../../common/abotapi.js");
-	// var app = getApp();
-	var userInfo = abotapi.get_user_info();
+
 	export default {
 		data() {
 			return {
@@ -96,8 +95,11 @@
 		onLoad:function(options) {
 			var that = this;
 			this.abotapi.set_option_list_str(this, function(that,cb_params){
+				console.log('aaaaaaaaaaaaa');
+				
 				that.abotapi.getColor();
 			});
+			
 			that.version_number = that.abotapi.globalData.version_number;
 			var userInfo = that.abotapi.get_user_info();
 			if ((!userInfo) || (!userInfo.userid)) {
@@ -106,6 +108,7 @@
 				})
 				return;
 			}
+			
 			this.userAcountInfo = this.abotapi.get_user_account_info();
 			
 			that.jubao_link_url = that.abotapi.jump_to_fankui_url();
