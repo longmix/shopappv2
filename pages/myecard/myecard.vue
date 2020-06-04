@@ -79,111 +79,18 @@
 		<!--商户头条end-->
 
 		<!-- 九宫格图标 begin -->
-		<view class='icon-box' v-for="(item,index) in list2">
-			<navigator :url="item.url" open-type="navigate" v-if="ecard_option_list.ecard_nav_show_toutiao == 1">
-				<view class='icon-list'>
-					<image :src='item.src'></image>
-					<view class='icon-text'><text>{{item.name}}</text></view>
-				</view>
-			</navigator>
-
-
-			<!-- <navigator url="../payment/payment" open-type="navigate" v-if="ecard_option_list.ecard_nav_show_maidan == 1">
-				<view class='icon-list'>
-					<image src='https://yanyubao.tseo.cn/Tpl/static/ecard_module/icon/fukuan.svg'></image>
-					<view class='icon-text'><text>余额付款</text></view>
-				</view>
-			</navigator>
-
-
-
-			<navigator url="pages/balance_log/balance_log" open-type="navigate" v-if="ecard_option_list.ecard_nav_show_balance_log == 1">
-				<view class='icon-list'>
-					<image src='https://yanyubao.tseo.cn/Tpl/static/ecard_module/icon/yue.svg'></image>
-					<view class='icon-text'><text>余额明细</text></view>
-				</view>
-			</navigator>
-
-			<navigator url="pages/score/score" open-type="navigate" v-if="ecard_option_list.ecard_nav_show_score_log == 1">
-				<view class='icon-list'>
-					<image src='https://yanyubao.tseo.cn/Tpl/static/ecard_module/icon/jifen.svg'></image>
-					<view class='icon-text'><text>积分记录</text></view>
-				</view>
-			</navigator>
-
-			<navigator url="pages/mycoupons/mycoupons" open-type="navigate" v-if="ecard_option_list.ecard_nav_show_youhui_list == 1">
-				<view class='icon-list'>
-					<image src='https://yanyubao.tseo.cn/Tpl/static/ecard_module/icon/youhuiquan.svg'></image>
-					<view class='icon-text'><text>优惠列表</text></view>
-				</view>
-			</navigator>
-
-			<navigator url="pages/coupons/coupons" open-type="navigate" v-if="ecard_option_list.ecard_nav_show_youhui_new == 1">
-				<view class='icon-list'>
-					<image src='https://yanyubao.tseo.cn/Tpl/static/ecard_module/icon/youhui.svg'></image>
-					<view class='icon-text'><text>最新优惠</text></view>
-				</view>
-			</navigator>
-
-			<navigator url="../score_shop/score_shop" open-type="navigate" v-if="ecard_option_list.ecard_nav_show_score_shop == 1">
-				<view class='icon-list'>
-					<image src='https://yanyubao.tseo.cn/Tpl/static/ecard_module/icon/shangcheng.svg'></image>
-					<view class='icon-text'><text>积分商城</text></view>
-				</view>
-			</navigator>
-			<navigator url="../biz_card/biz_card" open-type="navigate" v-if="ecard_option_list.ecard_nav_show_biz_card == 1">
-				<view class='icon-list'>
-					<image src='https://yanyubao.tseo.cn/Tpl/static/ecard_module/icon/mingpian.svg'></image>
-					<view class='icon-text'><text>电子名片</text></view>
-				</view>
-			</navigator>
-
-			<navigator url="../userinfo/userinfo" open-type="navigate" v-if="ecard_option_list.ecard_nav_show_profile == 1">
-				<view class='icon-list'>
-					<image src='https://yanyubao.tseo.cn/Tpl/static/ecard_module/icon/shezhi.svg'></image>
-					<view class='icon-text'><text>个人资料</text></view>
-				</view>
-			</navigator>
-
-			<navigator url="../about/about" open-type="navigate" v-if="ecard_option_list.ecard_nav_show_aboutus == 1">
-				<view class='icon-list'>
-					<image src='https://yanyubao.tseo.cn/Tpl/static/ecard_module/icon/guanyuwomen.svg'></image>
-					<view class='icon-text'><text>关于我们</text></view>
-				</view>
-			</navigator>
- -->
-
-		</view>
-
-	<!-- 	<view class='icon-box'>
-
-
-
-
-			<view class='icon-list' v-if="ecard_option_list.ecard_show_kefu_button==1">
-				<view v-if="ecard_option_list.ecard_kefu_button_type == 1" @tap="shangPhoneClick2">
-					<image src='https://yanyubao.tseo.cn/Tpl/static/ecard_module/icon/icon-6.png'></image>
-					<view class='icon-text'><text>联系客服</text></view>
-				</view>
-				<view v-elif="ecard_option_list.ecard_kefu_button_type == 2" @tap="goToOtherPage">
-					<image src='https://yanyubao.tseo.cn/Tpl/static/ecard_module/icon/icon-6.png'></image>
-					<view class='icon-text'><text>联系客服</text></view>
-				</view>
-				<view v-elif="ecard_option_list.ecard_kefu_button_type == 3">
-					<button class="u-go-home2" openType="contact" :style="{'background-color':unia_kefu_bg_color}">
-						<image src='https://yanyubao.tseo.cn/Tpl/static/ecard_module/icon/icon-6.png'></image>
-						<view class='icon-text'><text>联系客服</text></view>
-					</button>
-				</view>
+		<view class="icon-box-con" style="overflow: hidden;">
+			<view class='icon-box' v-for="(item,index) in list_first">
+				<navigator :url="item.url" open-type="navigate" v-if="ecard_option_list.ecard_nav_show_toutiao == 1">
+					<view class='icon-list'>
+						<image mode="widthFix" :src='item.src'></image>
+						<view class='icon-text'><text>{{item.name}}</text></view>
+					</view>
+				</navigator>
 			</view>
-		</view> -->
-
+		</view>
+		<view class="mid-gray" style="width: 100%;height: 10rpx;background-color: #dcdcdc;"></view>
 		<!-- 九宫格图标 end -->
-<!-- 
-		<div style="clear:both;display:block; height:30rpx;">
-
-		</div>
- -->
 
 		<!-- 商户风采图片 begin -->
 		<view class="supplier-image-list" v-if="shanghu_img_list && ecard_option_list.ecard_show_index_icon == 1">
@@ -228,121 +135,31 @@
 
 		</view>
 		<!-- 新增插件 end -->
+        
+        
 
-
-
-		<view class="info_list">
-			<!--
-		  <navigator url="../payment/payment" open-type="navigate">
-			<view class="weui_cell">
-			  <view class="weui_cell_bd">
-				<view class="weui_cell_bd_p"> 付款和申请积分</view>
-			  </view>
-			  <view class="badge" style="background: #FFA500;"></view>
-			  <view class="with_arrow"></view>
-			</view>
-		  </navigator>
-		  -->
-			<navigator url="../balance_log/balance_log" open-type="navigate">
+		<view class="info_list" v-for="(item,index) in list_two">
+		
+			<navigator :url="item.url" open-type="navigate">
 				<view class="weui_cell">
 					<view class="weui_cell_bd">
-						<view class="weui_cell_bd_p"> 余额明细 </view>
+						<image :src="item.src"></image>
+						<view class="weui_cell_bd_p">{{item.name}}</view>
 					</view>
-					<view class="badge">{{score_log_count}}</view>
-					<view class="with_arrow"></view>
 				</view>
 			</navigator>
-			<!--
-			<navigator url="../score_shop/score_shop" open-type="navigate">
-			<view class="weui_cell">
-			  <view class="weui_cell_bd">
-				<view class="weui_cell_bd_p"> 积分商城 </view>
-			  </view>
-			  <view></view>
-			  <view class="with_arrow"></view>
-			</view>
-		  </navigator>
-		-->
-			<!-- <navigator url="../score/score" open-type="navigate">
-				<view class="weui_cell">
-					<view class="weui_cell_bd">
-						<view class="weui_cell_bd_p"> 积分记录 </view>
-					</view>
-					<view class="badge">{{score_log_count}}</view>
-					<view class="with_arrow"></view>
-				</view>
-			</navigator>
-			<navigator url="../mycoupons/mycoupons" open-type="navigate">
-				<view class="weui_cell">
-					<view class="weui_cell_bd">
-						<view class="weui_cell_bd_p"> 我的优惠 </view>
-					</view>
-					<view class="badge">{{youhui_count}}</view>
-					<view class="with_arrow"></view>
-				</view>
-			</navigator>
-			<navigator url="../coupons/coupons" open-type="navigate">
-				<view class="weui_cell">
-					<view class="weui_cell_bd">
-						<view class="weui_cell_bd_p"> 领优惠券 </view>
-					</view>
-					<view class="badge">{{youhui_new_count}}</view>
-					<view class="with_arrow"></view>
-				</view>
-			</navigator> -->
-			<!--<navigator url="">
-					<view class="weui_cell">               
-						<view class="weui_cell_bd">
-							<view class="weui_cell_bd_p"> 我的红包 </view>
-						</view>
-						<view  class="badge">{{hongbao_count}}</view>
-						<view class="with_arrow"></view>
-					</view>
-				</navigator>
-
-		  <navigator url="../about/about" open-type="navigate">
-			<view class="weui_cell">
-			  <view class="weui_cell_bd">
-				<view class="weui_cell_bd_p"> 关于我们 </view>
-			  </view>
-			  <view class="with_arrow"></view>
-			</view>
-		  </navigator>
-		-->
+	
+	
 		</view>
-
-	<!-- 	<view class="info_list">
-			<navigator v-if="ecard_option_list.ecard_show_index_swiper == 1" url="../mycard/mycard" open-type="navigate">
-				<view class="weui_cell">
-					<view class="weui_cell_bd">
-						<view class="weui_cell_bd_p"> 会员卡列表 </view>
-					</view>
-
-					<view class="with_arrow"></view>
-				</view>
-			</navigator>
-
-			<navigator url="../about_applet/about_applet" open-type="navigate">
-				<view class="weui_cell">
-					<view class="weui_cell_bd">
-						<view class="weui_cell_bd_p"> 关于小程序 </view>
-					</view>
-
-					<view class="with_arrow"></view>
-				</view>
-			</navigator>
-
-
-
-		</view> -->
-
+		
+		
 		<view style='font-size:15px; margin:10px;position:relative;' @tap='shangPhoneClick' v-if="ecard_option_list.ecard_show_index_phone == 1">
 			<image src="https://yanyubao.tseo.cn/Tpl/static/ecard_module/mobile.png" style="width:30px;height:30px;margin-left:-5px;"></image>
 			<view style='position:absolute;top:5px;left:35px;'>{{current_user_card_data.shang_telephone}}</view>
 		</view>
 
 		<view style='font-size:15px; margin:10px;position:relative;' v-if="ecard_option_list.ecard_show_index_address == 1">
-			<image src="https://yanyubao.tseo.cn/Tpl/static/ecard_module/icon/ecard_module_iconfont-shouhuodizhi.png" style="width:25px;height:25px;"></image>
+			<image src="https://yanyubao.tseo.cn/Tpl/static/ecard_module/ecard_module_iconfont-shouhuodizhi.png" style="width:25px;height:25px;"></image>
 
 			<view style='position:absolute;top:-5px;left:35px; font-size:13px;' @tap="openLocation">{{current_user_card_data.shang_address}}</view>
 		</view>
@@ -404,8 +221,9 @@
 				score_log_count: '',
 				youhui_count: '',
 				youhui_new_count: '',
-				
-				list2:''
+				list_two:[],
+				list_first:[]
+			
 			}
 		},
 		onLoad(options) {
@@ -657,7 +475,8 @@
 					success(res) {
 						console.log("aaaaaaa==============>>>>>", res)
 						 
-						 that.list2 = res.data.data.ecard_shopappv2_nav_icon_list;
+						 that.list_first = res.data.data.ecard_shopappv2_nav_icon_list;
+						 that.list_two = res.data.data.ecard_shopappv2_function_list;
 						 
 						 console.log("gggggggg==============>>>>>", res.data.data.ecard_shopappv2_nav_icon_list);
 						 
@@ -966,11 +785,39 @@
 	}
 	.icon-list image{
 		width: 100rpx;
-		height: 100rpx;
-		
+		margin-top: 20rpx;
 	}
+	.icon-box navigator{
+		display: inline;
+		overflow: hidden;
+		width: 100%;
+		height: 100%;
+	}
+	
+	.icon-text text{
+		font-size: 20rpx;
+	}
+	
 	.supplier-img{
 		width: 100%;
+	}
+	.weui_cell_bd_p{
+		font-size: 35rpx;
+		margin-left: 35rpx;
+		line-height: 75rpx;
+		align-items: center;
+		display: flex;
+	}
+	.info_list{
+		border-bottom:  1rpx solid #b5b5b5;
+	}
+	.weui_cell_bd{
+		display: inline-flex;
+		margin-left: 10rpx;
+	}
+	.weui_cell_bd image{
+		width: 80rpx;
+		height:80rpx;
 	}
 </style>
 
