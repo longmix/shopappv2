@@ -36,10 +36,10 @@
 				style="width: 84%;background: #2E85D8;" 
 				@click="btn_user_login">登陆</button>
 			<div class="flex mgb-20">
-				<navigator class="cl-black pointer flex-1" url="/pages/login/login_by_password">账号密码登录</navigator>
+				<navigator class="cl-black pointer flex-1" open-type="redirect" url="/pages/login/login_by_password">账号密码登录</navigator>
 			</div>
 			
-			<view class="home-p" @tap="goHome()">
+			<view class="home-p" :style="{background:wxa_shop_nav_bg_color}" @tap="goHome()">
 				<image src="../../static/img/shouye.svg"></image>
 				<view>
 					首页
@@ -807,14 +807,14 @@
 	z-index: 100;
 	right: 60upx;
 	color: #fff;
-	font-size: 24upx;
+	font-size: 28rpx;
 	border-radius: 50%;
 	bottom: 120upx;
 }
 
 .home-p image{
-		width: 60%;
-		height: 60%;
+		width: 50%;
+		height: 50%;
 	}
 
 .cl-black{

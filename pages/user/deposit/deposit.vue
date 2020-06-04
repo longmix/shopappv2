@@ -52,9 +52,18 @@
 			}
 		},
 		onLoad: function (options) {
-			console.log('lalalalalalal22', options)
-			
+			console.log('deposit---options===',options);
 			var that = this;
+			
+			var userInfo = this.abotapi.get_user_info();
+			
+			console.log('userinfo===',userInfo);
+			
+			if(!userInfo || !userInfo.userid){
+				var last_url = '/pages/user/deposit/deposit';
+				this.abotapi.goto_user_login(last_url,'normal');
+				return;
+			}
 			
 			this.abotapi.set_option_list_str(this, 
 				function(that001, option_list){
@@ -63,6 +72,7 @@
 						that.wxa_shop_nav_bg_color  = option_list.wxa_shop_nav_bg_color;
 						
 						that.wxa_shop_nav_font_color = option_list.wxa_shop_nav_font_color
+						
 				
 				}
 			);
@@ -85,7 +95,8 @@
 					var data = res.data;
 					if(data.code == 1){
 						that.taocan = data.data;
-						that.order_rule_explain = data.order_rule_explain
+						that.order_rule_explain = data.order_rule_explain;
+						that.all_price = data.data[0].chong ? data.data[0].chong : '';
 					}
 		       
 				},

@@ -3,7 +3,7 @@
 		<div class="h30"></div>
 		<div class="flex-center ">
 			<div @click="goHome()" class="flex-center">
-				<image v-if="wxa_login_hide_shop_logo != 1" src="../../static/img/log.png"  style="width: 150upx;"  mode="widthFix"  class="wh-60"></image>
+				<image v-if="wxa_login_hide_shop_logo != 1" :src="shop_info.icon"  style="width: 150upx;"  mode="widthFix"  class="wh-60"></image>
 				<view v-if="wxa_login_show_shop_name && wxa_login_show_shop_name==1" class="">{{shop_info.name}}</view>
 				<view v-if="wxa_login_show_memo_text && wxa_login_show_memo_text==1" style='text-align:left;margin:50rpx 30rpx;color:#666; font-size:32rpx;display:block;' >
 					<text>{{memo_text_content}}</text>
@@ -25,14 +25,14 @@
 	  
 			<view class="flexIcon" :style="{border:'1px solid ' + wxa_shop_nav_bg_color}">
 			<view class="flexIcon-icon iconfont icon-moban flexIcon-icon-current"></view>
-				<image @click="click_check" :src="img_checkcode_url"  class="img_checkcode" mode="widthFix" style="width: 30%;"></image>
+				<image @click="click_check" :src="img_checkcode_url"  class="img_checkcode" mode="widthFix"></image>
 				<input type="text" class="flexIcon-text" placeholder-style="color: #999;" name="telephone" @input="imgInput" placeholder="请输入答案" />
 			</view>
 	  
 			<div></div>
 			<button type="primary" :style="{background:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" formType="submit" open-type="getUserInfo" class="btn-row-submit" @click="btn_user_login">登陆</button>
 			<div class="flex mgb-20">
-				<navigator class="cl-black pointer flex-1" style="margin-top: 30upx;text-align: right;font-size: 34upx;" url="/pages/login/login">手机验证码登录</navigator>
+				<navigator class="cl-black pointer flex-1" style="margin-top: 30upx;text-align: right;font-size: 34upx;" open-type="redirect" url="/pages/login/login">手机验证码登录</navigator>
 			</div>
 		</form>
 	</view>
@@ -396,6 +396,7 @@
 	float:left;
 }	
 .img_checkcode{
+	width: 25%;
 	float: right;
 	margin-top: -12upx;
 	margin-right: 16upx;

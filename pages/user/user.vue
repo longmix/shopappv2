@@ -37,9 +37,32 @@
 			<view class="img">
 				<image src="/static/img/VIP.png"></image>
 			</view>
-			<view class="title">开通VIP会员</view>
-			<view class="tis">会员特权</view>
+			<view class="title">{{userInfo && userInfo.userid ? fenxiao_info.level_name : '开通VIP会员'}}</view>			
+			<view class="tis" @tap="showMemberExplain">会员特权</view>
 		</view>
+		
+		<!-- 会员特权说明弹层 -->
+		<view class="wx-popup" :hidden="explainFlag">
+		  <view class='popup-container'>
+		    <view class="wx-popup-title">会员特权</view>
+		    <view class="wx-popup-subtitle">{{fenxiao_info.level_name}}</view>
+		    <view class="wx-popup-con">
+		      
+		    <scroll-view scroll-y class="a-1 wx-popup-content" :scroll-left="scrollLeft" bindscrolltolower="lower"  >     
+		     {{fenxiao_info.level_memo}}   
+		    </scroll-view>  
+		
+		
+		    </view>
+		    <view class="wx-popup-btn">
+		      <text class="btn-ok" @click='hideMemberExplain'>确定</text>
+		    </view>
+		  </view>
+		</view>
+		<!-- 会员特权说明弹层end -->
+		
+		
+		
 		<!-- 订单-余额 -->
 		<view class="order">
 			<!-- 订单类型 -->
@@ -135,7 +158,8 @@
 				userInfo: '',
 				
 				user_center_function_list_icon_type:0,
-				user_center_function_list_icon_list:[]
+				user_center_function_list_icon_list:[],
+				explainFlag: 1 //会员说明显示控制
 			}
 		},
 		
@@ -197,23 +221,23 @@
 		},
 		onShow(){
 			var that = this;
-
+			this.get_current_userinfo();
 			
-			uni.getStorage({
-				key: 'UserInfo',
-				success: (res)=>{
-					if(!res.data){
-						if(this.isfirst){
-							//this.toLogin();
-						}
-						return ;
-					}
-					this.user = res.data;
-				},
-				fail:(e)=>{
-					//this.toLogin(); 
-				}
-			});
+			// uni.getStorage({
+			// 	key: 'UserInfo',
+			// 	success: (res)=>{
+			// 		if(!res.data){
+			// 			if(this.isfirst){
+			// 				//this.toLogin();
+			// 			}
+			// 			return ;
+			// 		}
+			// 		this.user = res.data;
+			// 	},
+			// 	fail:(e)=>{
+			// 		//this.toLogin(); 
+			// 	}
+			// });
 		},
 		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
 		onPullDownRefresh() {
@@ -244,6 +268,7 @@
 				var that = this;
 
 				var userInfo = that.abotapi.get_user_info();
+				that.userInfo = userInfo;
 				
 				console.log('get_current_userinfo--userInfo==',userInfo)
 				
@@ -386,6 +411,18 @@
 				that.abotapi.call_h5browser_or_other_goto_url(url, var_list);
 							
 				
+			},
+			showMemberExplain(){
+				
+
+				if(!this.fenxiao_info.level_memo){
+					return;
+				}
+				this.explainFlag = 0 
+
+			},
+			hideMemberExplain(){
+				this.explainFlag = 1;
 			}
 		}
 	} 
@@ -658,5 +695,68 @@
 		font-size: 13px;
 		color: #666;
 		margin-bottom: 10upx;
+	}
+	.wx-popup {
+	  position: absolute;
+	  left: 0;
+	  top: 0;
+	  width: 100%;
+	  height: 100%;
+	  background: rgba(0, 0, 0, .5);
+	}
+	.popup-container {
+	  position: absolute;
+	  left: 50%;
+	  top: 50%;
+	 
+	  width: 80%;
+	  max-width: 600rpx;
+	  border: 2rpx solid #ccc;
+	  border-radius: 10rpx;
+	  box-sizing: bordre-box;
+	  transform: translate(-50%, -50%); 
+	  overflow: hidden;
+	  background: #fff;
+	}
+	.wx-popup-title {
+	  padding: 20rpx;
+	  text-align: center;
+	  font-size: 28rpx;
+	  border-bottom: 2rpx solid red;
+	}
+	
+	.wx-popup-subtitle{
+	  text-align:center;
+	  font-size:28rpx;
+	  color:#6798E9;
+	  margin-top:26rpx;
+	}
+	.wx-popup-con {
+	  margin: 60rpx 10rpx;
+	  text-align: center;
+	  font-size:28rpx;
+	  margin-top:20rpx;
+	}
+	.wx-popup-btn {
+	  display: flex;
+	  justify-content: space-around;
+	  margin-bottom: 40rpx;
+	}
+	.wx-popup-btn text {
+	  display:flex;
+	  align-items:center;
+	  justify-content:center;
+	  width:33%;
+	  height:70rpx;
+	  border-radius:88rpx;
+	  background:#6798E9;
+	  color:#fff;
+	  font-size:28rpx;
+	}
+	
+	.wx-popup-content{
+	  height: 300px;
+	  text-align: left;
+	  white-space: pre-line;
 	}
 </style>
