@@ -10,7 +10,12 @@
 		</view>
 		
 		<view class="nav-icon-con">
-				<view style="" v-for="(item,index) in publish_img_cata_list " :key="item.classid" :data-cataid="item.classid" @click="get_publish_cata_list">
+				<view style="" v-for="(item,index) in publish_img_cata_list " 
+					:key="item.classid" 
+					:data-cataid="item.classid" 
+					:data-url="item.url" 
+					data-from="icon" 
+					@click="get_publish_cata_list">
 					<image class="nav-icon-list" :src="item.icon"></image>
 					<view style="font-size: 24upx;">{{item.name}}</view>
 				</view>
@@ -23,7 +28,13 @@
 			</view>
 			<scroll-view scroll-x="true" enable-flex="true" class="kcrzxybd" style="height:60upx;display: flex;white-space: nowrap;width:83%">
 				
-					<view v-for="(item,index) in publish_img_cata_list " :key="item.classid" class="scroll-view" :data-cataid="item.classid" @click="get_publish_cata_list">{{item.name}}</view>
+					<view v-for="(item,index) in publish_img_cata_list " 
+						:key="item.classid" 
+						v-if="!item.url" 
+						class="scroll-view" 
+						:data-cataid="item.classid" 
+						data-from="text" 
+						@click="get_publish_cata_list">{{item.name}}</view>
 					
 			</scroll-view>
 		</view>
@@ -292,11 +303,33 @@
 					this.cms_cataid = '';
 				}
 				
+				var click_from = e.currentTarget.dataset.from;
 				
-				this.index_list = [];
-				this.current_page = 1;
-				this.is_get_article_list = true;
-				this.get_publish_list();
+				if(click_from == 'text'){
+					//从文字点击，局部刷新
+					this.index_list = [];
+					this.current_page = 1;
+					this.is_get_article_list = true;
+					this.get_publish_list();
+				}
+				else if(click_from == 'icon'){
+					//从图标点击
+					var new_url = e.currentTarget.dataset.url;
+					if(new_url){
+						this.abotapi.call_h5browser_or_other_goto_url(new_url);
+					}
+					else{
+						uni.redirectTo({
+							url:'/pages/publish/publish_home?cataid=' + this.cms_cataid
+						})
+					}
+					
+					
+					
+				}
+				
+				
+				
 			},
 			
 			//搜索
