@@ -517,6 +517,9 @@
 			              title: '操作成功！',
 			              duration: 2000
 			            });
+						
+						
+						
 			           
 			          } else {
 			            uni.showToast({
@@ -524,6 +527,9 @@
 			              duration: 2000
 			            });
 			          }
+					  uni.switchTab({
+					  	url:'../../pages/user/user',
+					  })
 			        },
 			        fail: function () {
 			          // fail
