@@ -342,25 +342,25 @@
 		onPullDownRefresh: function() {
 			var that = this;
 
-			var options = new Object();
-			//options.q = null;
-			//options.sellerid = null;
-
-			uni.removeStorage({
-				key: 'option_list_str',
-				success: function(res) {},
-			})
-
-			that.onLoad(options);
-			uni.stopPullDownRefresh()
+			
+			this.abotapi.set_shop_option_data(this, this.callback_function_shop_option_data);
+			
+			
+			setTimeout(function() {
+				uni.stopPullDownRefresh();
+				uni.hideToast();
+			}, 1000);
+			
 		},
 		onShareAppMessage: function() {
 			var that = this;
+			
 			return {
-				title: that.data.card_name,
-				desc: '欢迎您的访问!',
-				path: 'pages/index/index?usersn=' + that.data.usersn,
+				title: that.current_user_card_data.card_name,
+				desc: '',
+				path: 'pages/myecard/myecard',
 			}
+			
 		},
 
 
