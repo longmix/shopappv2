@@ -16,20 +16,10 @@ const globalData = {
 		
 		// default_sellerid: 'fSNQPajka',
 		
-		//通版商城
-		default_shopname: '延誉电商',
-		default_sellerid: 'pQNNmSkaq',
-		default_copyright_text:'延誉宝 @ 版权所有',
-		
-		//哈哈订
-		//default_shopname: '哈哈订',
-		// default_sellerid: 'fimmUPUPV',
-		// default_copyright_text:'哈哈订信息科技 版权所有',
-		
 		//腾羽生物
-		//default_shopname: '腾羽云商',
-		//default_sellerid: 'fSNQPajka',
-		//default_copyright_text:'腾羽生物科技 版权所有',
+		default_shopname: '腾羽云商',
+		default_sellerid: 'fSNQPajka',
+		default_copyright_text:'腾羽生物科技 版权所有',
 		
 		//=======以下配置项在发布版本的时候确定，服务器端配置无效===
 		
@@ -41,7 +31,11 @@ const globalData = {
 		//current_platform : 'h5',
 		
 		//固定导航栏的背景色，如果为0，则使用服务器端的配置
+		//如果固定导航栏颜色，请填写navigationBar_font_color和navigationBar_bg_color
+		//并确保与 navigationBarTextStyle / navigationBarBackgroundColor   保持一致
 		navigationBarBackgroundColor_fixed:1,
+		navigationBar_font_color:'#ffffff',
+		navigationBar_bg_color:'#f37404',
 		
 		//购物车在底部导航栏（如果购物车在底部导航栏，请务必选择此项，避免向购物车跳转失败）
 		is_shop_cart_in_tabbar: 0,

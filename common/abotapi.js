@@ -493,8 +493,7 @@ module.exports = {
 		if (uni.getStorageSync('shop_option_data_' + this.globalData.default_sellerid) && (currentTime - uni.getStorageSync("shop_option_data_time")) < 3600 * 1000) {
 		  
 			var option_data = JSON.parse(uni.getStorageSync('shop_option_data_' + this.globalData.default_sellerid))
-				
-			
+
 			//刷新界面
 			typeof callback_function == "function" && callback_function(that, option_data);
 				
@@ -505,17 +504,37 @@ module.exports = {
 				
 			uni.request({
 				//url: this.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_shop_option',
-				url: this.globalData.yanyubao_server_url + '/openapi/ShopAppV2Data/get_shop_option',
+				url: that002.globalData.yanyubao_server_url + '/openapi/ShopAppV2Data/get_shop_option',
 				method: 'post',
 				data: {
-					sellerid: this.globalData.default_sellerid,
-					platform: this.globalData.current_platform
+					sellerid: that002.globalData.default_sellerid,
+					platform: that002.globalData.current_platform
 				},
 				header: {
 					'Content-Type': 'application/x-www-form-urlencoded'
 				},
 				success: function (res) {
 					var option_data = res.data;
+					
+					if(option_data.code != 1){
+						console.log('/openapi/ShopAppV2Data/get_shop_option 错误！！！！！！！======>>>>', res);
+						return;
+					}
+					
+					//如果是固定了导航条颜色
+					if (that002.globalData.navigationBarBackgroundColor_fixed == 1){
+						console.log('保存商城选项数据=========>>>>>固定导航栏背景和文字颜色');
+						
+						if(that002.globalData.navigationBar_font_color && that002.globalData.navigationBar_bg_color){
+							option_data.option_list.wxa_shop_nav_font_color = that002.globalData.navigationBar_font_color;
+							option_data.option_list.wxa_shop_nav_bg_color = that002.globalData.navigationBar_bg_color;
+						}
+						else{
+							console.log('保存商城选项数据=========>>>>>但是没有设置这两项，所以导航栏之外无效。');
+						}
+						
+						
+					}
 				
 					//保存到本地
 					var shop_option_data = JSON.stringify(option_data);
@@ -525,7 +544,7 @@ module.exports = {
 					var currentTime = (new Date()).getTime();//获取当前时间
 					uni.setStorageSync("shop_option_data_time", currentTime);
 				
-					console.log('保存商城选项数据：' + shop_option_data);
+					console.log('保存商城选项数据=========>>>>>：', option_data);
 				
 					//刷新界面
 					typeof callback_function == "function" && callback_function(that, option_data);
