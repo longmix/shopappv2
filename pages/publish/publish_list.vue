@@ -14,7 +14,6 @@
 					<image class="nav-icon-list" :src="item.icon"></image>
 					<view style="font-size: 24upx;">{{item.name}}</view>
 				</view>
-
 		</view>
 		
 		<!-- 文字导航 -->
@@ -22,7 +21,7 @@
 			<view :data-cataid="0" @click="get_publish_cata_list" style="color: #999;font-size: 30upx;text-align: center;width: 15%;height:60upx;line-height: 60upx;">
 				<view>全部</view>
 			</view>
-			<scroll-view scroll-x="true" enable-flex="true" class="kcrzxybd" style="height:60upx;display: flex;white-space: nowrap;">
+			<scroll-view scroll-x="true" enable-flex="true" class="kcrzxybd" style="height:60upx;display: flex;white-space: nowrap;width:83%">
 				
 					<view v-for="(item,index) in publish_img_cata_list " :key="item.classid" class="scroll-view" :data-cataid="item.classid" @click="get_publish_cata_list">{{item.name}}</view>
 					
