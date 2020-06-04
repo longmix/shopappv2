@@ -9,7 +9,7 @@
 						<block v-if="form_type == 3">
 							<view class="input_flex" v-if="item.fieldname == 'imgimg_title'" style="overflow: auto;padding:35upx 40upx 20upx 40upx;background-color: #FFFFFF;border-bottom: 1upx solid #EEEEEE;">
 								<view class="input-flex-label w60" style="float: left;">标题<label class="FH">*</label></view>
-								<input style="float: left;width: 70%;margin-top: -4upx;" name="imgimg_title" maxlength="40" placeholder-style="color:#c3c3c3" placeholder="请输入合作需求的标题,5-40个字" />
+								<input style="float: left;width: 70%;margin-top: -4upx;" name="imgimg_title" maxlength="40" placeholder-style="color:#c3c3c3" placeholder="请输入标题" />
 							</view>
 							
 							<view class="uni-textarea" style="" v-if="item.fieldname == 'imgimg_content'">
@@ -95,9 +95,9 @@
 					
 					
 					<!-- <upimg-box></upimg-box> -->
-					<view style="display: flex;font-size: 24rpx;color: #999;align-items: center;margin-top: 16rpx;margin-bottom: 16rpx;padding-left: 34rpx;"> 
+					<view style="display: flex;font-size: 24rpx;color: #999;align-items: center;margin-top: 60rpx;margin-bottom: 16rpx;padding-left: 34rpx;"> 
 					
-						<checkbox-group name='fabu_xuzhi' style="zoom:55%;margin-right: 8rpx;">
+						<checkbox-group name='fabu_xuzhi' style="zoom:70%;margin-right: 8rpx;">
 								<checkbox value="1">
 									
 								</checkbox>
@@ -503,29 +503,34 @@
 				}
 				
 				uni.chooseImage({
+					
 				    success: function (chooseImageRes) {
-						
+						console.log('chooseImageRes',chooseImageRes);
 				        const tempFilePaths = chooseImageRes.tempFilePaths;
-				        uni.uploadFile({
-				            url: that.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/ShopAppV2Data/upload_video_or_img', //仅为示例，非真实的接口地址
-				            filePath: tempFilePaths[0],
-				            name: 'file',
-				            formData: {
-				                'sellerid': that.abotapi.globalData.default_sellerid,
-								'type': 0,
-								'checkstr': userInfo.checkstr,
-								'userid': userInfo.userid,
-				            },
-				            success: function (uploadFileRes) {
-								var JSON_uploadFileRes = JSON.parse(uploadFileRes.data);
-								var imgArray = that.imgArray;
-								
-								imgArray.push(JSON_uploadFileRes.url);
-								
-								that.imgArray = imgArray;
-								
-				            }
-				        });
+						console.log('chooseImageRes',tempFilePaths[2]);
+						for(let i = 0; i < tempFilePaths.length;i++){
+							uni.uploadFile({
+							    url: that.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/ShopAppV2Data/upload_video_or_img', //仅为示例，非真实的接口地址
+							    filePath: tempFilePaths[i],
+							    name: 'file',
+							    formData: {
+							        'sellerid': that.abotapi.globalData.default_sellerid,
+									'type': 0,
+									'checkstr': userInfo.checkstr,
+									'userid': userInfo.userid,
+							    },
+							    success: function (uploadFileRes) {
+									var JSON_uploadFileRes = JSON.parse(uploadFileRes.data);
+									var imgArray = that.imgArray;
+									
+									imgArray.push(JSON_uploadFileRes.url);
+									
+									that.imgArray = imgArray;
+									
+							    }
+							});
+						}
+				        
 				    }
 				});
 			},
@@ -654,7 +659,7 @@
 
 	}
 	.input-flex-label{
-	    width: 30%;
+	    width: 18%;
 	    line-height: 43rpx;
 	    font-size: 32rpx;
 	}

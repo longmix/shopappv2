@@ -93,16 +93,37 @@
 		
 		onLoad: function (options) {
 			//1、获取选项
+			var last_url = '/cms/publish/publish'; //跳转授权头像之后再跳转的页面
+			
 			if (options.publishtype) {
 				this.publishtype = options.publishtype;
+				//授权头像的参数拼接
+				if(last_url.indexOf("?") != -1){
+					last_url += '&publishtype=' + options.publishtype;
+				}else{
+					last_url += '?publishtype=' + options.publishtype;
+				}
+				
 			}
 			
 			if (options.xianmai_shangid){
 				this.xianmai_shangid = options.xianmai_shangid
+				//授权头像的参数拼接
+				if(last_url.indexOf("?") != -1){
+					last_url += '&xianmai_shangid=' + options.xianmai_shangid;
+				}else{
+					last_url += '?xianmai_shangid=' + options.xianmai_shangid;
+				}
 			}
 			
 			if (options.orderid) {
 			  this.orderid = options.orderid;
+			  //授权头像的参数拼接
+			  if(last_url.indexOf("?") != -1){
+			  	last_url += '&orderid=' + options.orderid;
+			  }else{
+			  	last_url += '?orderid=' + options.orderid;
+			  }
 			}
 			
 			
@@ -128,7 +149,7 @@
 				return;
 			}
 			
-			var last_url = '/cms/discover/discover';
+			
 			
 			//3、如果需要用户授权头像和昵称
 			if(this.abotapi.goto_get_userinfo(last_url)){
