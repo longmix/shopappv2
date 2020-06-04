@@ -262,7 +262,10 @@ export default {
 		uni.removeStorageSync("coordinate_array");
 		uni.removeStorageSync("cata_list");
 		uni.removeStorageSync("spec_list");
+		
 		//uni.removeStorageSync('all_shang_jingwei_list');
+		
+		locationapi.get_location_remove();
 		
 		that.abotapi.get_shop_info_from_server_remove();
 		that.abotapi.set_shop_option_data_remove();
