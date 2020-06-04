@@ -264,7 +264,6 @@ export default {
 		uni.removeStorageSync("spec_list");
 		
 		//uni.removeStorageSync('all_shang_jingwei_list');
-		
 		locationapi.get_location_remove();
 		
 		that.abotapi.get_shop_info_from_server_remove();
@@ -434,7 +433,6 @@ export default {
 		//加载活动专区
 		this.loadPromotion();
 		
-		locationapi.get_location(this, this.call_back_get_shang_list2);
 	},
 	onShow:function(){
 		
@@ -447,9 +445,6 @@ export default {
 	
 	
 	methods: {
-		call_back_get_shang_list2:function(that,cb_params){
-			console.log('call_back_get_shang_list2--cb_params==',cb_params)
-		},
 		
 		//跳转文章详情
 		goForum: function(id) {
@@ -821,6 +816,7 @@ export default {
 		},
 		//给商家排序
 		set_paixu_shanglist:function(that,locationData){
+			that.current_cityname = locationData.addressComponent.city;
 			console.log('locationData=======>>>>',locationData);
 			var coordinate = [];
 			coordinate['latitude'] = locationData.latitude;
@@ -1529,7 +1525,7 @@ page{position: relative;background-color: #fff;}
 	/*  #endif  */
 
 	.addr {
-		width: 150upx;
+		width: 160upx;
 		height: 60upx;
 		flex-shrink: 0;
 		display: flex;

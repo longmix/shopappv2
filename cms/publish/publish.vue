@@ -475,6 +475,7 @@
 			  
 			    order_finish:function(e){
 			      var that = this;
+				  var userInfo = that.abotapi.get_user_info();
 			      wx.request({
 			        url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_finish',
 			        method: 'post',
