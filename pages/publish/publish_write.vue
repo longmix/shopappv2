@@ -347,9 +347,10 @@
 							uni.showToast({
 								 title: res.data.msg,
 							});
+							
 							setTimeout(function(){
 								
-								uni.switchTab({
+								uni.reLaunch({
 									url:"../publish/publish_list"
 								});
 							},1000);
