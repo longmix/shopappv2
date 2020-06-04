@@ -23,7 +23,7 @@
 			<!-- 昵称,个性签名 -->
 			<view class="right">
 				<view class="username" :style="{color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}">
-					<label v-if="user_info">{{user_info.nickname}}</label><label @click="toLogin" v-else>请点击此处登录</label></view>
+					<label v-if="user_info">{{fenxiao_info.nickname}}</label><label @click="toLogin" v-else>请点击此处登录</label></view>
 				<view class="signature" :style="{color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}">
 					<label v-if="user_info && user_info.signature !=null">{{user_info.signature}}</label><label v-if="user_info.signature == null"></label></view>
 			</view>
@@ -184,6 +184,10 @@
 			that.abotapi.set_option_list_str(that, 
 				function(that001, option_list){
 					that001.abotapi.getColor();
+					
+					uni.setNavigationBarTitle({
+						title: 'ddddd'//this.abotapi.globalData.default_shopname
+					})
 					
 					that001.wxa_shop_nav_bg_color  = option_list.wxa_shop_nav_bg_color;
 						
@@ -363,9 +367,35 @@
 			    })
 			},
 			toMyQR(){
-				uni.navigateTo({
-					url:'/pages/user/myQR/myQR'
-				})
+				// uni.navigateTo({
+				// 	url:'/pages/user/myQR/myQR'
+				// })
+				var that = this;
+				uni.scanCode({
+				    success: function (res) {
+						console.log('res===',res);
+				        console.log('条码类型：' + res.scanType);
+				        console.log('条码内容：' + res.result);
+						
+						var result = res.result;
+						if ((result.indexOf('http://') == 0)||(result.indexOf('https://') == 0)){
+							var var_list = Object();
+							that.abotapi.call_h5browser_or_other_goto_url(result, var_list);
+						}else{
+							uni.showModal({
+							    title: '提示',
+							    content: result,
+								showCancel: false,
+							    success: function (res) {
+							        
+							    }
+							});
+						}
+						
+				    }
+				});
+				
+				
 			},
 			toLogin(){
 				
@@ -413,13 +443,10 @@
 				
 			},
 			showMemberExplain(){
-				
-
 				if(!this.fenxiao_info.level_memo){
 					return;
 				}
 				this.explainFlag = 0 
-
 			},
 			hideMemberExplain(){
 				this.explainFlag = 1;
