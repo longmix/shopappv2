@@ -174,7 +174,10 @@
 			this.userid = option.userid;
 			this.chat_type = option.type;
 			
-			
+			uni.setNavigationBarTitle({
+				title: option.name
+			});
+		
 			
 			that.abotapi.abotRequest({
 				  url: that.abotapi.globalData.yanyubao_server_url + '/openapi/BuddyData/buddy_action',
@@ -194,9 +197,7 @@
 					if(data.code == 1){
 						
 						that.friendInfo = data.data
-						 uni.setNavigationBarTitle({
-							title: data.data.nickname
-						 });
+						 
 						 that.taskUserInfo.userName = that.friendInfo.nickname;
 						 that.taskUserInfo.headImg = that.friendInfo.headimgurl;
 					 }

@@ -137,7 +137,7 @@
 				</button>
 			</block>
 			<block v-if="wxa_kefu_button_type==3">
-				<button class="u-go-home2" openType="contact" :style="{backgroundColor:wxa_kefu_bg_color}">
+				<button class="u-go-home2" open-type="contact" :style="{backgroundColor:wxa_kefu_bg_color}">
 					<image :src="wxa_kefu_button_icon" mode="widthFix"></image>
 				</button>
 			</block>
