@@ -17,7 +17,7 @@
 				
 				<navigator url='/pages/user/accountEdit/accountEdit' class="row">
 					<view class="title">账号密码</view>
-					<view class="right"><view class="tis"></view><view class="icon xiangyou"></view></view>
+					<view class="right"><view class="tis">{{userAcountInfo.account}}</view><view class="icon xiangyou"></view></view>
 				</navigator>
 				
 				<navigator url='/pages/user/updateMobile/updateMobile' class="row">

@@ -23,6 +23,17 @@ module.exports = {
 
 			var regeocoding_success = function (data) {
 				console.log('regeocoding_success locationapi===', data);
+							
+				
+				// uni.showModal({
+				//     title: '提示000',
+				//     content: JSON.stringify(data),
+				//     success: function (res) {
+				       
+				//     }
+				// });
+				
+							
 				
 				console.log('location---longitude===',data.wxMarkerData[0].longitude)
 				console.log('location---latitude===',data.wxMarkerData[0].latitude)
@@ -52,6 +63,15 @@ module.exports = {
 			var regeocoding_fail = function(res){
 				console.log('uni.getLocation fail locationapi====>>>>', res);
 				
+				// uni.showModal({
+				//     title: '提示111',
+				//     content: JSON.stringify(res),
+				//     success: function (res) {
+				       
+				//     }
+				// });
+				
+
 				let locationData = [];
 			
 				locationData['latitude'] = 31.293216;

@@ -185,9 +185,9 @@
 				function(that001, option_list){
 					that001.abotapi.getColor();
 					
-					uni.setNavigationBarTitle({
-						title: 'ddddd'//this.abotapi.globalData.default_shopname
-					})
+					// uni.setNavigationBarTitle({
+					// 	title: this.abotapi.globalData.default_shopname
+					// })
 					
 					that001.wxa_shop_nav_bg_color  = option_list.wxa_shop_nav_bg_color;
 						
