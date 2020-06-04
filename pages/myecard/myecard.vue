@@ -79,16 +79,16 @@
 		<!--商户头条end-->
 
 		<!-- 九宫格图标 begin -->
-		<view class='icon-box'>
-			<navigator url="pages/help/help" open-type="navigate" v-if="ecard_option_list.ecard_nav_show_toutiao == 1">
+		<view class='icon-box' v-for="(item,index) in list2">
+			<navigator :url="item.url" open-type="navigate" v-if="ecard_option_list.ecard_nav_show_toutiao == 1">
 				<view class='icon-list'>
-					<image src='https://yanyubao.tseo.cn/Tpl/static/ecard_module/icon/zixun.svg'></image>
-					<view class='icon-text'><text>最新资讯</text></view>
+					<image :src='item.src'></image>
+					<view class='icon-text'><text>{{item.name}}</text></view>
 				</view>
 			</navigator>
 
 
-			<navigator url="../payment/payment" open-type="navigate" v-if="ecard_option_list.ecard_nav_show_maidan == 1">
+			<!-- <navigator url="../payment/payment" open-type="navigate" v-if="ecard_option_list.ecard_nav_show_maidan == 1">
 				<view class='icon-list'>
 					<image src='https://yanyubao.tseo.cn/Tpl/static/ecard_module/icon/fukuan.svg'></image>
 					<view class='icon-text'><text>余额付款</text></view>
@@ -151,11 +151,11 @@
 					<view class='icon-text'><text>关于我们</text></view>
 				</view>
 			</navigator>
-
+ -->
 
 		</view>
 
-		<view class='icon-box'>
+	<!-- 	<view class='icon-box'>
 
 
 
@@ -176,14 +176,14 @@
 					</button>
 				</view>
 			</view>
-		</view>
+		</view> -->
 
 		<!-- 九宫格图标 end -->
-
+<!-- 
 		<div style="clear:both;display:block; height:30rpx;">
 
 		</div>
-
+ -->
 
 		<!-- 商户风采图片 begin -->
 		<view class="supplier-image-list" v-if="shanghu_img_list && ecard_option_list.ecard_show_index_icon == 1">
@@ -263,7 +263,7 @@
 			</view>
 		  </navigator>
 		-->
-			<navigator url="../score/score" open-type="navigate">
+			<!-- <navigator url="../score/score" open-type="navigate">
 				<view class="weui_cell">
 					<view class="weui_cell_bd">
 						<view class="weui_cell_bd_p"> 积分记录 </view>
@@ -289,7 +289,7 @@
 					<view class="badge">{{youhui_new_count}}</view>
 					<view class="with_arrow"></view>
 				</view>
-			</navigator>
+			</navigator> -->
 			<!--<navigator url="">
 					<view class="weui_cell">               
 						<view class="weui_cell_bd">
@@ -311,7 +311,7 @@
 		-->
 		</view>
 
-		<view class="info_list">
+	<!-- 	<view class="info_list">
 			<navigator v-if="ecard_option_list.ecard_show_index_swiper == 1" url="../mycard/mycard" open-type="navigate">
 				<view class="weui_cell">
 					<view class="weui_cell_bd">
@@ -334,7 +334,7 @@
 
 
 
-		</view>
+		</view> -->
 
 		<view style='font-size:15px; margin:10px;position:relative;' @tap='shangPhoneClick' v-if="ecard_option_list.ecard_show_index_phone == 1">
 			<image src="https://yanyubao.tseo.cn/Tpl/static/ecard_module/mobile.png" style="width:30px;height:30px;margin-left:-5px;"></image>
@@ -404,6 +404,8 @@
 				score_log_count: '',
 				youhui_count: '',
 				youhui_new_count: '',
+				
+				list2:''
 			}
 		},
 		onLoad(options) {
@@ -654,7 +656,11 @@
 					},
 					success(res) {
 						console.log("aaaaaaa==============>>>>>", res)
-						
+						 
+						 that.list2 = res.data.data.ecard_shopappv2_nav_icon_list;
+						 
+						 console.log("gggggggg==============>>>>>", res.data.data.ecard_shopappv2_nav_icon_list);
+						 
 						if(res.data.code == 1){
 							console.log("aaaaaaa==222222222222============>>>>>", res.data.code)
 
