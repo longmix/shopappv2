@@ -202,12 +202,16 @@
 			get_publish_list: function (action='') {
 				
 				if(!this.is_get_article_list){
-					uni.showToast({
+					/*uni.showToast({
 						title: '暂无相关文章',
 						duration: 2000
-					});
+					});*/
+					
+					console.log('没有更多文章');
+					
 					return;
 				}
+				
 				if(!this.cms_token){
 					console.log('get_publish_list 没有 CMS Token');
 					return;
@@ -261,10 +265,14 @@
 						}else{
 							that.is_get_article_list = false;
 							
-							uni.showToast({
-								title: '暂无更多文章',
+							
+							/*uni.showToast({
+								title: '暂无相关文章',
 								duration: 2000
-							});
+							});*/
+							
+							console.log('没有更多文章');
+							
 							return;
 						}
 					},

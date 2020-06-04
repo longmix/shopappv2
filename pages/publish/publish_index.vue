@@ -123,10 +123,13 @@
 				
 				that.publish_img_cata_list = [];
 				
-				var list001 = [];
-				if(that.publish_img_cata_list){
-					list001 = that.publish_img_cata_list;
+				var list001 = shop_option_data.option_list.publish_img_cata_list;
+				
+				if(!list001){
+					return;
 				}
+				
+				console.log('============================>>>>>', list001);
 				
 				for(var i=0; i<list001.length; i++){
 					var item001 = list001[i];
@@ -137,6 +140,9 @@
 					
 					that.publish_img_cata_list.push(item001);
 				}
+				
+				console.log('============================>>>>>', that.publish_img_cata_list);
+				
 			},
 			toUrl:function(url){
 				this.abotapi.call_h5browser_or_other_goto_url(url);
