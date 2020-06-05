@@ -927,14 +927,14 @@ export default {
 			for (var index in arr) {
 				if (!isNaN(index)) {
 					dis = that.abotapi.getDisance(that.coordinate['latitude'], that.coordinate['longitude'], arr[index]['latitude'], arr[index]['longitude']);
-					console.log('dis',dis);
-					arr[index]['dis'] = dis.toFixed(1);
-				
+					
 					//dis = Math.ceil(dis)
 					if(!isNaN(dis)){
+						arr[index]['dis'] = dis.toFixed(1);
+										
 						var dis_str = '';
 						if (dis < 1000) {
-						  dis_str = dis + '米'
+						  dis_str = dis.toFixed(1) + '米'
 						}
 										
 						else {
