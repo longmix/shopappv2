@@ -1614,7 +1614,7 @@ page{position: relative;background-color: #fff;}
 
 .category-list {
 	width: 96%;
-	margin: 0 4%;
+	margin-left: 2%;
 	padding: 0 0 30upx 0;
 	border-bottom: solid 2upx #f6f6f6;
 	display: flex;
@@ -1625,6 +1625,7 @@ page{position: relative;background-color: #fff;}
 		margin-top: 50upx;
 		display: flex;
 		flex-wrap: wrap;
+		justify-content: center;
 		.img {
 			width: 100%;
 			display: flex;
