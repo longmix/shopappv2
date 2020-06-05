@@ -1,19 +1,26 @@
 <template style="padding: 0upx;margin: 0upx;">
-	<view>
-		<view :style="[{'background-image':'url('+ current_user_card_data.card_bg_img +')' }]" class="c">
-			<view class="a">
-				<image :src="current_user_card_data.card_logo" style="width: 100upx;height: 100upx;border-radius: 50%;overflow: hidden;"></image>
-				<view style="margin-left:30rpx;line-height: 50rpx;">
-					<view>{{current_user_card_data.card_name}}</view>
-					<view>{{current_user_card_data.card_desc}}</view>
-				</view>
+	<view :style="[{'background-image':'url('+ bg_img.page_bg_img_body +')' }]" >
+		
+		<view >			
+			<view class="head_c">
+				<image :src="head_img"></image>
 			</view>
-			<view style="text-align: right;padding-right: 57px;color: #000000;margin-top:165upx;padding-right: 170upx;">
-				<b>{{current_user_card_data.card_no}}</b>
+			
+			<view :style="[{'background-image':'url('+ current_user_card_data.card_bg_img +')' }]" class="c">
+				<view class="a">
+					<image :src="current_user_card_data.card_logo" style="width: 100upx;height: 100upx;border-radius: 50%;overflow: hidden;"></image>
+					<view style="margin-left:30rpx;line-height: 50rpx;">
+						<view>{{current_user_card_data.card_name}}</view>
+						<view>{{current_user_card_data.card_desc}}</view>
+					</view>
+				</view>
+				<view style="text-align: right;padding-right: 57px;color: #000000;margin-top:165upx;padding-right: 170upx;">
+					<b>{{current_user_card_data.card_no}}</b>
+				</view>
 			</view>
 		</view>
 
-		<view style="text-align: center;">
+		<view style="text-align: center;margin-top:100rpx;background-color: #FFFFFF;margin-bottom: 10rpx;">
 			<view class="mid-tips" style="border-right: 1rpx solid #c5c5c5;">
 				<view class="mid-level">会员等级</view>
 				<view>{{current_user_card_data.level_name}}</view>
@@ -79,7 +86,7 @@
 		<!--商户头条end-->
 
 		<!-- 九宫格图标 begin -->
-		<view class="icon-box-con" style="overflow: hidden;">
+		<view class="icon-box-con" style="overflow: hidden;background-color: #FFFFFF;margin-bottom: 10rpx;">
 			<view class='icon-box' v-for="(item,index) in list_first">
 				<navigator :url="item.url" open-type="navigate" v-if="ecard_option_list.ecard_nav_show_toutiao == 1">
 					<view class='icon-list'>
@@ -89,7 +96,6 @@
 				</navigator>
 			</view>
 		</view>
-		<view class="mid-gray" style="width: 100%;height: 10rpx;background-color: #dcdcdc;"></view>
 		<!-- 九宫格图标 end -->
 
 		<!-- 商户风采图片 begin -->
@@ -159,9 +165,9 @@
 		</view>
 
 		<view style='font-size:15px; margin:10px;position:relative;' v-if="ecard_option_list.ecard_show_index_address == 1">
-			<image src="https://yanyubao.tseo.cn/Tpl/static/ecard_module/ecard_module_iconfont-shouhuodizhi.png" style="width:25px;height:25px;"></image>
+			<image src="../../static/img/category/weizhi.png" style="width:30px;height:30px;margin-left:-5px;"></image>
 
-			<view style='position:absolute;top:-5px;left:35px; font-size:13px;' @tap="openLocation">{{current_user_card_data.shang_address}}</view>
+			<view style='position:absolute;top:5px;left:35px;' @tap="openLocation">{{current_user_card_data.shang_address}}</view>
 		</view>
 
 
@@ -222,8 +228,9 @@
 				youhui_count: '',
 				youhui_new_count: '',
 				list_two:[],
-				list_first:[]
-			
+				list_first:[],
+				head_img:'',
+				bg_img:''
 			}
 		},
 		onLoad(options) {
@@ -477,8 +484,11 @@
 						 
 						 that.list_first = res.data.data.ecard_shopappv2_nav_icon_list;
 						 that.list_two = res.data.data.ecard_shopappv2_function_list;
+						 that.head_img = res.data.data.page_bg_img_head;
+						 that.bg_img = res.data.data;
+			
 						 
-						 console.log("gggggggg==============>>>>>", res.data.data.ecard_shopappv2_nav_icon_list);
+						 console.log("gggggggg==============>>>>>", res.data.data.page_bg_img_head);
 						 
 						if(res.data.code == 1){
 							console.log("aaaaaaa==222222222222============>>>>>", res.data.code)
@@ -680,8 +690,21 @@
 		margin-left: 20upx;
 		margin-top: 50upx;
 	}
-
+    .head_c{
+		z-index: 1;
+		position: absolute;
+		top: 0;
+		text-align: center;
+		display: inline-block;
+		width: 100%;
+	}
+	.head_c image{
+		width: 100%;
+	}
+		
 	.c {
+		z-index: 2;
+		position: relative;
 		margin-top: 25rpx;
 		margin-left: 5%;
 		width: 90%;
@@ -738,7 +761,6 @@
     .toutiao{
       width:100%;
       height:50px;
-      margin:10px auto;
       background-color: #fff;
       clear: both;
     }
@@ -795,7 +817,7 @@
 	}
 	
 	.icon-text text{
-		font-size: 20rpx;
+		font-size: 25rpx;
 	}
 	
 	.supplier-img{
@@ -812,7 +834,7 @@
 		border-bottom:  1rpx solid #b5b5b5;
 	}
 	.weui_cell_bd{
-		display: inline-flex;
+		display:flex;
 		margin-left: 10rpx;
 	}
 	.weui_cell_bd image{
