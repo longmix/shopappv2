@@ -30,7 +30,7 @@
 		<view class="swiper">
 			<view class="swiper-box">
 				<swiper circular="true" autoplay="true" @change="swiperChange" :style="{height:imgheights[current] + 'px'} ">
-					<swiper-item v-for="(swiper,index) in flash_ad_list" :key="swiper.id" @click="toAdDetails(swiper.url)">
+					<swiper-item v-for="(swiper,index) in flash_ad_list" :key="swiper.id" @click="toAdDetails(flash_ad_list[index].url)">
 						<image @load="imageLoad($event)"  :data-id='index' :src="swiper.image" mode="widthFix"></image>
 					</swiper-item>
 				</swiper>
