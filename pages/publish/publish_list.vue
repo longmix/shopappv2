@@ -23,7 +23,7 @@
 		
 		<!-- 文字导航 -->
 		<view style="display: flex;background-color: #FFFFFF;">
-			<view :data-cataid="0" @click="get_publish_cata_list" style="color: #999;font-size: 30upx;text-align: center;width: 15%;height:60upx;line-height: 60upx;">
+			<view :data-cataid="0" @click="get_publish_cata_list" data-from="text" style="color: #999;font-size: 30upx;text-align: center;width: 15%;height:60upx;line-height: 60upx;">
 				<view>全部</view>
 			</view>
 			<scroll-view scroll-x="true" enable-flex="true" class="kcrzxybd" style="height:60upx;display: flex;white-space: nowrap;width:83%">
@@ -45,6 +45,7 @@
 
 <script>
 	import publishList from '../../components/publish-list/publish-list.vue';
+	import publish_list_api from '../../common/publish_list_api.js';
 	export default {
 		components:{
 			publishList
@@ -91,10 +92,10 @@
 			console.log('options',options);
 			
 			var that = this;
+			
 			if(options.cataid){
 				this.cms_cataid = options.cataid;
 			}
-			
 			
 			
 			uni.getSystemInfo({
@@ -116,6 +117,7 @@
 			that.index_list = [];
 			that.abotapi.set_shop_option_data(that, that.callback_function);
 		},
+		
 		onPullDownRefresh:function(){
 			console.log(123465);
 			this.current_page = 1;
@@ -123,7 +125,7 @@
 			this.index_list = []; 
 			
 			
-			this.get_publish_list();
+			publish_list_api.get_publish_list(this,this.get_api_publish_list);
 			
 			
 			setTimeout(function() {
@@ -140,13 +142,31 @@
 			
 			that.current_page ++;
 			
-			this.get_publish_list();
+			publish_list_api.get_publish_list(that,that.get_api_publish_list);
 			
 			
 			
 		},
 		
 		methods: {
+			get_api_publish_list:function(that,publishData){
+				console.log('publishData',publishData);
+				if(publishData.title){
+					uni.showToast({
+						title: publishData.title,
+						duration: 2000
+					});
+				}
+				
+				
+				uni.setNavigationBarTitle({
+					title:publishData.list_title
+				})
+				
+				for(var i in publishData.index_list){
+					that.index_list.push(publishData.index_list[i]);
+				}
+			},
 			callback_function:function(that, shop_option_data){
 				console.log('aaaaaaa====',shop_option_data);
 				that.abotapi.getColor();
@@ -158,8 +178,8 @@
 				}
 				that.publish_img_cata_list = shop_option_data.option_list.publish_img_cata_list;
 				
-				that.get_publish_list();
-				
+				//that.get_publish_list();
+				publish_list_api.get_publish_list(that,that.get_api_publish_list);
 				//取帖子分类列表publish_hiddend_btn_for_write__checkbox
 			
 				
@@ -209,7 +229,7 @@
 				}
 			},
 			//获取帖子列表
-			get_publish_list: function (action='') {
+			get_publish_lists: function (action='') {
 				
 				if(!this.is_get_article_list){
 					/*uni.showToast({
@@ -236,7 +256,7 @@
 						action: 'newlist',
 						page:that.current_page,
 						page_size:that.current_page_size,
-					};
+				};
 					
 				if(that.cms_cataid){
 					post_data['cataid'] = that.cms_cataid;
@@ -297,6 +317,7 @@
 			
 			//点击导航传递cataid获取帖子
 			get_publish_cata_list:function(e){
+				var that = this;
 				if(e.currentTarget.dataset.cataid && e.currentTarget.dataset.cataid != 0){
 					this.cms_cataid = e.currentTarget.dataset.cataid;
 				}else{
@@ -310,7 +331,7 @@
 					this.index_list = [];
 					this.current_page = 1;
 					this.is_get_article_list = true;
-					this.get_publish_list();
+					publish_list_api.get_publish_list(that,that.get_api_publish_list);
 				}
 				else if(click_from == 'icon'){
 					//从图标点击

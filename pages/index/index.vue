@@ -157,6 +157,7 @@ import locationapi from '../../common/locationapi.js';
 import shopList from '../../components/shop-list/shop-list.vue';
 import publishList from '../../components/publish-list/publish-list.vue';
 import productList from '../../components/product-list/product-list.vue'
+import publish_list_api from '../../common/publish_list_api.js';
 
 export default {
 	components:{
@@ -237,7 +238,10 @@ export default {
 			wxa_kefu_bg_color:'',
 			wxa_show_kucun_in_list: '',
 			wxa_hidden_product_list:'',
-			supplierid: ''
+			supplierid: '',
+			is_get_article_list:true,// publish_list_api 帖子列表判断是否请求 
+			cms_token:'',//cms_token
+			current_page_size:''
 		};
 	},
 	onPageScroll: function (e) {
@@ -545,40 +549,7 @@ export default {
 			this.videometa_width_height = videometa_width_height;
 			
 		},
-		get_publish_list:function(){
-			
-			var that = this;
-			var post_data = {
-				token:this.cms_token,
-				sellerid: this.abotapi.globalData.default_sellerid,
-				action: 'newlist',
-				page:1,
-				page_size:this.default_publish_list_count_in_front_page,
-			}
-			
-			this.abotapi.abotRequest({
-				url: that.abotapi.globalData.weiduke_server_url + 'openapi/ArticleImgApi/article_list',
-				method: 'post',
-				data: post_data,
-				header: {
-					'Content-Type': 'application/x-www-form-urlencoded'
-				},
-				success: function (res) {
-					console.log('that.index_list',res);
-					if(res.data.code == 1){
-						
-						that.index_list = res.data.data;
-						console.log('that.index_list',that.index_list);
-					}
-				},
-				fail: function (e) {
-					uni.showToast({
-						title: '网络异常！',
-						duration: 2000
-					});
-				},
-			});
-		},
+		
 		callback_function_shop_option_data:function(that, cb_params){
 			
 			if(!cb_params){
@@ -742,8 +713,8 @@ export default {
 			
 			if (cb_params.option_list.default_publish_list_count_in_front_page) {
 			  
-			    that.abotapi.globalData.default_publish_list_count_in_front_page = cb_params.option_list.default_publish_list_count_in_front_page
-			  
+			    that.abotapi.globalData.default_publish_list_count_in_front_page = cb_params.option_list.default_publish_list_count_in_front_page;
+				that.current_page_size = cb_params.option_list.default_publish_list_count_in_front_page;
 			}
 			
 			
@@ -755,13 +726,19 @@ export default {
 			that.get_product_list();
 			
 			that.call_back_get_shang_list();
-			
-			that.get_publish_list();
-				
+			console.log('来啦');
+			publish_list_api.get_publish_list(that,that.get_api_publish_list);				
 			
 		},
 		
-		
+		get_api_publish_list:function(that,publishData){
+			//帖子列表
+			console.log('publishData',publishData);
+			
+			for(var i in publishData.index_list){
+				that.index_list.push(publishData.index_list[i]);
+			}
+		},
 		
 		/* 获取前十条商家 */
 		call_back_get_shang_list:function(){
