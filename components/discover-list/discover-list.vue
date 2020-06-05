@@ -109,16 +109,11 @@
 		        
 		          <view style="clear:both;"></view>
 		
-		           <view v-if="!is_my_discover_collection && !is_my_discover" class="list-address fz-10 m-t-5"> <!-- 004  -->
+		           <!-- <view v-if="!is_my_discover_collection && !is_my_discover" class="list-address fz-10 m-t-5">
 		              <view @tap="oneClickSave" class='download-con' 
 		                :data-index='idx' :data-type='item.type' 
 		                :style="{display:faquan_one_click_to_save_show}">
 		                <image class="download-img" src="../../static/img/download.png"></image>一键保存{{item.type}}</view>
-		
-		
-		
-		              <!-- <view class="list-icon-text vm" bindtap='clickBtn' data-id="{{item.id}}">分享</view> -->
-		              
 		                <view class="share_box" >
 		                <image class="share-img" src="../../static/img/share.png"></image>
 		                  <view class="share_hide">
@@ -128,7 +123,7 @@
 		                  </view>
 		                </view>
 		
-		          </view>
+		          </view> -->
 		
 		
 		        </view>

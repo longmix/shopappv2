@@ -497,7 +497,7 @@
 					sellerid: this.abotapi.globalData.default_sellerid,
 					action: action,
 					checkstr: userInfo.checkstr,					
-					xianmaishangid: this.current_shang_detail.current_xianmai_shangid,
+					xianmaishangid: this.current_shang_detail.xianmai_shangid,
 				}
 
 				this.abotapi.abotRequest({
