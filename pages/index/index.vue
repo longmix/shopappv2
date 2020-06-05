@@ -825,7 +825,7 @@ export default {
 			
 			//开始排序
 			var paixu_shanglist = shop_location_list.sort(compare);
-			
+			console.log('paixu_shanglist',paixu_shanglist);
 			uni.setStorageSync("shop_location_list", paixu_shanglist);
 			
 			//排序完成，取最新的10条
@@ -926,25 +926,26 @@ export default {
 			
 			for (var index in arr) {
 				if (!isNaN(index)) {
-				  
 					dis = that.abotapi.getDisance(that.coordinate['latitude'], that.coordinate['longitude'], arr[index]['latitude'], arr[index]['longitude']);
-					
-					arr[index]['dis'] = dis;
+					console.log('dis',dis);
+					arr[index]['dis'] = dis.toFixed(1);
 				
-					dis = Math.ceil(dis)
-				
-					var dis_str = '';
-					if (dis < 1000) {
-					  dis_str = dis + '米'
+					//dis = Math.ceil(dis)
+					if(!isNaN(dis)){
+						var dis_str = '';
+						if (dis < 1000) {
+						  dis_str = dis + '米'
+						}
+										
+						else {
+						  dis_str = (dis / 1000).toFixed(1) + '公里'
+						}
+										
+						arr[index]['dis_str'] = dis_str;
+						
+						shop_location_list.push(arr[index])
 					}
-				
-					else {
-					  dis_str = (dis / 1000).toFixed(1) + '公里'
-					}
-				
-					arr[index]['dis_str'] = dis_str;
 					
-					shop_location_list.push(arr[index])
 				}
 			}
 			return shop_location_list;

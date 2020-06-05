@@ -408,7 +408,7 @@
 				
 				var that = this;
 				var arr = uni.getStorageSync('all_shang_jingwei_list'); //获取商家经纬度
-				
+				console.log('arr',arr);
 				var shop_location_list = that.jisuan_juli(arr);
 				
 				console.log('shop_location_list',shop_location_list);
@@ -451,22 +451,24 @@
 					  
 						dis = that.abotapi.getDisance(that.coordinate['latitude'], that.coordinate['longitude'], arr[index]['latitude'], arr[index]['longitude']);
 						
-						arr[index]['dis'] = dis;
+						arr[index]['dis'] = dis.toFixed(2);
 						
-						dis = Math.ceil(dis)
-						
-						var dis_str = '';
-						if (dis < 1000) {
-						  dis_str = dis + '米'
+						//dis = Math.ceil(dis)
+						if(!isNaN(dis)){
+							var dis_str = '';
+							if (dis < 1000) {
+							  dis_str = dis + '米'
+							}
+												
+							else {
+							  dis_str = (dis / 1000).toFixed(1) + '公里'
+							}
+							
+							arr[index]['dis_str'] = dis_str;
+							
+							shop_location_list.push(arr[index])
 						}
-					
-						else {
-						  dis_str = (dis / 1000).toFixed(1) + '公里'
-						}
 						
-						arr[index]['dis_str'] = dis_str;
-						
-						shop_location_list.push(arr[index])
 					}
 				}
 				return shop_location_list;
