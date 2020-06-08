@@ -49,13 +49,19 @@
 				
 				
 				<view class="box" @tap="toChat">
-					<view class="icon kefu"></view>		<!-- 下版本改为   -->
+					<view class="icon kefu"></view>
 					<view class="text">客服</view>
 				</view>
 				<view class="box" @tap="keep">
 					<view class="icon" :class="[isKeep?'shoucangsel':'shoucang']"></view>
 					<view class="text">{{isKeep?'已':''}}收藏</view>
 				</view>
+				<view class="box" @tap="toCart">
+					<view class="icon cart"></view>
+					<view class="text">购物车</view>
+					<view class="amount" v-if="cart_amount > 0">{{cart_amount}}</view>
+				</view>
+				
 			</view>
 			<view class="btn">
 				<view :class="[goods_detail.inventory == 0? 'joinCart-null':'joinCart']" data-type="addcart" data-status="2" @tap="goods_detail.inventory == 0?'':setModalStatus($event)">加入购物车</view>
@@ -404,14 +410,15 @@ export default {
 			sharekanjia:'',
 			miaosha_url:'',
 			xianshimiaosha:'',
-			wxa_show_kucun_xiaoliang: ''
+			wxa_show_kucun_xiaoliang: '',
+			cart_amount:0
 
 		};
 	},
 	onLoad(option) {
 		this.abotapi.set_option_list_str(this, this.callback_set_option_list_str);
 		this.abotapi.get_shop_info_from_server(this.callback_func_for_shop_info);
-		console.log('44444444444',option);
+		console.log('/pages/product/detail=====',option);
 		var that = this;
 		
 		var options_str = '';
@@ -573,6 +580,7 @@ export default {
 			});
 		  }
 		
+		
 		this.loadCataXiangqing();
 		
 		// #ifdef MP
@@ -589,6 +597,9 @@ export default {
 		
 		
 		
+	},
+	onShow(){
+		this.getCartList();
 	},
 	onReady(){
 		this.calcAnchor();//计算锚点高度，页面数据是ajax加载时，请把此行放在数据渲染完成事件中执行以保证高度计算正确
@@ -779,6 +790,39 @@ export default {
 			
 			
 		},
+		
+		getCartList(){
+			let userInfo = this.abotapi.get_user_info();
+			this.abotapi.abotRequest({
+				url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=cart_list',
+				method: 'post',
+				data: {
+					userid: userInfo.userid,
+					checkstr: userInfo.checkstr,
+					page: 1,
+					sellerid: this.abotapi.get_sellerid()
+				},
+				header: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+				},
+				success: (res) => {
+					console.log('res',res);
+					
+					let amount = 0
+					if(res.data.code == 1){
+						let cart_list = res.data.data;
+						for(let i=0;i<cart_list.length;i++){
+							amount += cart_list[i].amount;
+						}
+					}
+					
+					this.cart_amount = amount
+			
+				},
+			});
+		},
+		
+		
 		//收藏
 		keep(){
 			
@@ -906,6 +950,7 @@ export default {
 		          uni.showToast({
 		            title: '添加成功',
 					success:()=>{
+						that.getCartList();
 						that.hideSpec();
 					}
 		          });
@@ -1672,6 +1717,7 @@ page {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	padding-bottom: 20rpx;
 	.icons {
 		display: flex;
 		height: 80upx;
@@ -1682,6 +1728,7 @@ page {
 			display: flex;
 			justify-content: center;
 			flex-wrap: wrap;
+			position: relative;
 			.icon {
 				font-size: 40upx;
 				color: #828282;
@@ -1693,6 +1740,19 @@ page {
 				font-size: 22upx;
 				color: #666;
 			}
+			.amount {
+				position: absolute;
+				background: #f00;
+				color: #fff;
+				width: 34rpx;
+				height: 34rpx;
+				line-height: 34rpx;
+				text-align: center;
+				border-radius: 50%;
+				font-size: 20rpx;
+				right: 0rpx;
+				top: -16rpx;
+			}
 		}
 	}
 	.btn {
@@ -1703,12 +1763,12 @@ page {
 		margin-right: -2%;
 		.joinCart,
 		.buy {
-			height: 80upx;
-			padding: 0 40upx;
+			height: 80rpx;
+			padding: 0 36rpx;
 			color: #fff;
 			display: flex;
 			align-items: center;
-			font-size: 28upx;
+			font-size: 28rpx;
 			background-color: #f06c7a;
 		}
 		.joinCart {
