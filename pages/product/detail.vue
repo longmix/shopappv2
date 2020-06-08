@@ -793,6 +793,11 @@ export default {
 		
 		getCartList(){
 			let userInfo = this.abotapi.get_user_info();
+			
+			if(!userInfo){
+				return;
+			}
+			
 			this.abotapi.abotRequest({
 				url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=cart_list',
 				method: 'post',
@@ -1702,7 +1707,7 @@ page {
 		position: relative;
 	}
 	.content{
-		padding-bottom: 70upx;
+		padding-bottom: 170rpx;
 	}
 }
 .footer {

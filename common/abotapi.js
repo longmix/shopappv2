@@ -1158,7 +1158,6 @@ module.exports = {
 				url: url,
 			})
 		} else if (url == '/pages/help_detail/help_detail') {
-			console.log('qqqe123456789011212122313321321');
 			var browser_cache_id = uni.getStorageSync('browser_cache_id');
 			if (browser_cache_id) {
 				uni.navigateTo({
@@ -1243,7 +1242,6 @@ module.exports = {
 			}
 		}
 		else {
-			console.log('qqqe12345678901121212');
 			uni.navigateTo({
 				url: url
 			})
