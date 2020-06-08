@@ -52,7 +52,7 @@
 					<view class="icon kefu"></view>
 					<view class="text">客服</view>
 				</view>
-				<view class="box" @tap="keep">
+				<view class="box" @tap="keep_to_collect">
 					<view class="icon" :class="[isKeep?'shoucangsel':'shoucang']"></view>
 					<view class="text">{{isKeep?'已':''}}收藏</view>
 				</view>
@@ -458,7 +458,7 @@ export default {
 		this.get_yanyubao_goods_recommend('hot');
 		
 		
-		uni.request({
+		this.abotapi.abotRequest({
 			
 		    url: this.abotapi.globalData.yanyubao_server_url +  '?g=Yanyubao&m=ShopAppWxa&a=product_detail',
 		    method: 'POST',
@@ -548,7 +548,7 @@ export default {
 		});
 
 		if (userInfo && userInfo.userid){
-			uni.request({
+			this.abotapi.abotRequest({
 			  url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_favorite',
 			  method: 'post',
 			  data: {
@@ -674,7 +674,7 @@ export default {
 		      }
 		    }
 		
-		    uni.request({
+		    this.abotapi.abotRequest({
 		      url: this.abotapi.globalData.yanyubao_server_url +  '?g=Yanyubao&m=ShopAppWxa&a=product_detail',
 		      method: 'post',
 		      data: {
@@ -777,6 +777,7 @@ export default {
 			}, 150);
 		},
 		toCart:function(){
+			console.log('toCart 向购物车跳转')
 			
 			if(this.abotapi.globalData.is_shop_cart_in_tabbar == 1){
 				uni.switchTab({
@@ -829,32 +830,41 @@ export default {
 		
 		
 		//收藏
-		keep(){
+		keep_to_collect(){
+			var that = this;
 			
-			var userInfo = this.abotapi.get_user_info();
+			var userInfo = that.abotapi.get_user_info();
+			
+			
 			if ((!userInfo) || (!userInfo.userid)) {
+				uni.showModal({
+					title:'提示',
+					content:'请先登录再收藏',
+					success(res) {
+						if(res.confirm){
+							var last_url = null;
+							var page_type = 'normal';
+									
+							if (that.productid) {
+								last_url = '/pages/product/detail?productid=' + that.productid;
+							}
+							
+							that.abotapi.goto_user_login(last_url);
+						}
+					}
+				})
 		
-			  var last_url = null;
-			  var page_type = 'normal';
-		
-			  if (that.productid) {
-				last_url = '/pages/product/detail?productid=' + that.productid;
-			  }
-			  this.abotapi.goto_user_login(last_url);	
+			  	
 			  return;
 			}
 			
-			uni.request({
+			this.abotapi.abotRequest({
 			  url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=favorite', 
-			  method:'post',
 			  data: {
 				userid: userInfo.userid,
 				checkstr: userInfo.checkstr,
 				sellerid: this.abotapi.get_sellerid(),
 				productid: this.productid,
-			  },
-			  header: {
-				'Content-Type':  'application/x-www-form-urlencoded'
 			  },
 			  success: (res) => {
 				console.log('favorite===',res)
@@ -938,7 +948,7 @@ export default {
 		    }
 		    else if (e.currentTarget.dataset.status == 2){
 		      //加入购物车
-		      uni.request({
+		      this.abotapi.abotRequest({
 		        url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=cart_add',
 		        method: 'post',		        
 		        data: {

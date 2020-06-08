@@ -21,10 +21,7 @@
     "kefu_qq": "",
     "kefu_website": "",
     "kefu_gongzhonghao": "",
-    "default_copyright_text": "延誉电商 - 延誉宝 @ 版权所有",
-    "is_shop_cart_in_tabbar": 1,
-    "is_publish_index_in_tabbar": 0,
-    "is_publish_list_in_tabbar": 1
+    "default_copyright_text": "延誉电商 - 延誉宝 @ 版权所有"
   },
   "extPages": {
     "pages/publish/publish_list": {

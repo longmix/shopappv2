@@ -562,7 +562,7 @@ export default {
 			
 			
 			//====1、更新界面的颜色
-			that.abotapi.getColor();
+			//that.abotapi.getColor();
 			
 			
 			if(!cb_params.option_list){

@@ -1,4 +1,7 @@
 
+//封装为一个方法
+const isNullOrUndefined=obj=>obj===null || obj === undefined;
+
 const abotRequest = (params) => {
   uni.request({
     url: params.url,
@@ -492,7 +495,10 @@ module.exports = {
 				
 		if (uni.getStorageSync('shop_option_data_' + this.globalData.default_sellerid) && (currentTime - uni.getStorageSync("shop_option_data_time")) < 3600 * 1000) {
 		  
-			var option_data = JSON.parse(uni.getStorageSync('shop_option_data_' + this.globalData.default_sellerid))
+			var option_data = JSON.parse(uni.getStorageSync('shop_option_data_' + this.globalData.default_sellerid));
+			
+			this.__get_ext_setting_from_server();
+			this.__get_and_set_color();
 
 			//刷新界面
 			typeof callback_function == "function" && callback_function(that, option_data);
@@ -545,6 +551,9 @@ module.exports = {
 					uni.setStorageSync("shop_option_data_time", currentTime);
 				
 					console.log('保存商城选项数据=========>>>>>：', option_data);
+					
+					this.__get_ext_setting_from_server();
+					this.__get_and_set_color();
 				
 					//刷新界面
 					typeof callback_function == "function" && callback_function(that, option_data);
@@ -838,11 +847,10 @@ module.exports = {
 	    return sellerid;
 	},
 	
-	
-	
-	
-	
 	getColor:function(){
+		//这个函数的功能已经被    get_and_set_color 替代，并且在 这个文件中调用，不会被外部使用。
+	},	
+	__get_and_set_color:function(){
 		//从本地读取
 	    var shop_option_data = uni.getStorageSync('shop_option_data_' + this.globalData.default_sellerid);
 	
@@ -898,7 +906,69 @@ module.exports = {
 	    })*/
 	  
 	},
-	
+	__get_ext_setting_from_server:function(){
+		
+		var shop_option_data = uni.getStorageSync('shop_option_data_' + this.globalData.default_sellerid);
+			
+		//console.log("获取商城选项数据====：", shop_option_data);
+			
+		if (!shop_option_data) {
+			//return null;
+			
+			uni.showToast({
+				title: '数据更新中……',
+				icon:'loading'
+			});
+			
+			
+			return;
+		}
+		
+		
+		var option_data =  JSON.parse(shop_option_data);
+		
+		var option_list = option_data.option_list;
+		
+		
+		
+		if (option_list.kefu_telephone) {
+		  this.abotapi.globalData.kefu_telephone = option_list.kefu_telephone;
+		}
+		if (option_list.kefu_qq) {
+		  this.abotapi.globalData.kefu_qq = option_list.kefu_qq;
+		}
+		if (option_list.kefu_website) {
+		  this.abotapi.globalData.kefu_website = option_list.kefu_website;
+		}
+		if (option_list.kefu_gongzhonghao) {
+		  this.abotapi.globalData.kefu_gongzhonghao = option_list.kefu_gongzhonghao;
+		}
+		
+		
+		if (option_list.copyright_text) {
+		  this.abotapi.globalData.default_copyright_text = option_list.copyright_text;
+		}
+		
+		if (!isNullOrUndefined(option_list.is_index_index_in_tabbar)) {
+		  this.abotapi.globalData.is_index_index_in_tabbar = option_list.is_index_index_in_tabbar;
+		}
+		if (!isNullOrUndefined(option_list.is_user_user_in_tabbar)) {
+		  this.abotapi.globalData.is_user_user_in_tabbar = option_list.is_user_user_in_tabbar;
+		}
+		if (!isNullOrUndefined(option_list.is_shop_cart_in_tabbar)) {
+		  this.abotapi.globalData.is_shop_cart_in_tabbar = option_list.is_shop_cart_in_tabbar;
+		}
+		if (!isNullOrUndefined(option_list.is_publish_index_in_tabbar)) {
+		  this.abotapi.globalData.is_publish_index_in_tabbar = option_list.is_publish_index_in_tabbar;
+		}
+		if (!isNullOrUndefined(option_list.is_publish_list_in_tabbar)) {
+		  this.abotapi.globalData.is_publish_list_in_tabbar = option_list.is_publish_list_in_tabbar;
+		}
+		
+		
+		
+		
+	},
 	
 	
 	getFaquanSetting: function (that, callback_function) {
