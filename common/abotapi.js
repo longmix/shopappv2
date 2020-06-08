@@ -1,6 +1,6 @@
 
 //封装为一个方法
-const isNullOrUndefined=obj=>obj===null || obj === undefined;
+const isNullOrUndefined = obj=>obj===null || obj === undefined  || obj === '';
 
 const abotRequest = (params) => {
   uni.request({
@@ -552,8 +552,8 @@ module.exports = {
 				
 					console.log('保存商城选项数据=========>>>>>：', option_data);
 					
-					this.__get_ext_setting_from_server();
-					this.__get_and_set_color();
+					that002.__get_ext_setting_from_server();
+					that002.__get_and_set_color();
 				
 					//刷新界面
 					typeof callback_function == "function" && callback_function(that, option_data);
@@ -910,7 +910,7 @@ module.exports = {
 		
 		var shop_option_data = uni.getStorageSync('shop_option_data_' + this.globalData.default_sellerid);
 			
-		//console.log("获取商城选项数据====：", shop_option_data);
+		
 			
 		if (!shop_option_data) {
 			//return null;
@@ -929,43 +929,53 @@ module.exports = {
 		
 		var option_list = option_data.option_list;
 		
+		console.log("__get_ext_setting_from_server 获取商城选项数据====：", option_list);
+		
 		
 		
 		if (option_list.kefu_telephone) {
-		  this.abotapi.globalData.kefu_telephone = option_list.kefu_telephone;
+		  this.globalData.kefu_telephone = option_list.kefu_telephone;
 		}
 		if (option_list.kefu_qq) {
-		  this.abotapi.globalData.kefu_qq = option_list.kefu_qq;
+		  this.globalData.kefu_qq = option_list.kefu_qq;
 		}
 		if (option_list.kefu_website) {
-		  this.abotapi.globalData.kefu_website = option_list.kefu_website;
+		  this.globalData.kefu_website = option_list.kefu_website;
 		}
 		if (option_list.kefu_gongzhonghao) {
-		  this.abotapi.globalData.kefu_gongzhonghao = option_list.kefu_gongzhonghao;
+		  this.globalData.kefu_gongzhonghao = option_list.kefu_gongzhonghao;
 		}
 		
 		
 		if (option_list.copyright_text) {
-		  this.abotapi.globalData.default_copyright_text = option_list.copyright_text;
+		  this.globalData.default_copyright_text = option_list.copyright_text;
 		}
 		
 		if (!isNullOrUndefined(option_list.is_index_index_in_tabbar)) {
-		  this.abotapi.globalData.is_index_index_in_tabbar = option_list.is_index_index_in_tabbar;
+		  this.globalData.is_index_index_in_tabbar = option_list.is_index_index_in_tabbar;
 		}
 		if (!isNullOrUndefined(option_list.is_user_user_in_tabbar)) {
-		  this.abotapi.globalData.is_user_user_in_tabbar = option_list.is_user_user_in_tabbar;
+		  this.globalData.is_user_user_in_tabbar = option_list.is_user_user_in_tabbar;
 		}
 		if (!isNullOrUndefined(option_list.is_shop_cart_in_tabbar)) {
-		  this.abotapi.globalData.is_shop_cart_in_tabbar = option_list.is_shop_cart_in_tabbar;
+		  this.globalData.is_shop_cart_in_tabbar = option_list.is_shop_cart_in_tabbar;
 		}
 		if (!isNullOrUndefined(option_list.is_publish_index_in_tabbar)) {
-		  this.abotapi.globalData.is_publish_index_in_tabbar = option_list.is_publish_index_in_tabbar;
-		}
+		  this.globalData.is_publish_index_in_tabbar = option_list.is_publish_index_in_tabbar;
+		}		
 		if (!isNullOrUndefined(option_list.is_publish_list_in_tabbar)) {
-		  this.abotapi.globalData.is_publish_list_in_tabbar = option_list.is_publish_list_in_tabbar;
+		  this.globalData.is_publish_list_in_tabbar = option_list.is_publish_list_in_tabbar;
 		}
 		
-		
+		console.log('isNullOrUndefined(option_list.is_publish_list_in_tabbar)1====>>>', option_list.is_publish_list_in_tabbar);
+		console.log('isNullOrUndefined(option_list.is_publish_list_in_tabbar)2====>>>', isNullOrUndefined(option_list.is_publish_list_in_tabbar));
+		console.log('isNullOrUndefined(option_list.is_publish_list_in_tabbar)3====>>>', this.globalData.is_publish_list_in_tabbar);
+		console.log('isNullOrUndefined(option_list.is_publish_list_in_tabbar)1====>>>', option_list.is_shop_cart_in_tabbar);
+		console.log('isNullOrUndefined(option_list.is_publish_list_in_tabbar)2====>>>', isNullOrUndefined(option_list.is_shop_cart_in_tabbar));
+		console.log('isNullOrUndefined(option_list.is_publish_list_in_tabbar)3====>>>', this.globalData.is_shop_cart_in_tabbar);
+		console.log('isNullOrUndefined(option_list.is_publish_list_in_tabbar)1====>>>', option_list.is_user_user_in_tabbar);
+		console.log('isNullOrUndefined(option_list.is_publish_list_in_tabbar)2====>>>', isNullOrUndefined(option_list.is_user_user_in_tabbar));
+		console.log('isNullOrUndefined(option_list.is_publish_list_in_tabbar)3====>>>', this.globalData.is_user_user_in_tabbar);
 		
 		
 	},
