@@ -32,6 +32,8 @@ const globalData = {
 		navigationBar_bg_color:'#f37404',
 		
 		//购物车在底部导航栏（如果购物车在底部导航栏，请务必选择此项，避免向购物车跳转失败）
+		is_index_index_in_tabbar: 1,
+		is_user_user_in_tabbar: 1,
 		is_shop_cart_in_tabbar: 0,
 		is_publish_index_in_tabbar: 0, //判断发布的栏目在底部导航  1就是在底部导航
 		is_publish_list_in_tabbar: 0, //判断文章列表在底部导航   1就是在底部导航

@@ -1100,7 +1100,7 @@ module.exports = {
 				  if (code == 1) {
 					  
 					if(res.data.oneclicklogin){
-						url = url.replace('%oneclicklogin%', oneclicklogin);
+						url = url.replace('%oneclicklogin%', res.data.oneclicklogin);
 					}
 					
 					if (res.data.refresh_token){

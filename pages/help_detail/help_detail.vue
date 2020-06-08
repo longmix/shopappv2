@@ -404,6 +404,9 @@
 			//评论输入框获取焦点判断是否登录
 			is_login:function(){
 				console.log('获取焦点！！！！');
+				
+				var that = this;
+				
 				//判断是否登录
 				var userInfo = this.abotapi.get_user_info();
 				if(!userInfo || !userInfo.userid){
@@ -416,9 +419,9 @@
 							}else if(res.confirm){
 								//确认
 								if(that.form_page && that.form_page == 'publish_list'){
-									var last_url = '/pages/home/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid + '&form_page=publish_list';
+									var last_url = '/pages/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid + '&form_page=publish_list';
 								}else{
-									var last_url = '/pages/home/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid;
+									var last_url = '/pages/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid;
 								}
 								
 								that.abotapi.goto_user_login(last_url, 'normal');
@@ -444,7 +447,7 @@
 			returnto_toutiao:function(){
 				var that = this;
 				uni.redirectTo({
-					url: '/pages/home/help/help?sellerid=' + that.sellerid	
+					url: '/pages/help/help?sellerid=' + that.sellerid	
 				})
 			},
 			returnto_index: function () {
@@ -484,9 +487,9 @@
 								return;
 							}else if(res.confirm){
 								if(that.form_page && that.form_page == 'publish_list'){
-									var last_url = '/pages/home/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid + '&form_page=publish_list';
+									var last_url = '/pages/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid + '&form_page=publish_list';
 								}else{
-									var last_url = '/pages/home/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid;
+									var last_url = '/pages/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid;
 								}
 								
 								that.abotapi.goto_user_login(last_url, 'normal');
@@ -876,9 +879,9 @@
 								return;
 							}else if(res.confirm){
 								if(that.form_page && that.form_page == 'publish_list'){
-									var last_url = '/pages/home/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid + '&form_page=publish_list';
+									var last_url = '/pages/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid + '&form_page=publish_list';
 								}else{
-									var last_url = '/pages/home/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid;
+									var last_url = '/pages/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid;
 								}
 								
 								that.abotapi.goto_user_login(last_url, 'normal');

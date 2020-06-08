@@ -435,8 +435,7 @@
 				}
 				
 				
-				// 微读客获取文章列表  
-				//http://192.168.0.88/weiduke_cms/index.php/openapi/ArticleImgApi/article_list?token=gwcuuk1411034699&cataid=22&page=0
+				// 微读客获取文章列表  				
 				that.abotapi.abotRequest({
 					url:url,
 					method:'POST',

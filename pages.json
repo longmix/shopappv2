@@ -27,9 +27,9 @@
 			}
 		},
 		{	//商品超级分类
-			"path": "pages/category/category2",
+			"path": "pages/category/index2",
 			"style": {
-				"navigationBarTitleText":"超级分类",
+				"navigationBarTitleText":"商品分类导航",
 				"enablePullDownRefresh": true
 				// "app-plus": {
 				// 	"titleNView": false ,//禁用原生导航栏
@@ -350,8 +350,15 @@
 		    	"enablePullDownRefresh": true,
 		    	"onReachBottomDistance":50
 		    }
-		}
-        ,{
+		},
+		{
+		    "path" : "pages/publish/publish_home",
+		    "style" : {
+				"navigationBarTitleText": "文章列表-分类",
+				"softinputNavBar":"none"
+			}
+		},
+		{
             "path" : "pages/myecard/myecard",
             "style" : {
 				"navigationBarTitleText":"会员卡",

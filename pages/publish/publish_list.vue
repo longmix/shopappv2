@@ -228,92 +228,6 @@
 					})
 				}
 			},
-			//获取帖子列表
-			get_publish_lists: function (action='') {
-				
-				if(!this.is_get_article_list){
-					/*uni.showToast({
-						title: '暂无相关文章',
-						duration: 2000
-					});*/
-					
-					console.log('没有更多文章');
-					
-					return;
-				}
-				
-				if(!this.cms_token){
-					console.log('get_publish_list 没有 CMS Token');
-					return;
-				}
-				
-				
-				var that = this;
-				
-				var post_data = {
-						token:that.cms_token,
-						sellerid: this.abotapi.globalData.default_sellerid,
-						action: 'newlist',
-						page:that.current_page,
-						page_size:that.current_page_size,
-				};
-					
-				if(that.cms_cataid){
-					post_data['cataid'] = that.cms_cataid;
-				}
-				
-				if(action){
-					
-					post_data['action'] = action;
-					post_data['search'] = that.search_text;
-				}
-				
-				this.abotapi.abotRequest({
-					url: that.abotapi.globalData.weiduke_server_url + 'openapi/ArticleImgApi/article_list',
-					method: 'post',
-					data: post_data,
-					header: {
-						'Content-Type': 'application/x-www-form-urlencoded'
-					},
-					success: function (res) {
-						if(res.data.list_title){
-							that.list_title = res.data.list_title;
-							
-							uni.setNavigationBarTitle({
-								title:that.list_title
-							})
-						}
-						
-						if(res.data.code == 1){
-							if(res.data.data.length < that.current_page_size){
-								that.is_get_article_list = false;
-							}
-							for(var i in res.data.data){
-								that.index_list.push(res.data.data[i]);
-							}
-							
-						}else{
-							that.is_get_article_list = false;
-							
-							
-							/*uni.showToast({
-								title: '暂无相关文章',
-								duration: 2000
-							});*/
-							
-							console.log('没有更多文章');
-							
-							return;
-						}
-					},
-					fail: function (e) {
-						uni.showToast({
-							title: '网络异常！',
-							duration: 2000
-						});
-					},
-				});
-			},
 			
 			//点击导航传递cataid获取帖子
 			get_publish_cata_list:function(e){
@@ -340,7 +254,7 @@
 						this.abotapi.call_h5browser_or_other_goto_url(new_url);
 					}
 					else{
-						uni.redirectTo({
+						uni.navigateTo({
 							url:'/pages/publish/publish_home?cataid=' + this.cms_cataid
 						})
 					}
