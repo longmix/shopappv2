@@ -27,7 +27,7 @@
 			}
 		},
 		{	//商品超级分类
-			"path": "pages/category/index2",
+			"path": "pages/category/category2",
 			"style": {
 				"navigationBarTitleText":"商品分类导航",
 				"enablePullDownRefresh": true

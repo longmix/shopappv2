@@ -159,7 +159,8 @@
 				
 				user_center_function_list_icon_type:0,
 				user_center_function_list_icon_list:[],
-				explainFlag: 1 //会员说明显示控制
+				explainFlag: 1 ,//会员说明显示控制
+				scrollLeft:''
 			}
 		},
 		

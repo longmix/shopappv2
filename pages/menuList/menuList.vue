@@ -20,17 +20,17 @@
 		 </view>
 		 <block v-else>
 	  <scroll-view  class="body-col" scroll-y="true" :style="{height:menuHeight + 'px'}">
-	    <view class="body-section" :class="[selectOrder==m1.id?'active':'']" v-for="(m1, index) in menu_list"  :data-cate="'z' + m1.id" :data-selectorder="m1.id" @tap="clickMenu">
+	    <view class="body-section" :class="[selectOrder==m1.id?'active':'']" v-for="(m1, index) in menu_list" :key="index5" :data-cate="'z' + m1.id" :data-selectorder="m1.id" @tap="clickMenu">
 	     <view>{{m1.package}}</view>
 	    </view>
 	  </scroll-view>
 	  <scroll-view scroll-y="true" class="body-block" @scroll="onGoodsScroll" :style="{height:menuHeight + 'px'}" :scroll-into-view="toView"  scroll-with-animation="true">
 		  
+		   
 		  
-		  
-	     <view  class="body-content"  v-for="(m1,idx1) in menu_list">
+	     <view  class="body-content"  v-for="(m1,idx1) in menu_list" :key="index">
 	      <view class="title" :id="'z' + m1.id">{{m1.package}}</view>
-	        <view class="content-item" v-for="(m2, idx2) in m1.menu">
+	        <view class="content-item" v-for="(m2, idx2) in m1.menu" :key="index2">
 	          <image :src="m2.img"  class="content-item-img"></image>
 	          <view class="item-txt">
 	            <!-- <text bindtap="shopdetail" class="item-txt-name">{{m2.name}}</text> -->
@@ -69,7 +69,7 @@
 	  <view class="list">
 	  <view class="list-a">购物车</view>
 	    <view class="list-item" >
-	      <view class="local-item" v-for="(item,idx) in cartlist">
+	      <view class="local-item" v-for="(item,idx) in cartlist" :key="indexa"> 
 	        <view class="item-img"><image :src="item.img" style="opacity:1;"></image></view>
 	        <view class="item-info">
 	          <view class="item-name-con">

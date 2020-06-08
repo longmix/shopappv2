@@ -87,7 +87,7 @@
 
 		<!-- 九宫格图标 begin -->
 		<view class="icon-box-con" style="overflow: hidden;background-color: #FFFFFF;margin-bottom: 10rpx;">
-			<view class='icon-box' v-for="(item,index) in list_first">
+			<view class='icon-box' v-for="(item,index) in list_first" :key="index">
 				<navigator :url="item.url" open-type="navigate" v-if="ecard_option_list.ecard_nav_show_toutiao == 1">
 					<view class='icon-list'>
 						<image mode="widthFix" :src='item.src'></image>
@@ -144,7 +144,7 @@
         
         
 
-		<view class="info_list" v-for="(item,index) in list_two">
+		<view class="info_list" v-for="(item,index) in list_two" :key="index">
 		
 			<navigator :url="item.url" open-type="navigate">
 				<view class="weui_cell">

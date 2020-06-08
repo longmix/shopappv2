@@ -184,7 +184,7 @@
 		<view class="info-box spec" v-if="attribute_list && attribute_list.length>0">
 			<view class="row" @tap="showService">			
 				<view class="content">
-					<view class="serviceitem" v-if="index < 3" v-for="(item,index) in attribute_list">
+					<view class="serviceitem" v-if="index < 3" v-for="(item,index) in attribute_list" :key="index">
 					 <view>{{item.name}}</view> {{item.value}}
 					</view>
 				</view>
@@ -197,12 +197,12 @@
 			<!-- 规格开始 -->
 			<view class="specs" v-if="attr_list">商品选项</view>
 			<view class="specs-a" style='display:flex;'>
-				<view :class="[option_list_arr[0] == item ? 'specs-e' : 'specs-d']" v-for="(item, index) in attr_key_arr"  :data-spec1="item" @click='changeSpec1($event)'>
+				<view :class="[option_list_arr[0] == item ? 'specs-e' : 'specs-d']" v-for="(item, index) in attr_key_arr" :key="index" :data-spec1="item" @click='changeSpec1($event)'>
 					{{item}}
 				</view>
 			</view>
 			<view class="specs-a" style="display:flex;" v-if="attr_list_arr[spec1] != null">
-				<view :class="[option_list_arr[1] == item2 ? 'specs-e' : 'specs-d']" v-for="(item2, index) in attr_list_arr[spec1]" :data-spec2="item2"  @click="changeSpec2($event)">
+				<view :class="[option_list_arr[1] == item2 ? 'specs-e' : 'specs-d']" v-for="(item2, index) in attr_list_arr[spec1]" :key="index" :data-spec2="item2"  @click="changeSpec2($event)">
 				  {{item2}}
 				</view>
 			</view>
@@ -231,7 +231,7 @@
 		  <view class="block_ladder">
 			<view class="drpt_0" :style="{display:jietijiage==1?'block':'none'}">
 			  <view class="yhmc">阶梯价格</view>
-			  <view class="drpt_1" v-for="(item, index) in jietijiage_youhui_data" wx:key="id">
+			  <view class="drpt_1" v-for="(item, index) in jietijiage_youhui_data" :key="index">
 				<view class="yh_1">{{item.min}}件-{{item.max}}件 <text class="yh_1_1">{{item.price/100}}元</text> </view>
 			  </view>
 			</view>

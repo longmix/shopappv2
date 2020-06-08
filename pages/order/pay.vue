@@ -172,7 +172,7 @@
 		
 		<view class="p_all bg_white df item" style="border-bottom: 1rpx solid #e5e5e5;"  >
 		  <view class="d_name">{{shoplist.name}}</view>
-			<view class="photo_name" v-for="item in cartlist">
+			<view class="photo_name" v-for="item in cartlist" :key="index">
 			  <view class="cp_photo">			
 				<image :src="item.img"></image>
 			  </view>
