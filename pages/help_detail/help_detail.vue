@@ -37,7 +37,7 @@
 					</scroll-view>
 				</view>
 				<view style="margin-top: 10px;" v-for="img_item in wz_text.picture_list" :key="img_item" v-if="form_page == 'publish_list'">
-					<image style="width: 100%;" :src="img_item"></image>
+					<image style="width: 100%;" mode="widthFix" :src="img_item"></image>
 				</view>
 				
 				<!-- 自定义属性 -->
