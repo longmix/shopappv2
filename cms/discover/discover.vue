@@ -15,7 +15,19 @@
 	
 	<view v-if="!is_my_discover_collection && !is_my_discover" class='c-1'>
 	  <image src="../../static/img/search.png"></image>
-	  <input placeholder='搜索' @confirm='searchFaquan'> </input>
+	  <input placeholder='搜索' @confirm='searchFaquan' v-model="sousuo_text"> </input>
+	</view>
+	
+	<!-- 我收藏、发布的按钮 -->
+	<view class='publish_box'>
+		<view class='my_publish' @click="my_publish_and_collect" data-type="my_publish">
+			<image style="width: 40rpx;height: 40rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/edit.png"></image>
+			<view>我的发布</view>
+		</view>
+		<view class="my_collection" @click="my_publish_and_collect" data-type="my_collection">
+			<image style="width: 40rpx;height: 40rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/edit.png"></image>
+			<view>我的收藏</view>
+		</view>
 	</view>
 	
 	<!-- 标签start -->
@@ -143,6 +155,7 @@
 	            tag:'',
 				idx2:'',
 				disabled:false,
+				sousuo_text:'',
 			};
 		},
 		onLoad(options) {
@@ -612,28 +625,30 @@
 			  //搜索发圈
 			  searchFaquan: function (e) {
 			    console.log('e====',e)
-			
+				var sousuo_text = this.sousuo_text;
+				
 			    var that = this;
 			
-			    var keyword = e.detail.value;
+			    var keyword = sousuo_text;
 			    
-			      that.page = 1;
-			      that.keyword = keyword;
-			      that.is_search = true;
-
+				that.page = 1;
+				that.keyword = keyword;
+				that.is_search = true;
+				that.faquanList = [];
 			
 			    that.__getFaquanList();
 			  },
 			
 			  //取消搜索
 			  cancelSearch:function(e){
-			  
-			      that.keyword = '',
-			      that.is_search = false;
-			      that.current_faquanid = 0;
-			      that.page = 1;
+				var that = this;
+				that.keyword = '',
+				that.is_search = false;
+				that.current_faquanid = 0;
+				that.page = 1;
+				that.faquanList = [];
 			    
-			
+				console.log('开始取消搜索');
 			    this.__getFaquanList();
 			  },
 			
@@ -646,13 +661,16 @@
 			    var current_faquanid = this.current_faquanid;
 			
 			    var userInfo = this.abotapi.get_user_info();
-			
+				
+				//帖子列表
 			    var post_url = this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/get_faquan_list';
 			
 			    if(this.is_my_discover){
+					//我的发布
 			      post_url = this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/get_faquan_list_by_userid';
 			    }
 			    else if(this.is_my_discover_collection){
+					//我的收藏
 			      post_url = this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/get_faquan_collect_list';
 			    }
 				
@@ -687,7 +705,7 @@
 			        console.log('__getFaquanList===>>>>faquanList====>>>', faquanList)
 			
 			        if (res.data.code == 1) {
-			   
+						
 			            that.faquanList = that.faquanList.concat(faquanList);
 			            that.page = that.page + 1;
 		
@@ -790,7 +808,27 @@
 			      },
 			    })
 			  },
-			
+			  
+			  //点击收藏、发布按钮
+			  my_publish_and_collect:function(e){
+				  console.log('eeeee',e);
+				  if(e.currentTarget.dataset.type == 'my_publish'){
+					  //我的发布
+					  this.page = 1;
+					  this.faquanList = [];
+					  this.is_my_discover = 1;
+					  this.is_my_discover_collection = 0;
+					  this.__getFaquanList();
+				  }else if(e.currentTarget.dataset.type == 'my_collection'){
+					  //我的收藏
+					  this.page = 1;
+					  this.faquanList = [];
+					  this.is_my_discover = 0;
+					  this.is_my_discover_collection = 1;
+					  this.__getFaquanList();
+				  }
+				  //e.detail.width  my_publish">my_collection    e.currentTarget.dataset.type;
+			  },
 			
 			  //发圈点赞
 			  fanquaDianzan: function (e) {
@@ -1235,5 +1273,24 @@ margin-top: 20rpx;
 .select-tab{
   color:#fff !important;
   background: #1E90FF;
+}
+.my_collection {
+	width: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.publish_box{
+	width:100%;
+	display: flex;
+	justify-content: center;
+	font-size: 32rpx;
+	color:#333;
+}
+.my_publish{
+	width: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 </style>

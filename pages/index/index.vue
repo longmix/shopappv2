@@ -169,6 +169,7 @@ import shopList from '../../components/shop-list/shop-list.vue';
 import publishList from '../../components/publish-list/publish-list.vue';
 import productList from '../../components/product-list/product-list.vue'
 import publish_list_api from '../../common/publish_list_api.js';
+const isNullOrUndefined = obj=>obj===null || obj === undefined  || obj === '';
 
 export default {
 	components:{
@@ -758,7 +759,7 @@ export default {
 			that.get_product_list();
 			
 			that.call_back_get_shang_list();
-			console.log('来啦');
+			
 			publish_list_api.get_publish_list(that,that.get_api_publish_list);				
 			
 		},
@@ -825,8 +826,12 @@ export default {
 		},
 		//给商家排序
 		set_paixu_shanglist:function(that,locationData){
-			that.current_cityname = locationData.addressComponent.city;
-			console.log('locationData=======>>>>',locationData);
+			
+			if(!isNullOrUndefined(locationData.addressComponent)){
+				that.current_cityname = locationData.addressComponent.city;
+			}
+			
+			
 			var coordinate = [];
 			coordinate['latitude'] = locationData.latitude;
 			coordinate['longitude'] = locationData.longitude;
@@ -840,8 +845,6 @@ export default {
 			
 			var shop_location_list = that.jisuan_juli(arr);
 			
-			console.log('shop_location_list',shop_location_list);
-						
 			function compare(obj1, obj2) {
 			  var val1 = obj1.dis; 
 			  var val2 = obj2.dis;
@@ -857,7 +860,6 @@ export default {
 			
 			//开始排序
 			var paixu_shanglist = shop_location_list.sort(compare);
-			console.log('paixu_shanglist',paixu_shanglist);
 			uni.setStorageSync("shop_location_list", paixu_shanglist);
 			
 			//排序完成，取最新的10条

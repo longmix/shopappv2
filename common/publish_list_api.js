@@ -1,10 +1,10 @@
 import abotapi from './abotapi.js';
-
+const isNullOrUndefined = obj=>obj===null || obj === undefined  || obj === '';
 
 module.exports = {
 	
 	//获取帖子列表 （封装） (页面刷新要重置页数，必须的参数有cms_token,sellerid)
-	get_publish_list: function (that, callback_function='', action='') {
+	get_publish_list: function (that, callback_function='', action='',) {
 		
 		var publishData = []; //返回的数组
 		publishData['title'] = '';
@@ -46,6 +46,17 @@ module.exports = {
 			post_data['search'] = that.search_text;
 		}
 		
+		var openid = that.abotapi.get_current_openid();
+		var userInfo = that.abotapi.get_user_info();
+		
+		if(!isNullOrUndefined(openid)){
+			post_data['openid'] = openid;
+		}
+		
+		if(!isNullOrUndefined(userInfo) && !isNullOrUndefined(userInfo.userid)){
+			post_data['userid'] = userInfo.userid;
+		}
+		
 		abotapi.abotRequest({
 			url: that.abotapi.globalData.weiduke_server_url + 'openapi/ArticleImgApi/article_list',
 			method: 'post',
@@ -73,7 +84,8 @@ module.exports = {
 					
 				}else{
 					that.is_get_article_list = false;
-					console.log('没有更多文章');
+					publishData['msg'] = '暂无数据';
+					typeof callback_function == "function" && callback_function(that, publishData);
 					return;
 				}
 			},

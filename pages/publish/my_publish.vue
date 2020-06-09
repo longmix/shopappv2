@@ -8,6 +8,8 @@
 
 <script>
 	import publishList from '../../components/publish-list/publish-list.vue';
+	import publish_list_api from '../../common/publish_list_api.js';
+	const isNullOrUndefined = obj=>obj===null || obj === undefined  || obj === '';
 	export default {
 		components:{
 			publishList
@@ -203,100 +205,44 @@
 				
 				var that = this;
 				
-				// var post_data = {
-				// 		token:that.cms_token,
-				// 		sellerid: this.abotapi.globalData.default_sellerid,
-				// 		action: 'newlist',
-				// 		page:that.current_page,
-				// 		page_size:that.current_page_size,
-				// 	};
-					
-				// if(that.cms_cataid){
-				// 	post_data['cataid'] = that.cms_cataid;
-				// }
-				
-				// if(action){
-					
-				// 	post_data['action'] = action;
-				// 	post_data['search'] = that.search_text;
-				// }
-				
 				
 				if(this.my_collect == 'my_collect'){
-					var openid = this.abotapi.get_current_openid();
-					var userInfo = this.abotapi.get_user_info();
-					var post_data = {
-							token:that.cms_token,
-							sellerid: this.abotapi.globalData.default_sellerid,
-							userid:userInfo.userid,
-							action: 'my_collect',
-							openid:openid,
-							page:that.current_page,
-							page_size:that.current_page_size,
-						};
+					
+					var action = 'my_collect';
 				}
 				
 				if(this.my_collect == 'my_publish'){
-					var openid = this.abotapi.get_current_openid();
-					var userInfo = this.abotapi.get_user_info();
-					var post_data = {
-							token:that.cms_token,
-							sellerid: this.abotapi.globalData.default_sellerid,
-							userid:userInfo.userid,
-							action: 'my_collect',
-							openid:openid,
-							page:that.current_page,
-							page_size:that.current_page_size,
-						};
+					
+					var action = 'my_publish';
 				}
 				//搜索的情况
-				//if(){}
+				publish_list_api.get_publish_list(that,that.get_api_publish_list,action);		
 				
-				this.abotapi.abotRequest({
-					url: that.abotapi.globalData.weiduke_server_url + 'openapi/ArticleImgApi/article_list',
-					method: 'post',
-					data: post_data,
-					header: {
-						'Content-Type': 'application/x-www-form-urlencoded'
-					},
-					success: function (res) {
-						
-						if(res.data.code == 1){
-							if(res.data.data.length > that.current_page_size){
-								that.is_get_article_list = false;
-							}
-							for(var i in res.data.data){
-								that.index_list.push(res.data.data[i]);
-							}
-							
-							
-							if(res.data.list_title){
-								that.list_title = res.data.list_title;
-								
-								uni.setNavigationBarTitle({
-									title:that.list_title
-								})
-							}
-							
-							
-							
-						}else{
-							that.is_get_article_list = false;
-							uni.showToast({
-								title: '暂无相关文章',
-								duration: 2000
-							});
-							console.log('else',that.index_list);
-							return;
-						}
-					},
-					fail: function (e) {
-						uni.showToast({
-							title: '网络异常！',
-							duration: 2000
-						});
-					},
-				});
+				
+			},
+			
+			get_api_publish_list:function(that,data){
+				console.log('datasdf',data);
+				if(!isNullOrUndefined(data.msg)){
+					//没有收藏的情况
+					uni.showToast({
+						title: data.msg,
+						duration: 2000
+					});
+				}
+				
+				//接口返回code 等于 1
+				
+				for(var i in data.index_list){
+					that.index_list.push(data.index_list[i]);
+				}
+				
+				if(!isNullOrUndefined(data.title)){
+					that.list_title = data.title;
+					uni.setNavigationBarTitle({
+						title:that.list_title
+					})
+				}
 			},
 			
 			//搜索
