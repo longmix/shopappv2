@@ -26,7 +26,7 @@
 		
 		<view class="label-line">
 		  <view class='label-line-a'></view>
-		  <view>附近商家</view>
+		  <view> ※ 附近商家 ※ </view>
 		  <view class='label-line-a'></view>
 		</view>
 		

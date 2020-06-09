@@ -121,23 +121,34 @@
 		<publishList v-if="index_list" :index_list="index_list" @goForum="goForum" @previewImage="previewImage"></publishList>
 			
 		<!-- 商品列表 -->
-		<view style="font-size:30upx;text-align: center;color:#ccc;padding: 30upx auto;display: block;height: 80upx;width: 100%;">———— 最新上架 ————</view>
-		<productList v-if="!wxa_hidden_product_list || wxa_hidden_product_list==0" :productsList="productList" :loadingText="loadingText" :showKucunSale="wxa_show_kucun_in_list" @toGoods="toGoods"></productList>	
+		<view v-if="!wxa_hidden_product_list || wxa_hidden_product_list==0"
+			style="font-size:30upx;text-align: center;color:#ccc;padding: 30upx auto;display: block;height: 80upx;width: 100%;">———— ※ 最新上架 ※ ————</view>
+		<productList v-if="!wxa_hidden_product_list || wxa_hidden_product_list==0" :productsList="current_product_list" :loadingText="loadingText" :showKucunSale="wxa_show_kucun_in_list" @toGoods="toGoods"></productList>	
 
 		<!-- 客服按钮 -->
-		<view class="u-tap-btn" v-if="wxa_show_kefu_button==1">
+		<view class="u-tap-btn" v-if="(wxa_show_kefu_button==1) && (wxa_kefu_bg_no_color_flag == 0)">
 			<block v-if="wxa_kefu_button_type==1">
-				<button class="u-go-home2" @tap="call_seller" :style="{backgroundColor:wxa_kefu_bg_color}">
-					<image :src="wxa_kefu_button_icon" mode="widthFix"></image>
-				</button>
+					<image class="u-go-home2" @tap="call_seller" :style="{backgroundColor:wxa_kefu_bg_color}" :src="wxa_kefu_button_icon" mode="widthFix"></image>
 			</block>
 			<block v-if="wxa_kefu_button_type==2">
-				<button class="u-go-home2" @tap="toAdDetails(wxa_kefu_form_url)" :style="{backgroundColor:wxa_kefu_bg_color}">
-					<image :src="wxa_kefu_button_icon" mode="widthFix"></image>
-				</button>
+					<image class="u-go-home2" @tap="toAdDetails(wxa_kefu_form_url)" :style="{backgroundColor:wxa_kefu_bg_color}" :src="wxa_kefu_button_icon" mode="widthFix"></image>
 			</block>
 			<block v-if="wxa_kefu_button_type==3">
 				<button class="u-go-home2" open-type="contact" :style="{backgroundColor:wxa_kefu_bg_color}">
+					<image :src="wxa_kefu_button_icon" mode="widthFix"></image>
+				</button>
+			</block>
+			
+		</view>
+		<view class="u-tap-btn" v-if="(wxa_show_kefu_button==1) && (wxa_kefu_bg_no_color_flag == 1)">
+			<block v-if="wxa_kefu_button_type==1">
+					<image class="u-go-home2" @tap="call_seller" :src="wxa_kefu_button_icon" mode="widthFix"></image>
+			</block>
+			<block v-if="wxa_kefu_button_type==2">
+					<image class="u-go-home2" @tap="toAdDetails(wxa_kefu_form_url)" :src="wxa_kefu_button_icon" mode="widthFix"></image>
+			</block>
+			<block v-if="wxa_kefu_button_type==3">
+				<button class="u-go-home2" open-type="contact">
 					<image :src="wxa_kefu_button_icon" mode="widthFix"></image>
 				</button>
 			</block>
@@ -220,8 +231,14 @@ export default {
 			//猜你喜欢列表
 			twoArr:'',
 			page:'',
-			productList:'',
+			
+			current_product_list:'',
 			loadingText: '正在加载...',
+			
+			
+			wxa_product_list_show_type:'',
+			wxa_hidden_product_list:'',
+			
 			imgheights: [],
 			current: 0,
 			windowHeight: 0,
@@ -237,7 +254,7 @@ export default {
 			wxa_kefu_form_url:'',
 			wxa_kefu_bg_color:'',
 			wxa_show_kucun_in_list: '',
-			wxa_hidden_product_list:'',
+			
 			supplierid: '',
 			is_get_article_list:true,// publish_list_api 帖子列表判断是否请求 
 			cms_token:'',//cms_token
@@ -295,21 +312,32 @@ export default {
 			});
 			return;
 		}
-		this.abotapi.abotRequest({
-		    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
-		    data: {
+		
+		var post_data = {
 				sellerid:this.abotapi.globalData.default_sellerid,
 				sort: 1,
 				page: that.page_num,
 				page_size:that.page_size,
-		    },
+		    };
+		
+		if(this.wxa_product_list_show_type == 'is_recommend'){
+			post_data.is_recommend = 1;
+		}
+		else if(this.wxa_product_list_show_type == 'is_hot'){
+			post_data.is_hot = 1;
+		}
+		
+		
+		this.abotapi.abotRequest({
+		    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
+		    data: post_data,
 		    success: function (res) {
 	
 				
 				if(res.data.code == 1){
 					that.is_OK = false;
-					that.productList = that.productList.concat(res.data.product_list);
-					console.log('超过一页',that.productList)
+					that.current_product_list = that.current_product_list.concat(res.data.product_list);
+					console.log('超过一页',that.current_product_list)
 					uni.stopPullDownRefresh();//得到数据后停止下拉刷新
 				}else if(res.data.code == 0){
 					that.is_OK = true;
@@ -640,6 +668,10 @@ export default {
 			  
 			    that.wxa_hidden_product_list = cb_params.option_list.wxa_hidden_product_list
 			  
+			}
+			
+			if(cb_params.option_list.wxa_product_list_show_type){
+				that.wxa_product_list_show_type = cb_params.option_list.wxa_product_list_show_type
 			}
 					
 			if (cb_params.option_list.wxa_kefu_button_type) {
@@ -1031,24 +1063,35 @@ export default {
 			console.log('get_product_list=====>>>>>');
 			
 			var that = this;
-			this.abotapi.abotRequest({
-			    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
-			    method: 'post',
-			    data: {
+			
+			var post_data = {
 					sellerid:this.abotapi.globalData.default_sellerid,
 					sort: 1,
 					page: that.page,
 					page_size:that.page_size,
-			    },
+			    };
+			
+			if(this.wxa_product_list_show_type == 'is_recommend'){
+				post_data.is_recommend = 1;
+			}
+			else if(this.wxa_product_list_show_type == 'is_hot'){
+				post_data.is_hot = 1;
+			}
+			
+			
+			this.abotapi.abotRequest({
+			    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
+			    method: 'post',
+			    data: post_data,
 			    success: function (res) {
 					
 					if(res.data.code == 1){
 						that.is_OK = false;
-						that.productList = res.data.product_list;
+						that.current_product_list = res.data.product_list;
 						if(that.page == 1){
 							console.log('第一页')
-							that.productList = res.data.product_list;
-							console.log('第一页index',that.productList)
+							that.current_product_list = res.data.product_list;
+							console.log('第一页index',that.current_product_list)
 						}
 					}
 			    },
@@ -1665,30 +1708,30 @@ page{position: relative;background-color: #fff;}
 
 .toutiao{
   width:100%;
-  height:50px;
-  margin:10px auto;
+  height:100rpx;
+  margin:20rpx auto;
   background-color: #fff;
   clear: both;
 }
 
 .toutiao_left{
-  width:15%;
-  height:50px;
+  width:80rpx;
+  height:80rpx;
   float:left;
 }
 
 .toutiao_left image{
-  width:60%;
-  height:100%;
+  width:80rpx;
+  height:80rpx;
   float:left;
 }
 
 .toutiao_right{
   width:85%;
-  height:50px;
+  height:100rpx;
   float:left;
-  font-size:16px;
-  line-height:50px;
+  font-size:32rpx;
+  line-height:100rpx;
   color:#666666;
   overflow: hidden;
   white-space: nowrap;
@@ -1697,13 +1740,13 @@ page{position: relative;background-color: #fff;}
 
 .toutiao_right2{
   width:85%;
-  height:50px;
+  height:100rpx;
   float:left;
-  font-size:13px;
-  line-height:50upx;
+  font-size:26rpx;
+  line-height:50rpx;
   color:black;
   overflow: hidden;
-  letter-spacing: 3upx;
+  letter-spacing: 3rpx;
   text-overflow: ellipsis;
 }
 

@@ -315,7 +315,7 @@
 		
 		
 		<view class="description">
-			<view class="title">———— 商品详情 ————</view>
+			<view class="title">———— ※ 商品详情 ※ ————</view>
 			<view class="content">
 				<rich-text :nodes="describe|formatRichText"></rich-text>
 			</view>

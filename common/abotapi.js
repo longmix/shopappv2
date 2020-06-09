@@ -967,16 +967,6 @@ module.exports = {
 		  this.globalData.is_publish_list_in_tabbar = option_list.is_publish_list_in_tabbar;
 		}
 		
-		console.log('isNullOrUndefined(option_list.is_publish_list_in_tabbar)1====>>>', option_list.is_publish_list_in_tabbar);
-		console.log('isNullOrUndefined(option_list.is_publish_list_in_tabbar)2====>>>', isNullOrUndefined(option_list.is_publish_list_in_tabbar));
-		console.log('isNullOrUndefined(option_list.is_publish_list_in_tabbar)3====>>>', this.globalData.is_publish_list_in_tabbar);
-		console.log('isNullOrUndefined(option_list.is_publish_list_in_tabbar)1====>>>', option_list.is_shop_cart_in_tabbar);
-		console.log('isNullOrUndefined(option_list.is_publish_list_in_tabbar)2====>>>', isNullOrUndefined(option_list.is_shop_cart_in_tabbar));
-		console.log('isNullOrUndefined(option_list.is_publish_list_in_tabbar)3====>>>', this.globalData.is_shop_cart_in_tabbar);
-		console.log('isNullOrUndefined(option_list.is_publish_list_in_tabbar)1====>>>', option_list.is_user_user_in_tabbar);
-		console.log('isNullOrUndefined(option_list.is_publish_list_in_tabbar)2====>>>', isNullOrUndefined(option_list.is_user_user_in_tabbar));
-		console.log('isNullOrUndefined(option_list.is_publish_list_in_tabbar)3====>>>', this.globalData.is_user_user_in_tabbar);
-		
 		
 	},
 	
