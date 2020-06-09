@@ -929,7 +929,7 @@ module.exports = {
 		
 		var option_list = option_data.option_list;
 		
-		console.log("__get_ext_setting_from_server 获取商城选项数据====：", option_list);
+		//console.log("__get_ext_setting_from_server 获取商城选项数据====：", option_list);
 		
 		
 		

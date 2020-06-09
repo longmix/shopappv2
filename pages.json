@@ -26,6 +26,18 @@
 				// }
 			}
 		},
+		{	//商品超级分类
+			"path": "pages/category/index2",
+			"style": {
+				"navigationBarTitleText":"商品分类导航",
+				"enablePullDownRefresh": true
+				// "app-plus": {
+				// 	"titleNView": false ,//禁用原生导航栏
+				// 	"bounce":"none"
+					
+				// }
+			}
+		},
 		{	//购物车
 			"path": "pages/cart/cart",
 			"style": {
@@ -385,7 +397,7 @@
 		{
 		    "path" : "pages/live/live-pusher",
 		    "style" : {
-		    	"navigationBarTitleText":"腾羽云商",
+		    	"navigationBarTitleText":"主播控制台",
 		    	"navigationBarBackgroundColor":"#1569DB",
 				"navigationBarTextStyle":"white"
 		    }
@@ -393,7 +405,7 @@
         ,{
             "path" : "pages/live/live-list",
             "style" : {
-				"navigationBarTitleText":"腾羽云商",
+				"navigationBarTitleText":"直播间列表",
 				"navigationBarBackgroundColor":"#1569DB",
 				"navigationBarTextStyle":"white"
 			}

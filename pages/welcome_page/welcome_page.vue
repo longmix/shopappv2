@@ -8,12 +8,7 @@
 		
 		<block v-if="content_type == 'cms'">
 		<view class='wenzhang_detail'>
-		    <import src="../../wxParse/wxParse.wxml"/> 
-		    <view class="wxParse"> 
-		        <scroll-view  scroll-y='true'>
-		           <template is="wxParse" :data='{wxParseData:content.nodes}'/>
-		        </scroll-view>
-		    </view>
+			<rich-text v-if="describe" :nodes="describe|formatRichText"></rich-text>
 		</view>
 		</block>
 		
@@ -47,7 +42,7 @@
 		
 		</view>
 		 
-		<rich-text v-if="describe" :nodes="describe|formatRichText"></rich-text>
+		
 		
 	</view>
 </template>
@@ -139,6 +134,8 @@ export default {
 		}
 		else{
 			
+			console.log('options===============>>>>>', options);
+			
 		  //3、其他方式：直接传参
 		  var imgid = options.imgid;
 		  var parentid = options.parentid;
@@ -153,14 +150,11 @@ export default {
 		  }
 			
 		  if(platform == 'cms'){
-			if(imgid){
-			  imgid = 0;
-			  
-			  this.__get_img_from_weiduke(imgid, this);
-			}
-			else{
+			if(!imgid){
 			  this.get_default_imgid = true;
 			}
+			
+			this.__get_img_from_weiduke(imgid, this);
 		  }
 		  else if(platform == 'pic'){
 			this.__get_pic_from_yanyubao(imgid, this);
@@ -360,7 +354,6 @@ export default {
 		        that.current_title = res.data.data.title;
 		
 				that.describe = res.data.data.info;
-		        //WxParse.wxParse('content', 'html', res.data.data.info, that, 15);
 		
 		        if(res.data.data.video_url){
 					that.video_url = res.data.data.video_url;

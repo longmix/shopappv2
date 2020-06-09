@@ -76,7 +76,7 @@
 		<!-- 视频组件 -->
 		<view v-if="wxa_show_video_player == 1">
 		   <video object-fit='fill' :src="wxa_video_player_url" :poster='wxa_video_screen_url'
-			controls="true" :autoplay="false"
+			controls="true" :autoplay="wxa_show_video_autoplay"
 			:style="{width:videometa_width_height[0] + 'rpx;height:' + videometa_width_height[1] + 'rpx;'}"
 			@loadedmetadata="videometa_auto_set($event)"
 			enable-play-gesture="true"
@@ -197,10 +197,15 @@ export default {
 			current_citynameWidth:'',
 			wxa_shop_toutiao_icon:'',
 			is_shangjia:1,
+			
+			
 			wxa_video_player_url:'', //视频相关路径
 			wxa_video_screen_url:'', //视频相关路径
 			wxa_show_video_player:0, //视频是否启用
-			videometa_width_height:'',
+			wxa_show_video_autoplay:false,
+			videometa_width_height:[0, 0],
+			
+			
 			showHeader:true,
 			afterHeaderOpacity: 1,//不透明度
 			headerPosition: 'fixed',
@@ -644,11 +649,16 @@ export default {
 			    that.wxa_show_toutiao = cb_params.option_list.wxa_show_toutiao
 			  
 			}
-			if (cb_params.option_list.wxa_show_video_player) {
-			  
-			   that.wxa_show_video_player = cb_params.option_list.wxa_show_video_player
 			
+			
+			if (cb_params.option_list.wxa_show_video_player) {			  
+			   that.wxa_show_video_player = cb_params.option_list.wxa_show_video_player			
 			}
+			if (cb_params.option_list.wxa_show_video_autoplay) {			  
+			   that.wxa_show_video_autoplay = true
+			}
+			
+			
 			if (cb_params.option_list.wxa_video_player_url) {
 			  
 			    that.wxa_video_player_url = cb_params.option_list.wxa_video_player_url
@@ -664,6 +674,7 @@ export default {
 			    that.wxa_shop_toutiao_flash_line = cb_params.option_list.wxa_shop_toutiao_flash_line
 			  
 			}
+				
 					
 			if (cb_params.option_list.wxa_hidden_product_list) {
 			  
