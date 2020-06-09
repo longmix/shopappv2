@@ -162,7 +162,8 @@
 			
 			uni.getSystemInfo({
 			    success: function (res) {
-					
+					console.log('getSystemInfo==',res)
+					that.windowWidth = res.windowWidth;
 					that.windowHeight = res.windowHeight;
 					
 			    }
@@ -217,12 +218,11 @@
 			// this.coordinate = coordinate;
 			
 			
-			this.get_cata_tag();
+			this.get_cata_tag(); 
 			this.get_gundong_img();
 			//this.shuaxin();
 			console.log('imgheights2222',this.imgheights);
 			console.log('imgheights2222',this.current);
-			
 		},
 		
 		onPageScroll(e) {
@@ -760,22 +760,22 @@
 			
 			
 			imageLoad: function (e) {//获取图片真实宽度  
+				var imgwidth = e.detail.width,
+				  imgheight = e.detail.height,
+				  //宽高比  
+				  ratio = imgwidth / imgheight;
+				console.log(imgwidth, imgheight)
+				//计算的高度值  
+				var viewHeight = (this.windowWidth * 2 * 0.92)/ ratio;
+				var imgheight = viewHeight;
+				var imgheights = this.imgheights;
+				//把每一张图片的对应的高度记录到数组里  
+				imgheights[e.target.dataset.id] = uni.upx2px(imgheight);
 					
-			    var imgwidth = e.detail.width,
-			    imgheight = e.detail.height,
-				  
-			    //宽高比  
-			    ratio = imgwidth / imgheight;
-			   
-			    //计算的高度值  
-			    var viewHeight = this.windowHeight / ratio;
-			    var imgheight = viewHeight;
-			    var imgheights = this.imgheights;
-				
-			    //把每一张图片的对应的高度记录到数组里  
-			    imgheights[e.target.dataset.id] = uni.upx2px(imgheight);
-			    
-				this.imgheights = imgheights
+				console.log('id===>>>'+e.target.dataset.id+", imgheights====>>>", imgheights);
+						
+					
+				 this.imgheights = imgheights
 			   
 			  },
 			
@@ -792,7 +792,7 @@
 	};
 </script>
 
-<style>
+<style lang="scss">
 	
 	
 	.top-input-con {
@@ -857,62 +857,57 @@
 		color: #666;
 
 	}
-	.local-img {
-		width: 24rpx;
-		height: 24rpx;
-		margin-left: 11rpx;
-		padding-top: 1rpx;
+.local-img {
+	width: 24rpx;
+	height: 24rpx;
+	margin-left: 11rpx;
+	padding-top: 1rpx;
 
-	}
-	.swiper {
-		width: 100%;
-		margin-top: 10upx;
-		display: flex;
-		
-		justify-content: center;
-		
-	}
+}
+.swiper {
+	width: 100%;
+	margin-top: 10upx;
+	display: flex;
+	
+	justify-content: center;
 	.swiper-box {
 		width: 92%;
-		
+		// height: 30.7vw;
 
 		overflow: hidden;
 		border-radius: 15upx;
 		box-shadow: 0upx 8upx 25upx rgba(0, 0, 0, 0.2);
-		
+		//兼容ios，微信小程序
 		position: relative;
 		z-index: 1;
-		
-			
+		swiper {
+			width: 100%;
+			// height: 30.7vw;
+			swiper-item {
+				image {
+					width: 100%;
+				}
+			}
 		}
-	.indicator {
-		position: absolute;
-		bottom: 20upx;
-		left: 20upx;
-		background-color: rgba(255, 255, 255, 0.4);
-		width: 150upx;
-		height: 5upx;
-		border-radius: 3upx;
-		overflow: hidden;
-		display: flex;
-		
+		.indicator {
+			position: absolute;
+			bottom: 20upx;
+			left: 20upx;
+			background-color: rgba(255, 255, 255, 0.4);
+			width: 150upx;
+			height: 5upx;
+			border-radius: 3upx;
+			overflow: hidden;
+			display: flex;
+			.dots {
+				width: 0upx;
+				background-color: rgba(255, 255, 255, 1);
+				transition: all 0.3s ease-out;
+				&.on {
+					width: (100%/3);
+				}
+			}
+		}
 	}
-	.dots {
-		width: 0upx;
-		background-color: rgba(255, 255, 255, 1);
-		transition: all 0.3s ease-out;
-		
-	}
-	.on {
-		width: (100%/3);
-	}
-	swiper {
-		width: 100%;
-		
-		
-	}
-	image {
-		width: 100%;
-	}
-	
+}	
 </style>

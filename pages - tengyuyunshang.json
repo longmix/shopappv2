@@ -299,7 +299,9 @@
 		    "path" : "pages/shopList/shopList",
 		    "style": {
 		    	"navigationBarTitleText": "商家列表",
-		    	"softinputNavBar":"none"
+		    	"softinputNavBar":"none",
+				"enablePullDownRefresh": true,
+				"onReachBottomDistance":50
 		    }
 		},
 		{
