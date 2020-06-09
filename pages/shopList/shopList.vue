@@ -224,7 +224,9 @@
 			console.log('imgheights2222',this.imgheights);
 			console.log('imgheights2222',this.current);
 		},
-		
+		onReady(){
+			
+		},
 		onPageScroll(e) {
 			//兼容iOS端下拉时顶部漂移
 			this.headerPosition = e.scrollTop>=0?"fixed":"absolute";
