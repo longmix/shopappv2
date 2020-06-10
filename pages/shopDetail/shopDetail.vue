@@ -179,33 +179,74 @@
 		<view class="bottom">
 
 		</view>
+		<view v-if="user_console_setting.user_console_quick_button_position == 'left' || !user_console_setting.user_console_quick_button_position">
+			<view @tap="isShoucang==1?Shoucang('del'):Shoucang('add')" class="home-p">
+				<image v-if="isShoucang == 0" src="../../static/img/help/star_off.png"></image>
+				<image v-if="isShoucang == 1" src="../../static/img/help/star_on.png"></image>
+				<!-- <view>分享</view> -->
+			</view>
+			<view class="ps-btn">
+				
 
-		<view @tap="isShoucang==1?Shoucang('del'):Shoucang('add')" class="home-p">
-			<image v-if="isShoucang == 0" src="../../static/img/help/star_off.png"></image>
-			<image v-if="isShoucang == 1" src="../../static/img/help/star_on.png"></image>
-			<!-- <view>分享</view> -->
+				<view>
+					<!-- <image src="../../static/img/addricon.png"></image> -->
+					<!-- #ifdef MP-WEIXIN || APP-PLUS --> 
+					<button style="padding-left: 0;padding-right: 0;" open-type="share">分享</button>
+					<!-- #endif -->
+					<!-- #ifdef H5 --> 
+					<button style="padding-left: 0;padding-right: 0;" @click="share_shang_detail">分享</button>
+					<!-- #endif -->
+				</view>
+				
+				<view @tap="call_seller" style="margin-bottom: 20rpx;">
+					<!-- <image src="../../static/img/addricon.png"></image> -->
+					<view>电话</view>
+				</view>
+				<view @tap="toChat">
+					<!-- <image src="../../static/img/addricon.png"></image> -->
+					<view>客服</view>
+				</view>
+			</view>
 		</view>
-		<view class="ps-btn">
-
-
-			<view>
+		
+		
+		<view v-if="user_console_setting.user_console_quick_button_position == 'bottom'" class='footer' >
+			<view @tap="isShoucang==1?Shoucang('del'):Shoucang('add')" class="shoucang_box">
+				<image v-if="isShoucang == 0" src="http://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star.png"></image>
+				<image v-if="isShoucang == 1" src="http://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png"></image>收藏
+				<!-- <view>分享</view> -->
+			</view>
+			<view style="width: 25%;background: #FFFFFF;text-align: center;font-size:32rpx;" class="icons">
 				<!-- <image src="../../static/img/addricon.png"></image> -->
 				<!-- #ifdef MP-WEIXIN || APP-PLUS --> 
-				<button style="padding-left: 0;padding-right: 0;" open-type="share">分享</button>
+				<!-- <button style="padding-left: 0;padding-right: 0;" open-type="share">分享</button> -->
+				<button class="box share-btn btn_box" open-type="share">
+					<image style="width:40rpx;height:40rpx;padding-right:10rpx;" src="http://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_share.png"></image>
+					<view  style="font-size:32rpx;">分享</view>
+					<!-- <button class="text" open-type="share">分享</button> -->
+				</button>
+				
 				<!-- #endif -->
 				<!-- #ifdef H5 --> 
-				<button style="padding-left: 0;padding-right: 0;" @click="share_shang_detail">分享</button>
+				<!-- <button style="padding-left: 0;padding-right: 0;" @click="share_shang_detail">分享</button> -->
+				<button @click="share_shang_detail" class="box share-btn btn_box">
+					<image style="width:40rpx;height:40rpx;padding-right:10rpx;" src="http://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_share.png"></image>
+					<view  style="font-size:32rpx;">分享</view>
+					<!-- <button class="text" open-type="share">分享</button> -->
+				</button>
+				
 				<!-- #endif -->
 			</view>
 			
-			<view @tap="call_seller" style="margin-bottom: 20rpx;">
-				<!-- <image src="../../static/img/addricon.png"></image> -->
+			<view @tap="call_seller" class="dianhua_box">
+				<image style="width:40rpx;height:40rpx;padding-right:10rpx;" src="http://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_phone.png"></image>
 				<view>电话</view>
 			</view>
-			<view @tap="toChat">
-				<!-- <image src="../../static/img/addricon.png"></image> -->
+			<view @tap="toChat" class="kefu_box">
+				<image style="width:40rpx;height:40rpx;padding-right:10rpx;" src="http://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_dialog.png"></image>
 				<view>客服</view>
 			</view>
+			
 		</view>
 	</view>
 </template>
@@ -860,7 +901,7 @@
 	};
 </script>
 
-<style>
+<style lang="scss">
 	.shang_detail_box1 {
 		background-color: #81ab85;
 		margin: 5upx;
@@ -1420,5 +1461,150 @@
 		width: 60%;
 		height: 60%;
 
+	}
+	
+	.share-btn::after{
+		border: none;
+	
+	}
+	
+	.share-btn{
+		line-height: normal;
+		background-color: transparent;
+		padding:0,
+	}
+	.footer {
+		position: fixed;
+		bottom: 0upx;
+		width: 92%;
+		padding: 0 4%;
+		height: 99upx;
+		border-top: solid 1upx #eee;
+		background-color: #fff;
+		z-index: 2;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding-bottom: 20rpx;
+		.icons {
+			display: flex;
+			height: 80upx;
+			.box {
+				width: 100%;
+				height: 80upx;
+				display: flex;
+				justify-content: center;
+				flex-wrap: wrap;
+				align-items: center;
+				position: relative;
+				.icon {
+					font-size: 40rpx;
+					/* color: #828282; */
+				}
+				.text {
+					display: flex;
+					justify-content: center;
+					width: 100%;
+					font-size: 22upx;
+					color: #666;
+				}
+				.amount {
+					position: absolute;
+					background: #f00;
+					color: #fff;
+					width: 34rpx;
+					height: 34rpx;
+					line-height: 34rpx;
+					text-align: center;
+					border-radius: 50%;
+					font-size: 20rpx;
+					right: 0rpx;
+					top: -16rpx;
+				}
+			}
+		}
+		.btn {
+			height: 80upx;
+			border-radius: 40upx;
+			overflow: hidden;
+			display: flex;
+			margin-right: -2%;
+			.joinCart,
+			.buy {
+				height: 80rpx;
+				padding: 0 36rpx;
+				color: #fff;
+				display: flex;
+				align-items: center;
+				font-size: 28rpx;
+				background-color: #f06c7a;
+			}
+			.joinCart {
+				background-color: #f0b46c;
+			}
+			.joinCart-null{
+				background-color: #808080;
+				height: 80upx;
+				padding: 0 40upx;
+				color: #fff;
+				display: flex;
+				align-items: center;
+				font-size: 28upx;
+			}
+			.buy-null {
+				height: 80upx;
+				padding: 0 40upx;
+				color: #fff;
+				display: flex;
+				align-items: center;
+				font-size: 28upx;
+				background-color: #808080;
+				opacity: 0.4;
+			}
+		}
+	}
+	.shoucang_box{
+		width: 25%;
+		background: #FFFFFF;
+		text-align: center;
+		font-size:32rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-right: 1px solid #999;
+	}
+	.shoucang_box image{
+		width:40rpx;
+		height:40rpx;
+		padding-right:10rpx;
+	}
+	.btn_box{
+		width: 100%;
+		background: #FFFFFF;
+		text-align: center;
+		font-size:32rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.dianhua_box{
+		width: 25%;
+		background: #FFFFFF;
+		text-align: center;
+		font-size:32rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-right: 1px solid #999;
+		border-left: 1px solid #999;
+	}
+	.kefu_box{
+		width: 25%;
+		background: #FFFFFF;
+		text-align: center;
+		font-size:32rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 </style>

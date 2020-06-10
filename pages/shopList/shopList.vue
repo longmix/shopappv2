@@ -218,15 +218,14 @@
 			// this.coordinate = coordinate;
 			
 			
-			this.get_cata_tag(); 
+			this.get_cata_tag();
 			this.get_gundong_img();
 			//this.shuaxin();
 			console.log('imgheights2222',this.imgheights);
 			console.log('imgheights2222',this.current);
-		},
-		onReady(){
 			
 		},
+		
 		onPageScroll(e) {
 			//兼容iOS端下拉时顶部漂移
 			this.headerPosition = e.scrollTop>=0?"fixed":"absolute";
@@ -762,6 +761,7 @@
 			
 			
 			imageLoad: function (e) {//获取图片真实宽度  
+				var that = this;
 				var imgwidth = e.detail.width,
 				  imgheight = e.detail.height,
 				  //宽高比  
@@ -776,8 +776,14 @@
 					
 				console.log('id===>>>'+e.target.dataset.id+", imgheights====>>>", imgheights);
 						
-					
-				 this.imgheights = imgheights
+				console.log('imgheightsimgheightsimgheights',imgheights);
+				
+				var heights = [];
+				for(var i = 0; i < imgheights.length;i++){
+					heights[i] = imgheights[i]
+				}
+				
+				 that.imgheights = heights;
 			   
 			  },
 			
