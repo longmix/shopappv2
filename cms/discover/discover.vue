@@ -1286,6 +1286,7 @@ margin-top: 20rpx;
 	justify-content: center;
 	font-size: 32rpx;
 	color:#333;
+	margin-top: 30rpx;
 }
 .my_publish{
 	width: 50%;
