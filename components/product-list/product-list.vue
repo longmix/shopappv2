@@ -2,35 +2,39 @@
 	<view class="goods-list">
 		<view class="product-list">
 			<!-- cataid传值时 -->
-			<view class="product" v-if="cataid && item.cataid == cataid" v-for="(item,indexs) in productsList" :key="indexs" @click="toGoods(item)">
-				
-				<image class="shouqing" v-if="item.inventory == 0" src="https://yanyubao.tseo.cn/Tpl/static/images/shouqing.png" ></image>
-				<image mode="widthFix" :src="item.picture"></image>
-				<view class="name">{{item.name}}</view>
-				<view class="kucun-sale" v-if="showKucunSale==1">
-					<view>销量：{{item.sale_volume}}</view>
-					<view>库存：{{item.inventory}}</view>
+			<block v-if="cataid && item.cataid == cataid">
+				<view class="product"  v-for="(item,indexs) in productsList" :key="indexs" @click="toGoods(item)">
+					
+					<image class="shouqing" v-if="item.inventory == 0" src="https://yanyubao.tseo.cn/Tpl/static/images/shouqing.png" ></image>
+					<image mode="widthFix" :src="item.picture"></image>
+					<view class="name">{{item.name}}</view>
+					<view class="kucun-sale" v-if="showKucunSale==1">
+						<view>销量：{{item.sale_volume}}</view>
+						<view>库存：{{item.inventory}}</view>
+					</view>
+					<view class="info">
+						<view class="price">￥ {{item.price}}</view>
+						<!-- <view class="slogan">{{item.seller_name}}</view> -->
+					</view>
 				</view>
-				<view class="info">
-					<view class="price">￥ {{item.price}}</view>
-					<!-- <view class="slogan">{{item.seller_name}}</view> -->
-				</view>
-			</view>
+			</block>
 			<!-- cataid没有传值时 -->
-			<view class="product" v-else  :key="indexs" @click="toGoods(item)">
-				
-				<image class="shouqing" v-if="item.inventory == 0" src="https://yanyubao.tseo.cn/Tpl/static/images/shouqing.png" ></image>
-				<image mode="widthFix" :src="item.picture"></image>
-				<view class="name">{{item.name}}</view>
-				<view class="kucun-sale" v-if="showKucunSale==1">
-					<view>销量：{{item.sale_volume}}</view>
-					<view>库存：{{item.inventory}}</view>
+			<block v-else>
+				<view class="product"  v-for="(item,indexs) in productsList" :key="indexs" @click="toGoods(item)">
+					
+					<image class="shouqing" v-if="item.inventory == 0" src="https://yanyubao.tseo.cn/Tpl/static/images/shouqing.png" ></image>
+					<image mode="widthFix" :src="item.picture"></image>
+					<view class="name">{{item.name}}</view>
+					<view class="kucun-sale" v-if="showKucunSale==1">
+						<view>销量：{{item.sale_volume}}</view>
+						<view>库存：{{item.inventory}}</view>
+					</view>
+					<view class="info">
+						<view class="price">￥ {{item.price}}</view>
+						<!-- <view class="slogan">{{item.seller_name}}</view> -->
+					</view>
 				</view>
-				<view class="info">
-					<view class="price">￥ {{item.price}}</view>
-					<!-- <view class="slogan">{{item.seller_name}}</view> -->
-				</view>
-			</view>
+			</block>
 		</view>
 		<view v-if="!productsList" class="loading-text">{{loadingText}}</view>
 	</view>
@@ -40,7 +44,7 @@
 	export default {
 		name: "product-list",
 		props: {
-			productsList:'',
+			productsList: '',
 			cataid: '',
 			loadingText:"",
 			showKucunSale: '',

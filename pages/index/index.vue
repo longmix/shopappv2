@@ -123,7 +123,7 @@
 		<!-- 商品列表 -->
 		<view v-if="!wxa_hidden_product_list || wxa_hidden_product_list==0"
 			style="font-size:30upx;text-align: center;color:#ccc;padding: 30upx auto;display: block;height: 80upx;width: 100%;">———— ※ 最新上架 ※ ————</view>
-		<productList v-if="!wxa_hidden_product_list || wxa_hidden_product_list==0" :productsList="current_product_list" :loadingText="loadingText" :showKucunSale="wxa_show_kucun_in_list" @toGoods="toGoods"></productList>	
+		<productList  :productsList="current_product_list" :loadingText="loadingText" :showKucunSale="wxa_show_kucun_in_list" @toGoods="toGoods"></productList>	
 
 		<!-- 客服按钮 -->
 		<view class="u-tap-btn" v-if="(wxa_show_kefu_button==1) && (wxa_kefu_bg_no_color_flag == 0)">
@@ -236,9 +236,9 @@ export default {
 			Promotion: [],
 			//猜你喜欢列表
 			twoArr:'',
-			page:'',
+			page: '',
 			
-			current_product_list:'',
+			current_product_list:[{}],
 			loadingText: '正在加载...',
 			
 			
@@ -682,6 +682,8 @@ export default {
 			  
 			}
 			
+			
+			
 			if(cb_params.option_list.wxa_product_list_show_type){
 				that.wxa_product_list_show_type = cb_params.option_list.wxa_product_list_show_type
 			}
@@ -1107,6 +1109,8 @@ export default {
 							console.log('第一页index',that.current_product_list)
 						}
 					}
+					
+					console.log('第一1111111页index111',that.current_product_list)
 			    },
 			    fail: function (e) {
 					uni.showToast({
