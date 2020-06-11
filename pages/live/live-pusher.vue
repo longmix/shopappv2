@@ -5,15 +5,15 @@
 	        aspect="9:16" @statechange="statechange" @netstatus="netstatus" @error = "error"
 	        ></live-pusher> -->
 			<view class="fun-btn">
-				<image class="btn" mode="widthFix" :src="is_push ? '../../static/img/live/stop.png' : '../../static/img/live/start.png'" @click="is_push ? stop() : start()"></image>
+				<image class="btn" mode="widthFix" :src="is_push ? 'https://yanyubao.tseo.cn/Tpl/static/images/video_live/stop.png' : 'https://yanyubao.tseo.cn/Tpl/static/images/video_live/start.png'" @click="is_push ? stop() : start()"></image>
 				<!-- <view>{{is_push}}</view> -->
 				<!-- <button class="btn" @click="pause">暂停推流</button>
 				<button class="btn" @click="resume">resume</button> -->
-				<image class="btn" mode="widthFix" src="../../static/img/live/stop.png" @click="stop"></image>
-				<image class="btn" mode="widthFix" src="../../static/img/live/snapshot.png" @click="snapshot"></image>
-				<image class="btn" mode="widthFix" :src="is_camera_preview ? '../../static/img/live/camera-off.png' : '../../static/img/live/camera-on.png'" @click="is_camera_preview ? stopPreview() : startPreview()"></image>
-				<!-- <image class="btn" mode="widthFix" src="../../static/img/live/camera-off.png" @click="stopPreview"></image> -->
-				<image class="btn" mode="widthFix" src="../../static/img/live/camera-change.png" @click="switchCamera"></image>
+				<image class="btn" mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/video_live/stop.png" @click="stop"></image>
+				<image class="btn" mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/video_live/snapshot.png" @click="snapshot"></image>
+				<image class="btn" mode="widthFix" :src="is_camera_preview ? 'https://yanyubao.tseo.cn/Tpl/static/images/video_live/camera-off.png' : 'https://yanyubao.tseo.cn/Tpl/static/images/video_live/camera-on.png'" @click="is_camera_preview ? stopPreview() : startPreview()"></image>
+				<!-- <image class="btn" mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/video_live/camera-off.png" @click="stopPreview"></image> -->
+				<image class="btn" mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/video_live/camera-change.png" @click="switchCamera"></image>
 			</view>
 	</view>
 </template>
@@ -120,7 +120,9 @@ export default {
 				
 	},
 	
-	
+	onUnload(){
+		this.stop();
+	},
 	
 	methods: {
 		statechange() {
@@ -296,7 +298,8 @@ export default {
 				console.log("stopPreview.start-b:" + JSON.stringify(b))
 			});
 			this.is_camera_preview = 0;
-		}
+		},
+		
 		
 		
 	}
