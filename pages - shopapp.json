@@ -1,4 +1,5 @@
-{	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+{	
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{	//主页
 			"path": "pages/index/index",
 			"style": {
@@ -17,7 +18,20 @@
 		{	//商品分类
 			"path": "pages/category/category",
 			"style": {
-				"navigationBarTitleText":"分类列表"
+				"navigationBarTitleText":"分类列表",
+				"enablePullDownRefresh": true
+				// "app-plus": {
+				// 	"titleNView": false ,//禁用原生导航栏
+				// 	"bounce":"none"
+					
+				// }
+			}
+		},
+		{	//商品超级分类
+			"path": "pages/category/index2",
+			"style": {
+				"navigationBarTitleText":"商品分类导航",
+				"enablePullDownRefresh": true
 				// "app-plus": {
 				// 	"titleNView": false ,//禁用原生导航栏
 				// 	"bounce":"none"
@@ -46,15 +60,15 @@
 				"enablePullDownRefresh": true,
 				"backgroundTextStyle":"light",
 				"backgroundColorTop":"#FFFFFF",
-				"titleNView": true ,
-				"app-plus": {
-					"titleNView": false ,//禁用原生导航栏
-					"subNVues":[{  
-						"id": "userTitleNvue", // 唯一标识  
-						"path": "pages/user/subNvue/userTitleNvue", // 页面路径  
-						"type":"navigationBar"
-					}]
-				}
+				"titleNView": true 
+				// "app-plus": {
+				// 	"titleNView": false ,//禁用原生导航栏
+				// 	"subNVues":[{  
+				// 		"id": "userTitleNvue", // 唯一标识  
+				// 		"path": "pages/user/subNvue/userTitleNvue", // 页面路径  
+				// 		"type":"navigationBar"
+				// 	}]
+				// }
 			}
 		},
 		{	//商品搜索
@@ -141,28 +155,19 @@
         ,{	//订单列表
             "path" : "pages/user/order_list/order_list",
             "style" : {
-				"navigationBarTitleText":"我的订单",
-				"navigationBarBackgroundColor":"#f8f8f8",
-				"backgroundColorTop":"#f3f3f3",
-				"backgroundColorBottom":"#ffffff"
+				"navigationBarTitleText":"我的订单"
 			}
         }
 		,{	//订单列表
 		    "path" : "pages/user/orderDetail/orderDetail",
 		    "style" : {
-				"navigationBarTitleText":"订单详情",
-				"navigationBarBackgroundColor":"#f8f8f8",
-				"backgroundColorTop":"#f3f3f3",
-				"backgroundColorBottom":"#ffffff"
+				"navigationBarTitleText":"订单详情"
 			}
 		}
         ,{	//用户设置
             "path" : "pages/user/setting/setting",
             "style" : {
-				"navigationBarBackgroundColor":"#f8f8f8",
-				"navigationBarTitleText":"我的设置",
-				"backgroundColorTop":"#ffffff",
-				"backgroundColorBottom":"#f3f3f3"
+				"navigationBarTitleText":"我的设置"
 			}
         }
         ,{
@@ -184,9 +189,7 @@
         ,{
             "path" : "pages/msg/chat/chat",
             "style" : {
-				"navigationBarBackgroundColor":"#f2f2f2",
-				"backgroundColorTop":"#e5e5e5",
-				"backgroundColorBottom":"#e5e5e5",
+				"navigationBarTitleText": "对话",
 				"app-plus":{
 					"softinputNavBar":"none",
 					"bounce":"none"
@@ -214,43 +217,33 @@
         ,{
             "path" : "pages/user/address/address",
             "style" : {
-				"navigationBarTitleText":"地址管理",
-				"backgroundColorTop":"#ffffff",
-				"backgroundColorBottom":"#ffffff"
+				"navigationBarTitleText":"地址管理"
 			}
         }
         ,{
             "path" : "pages/user/address/edit/edit",
             "style" : {
 
-				"navigationBarTitleText":"编辑收件人地址",
-				"backgroundColorTop":"#ffffff",
-				"backgroundColorBottom":"#ffffff"
+				"navigationBarTitleText":"编辑收件人地址"
 			}
         }
         ,{
             "path" : "pages/user/deposit/deposit",
             "style" : {
-				"navigationBarTitleText":"充值",
-				"backgroundColorTop":"#ffffff",
-				"backgroundColorBottom":"#ffffff"
+				"navigationBarTitleText":"充值"
 			}
         }
         ,{
             "path" : "pages/pay/payment/payment",
             "style" : {
-				"navigationBarTitleText":"订单支付",
-				"backgroundColorTop":"#ffffff",
-				"backgroundColorBottom":"#ffffff"
+				"navigationBarTitleText":"订单支付"
 			}
         }
         ,{
             "path" : "pages/pay/success/success",
             "style" : {
 
-				"navigationBarTitleText":"支付成功",
-				"backgroundColorTop":"#ffffff",
-				"backgroundColorBottom":"#ffffff"
+				"navigationBarTitleText":"支付成功"
 			}
         }
         ,{
@@ -258,9 +251,7 @@
             "style" : {
 				"navigationBarTitleText":"商品评论",
 				"enablePullDownRefresh": true,
-				"onReachBottomDistance":50,
-				"backgroundColorTop":"#ffffff",
-				"backgroundColorBottom":"#ffffff"
+				"onReachBottomDistance":50
 			}
         }
         ,{
@@ -299,6 +290,8 @@
 		    "path" : "pages/shopList/shopList",
 		    "style": {
 		    	"navigationBarTitleText": "商家列表",
+				"enablePullDownRefresh": true,
+				"onReachBottomDistance":50,
 		    	"softinputNavBar":"none"
 		    }
 		},
@@ -306,6 +299,7 @@
 		    "path" : "pages/shopDetail/shopDetail",
 		    "style": {
 		    	"navigationBarTitleText": "商家详情",
+				"enablePullDownRefresh": true,
 		    	"softinputNavBar":"none"
 		    }
 		},
@@ -357,20 +351,71 @@
 		    	"enablePullDownRefresh": true,
 		    	"onReachBottomDistance":50
 		    }
-		}
-        ,{
+		},
+		{
+		    "path" : "pages/publish/publish_home",
+		    "style" : {
+				"navigationBarTitleText": "文章列表-分类",
+				"softinputNavBar":"none"
+			}
+		},
+		{
             "path" : "pages/myecard/myecard",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText":"会员卡",
+				"enablePullDownRefresh": true
+			}
         }
 		,{
 		    "path" : "pages/welcome_page/welcome_page",
 		    "style" : {}
 		}
+        ,{
+            "path" : "pages/user/nickName/nickNameEdit",
+            "style" : {}
+        },
+		{
+		    "path" : "cms/discover/discover",
+		    "style" : {}
+		}
+		,{
+			"path" : "cms/publish/publish",
+		    "style" : {}
+		}
+		,
+		{
+			"path" : "pages/login/login_get_userinfo",
+		    "style" : {}
+		}
+		,{
+            "path" : "pages/user/accountEdit/accountEdit",
+            "style" : {}
+        }
+		,{
+		    "path" : "pages/user/updateMobile/updateMobile",
+		    "style" : {}
+		},
+		{
+		    "path" : "pages/live/live-pusher",
+		    "style" : {
+		    	"navigationBarTitleText":"主播控制台",
+		    	"navigationBarBackgroundColor":"#1569DB",
+				"navigationBarTextStyle":"white"
+		    }
+		}
+        ,{
+            "path" : "pages/live/live-list",
+            "style" : {
+				"navigationBarTitleText":"直播间列表",
+				"navigationBarBackgroundColor":"#1569DB",
+				"navigationBarTextStyle":"white"
+			}
+        }
     ],
 	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText" : "",
-		"navigationBarBackgroundColor" : "#ffffff",
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText" : "延誉电商",
+		"navigationBarBackgroundColor" : "#f37404",
 		"backgroundColor" : "#ffffff",
 		"backgroundColorTop":"#ffffff",
 		"backgroundColorBottom":"#ffffff"
@@ -387,16 +432,16 @@
 				"text": "首页"
 			},
 			{
-				"pagePath": "pages/category/category",
-				"iconPath": "static/img/tabBar/category.png",
-				"selectedIconPath": "static/img/tabBar/category-on.png",
-				"text": "商品"
+				"pagePath": "pages/publish/publish_list",
+				"iconPath": "static/img/tabBar/imglist.png",
+				"selectedIconPath": "static/img/tabBar/imglist-on.png",
+				"text": "创业与开业"
 			},
 			{
 				"pagePath": "pages/shopList/shopList",
-				"iconPath": "static/img/tabBar/cart.png",
-				"selectedIconPath": "static/img/tabBar/cart-on.png",
-				"text": "商家"
+				"iconPath": "static/img/tabBar/category.png",
+				"selectedIconPath": "static/img/tabBar/category-on.png",
+				"text": "城市合伙人"
 			},
 			{
 				"pagePath": "pages/user/user",

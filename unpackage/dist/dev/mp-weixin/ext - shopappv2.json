@@ -51,8 +51,8 @@
       },
       {
         "pagePath": "pages/shopList/shopList",
-        "iconPath": "static/img/tabBar/cart.png",
-        "selectedIconPath": "static/img/tabBar/cart-on.png",
+        "iconPath": "static/img/tabBar/category.png",
+        "selectedIconPath": "static/img/tabBar/category-on.png",
         "text": "城市合伙人"
       },
       {
