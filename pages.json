@@ -393,22 +393,26 @@
 		,{
 		    "path" : "pages/user/updateMobile/updateMobile",
 		    "style" : {}
-		},
-		{
-		    "path" : "pages/live/live-pusher",
-		    "style" : {
-		    	"navigationBarTitleText":"主播控制台",
-		    	"navigationBarBackgroundColor":"#1569DB",
-				"navigationBarTextStyle":"white"
-		    }
-		}
-        ,{
+		},{
             "path" : "pages/live/live-list",
             "style" : {
 				"navigationBarTitleText":"直播间列表",
 				"navigationBarBackgroundColor":"#1569DB",
 				"navigationBarTextStyle":"white"
 			}
+        },
+		{
+		    "path" : "pages/live/live-pusher",
+		    "style" : {
+		    	"navigationBarTitleText":"主播控制台",
+		    	"navigationBarBackgroundColor":"#1569DB",
+				"navigationBarTextStyle":"white"
+				
+		    }
+		}
+        ,{
+            "path" : "pages/live/live-player",
+            "style" : {}
         }
     ],
 	"globalStyle": {
@@ -447,6 +451,16 @@
 				"iconPath": "static/img/tabBar/user.png",
 				"selectedIconPath": "static/img/tabBar/user-on.png",
 				"text": "我的"
+			}
+		]
+	},
+	"condition" : { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": [
+			{
+				"name": "", //模式名称
+				"path": "", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到
 			}
 		]
 	}

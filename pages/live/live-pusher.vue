@@ -1,17 +1,20 @@
 <template>
-	 <view>
-	        <live-pusher id='livePusher' ref="livePusher" class="livePusher" url="rtmp://101619.livepush.myqcloud.com/live/tengyumall?txSecret=e809b255904e3bce90dcadd1bab34018&txTime=5EFAECD4"
+	<view>
+	        <!-- <live-pusher id='livePusher' ref="livePusher" class="livePusher" url="rtmp://101619.livepush.myqcloud.com/live/tengyumall?txSecret=e809b255904e3bce90dcadd1bab34018&txTime=5EFAECD4"
 	        mode="SD" :muted="true" :enable-camera="true" :auto-focus="true" :beauty="1" whiteness="2"
 	        aspect="9:16" @statechange="statechange" @netstatus="netstatus" @error = "error"
-	        ></live-pusher>
-	        <button class="btn" @click="start">开始推流</button>
-	        <button class="btn" @click="pause">暂停推流</button>
-	        <button class="btn" @click="resume">resume</button>
-	        <button class="btn" @click="stop">停止推流</button>
-	        <button class="btn" @click="snapshot">快照</button>
-	        <button class="btn" @click="startPreview">开启摄像头预览</button>
-	        <button class="btn" @click="stopPreview">关闭摄像头预览</button>
-	        <button class="btn" @click="switchCamera">切换摄像头</button>
+	        ></live-pusher> -->
+			<view class="fun-btn">
+				<image class="btn" mode="widthFix" :src="is_push ? '../../static/img/live/stop.png' : '../../static/img/live/start.png'" @click="is_push ? stop() : start()"></image>
+				<!-- <view>{{is_push}}</view> -->
+				<!-- <button class="btn" @click="pause">暂停推流</button>
+				<button class="btn" @click="resume">resume</button> -->
+				<image class="btn" mode="widthFix" src="../../static/img/live/stop.png" @click="stop"></image>
+				<image class="btn" mode="widthFix" src="../../static/img/live/snapshot.png" @click="snapshot"></image>
+				<image class="btn" mode="widthFix" :src="is_camera_preview ? '../../static/img/live/camera-off.png' : '../../static/img/live/camera-on.png'" @click="is_camera_preview ? stopPreview() : startPreview()"></image>
+				<!-- <image class="btn" mode="widthFix" src="../../static/img/live/camera-off.png" @click="stopPreview"></image> -->
+				<image class="btn" mode="widthFix" src="../../static/img/live/camera-change.png" @click="switchCamera"></image>
+			</view>
 	</view>
 </template>
 
@@ -23,7 +26,8 @@ export default {
 
 	data() {
 		return {
-			
+			is_push:0,
+			is_camera_preview:0,
 		};
 	},
 	onPageScroll: function (e) {
@@ -40,480 +44,276 @@ export default {
 	
 	},
 	onLoad: function (options) {
+		let userInfo = this.abotapi.get_user_info();
+
+
+
+		
+		if (!userInfo || !userInfo.userid) {
+			let last_url = '/pages/live/live-pusher'
+			this.abotapi.goto_user_login(last_url,'normal');		
+			return;
+		}
+		
+		const currentWebview = this.$mp.page.$getAppWebview()
+		this.abotapi.abotRequest({
+		  url: this.abotapi.globalData.yanyubao_server_url + 'openapi/VideoLiveData/set_plan_video_live',
+		  method: 'post',
+		  data: {				
+			userid: userInfo.userid,
+			checkstr: userInfo.checkstr,
+			sellerid: this.abotapi.get_sellerid(),
+		  },
+		  header: {
+			'Content-Type': 'application/x-www-form-urlencoded'
+		  },
+		  success: (res) => {
+			  console.log('set_plan_video_live=====',res)
+			  let data = res.data;
+			if(data.code == 1){
+					
+				console.log('data.pusher_url==',data.data.pusher_url)
+				this.pusher = plus.video.createLivePusher("livepusher", {    
+				// url:'rtmp://101619.livepush.myqcloud.com/live/tengyumall?txSecret=e809b255904e3bce90dcadd1bab34018&txTime=5EFAECD4',    
+				 url: data.data.pusher_url,
+				 //url: 'rtmp://101619.livepush.myqcloud.com/live/live_71297?txSecret=2d0f51a4be51b243c55b211e0223a4ea&txTime=5EE1F571',
+				top:'0px',    
+				left:'0px',    
+				width: '100%',    
+				height: '375px',
+				position: 'static'    
+				});
+				currentWebview.append(this.pusher); 
+			
+			}
+			
+			
+		  },
+		  error: function (e) {
+			uni.showToast({
+			  title: '网络异常！',
+			  duration: 2000,
+			});
+		  },
+		});
+		
 		
 		
 	},
-	onShow:function(){	
+	onShow:function(){
 		
 		
 	},
 	 onReady() {
 	            // 注意：需要在onReady中 或 onLoad 延时
-	            this.context = uni.createLivePusherContext("livePusher", this);
+	            // this.context = uni.createLivePusherContext("livePusher", this);
+				
+				
+				
+				// 监听状态变化事件
+				// this.pusher.addEventListener('statechange', function(e){
+				// 	console.log('statechange1: '+JSON.stringify(e));
+				// }, false);
+				
+				// this.statechange();
+				
+				
 	},
 	
 	
 	
 	methods: {
+		statechange() {
+			
+			// 监听状态变化事件
+			this.pusher.addEventListener('statechange', function(e){
+				console.log('statechange: '+JSON.stringify(e));
+			}, false);
+			
+			// console.log("statechange:" + JSON.stringify(e));
+		},
+		netstatus() {
+			// 监听状态变化事件
+			this.pusher.addEventListener('netstatus', function(e){
+				console.log('netstatus: '+JSON.stringify(e));
+			}, false);
+			// console.log("netstatus:" + JSON.stringify(e));
+		},
+		error() {
+			this.pusher.addEventListener('error', function(e){
+				console.log('error: '+JSON.stringify(e));
+			}, false);
+			console.log("error:" + JSON.stringify(e));
+		},
+		start: function() {
+			let userInfo = this.abotapi.get_user_info();
+			
+			this.abotapi.abotRequest({
+			  url: this.abotapi.globalData.yanyubao_server_url + 'openapi/VideoLiveData/set_video_live_list_and_logo_begin',
+			  method: 'post',
+			  data: {				
+				userid: userInfo.userid,
+				checkstr: userInfo.checkstr,
+				sellerid: this.abotapi.get_sellerid(),
+			  },
+			  header: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			  },
+			  success: (res) => {
+				  	console.log('set_video_live_list_and_logo_begin=====',res)
+				  
+				  let data = res.data;
+				if(data.code = 1){
+					
+	
+				}
+			
+				
+			  },
+			  error: function (e) {
+				uni.showToast({
+				  title: '网络异常！',
+				  duration: 2000,
+				});
+			  },
+			});
+			
+			
+			
+			this.pusher.start((a)=>{
+				console.log("livePusher.start-a:" + JSON.stringify(a))
+				this.is_push = 1;
+			}, (b)=>{
+				console.log("livePusher.start-b:" + JSON.stringify(b))
+			});
+			
+		},
+		close: function() {
+			this.context.close({
+				success: (a) => {
+					console.log("livePusher.close:" + JSON.stringify(a));
+				}
+			});
+		},
+		snapshot: function() {
+			
+			this.pusher.snapshot((a)=>{
+				console.log("snapshot.start-a:" + JSON.stringify(a))
+			}, (b)=>{
+				console.log("snapshot.start-b:" + JSON.stringify(b))
+			});
+			
+		},
+		resume: function() {
+			
+			this.pusher.resume((a)=>{
+				console.log("resume.start-a:" + JSON.stringify(a))
+			}, (b)=>{
+				console.log("resume.start-b:" + JSON.stringify(b))
+			});
+			
+		},
+		pause: function() {
+			this.context.pause({
+				success: (a) => {
+					console.log("livePusher.pause:" + JSON.stringify(a));
+				}
+			});
+		},
+		stop: function() {
+			let userInfo = this.abotapi.get_user_info();
+			
+			this.abotapi.abotRequest({
+			  url: this.abotapi.globalData.yanyubao_server_url + 'openapi/VideoLiveData/set_video_live_list_and_logo_end',
+			  method: 'post',
+			  data: {				
+				userid: userInfo.userid,
+				checkstr: userInfo.checkstr,
+				sellerid: this.abotapi.get_sellerid(),
+				video_live_tiem: '1'
+			  },
+			  header: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			  },
+			  success: (res) => {
+				  	console.log('set_video_live_list_and_logo_end=====',res)
+				  
+				  let data = res.data;
+				if(data.code = 1){
+					
+				
+				}
+			
+				
+			  },
+			  error: function (e) {
+				uni.showToast({
+				  title: '网络异常！',
+				  duration: 2000,
+				});
+			  },
+			});
+			
+			
+			this.pusher.stop((a)=>{
+				console.log("livePusher.stop:" + JSON.stringify(a))
+				
+			},(b)=>{
+				console.log("livePusher.start:" + JSON.stringify(b))
+			});
+			
+			
+			
+			
+			this.is_push = 0;
+			
+		},
+		switchCamera: function() {
+			this.pusher.switchCamera((a)=>{
+				console.log("switchCamera.start-a:" + JSON.stringify(a))
+			}, (b)=>{
+				console.log("switchCamera.start-b:" + JSON.stringify(b))
+			});
+			
+		},
+		startPreview: function() {
+			
+			this.pusher.startPreview((a)=>{
+				console.log("startPreview.start-a:" + JSON.stringify(a))
+				
+			}, (b)=>{
+				console.log("startPreview.start-b:" + JSON.stringify(b))
+			});
+			this.is_camera_preview = 1;
 		
+		},
+		stopPreview: function() {
+			
+			this.pusher.stopPreview((a)=>{
+				console.log("stopPreview.start-a:" + JSON.stringify(a))
+				
+			}, (b)=>{
+				console.log("stopPreview.start-b:" + JSON.stringify(b))
+			});
+			this.is_camera_preview = 0;
+		}
 		
 		
 	}
 };
 </script>
-<style lang="scss">
-page{position: relative;background-color: #fff;}
-.icon.location:before {
-    content: '\E611';
-}
-.shang_box{
+<style >
+.fun-btn{
+	z-index:100;
 	display: flex;
-	padding: 10upx;
-	margin: 10upx;
-	border-radius: 10upx;
-	background: #fff;
-	border: 1upx solid #fff;
-}
-.pullDown-effects{
-	position: fixed;
-	//top: calc(100upx - 36vw);
-	top: 0;
-	z-index: 9;
-	width: 100%;
-	height: 36vw;
-	/*  #ifdef  APP-PLUS  */
-	padding-top: var(--status-bar-height);
-	/*  #endif  */
-	image{
-		width: 100%;
-		height: 36vw;
-	}
-}
-.status {
-	width: 100%;
-	height: 0;
-	position: fixed;
-	z-index: 10;
-	background-color: #fff;
-	top: 0;
-	/*  #ifdef  APP-PLUS  */
-	height: var(--status-bar-height); //覆盖样式
-	/*  #endif  */
-}
-.header {
-	width: 92%;
-	padding: 0 4%;
-	height: 100upx;
-	display: flex;
-	align-items: center;
-	position: fixed;
-	top: 0;
-	z-index: 10;
-	background-color: #fff;
-
-	/*  #ifdef  APP-PLUS  */
-	top: var(--status-bar-height);
-	/*  #endif  */
-
-	.addr {
-		width: 160upx;
-		height: 60upx;
-		flex-shrink: 0;
-		display: flex;
-		align-items: center;
-		
-		// font-size: 28upx;
-		.icon {
-			height: 60upx;
-			margin-right: 5upx;
-			display: flex;
-			align-items: center;
-			font-size: 42upx;
-			color: #ffc50a;
-		}
-	}
-	.input-box {
-		width: 100%;
-		height: 60upx;
-		background-color: #f5f5f5;
-		border-radius: 30upx;
-		position: relative;
-		display: flex;
-		align-items: center;
-		.icon {
-			display: flex;
-			align-items: center;
-			position: absolute;
-			top: 0;
-			right: 0;
-			width: 60upx;
-			height: 60upx;
-			font-size: 34upx;
-			color: #c0c0c0;
-		}
-		input {
-			padding-left: 28upx;
-			height: 28upx;
-			font-size: 28upx;
-		}
-	}
-	.icon-btn {
-		// width: 120upx;
-		height: 60upx;
-		flex-shrink: 0;
-		display: flex;
-		.icon {
-			width: 60upx;
-			height: 60upx;
-			display: flex;
-			justify-content: flex-end;
-			align-items: center;
-			font-size: 42upx;
-		}
-	}
-}
-.place {
-	background-color: #ffffff;
-	height: 100upx;
-	/*  #ifdef  APP-PLUS  */
-	margin-top: var(--status-bar-height);
-	/*  #endif  */
-}
-.swiper {
-	width: 100%;
-	margin-top: 10upx;
-	display: flex;
-	
-	justify-content: center;
-	.swiper-box {
-		width: 92%;
-		// height: 30.7vw;
-
-		overflow: hidden;
-		border-radius: 15upx;
-		box-shadow: 0upx 8upx 25upx rgba(0, 0, 0, 0.2);
-		//兼容ios，微信小程序
-		position: relative;
-		z-index: 1;
-		swiper {
-			width: 100%;
-			// height: 30.7vw;
-			swiper-item {
-				image {
-					width: 100%;
-				}
-			}
-		}
-		.indicator {
-			position: absolute;
-			bottom: 20upx;
-			left: 20upx;
-			background-color: rgba(255, 255, 255, 0.4);
-			width: 150upx;
-			height: 5upx;
-			border-radius: 3upx;
-			overflow: hidden;
-			display: flex;
-			.dots {
-				width: 0upx;
-				background-color: rgba(255, 255, 255, 1);
-				transition: all 0.3s ease-out;
-				&.on {
-					width: (100%/3);
-				}
-			}
-		}
-	}
-}
-
-.category-list {
-	width: 96%;
-	margin-left: 2%;
-	padding: 0 0 30upx 0;
-	border-bottom: solid 2upx #f6f6f6;
-	display: flex;
+	width: 80%;
+	margin-left: 10%;
 	justify-content: space-between;
-	flex-wrap: wrap;
-	.category {
-		width: 25%;
-		margin-top: 50upx;
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-		.img {
-			width: 100%;
-			display: flex;
-			justify-content: center;
-			image {
-				width: 9vw;
-				height: 9vw;
-			}
-		}
-		.text {
-			margin-top: 16upx;
-			width: 100%;
-			display: flex;
-			justify-content: center;
-			font-size: 24upx;
-			color: #3c3c3c;
-		}
-	}
-}
-.banner_with_shadow {
-	width: 92%;
-	margin: 40upx 4%;
-	image {
-		border-radius: '';
-		box-shadow: 0upx 5upx 25upx rgba(0, 0, 0, 0.3);
-	}
+	position: fixed;
+	bottom: 70rpx;
 }
 
-.banner {
-	width: 100%;
-	margin: 0;
-	image {
-		border-radius: '';
-	}
+.btn {
+	width: 80rpx;
 }
-
-.toutiao{
-  width:100%;
-  height:50px;
-  margin:10px auto;
-  background-color: #fff;
-  clear: both;
-}
-
-.toutiao_left{
-  width:15%;
-  height:50px;
-  float:left;
-}
-
-.toutiao_left image{
-  width:60%;
-  height:100%;
-  float:left;
-}
-
-.toutiao_right{
-  width:85%;
-  height:50px;
-  float:left;
-  font-size:16px;
-  line-height:50px;
-  color:#666666;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.toutiao_right2{
-  width:85%;
-  height:50px;
-  float:left;
-  font-size:13px;
-  line-height:50upx;
-  color:black;
-  overflow: hidden;
-  letter-spacing: 3upx;
-  text-overflow: ellipsis;
-}
-
-
-
-
-.promotion {
-	width: 92%;
-	margin: 50upx 4% 20upx;
-	.text {
-		width: 100%;
-		height: 60upx;
-		font-size: 34upx;
-		font-weight: 600;
-		margin-top: -10upx;
-	}
-	.list {
-		width: 100%;
-		display: flex;
-		justify-content: space-between;
-		.column {
-			width: 43%;
-			padding: 15upx 3%;
-			background-color: #ebf9f9;
-			border-radius: 10upx;
-			overflow: hidden;
-			display: flex;
-			justify-content: space-between;
-			flex-wrap: wrap;
-			.top {
-				width: 100%;
-				height: 40upx;
-				display: flex;
-				align-items: center;
-				margin-bottom: 5upx;
-				.title {
-					font-size: 30upx;
-				}
-				.countdown {
-					margin-left: 20upx;
-					display: flex;
-					height: 40upx;
-					display: flex;
-					align-items: center;
-					font-size: 20upx;
-					view {
-						height: 30upx;
-						background-color: #f06c7a;
-						display: flex;
-						justify-content: center;
-						align-items: center;
-						color: #fff;
-						border-radius: 4upx;
-						margin: 0 4upx;
-						padding: 0 2upx;
-					}
-				}
-			}
-			.left {
-				width: 50%;
-				height: 18.86vw;
-				display: flex;
-				flex-wrap: wrap;
-				align-content: space-between;
-				.ad {
-					margin-top: 5upx;
-					width: 100%;
-					font-size: 22upx;
-					color: #acb0b0;
-				}
-				.into {
-					width: 100%;
-					font-size: 24upx;
-					color: #aaa;
-					margin-bottom: 5upx;
-				}
-			}
-			.right {
-				width: 18.86vw;
-				height: 18.86vw;
-				image {
-					width: 18.86vw;
-					height: 18.86vw;
-				}
-			}
-		}
-	}
-}
-.goods-list {
-	// background-color: #f4f4f4;
-	.title {
-		width: 100%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		height: 80upx;
-		color: #f47825;
-		font-size: 30upx;
-		margin-top: 10upx;
-		image {
-			width: 30upx;
-			height: 30upx;
-		}
-	}
-	.loading-text {
-		width: 100%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		height: 60upx;
-		color: #979797;
-		font-size: 24upx;
-	}
-	.product-list {
-		width: 92%;
-		padding: 0 4% 3vw 4%;
-		display: flex;
-		justify-content: space-between;
-		flex-wrap: wrap;
-		.product {
-			width: 48%;
-			border-radius: 20upx;
-			background-color: #fff;
-			margin: 0 0 15upx 0;
-			box-shadow: 0upx 5upx 25upx rgba(0, 0, 0, 0.1);
-			image {
-				width: 100%;
-				border-radius: 20upx 20upx 0 0;
-			}
-			.name {
-				width: 92%;
-				margin: 10upx 4%;
-				display: -webkit-box;
-				-webkit-box-orient: vertical;
-				-webkit-line-clamp: 2;
-				text-align: justify;
-				overflow: hidden;
-				font-size: 30upx;
-			}
-			.info {
-				display: flex;
-				justify-content: space-between;
-				align-items: flex-end;
-				width: 92%;
-				padding: 10upx 4% 10upx 4%;
-
-				.price {
-					color: #e65339;
-					font-size: 30upx;
-					font-weight: 600;
-				}
-				.slogan {
-					color: #807c87;
-					font-size: 24upx;
-				}
-			}
-		}
-	}
-}
-.youhui-biaoqian {
-		font-size: 24upx;
-		margin-bottom: 10upx;
-		border: 1px solid #666;
-		text-align: center;
-		color: #555;
-		border-radius: 6upx;
-		padding: 2px 5px;
-		margin-right: 10upx;
-	}
-	.u-tap-btn {
-	  position:fixed;
-	  right:20upx;
-	  bottom:150upx;
-	  border:0upx;
-	}
-	
-	.u-go-home2 {
-	  display:flex;
-	  flex-direction:row;
-	  justify-content:center;
-	  border-radius:80upx;
-	  width:110upx;
-	  height:110upx;
-	  border:0px solid #eee;
-	  font-size:20upx;
-	  /*box-shadow:0px 4upx 8upx rgba(0,0,0,0.35);*/
-	  z-index:2;
-	  opacity:1;
-	  margin-bottom:20upx;
-	  /*background:#44b549;*/
-	  align-items:center;
-	}
-.u-go-home2 image {
-	height: 80upx;
-	width: 80upx;
-	position: absolute;
-	left: 16upx;
-}
-
 </style>
