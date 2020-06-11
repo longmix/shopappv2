@@ -1,9 +1,9 @@
 <template>
-	
-	
 	<view>
+		<!-- 状态栏 -->
+		<view  class="status" :style="{ position: headerPosition,top:statusTop,opacity: afterHeaderOpacity}"></view>
 		<!-- 商家搜索 -->
-		<view class="top-input-con"> 
+		<view class="top-input-con">
 
 			<view  class="scroll-txt" @tap="search()">   
 				<icon type="search" size="14" style="margin: 0px 10rpx 0 0"></icon>
@@ -810,7 +810,9 @@
 	padding: 10rpx 20rpx;
 	background: #fff;
 	z-index: 2;
-	
+	/*  #ifdef  APP-PLUS  */
+	margin-top: var(--status-bar-height);
+	/*  #endif  */
 	}
 	.scroll-txt {
 		text-align: center;
@@ -918,4 +920,15 @@
 		}
 	}
 }	
+.status {
+	width: 100%;
+	height: 0;
+	position: fixed;
+	z-index: 10;
+	background-color: #fff;
+	top: 0;
+	/*  #ifdef  APP-PLUS  */
+	height:var(--status-bar-height); //覆盖样式
+	/*  #endif  */
+}
 </style>

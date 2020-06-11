@@ -109,12 +109,11 @@
 					
 				}
 			});
+			
+			that.abotapi.set_shop_option_data(that, that.callback_function);
 		},
 		onShow:function(){
-			var that = this;
-			that.current_page = 1;
-			that.index_list = [];
-			that.abotapi.set_shop_option_data(that, that.callback_function);
+			
 		},
 		onPullDownRefresh:function(){
 			console.log(123465);

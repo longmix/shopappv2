@@ -19,13 +19,13 @@
 	</view>
 	
 	<!-- 我收藏、发布的按钮 -->
-	<view class='publish_box'>
+	<view class='publish_box' v-if="faquan_button_status==1">
 		<view class='my_publish' @click="my_publish_and_collect" data-type="my_publish">
-			<image style="width: 40rpx;height: 40rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/edit.png"></image>
+			<image style="width: 40rpx;height: 40rpx;margin-right: 10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/edit.png"></image>
 			<view>我的发布</view>
 		</view>
 		<view class="my_collection" @click="my_publish_and_collect" data-type="my_collection">
-			<image style="width: 40rpx;height: 40rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/edit.png"></image>
+			<image style="width: 40rpx;height: 40rpx;margin-right: 10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/favorite.png"></image>
 			<view>我的收藏</view>
 		</view>
 	</view>
@@ -1279,6 +1279,11 @@ margin-top: 20rpx;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	border: 1px solid #ccc;
+	padding: 10px;
+	margin: 2%;
+	border-radius: 10rpx;
+	border: 1px solid #ccc;
 }
 .publish_box{
 	width:100%;
@@ -1293,5 +1298,9 @@ margin-top: 20rpx;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	padding: 10px;
+	margin: 2%;
+	border-radius: 10rpx;
+	border: 1px solid #ccc;
 }
 </style>

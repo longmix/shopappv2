@@ -658,7 +658,7 @@
 
 	}
 	.input-flex-label{
-	    width: 18%;
+	    width: 23%;
 	    line-height: 43rpx;
 	    font-size: 32rpx;
 	}

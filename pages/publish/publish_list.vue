@@ -1,6 +1,6 @@
 <template>
 	<view style="background:#EFEFF4;border-top: 1px solid #EFEFF4;">
-		<view class="fabu_button" @tap="toPublish_index()" v-if="publish_hiddend_btn_for_write != 1">
+		<view class="fabu_button" :style="{background:wxa_shop_nav_bg_color}" @tap="toPublish_index()" v-if="publish_hiddend_btn_for_write != 1">
 			发布
 		</view>
 		<view class="sou">
@@ -84,6 +84,7 @@
 				current_page_size:4,
 				is_get_article_list:true,//控制触底请求分页的文章列表接口 
 				search_text:'',//搜索的文案
+				wxa_shop_nav_bg_color:'#f44444',
 			}
 		},
 		
@@ -110,12 +111,11 @@
 					
 				}
 			});
+			
+			that.abotapi.set_shop_option_data(that, that.callback_function);
 		},
 		onShow:function(){
-			var that = this;
-			that.current_page = 1;
-			that.index_list = [];
-			that.abotapi.set_shop_option_data(that, that.callback_function);
+			
 		},
 		
 		onPullDownRefresh:function(){
@@ -176,6 +176,13 @@
 				if(shop_option_data.option_list.publish_hiddend_btn_for_write){
 					that.publish_hiddend_btn_for_write = shop_option_data.option_list.publish_hiddend_btn_for_write; //是否显示发帖按钮
 				}
+				
+				if(shop_option_data.option_list.wxa_shop_nav_bg_color){
+					that.wxa_shop_nav_bg_color = shop_option_data.option_list.wxa_shop_nav_bg_color; //头部导航的颜色
+				}
+				
+				
+				
 				that.publish_img_cata_list = shop_option_data.option_list.publish_img_cata_list;
 				
 				//that.get_publish_list();
@@ -271,7 +278,8 @@
 			search_article_list:function(){
 				this.index_list = [];
 				this.current_page = 1;
-				this.get_publish_list('search')
+				this.is_get_article_list = true;
+				publish_list_api.get_publish_list(this,this.get_api_publish_list,'search')
 			},
 			
 			//读取搜索记录缓存
@@ -440,7 +448,6 @@
 		position: fixed;
 		bottom: 80px;
 		right: 8px;
-		background: #f44444;
 		border-radius: 54%;
 		padding: 5px;
 		height: 30px;
