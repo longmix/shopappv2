@@ -151,10 +151,7 @@
 			
 			
 			
-			//3、如果需要用户授权头像和昵称
-			if(this.abotapi.goto_get_userinfo(last_url)){
-			  return;
-			}
+			
 			
 			
 			
@@ -164,7 +161,12 @@
 		},
 		
 		onShow: function () {
+			var last_url = '/cms/publish/publish'; //跳转授权头像之后再跳转的页面
 			
+			//3、如果需要用户授权头像和昵称
+			if(this.abotapi.goto_get_userinfo(last_url)){
+			  return;
+			}
 			
 		},
 		

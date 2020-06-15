@@ -4,10 +4,10 @@
 			"style": {
 				"enablePullDownRefresh": true,
 				"onReachBottomDistance":50,
-				// "app-plus": {
-				// 	"titleNView": false ,//禁用原生导航栏
-				// 	"softinputNavBar":"none"
-				// }
+				"app-plus": {
+					"titleNView": false ,//禁用原生导航栏
+					"softinputNavBar":"none"
+				},
 				"h5": {
 					"titleNView": false ,//禁用原生导航栏
 					"softinputNavBar":"none"
@@ -18,24 +18,24 @@
 			"path": "pages/category/category",
 			"style": {
 				"navigationBarTitleText":"分类列表",
-				"enablePullDownRefresh": true
-				// "app-plus": {
-				// 	"titleNView": false ,//禁用原生导航栏
-				// 	"bounce":"none"
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"titleNView": false ,//禁用原生导航栏
+					"bounce":"none"
 					
-				// }
+				}
 			}
 		},
 		{	//商品超级分类
 			"path": "pages/category/index2",
 			"style": {
 				"navigationBarTitleText":"商品分类导航",
-				"enablePullDownRefresh": true
-				// "app-plus": {
-				// 	"titleNView": false ,//禁用原生导航栏
-				// 	"bounce":"none"
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"titleNView": false ,//禁用原生导航栏
+					"bounce":"none"
 					
-				// }
+				}
 			}
 		},
 		{	//购物车
@@ -59,15 +59,15 @@
 				"enablePullDownRefresh": true,
 				"backgroundTextStyle":"light",
 				"backgroundColorTop":"#FFFFFF",
-				"titleNView": true 
-				// "app-plus": {
-				// 	"titleNView": false ,//禁用原生导航栏
-				// 	"subNVues":[{  
-				// 		"id": "userTitleNvue", // 唯一标识  
-				// 		"path": "pages/user/subNvue/userTitleNvue", // 页面路径  
-				// 		"type":"navigationBar"
-				// 	}]
-				// }
+				"titleNView": true ,
+				"app-plus": {
+					"titleNView": false ,//禁用原生导航栏
+					"subNVues":[{  
+						"id": "userTitleNvue", // 唯一标识  
+						"path": "pages/user/subNvue/userTitleNvue", // 页面路径  
+						"type":"navigationBar"
+					}]
+				}
 			}
 		},
 		{	//商品搜索
@@ -291,7 +291,10 @@
 		    	"navigationBarTitleText": "商家列表",
 				"enablePullDownRefresh": true,
 				"onReachBottomDistance":50,
-		    	"softinputNavBar":"none"
+				"app-plus": {
+					"titleNView": false ,//禁用原生导航栏
+					"softinputNavBar":"none"
+				}
 		    }
 		},
 		{

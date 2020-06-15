@@ -647,7 +647,9 @@
 				that.current_faquanid = 0;
 				that.page = 1;
 				that.faquanList = [];
-			    
+			    that.is_my_discover_collection = false;
+				that.is_my_discover = false;
+				
 				console.log('开始取消搜索');
 			    this.__getFaquanList();
 			  },
