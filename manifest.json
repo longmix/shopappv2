@@ -159,7 +159,13 @@
         },
         "uniStatistics" : {
             "enable" : false
-        }
+        },
+		"plugins": {
+			"live-player-plugin": {
+			  "version": "1.0.15",
+			  "provider": "wx2b03c6e691cd7370"
+			}
+		 }
     },
     "h5" : {
         "router" : {
