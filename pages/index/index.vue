@@ -74,12 +74,19 @@
 		</view>
 		
 		<!-- 视频组件 -->
-		<view v-if="wxa_show_video_player == 1">
+		<view v-if="wxa_show_video_player == 1" style="text-align: center;">
 		   <video object-fit='fill' :src="wxa_video_player_url" :poster='wxa_video_screen_url'
 			controls="true" :autoplay="wxa_show_video_autoplay"
+			
+<!-- #ifndef MP-WEIXIN -->
+			style="margin: 0 auto; display:block;"
+<!-- #endif -->
+			
+<!-- #ifdef MP-WEIXIN -->
 			:style="{width:videometa_width_height[0] + 'rpx;height:' + videometa_width_height[1] + 'rpx;'}"
 			@loadedmetadata="videometa_auto_set($event)"
 			enable-play-gesture="true"
+<!-- #endif -->
 			>
 			</video>
 		</view>
@@ -203,7 +210,7 @@ export default {
 			wxa_video_screen_url:'', //视频相关路径
 			wxa_show_video_player:0, //视频是否启用
 			wxa_show_video_autoplay:false,
-			videometa_width_height:[0, 0],
+			videometa_width_height:[400, 300],
 			
 			
 			showHeader:true,
@@ -654,9 +661,10 @@ export default {
 			if (cb_params.option_list.wxa_show_video_player) {			  
 			   that.wxa_show_video_player = cb_params.option_list.wxa_show_video_player			
 			}
-			if (cb_params.option_list.wxa_show_video_autoplay) {			  
+
+			if (cb_params.option_list.wxa_show_video_autoplay == 1) {			  
 			   that.wxa_show_video_autoplay = true
-			}
+			}		
 			
 			
 			if (cb_params.option_list.wxa_video_player_url) {

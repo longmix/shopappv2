@@ -13,7 +13,7 @@
         /* 5+App特有相关 */
         "splashscreen" : {
             "alwaysShowBeforeRender" : false,
-            "waiting" : true,
+            "waiting" : false,
             "autoclose" : true,
             "delay" : 0
         },
@@ -115,6 +115,24 @@
                         "settings@3x" : "unpackage/res/icons/87x87.png",
                         "spotlight@2x" : "unpackage/res/icons/80x80.png",
                         "spotlight@3x" : "unpackage/res/icons/120x120.png"
+                    }
+                }
+            },
+            "splashscreen" : {
+                "android" : {
+                    "hdpi" : "unpackage/res/splashscreen/welandroid_480x762.png",
+                    "xhdpi" : "unpackage/res/splashscreen/welandroid_720x1242.png",
+                    "xxhdpi" : "unpackage/res/splashscreen/welandroid_1080x1882.png"
+                },
+                "ios" : {
+                    "iphone" : {
+                        "portrait-896h@3x" : "unpackage/res/splashscreen/welcome_1242x2688.png",
+                        "portrait-896h@2x" : "unpackage/res/splashscreen/welcome_828x1792.png",
+                        "iphonex" : "unpackage/res/splashscreen/welcome_1125x2436.png",
+                        "retina55" : "unpackage/res/splashscreen/welcome_1242x2208.png",
+                        "retina47" : "unpackage/res/splashscreen/welcome_750x1334.png",
+                        "retina40" : "unpackage/res/splashscreen/welcome_640x1136.png",
+                        "retina35" : "unpackage/res/splashscreen/welcome_640x960.png"
                     }
                 }
             }
