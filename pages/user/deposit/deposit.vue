@@ -15,7 +15,7 @@
 		      <view hidden="true">{{item.all_price}}50</view>
 		    </view> -->
 		
-			<view class="score-list" :class="currentid == idx?'score-list-a-hover':''" :style="{background: currentid == idx? '' : wxa_shop_nav_bg_color}" @tap="radioCheckedChange" v-for="(item2,idx) in taocan" :key="idx" :data-all_price="item2.chong" :data-currentid="idx">
+			<view class="score-list" :class="currentid == idx?'score-list-a-hover':''" :style="{background: currentid == idx? wxa_shop_nav_bg_color : ''}" @tap="radioCheckedChange" v-for="(item2,idx) in taocan" :key="idx" :data-all_price="item2.chong" :data-currentid="idx">
 				  <view class="score-list-a">
 					<view>{{item2.chong_str}}</view>
 				  </view>
@@ -426,7 +426,7 @@
 	
 	.score-list-a-hover {
 	color:#fff;
-	background-color:#17A8E2;
+	// background-color:#17A8E2;
 	
 	}
 	
