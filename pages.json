@@ -367,7 +367,14 @@
 				"navigationBarTitleText":"会员卡",
 				"enablePullDownRefresh": true
 			}
-        }
+        },
+		{
+		    "path" : "pages/myecard/mymessage",
+		    "style" : {
+				"navigationBarTitleText":"直播预约",
+				"enablePullDownRefresh": true
+			}
+		}
 		,{
 		    "path" : "pages/welcome_page/welcome_page",
 		    "style" : {}
