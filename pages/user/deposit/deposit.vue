@@ -15,7 +15,7 @@
 		      <view hidden="true">{{item.all_price}}50</view>
 		    </view> -->
 		
-			<view class="score-list" :class="currentid == idx?'score-list-a-hover':''" @tap="radioCheckedChange" v-for="(item2,idx) in taocan" :key="idx" :data-all_price="item2.chong" :data-currentid="idx">
+			<view class="score-list" :class="currentid == idx?'score-list-a-hover':''" :style="{background: currentid == idx? '' : wxa_shop_nav_bg_color}" @tap="radioCheckedChange" v-for="(item2,idx) in taocan" :key="idx" :data-all_price="item2.chong" :data-currentid="idx">
 				  <view class="score-list-a">
 					<view>{{item2.chong_str}}</view>
 				  </view>
@@ -23,7 +23,7 @@
 			</view>
 		</scroll-view>
 		
-		<button class='btn' @tap="toRecharge" type=""> 立即充值 </button>
+		<button class='btn' @tap="toRecharge" type="" :style="{background: wxa_shop_nav_bg_color}"> 立即充值 </button>
 		
 		<view class="rule-explain" v-if="order_rule_explain">{{order_rule_explain}}</view>
 		

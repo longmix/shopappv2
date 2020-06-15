@@ -1,7 +1,7 @@
 <template>
 	<view class="section">		
 			<!-- 商品搜索 -->
-			<view v-if="1" class="scroll-txt" bindtap="goto_search" data-value="">
+			<view v-if="1" class="scroll-txt" @tap="goto_search" data-value="">
 				<icon type="search" size="14" style="margin: 0px 10rpx 0 0"></icon>
 				<text class="scroll-ads">搜索</text>
 			</view>
@@ -323,11 +323,11 @@
 			  },
 			
 			  goto_search:function(view){
-			    var welfareId = view.currentTarget.dataset.value;
-			    var url = "../listdetail/listdetail?name=" + welfareId;
-			    uni.navigateTo({
-			      url: url
-			    });
+			    //搜索跳转
+				uni.navigateTo({
+					url:'/pages/search/search'				
+				})
+			    
 			  }
 		},
 		

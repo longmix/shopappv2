@@ -102,7 +102,7 @@
 			console.log('11',options);
 			
 			this.abotapi.set_option_list_str(that, function(that002, option_list){
-				this.abotapi.getColor();
+				that.abotapi.getColor();
 				
 				if (option_list.wxa_product_list_style) {
 					that.wxa_product_list_style = option_list.wxa_product_list_style

@@ -10,6 +10,7 @@
 			</view>
 			<view class="icon-btn">
 				<view class="icon tongzhi" @tap="toMsg"></view>
+				<view class="icon cart" @tap="toCart"></view>
 			</view>
 		</view>
 		<!-- 占位 -->
@@ -138,6 +139,19 @@
 				uni.navigateTo({
 					url:'/pages/msg/msg'
 				})
+			},
+			toCart:function(){
+				console.log('toCart 向购物车跳转')
+				
+				if(this.abotapi.globalData.is_shop_cart_in_tabbar == 1){
+					uni.switchTab({
+						url:'/pages/cart/cart'
+					})
+				}else{
+					uni.navigateTo({
+						url:'/pages/cart/cart'
+					})
+				}	
 			},
 			
 			get_cataList:function(){

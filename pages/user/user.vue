@@ -91,12 +91,22 @@
 						<view class="text">积分</view>
 					</view>
 				</view>
-				<view class="right">
+				<view class="right" v-if="wxa_show_recharge_button_in_usercenter == 1">
 					<view class="box" @tap="toDeposit">
 						<view class="img">
 							<view class="icon chongzhi"></view>
 						</view>
 						<view class="text">充值</view>
+					</view>
+				</view>
+				
+				<view class="right" v-else>
+					<view class="box" >
+						<view class="img logo-img">
+							<image :src="shop_info_from_server.icon" mode="widthFix" class="logo"></image>
+							<!-- <view class="icon chongzhi"></view> -->
+						</view>
+						<view class="text"></view>
 					</view>
 				</view>
 			</view>
@@ -119,6 +129,11 @@
 				</navigator>
 			</view>
 		</view>
+		
+<!-- 		<navigator url="/pages/live/live-pusher">主播控制台</navigator>
+		<navigator url="/pages/live/live-player">直播页面</navigator>
+		<navigator url="/pages/live/live-list">直播列表</navigator> -->
+		
 		<!-- 占位 -->
 		<view class="place-bottom"></view>
 		<!-- 著作信息 -->
@@ -159,8 +174,10 @@
 				
 				user_center_function_list_icon_type:0,
 				user_center_function_list_icon_list:[],
+				wxa_show_recharge_button_in_usercenter: '',
 				explainFlag: 1 ,//会员说明显示控制
-				scrollLeft:''
+				scrollLeft:'',
+				shop_info_from_server: ''
 			}
 		},
 		
@@ -199,13 +216,30 @@
 						that.user_center_function_list_icon_list = option_list.user_center_function_list_icon_list;
 					}
 					
+					if(option_list.wxa_show_recharge_button_in_usercenter){
+						that.wxa_show_recharge_button_in_usercenter = option_list.wxa_show_recharge_button_in_usercenter;
+					}
+					
+					
+					
 					that001.get_current_userinfo();
 					
 					that001.get_user_function_list();
 				
 				}
 			);
-						
+				
+			
+			that.abotapi.get_shop_info_from_server((shop_info)=>{
+				if(!shop_info){
+					return;
+				}
+				this.shop_info_from_server = shop_info;
+			})		
+			
+			
+			
+			
 			
 			this.statusHeight = 0;
 			// #ifdef APP-PLUS
@@ -732,6 +766,12 @@
 		font-size: 13px;
 		color: #666;
 		margin-bottom: 10upx;
+	}
+	.logo-img{
+		margin-top: 22px;
+	}
+	.logo{
+		width: 90rpx;
 	}
 	.wx-popup {
 	  position: absolute;

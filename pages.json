@@ -59,15 +59,15 @@
 				"enablePullDownRefresh": true,
 				"backgroundTextStyle":"light",
 				"backgroundColorTop":"#FFFFFF",
-				"titleNView": true ,
-				"app-plus": {
-					"titleNView": false ,//禁用原生导航栏
-					"subNVues":[{  
-						"id": "userTitleNvue", // 唯一标识  
-						"path": "pages/user/subNvue/userTitleNvue", // 页面路径  
-						"type":"navigationBar"
-					}]
-				}
+				"titleNView": true 
+				// "app-plus": {
+				// 	"titleNView": false ,//禁用原生导航栏
+				// 	"subNVues":[{  
+				// 		"id": "userTitleNvue", // 唯一标识  
+				// 		"path": "pages/user/subNvue/userTitleNvue", // 页面路径  
+				// 		"type":"navigationBar"
+				// 	}]
+				// }
 			}
 		},
 		{	//商品搜索
@@ -400,15 +400,12 @@
             "path" : "pages/live/live-list",
             "style" : {
 				"navigationBarTitleText":"直播间列表",
-				"navigationBarBackgroundColor":"#1569DB",
-				"navigationBarTextStyle":"white",
 				"mp-weixin": {
 				      "usingComponents": {
 				        "live-room": "plugin://live-player-plugin/live-room"
 				      }
 				}
 			}
-			
         },
 		{
 		    "path" : "pages/live/live-pusher",
@@ -421,7 +418,22 @@
 		}
         ,{
             "path" : "pages/live/live-player",
-            "style" : {}
+            "style" : {
+				// "app-plus": {  
+				// 	"subNVues":[{  
+				// 		"id": "sendDanmu", // 唯一标识  
+				// 		"path": "pages/live/subNVues/live-player", // 页面路径  
+				// 		// "type": "popup",  //原生子窗口内置样式，可取值：'popup',弹出层；"navigationBar",导航栏
+				// 		"style": {  
+				// 			"position": "absolute",  
+				// 			// "dock": "right",  
+				// 			"width": "100upx",  
+				// 			"height": "150upx",  
+				// 			"background": "transparent"  
+				// 		}    
+				// 	}]  
+				// }
+			}
         }
     ],
 	"globalStyle": {
