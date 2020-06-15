@@ -64,12 +64,50 @@
 							{'name':'555','content':'5555'},
 						],
 				roomid: '',
-				product_list: ''
+				product_list: '',
+				live_userid:'',
 				
 			}
 		},
 		onLoad(options){
 			var that = this;
+			
+			//渲染头部和文字颜色
+			this.abotapi.set_shop_option_data(this, function(){
+				
+			});
+			
+			//请求直播信息
+			let live_userid = options.live_userid;
+			
+			this.abotapi.abotRequest({
+			    url: this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/VideoLiveData/get_live_player_and_product_list',
+			    method: 'post',
+			    data: {
+					sellerid:this.abotapi.get_sellerid(),
+					live_userid:live_userid,
+				},
+			    success: function (res) {
+					
+					console.log('第一1111111页index111',res)
+					if(res.data.code == 1){
+						
+						that.product_list = res.data.product_list;
+						
+					}
+					
+			    },
+			    fail: function (e) {
+					uni.showToast({
+						title: '网络异常！',
+						duration: 2000
+					});
+			    },
+			});
+			
+			
+			
+			
 			
 			this.abotapi.current_chat_gui = this;
 			this.abotapi.current_chat_page = '/pages/live/live-player';
@@ -118,7 +156,9 @@
 			// 关闭 nvue 子窗体  
 			// subNVue.hide('fade-out', 300)
 			
-			
+			if(options.userid){
+				this.live_userid = options.live_userid;
+			}
 
 			
 			if(options.player_url){

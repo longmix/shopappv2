@@ -409,7 +409,7 @@
 				"navigationBarTitleText":"直播间列表",
 				"mp-weixin": {
 				      "usingComponents": {
-				        "live-room": "plugin://live-player-plugin/live-room"
+				        "live-player-plugin": "plugin://live-player-plugin/live-player-plugin"
 				      }
 				}
 			}
