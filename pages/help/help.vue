@@ -5,8 +5,10 @@
 	<view>
 		<view class="weui-panel weui-panel_access">
 			<view class="weui-panel__bd">
-				<block v-for="(item,artlist_for) in articlelist" :key="artlist_for">
-					<view class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active" @tap="showDetail" :data-id="item.id">
+				<block v-for="(item, artlist_for) in articlelist" :key="artlist_for">
+					<view class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active"
+							@tap="showDetail" :data-id="item.id"
+							:data-url="item.url">
 						<view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
 							<image class="weui-media-box__thumb" :src="item.pic" mode="widthFix" style="width:75%;margin:15rpx;"/>
 						</view>
@@ -31,12 +33,23 @@
 </template>
 
 <script>
+	import publish_list_api from '../../common/publish_list_api.js';
+	
 	export default {
 		data() {
 			return {
 				sellerid:'',
 				articlelist: [],
 				loading: true,
+				
+				//===相关的 publish_list_api 组件相关的==
+				is_get_article_list:1,
+				cms_token:'',
+				current_page:1,
+				current_page_size:50,
+				cms_cataid:0,
+				//========== End ==============
+				
 			}
 		},
 		onShow: function () {
@@ -58,7 +71,7 @@
 		// 生命周期函数--监听页面加载
 		onLoad: function (options) {
 			console.log('options==>>',options);
-			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
+			
 			
 			var that = this
 			
@@ -69,7 +82,10 @@
 			}
 			
 			
-			this.initArticleList(that.sellerid);
+			//this.initArticleList(that.sellerid);
+			
+			this.abotapi.set_option_list_str(this, this.initArticleList_new);
+			
 			
 		},
 		methods: {
@@ -94,6 +110,39 @@
 			    //========End====================
 				
 			},
+			initArticleList_new: function (that002, option_list) {
+				console.log('initArticleList_new initArticleList_new', option_list);
+				
+				if(!option_list || !option_list.weiduke_token_to_toutiao || !option_list.weiduke_classid_to_toutiao){
+					console.log('缺少 weiduke_token_to_toutiao 或 weiduke_classid_to_toutiao');
+					return;
+				}
+				
+				
+				that002.cms_token = option_list.weiduke_token_to_toutiao;
+				that002.cataid = option_list.weiduke_classid_to_toutiao; 
+				
+				publish_list_api.get_publish_list(that002, function(that003, res_data){
+					
+					
+					if(!res_data.index_list){
+						console.log('res_data=====>>>>', res_data);
+						
+						return;
+					}
+					
+					
+					//为显示加载动画添加3秒延时
+					setTimeout(function () {
+						that003.articlelist = res_data.index_list;
+					}, 500)
+					
+					
+					
+					
+				});
+				
+			},
 			articleBack: function (res) {
 				console.log(res);
 				var that = this;
@@ -115,6 +164,14 @@
 				
 				var id = e.currentTarget.dataset.id;
 				uni.setStorageSync('browser_cache_id', id);
+				
+				if(e.currentTarget.dataset.url && (e.currentTarget.dataset.url.length > 0)){
+					//可以跳转到http网址或者其他小程序内部链接
+					this.abotapi.call_h5browser_or_other_goto_url(e.currentTarget.dataset.url);
+					
+					return;
+				}
+				
 			  
 				uni.navigateTo({
 					url: '/pages/help_detail/help_detail?id=' + id + '&sellerid=' + that.sellerid
