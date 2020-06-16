@@ -1,4 +1,44 @@
-{	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+{	
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText" : "",
+		"navigationBarBackgroundColor" : "#ffffff",
+		"backgroundColor" : "#ffffff",
+		"backgroundColorTop":"#ffffff",
+		"backgroundColorBottom":"#ffffff"
+	},
+	"tabBar": {
+		"color": "#333333",
+		"selectedColor": "#f06c7a",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [{
+				"pagePath": "pages/index/index",
+				"iconPath": "static/img/tabBar/home.png",
+				"selectedIconPath": "static/img/tabBar/home-on.png",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/category/category",
+				"iconPath": "static/img/tabBar/category.png",
+				"selectedIconPath": "static/img/tabBar/category-on.png",
+				"text": "商品"
+			},
+			{
+				"pagePath": "pages/shopList/shopList",
+				"iconPath": "static/img/tabBar/cart.png",
+				"selectedIconPath": "static/img/tabBar/cart-on.png",
+				"text": "商家"
+			},
+			{
+				"pagePath": "pages/user/user",
+				"iconPath": "static/img/tabBar/user.png",
+				"selectedIconPath": "static/img/tabBar/user-on.png",
+				"text": "我的"
+			}
+		]
+	},
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{	//主页
 			"path": "pages/index/index",
 			"style": {
@@ -442,46 +482,7 @@
 				// }
 			}
         }
-    ],
-	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText" : "",
-		"navigationBarBackgroundColor" : "#ffffff",
-		"backgroundColor" : "#ffffff",
-		"backgroundColorTop":"#ffffff",
-		"backgroundColorBottom":"#ffffff"
-	},
-	"tabBar": {
-		"color": "#333333",
-		"selectedColor": "#f06c7a",
-		"borderStyle": "black",
-		"backgroundColor": "#ffffff",
-		"list": [{
-				"pagePath": "pages/index/index",
-				"iconPath": "static/img/tabBar/home.png",
-				"selectedIconPath": "static/img/tabBar/home-on.png",
-				"text": "首页"
-			},
-			{
-				"pagePath": "pages/category/category",
-				"iconPath": "static/img/tabBar/category.png",
-				"selectedIconPath": "static/img/tabBar/category-on.png",
-				"text": "商品"
-			},
-			{
-				"pagePath": "pages/shopList/shopList",
-				"iconPath": "static/img/tabBar/cart.png",
-				"selectedIconPath": "static/img/tabBar/cart-on.png",
-				"text": "商家"
-			},
-			{
-				"pagePath": "pages/user/user",
-				"iconPath": "static/img/tabBar/user.png",
-				"selectedIconPath": "static/img/tabBar/user-on.png",
-				"text": "我的"
-			}
-		]
-	},
+    ],	
 	"condition" : { //模式配置，仅开发期间生效
 		"current": 0, //当前激活的模式(list 的索引项)
 		"list": [
