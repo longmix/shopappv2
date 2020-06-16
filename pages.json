@@ -59,15 +59,15 @@
 				"enablePullDownRefresh": true,
 				"backgroundTextStyle":"light",
 				"backgroundColorTop":"#FFFFFF",
-				"titleNView": true 
-				// "app-plus": {
-				// 	"titleNView": false ,//禁用原生导航栏
-				// 	"subNVues":[{  
-				// 		"id": "userTitleNvue", // 唯一标识  
-				// 		"path": "pages/user/subNvue/userTitleNvue", // 页面路径  
-				// 		"type":"navigationBar"
-				// 	}]
-				// }
+				"titleNView": true,
+				"app-plus": {
+					"titleNView": false ,//禁用原生导航栏
+					"subNVues":[{  
+						"id": "userTitleNvue", //唯一标识  
+						"path": "pages/user/subNvue/userTitleNvue", //页面路径  
+						"type":"navigationBar"
+					}]
+				}
 			}
 		},
 		{	//商品搜索

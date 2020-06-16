@@ -74,22 +74,19 @@
 		</view>
 		
 		<!-- 视频组件 -->
+<!-- #ifdef MP-WEIXIN -->		
 		<view v-if="wxa_show_video_player == 1" style="text-align: center;">
 		   <video object-fit='fill' :src="wxa_video_player_url" :poster='wxa_video_screen_url'
 			controls="true" :autoplay="wxa_show_video_autoplay"
 			
-<!-- #ifndef MP-WEIXIN -->
-			style="margin: 0 auto; display:block;"
-<!-- #endif -->
-			
-<!-- #ifdef MP-WEIXIN -->
 			:style="{width:videometa_width_height[0] + 'rpx;height:' + videometa_width_height[1] + 'rpx;'}"
 			@loadedmetadata="videometa_auto_set($event)"
 			enable-play-gesture="true"
-<!-- #endif -->
+
 			>
 			</video>
 		</view>
+<!-- #endif -->
 		
 		
 		<!-- 广告图 -->
