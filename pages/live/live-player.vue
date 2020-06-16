@@ -71,10 +71,10 @@
 		},
 		onLoad(options){
 			var that = this;
-			
+			let userInfo = this.abotapi.get_user_info();
 			//渲染头部和文字颜色
-			this.abotapi.set_shop_option_data(this, function(){
-				
+			this.abotapi.set_shop_option_data(this, function(that, option_data){
+				console.log('option_data',option_data);
 			});
 			
 			//请求直播信息
@@ -86,6 +86,8 @@
 			    data: {
 					sellerid:this.abotapi.get_sellerid(),
 					live_userid:live_userid,
+					userid:userInfo.userid,
+					checkstr: userInfo.checkstr,
 				},
 			    success: function (res) {
 					
