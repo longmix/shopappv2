@@ -409,7 +409,7 @@
 			}
         },
 		{
-		    "path" : "pages/myecard/mymessage",
+		    "path" : "pages/live/livereserve",
 		    "style" : {
 				"navigationBarTitleText":"直播预约",
 				"enablePullDownRefresh": true
