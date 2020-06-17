@@ -9,7 +9,7 @@
 			<view class="icon-btn">
 				<view class="icon tongzhi" @tap="toMsg" :style="{color: wxa_shop_nav_bg_color == '#FFFFFF' ? '#333' : ''}"></view>				<!--下版本替换为: toMsg -->
 				<view class="icon setting" @tap="toSetting" :style="{color: wxa_shop_nav_bg_color == '#FFFFFF' ? '#333' : ''}"></view>
-			</view>
+			</view> 
 		</view>
 		<!-- 占位 -->
 		<view v-if="showHeader" class="place"></view>
@@ -243,7 +243,7 @@
 			
 			this.statusHeight = 0;
 			// #ifdef APP-PLUS
-			this.showHeader = false;
+			this.showHeader = true;
 			this.statusHeight = plus.navigator.getStatusbarHeight();
 			// #endif
 		},
@@ -507,6 +507,7 @@
 		z-index: 10;
 		//background-color: #f06c7a;
 		top: 0;
+		
 		/*  #ifdef  APP-PLUS  */
 		height: var(--status-bar-height);//覆盖样式
 		/*  #endif  */

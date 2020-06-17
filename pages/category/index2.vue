@@ -1,5 +1,8 @@
 <template>
-	<view class="section">		
+	<view class="section">	
+			<!-- 状态栏 -->
+			<view v-if="showHeader" class="status" :style="{ position: headerPosition,top:statusTop,opacity: afterHeaderOpacity}"></view>
+			
 			<!-- 商品搜索 -->
 			<view v-if="1" class="scroll-txt" @tap="goto_search" data-value="">
 				<icon type="search" size="14" style="margin: 0px 10rpx 0 0"></icon>
@@ -73,7 +76,7 @@
 		data() {
 			return {
 				 // types: null,
-					typeTree: {}, // 数据缓存
+					//typeTree: {}, // 数据缓存
 					currType: 0 ,
 					// 当前类型
 					"types": [
@@ -84,8 +87,12 @@
 					bus_y:'',
 					typeTree_icon: '',					
 					wxa_product_super_list_style:'',
-					wxa_order_super_cata_parentid:''
-					
+					wxa_order_super_cata_parentid:'',
+					showHeader:true,
+					headerPosition: 'fixed',
+					headerTop:null,
+					statusTop:null,
+					afterHeaderOpacity: 1,//不透明度
 			}
 		},
 		onPageScroll(e){
@@ -95,6 +102,9 @@
 			}else{
 				this.headerPosition = "absolute";
 			}
+			
+			this.headerTop = e.scrollTop>=0?null:0;
+			this.statusTop = e.scrollTop>=0?null:-this.statusHeight+'px';
 		},
 		onLoad() {
 			
@@ -119,7 +129,17 @@
 			this.busPos['x'] = 234.375;//购物车的位置
 			this.busPos['y'] = that.abotapi.globalData.hh - 32;
 			
-			
+			// #ifdef APP-PLUS
+					this.nVueTitle = uni.getSubNVueById('homeTitleNvue');
+					this.nVueTitle.onMessage(res => {
+						let type = res.data.type;
+						if(type=='focus'){
+							this.toSearch();
+						}
+					});
+					this.showHeader = false;
+					this.statusHeight = plus.navigator.getStatusbarHeight();
+			// #endif
 		},
 		methods: {
 			call_back_set_option:function(that, cb_params){
@@ -347,7 +367,19 @@
 .section{ position: absolute; width: 100%; height: 100% ; overflow: hidden;
   padding-bottom: 200rpx;
 }
-.left{ position: absolute; left: 0; top: 100rpx; height: 100%; width: 180rpx; background: #F6F6F6; text-align: center;font-size:28rpx;}
+.left{ 
+	position: absolute; 
+	left: 0; 
+	top: 100rpx; 
+	height: 100%; 
+	width: 180rpx; 
+	background: #F6F6F6; 
+	text-align: center;
+	font-size:28rpx;
+	/*  #ifdef  APP-PLUS  */
+	top: 130rpx; //覆盖样式
+	/*  #endif  */
+	}
 .left::before{ content: ""; position: absolute; background: #dcdcdc; right: 0; top: 0; height: 100%; }
 .left view.active{ background: #FFF; position: relative; z-index: 2;}
 .left view{ display: block; height: 120rpx; line-height: 120rpx; border-bottom: 0px solid #dcdcdc;}
@@ -448,13 +480,26 @@ margin-bottom: 10rpx;
   align-items: center;
   border-radius: 60rpx;
   height:50rpx;
+  /*  #ifdef  APP-PLUS  */
+  margin-top: var(--status-bar-height); //覆盖样式
+  /*  #endif  */
 }
 
 .scroll-ads{
   text-align: center;
   font-size: 28rpx;
 }
-
+.status {
+	width: 100%;
+	height: 0;
+	position: fixed;
+	z-index: 10;
+	background-color: #fff;
+	top: 0;
+	/*  #ifdef  APP-PLUS  */
+	height: var(--status-bar-height); //覆盖样式
+	/*  #endif  */
+}
 
 
 </style>

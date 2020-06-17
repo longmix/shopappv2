@@ -17,7 +17,7 @@
 			</view> -->
 			<!-- <view class="hui">热门城市</view> -->
 			<view class="city_box">
-				<view class="kuai" v-for="(item,index) in address_list" :key="item" @tap="go_home(item.value)">{{item.value}}</view>
+				<view class="kuai" v-for="(item,index) in address_list" :key="item.value" @tap="go_home(item.value)">{{item.value}}</view>
 			</view>
 
 		</view>
@@ -26,6 +26,9 @@
 </template>
 
 <script>
+	
+	import locationapi from '../../common/locationapi.js'; 
+	
 	export default {
 		data() {
 			return {
@@ -45,12 +48,22 @@
 			
 		},
 		onLoad: function (options) {
+			locationapi.get_location_remove();
+			//var address_info =  uni.getStorageSync('address_info');
+			var that = this;
 			
-			var address_info =  uni.getStorageSync('address_info');
-			this.address_info_current = address_info.city; //获取缓存中的当前城市的名称
+			
+			
 			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 			
 			this.get_address_city(); //获取城市列表
+			
+			locationapi.get_location(that, function(that,locationData){
+				
+				console.log('获取城市列表页面locationData',locationData);
+				
+				that.address_info_current = locationData.addressComponent.city; //获取缓存中的当前城市的名称
+			});
 		},
 		methods: {
 			get_address_city:function(){

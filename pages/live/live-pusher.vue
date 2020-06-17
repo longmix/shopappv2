@@ -150,7 +150,8 @@ export default {
 		},
 		start: function() {
 			let userInfo = this.abotapi.get_user_info();
-			
+			console.log('userInfo',userInfo.userid);
+			console.log('userInfo',this.abotapi.get_sellerid());
 			this.abotapi.abotRequest({
 			  url: this.abotapi.globalData.yanyubao_server_url + 'openapi/VideoLiveData/set_video_live_list_and_logo_begin',
 			  method: 'post',

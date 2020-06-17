@@ -13,16 +13,18 @@ module.exports = {
 		console.log('123456789 get_location');
 		
 		let locationData = uni.getStorageSync('locationData');
+		console.log('获取缓存坐标',locationData);
+		
 		if(locationData){
 			console.log('get_location in cache =====>>>>', locationData);
-			
+			console.log('进入3');
 			typeof callback_function == "function" && callback_function(that, locationData);
 			return;
 		}else{
-			
+			console.log('进入没有缓存开始');
 
 			var regeocoding_success = function (data) {
-				console.log('regeocoding_success locationapi===', data);
+			console.log('regeocoding_success locationapi===', data);
 							
 				
 				// uni.showModal({
@@ -53,7 +55,7 @@ module.exports = {
 				
 				//缓存位置信息					
 				uni.setStorageSync('locationData', locationData)
-				
+				console.log('进入1');
 				typeof callback_function == "function" && callback_function(that, locationData);
 				return;		
 			};
@@ -78,7 +80,7 @@ module.exports = {
 				locationData['longitude'] = 121.662945;
 				
 				console.log('set virtual coordinate ====>>>>>', locationData);
-				
+				console.log('进入2');
 				typeof callback_function == "function" && callback_function(that, locationData);				
 				return;
 				
@@ -98,18 +100,67 @@ module.exports = {
 				baidu_map_ak = that.abotapi.globalData.option_list.baidu_map_ak_app;
 			// #endif
 			
-			// #ifdef MP-WEIXIN || APP-PLUS
+			// #ifdef MP-WEIXIN
+				console.log('进入没有缓存微信开始');
 				baidu_map_ak = that.abotapi.globalData.option_list.baidu_map_ak_wxa;
-				
+				console.log('结束1',baidu_map_ak);
 				var BMap_obj = new bmap.BMapWX({
 					ak: baidu_map_ak
 				});
-							
+				console.log('实例化百度地图');
+					
 				BMap_obj.regeocoding({
 					fail: regeocoding_fail,
 					success: regeocoding_success,
 					complete: regeocoding_complete
 				});
+				console.log('结束');
+			// #endif
+			
+			// #ifdef APP-PLUS
+				console.log('进入没有缓存app开始');
+				// baidu_map_ak = that.abotapi.globalData.option_list.baidu_map_ak_wxa;
+				// console.log('结束2',baidu_map_ak);
+				
+				uni.getLocation({
+				    type: 'wgs84',
+					geocode:true,
+				    success: function (res) {
+						//let translate = that002.gcj2bd(res.latitude,res.longitude); //坐标转换
+				        console.log('当前位置的经度：' + res.longitude);
+				        console.log('当前位置的纬度：' + res.latitude);
+						//console.log('当前位置的经度：' + translate);
+						console.log('当前位置的经度：' + JSON.stringify(res.address));
+						
+						var locationData = {};
+						locationData.latitude = res.latitude;
+						locationData.longitude = res.longitude;
+						
+						locationData.addressComponent = res.address;
+									
+						
+						//缓存位置信息			getStorageSync		
+						uni.setStorageSync('locationData', locationData)
+						console.log('进入1');
+						typeof callback_function == "function" && callback_function(that, locationData);
+						return;		
+						
+				    }
+				});
+				
+				
+				
+				// var BMap_obj = new bmap.BMapWX({
+				// 	ak: baidu_map_ak
+				// });
+				// console.log('实例化百度地图');
+					
+				// BMap_obj.regeocoding({
+				// 	fail: regeocoding_fail,
+				// 	success: regeocoding_success,
+				// 	complete: regeocoding_complete
+				// });
+				console.log('结束');
 			// #endif
 			
 			

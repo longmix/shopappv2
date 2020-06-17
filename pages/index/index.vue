@@ -36,6 +36,23 @@
 				</swiper>
 			</view>
 		</view>
+		
+		<view style="display: flex;align-items: center;padding-top: 20rpx;padding-left: 10rpx;" v-if="show_weather_forecast_in_index == 1">
+			<image  mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/weather_icon/dayu.png" style="margin-right:20rpx;width: 100rpx;" 
+			v-if="weather!='多云'&&weather!='晴'&&weather!='阴'"></image>
+			<image  mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/weather_icon/yin.png" style="margin-right:20rpx;width: 100rpx;" 
+			v-if="weather=='阴'"></image>
+			<image  mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/weather_icon/qing.png" style="margin-right:20rpx;width: 100rpx;" 
+			v-if="weather=='晴'"></image>
+			<image  mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/weather_icon/duoyun.png" style="margin-right:20rpx;width: 100rpx;" 
+			v-if="weather == '多云'"></image>
+			<view class="weather" style="font-size: 28rpx;color: #333;">
+				<view class="weatherinfo gobyndsingle">{{area}} {{temperature}}℃  {{weather}}</view>
+				<view class="weathertime">{{reporttime}} {{w1}}</view>
+			</view>
+		</view>
+		
+		
 		<!--商户头条start-->
 		    <view v-if="wxa_show_toutiao == 1">
 			   <view class="toutiao">
@@ -167,6 +184,7 @@
 var ttt = 0;
 //高德SDK
 import bmap from '../../common/SDK/bmap-wx.js';
+import amap from '@/common/SDK/amap-wx.js';
 import io from '../../common/weapp.socket.io.js'; 
 import locationapi from '../../common/locationapi.js'; 
 import shopList from '../../components/shop-list/shop-list.vue';
@@ -268,7 +286,14 @@ export default {
 			supplierid: '',
 			is_get_article_list:true,// publish_list_api 帖子列表判断是否请求 
 			cms_token:'',//cms_token
-			current_page_size:''
+			current_page_size:'',
+			//天气
+			area:'',
+			reporttime:'',
+			weather:'',
+			w1:'',
+			temperature:'',
+			show_weather_forecast_in_index:0,
 		};
 	},
 	onPageScroll: function (e) {
@@ -477,7 +502,7 @@ export default {
 		
 	},
 	onShow:function(){
-		
+		this.get_tianqi();
 		var city_name = uni.getStorageSync('city_name');
 		if(city_name){
 			this.current_cityname = city_name;
@@ -487,7 +512,40 @@ export default {
 	
 	
 	methods: {
-		
+		//获取天气
+		get_tianqi:function(){
+			var that = this;
+			var AMap_obj = new amap.AMapWX({
+				key: '8ea39971ec18a332e5af9e18795e7604'
+			});
+			console.log('实例化百度地图');
+				
+			AMap_obj.getWeather({
+				success: function(t) {
+					console.log('t===>',t);
+					
+					var reporttime = t.liveData.reporttime.slice(0, 10);
+					
+					var date = reporttime;
+					var dt = new Date(date.split("-")[0], date.split("-")[1]-1,date = date.split("-")[2]);
+					var weekDay = ["星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+					
+					var weekDay = weekDay[dt.getDay()]
+					
+					
+					//console.log('t===>',t);
+					that.area = t.city.data; //地区 （浦东新区）
+					that.reporttime = reporttime; //时间
+					that.weather = t.liveData.weather; //天气（多云）
+					that.w1 = weekDay;
+					that.temperature = t.liveData.temperature; //温度
+				}
+
+			});
+			
+			
+			    
+		},
 		//跳转文章详情
 		goForum: function(id) {
 			
@@ -767,6 +825,10 @@ export default {
 			    that.abotapi.globalData.default_publish_list_count_in_front_page = cb_params.option_list.default_publish_list_count_in_front_page;
 				that.current_page_size = cb_params.option_list.default_publish_list_count_in_front_page;
 			}
+			if (cb_params.option_list.show_weather_forecast_in_index) {
+			  
+			    that.show_weather_forecast_in_index = cb_params.option_list.show_weather_forecast_in_index;
+			}
 			
 			
 			that.get_flash_ad_list();
@@ -838,12 +900,14 @@ export default {
 							duration: 2000
 						});
 				    },
-				});
+				}); 
 			}
 			
 		},
 		//给商家排序
 		set_paixu_shanglist:function(that,locationData){
+			
+			console.log('获取坐标locationData',locationData);
 			
 			if(!isNullOrUndefined(locationData.addressComponent)){
 				that.current_cityname = locationData.addressComponent.city;
@@ -860,7 +924,7 @@ export default {
 			
 			
 			var arr = uni.getStorageSync('all_shang_jingwei_list');
-			
+			console.log('arrarr',arr);
 			var shop_location_list = that.jisuan_juli(arr);
 			
 			function compare(obj1, obj2) {
@@ -1000,6 +1064,7 @@ export default {
 					
 				}
 			}
+			console.log('=========>>>>>>>>....');
 			return shop_location_list;
 		},
 		
@@ -1967,5 +2032,5 @@ page{position: relative;background-color: #fff;}
 	position: absolute;
 	left: 16upx;
 }
-
+
 </style>
