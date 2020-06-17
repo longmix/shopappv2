@@ -476,8 +476,8 @@
 					url: that.abotapi.globalData.yanyubao_server_url + 'Yanyubao/Xiaochengxu/get_ecard_option_list',
 					method: 'POST', //请求方式
 					data: {
-						//sellerid : that.abotapi.get_sellerid()
-						sellerid: 'pQNNmSkaq'
+						sellerid : that.abotapi.get_sellerid.default_sellerid
+						//sellerid: 'pQNNmSkaq'
 					},
 					success(res) {
 						console.log("aaaaaaa==============>>>>>", res)

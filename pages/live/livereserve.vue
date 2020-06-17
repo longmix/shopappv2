@@ -93,7 +93,7 @@
 				liveNO:'',
 				productid:'',
 				recommend_product_list:'',
-				productids: []
+				productid_str: []
 			}
 		},
 		onLoad(option){
@@ -109,6 +109,7 @@
 						'livemessage':this.livemessage,
 						'liver':this.liver,
 						'liveNo':this.liveNO,
+						'productid_str':this.productid_str.join(","),
 						}
 						
 						
@@ -118,6 +119,7 @@
 							url:that.abotapi.globalData.yanyubao_server_url+'index.php/openapi/VideoLiveData/set_plan_video_live',
 							method:'POST',
 							data:{
+								userid:userInfo.userid,
 								sellerid:this.abotapi.globalData.default_sellerid,
 								checkstr:userInfo.checkstr,
 								type:0,
@@ -141,7 +143,6 @@
 								sellerid:that.abotapi.globalData.default_sellerid,
 								//is_recommend:1,
 								page_num:6,
-								productid:''
 							},
 							success(res){
 								console.log('11111111===',res)
@@ -181,18 +182,18 @@
 					 console.log('aaaaaaaa11111',productid);
 
 						
-						var index = this.productids.indexOf(productid);
+						var index = this.productid_str.indexOf(productid);
 						
 						if(index != -1){	
 							console.log('ssss')
-							 this.productids.splice(index,1);
+							 this.productid_str.splice(index,1);
 						}else{
 							console.log('ssss222')
-							this.productids.push(productid);
+							this.productid_str.push(productid);
 						}
 						
 					 
-					  console.log('aaaaaaaa2222',this.productids);
+					  console.log('aaaaaaaa2222',this.productid_str);
 				    	 
 				
 				}
