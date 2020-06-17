@@ -97,7 +97,7 @@
 			}
 		},
 		onLoad(option){
-				this.bt_live_data();
+				this.live_goods_lists();
 		},
 		methods:{
 			
@@ -134,37 +134,43 @@
 							}
 							
 							
-						}),
-						//推荐商品接口
-						this.abotapi.abotRequest({
-							url:that.abotapi.globalData.yanyubao_server_url+'Yanyubao/ShopApp/product_list',
-							method:'post',
-							data:{
-								sellerid:that.abotapi.globalData.default_sellerid,
-								//is_recommend:1,
-								page_num:6,
+						})
+						
+					
+							
+							
+							
+						
+						
+			},
+			
+				//推荐商品接口
+				live_goods_lists:function(){
+					var that = this;
+					var userInfo = this.abotapi.get_user_info();
+					
+					this.abotapi.abotRequest({
+						url:that.abotapi.globalData.yanyubao_server_url+'Yanyubao/ShopApp/product_list',
+						method:'post',
+						data:{
+							sellerid:that.abotapi.globalData.default_sellerid,
+							//is_recommend:1,
+							page_num:6,
+						},
+						success(res){
+							console.log('11111111===',res)
+							
+							var recommend_product_list = res.data.product_list;
+							that.recommend_product_list = recommend_product_list;
+							
+							
 							},
-							success(res){
-								console.log('11111111===',res)
-								
-								var recommend_product_list = res.data.product_list;
-								that.recommend_product_list = recommend_product_list;
-								
-								
-								},
-								fail(error){
-									console.log("fffffff====",error)
-								}
-								
-							})
+							fail(error){
+								console.log("fffffff====",error)
+							}
 							
-							
-							
-						
-						
-					},
-				
-				
+						})
+				},
 			
 				
 				
