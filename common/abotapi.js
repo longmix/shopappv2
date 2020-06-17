@@ -61,6 +61,8 @@ module.exports = {
 					  current_chat_gui.getFriendList(msg);
 				  }				  
 				  
+			  } else if (current_chat_page=='/pages/friendInfo/friendList') {
+					current_chat_gui.getNewMsg(msg);
 			  }
 				  
 		  }	

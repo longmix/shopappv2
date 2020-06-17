@@ -291,8 +291,8 @@
 	}
 
 	.header{
-		width: 92%;
-		padding: 0 4%;
+		width: 90%;
+		padding: 0 2%;
 		height: 100upx;
 		display: flex;
 		align-items: center;
