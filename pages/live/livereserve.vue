@@ -4,8 +4,9 @@
 	    <view class="head"><h1>请填写直播信息</h1></view>
 	  
 		<view class="head-img">
+			<view style="text-align: center;color: #cbcbcb;">请设置直播间图片</view>
 			<view >
-				<image src="../../static/img/noorder.png"></image>
+				<image :src="img_url" @tap="upLoadimgs()" mode="widthFix"></image>
 			</view>
 		</view>
 		
@@ -93,13 +94,61 @@
 				liveNO:'',
 				productid:'',
 				recommend_product_list:'',
-				productid_str: []
+				productid_str: [],
+				img_url:'../../static/img/add.png'
 			}
 		},
 		onLoad(option){
 				this.live_goods_lists();
 		},
 		methods:{
+			   
+			      upLoadimgs:function(){
+								var that =this;
+								var userInfo = this.abotapi.get_user_info();
+			                   uni.chooseImage({
+			                      // count:  允许上传的照片数量
+			                    count:1,
+			                     // sizeType:  original 原图，compressed 压缩图，默认二者都有
+								sizeType: "original",
+			                      success(res){
+			                      console.log(res,'aaaaa8888')
+								  
+								  var filepath = res.tempFilePaths[0];
+								   console.log('8888888888',res.tempFilePaths[0])
+								console.log('8888888888===>',that.abotapi.globalData.yanyubao_server_url);
+								uni.uploadFile({
+									url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=upload_image_file',
+									filePath:filepath,
+									
+									formData: {
+										sellerid: that.abotapi.globalData.default_sellerid,
+										checkstr: userInfo.checkstr,
+										userid: userInfo.userid,
+									},
+									success: function (res) {
+										
+										console.log('res===>>',res);
+										
+										
+										var obj = JSON.parse(res.data);
+										console.log('objadsdsad',obj);
+										
+										that.img_url = obj.img_url;
+										
+										console.log('aaaaaa99995555',that.img_url);
+										
+									}
+								});   
+								   
+			                   } 
+							   
+							   
+			               });
+						   
+						   
+			             },
+			
 			
 				bt_live_data:function(){
 					var value2_json_str = {
@@ -109,8 +158,36 @@
 						'livemessage':this.livemessage,
 						'liver':this.liver,
 						'liveNo':this.liveNO,
+						'filepath':this.img_url,
 						'productid_str':this.productid_str.join(","),
 						}
+						
+						if (!this.liver) {
+							uni.showToast({
+								title: '请输入主播名字！',
+								icon: 'fail',
+								duration: 2000
+							})
+							return;
+						}
+						if (!this.livename) {
+							uni.showToast({
+								title: '请输入直播间名称！',
+								icon: 'fail',
+								duration: 2000
+							})
+							return;
+						}
+						if (!this.starttime) {
+							uni.showToast({
+								title: '请输入开始时间！',
+								icon: 'fail',
+								duration: 2000
+							})
+							return;
+						}
+						
+						
 						
 						
 						var that = this
@@ -132,6 +209,7 @@
 							fail(error){
 								console.log("ccccccc====",error)
 							}
+							
 							
 							
 						})
@@ -202,7 +280,9 @@
 					  console.log('aaaaaaaa2222',this.productid_str);
 				    	 
 				
-				}
+				},
+				
+				
 		}
 	}
 	
@@ -259,8 +339,9 @@
 		margin-top: 15rpx;
 	}
 	.head-img image{
-		width: 80%;
+		width: 55%;
 		border-radius: 25rpx;
+		
 	}
 	.goods{
 		margin: 20rpx 0 20rpx 0;
