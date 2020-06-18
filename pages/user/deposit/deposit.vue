@@ -15,12 +15,30 @@
 		      <view hidden="true">{{item.all_price}}50</view>
 		    </view> -->
 		
-			<view class="score-list" :class="currentid == idx?'score-list-a-hover':''" :style="{background: currentid == idx? wxa_shop_nav_bg_color : ''}" @tap="radioCheckedChange" v-for="(item2,idx) in taocan" :key="idx" :data-all_price="item2.chong" :data-currentid="idx">
+			<block v-for="(item2,idx) in taocan" :key="idx" >
+			<view class="score-list score-list-a-hover" v-if="currentid == idx"
+				:style="{background: wxa_shop_nav_bg_color, border:'1rpx solid '+wxa_shop_nav_bg_color}"
+				@tap="radioCheckedChange" 
+				
+				:data-all_price="item2.chong" 
+				:data-currentid="idx">
 				  <view class="score-list-a">
 					<view>{{item2.chong_str}}</view>
 				  </view>
 				  <view class="score-list-b">{{item2.rule_str}}</view>
 			</view>
+			<view class="score-list" v-else				
+				:style="{border:'1rpx solid '+wxa_shop_nav_bg_color, color:wxa_shop_nav_bg_color}"
+				@tap="radioCheckedChange" 
+				:data-all_price="item2.chong" 
+				:data-currentid="idx">
+				  <view class="score-list-a">
+					<view>{{item2.chong_str}}</view>
+				  </view>
+				  <view class="score-list-b">{{item2.rule_str}}</view>
+			</view>
+			</block>
+			
 		</scroll-view>
 		
 		<button class='btn' @tap="toRecharge" type="" :style="{background: wxa_shop_nav_bg_color}"> 立即充值 </button>
@@ -57,60 +75,68 @@
 			
 			var userInfo = this.abotapi.get_user_info();
 			
-			console.log('userinfo===',userInfo);
 			
-			if(!userInfo || !userInfo.userid){
-				var last_url = '/pages/user/deposit/deposit';
-				this.abotapi.goto_user_login(last_url,'normal');
-				return;
-			}
+			that.currentid = 0;
+			
 			
 			this.abotapi.set_option_list_str(this, 
 				function(that001, option_list){
-					that.abotapi.getColor();
+					that001.abotapi.getColor();
 					
-						that.wxa_shop_nav_bg_color  = option_list.wxa_shop_nav_bg_color;
+					that001.wxa_shop_nav_bg_color  = option_list.wxa_shop_nav_bg_color;
 						
-						that.wxa_shop_nav_font_color = option_list.wxa_shop_nav_font_color
-						
-				
+					that001.wxa_shop_nav_font_color = option_list.wxa_shop_nav_font_color;
+					
+					console.log('userinfo===',userInfo);
+					
+					if(!userInfo || !userInfo.userid){
+						var last_url = '/pages/user/deposit/deposit';
+						that001.abotapi.goto_user_login(last_url,'normal');
+						return;
+					}
+					
+					
+					that001.abotapi.abotRequest({
+						url: that001.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/OrderChongZhiData/get_chongzhi_rule_list',
+						method: 'post',
+						data: {
+							sellerid: that001.abotapi.get_sellerid(),
+						},
+						header: {
+							'Content-Type': 'application/x-www-form-urlencoded'
+						},
+						success: function (res) {
+							//--init data        
+							var data = res.data;
+							if(data.code == 1){
+								that001.taocan = data.data;
+								that001.order_rule_explain = data.order_rule_explain;
+								that001.all_price = data.data[0].chong ? data.data[0].chong : '';
+							}
+					   
+						},
+						fail: function (e) {
+							uni.showToast({
+								title: '网络异常',
+								duration: 2000
+							});
+					
+						}
+					});
+					
 				}
 			);
-			that.currentid = 0;
-		    this.abotapi.getColor();
-		
-		    this.abotapi.set_option_list_str(this, this.callback_function);
-		
-		    uni.request({
-				url: this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/OrderChongZhiData/get_chongzhi_rule_list',
-				method: 'post',
-				data: {
-					sellerid: this.abotapi.get_sellerid(),
-				},
-				header: {
-					'Content-Type': 'application/x-www-form-urlencoded'
-				},
-				success: function (res) {
-					//--init data        
-					var data = res.data;
-					if(data.code == 1){
-						that.taocan = data.data;
-						that.order_rule_explain = data.order_rule_explain;
-						that.all_price = data.data[0].chong ? data.data[0].chong : '';
-					}
-		       
-				},
-				fail: function (e) {
-					uni.showToast({
-						title: '网络异常',
-						duration: 2000
-					});
-			
-				}
-			});
+		    
 		},
-		
-		
+		onShow() {
+			var userInfo = this.abotapi.get_user_info();
+			
+			console.log('userinfo===',userInfo);
+			
+			if(!userInfo || !userInfo.userid){
+				retrun;
+			}
+		},
 		
 		
 		methods:{
@@ -447,7 +473,6 @@
 	
 	.score-list-a view{
 	  font-size: 40rpx;
-	  color: #67B1CC;
 	}
 	
 	.score-list-b{

@@ -176,6 +176,8 @@
 			
 		</view>
 		
+		<view class="copyright_info">{{default_copyright_text}}</view>
+		
 	</view>
 </template>
 
@@ -260,7 +262,7 @@ export default {
 			twoArr:'',
 			page: '',
 			
-			current_product_list:[{}],
+			current_product_list:[{inventory:"1", price:"0"}],
 			loadingText: '正在加载...',
 			
 			
@@ -294,103 +296,10 @@ export default {
 			w1:'',
 			temperature:'',
 			show_weather_forecast_in_index:0,
+			default_copyright_text:''
 		};
 	},
-	onPageScroll: function (e) {
-		//兼容iOS端下拉时顶部漂移
-		this.headerPosition = e.scrollTop>=0?"fixed":"absolute";
-		this.headerTop = e.scrollTop>=0?null:0;
-		this.statusTop = e.scrollTop>=0?null:-this.statusHeight+'px';
-		
-		
-		
-	},
-	//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
-	onPullDownRefresh: function () {
-		var that = this;
-		
-		console.log('onPullDownRefresh=====>>>>>');
-		uni.showToast({
-			title: '数据更新中……',
-			icon:'loading'
-		});
-		
-		uni.removeStorageSync("coordinate_array");
-		uni.removeStorageSync("cata_list");
-		uni.removeStorageSync("spec_list");
-		
-		//uni.removeStorageSync('all_shang_jingwei_list');
-		locationapi.get_location_remove();
-		
-		that.abotapi.get_shop_info_from_server_remove();
-		that.abotapi.set_shop_option_data_remove();
-		that.abotapi.set_shop_option_data(that, that.callback_function_shop_option_data);
-		that.abotapi.get_shop_info_from_server(that.callback_func_for_shop_info);
-		that.abotapi.get_xianmaishang_setting_list_remove();
-		
-		setTimeout(function() {
-			uni.stopPullDownRefresh();
-			uni.hideToast();
-		}, 1000);
-	},
 	
-	//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
-	onReachBottom: function () {
-		var that = this;
-		var page_num = that.page_num;
-		that.page_num ++;
-		
-		if(this.is_OK){
-			uni.showToast({
-				title: '暂无数据',
-				duration: 2000
-			});
-			return;
-		}
-		
-		var post_data = {
-				sellerid:this.abotapi.globalData.default_sellerid,
-				sort: 1,
-				page: that.page_num,
-				page_size:that.page_size,
-		    };
-		
-		if(this.wxa_product_list_show_type == 'is_recommend'){
-			post_data.is_recommend = 1;
-		}
-		else if(this.wxa_product_list_show_type == 'is_hot'){
-			post_data.is_hot = 1;
-		}
-		
-		
-		this.abotapi.abotRequest({
-		    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
-		    data: post_data,
-		    success: function (res) {
-	
-				
-				if(res.data.code == 1){
-					that.is_OK = false;
-					that.current_product_list = that.current_product_list.concat(res.data.product_list);
-					console.log('超过一页',that.current_product_list)
-					uni.stopPullDownRefresh();//得到数据后停止下拉刷新
-				}else if(res.data.code == 0){
-					that.is_OK = true;
-					uni.showToast({
-						title: '暂无数据',
-						duration: 2000
-					});
-					return;
-				}
-		    },
-		    fail: function (e) {
-				uni.showToast({
-					title: '暂无数据！',
-					duration: 2000
-				});
-		    },
-		});
-	},
 	onLoad: function (options) {
 		///this.bindKeyInput();
 		var that = this;	
@@ -507,6 +416,101 @@ export default {
 		if(city_name){
 			this.current_cityname = city_name;
 		}
+	},
+	onPageScroll: function (e) {
+		//兼容iOS端下拉时顶部漂移
+		this.headerPosition = e.scrollTop>=0?"fixed":"absolute";
+		this.headerTop = e.scrollTop>=0?null:0;
+		this.statusTop = e.scrollTop>=0?null:-this.statusHeight+'px';
+		
+		
+		
+	},
+	//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
+	onPullDownRefresh: function () {
+		var that = this;
+		
+		console.log('onPullDownRefresh=====>>>>>');
+		uni.showToast({
+			title: '数据更新中……',
+			icon:'loading'
+		});
+		
+		uni.removeStorageSync("coordinate_array");
+		uni.removeStorageSync("cata_list");
+		uni.removeStorageSync("spec_list");
+		
+		//uni.removeStorageSync('all_shang_jingwei_list');
+		locationapi.get_location_remove();
+		
+		that.abotapi.get_shop_info_from_server_remove();
+		that.abotapi.set_shop_option_data_remove();
+		that.abotapi.set_shop_option_data(that, that.callback_function_shop_option_data);
+		that.abotapi.get_shop_info_from_server(that.callback_func_for_shop_info);
+		that.abotapi.get_xianmaishang_setting_list_remove();
+		
+		setTimeout(function() {
+			uni.stopPullDownRefresh();
+			uni.hideToast();
+		}, 1000);
+	},
+	
+	//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
+	onReachBottom: function () {
+		var that = this;
+		var page_num = that.page_num;
+		that.page_num ++;
+		
+		if(this.is_OK){
+			uni.showToast({
+				title: '暂无数据',
+				duration: 2000
+			});
+			return;
+		}
+		
+		var post_data = {
+				sellerid:this.abotapi.globalData.default_sellerid,
+				sort: 1,
+				page: that.page_num,
+				page_size:that.page_size,
+		    };
+		
+		if(this.wxa_product_list_show_type == 'is_recommend'){
+			post_data.is_recommend = 1;
+		}
+		else if(this.wxa_product_list_show_type == 'is_hot'){
+			post_data.is_hot = 1;
+		}
+		
+		
+		this.abotapi.abotRequest({
+		    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
+		    data: post_data,
+		    success: function (res) {
+	
+				
+				if(res.data.code == 1){
+					that.is_OK = false;
+					that.current_product_list = that.current_product_list.concat(res.data.product_list);
+					console.log('超过一页',that.current_product_list)
+					uni.stopPullDownRefresh();//得到数据后停止下拉刷新
+				}else if(res.data.code == 0){
+					that.is_OK = true;
+					uni.showToast({
+						title: '暂无数据',
+						duration: 2000
+					});
+					return;
+				}
+		    },
+		    fail: function (e) {
+				uni.showToast({
+					title: '暂无数据！',
+					duration: 2000
+				});
+		    },
+		});
 	},
 	
 	
@@ -664,6 +668,8 @@ export default {
 			if(!cb_params.option_list){
 				return;
 			}
+			
+			that.default_copyright_text = that.abotapi.globalData.default_copyright_text;
 			
 			//====2、其他的设置选项：商品列表风格、头条图标等等
 			if (cb_params.option_list.wxa_product_list_style) {
@@ -2014,7 +2020,7 @@ page{position: relative;background-color: #fff;}
 	  display:flex;
 	  flex-direction:row;
 	  justify-content:center;
-	  border-radius:80upx;
+	  border-radius:55upx;
 	  width:110upx;
 	  height:110upx;
 	  border:0px solid #eee;
@@ -2022,9 +2028,9 @@ page{position: relative;background-color: #fff;}
 	  /*box-shadow:0px 4upx 8upx rgba(0,0,0,0.35);*/
 	  z-index:2;
 	  opacity:1;
-	  margin-bottom:20upx;
 	  /*background:#44b549;*/
 	  align-items:center;
+	  
 	}
 .u-go-home2 image {
 	height: 80upx;

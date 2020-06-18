@@ -50,7 +50,7 @@
 			<swiper class="swiper" indicator-dots="true" duration="150">
 				<swiper-item v-for="(page,pid) in emojiList" :key="pid">
 					<view v-for="(em,eid) in page" :key="eid" @tap="addEmoji(em)">
-						<image mode="widthFix" :src="'http://yanyubao.tseo.cn/Tpl/static/emoji/'+em.url"></image>
+						<image mode="widthFix" :src="'https://yanyubao.tseo.cn/Tpl/static/emoji/'+em.url"></image>
 					</view>
 				</swiper-item>
 			</swiper>
@@ -455,7 +455,7 @@
 							let EM = row[j];
 							if(EM.alt==item){
 								
-								let onlinePath = 'http://yanyubao.tseo.cn/Tpl/static/emoji/';
+								let onlinePath = 'https://yanyubao.tseo.cn/Tpl/static/emoji/';
 								let imgstr = '<img style="width:24px;" src="' + onlinePath + EM.url + '">';
 								
 								return imgstr;

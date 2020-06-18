@@ -30,7 +30,7 @@
 						<view>库存：{{item.inventory}}</view>
 					</view>
 					<view class="info">
-						<view class="price">￥ {{item.price}}</view>
+						<view class="price">￥{{item.price}}</view>
 						<!-- <view class="slogan">{{item.seller_name}}</view> -->
 					</view>
 				</view>
@@ -44,7 +44,7 @@
 	export default {
 		name: "product-list",
 		props: {
-			productsList: '',
+			productsList: [{inventory:"0", price:"0"}],
 			cataid: '',
 			loadingText:"",
 			showKucunSale: '',

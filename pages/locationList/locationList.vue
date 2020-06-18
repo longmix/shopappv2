@@ -129,16 +129,17 @@
 	flex-wrap: wrap;
 }
 .kuai{
-
 	float: left;
-	border-radius: 10rpx;
 	width: 21%;
 	background: #fff;
-	margin: 10upx 1.5%;
+	margin: 10rpx 1.5%;
 	text-align: center;
-	padding: 10px 0px;
-	border-radius: 10px;
-	border: 1px solid #eee;
+	padding: 10rpx 0px;
+	border-radius: 10rpx;
+	border: 1rpx solid #a2a2a2;
+	height: 35rpx;
+	line-height: 35rpx;
+	font-size: 32rpx;
 
 }
 .middle{

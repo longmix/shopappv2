@@ -11,6 +11,8 @@
 		<!-- 商品列表 -->
 		<productList :productsList="goodsList" :cataid="cataid" :loadingText="loadingText" :showKucunSale="wxa_show_kucun_in_list" @toGoods="toGoods"></productList>
 		
+		<view class="copyright_info">{{default_copyright_text}}</view>
+		
 	</view>
 </template>
 
@@ -35,7 +37,8 @@
 					{text:"销量",selected:false,orderbyicon:false,orderby:0},
 					{text:"价格",selected:false,orderbyicon:false,orderby:0}
 				],
-				wxa_show_kucun_in_list: ''
+				wxa_show_kucun_in_list: '',
+				default_copyright_text:''
 			};
 		},
 		onLoad: function (option) { //option为object类型，会序列化上个页面传递的参数
@@ -49,8 +52,9 @@
 			uni.setNavigationBarTitle({
 				title: title
 			});
-			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
+			
 			this.abotapi.set_option_list_str(this,this.callback_set_option_list_str);
+			
 			this.cataid = option.cataid;
 			//兼容H5下排序栏位置
 			// #ifdef H5
@@ -109,9 +113,15 @@
 		methods:{
 			callback_set_option_list_str:function(that,cb_params){
 				var that = this;
+				
 				if(!cb_params){
 					return;
 				}
+				
+				that.abotapi.getColor()
+				
+				that.default_copyright_text = that.abotapi.globalData.default_copyright_text;
+				
 				that.wxa_show_kucun_in_list = cb_params.wxa_show_kucun_in_list		
 			},
 			//获取商品列表

@@ -148,6 +148,14 @@
 		font-family: '微软雅黑';
 	}
 	
+	.copyright_info{
+		text-align: center;
+		font-size: 25rpx;
+		color: #666;
+		margin-bottom: 80rpx;
+	}
+
+	
 	.container {
 	  height: 100%;
 	  display: flex;

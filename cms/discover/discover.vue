@@ -129,7 +129,7 @@
 				startself:0,
 				selectTabArr: [],
 				current_self_in_tabbar:1,  //当前这个page挂接在底部导航中，用switchTab跳转
-				faquan_add_img_url:'http://yanyubao.tseo.cn/Tpl/static/images/discover_publish_add.png',
+				faquan_add_img_url:'https://yanyubao.tseo.cn/Tpl/static/images/discover_publish_add.png',
 				videometa_width_height_list:[],  //记录视频的高度
 				current_view_width : 480,  //当前屏幕的宽度
 				current_page_title:'发圈.发现.随拍',
@@ -453,7 +453,7 @@
 			    }
 			    else{
 			    
-			        that.faquan_add_img_url =  'http://yanyubao.tseo.cn/Tpl/static/images/discover_publish_add.png'
+			        that.faquan_add_img_url =  'https://yanyubao.tseo.cn/Tpl/static/images/discover_publish_add.png'
 			
 			    }
 			

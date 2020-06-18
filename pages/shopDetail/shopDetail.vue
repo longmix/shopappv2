@@ -212,8 +212,8 @@
 		
 		<view v-if="user_console_setting.user_console_quick_button_position == 'bottom'" class='footer' >
 			<view @tap="isShoucang==1?Shoucang('del'):Shoucang('add')" class="shoucang_box">
-				<image v-if="isShoucang == 0" src="http://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star.png"></image>
-				<image v-if="isShoucang == 1" src="http://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png"></image>收藏
+				<image v-if="isShoucang == 0" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star.png"></image>
+				<image v-if="isShoucang == 1" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png"></image>收藏
 				<!-- <view>分享</view> -->
 			</view>
 			<view style="width: 25%;background: #FFFFFF;text-align: center;font-size:32rpx;" class="icons">
@@ -221,7 +221,7 @@
 				<!-- #ifdef MP-WEIXIN || APP-PLUS --> 
 				<!-- <button style="padding-left: 0;padding-right: 0;" open-type="share">分享</button> -->
 				<button class="box share-btn btn_box" open-type="share">
-					<image style="width:40rpx;height:40rpx;padding-right:10rpx;" src="http://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_share.png"></image>
+					<image style="width:40rpx;height:40rpx;padding-right:10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_share.png"></image>
 					<view  style="font-size:32rpx;">分享</view>
 					<!-- <button class="text" open-type="share">分享</button> -->
 				</button>
@@ -230,7 +230,7 @@
 				<!-- #ifdef H5 --> 
 				<!-- <button style="padding-left: 0;padding-right: 0;" @click="share_shang_detail">分享</button> -->
 				<button @click="share_shang_detail" class="box share-btn btn_box">
-					<image style="width:40rpx;height:40rpx;padding-right:10rpx;" src="http://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_share.png"></image>
+					<image style="width:40rpx;height:40rpx;padding-right:10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_share.png"></image>
 					<view  style="font-size:32rpx;">分享</view>
 					<!-- <button class="text" open-type="share">分享</button> -->
 				</button>
@@ -239,11 +239,11 @@
 			</view>
 			
 			<view @tap="call_seller" class="dianhua_box">
-				<image style="width:40rpx;height:40rpx;padding-right:10rpx;" src="http://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_phone.png"></image>
+				<image style="width:40rpx;height:40rpx;padding-right:10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_phone.png"></image>
 				<view>电话</view>
 			</view>
 			<view @tap="toChat" class="kefu_box">
-				<image style="width:40rpx;height:40rpx;padding-right:10rpx;" src="http://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_dialog.png"></image>
+				<image style="width:40rpx;height:40rpx;padding-right:10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_dialog.png"></image>
 				<view>客服</view>
 			</view>
 			
@@ -277,7 +277,7 @@
 				current_citynameLength: '',
 				current_citynameWidth: '',
 				wxa_shop_toutiao_icon: '',
-				current_shang_detail: '',
+				current_shang_detail: {yingyeshijian:"8:00~20:00", address:""},
 				shang_faquan_list: '',
 				spec: '',
 				isShoucang: 0,
@@ -1453,8 +1453,9 @@
 		font-size: 24rpx;
 		border-radius: 50%;
 		bottom: 110rpx;
-
-
+		
+		background-color: #fff;
+		border: 1rpx solid #666;
 	}
 
 	.home-p image {

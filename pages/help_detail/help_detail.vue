@@ -21,7 +21,7 @@
 			</view>
 		</view>
 		
-		<view style='margin:32rpx;margin-top:30rpx;margin-bottom:150rpx;padding-bottom:80rpx;'>
+		<view style='margin-top:10rpx;margin-bottom:250rpx;'>
 		
 			<view class='datetime' v-if="wxa_show_article_detail_category == 1">
 				<view class='yuanchuang'>分类：{{wz_text.classname}}</view>
@@ -33,7 +33,7 @@
 				<view class="wxParse"> 
 					<scroll-view  scroll-y='true'>
 						<!-- <view v-html="info" ></view> -->
-						<rich-text :nodes="info"></rich-text>
+						<rich-text :nodes="info|formatRichText"></rich-text>
 					</scroll-view>
 				</view>
 				<view style="margin-top: 10px;" v-for="img_item in wz_text.picture_list" :key="img_item" v-if="form_page == 'publish_list'">
@@ -998,6 +998,37 @@
 					})
 				})
 			},
+		},
+		
+		filters: {
+			/**
+			 * 处理富文本里的图片宽度自适应
+			 * 1.去掉img标签里的style、width、height属性
+			 * 2.img标签添加style属性：max-width:100%;height:auto
+			 * 3.修改所有style里的width属性为max-width:100%
+			 * 4.去掉<br/>标签
+			 * @param html
+			 * @returns {void|string|*}
+			 */
+			formatRichText (html) { //控制小程序中图片大小
+				let newContent= html.replace(/<img[^>]*>/gi,function(match,capture){
+					match = match.replace(/style="[^"]+"/gi, '').replace(/style='[^']+'/gi, '');
+					match = match.replace(/width="[^"]+"/gi, '').replace(/width='[^']+'/gi, '');
+					match = match.replace(/height="[^"]+"/gi, '').replace(/height='[^']+'/gi, '');
+					return match;
+				});
+				newContent = newContent.replace(/style="[^"]+"/gi,function(match,capture){
+					match = match.replace(/width:[^;]+;/gi, 'max-width:100%;').replace(/width:[^;]+;/gi, 'max-width:100%;');
+					return match;
+				});
+				//newContent = newContent.replace(/<br[^>]*\/>/gi, '');
+				
+				newContent = newContent.replace(/<p[^>]*>/gi, '<p style="margin:10px;">');
+				
+				newContent = newContent.replace(/\<img/gi, '<img style="max-width:100%;height:auto;display:inline-block;margin:10rpx auto;vertical-align: middle;"');
+				
+				return newContent;
+			}	
 		}
 	}
 	

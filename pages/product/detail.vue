@@ -321,6 +321,8 @@
 			</view>
 			
 		</view>
+		
+		<view class="copyright_info">{{default_copyright_text}}</view>
 	</view>
 </template>
 
@@ -411,7 +413,8 @@ export default {
 			miaosha_url:'',
 			xianshimiaosha:'',
 			wxa_show_kucun_xiaoliang: '',
-			cart_amount:0
+			cart_amount:0,
+			default_copyright_text:''
 
 		};
 	},
@@ -718,6 +721,9 @@ export default {
 			if(!cb_params){
 				return;
 			}
+			
+			that.default_copyright_text = that.abotapi.globalData.default_copyright_text;
+			
 			if (cb_params.wxa_show_kucun_xiaoliang) {
 			  
 			    that.wxa_show_kucun_xiaoliang = cb_params.wxa_show_kucun_xiaoliang;
@@ -1376,7 +1382,7 @@ export default {
 			});
 			//newContent = newContent.replace(/<br[^>]*\/>/gi, '');
 			
-			newContent = newContent.replace(/<p[^>]*>/gi, '<p style="margin:20px;">');
+			newContent = newContent.replace(/<p[^>]*>/gi, '<p style="margin:10px;">');
 			
 			newContent = newContent.replace(/\<img/gi, '<img style="max-width:100%;height:auto;display:inline-block;margin:10rpx auto;vertical-align: middle;"');
 			

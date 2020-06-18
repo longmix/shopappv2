@@ -33,7 +33,7 @@
 			</view>
 		</view>
 		<!-- VIP banner -->
-		<view class="VIP">
+		<view class="VIP" v-if="wxa_show_levelname_in_usercenter == 1">
 			<view class="img">
 				<image src="/static/img/VIP.png"></image>
 			</view>
@@ -137,7 +137,7 @@
 		<!-- 占位 -->
 		<view class="place-bottom"></view>
 		<!-- 著作信息 -->
-		<view class="copyinfo">{{default_copyright_text}}</view>
+		<view class="copyright_info">{{default_copyright_text}}</view>
 	</view>
 </template>
 <script>
@@ -178,6 +178,7 @@
 				wxa_show_recharge_button_in_usercenter: 0,
 				wxa_show_zengkuan_in_usercenter: 0,
 				wxa_hidden_order_index_in_usercenter:0,
+				wxa_show_levelname_in_usercenter:0,
 				
 				explainFlag: 1 ,//会员说明显示控制
 				scrollLeft:'',
@@ -225,6 +226,9 @@
 					}
 					if(option_list.wxa_hidden_order_index_in_usercenter){
 						that.wxa_hidden_order_index_in_usercenter = option_list.wxa_hidden_order_index_in_usercenter;
+					}
+					if(option_list.wxa_show_levelname_in_usercenter){
+						that.wxa_show_levelname_in_usercenter = option_list.wxa_show_levelname_in_usercenter;
 					}
 					
 					that001.get_current_userinfo();
@@ -558,7 +562,7 @@
 		/*  #endif  */
 	}
 	.place-bottom{
-		height: 300upx;
+		height: 150upx;
 	}
 	.user{
 		width: 92%;
@@ -768,12 +772,7 @@
 			}
 		}
 	}
-	.copyinfo{
-		text-align: center;
-		font-size: 13px;
-		color: #666;
-		margin-bottom: 10upx;
-	}
+	
 	.logo-img{
 		margin-top: 22px;
 	}

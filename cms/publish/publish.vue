@@ -340,8 +340,6 @@
 								})
 													
 								uni.uploadFile({
-									
-									//url: 'http://192.168.0.205:81/index/upload/uploadImg',      //此处换上你的接口地址
 									url: that.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/add_faquan_video_or_img',
 									filePath: that.video,
 									header: {
@@ -419,7 +417,6 @@
 			        title: '正在上传第' + (i + 1) + '张',
 			      })
 			      uni.uploadFile({
-			        //url: 'http://192.168.0.205:81/index/upload/uploadImg',      //此处换上你的接口地址
 			        url: that.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/add_faquan_video_or_img',
 			        filePath: that.imgList[i],
 			        header: {
