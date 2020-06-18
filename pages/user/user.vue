@@ -66,7 +66,7 @@
 		<!-- 订单-余额 -->
 		<view class="order">
 			<!-- 订单类型 -->
-			<view class="list">
+			<view class="list" v-if="wxa_hidden_order_index_in_usercenter != 1">
 				<view class="box" style="width: 25%;" v-for="(row,index) in orderList" :key="index" @tap="toOrderList(row.otype,index)">
 					<view class="img">
 						<view class="icon" :class="row.icon"></view>
@@ -82,7 +82,7 @@
 						<view class="text">余额</view>
 					</view>
 					
-					<view class="box">
+					<view class="box" v-if="wxa_show_zengkuan_in_usercenter == 1">
 						<view class="num">{{userInfo && userInfo.userid ? fenxiao_info.balance_zengsong_yuan : '0.00'}}</view>
 						<view class="text">赠款</view>
 					</view>
@@ -130,9 +130,9 @@
 			</view>
 		</view>
 		
-<!-- 		<navigator url="/pages/live/live-pusher">主播控制台</navigator>
-		<navigator url="/pages/live/live-player">直播页面</navigator>
-		<navigator url="/pages/live/live-list">直播列表</navigator> -->
+<!-- 		<navigator url="/pages/live/live-pusher">主播控制台</navigator> -->
+<!-- 		<navigator url="/pages/live/live-player">直播页面</navigator> -->
+<!-- 		<navigator url="/pages/live/live-list">直播列表</navigator> -->
 		
 		<!-- 占位 -->
 		<view class="place-bottom"></view>
@@ -174,7 +174,11 @@
 				
 				user_center_function_list_icon_type:0,
 				user_center_function_list_icon_list:[],
-				wxa_show_recharge_button_in_usercenter: '',
+				
+				wxa_show_recharge_button_in_usercenter: 0,
+				wxa_show_zengkuan_in_usercenter: 0,
+				wxa_hidden_order_index_in_usercenter:0,
+				
 				explainFlag: 1 ,//会员说明显示控制
 				scrollLeft:'',
 				shop_info_from_server: ''
@@ -197,15 +201,11 @@
 			// #endif
 			
 			
-			that.default_copyright_text = that.abotapi.globalData.default_copyright_text;
+			
 			
 			that.abotapi.set_option_list_str(that, 
 				function(that001, option_list){
 					that001.abotapi.getColor();
-					
-					// uni.setNavigationBarTitle({
-					// 	title: this.abotapi.globalData.default_shopname
-					// })
 					
 					that001.wxa_shop_nav_bg_color  = option_list.wxa_shop_nav_bg_color;
 						
@@ -220,7 +220,12 @@
 						that.wxa_show_recharge_button_in_usercenter = option_list.wxa_show_recharge_button_in_usercenter;
 					}
 					
-					
+					if(option_list.wxa_show_zengkuan_in_usercenter){
+						that.wxa_show_zengkuan_in_usercenter = option_list.wxa_show_zengkuan_in_usercenter;
+					}
+					if(option_list.wxa_hidden_order_index_in_usercenter){
+						that.wxa_hidden_order_index_in_usercenter = option_list.wxa_hidden_order_index_in_usercenter;
+					}
 					
 					that001.get_current_userinfo();
 					
@@ -260,26 +265,27 @@
 		},
 		onShow(){
 			var that = this;
+			
+			//更新账号余额等信息
 			this.get_current_userinfo();
 			
-			// uni.getStorage({
-			// 	key: 'UserInfo',
-			// 	success: (res)=>{
-			// 		if(!res.data){
-			// 			if(this.isfirst){
-			// 				//this.toLogin();
-			// 			}
-			// 			return ;
-			// 		}
-			// 		this.user = res.data;
-			// 	},
-			// 	fail:(e)=>{
-			// 		//this.toLogin(); 
-			// 	}
-			// });
+			that.abotapi.set_option_list_str(that,
+				function(that001, option_list){
+					
+					
+					
+					
+					that.default_copyright_text = that.abotapi.globalData.default_copyright_text;
+					
+					
+				}
+			);
+			
 		},
 		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
 		onPullDownRefresh() {
+			
+			console.log('onPullDownRefresh onPullDownRefresh onPullDownRefresh');
 			
 			this.abotapi.set_option_list_str(this,
 				function(that001, option_list){					

@@ -86,6 +86,7 @@
 			
 			if (extConfig.default_copyright_text) {
 			  this.abotapi.globalData.default_copyright_text = extConfig.default_copyright_text;
+			  console.log('this.abotapi.globalData.default_copyright_text ==>> ', this.abotapi.globalData.default_copyright_text);
 			}
 			
 			if (extConfig.is_shop_cart_in_tabbar) {

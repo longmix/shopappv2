@@ -4,7 +4,7 @@ const globalData = {
 		o2owaimai_server_url: 'https://app.tseo.cn/o2owaimai/index.php/',
 		socket_server: 'https://socketio.tseo.cn',
 		
-		// o2owaimai_server_url: 'https://yanyubao.tseo.cn/hahading/index.php/',
+		force_sellerid:1,
 		
 		
 		// xiaochengxu_appid: 'wx60a801e5fb7f9378',

@@ -950,7 +950,10 @@ module.exports = {
 		
 		
 		if (option_list.copyright_text) {
+			
 		  this.globalData.default_copyright_text = option_list.copyright_text;
+		  
+		  console.log('this.globalData.default_copyright_text ==>> ', this.globalData.default_copyright_text);
 		}
 		
 		if (!isNullOrUndefined(option_list.is_index_index_in_tabbar)) {

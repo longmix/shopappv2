@@ -4,32 +4,14 @@ const globalData = {
 		o2owaimai_server_url: 'https://app.tseo.cn/o2owaimai/index.php/',
 		socket_server: 'https://socketio.tseo.cn',
 		
-		// o2owaimai_server_url: 'https://yanyubao.tseo.cn/hahading/index.php/',
+		force_sellerid:1,
 		
-		
-		// xiaochengxu_appid: 'wx60a801e5fb7f9378',
 		xiaochengxu_appid: 'wx00d1e2843c3b3f77',
-		
-		
-		// default_sellerid : 'fyJSPaVja',
-		// default_sellerid : 'pQNNmSkaq',	
-		
-		// default_sellerid: 'fSNQPajka',
 		
 		//通版商城
 		default_shopname: '延誉电商',
 		default_sellerid: 'pQNNmSkaq',
 		default_copyright_text:'延誉宝 @ 版权所有',
-		
-		//哈哈订
-		//default_shopname: '哈哈订',
-		// default_sellerid: 'fimmUPUPV',
-		// default_copyright_text:'哈哈订信息科技 版权所有',
-		
-		//腾羽生物
-		//default_shopname: '腾羽云商',
-		//default_sellerid: 'fSNQPajka',
-		//default_copyright_text:'腾羽生物科技 版权所有',
 		
 		//=======以下配置项在发布版本的时候确定，服务器端配置无效===
 		
