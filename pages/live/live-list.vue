@@ -299,6 +299,8 @@
 			// 	});
 			// }
 		},
+		onShareAppMessage: function () {
+		},
 		methods: {
 			// 跳转直播间
 			  toLiveStudio: function(e){

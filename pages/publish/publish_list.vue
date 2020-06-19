@@ -169,6 +169,8 @@
 			
 			
 		},
+		onShareAppMessage: function () {
+		},
 		
 		methods: {
 			get_api_publish_list:function(that,publishData){

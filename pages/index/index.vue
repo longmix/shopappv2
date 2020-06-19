@@ -512,7 +512,8 @@ export default {
 		    },
 		});
 	},
-	
+	onShareAppMessage: function () {
+	},
 	
 	
 	methods: {
@@ -1539,19 +1540,21 @@ export default {
 		imageLoad: function (e) {//获取图片真实宽度  
 				
 		    var imgwidth = e.detail.width,
-		      imgheight = e.detail.height,
+		    imgheight = e.detail.height,
 		      //宽高比  
-		      ratio = imgwidth / imgheight;
+		    ratio = imgwidth / imgheight;
+			  
 		    console.log(imgwidth, imgheight)
+			
 		    //计算的高度值  
 		    var viewHeight = (this.windowWidth * 2 * 0.92)/ ratio;
 		    var imgheight = viewHeight;
 		    var imgheights = this.imgheights;
+			
 		    //把每一张图片的对应的高度记录到数组里  
 		    imgheights[e.target.dataset.id] = uni.upx2px(imgheight);
 	
-		    console.log('id===>>>'+e.target.dataset.id+", imgheights====>>>", imgheights);
-		
+		    console.log('id===>>>'+e.target.dataset.id+", imgheights====>>>", imgheights);		
 	
 		     this.imgheights = imgheights
 		   

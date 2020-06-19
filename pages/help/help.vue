@@ -88,6 +88,8 @@
 			
 			
 		},
+		onShareAppMessage: function () {
+		},
 		methods: {
 			initArticleList: function () {
 				

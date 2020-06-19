@@ -187,6 +187,8 @@
 		        this.videoContext = uni.createVideoContext('myVideo')
 		        // #endif
 		},
+		onShareAppMessage: function () {
+		},
 		methods: {
 			//猜你喜欢
 			get_product_list:function(){

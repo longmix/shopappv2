@@ -83,7 +83,9 @@
 		},
 		onPullDownRefresh:function(){
 			this.refresh();
-		} ,
+		},
+		onShareAppMessage: function () {
+		},
 		 
 		methods: {
 			
