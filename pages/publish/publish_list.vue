@@ -127,7 +127,17 @@
 			that.abotapi.set_shop_option_data(that, that.callback_function);
 		},
 		onShow:function(){
+			var that = this;
 			
+			that.abotapi.set_shop_option_data(that, function(that002, shop_option_data){
+				
+				console.log('aaaaaaa====  onShow',shop_option_data);
+				
+				if(shop_option_data.option_list.publish_hiddend_btn_for_write){
+					that002.publish_hiddend_btn_for_write = shop_option_data.option_list.publish_hiddend_btn_for_write; //是否显示发帖按钮
+				}
+				
+			});
 		},
 		
 		onPullDownRefresh:function(){
@@ -185,10 +195,6 @@
 				
 				that.cms_token = shop_option_data.option_list.cms_token;
 				
-				if(shop_option_data.option_list.publish_hiddend_btn_for_write){
-					that.publish_hiddend_btn_for_write = shop_option_data.option_list.publish_hiddend_btn_for_write; //是否显示发帖按钮
-				}
-				
 				if(shop_option_data.option_list.wxa_shop_nav_bg_color){
 					that.wxa_shop_nav_bg_color = shop_option_data.option_list.wxa_shop_nav_bg_color; //头部导航的颜色
 				}
@@ -196,10 +202,9 @@
 				
 				
 				that.publish_img_cata_list = shop_option_data.option_list.publish_img_cata_list;
-				
-				//that.get_publish_list();
+
 				publish_list_api.get_publish_list(that,that.get_api_publish_list);
-				//取帖子分类列表publish_hiddend_btn_for_write__checkbox
+
 			
 				
 				

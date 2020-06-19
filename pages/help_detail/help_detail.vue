@@ -510,7 +510,7 @@
 				
 			    that.isShoucang = isShoucang
 				
-				var url = this.abotapi.globalData.weiduke_server_url + 'index.php/openapi/ArticleImgApi/collect_my_update.shtml';
+				var url = this.abotapi.globalData.weiduke_server_url + 'index.php/openapi/ArticleImgApi/collect_my_update';
 				var data = {
 					userid:userInfo.userid,
 					checkstr:userInfo.checkstr,

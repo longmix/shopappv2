@@ -67,6 +67,10 @@
 					this.abotapi.goto_user_login(last_url, 'normal');
 				}
 				
+				uni.setNavigationBarTitle({
+					title:'我的收藏'
+				})
+				
 			}
 			if(options.action == 'my_publish'){
 				this.my_publish = options.action;
@@ -76,6 +80,9 @@
 				}else{
 					this.abotapi.goto_user_login(last_url, 'normal');
 				}
+				uni.setNavigationBarTitle({
+					title:'我的发布'
+				})
 			}
 			
 			var that = this;
