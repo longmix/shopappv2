@@ -82,7 +82,7 @@
 							删除收货地址
 						</view>
 					</view>
-					<view class="row">
+					<view class="button_su">
 						<button formType="submit">保存地址</button>
 					</view>
 					
@@ -686,7 +686,6 @@
 		}
 		.row{
 			width: 94%;
-			
 			margin: 0 3%;
 			border-top: solid 1upx #eee;
 			.nominal{
@@ -715,9 +714,10 @@
 				justify-content: center;
 				align-items: center;
 				font-size: 36upx;
-				color: #f06c7a;
-				background-color: rgba(255,0,0,0.05);
-				border-bottom: solid 1upx #eee;
+				color: #FFFFFF;
+				background-color:#E64340;
+				border: solid 1px #eee;
+				border-radius: 10rpx;
 			}
 		}
 	}
@@ -752,17 +752,17 @@
 	}
 	
 	uni-button {
-	  width:80%;
+	  width:100%;
 	  height:50px;
 	  line-height:50px;
-	  position: fixed;
-	  margin-top:20%;
+	  margin-top:15rpx;
 	  color: #fff;
-	  background-color: #17A8E2;
-	  border-radius:30px;
-	
+	  background-color: #1AAD19;
+	  margin-left: 25rpx;
 	}
-	
+	.button_su{
+		width:97%;
+	}
 	.picker {
 	  width: 600rpx;
 	  height: 100%;
