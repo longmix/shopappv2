@@ -158,24 +158,23 @@
 				publishtype:'',
 				is_Focus:false,
 				is_OK:false,
-				app_name_chat_title:''
+				app_name_chat_title:'',
+				current_cms_token:''
 				
 			}
 		},
 		
 		// 页面初始化 options为页面跳转所带来的参数
+		/**
+		 * @param {Object} options
+		 *  form_page  如果为 publish_list 代表从论坛的文章列表点击过来，默认为从商户头条点击过来
+		 */
 		onLoad: function (options) {
 		  
 			console.log('options==>>',options);
 			var that = this
-			//this.abotapi.set_option_list_str(null, this.abotapi.getColor());
-			this.abotapi.set_option_list_str(that, that.callback_set_option);
-			var userInfo = this.abotapi.get_user_info();
-			var current_openid = this.abotapi.get_current_openid();
 			
-		    that.wz_id = options.id;
-		    that.theme_color_wenku = this.abotapi.getColor()
-			console.log('colr=====', this.abotapi.getColor())
+		    that.wz_id = options.id;		    
 			
 			//跳转过来的页面参数用来判断头像和昵称的显示
 			if(options.form_page){
@@ -183,96 +182,15 @@
 			}
 			
 			
-			// if (!current_openid){
-			// 	uni.showLoading({
-			// 		title: '正在加载....',
-			// 	});
-			
-			// 	console.log('uni.login <<<==== onLoad <<<==== help_detail');
-				
-			// 	uni.login({
-			// 		success: function (login_res) {
-			// 			console.log("uni.login返回：");
-			// 			console.log(login_res);
-				
-			// 			if (!login_res.code) {
-			// 				return;
-			// 			}
-				
-			// 			this.abotapi.abotRequest({
-			// 				url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=wxa_one_click_login',
-			// 				header: {
-			// 					"Content-Type": "application/x-www-form-urlencoded"
-			// 				},
-			// 				method: "POST",
-			// 				dataType: 'json',
-			// 				data: {
-			// 					js_code: login_res.code,
-			// 					xiaochengxu_appid: that.abotapi.globalData.xiaochengxu_appid,
-			// 					sellerid: that.abotapi.get_sellerid(),
-			// 				},
-			// 				success: function (res) {
-			// 					uni.hideLoading();
-			// 					if(res.data.code == 1){
-			// 						current_openid = res.data.openid;
-			// 						that.abotapi.set_current_openid(current_openid);
-				
-			// 						that.__get_img_from_weiduke(options.id, that); 
-			// 						console.log('jjjjss')
-			// 					}else{
-			// 						uni.showModal({
-			// 							title: '确认',
-			// 							content: '小程序服务器异常',
-			// 						});
-					
-
-			// 						//返回上一页
-			// 						uni.navigateBack({
-			// 							delta: 2
-			// 						})
-						  
-			// 					}
-			// 				},
-			// 				fail:function(res){
-			// 					uni.hideLoading();
-					
-			// 					uni.showModal({
-			// 						title: '确认',
-			// 						content: '小程序网络异常',
-			// 					});
-					
-			// 					//返回上一页
-			// 					uni.navigateBack({
-			// 						delta: 2
-			// 					})
-					
-			// 				}
-			// 			});
-								
-			// 		},
-			// 		fail: function (login_res){
-			// 			uni.hideLoading();
-				
-			// 			console.log("uni.login  fail 返回：");
-			// 			console.log(login_res);
-				
-			// 			uni.showModal({
-			// 				title: '确认',
-			// 				content: '小程序认证异常',
-			// 			});
-				
-			// 			//返回上一页
-			// 			uni.navigateBack({
-			// 				delta: 2
-			// 			})
-			// 		}
-			// 	})   // End of uni.login
-			
-			// }
-			
 			console.log(options);
 			console.log("商户头条id:"+options.id);
 			console.log("sellerid:" + options.sellerid);
+			
+			
+			this.abotapi.set_option_list_str(that, that.callback_set_option);
+			var userInfo = this.abotapi.get_user_info();
+			var current_openid = this.abotapi.get_current_openid();
+			
 		  
 			that.id = options.id;
 			that.sellerid = options.sellerid;
@@ -313,7 +231,11 @@
 		methods: {
 			callback_set_option: function (that, cb_params) {
 				console.log('getShopOptionAndRefresh+++++:::' + cb_params)
-				that.abotapi.getColor();
+				
+				that.theme_color_wenku = that.abotapi.getColor();
+
+				console.log('colr=====', that.theme_color_wenku)
+				
 				var that = this;
 				var option_list = cb_params;
 				console.log('option_list===', option_list)
@@ -323,6 +245,14 @@
 				if (option_list.wxa_show_article_detail_category) {
 					that.wxa_show_article_detail_category = option_list.wxa_show_article_detail_category    
 				}
+				
+				if(that.form_page == 'publish_list'){
+					that.current_cms_token = option_list.cms_token;
+				}
+				else{
+					that.current_cms_token = this.abotapi.get_current_weiduke_token();
+				}
+				
 			},
 			__get_img_from_weiduke: function (imgid, that){
 				//=====更新商户头条=================
@@ -333,7 +263,7 @@
 				// };
 				var url = this.abotapi.globalData.weiduke_server_url + 'openapi/ArticleImgApi/article_detail';
 				var data = {
-					token: this.abotapi.get_current_weiduke_token(),
+					token: this.current_cms_token,
 					id: imgid,
 					openid: this.abotapi.get_current_openid(),
 					sellerid:this.abotapi.globalData.default_sellerid,
@@ -514,7 +444,7 @@
 				var data = {
 					userid:userInfo.userid,
 					checkstr:userInfo.checkstr,
-					token: this.abotapi.get_current_weiduke_token(),
+					token: that.current_cms_token,
 					openid: this.abotapi.get_current_openid(),
 					id: wz_id
 				};
@@ -549,7 +479,7 @@
 					data: {
 						// userid:userInfo.userid,
 						// checkstr:userInfo.checkstr,
-						token: this.abotapi.get_current_weiduke_token(),
+						token: this.current_cms_token,
 						openid: this.abotapi.get_current_openid(),
 						action: 'list',
 						imgid: that.wz_id,
@@ -632,7 +562,7 @@
 			
 								var url = that.abotapi.globalData.weiduke_server_url + '/openapi/ArticleImgApi/remark_img';
 								var data = {
-									token: that.abotapi.get_current_weiduke_token(),
+									token: that.current_cms_token,
 									openid: that.abotapi.get_current_openid(),
 									userid: userInfo.userid,
 									checkstr: userInfo.checkstr,
@@ -785,7 +715,7 @@
 					method:'POST',
 					header:{'Content-Type': 'application/x-www-form-urlencoded'},
 					data:{
-						token: that.abotapi.get_current_weiduke_token(),
+						token: that.current_cms_token,
 						openid: that.abotapi.get_current_openid(),
 						userid:userInfo.userid,
 						checkstr:userInfo.checkstr,
@@ -833,7 +763,7 @@
 					url: this.abotapi.globalData.weiduke_server_url + 'index.php/openapi/ArticleImgApi/remark_img',
 					method: 'post',
 					data: {
-						token: this.abotapi.get_current_weiduke_token(),
+						token: this.current_cms_token,
 						openid: this.abotapi.get_current_openid(),
 						userid: userInfo.userid,
 						checkstr: userInfo.checkstr,
@@ -920,7 +850,7 @@
 					data: {
 						userid:userInfo.userid,
 						checkstr:userInfo.checkstr,
-						token: this.abotapi.get_current_weiduke_token(),
+						token: this.current_cms_token,
 						openid: this.abotapi.get_current_openid(),
 						action: action,
 						imgid: that.wz_id,
@@ -949,7 +879,7 @@
 					url: this.abotapi.globalData.weiduke_server_url + 'index.php/openapi/ArticleImgApi/dianzan_img',
 					method: 'post',
 					data: {
-						token: this.abotapi.get_current_weiduke_token,      
+						token: this.current_cms_token,      
 						openid: this.abotapi.get_current_openid(),
 						action: 'list',
 						imgid: that.wz_id,

@@ -83,7 +83,7 @@
 						</view>
 					</view>
 					<view class="button_su">
-						<button formType="submit">保存地址</button>
+						<button formType="submit" style="width:100%;">保存地址</button>
 					</view>
 					
 				</view>
@@ -761,7 +761,8 @@
 	  margin-left: 25rpx;
 	}
 	.button_su{
-		width:97%;
+		width:94%;
+		margin: 10rpx auto;
 	}
 	.picker {
 	  width: 600rpx;

@@ -3,8 +3,9 @@
 		<div class="h30"></div>
 		<div class="flex-center ">
 			<div @click="goHome()" class="flex-center">
-				<image v-if="wxa_login_hide_shop_logo != 1" :src="shop_info.icon"  style="width: 150upx;"  mode="widthFix"  class="wh-60"></image>
-				<view v-if="wxa_login_show_shop_name && wxa_login_show_shop_name==1" class="">{{shop_info.name}}</view>
+				<image v-if="wxa_login_hide_shop_logo != 1" :src="wxa_shop_operation_logo_url"  
+					style="width: 150upx;height: 150upx;border-radius: 50%;"  mode="widthFix"></image>
+				<view v-if="wxa_login_show_shop_name && wxa_login_show_shop_name==1" class="">{{wxa_shop_new_name}}</view>
 				<view v-if="wxa_login_show_memo_text && wxa_login_show_memo_text==1" style='text-align:left;margin:50rpx 30rpx;color:#666; font-size:32rpx;display:block;' >
 					<text>{{memo_text_content}}</text>
 				</view>
@@ -81,9 +82,14 @@
 				tokenstr :'',
 				password: '',
 				account: '',
+				
 				wxa_shop_nav_bg_color: '',
 				wxa_shop_nav_font_color: '',
-				shop_info: '',
+				
+				//shop_info: '',
+				wxa_shop_operation_logo_url:'',
+				wxa_shop_new_name:'',
+				
 				screenHeight:'',
 				wxa_login_hide_shop_logo:'',
 				wxa_login_show_shop_name:'',
@@ -106,9 +112,12 @@
 					url: '/pages/index/index'
 				})
 			}
+			
 			this.click_check();
+			
 			this.abotapi.set_option_list_str(this, this.callback_set_option_list_str);
-			this.abotapi.get_shop_info_from_server(this.callback_func_for_shop_info);
+			
+			//this.abotapi.get_shop_info_from_server(this.callback_func_for_shop_info);
 		},
 		methods:{
 			callback_set_option_list_str:function(that,cb_params){
@@ -139,7 +148,10 @@
 				
 				if(cb_params.wxa_login_memo_text){
 					that.memo_text_content = cb_params.wxa_login_memo_text
-				}	
+				}
+				
+				that.wxa_shop_operation_logo_url = cb_params.wxa_shop_operation_logo_url;
+				that.wxa_shop_new_name = cb_params.wxa_shop_new_name;
 				
 			},
 			
@@ -148,7 +160,7 @@
 				if(!shop_info){
 					return;
 				}
-				this.shop_info = shop_info;
+				//this.shop_info = shop_info;
 			},
 			
 			accountInput:function(e){

@@ -72,5 +72,11 @@
   "networkTimeout": {
     "request": 10000,
     "downloadFile": 10000
-  }
+  },
+  "navigateToMiniProgramAppIdList": [
+    "wx00d1e2843c3b3f77",
+    "wx5ade221daf329103",
+    "wx424d6888ee0403e9",
+    "wxa36bafa53080cac8"
+  ]
 }

@@ -3,7 +3,7 @@
 	<!--pages/login/login.wxml-->
 	<view class="page" style='width:100%;overflow-x:hidden;background:#fff;' :style="{height:windowHeight+'px'}">
 		<view class='box'>
-			<image :src="shop_list.icon" mode="widthFix"></image>
+			<image :src="wxa_shop_operation_logo_url" mode="widthFix"></image>
 		</view>
 
 
@@ -19,7 +19,10 @@
 		</view>
 
 
-		<button open-type="getUserInfo" plain="true" @getuserinfo="btn_one_click_get_userinfo" class="check_btn2" style="background-color:#07C160; color:#ffffff;border:1px solid #fff;">授权获取头像和昵称</button>
+		<button open-type="getUserInfo" plain="true" 
+			@getuserinfo="btn_one_click_get_userinfo" 
+			class="check_btn2" 
+			style="background-color:#07C160; color:#ffffff;border:1px solid #fff;">授权获取头像和昵称</button>
 	</view>
 
 </template>
@@ -35,7 +38,11 @@
 				js_code: '',
 				tokenstr: '',
 				show_mobile_login: 0,
-				shop_list: '',
+				
+				//shop_list: '',
+				wxa_shop_operation_logo_url:'',
+				
+				
 				windowHeight: ''
 			};
 		},
@@ -45,13 +52,17 @@
 
 		},
 		onLoad: function(options) {
-			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
+			this.abotapi.set_option_list_str(this, function(that, option_list){
+				this.abotapi.getColor();
+				
+				that.wxa_shop_operation_logo_url = option_list.wxa_shop_operation_logo_url;
+			});
 
 			var that = this;
 
 			this.abotapi.get_shop_info_from_server(function(shop_info_list) {
 
-				that.shop_list = shop_info_list;
+				//that.shop_list = shop_info_list;
 
 			});
 

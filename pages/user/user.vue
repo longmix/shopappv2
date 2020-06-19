@@ -103,7 +103,7 @@
 				<view class="right" v-else>
 					<view class="box" >
 						<view class="img logo-img">
-							<image :src="shop_info_from_server.icon" mode="widthFix" class="logo"></image>
+							<image :src="wxa_shop_operation_logo_url" mode="widthFix" class="logo"></image>
 							<!-- <view class="icon chongzhi"></view> -->
 						</view>
 						<view class="text"></view>
@@ -182,7 +182,8 @@
 				
 				explainFlag: 1 ,//会员说明显示控制
 				scrollLeft:'',
-				shop_info_from_server: ''
+				//shop_info_from_server: ''
+				wxa_shop_operation_logo_url:''
 			}
 		},
 		
@@ -217,19 +218,7 @@
 						that.user_center_function_list_icon_list = option_list.user_center_function_list_icon_list;
 					}
 					
-					if(option_list.wxa_show_recharge_button_in_usercenter){
-						that.wxa_show_recharge_button_in_usercenter = option_list.wxa_show_recharge_button_in_usercenter;
-					}
 					
-					if(option_list.wxa_show_zengkuan_in_usercenter){
-						that.wxa_show_zengkuan_in_usercenter = option_list.wxa_show_zengkuan_in_usercenter;
-					}
-					if(option_list.wxa_hidden_order_index_in_usercenter){
-						that.wxa_hidden_order_index_in_usercenter = option_list.wxa_hidden_order_index_in_usercenter;
-					}
-					if(option_list.wxa_show_levelname_in_usercenter){
-						that.wxa_show_levelname_in_usercenter = option_list.wxa_show_levelname_in_usercenter;
-					}
 					
 					that001.get_current_userinfo();
 					
@@ -243,7 +232,7 @@
 				if(!shop_info){
 					return;
 				}
-				this.shop_info_from_server = shop_info;
+				//this.shop_info_from_server = shop_info;
 			})		
 			
 			
@@ -276,7 +265,20 @@
 			that.abotapi.set_option_list_str(that,
 				function(that001, option_list){
 					
+					if(option_list.wxa_show_recharge_button_in_usercenter){
+						that.wxa_show_recharge_button_in_usercenter = option_list.wxa_show_recharge_button_in_usercenter;
+						that.wxa_shop_operation_logo_url = option_list.wxa_shop_operation_logo_url;
+					}
 					
+					if(option_list.wxa_show_zengkuan_in_usercenter){
+						that.wxa_show_zengkuan_in_usercenter = option_list.wxa_show_zengkuan_in_usercenter;
+					}
+					if(option_list.wxa_hidden_order_index_in_usercenter){
+						that.wxa_hidden_order_index_in_usercenter = option_list.wxa_hidden_order_index_in_usercenter;
+					}
+					if(option_list.wxa_show_levelname_in_usercenter){
+						that.wxa_show_levelname_in_usercenter = option_list.wxa_show_levelname_in_usercenter;
+					}
 					
 					
 					that.default_copyright_text = that.abotapi.globalData.default_copyright_text;
@@ -300,6 +302,12 @@
 				function(that001, option_list){					
 					
 					that001.get_current_userinfo();
+					
+					
+					that001.user_center_function_list_icon_type = option_list.user_center_function_list_icon_type;
+					if(option_list.user_center_function_list_icon_type == -1){
+						that001.user_center_function_list_icon_list = option_list.user_center_function_list_icon_list;
+					}
 					
 					that001.get_user_function_list();
 				
