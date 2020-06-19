@@ -145,7 +145,7 @@
 		
 		<view class="goods_list" v-if="zhibotype == 'weixin'">
 			请选择商品
-		</view>
+		
 
 		<view class="goods" v-for="(item,index) in recommend_product_list" :key="index" @click="live_goods($event)"
 		 :data-productid="item.productid">
@@ -154,7 +154,7 @@
 				<checkbox value="" style="text-align: center;margin-left: 40px;margin-top: 10px;" />
 			</label>
 		</view>
-
+		</view>
 
 
 
