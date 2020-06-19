@@ -237,7 +237,7 @@
 				  success: (res) => {
 					  console.log('get_video_live_list=====',res)
 					  let data = res.data;
-					if(data.code = 1){
+					if(data.code == 1){
 						this.liveList = data.data;
 					console.log('this.liveList=====',this.liveList)
 					}
