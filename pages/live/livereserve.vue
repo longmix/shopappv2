@@ -408,11 +408,11 @@
 				}
 			    
 
-				console.log('choselike==>>',this.choselike)
-				console.log('chosegoods==>>',this.chosegoods)
-				console.log('screentype==>>',this.screentype)
-				console.log('closecomment==>>',this.closecomment)
-				return;
+				// console.log('choselike==>>',this.choselike)
+				// console.log('chosegoods==>>',this.chosegoods)
+				// console.log('screentype==>>',this.screentype)
+				// console.log('closecomment==>>',this.closecomment)
+				// return;
 
 
 				var that = this
@@ -429,7 +429,10 @@
 					},
 					success(res) {
 						console.log("aaaaa111", res)
-
+						uni.showToast({
+						  title: res.data.msg,
+						  duration: 2000
+						});
 					},
 					fail(error) {
 						console.log("ccccccc====", error)
