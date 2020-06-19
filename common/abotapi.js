@@ -956,6 +956,15 @@ module.exports = {
 		  console.log('this.globalData.default_copyright_text ==>> ', this.globalData.default_copyright_text);
 		}
 		
+		this.globalData.is_index_index_in_tabbar = 1;
+		this.globalData.is_user_user_in_tabbar = 1;
+		//购物车在底部导航栏（如果购物车在底部导航栏，请务必选择此项，避免向购物车跳转失败）
+		this.globalData.is_shop_cart_in_tabbar = 1;
+		//判断发布的栏目在底部导航  1就是在底部导航
+		this.globalData.is_publish_index_in_tabbar = 0;
+		//判断文章列表在底部导航   1就是在底部导航
+		this.globalData.is_publish_list_in_tabbar = 1;
+		
 		if (!isNullOrUndefined(option_list.is_index_index_in_tabbar)) {
 		  this.globalData.is_index_index_in_tabbar = option_list.is_index_index_in_tabbar;
 		}
