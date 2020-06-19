@@ -24,7 +24,7 @@ module.exports = {
 			console.log('进入没有缓存开始');
 
 			var regeocoding_success = function (data) {
-			console.log('regeocoding_success locationapi===', data);
+				console.log('regeocoding_success locationapi===', data);
 							
 				
 				// uni.showModal({
@@ -102,11 +102,15 @@ module.exports = {
 			
 			// #ifdef MP-WEIXIN
 				console.log('进入没有缓存微信开始');
+				
 				baidu_map_ak = that.abotapi.globalData.option_list.baidu_map_ak_wxa;
+				
 				console.log('结束1',baidu_map_ak);
+				
 				var BMap_obj = new bmap.BMapWX({
 					ak: baidu_map_ak
 				});
+				
 				console.log('实例化百度地图');
 					
 				BMap_obj.regeocoding({
@@ -141,8 +145,11 @@ module.exports = {
 						
 						//缓存位置信息			getStorageSync		
 						uni.setStorageSync('locationData', locationData)
+						
 						console.log('进入1');
+						
 						typeof callback_function == "function" && callback_function(that, locationData);
+						
 						return;		
 						
 				    }
@@ -160,6 +167,27 @@ module.exports = {
 				// 	success: regeocoding_success,
 				// 	complete: regeocoding_complete
 				// });
+				console.log('结束');
+			// #endif
+			
+			// #ifdef MP-BAIDU
+				console.log('百度智能小程序中获取坐标');
+				
+				baidu_map_ak = that.abotapi.globalData.option_list.baidu_map_ak_wxa;
+				
+				console.log('结束1',baidu_map_ak);
+				
+				var BMap_obj = new bmap.BMapWX({
+					ak: baidu_map_ak
+				});
+				
+				console.log('实例化百度地图完成');
+					
+				BMap_obj.regeocoding({
+					fail: regeocoding_fail,
+					success: regeocoding_success,
+					complete: regeocoding_complete
+				});
 				console.log('结束');
 			// #endif
 			

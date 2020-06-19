@@ -81,6 +81,7 @@
 <script>
 	import locationapi from '../../common/locationapi.js'; 
 	import shopList from '../../components/shop-list/shop-list.vue';
+	
 	export default {
 		components:{
 			shopList

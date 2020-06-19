@@ -78,7 +78,7 @@
 		name: 'publish-list',	
 		props: {
 			index_list:'',
-			action:'',
+			action:''
 		},
 		onLoad() {
 			var that = this;

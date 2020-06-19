@@ -216,7 +216,7 @@
 			
 			setTimeout(function () {
 				uni.hideLoading()
-			}, 2000)
+			}, 1000)
 		  
 		},
 		onReady: function () {
