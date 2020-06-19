@@ -58,10 +58,13 @@
 			if (extConfig.version_number) {
 			  this.abotapi.globalData.version_number = extConfig.version_number;
 			}
+			
+			console.log('extConfig.navigationBarBackgroundColor_fixed===>>>', extConfig.navigationBarBackgroundColor_fixed);
 		
 		
-			if (extConfig.navigationBarBackgroundColor_fixed != 'undefined') {
+			if (extConfig.navigationBarBackgroundColor_fixed && (extConfig.navigationBarBackgroundColor_fixed != 'undefined')) {
 			  this.abotapi.globalData.navigationBarBackgroundColor_fixed = extConfig.navigationBarBackgroundColor_fixed;
+			  console.log('extConfig.navigationBarBackgroundColor_fixed===>>>', extConfig.navigationBarBackgroundColor_fixed);
 			}
 		
 		
