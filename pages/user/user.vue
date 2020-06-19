@@ -291,6 +291,11 @@
 			
 			console.log('onPullDownRefresh onPullDownRefresh onPullDownRefresh');
 			
+			uni.showToast({
+				title: '数据更新中……',
+				icon:'loading'
+			});
+			
 			this.abotapi.set_option_list_str(this,
 				function(that001, option_list){					
 					
@@ -303,8 +308,12 @@
 			
 		    setTimeout(function () {
 		        uni.stopPullDownRefresh();
+				
+				uni.hideToast();
+				
 		    }, 1000);
 		},
+		
 		onPageScroll(e){
 			//兼容iOS端下拉时顶部漂移
 			this.headerPosition = e.scrollTop>=0?"fixed":"absolute";

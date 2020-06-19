@@ -41,8 +41,11 @@
 				</view>
 				
 				<!-- 自定义属性 -->
-				<view class="wenzhang-meihua" v-for="value_item in wz_text.value_list" :key="value_item">
-					{{value_item.displayname}}：{{value_item.fieldvalue}}
+				<view class="wenzhang_meihua" 
+					v-for="value_item in wz_text.value_list" :key="value_item">
+					<block v-if="value_item.fieldvalue">
+					<view class="wenzhang_meihua_name">{{value_item.displayname}}</view>：{{value_item.fieldvalue}}
+					</block>
 				</view>
 				
 				<view class="article_bottom">
@@ -1164,8 +1167,7 @@
 	}
 	.wenzhang_detail{
 	  font-size: 30rpx;
-	  font-family: "微软雅黑";
-	  margin-bottom:40rpx;
+	  margin:20rpx 20rpx 40rpx 20rpx;
 	}
 	.tuijian{
 	  font-size: 24rpx;
@@ -1455,12 +1457,16 @@
 		padding: 2rpx 6rpx;
 		text-align: center;
 	}
-	.wenzhang-meihua{
+	.wenzhang_meihua{
 		font-size: 30upx;
 		margin-top: 10upx;
 		margin: auto;
 		padding-bottom: 10upx;
 		padding-top: 10upx;
 		border-top: 1upx solid #eee;
+	}
+	.wenzhang_meihua_name{
+		font-weight: bold;
+		float: left;
 	}
 </style>
