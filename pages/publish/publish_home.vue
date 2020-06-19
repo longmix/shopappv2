@@ -1,6 +1,6 @@
 <template>
 	<view style="background:#EFEFF4;border-top: 1px solid #EFEFF4;">
-		<view class="fabu_button" @tap="toPublish_index()" v-if="publish_hiddend_btn_for_write != 1">
+		<view class="fabu_button" :style="{background:wxa_shop_nav_bg_color}" @tap="toPublish_index()" v-if="publish_hiddend_btn_for_write != 1">
 			发布
 		</view>
 		<!-- <view class="sou">
@@ -84,6 +84,7 @@
 				current_page_size:4,
 				is_get_article_list:true,//控制触底请求分页的文章列表接口 
 				search_text:'',//搜索的文案
+				wxa_shop_nav_bg_color:'#f44444',
 			}
 		},
 		
@@ -165,6 +166,9 @@
 				}
 				that.publish_img_cata_list = shop_option_data.option_list.publish_img_cata_list;
 				
+				if(shop_option_data.option_list.wxa_shop_nav_bg_color){
+					that.wxa_shop_nav_bg_color = shop_option_data.option_list.wxa_shop_nav_bg_color; //头部导航的颜色
+				}
 				
 				publish_list_api.get_publish_list(that,that.get_api_publish_list);
 				//取帖子分类列表publish_hiddend_btn_for_write__checkbox
