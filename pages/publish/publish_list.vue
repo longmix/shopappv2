@@ -1,7 +1,13 @@
 <template>
 	<view style="background:#EFEFF4;border-top: 1px solid #EFEFF4;">
-		<view class="fabu_button" :style="{background:wxa_shop_nav_bg_color}" @tap="toPublish_index()" v-if="publish_hiddend_btn_for_write != 1">
+		<view class="fabu_button" :style="{background:wxa_shop_nav_bg_color}" @tap="toPublish_index('fabu')" v-if="publish_hiddend_btn_for_write != 1">
 			发布
+		</view>
+		<view class="wode_button" :style="{background:wxa_shop_nav_bg_color}" @tap="toPublish_index('wode')" v-if="publish_hiddend_btn_for_write != 1">
+			我的
+		</view>
+		<view class="shoucang_button" :style="{background:wxa_shop_nav_bg_color}" @tap="toPublish_index('shoucang')">
+			收藏
 		</view>
 		<view class="sou">
 			
@@ -23,7 +29,11 @@
 		
 		<!-- 文字导航 -->
 		<view style="display: flex;background-color: #FFFFFF;">
-			<view :data-cataid="0" @click="get_publish_cata_list" data-from="text" style="color: #999;font-size: 30upx;text-align: center;width: 15%;height:60upx;line-height: 60upx;">
+			<view :data-cataid="0" @click="get_publish_cata_list" data-from="text" 
+			:data-index="-1"
+			:class="tap_index < 0 ? 'quanbu_color' : 'quanbu'"
+			
+			>
 				<view>全部</view>
 			</view>
 			<scroll-view scroll-x="true" enable-flex="true" class="kcrzxybd" style="height:60upx;display: flex;white-space: nowrap;width:83%">
@@ -31,9 +41,10 @@
 					<view v-for="(item,index) in publish_img_cata_list " 
 						:key="item.classid" 
 						v-if="!item.url" 
-						class="scroll-view" 
-						:data-cataid="item.classid" 
-						data-from="text" 
+						:class="tap_index == index ? 'changes_color':'scroll-view'" 
+						:data-cataid="item.classid"
+						:data-index="index"
+						data-from="text"
 						@click="get_publish_cata_list">{{item.name}}</view>
 					
 			</scroll-view>
@@ -85,6 +96,7 @@
 				is_get_article_list:true,//控制触底请求分页的文章列表接口 
 				search_text:'',//搜索的文案
 				wxa_shop_nav_bg_color:'#f44444',
+				tap_index:'-1', //改变文字导航颜色
 			}
 		},
 		
@@ -224,21 +236,41 @@
 				});
 			},
 			//发布按钮跳转
-			toPublish_index:function(){
-				if(this.abotapi.globalData.is_publish_index_in_tabbar == 1){
-					uni.switchTab({
-						url:'./publish_index'
-					})
-				}else{
+			toPublish_index:function(page){
+				console.log('page====>>',page);
+				if(page == 'fabu'){
+					console.log('page====>>fabu');
+					if(this.abotapi.globalData.is_publish_index_in_tabbar == 1){
+						uni.switchTab({
+							url:'./publish_index'
+						})
+					}else{
+						uni.navigateTo({
+							url:'./publish_index'
+						})
+					}
+				}else if(page == 'wode'){
+					console.log('page====>>wode');
 					uni.navigateTo({
-						url:'./publish_index'
+						url:'./my_publish?action=my_publish'
+					})
+				}else if(page == 'shoucang'){
+					console.log('page====>>shoucang');
+					uni.navigateTo({
+						url:'./my_publish?action=my_collect'
 					})
 				}
+				
+				
 			},
 			
 			//点击导航传递cataid获取帖子
 			get_publish_cata_list:function(e){
 				var that = this;
+				console.log('eeeeeee',e);
+				that.tap_index = e.currentTarget.dataset.index;
+				
+				
 				if(e.currentTarget.dataset.cataid && e.currentTarget.dataset.cataid != 0){
 					this.cms_cataid = e.currentTarget.dataset.cataid;
 				}else{
@@ -446,17 +478,45 @@
 	}
 	.fabu_button{
 		position: fixed;
-		bottom: 80px;
-		right: 8px;
+		bottom: 240rpx;
+		right: 16rpx;
 		border-radius: 54%;
-		padding: 5px;
-		height: 30px;
-		width: 30px;
-		font-size: 14px;
+		padding: 10rpx;
+		height: 60rpx;
+		width: 60rpx;
+		font-size: 28rpx;
 		color: #fff;
 		text-align: center;
-		line-height: 30px;
+		line-height: 60rpx;
 
+	}
+	.wode_button{
+		position: fixed;
+		bottom: 140rpx;
+		right: 16rpx;
+		border-radius: 54%;
+		padding: 10rpx;
+		height: 60rpx;
+		width: 60rpx;
+		font-size: 28rpx;
+		color: #fff;
+		text-align: center;
+		line-height: 60rpx;
+	
+	}
+	.shoucang_button{
+		position: fixed;
+		bottom: 40rpx;
+		right: 16rpx;
+		border-radius: 54%;
+		padding: 10rpx;
+		height: 60rpx;
+		width: 60rpx;
+		font-size: 28rpx;
+		color: #fff;
+		text-align: center;
+		line-height: 60rpx;
+	
 	}
 	.scroll-view{
 		color: #999;
@@ -466,6 +526,32 @@
 		max-width:25%;
 		max-height:60upx;
 		min-height:60upx;
+		line-height: 60upx;
+	}
+	.changes_color{
+		color:#0055ff;
+		font-size: 30upx;
+		text-align: center;
+		min-width: 25%;
+		max-width:25%;
+		max-height:60upx;
+		min-height:60upx;
+		line-height: 60upx;
+	}
+	.quanbu{
+		color: #999;
+		font-size: 30upx;
+		text-align: center;
+		width: 15%;
+		height:60upx;
+		line-height: 60upx;
+	}
+	.quanbu_color{
+		color: #0055ff;
+		font-size: 30upx;
+		text-align: center;
+		width: 15%;
+		height:60upx;
 		line-height: 60upx;
 	}
 </style>

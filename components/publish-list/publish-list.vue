@@ -2,22 +2,29 @@
 	<view style="background-color: #f4f4f4;padding: 1px 0px 1px 0px;">
 		<view v-for="(item,index) in index_list" :key="item.id" style="background: #fff;margin: 8upx;border-radius: 8upx;">
 			<view class="title_box">
-				 <!-- 头像和昵称和发布时间 -->
-				<view class="head_img">
-					<image :src="item.user_detail.headimgurl"></image>
-				</view>
-				<view>
-					<b>
-						<view class="nickname">
-							<!-- 昵称 -->
-							{{item.user_detail.nickname}}
-						</view>
-					</b>
-					<view class="cata_name">
-						<!-- 分类名称 -->
-						<view style="">{{item.classname}}</view>
-					</view>
-				</view>
+				 <view style="display: flex;align-items: center;">
+					 <!-- 头像和昵称和发布时间 -->
+					 <view class="head_img">
+					 	<image :src="item.user_detail.headimgurl"></image>
+					 </view>
+					 <view>
+					 	<b>
+					 		<view class="nickname">
+					 			<!-- 昵称 -->
+					 			{{item.user_detail.nickname}}
+					 		</view>
+					 	</b>
+					 	<view class="cata_name">
+					 		<!-- 分类名称 -->
+					 		<view style="">{{item.classname}}</view>
+					 	</view>
+					 </view>
+				 </view>
+				<view 
+				v-if="action == 'my_publish'" 
+				style="color: #2cb2f0;margin-right: 12px;font-size: 29rpx;"
+				@click="article_delete(item.id,index)"
+				>删除</view>
 			</view>
 			
 			<view class="content" @tap="goForum(item.id)">
@@ -71,6 +78,7 @@
 		name: 'publish-list',	
 		props: {
 			index_list:'',
+			action:'',
 		},
 		onLoad() {
 			var that = this;
@@ -82,7 +90,22 @@
 			},
 			previewImage:function(index){
 				this.$emit('previewImage',index);
-			}
+			},
+			article_delete:function(imgid,index){
+				var that = this;
+				uni.showModal({
+					title: '是否确认删除?',
+					success: function (res) {
+						if (res.confirm) {
+							that.$emit('article_delete',imgid,index);
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
+				})
+				
+				
+			},
 		}
 		
 	}
@@ -93,6 +116,7 @@
 		display: -webkit-flex;
 		display: flex;
 		align-items: center;
+		justify-content: space-between;
 	}
 	.head_img{
 		margin: 20upx;

@@ -1,7 +1,12 @@
 <template>
 	<view>
 		<view v-if="index_list.length == 0" style='text-align: center;color: #999;font-size: 32upx;margin-top: 100upx;'>暂无数据</view>
-		<publishList :index_list="index_list" @goForum="goForum"></publishList>
+		<publishList 
+		:index_list="index_list" 
+		@goForum="goForum" 
+		:action="my_publish"
+		@article_delete="article_delete"
+		></publishList>
 	</view>
 	
 </template>
@@ -39,6 +44,7 @@
 				click:'',
 				cms_token:'',
 				my_collect:'', //判断是不是收藏的
+				my_publish:'', //判断是不是我的
 				cms_cataid:0,
 				cms_cataname:'内容列表',
 				current_page:1,
@@ -151,6 +157,73 @@
 				})
 			},
 			
+			//跳转文章详情
+			article_delete: function(imgid,index) {
+				
+				var that = this;
+				var userInfo = that.abotapi.get_user_info();
+				
+				if (!userInfo || !userInfo.userid) {
+					uni.showToast({
+						title: '请先登录',
+						icon: 'none',
+						duration: 1000,
+					});
+				
+					//var last_url = '/cms/publish/publish?publishtype=' + that.publishtype;
+					
+					var last_url = '/pages/publish/my_publish?action=my_publish';
+					
+					that.abotapi.goto_user_login(last_url, 'normal');
+					return;
+				}
+				
+				if(!this.cms_token){
+					uni.showToast({
+						title: '错误',
+						icon: 'none',
+						duration: 1000,
+					});
+					return;
+				}
+				
+				if(!imgid){
+					uni.showToast({
+						title: '缺少参数',
+						icon: 'none',
+						duration: 1000,
+					});
+					return;
+				}
+				
+				that.abotapi.abotRequest({
+					url: that.abotapi.globalData.weiduke_server_url + 'openapi/ArticleImgApi/article_delete',
+					method: 'post',
+					data: {
+						sellerid: that.abotapi.get_sellerid(),
+						userid:userInfo.userid,
+						checkstr:userInfo.checkstr,
+						imgid:imgid,
+						token:that.cms_token,
+					},
+					header: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					},
+					success: (res) => {
+						console.log('res===>del_article',res);
+						uni.showToast({
+							title:res.data.msg
+						})
+						
+						if(res.data.code == 1){
+							this.index_list.splice(index,1);
+						}
+					}
+				})
+				
+			},
+			
+			
 			previewImage:function(index) {
 				
 				var index_list = this.index_list;
@@ -211,10 +284,11 @@
 					var action = 'my_collect';
 				}
 				
-				if(this.my_collect == 'my_publish'){
+				if(this.my_publish == 'my_publish'){
 					
-					var action = 'my_publish';
+					var action = 'my_article';
 				}
+				console.log('action==========>',action);
 				//搜索的情况
 				publish_list_api.get_publish_list(that,that.get_api_publish_list,action);		
 				

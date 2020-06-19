@@ -55,6 +55,8 @@ module.exports = {
 		
 		if(!isNullOrUndefined(userInfo) && !isNullOrUndefined(userInfo.userid)){
 			post_data['userid'] = userInfo.userid;
+			post_data['checkstr'] = userInfo.checkstr;
+			
 		}
 		
 		abotapi.abotRequest({
