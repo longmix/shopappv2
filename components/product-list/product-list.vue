@@ -44,7 +44,7 @@
 	export default {
 		name: "product-list",
 		props: {
-			productsList: [{inventory:"0", price:"0"}],
+			productsList: '',
 			cataid: '',
 			loadingText:"",
 			showKucunSale: '',
