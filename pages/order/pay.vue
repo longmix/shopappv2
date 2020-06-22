@@ -214,7 +214,7 @@
 					<text class="gm_ovh_1h pt10">合计</text>
 					<text class="gm_ovh_1h pt10">¥ {{all_price}}</text>
 				</view>
-				<view class="heji_con">
+				<view class="heji_con" v-if='is_waimai == 1'>
 					<text class="gm_ovh_1h pt10">运费</text>	
 					<text class="gm_ovh_1h pt10">¥ {{traffic_price}}</text>	
 				</view> 

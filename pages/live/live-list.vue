@@ -8,7 +8,7 @@
 					<image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1591620095324&di=a27d97a3e70055c422631d5dfee2903f&imgtype=0&src=http%3A%2F%2Fimg4.imgtn.bdimg.com%2Fit%2Fu%3D1659259599%2C380003090%26fm%3D214%26gp%3D0.jpg" mode="aspectFill"></image>
 					<view class="live_list_li_ve_title">
 						<view class="live_list_li_ve_title_l">
-							<view>13W人</view>
+							<view>{{item.name}}</view>
 						</view>
 						<view class="live_list_li_ve_title_r">
 							<view>来聊聊天</view>
@@ -22,7 +22,7 @@
 					<image :src="item.share_img" mode="aspectFill"></image>
 					<view class="live_list_li_ve_title">
 						<view class="live_list_li_ve_title_l">
-							<view>13W人</view>
+							<view>{{item.name}}</view>
 						</view>
 						<view class="live_list_li_ve_title_r">
 							<view>{{item.anchor_name}}</view>
@@ -197,6 +197,10 @@
 			  text: '6'
 			})
 			
+			
+			this.abotapi.set_shop_option_data(null, function(){
+				
+			});
 			
 			if(options.zhibotype && options.zhibotype == 'weixin'){
 				

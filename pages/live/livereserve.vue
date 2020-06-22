@@ -74,8 +74,12 @@
 		<view class="error-msg">
 			<label>
 				<span>开始时间 :</span>
-				<input id="startTime" type="text" value="" v-model="startTime" name="startTime" placeholder="请输入开始时间" style="height: 60rpx;" />
-
+				<!-- <input id="startTime" type="text" value="" v-model="startTime" name="startTime" placeholder="请输入开始时间" style="height: 60rpx;" /> -->
+			<picker name="birthday" @change="bindDateChange" mode="date" :value="date" :start="date_start_val" :end="date_end_val">
+				<view class="picker">
+					{{date}}
+				</view>
+			</picker>
 			</label>
 		</view>
 
@@ -188,11 +192,17 @@
 				closeGoods:'',
 				screenType:'',
 				closeComment:'',
-				zhibotype: ''
+				zhibotype: '',
+				date_start_val:'',//显示开始的时间
+				date_end_val:'',//显示开始的时间
+				date:'2020-06-22', //显示开始的时间
+				date_end:'', //显示结束的时间
 			}
 		},
 		onLoad(option) {
-			
+			this.abotapi.set_shop_option_data(null, function(){
+				
+			});
 			console.log('weixxxsdsdsssssssssssssd====',option );
 			if (option.zhibotype == 'weixin') {
 				this.zhibotype = 'weixin';
@@ -200,9 +210,24 @@
 				
 			}
 				
+			var myDate = new Date();
+			myDate.setDate(myDate.getDate() - 5);
+			
+			var myDate2 = new Date();
+			myDate2.setDate(myDate2.getDate() + 5);
+		
+			
+			this.date_start_val = util.formatTime(myDate),
+			this.date_end_val = util.formatTime(myDate2),
+			
+
+				
 			this.abotapi.set_option_list_str(this, this.callback_function);
 
 			this.live_goods_lists();
+			
+			
+			
 
 		},
 		methods: {
@@ -216,6 +241,13 @@
 				
 				that.abotapi.getColor();
 			},
+			
+			bindDateChange: function (event) {
+			    console.log(event);
+				this.date = event.detail.value;
+			    
+			},
+			
 			checkbox:function(e){
 				console.log('eeeee=>>>>>',e);
 				
@@ -404,14 +436,14 @@
 					})
 					return;
 				}
-				if (!this.startTime) {
-					uni.showToast({
-						title: '请输入开始时间！',
-						icon: 'fail',
-						duration: 2000
-					})
-					return;
-				}
+				// if (!this.startTime) {
+				// 	uni.showToast({
+				// 		title: '请输入开始时间！',
+				// 		icon: 'fail',
+				// 		duration: 2000
+				// 	})
+				// 	return;
+				// }
 				
 			    
 
