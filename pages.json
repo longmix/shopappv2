@@ -1,6 +1,6 @@
 {	
 	"globalStyle": {
-		"navigationBarTextStyle": "black",
+		"navigationBarTextStyle": "white",
 		"navigationBarTitleText" : "腾羽云商",
 		"navigationBarBackgroundColor" : "#2d96ff",
 		"backgroundColor" : "#2d96ff",

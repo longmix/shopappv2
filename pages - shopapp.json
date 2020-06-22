@@ -1,11 +1,10 @@
 {	
-
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
-		"navigationBarTitleText" : "延誉电商",
-		"navigationBarBackgroundColor" : "#f37404",
-		"backgroundColor" : "#ffffff",
-		"backgroundColorTop":"#ffffff",
+		"navigationBarTitleText" : "通版商城通用导航",
+		"navigationBarBackgroundColor" : "#2d96ff",
+		"backgroundColor" : "#2d96ff",
+		"backgroundColorTop":"#2d96ff",
 		"backgroundColorBottom":"#ffffff"
 	},
 	"tabBar": {
@@ -20,16 +19,16 @@
 				"text": "首页"
 			},
 			{
-				"pagePath": "pages/publish/publish_list",
-				"iconPath": "static/img/tabBar/imglist.png",
-				"selectedIconPath": "static/img/tabBar/imglist-on.png",
-				"text": "创业与开业"
+				"pagePath": "pages/category/category",
+				"iconPath": "static/img/tabBar/category.png",
+				"selectedIconPath": "static/img/tabBar/category-on.png",
+				"text": "商品"
 			},
 			{
 				"pagePath": "pages/shopList/shopList",
-				"iconPath": "static/img/tabBar/category.png",
-				"selectedIconPath": "static/img/tabBar/category-on.png",
-				"text": "城市合伙人"
+				"iconPath": "static/img/tabBar/cart.png",
+				"selectedIconPath": "static/img/tabBar/cart-on.png",
+				"text": "商家"
 			},
 			{
 				"pagePath": "pages/user/user",
