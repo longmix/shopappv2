@@ -181,7 +181,7 @@ module.exports = {
 					ak: baidu_map_ak
 				});
 				
-				console.log('实例化百度地图完成');
+				console.log('实例化百度地图完成', BMap_obj);
 					
 				BMap_obj.regeocoding({
 					fail: regeocoding_fail,

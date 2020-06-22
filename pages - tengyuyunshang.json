@@ -2,9 +2,9 @@
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText" : "腾羽云商",
-		"navigationBarBackgroundColor" : "#ffffff",
-		"backgroundColor" : "#ffffff",
-		"backgroundColorTop":"#ffffff",
+		"navigationBarBackgroundColor" : "#2d96ff",
+		"backgroundColor" : "#2d96ff",
+		"backgroundColorTop":"#2d96ff",
 		"backgroundColorBottom":"#ffffff"
 	},
 	"tabBar": {
@@ -37,5 +37,6 @@
 				"text": "我的"
 			}
 		]
-	}
+	},
+	"pages": []
 }

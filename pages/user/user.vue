@@ -190,6 +190,8 @@
 		onLoad() {
 			var that = this;
 			
+			that.about = '关于我们';
+			
 			// #ifdef H5
 				that.about = '关于我们';
 			// #endif
@@ -202,12 +204,15 @@
 				that.about = '关于小程序'
 			// #endif
 			
+			// #ifdef MP-BAIDU
+				that.about = '百度小程序'
+			// #endif
 			
 			
 			
 			that.abotapi.set_option_list_str(that, 
 				function(that001, option_list){
-					that001.abotapi.getColor();
+					//that001.abotapi.getColor();
 					
 					that001.wxa_shop_nav_bg_color  = option_list.wxa_shop_nav_bg_color;
 						

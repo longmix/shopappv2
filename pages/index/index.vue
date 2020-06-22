@@ -931,19 +931,14 @@ export default {
 			
 			
 			var arr = uni.getStorageSync('all_shang_jingwei_list');
-			console.log('arrarr',arr);
+			
 			var shop_location_list = that.jisuan_juli(arr);
 			
 			function compare(obj1, obj2) {
 			  var val1 = obj1.dis; 
 			  var val2 = obj2.dis;
-			  if (val1 < val2) {
-				return -1;
-			  } else if (val1 > val2) {
-				return 1;
-			  } else {
-				return 0;
-			  }
+			  
+			  return val1 - val2;
 			}
 			
 			

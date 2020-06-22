@@ -35,7 +35,7 @@
 			<view style="width: 100%;display: flex;justify-content: center;align-items: center;padding:0upx;">
 				<view style="width:60%;background-color: #FFFFFF;height: 10upx;"></view>
 				<view class="fuwu">
-					{{current_shang_detail.name}}
+					<!-- {{current_shang_detail.name}} -->
 				</view>
 				<view style="width:60%;background-color: #FFFFFF;height: 10upx;"></view>
 			</view>
@@ -56,7 +56,7 @@
 				</view>
 				<!-- 地址-->
 				<navigator :url="'/pages/shopMap/shopMap?address=' + current_shang_detail.address + '&latitude=' + current_shang_detail.latitude + '&longitude=' + current_shang_detail.longitude + '&name=' + current_shang_detail.name + '&telephone=' + current_shang_detail.telephone"
-				 style="display: flex;justify-content: space-between;align-items: center;padding: 20upx;">
+				 class="shang_detail_address">
 					<view style="color:#333;font-size: 28upx;display: flex;align-items: center;">
 						<image style="width:40upx;height:40upx;" src="../../static/img/user/adress1.png"></image>
 						<view style="width: 100%;">
@@ -924,13 +924,13 @@
 		margin-right: 1%;
 		background-color: #fed060;
 		color: #fff;
-		border-radius: 4px;
+		border-radius: 10rpx;
 		text-align: center;
 		width: 19%;
-		height: 20px;
-		line-height: 20px;
-		font-size: 19rpx;
-		margin-top: 10upx;
+		height: 40rpx;
+		line-height: 40rpx;
+		font-size: 22rpx;
+		margin-top: 10rpx;
 		font-weight: bold;
 	}
 
@@ -1607,5 +1607,12 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+	}
+	
+	.shang_detail_address {
+		display: flex;justify-content: space-between;align-items: center;padding: 20upx;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
 	}
 </style>
