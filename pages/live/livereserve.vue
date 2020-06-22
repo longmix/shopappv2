@@ -8,7 +8,7 @@
 		<view class="head-img">
 			<view style="margin-right: 450rpx;color: #cbcbcb;">请设置分享图片</view>
 			<view>
-				<image :src="shareimg" @tap="upLoadimgs(2)" mode="widthFix"></image>
+				<image :src="shareImg" @tap="upLoadimgs(2)" mode="widthFix"></image>
 				<view style="display: flex;float: right;margin-right: 15rpx;">
 					<view style="color: red;margin-top: 4rpx;">*</view>
 					<view style="color:#666666 ;">建议像素800*640，大小不超过2M</view>
@@ -23,7 +23,7 @@
 		<view class="head-img" v-if="zhibotype == 'weixin'">
 			<view style="margin-right: 350rpx;color: #cbcbcb;">请设置直播间背景图片</view>
 			<view>
-				<image :src="coverimg" @tap="upLoadimgs(1)" mode="widthFix"></image>
+				<image :src="coverImg" @tap="upLoadimgs(1)" mode="widthFix"></image>
 
 				<view style="display: flex;float: right;margin-right: 15rpx;">
 					<view style="color: red;margin-top: 4rpx;">*</view>
@@ -37,7 +37,7 @@
 		<view class="error-msg">
 			<label>
 				<span>主播昵称 :</span>
-				<input id="name" type="text" name="name" v-model="liver" class="error" placeholder="请输入主播昵称" style="height: 60rpx;" />
+				<input id="name" type="text" name="name" v-model="anchorName" class="error" placeholder="请输入主播昵称" style="height: 60rpx;" />
 
 			</label>
 		</view>
@@ -66,7 +66,7 @@
 		<view class="error-msg">
 			<label>
 				<span>直播间名称 :</span>
-				<input id="name" type="text" name="name" v-model="livename" class="error" placeholder="请输入直播间名称" style="height: 60rpx;" />
+				<input id="name" type="text" name="name" v-model="name" class="error" placeholder="请输入直播间名称" style="height: 60rpx;" />
 
 			</label>
 		</view>
@@ -74,7 +74,7 @@
 		<view class="error-msg">
 			<label>
 				<span>开始时间 :</span>
-				<input id="starttime" type="text" value="" v-model="starttime" name="starttime" placeholder="请输入开始时间" style="height: 60rpx;" />
+				<input id="startTime" type="text" value="" v-model="startTime" name="startTime" placeholder="请输入开始时间" style="height: 60rpx;" />
 
 			</label>
 		</view>
@@ -82,30 +82,30 @@
 		<view class="error-msg">
 			<label>
 				<span>结束时间 :</span>
-				<input id="endtime" type="text" value="" v-model="endtime" name="endtime" placeholder="请输入结束时间" style="height: 60rpx;" />
+				<input id="endTime" type="text" value="" v-model="endTime" name="endTime" placeholder="请输入结束时间" style="height: 60rpx;" />
 
 			</label>
 		</view>
 		
 		<view>
 			
-			<!-- <switch  @change="aaaa" data-name="choselike"/> -->
+			<!-- <switch  @change="aaaa" data-name="closeLike"/> -->
 
 		</view>
 		
 		<view class="text_line" style="padding: 0 30rpx;" v-if="zhibotype == 'weixin'">
 			<view style="display: flex;justify-content: space-between;">
-				是否关闭点赞<switch class="text_check" @change="checkbox" data-name="choselike"/>
-				<!-- <radio-group style="display: flex; justify-content: space-around;margin-top: 35rpx;" @change="aaaa" data-name="choselike">
+				是否关闭点赞<switch class="text_check" @change="checkbox" data-name="closeLike"/>
+				<!-- <radio-group style="display: flex; justify-content: space-around;margin-top: 35rpx;" @change="aaaa" data-name="closeLike">
 					<label>
 						<view>
-							<radio value="0" :checked="choselike==0" />关闭
+							<radio value="0" :checked="closeLike==0" />关闭
 						</view>
 					</label>
 			
 					<label>
 						<view>
-							<radio value="1"  :checked="choselike==1" />开启
+							<radio value="1"  :checked="closeLike==1" />开启
 						</view>
 					</label>
 				</radio-group> -->
@@ -115,20 +115,20 @@
 
 		<view class="text_line" style="padding: 0 30rpx;" v-if="zhibotype == 'weixin'">
 			<view  style="display: flex;justify-content: space-between;">
-				是否关闭货架<switch class="text_check" @change="checkbox" data-name="chosegoods"/>
+				是否关闭货架<switch class="text_check" @change="checkbox" data-name="closeGoods"/>
 			</view>
 		</view>
 		
 		<view class="text-line" style="padding: 0 30rpx;" v-if="zhibotype == 'weixin'">
 			<view style="display: flex;justify-content: space-between;">
-				直播方式<switch class="text_check" @change="checkbox" data-name="screentype"/>
+				直播方式<switch class="text_check" @change="checkbox" data-name="screenType"/>
 			</view>
 		</view>
 		
 		
 		<view class="text-line" style="padding: 0 30rpx;" v-if="zhibotype == 'weixin'">
 			<view style="display: flex;justify-content: space-between;">
-				是否关闭评论<switch class="text_check" @change="checkbox" data-name="closecomment"/>
+				是否关闭评论<switch class="text_check" @change="checkbox" data-name="closeComment"/>
 			</view>
 		</view>
 		
@@ -144,7 +144,7 @@
 		</view>
 		
 		<view class="goods_list" v-if="zhibotype == 'weixin'">
-			请选择商品
+			<view style="text-align: center;">请选择商品</view>
 		
 
 		<view class="goods" v-for="(item,index) in recommend_product_list" :key="index" @click="live_goods($event)"
@@ -172,30 +172,34 @@
 	export default {
 		data() {
 			return {
-				livename: '',
-				starttime: '',
-				endtime: '',
+				name: '',
+				startTime: '',
+				endTime: '',
 				livemessage:'',
-				liver: '',
+				anchorName: '',
 				anchorWechat: '',
 				liveNO: '',
 				productid: '',
 				recommend_product_list: '',
 				productid_str: [],
-				shareimg: '../../static/img/add.png',
-				coverimg: '../../static/img/add.png',
-				choselike:'',
-				closegoods:'',
-				screentype:'',
-				closecomment:'',
+				shareImg: '../../static/img/add.png',
+				coverImg: '../../static/img/add.png',
+				closeLike:'',
+				closeGoods:'',
+				screenType:'',
+				closeComment:'',
 				zhibotype: ''
 			}
 		},
 		onLoad(option) {
+			
+			console.log('weixxxsdsdsssssssssssssd====',option );
 			if (option.zhibotype == 'weixin') {
 				this.zhibotype = 'weixin';
+				console.log('weixxxsdsdssssssssssssssaaaaassd====',this.zhibotype );
+				
 			}
-
+				
 			this.abotapi.set_option_list_str(this, this.callback_function);
 
 			this.live_goods_lists();
@@ -219,61 +223,61 @@
 				
 				console.log('789sssss',name);
 				
-				if(name == 'choselike'){
-					var choselike = e.detail.value;
+				if(name == 'closeLike'){
+					var closeLike = e.detail.value;
 					
-					if(choselike){
-						this.choselike =1;
-					console.log('choselikeeeeeeeeeeeee',this.choselike);	
+					if(closeLike){
+						this.closeLike =1;
+					console.log('closeLikeeeeeeeeeeeee',this.closeLike);	
 					}
 					else{
-						this.choselike =0;
-						console.log('choselikeeeeeeeeeeeee',this.choselike);
+						this.closeLike =0;
+						console.log('closeLikeeeeeeeeeeeee',this.closeLike);
 					}
 					
 					
 				}
 				
-				if(name == 'chosegoods'){
-					var chosegoods = e.detail.value;
+				if(name == 'closeGoods'){
+					var closeGoods = e.detail.value;
 					
-					if(chosegoods){
-						this.chosegoods =1;
-					console.log('chosegoodsssssssss',this.chosegoods);	
+					if(closeGoods){
+						this.closeGoods =1;
+					console.log('closeGoodsssssssss',this.closeGoods);	
 					}
 					else{
-						this.chosegoods =0;
-						console.log('chosegoodsssssssss',this.chosegoods);
+						this.closeGoods =0;
+						console.log('closeGoodsssssssss',this.closeGoods);
 					}
 					
 					
 				}
 				
-				if(name == 'screentype'){
-					var screentype = e.detail.value;
+				if(name == 'screenType'){
+					var screenType = e.detail.value;
 					
-					if(screentype){
-						this.screentype =1;
-					console.log('screentypeeeeeeeeeeee',this.screentype);	
+					if(screenType){
+						this.screenType =1;
+					console.log('screenTypeeeeeeeeeeee',this.screenType);	
 					}
 					else{
-						this.screentype =0;
-						console.log('screentypeeeeeeeeeeee',this.screentype);
+						this.screenType =0;
+						console.log('screenTypeeeeeeeeeeee',this.screenType);
 					}
 					
 					
 				}
 				
-			if(name == 'closecomment'){
-				var closecomment = e.detail.value;
+			if(name == 'closeComment'){
+				var closeComment = e.detail.value;
 				
-				if(closecomment){
-					this.closecomment =1;
-				console.log('789sssssssssss',this.closecomment);	
+				if(closeComment){
+					this.closeComment =1;
+				console.log('789sssssssssss',this.closeComment);	
 				}
 				else{
-					this.closecomment =0;
-					console.log('789sssssssddddssss',this.closecomment);
+					this.closeComment =0;
+					console.log('789sssssssddddssss',this.closeComment);
 				}
 				
 				
@@ -288,10 +292,10 @@
 			// 	console.log('789sssss',name);
 				
 			
-			// 	var chosegoods = e.detail.value;
-			// 	this.chosegoods = chosegoods;
+			// 	var closeGoods = e.detail.value;
+			// 	this.closeGoods = closeGoods;
 				
-			// 	// console.log('789sssddddss',choselike);
+			// 	// console.log('789sssddddss',closeLike);
 			// 	// if(name == 'dianzan'){
 			// 	// 	console.log('789');
 			// 	// }
@@ -315,7 +319,7 @@
 						uni.uploadFile({
 							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=upload_image_file',
 							filePath: filepath,
-
+							name: 'file',
 							formData: {
 								sellerid: that.abotapi.globalData.default_sellerid,
 								checkstr: userInfo.checkstr,
@@ -329,16 +333,16 @@
 								var obj = JSON.parse(res.data);
 								console.log('objadsdsad', obj);
 
-								//that.shareimg = obj.img_url;
+								//that.shareImg = obj.img_url;
 								console.log('aaaaaa',a);
 								if(a == 1){
-									that.coverimg = obj.img_url
+									that.coverImg = obj.img_url
 								}else if(a == 2){
-									that.shareimg = obj.img_url;
+									that.shareImg = obj.img_url;
 								}
 								console.log('aaaaaa99995555', that.img_url);
-								console.log('===>shareimg', that.shareimg);
-								console.log('===>coverimg', that.coverimg);
+								console.log('===>shareImg', that.shareImg);
+								console.log('===>coverImg', that.coverImg);
 
 							}
 						});
@@ -350,26 +354,28 @@
 
 
 			},
-
+			
 
 			bt_live_data: function() {
 				var value2_json_str = {
-					'livename': this.livename,
-					'starttime': this.starttime,
-					'endtime': this.endtime,
+					'name': this.name,
+					'startTime': this.startTime,
+					'endTime': this.endTime,
 					'livemessage':this.livemessage,
-					'liver': this.liver,
+					'anchorName': this.anchorName,
 					'anchorWechat': this.anchorWechat,
 					'liveNo': this.liveNO,
-					'filepath': this.shareimg,
-					'choselike':this.choselike,
-					'chosegoods':this.chosegoods,
-					'screentype':this.screentype,
-					'closecomment':this.closecomment,
+					'filepath': this.shareImg,
+					'closeLike':this.closeLike,
+					'closeGoods':this.closeGoods,
+					'screenType':this.screenType,
+					'closeComment':this.closeComment,
 					'productid_str': this.productid_str.join(","),
+					'zhibotype':this.zhibotype
 				}
+				
 					var that
-				if (!this.liver) {
+				if (!this.anchorName) {
 					uni.showToast({
 						title: '请输入主播名字！',
 						icon: 'fail',
@@ -390,7 +396,7 @@
 				}
 				
 				
-				if (!this.livename) {
+				if (!this.name) {
 					uni.showToast({
 						title: '请输入直播间名称！',
 						icon: 'fail',
@@ -398,7 +404,7 @@
 					})
 					return;
 				}
-				if (!this.starttime) {
+				if (!this.startTime) {
 					uni.showToast({
 						title: '请输入开始时间！',
 						icon: 'fail',
@@ -406,29 +412,75 @@
 					})
 					return;
 				}
+				
 			    
 
-				// console.log('choselike==>>',this.choselike)
-				// console.log('chosegoods==>>',this.chosegoods)
-				// console.log('screentype==>>',this.screentype)
-				// console.log('closecomment==>>',this.closecomment)
+				// console.log('closeLike==>>',this.closeLike)
+				// console.log('closeGoods==>>',this.closeGoods)
+				// console.log('screenType==>>',this.screenType)
+				// console.log('closeComment==>>',this.closeComment)
 				// return;
 
-
-				var that = this
-				var userInfo = this.abotapi.get_user_info();
-				this.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/VideoLiveData/set_plan_video_live',
-					method: 'POST',
-					data: {
+				// var a = {
+				// 	userid: userInfo.userid,
+				// 	sellerid: this.abotapi.globalData.default_sellerid,
+				// 	checkstr: userInfo.checkstr,
+				// 	type: 0,
+				// 	value2_json_str: JSON.stringify(value2_json_str),
+				// };
+				
+				if(this.zhibotype == 'weixin'){
+					var that = this
+					var userInfo = this.abotapi.get_user_info();
+					var livetips={
+						userid: userInfo.userid,
+						sellerid: this.abotapi.globalData.default_sellerid,
+						checkstr: userInfo.checkstr,
+						type: 0,
+						// value2_json_str: JSON.stringify(value2_json_str),
+						name: this.name,
+						startTime: this.startTime,
+						endTime: this.endTime,
+						// livemessage:this.livemessage,
+						anchorName: this.anchorName,
+						anchorWechat: this.anchorWechat,
+						// liveNo: this.liveNO,
+						closeLike:this.closeLike,
+						closeGoods:this.closeGoods,
+						screenType:this.screenType,
+						closeComment:this.closeComment,
+						zhibotype:this.zhibotype,
+						shareImg:this.shareImg,
+						coverImg:this.coverImg,
+						wxa_appid: this.abotapi.globalData.xiaochengxu_appid,
+					}
+					
+					
+				}
+				else{
+					var that = this
+					var userInfo = this.abotapi.get_user_info();
+					var livetips={
 						userid: userInfo.userid,
 						sellerid: this.abotapi.globalData.default_sellerid,
 						checkstr: userInfo.checkstr,
 						type: 0,
 						value2_json_str: JSON.stringify(value2_json_str),
-					},
+					}
+					
+					
+				}
+				console.log('99999999999====',this.zhibotype );
+				var that = this
+				var userInfo = this.abotapi.get_user_info();
+				this.abotapi.abotRequest({
+					url: that.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/VideoLiveData/set_plan_video_live',
+					method: 'POST',
+					data:livetips,
+					
 					success(res) {
 						console.log("aaaaa111", res)
+						console.log('99999999ssss999====',livetips );
 						uni.showToast({
 						  title: res.data.msg,
 						  duration: 2000
