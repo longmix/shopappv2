@@ -93,9 +93,9 @@
 
 		</view>
 		
-		<view class="text_line" style="padding: 0 30rpx;" v-if="zhibotype == 'weixin'">
+		<view class="text_line" style="padding: 0 30rpx; margin-top: 15px;" v-if="zhibotype == 'weixin'">
 			<view style="display: flex;justify-content: space-between;">
-				是否关闭点赞<switch class="text_check" @change="checkbox" data-name="closeLike"/>
+				<span>是否关闭点赞:</span><switch class="text_check" @change="checkbox" data-name="closeLike"/>
 				<!-- <radio-group style="display: flex; justify-content: space-around;margin-top: 35rpx;" @change="aaaa" data-name="closeLike">
 					<label>
 						<view>
@@ -115,20 +115,20 @@
 
 		<view class="text_line" style="padding: 0 30rpx;" v-if="zhibotype == 'weixin'">
 			<view  style="display: flex;justify-content: space-between;">
-				是否关闭货架<switch class="text_check" @change="checkbox" data-name="closeGoods"/>
+				<span>是否关闭货架:</span><switch class="text_check" @change="checkbox" data-name="closeGoods"/>
 			</view>
 		</view>
 		
 		<view class="text-line" style="padding: 0 30rpx;" v-if="zhibotype == 'weixin'">
 			<view style="display: flex;justify-content: space-between;">
-				直播方式<switch class="text_check" @change="checkbox" data-name="screenType"/>
+				<span>直播方式:</span><switch class="text_check" @change="checkbox" data-name="screenType"/>
 			</view>
 		</view>
 		
 		
 		<view class="text-line" style="padding: 0 30rpx;" v-if="zhibotype == 'weixin'">
 			<view style="display: flex;justify-content: space-between;">
-				是否关闭评论<switch class="text_check" @change="checkbox" data-name="closeComment"/>
+				<span>是否关闭评论:</span><switch class="text_check" @change="checkbox" data-name="closeComment"/>
 			</view>
 		</view>
 		
@@ -588,7 +588,7 @@
 		font-size: 30rpx;
 	}
 
-	.error-msg span {
+	span {
 		font-size: 30rpx;
 		color: #666666;
 	}
