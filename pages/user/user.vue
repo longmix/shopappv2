@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view v-if="showHeader" class="status" :style="{position:headerPosition,top:statusTop,backgroundColor:wxa_shop_nav_bg_color,fontColor:wxa_shop_nav_font_color}"></view>
+		<view v-if="showHeader" class="mystatusbar" :style="{position:headerPosition,top:statusTop,backgroundColor:wxa_shop_nav_bg_color,fontColor:wxa_shop_nav_font_color}"></view>
 		<view v-if="showHeader" class="header" :style="{position:headerPosition,top:headerTop,backgroundColor:wxa_shop_nav_bg_color,fontColor:wxa_shop_nav_font_color}">
 			<view class="addr"></view>
 			<view class="input-box">
@@ -532,7 +532,7 @@
 </script>
 <style lang="scss">
 	page{position: relative;background-color: #fff;}
-	.status {
+	.mystatusbar {
 		width: 100%;
 		height: 0;
 		position: fixed;

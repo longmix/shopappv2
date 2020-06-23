@@ -45,8 +45,9 @@
 				"enablePullDownRefresh": true,
 				"onReachBottomDistance":50,
 				"app-plus": {
-					"titleNView": false ,//禁用原生导航栏
-					"softinputNavBar":"none"
+					"titleNView":false,//禁用原生导航栏
+					"softinputNavBar":"none",
+					"navigationBarTextStyle":"black" //因为首页的背景是白色的，所以需要将状态栏文字改成黑色
 				},
 				"h5": {
 					"titleNView": false ,//禁用原生导航栏
@@ -61,7 +62,8 @@
 				"enablePullDownRefresh": true,
 				"app-plus": {
 					"titleNView": false ,//禁用原生导航栏
-					"bounce":"none"
+					"bounce":"none",
+					"navigationBarTextStyle":"black"
 					
 				}
 			}
@@ -73,7 +75,8 @@
 				"enablePullDownRefresh": true,
 				"app-plus": {
 					"titleNView": false ,//禁用原生导航栏
-					"bounce":"none"
+					"bounce":"none",
+					"navigationBarTextStyle":"black"
 					
 				}
 			}
@@ -354,7 +357,8 @@
 				"onReachBottomDistance":50,
 				"app-plus": {
 					"titleNView": false ,//禁用原生导航栏
-					"softinputNavBar":"none"
+					"softinputNavBar":"none",
+					"navigationBarTextStyle":"black"
 				}
 		    }
 		},
@@ -363,7 +367,12 @@
 		    "style": {
 		    	"navigationBarTitleText": "商家详情",
 				"enablePullDownRefresh": true,
-		    	"softinputNavBar":"none"
+		    	"softinputNavBar":"none",
+				"app-plus": {
+					"titleNView": false ,//禁用原生导航栏
+					"softinputNavBar":"none",
+					"navigationBarTextStyle":"black"
+				}
 		    }
 		},
 		{

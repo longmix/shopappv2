@@ -1,7 +1,12 @@
 <template>
 	<view>
-		<view v-if="current_shang_detail.mendian_image">
-			<image @load="imageLoad($event)" :data-id='index' mode="widthFix" style="width: 100%;" :src="current_shang_detail.mendian_image"></image>
+		<!-- 状态栏 -->
+		<view v-if="showHeader" class="mystatusbar" :style="{ position: headerPosition,top:statusTop,opacity: afterHeaderOpacity}"></view>
+	
+		<view class="welcome_image">
+			<view v-if="current_shang_detail.mendian_image">
+				<image @load="imageLoad($event)" :data-id='index' mode="widthFix" style="width: 100%;" :src="current_shang_detail.mendian_image"></image>
+			</view>
 		</view>
 
 		<view class="shang_detail_box1">
@@ -281,9 +286,11 @@
 				shang_faquan_list: '',
 				spec: '',
 				isShoucang: 0,
+				
 				showHeader: true,
 				afterHeaderOpacity: 1, //不透明度
 				headerPosition: 'fixed',
+				
 				headerTop: null,
 				statusTop: null,
 				nVueTitle: null,
@@ -902,6 +909,28 @@
 </script>
 
 <style lang="scss">
+	.mystatusbar {
+		width: 100%;
+		height: 0;
+		position: fixed;
+		z-index: 10;
+		background-color: #fff;
+		top: 0;
+		/*  #ifdef  APP-PLUS  */
+		height: var(--status-bar-height); //覆盖样式
+		margin-bottom: var(--status-bar-height);
+		/*  #endif  */
+	}
+	
+	.welcome_image{
+		width: 100%;
+		display: block;
+		//background-color: #f06c7a;
+		/*  #ifdef  APP-PLUS  */
+		margin-top: var(--status-bar-height);
+		/*  #endif  */
+	}
+
 	.shang_detail_box1 {
 		background-color: #81ab85;
 		margin: 5upx;

@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<!-- 状态栏 -->
-		<view v-if="showHeader" class="status" :style="{ position: headerPosition,top:statusTop,opacity: afterHeaderOpacity}"></view>
+		<view v-if="showHeader" class="mystatusbar" :style="{ position: headerPosition,top:statusTop,opacity: afterHeaderOpacity, fontColor:wxa_shop_nav_font_color}"></view>
 		<!-- 顶部导航栏 -->
 		<view v-if="showHeader" class="header" :style="{ position: headerPosition,top:headerTop,opacity: afterHeaderOpacity }">
 			<!-- 定位城市 -->
@@ -214,6 +214,11 @@ export default {
 			articlelist2:'',
 			wxa_show_toutiao:'',
 			wxa_shop_toutiao_flash_line:'',
+			
+			wxa_shop_nav_bg_color:'',
+			wxa_shop_nav_font_color:'',
+			
+			
 			addListener:'',
 			wxa_show_icon_index_count:'',
 			current_cityname:'',
@@ -669,6 +674,10 @@ export default {
 			if(!cb_params.option_list){
 				return;
 			}
+			
+			that.wxa_shop_nav_bg_color  = cb_params.option_list.wxa_shop_nav_bg_color;
+				
+			that.wxa_shop_nav_font_color = cb_params.option_list.wxa_shop_nav_font_color;
 			
 			that.default_copyright_text = that.abotapi.globalData.default_copyright_text;
 			
@@ -1610,7 +1619,7 @@ page{position: relative;background-color: #fff;}
 		height: 36vw;
 	}
 }
-.status {
+.mystatusbar {
 	width: 100%;
 	height: 0;
 	position: fixed;
