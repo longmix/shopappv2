@@ -5,9 +5,10 @@
 		<!-- 商家搜索 -->
 		<view class="top-input-con">
 
-			<view  class="scroll-txt" @tap="search()">   
-				<icon type="search" size="14" style="margin: 0px 10rpx 0 0"></icon>
-				<text class="scroll-ads">搜索附近商家</text>
+			<view  class="scroll-txt" >   
+				<input type="text" v-model="search_text" placeholder="搜索附近商家"/>
+				<icon type="search" size="15" style="margin: 0px 10rpx 0 0;position:absolute;right:30rpx;" @tap="search()"></icon>
+				<!-- <text class="scroll-ads">搜索附近商家</text> -->
 			</view>
 		</view>
 		
@@ -155,6 +156,8 @@
 				wxa_kefu_mobile_num:'',
 				wxa_kefu_form_url:'',
 				wxa_kefu_bg_color:'',
+				search_text:'', //搜索用的文字
+				search_shang_list:[], //搜索查询商家
 			};
 		},
 		
@@ -204,6 +207,9 @@
 			// console.log('coordinate1',coordinate);
 			
 			// this.coordinate = coordinate;
+			//清除搜索的缓存
+			that.search_shang_list = [];
+			uni.removeStorageSync('search_shang_all_jingwei');
 			
 			locationapi.get_location(that, that.cx_paixu_shang_list);
 			
@@ -289,14 +295,21 @@
 			get_shang_list:function(){
 				
 				var that = this;
+				console.log('7777778888',this.search_shang_list);
+				if(that.search_shang_list.length != 0){
+					var shang_list = that.search_shang_list;
+				}else{
+					var shang_list = that.shang_list;
+				}
 				
-				var shang_list = that.shang_list;
+				
+				
 				if(that.sx_shang_list.length != 0){
 					
 					var shang_list = that.sx_shang_list;
 				}
-				
-				
+				console.log(that.sx_shang_list.length);
+				console.log('77777788883333',shang_list);
 				var page = this.page;
 				var shang_num = this.shang_num;
 				
@@ -306,7 +319,7 @@
 				console.log('end',end);
 				var threeArr = shang_list.slice(star, end); //返回特定的数组
 				
-				
+				console.log(threeArr);
 				var shangid_str = '';
 				for(var i = 0;i <  threeArr.length;i++){
 					shangid_str = shangid_str + threeArr[i]['xianmai_shangid'] + '|';
@@ -410,8 +423,15 @@
 				
 				var that = this;
 				var arr = uni.getStorageSync('all_shang_jingwei_list'); //获取商家经纬度
+				var search_shang_all_jingwei = uni.getStorageSync("search_shang_all_jingwei");  //获取搜索之后的缓存
 				console.log('arr',arr);
-				var shop_location_list = that.jisuan_juli(arr);
+				if(search_shang_all_jingwei){
+					console.log('进入搜索缓存排序');
+					var shop_location_list = that.jisuan_juli(search_shang_all_jingwei);
+				}else{
+					var shop_location_list = that.jisuan_juli(arr);
+				}
+				
 				
 				
 				//console.log('shop_location_list',shop_location_list);
@@ -437,11 +457,19 @@
 					return 0;
 				  }*/
 				}
+				console.log('进入搜索缓存排序计算完毕',paixu_shanglist);
+				if(search_shang_all_jingwei){
+					uni.setStorageSync("search_shop_location_list", paixu_shanglist);
+					that.search_shang_list = paixu_shanglist;
+				}else{
+					uni.setStorageSync("shop_location_list", paixu_shanglist);
+					that.shang_list = uni.getStorageSync("shop_location_list");
+				}
 				
-				uni.setStorageSync("shop_location_list", paixu_shanglist);
 				
 				
-				that.shang_list = uni.getStorageSync("shop_location_list");
+				console.log('that.shang_list===>',that.shang_list);
+				
 				
 				that.get_shang_list();
 				
@@ -509,9 +537,15 @@
 			
 			//全部美食
 			shuaxin:function(){
+				//清除搜索的缓存
+				this.search_shang_list = [];
+				uni.removeStorageSync('search_shang_all_jingwei');
+				this.search_text = '';
+				//===end====
+				
 				this.is_xiala = 0;
 				var shang_list = uni.getStorageSync("shop_location_list");
-				
+				console.log('shang_list==>',shang_list);
 				this.shang_list = shang_list;
 				
 				this.page = 1;
@@ -524,6 +558,11 @@
 			
 			//筛选功能
 			bindPickerChangeFloor:function(e){
+				//清除搜索的缓存
+				this.search_shang_list = [];
+				uni.removeStorageSync('search_shang_all_jingwei');
+				this.search_text = '';
+				
 				//缓存中的商家列表
 				this.is_xiala = 0;
 				var shang_list = uni.getStorageSync("shop_location_list");
@@ -682,11 +721,33 @@
 			
 			//搜索
 			search: function (view) {
-				var welfareId = view.currentTarget.dataset.value;
-				var url = "/pages/listdetail/listdetail?name=" + welfareId;
-				uni.navigateTo({
-					url: url
-				});
+				
+				var that = this;
+				that.xianmaishang_list = [];
+				that.page = 1;
+				that.sx_shang_list = [];
+				that.abotapi.abotRequest({
+					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/XianmaiShangData/get_shang_all_jingwei',
+					method: 'post',
+					data: {
+						sellerid:that.abotapi.globalData.default_sellerid,
+						searchType: 'search',
+						keywords: this.search_text,
+					},
+					success: function (res) {
+						uni.setStorageSync("search_shang_all_jingwei", res.data.data);
+						console.log('resres',res.data.data);
+						locationapi.get_location(that, that.cx_paixu_shang_list);
+					}
+				})
+				    
+				console.log('search_text',this.search_text);
+				
+				// var welfareId = view.currentTarget.dataset.value;
+				// var url = "/pages/listdetail/listdetail?name=" + welfareId;
+				// uni.navigateTo({
+				// 	url: url
+				// });
 			},
 			
 			//商户头条
