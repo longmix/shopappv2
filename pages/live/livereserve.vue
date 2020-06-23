@@ -71,25 +71,53 @@
 			</label>
 		</view>
 
-		<view class="error-msg">
+		<!-- <view class="error-msg">
 			<label>
 				<span>开始时间 :</span>
-				<!-- <input id="startTime" type="text" value="" v-model="startTime" name="startTime" placeholder="请输入开始时间" style="height: 60rpx;" /> -->
 			<picker name="birthday" @change="bindDateChange" mode="date" :value="date" :start="date_start_val" :end="date_end_val">
 				<view class="picker">
 					{{date}}
 				</view>
 			</picker>
 			</label>
+		</view> -->
+		<view class="row">
+			<text class="name">开始时间：</text>
+			<view class="value">
+				<biaofun-datetime-picker
+					placeholder="请选择活动时间"
+					:defaultValue="defaultValue"
+					start="2000-02-03 02:08"
+					end="2100-10-28 22:58"
+					fields="minute"
+					@change="changeDatetimePicker"
+					change_name="startTime"
+				></biaofun-datetime-picker>
+			</view>
 		</view>
+		<view class="row">
+			<text class="name">结束时间：</text>
+			<view class="value">
+				<biaofun-datetime-picker
+					placeholder="请选择活动时间"
+					:defaultValue="defaultValue"
+					start="2000-02-03 02:08"
+					end="2100-10-28 22:58"
+					fields="minute"
+					@change="changeDatetimePicker"
+					change_name="endTime"
+				></biaofun-datetime-picker>
+			</view>
+		</view>
+		
 
-		<view class="error-msg">
+		<!-- <view class="error-msg">
 			<label>
 				<span>结束时间 :</span>
 				<input id="endTime" type="text" value="" v-model="endTime" name="endTime" placeholder="请输入结束时间" style="height: 60rpx;" />
 
 			</label>
-		</view>
+		</view> -->
 		
 		<view>
 			
@@ -159,7 +187,8 @@
 			</label>
 		</view>
 		</view>
-
+		
+		
 
 
 		<view class="success-msg">
@@ -173,7 +202,13 @@
 </template>
 
 <script>
+	
+	import biaofunDatetimePicker from '@/components/biaofun-datetime-picker/biaofun-datetime-picker.vue';
+	
 	export default {
+		components: {
+			biaofunDatetimePicker
+		},
 		data() {
 			return {
 				name: '',
@@ -197,6 +232,7 @@
 				date_end_val:'',//显示开始的时间
 				date:'2020-06-22', //显示开始的时间
 				date_end:'', //显示结束的时间
+				defaultValue: '2020-06-08 10:30' // 默认值
 			}
 		},
 		onLoad(option) {
@@ -210,15 +246,15 @@
 				
 			}
 				
-			var myDate = new Date();
-			myDate.setDate(myDate.getDate() - 5);
+		// 	var myDate = new Date();
+		// 	myDate.setDate(myDate.getDate() - 5);
 			
-			var myDate2 = new Date();
-			myDate2.setDate(myDate2.getDate() + 5);
+		// 	var myDate2 = new Date();
+		// 	myDate2.setDate(myDate2.getDate() + 5);
 		
 			
-			this.date_start_val = util.formatTime(myDate),
-			this.date_end_val = util.formatTime(myDate2),
+		// 	this.date_start_val = util.formatTime(myDate),
+		// 	this.date_end_val = util.formatTime(myDate2),
 			
 
 				
@@ -231,6 +267,22 @@
 
 		},
 		methods: {
+			changeDatetimePicker: function(date,change_name) {
+				
+				if(change_name == 'endTime'){
+					//选择的是结束时间
+					this.endTime = date.f3;
+				}
+				
+				if(change_name == 'startTime'){
+					//选择的是开始时间
+					this.startTime = date.f3;
+				}
+				
+				console.log('选择的日期时间的change_name：', change_name);
+				
+				console.log('选择的日期时间数据：', date);
+			},
 			callback_function: function(that, cb_params) {
 
 				if (!cb_params) {
@@ -242,11 +294,6 @@
 				that.abotapi.getColor();
 			},
 			
-			bindDateChange: function (event) {
-			    console.log(event);
-				this.date = event.detail.value;
-			    
-			},
 			
 			checkbox:function(e){
 				console.log('eeeee=>>>>>',e);
@@ -427,6 +474,23 @@
 					}
 				}
 				
+				if (!this.startTime) {
+					uni.showToast({
+						title: '请选择开始时间！',
+						icon: 'fail',
+						duration: 2000
+					})
+					return;
+				}
+				
+				if (!this.endTime) {
+					uni.showToast({
+						title: '请选择结束时间！',
+						icon: 'fail',
+						duration: 2000
+					})
+					return;
+				}
 				
 				if (!this.name) {
 					uni.showToast({
@@ -502,6 +566,7 @@
 					
 					
 				}
+				
 				console.log('99999999999====',this.zhibotype );
 				var that = this
 				var userInfo = this.abotapi.get_user_info();
@@ -684,5 +749,32 @@
 	.huakuai{
 		float: right;
 		display: flow-root;
+	}
+	.page {
+		padding: 0 30upx;
+	}
+	
+	.row {
+		display: flex;
+		height: 100upx;
+		align-items: center;
+		color: #040506;
+		border-bottom: 1upx solid rgba($color: #707070, $alpha: 0.3);
+	}
+	
+	.row:active {
+		opacity: 0.8;
+	}
+	
+	.name {
+		flex-shrink: 0;
+	}
+	
+	.value {
+		flex: 1;
+	}
+	
+	.right-icon {
+		color: #707070;
 	}
 </style>
