@@ -88,7 +88,7 @@
 		<!-- 九宫格图标 begin -->
 		<view class="icon-box-con" style="overflow: hidden;background-color: #FFFFFF;margin-bottom: 10rpx;">
 			<view class='icon-box' v-for="(item,index) in list_first" :key="index">
-				<navigator :url="item.url" open-type="navigate" v-if="ecard_option_list.ecard_nav_show_toutiao == 1">
+				<navigator :url="item.url" open-type="navigate">
 					<view class='icon-list'>
 						<image mode="widthFix" :src='item.src'></image>
 						<view class='icon-text'><text>{{item.name}}</text></view>
@@ -303,7 +303,7 @@
 			this.abotapi.globalData.sellerid = sellerid
 			this.abotapi.set_sellerid(sellerid);
 			
-			console.log('当前sellerid:' + sellerid + "，来自请求" + q);
+			console.log('当前sellerid:' + sellerid + "，来自请求");
 
 
 
@@ -377,17 +377,14 @@
 			callback_function_shop_option_data: function(that, option_data) {
 				console.log('option_data========', option_data);
 
-				that.abotapi.getColor();
+				//that.abotapi.getColor();
 
 				//=====更新商户头条=================
 				that.initArticleList();
 				//========End====================
 
 
-				console.log("准备获取uwid[" + this.abotapi.globalData.userInfo.uwid + "]的商户[" + this.abotapi.globalData.sellerid +
-					"]会员卡信息");
-
-
+				
 
 
 
@@ -403,17 +400,20 @@
 				  return;
 				}
 				
+				console.log("准备获取userid[" + userInfo.userid + "]的商户[" + this.abotapi.globalData.sellerid +"]会员卡信息");
+				
+				//console.log('that.abotapi.get_sellerid() ===>>>> ', that.abotapi.get_sellerid());
 				
 				uni.showLoading({
 					title: '数据加载中……',
 				});
                 
 				
-				var url = this.abotapi.globalData.yanyubao_server_url + '/index.php?g=Yanyubao&m=Xiaochengxu&a=get_user_card';
+				var url = that.abotapi.globalData.yanyubao_server_url + '/index.php?g=Yanyubao&m=Xiaochengxu&a=get_user_card';
 				var data = {
-					sellerid: this.abotapi.get_sellerid(),
+					sellerid: that.abotapi.get_sellerid(),
 					checkstr: userInfo.checkstr,
-					uwid: userInfo.uwid,
+					//uwid: userInfo.uwid,
 					userid: userInfo.userid,
 					//data_unia_str: encodeURI(JSON.stringify(app.globalData.userInfo))  //用于更新服务器端用户的头像和昵称
 				};
@@ -476,7 +476,7 @@
 					url: that.abotapi.globalData.yanyubao_server_url + 'Yanyubao/Xiaochengxu/get_ecard_option_list',
 					method: 'POST', //请求方式
 					data: {
-						sellerid : that.abotapi.get_sellerid.default_sellerid
+						sellerid : that.abotapi.get_sellerid()
 						//sellerid: 'pQNNmSkaq'
 					},
 					success(res) {
