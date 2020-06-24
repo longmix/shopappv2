@@ -110,9 +110,12 @@
 						</block>
 						<view v-if="item.buyer_memo != ''">备注：{{item.buyer_memo}}</view>
 						<view  class="btn_b">
+							<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
+						</view> 
+						<!-- <view  class="btn_b">
 							<navigator :url="'/pages/pay/payment/payment?orderId='+item.orderid+'&balance_zengsong_dikou='+item.coupon_price+'&balance_dikou='+item.yue_price" class="font_12 fl_r mr_5 btn_min">支付订单</navigator>
 							<view class="font_12 fl_r mr_5 btn_min" @tap="removeOrder" :data-order-id="item.orderid">取消订单</view>
-						</view> 
+						</view> -->
 					</view>
 				</swiper-item>
 				
@@ -159,10 +162,13 @@
 						
 						</block>
 						<view v-if="item.buyer_memo != ''">备注：{{item.buyer_memo}}</view>
-						<view  class="btn_b">
+						<!-- <view  class="btn_b">
 							<navigator class="font_12 btn_min fl_r" @tap="refundOrder" v-if="wxa_order_hide_daishouhuo_refund == 0" :data-order-id="item.orderid">申请退款</navigator>
 							<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
-						</view> 
+						</view> --> 
+						<view  class="btn_b">
+							<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
+						</view>
 					</view>
 				</swiper-item>
   
@@ -209,12 +215,15 @@
 							</view>
 						</block>
 						<view v-if="item.buyer_memo != ''">备注：{{item.buyer_memo}}</view>
-						<view  class="btn_b">
+						<!-- <view  class="btn_b">
 							<navigator v-if="wxa_order_hide_daishouhuo_refund_after == 0" class="font_12 btn_min fl_r" :url="'tuihuo?orderId='+item.orderid">申请退款</navigator>
 							<view class="font_12 btn_min fl_r mr_5" @tap="recOrder" :data-order-id="item.orderid">确认收货</view>
 							<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
 							<view v-if="item.status=='3'" class="font_12 btn_min fl_r mr_5" @click="pingjia" :data-orderid='item.orderid' :data-xianmaishangid='item.order_option.hahading_order_xianmai_shangid'>立即评价</view>
 							
+						</view> -->
+						<view  class="btn_b">
+							<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
 						</view>
 					</view>
 				</swiper-item>

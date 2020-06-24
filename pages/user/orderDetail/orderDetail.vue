@@ -35,7 +35,8 @@
 			<view class="p_all bg_white mt10 c6 l_h20  font_14">
 				<view >
 				订单状态：<text class="red">{{orderData.status_str}}</text>
-	      <navigator v-if="orderData.status_str=='待付款'" :url="'../order/zhifu?orderId=' + orderData.orderid + '&balance_zengsong_dikou=' + orderData.coupon_price + '&balance_dikou=' + orderData.yue_price" class="font_12 fl_r mr_5 btn_min">立即支付</navigator>
+	      <navigator v-if="orderData.status_str=='待付款'" :url="'../../pay/payment/payment?orderId=' + orderData.orderid + '&balance_zengsong_dikou=' + orderData.coupon_price + '&balance_dikou=' + orderData.yue_price" class="font_12 fl_r mr_5 btn_min">立即支付</navigator>
+		  <view v-if="orderData.status_str=='待收货'" @click="recOrder" :data-orderid="orderData.orderid" class="font_12 fl_r mr_5 btn_min">确认收货</view>
 				</view>
 				
 				<view class="mt10">
@@ -59,6 +60,13 @@
 	
 	      <view class="bordert font_14">
 	          <view>快递费<view class='fl_r'>￥{{orderData.price3}}</view></view>
+			  <view v-if="orderData.delivery_company">物流公司<view class='fl_r'>{{orderData.delivery_company}}</view></view>
+			  <view v-if="orderData.delivery_no">
+				  物流编号
+				  <view class="fuzhi" @click="Clipboard_text(orderData.delivery_no)" style="">复制</view>
+				  <view class='fl_r'>{{orderData.delivery_no}}</view>
+				  
+		      </view>
 	      </view>
 	      <view class="bordert font_14">
 	          <view>订单金额<view class='fl_r'>￥{{orderData.order_total_price}}</view></view>
@@ -124,7 +132,25 @@
 				orderList2:[],
 				orderList3:[],
 				orderList4:[],
-				orderData:'',
+				orderData:{
+					orderno:'',
+					realname:'',
+					mobile:'',
+					status_str:'',
+					createtime:'',
+					buyer_memo:'', 
+					total_num:'',
+					price:'',
+					price3:'',
+					delivery_company:'',
+					delivery_company:'', 
+					delivery_no:'',
+					order_total_price:'',
+					yue_price:'',
+					coupon_price:'',
+					pay_price:'',
+					payment_name:'',
+				},
 				wxa_shop_nav_bg_color:'',
 				wxa_order_hide_daishouhuo_refund_after:'',
 				orderno:''
@@ -229,6 +255,75 @@
 			        }
 			      });
 			    },
+				
+				//复制剪切板
+				Clipboard_text:function(text){
+					uni.setClipboardData({
+					    data: text,
+					    success: function () {
+					        uni.showToast({
+					        	title:'复制成功',
+					        })
+					    },
+						fail:function(){
+							uni.showToast({
+								title:'复制失败',
+							})
+						}
+					});
+				},
+				
+				  //确认收货
+				recOrder:function(e){
+					
+				    var that = this;
+				    var orderid = e.currentTarget.dataset.orderid;
+					var userInfo = that.abotapi.get_user_info();
+				    uni.showModal({
+				      title: '提示',
+				      content: '你确定已收到宝贝吗？',
+				      success: function(res) {
+				        res.confirm && that.abotapi.abotRequest({
+				          url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_finish',
+				          method:'post',
+				          data: {
+				            orderid: orderid,
+				            sellerid: that.abotapi.get_sellerid(),
+				            checkstr: userInfo.checkstr,
+				            userid: userInfo.userid
+				          },
+				          header: {
+				            'Content-Type':  'application/x-www-form-urlencoded'
+				          },
+				          success: function (res) {
+				            //--init data
+				            var code = res.data.code;
+				            if (code == 1){
+				              uni.showToast({
+				                title: '操作成功！',
+				                duration: 2000
+				              });
+				              that.loadProductDetail();
+				            }else{
+				              uni.showToast({
+				                title: res.data.msg,
+				                duration: 2000
+				              });
+				            }
+				          },
+				          fail: function () {
+				            // fail
+				            wx.showToast({
+				              title: '网络异常！',
+				              duration: 2000
+				            });
+				          }
+				        });
+				
+				      }
+				    });
+				  },
+				
 		}
 		
 	}
@@ -413,5 +508,14 @@
 	  padding-top: 5px;
 	  display:block;
 	  width:100%;
+	}
+	.fuzhi{
+		float: right;
+		margin-left: 24rpx;
+		background: #1AAD19;
+		color: #fff;
+		padding: 0 18rpx;
+		border-radius: 5px;
+		font-size: 24rpx;
 	}
 </style>
