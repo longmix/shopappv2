@@ -98,7 +98,9 @@
 			<view class="comment">
 		     
 				<image class="comment_img comment_write_img" src="../../static/img/help/write.png"></image>
-		        <input @focus="is_login" class="comment_input" placeholder="写评论..." confirm-type="send" @confirm="sendRemark()" :data-imgid="wz_text.id" v-model="inputValue" type="text"></input> <!--  -->
+		        <input @focus="is_login" class="comment_input" 
+					placeholder="写评论..." confirm-type="send" 
+					@confirm="submitRemark" :data-imgid="wz_text.id" v-model="inputValue" type="text"></input> <!--  -->
 		        
 		        <image class="comment_img comment_right_img" src="../../static/img/help/comment.png" @tap='toReamrkList'  ></image><!--  @click="get_input_focus()" -->
 		        <view class="comment_num" :hidden="!comment_num">{{comment_num}}</view>
@@ -479,6 +481,7 @@
 					data: {
 						// userid:userInfo.userid,
 						// checkstr:userInfo.checkstr,
+						sellerid : that.abotapi.get_sellerid(),
 						token: this.current_cms_token,
 						openid: this.abotapi.get_current_openid(),
 						action: 'list',
@@ -527,96 +530,11 @@
 			//提交评论
 			submitRemark: function (e) {
 				var that = this;
-				var remark = e.detail.value;
+				
+				var remark = that.inputValue;
 				var imgid = e.currentTarget.dataset.imgid
-				var userInfo = this.abotapi.get_user_info();
-				if(!userInfo || !userInfo.userid){
-					uni.navigateTo({
-						url: '/pages/login/login',
-					})
-					return;
-				}else{
-					this.abotapi.abotRequest({
-						url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
-						data: {
-							sellerid: this.abotapi.get_sellerid(),
-							checkstr: userInfo.checkstr,
-							userid: userInfo.userid,
-			      
-						},
-						header: {
-							"Content-Type": "application/x-www-form-urlencoded"
-						},
-						method: "POST",
-						success: function (res) {
-							console.log('ddd', res);
-							// console.log('ddd', res.data.code);
-							if (res.data.code == "-1") {
-								uni.navigateTo({
-									url: '/pages/login/login',
-								})
-							} else {
-								var data = res.data
-								var headimgurl = data.data.headimgurl
-								var nickname = data.data.nickname
-			
-								var url = that.abotapi.globalData.weiduke_server_url + '/openapi/ArticleImgApi/remark_img';
-								var data = {
-									token: that.current_cms_token,
-									openid: that.abotapi.get_current_openid(),
-									userid: userInfo.userid,
-									checkstr: userInfo.checkstr,
-									action: 'add',
-									imgid: imgid,
-									content: remark,
-									icon: headimgurl,
-									name: nickname
-								};
-								var cbSuccess = function (res) {
-									if (res.data.code == 1) {
-										that.get_remark_list();
-							   
-										that.inputValue == '';
-										console.log('that.inputValue',that.inputValue);
-										uni.showToast({
-											title: res.data.msg,
-											duration: 500
-										})
-									}
-								};
-								var cbError = function (res) {
-									uni.showToast({
-										title: '评论失败',
-										duration: 500
-									})
-								};
-								that.abotapi.httpPost(url, data, cbSuccess, cbError);
 				
-							}
-				
-						}
-					}) 
-				}
-			},
-				
-			
-			
-
-			
-			//发送评论内容
-			sendRemark:function(){
-				var that = this;
-				var userInfo = this.abotapi.get_user_info();
-				that.inputValue = this.inputValue;
-				console.log('inputValue',that.inputValue);
-				if(!userInfo || !userInfo.userid){
-					
-					uni.navigateTo({
-						url: '/pages/login/login',
-					})
-					return
-				};
-				if(that.inputValue == ''){
+				if(remark == ''){
 					that.is_OK = false;
 					console.log('TRUE')
 					uni.showToast({
@@ -624,145 +542,86 @@
 						duration: 500,
 					});
 					return;
-				}else{
-					that.is_OK = false;
-					this.getUserProfile();
-					console.log('FALSE')
-					uni.showToast({
-						title: '评论成功',
-						duration: 500,
-						
-					});
-					
 				}
-			},	
-			
-			
-			//获取登陆者个人信息
-			getUserProfile:function(){
-				var that=this;
+				
 				var userInfo = this.abotapi.get_user_info();
-				if(!userInfo){
+				
+				if(!userInfo || !userInfo.userid){
 					uni.navigateTo({
 						url: '/pages/login/login',
 					})
 					return;
 				}
-				this.abotapi.abotRequest({
-					url:this.abotapi.globalData.yanyubao_server_url +"?g=Yanyubao&m=ShopAppWxa&a=get_user_info",
-					data:{
-						sellerid: this.abotapi.get_sellerid(),
-						checkstr: userInfo.checkstr,
-						userid: userInfo.userid,
-					},
-					
-					header: {
-					  "Content-Type": "application/x-www-form-urlencoded"
-					},
-					method: "POST",
-					success: function (res) {
-						console.log('ddd', res);
-											
-						if (res.data.code == "-1") {
-							uni.navigateTo({
-								url: '/pages/login/login',
-							})
-							return;
-						} else {
-							var data = res.data;
-							
-							that.user_info = data.data;
-							console.log("user_info",that.user_info);
-							if(that.inputValue == ''){
-								console.log('inputValue为空')
-								return;
-							}else{
-								console.log("评论成功,inputValue清空")
-								that.doSendRemark();
-								that.inputValue = ''
+				
+				var url = that.abotapi.globalData.weiduke_server_url + '/openapi/ArticleImgApi/remark_img';
+				
+				var data = {
+					sellerid : that.abotapi.get_sellerid(),
+					token: that.current_cms_token,
+					openid: that.abotapi.get_current_openid(),
+					userid: userInfo.userid,
+					checkstr: userInfo.checkstr,
+					action: 'add',
+					imgid: imgid,
+					content: remark,
+					//icon: headimgurl,
+					//name: nickname
+				};
+				
+				var cbSuccess = function (res) {
+					uni.showModal({
+						title:'提示',
+						content:res.data.msg,
+						showCancel:false,
+						success:function(res002){
+							if (res.data.code == 1) {
 								that.get_remark_list();
+												   
+								that.inputValue = '';
 							}
 						}
-					},
-				})
-			},
-			
-			
-			// 执行发送评论
-			doSendRemark:function(){
-				var that = this;
-				var userInfo = this.abotapi.get_user_info();
-				console.log('userInfo',userInfo);
-				
-				if(!userInfo){
-					uni.showModal({
-						title:'请先登录',
-						content:'请先登录'
+					});
+				};
+				var cbError = function (res) {
+					uni.showToast({
+						title: '网络连接失败',
+						duration: 500
 					})
-					return;
-				}
+				};
 				
-				if(!userInfo.nickname){
-					userInfo.nickname = '';
-				}
+				that.abotapi.httpPost(url, data, cbSuccess, cbError);
 				
-				if(!userInfo.headimgurl){
-					userInfo.headimgurl = '';
-				}
 				
-				that.abotapi.abotRequest({
-					url:that.abotapi.globalData.weiduke_server_url+'openapi/ArticleImgApi/remark_img',
-					method:'POST',
-					header:{'Content-Type': 'application/x-www-form-urlencoded'},
-					data:{
-						token: that.current_cms_token,
-						openid: that.abotapi.get_current_openid(),
-						userid:userInfo.userid,
-						checkstr:userInfo.checkstr,
-						action: 'add',
-						imgid: that.wz_id,
-						content:this.inputValue,
-						icon:userInfo.headimgurl,
-						name:userInfo.nickname
-					},
-					success(res) {
-						console.log("res===",res);
-						if(res.data.code == 1){
-							uni.showToast({
-								title: '评论成功',
-								duration: 500,
-							});
-							
-						}
-					}
-				});
 			},
-			
 				
+			
+			
+			
 			//删除评论
 			deleteRemark: function (e) {
-			  
-				if (!userInfo) {
+				var userInfo = this.abotapi.get_user_info();
+				
+				if(!userInfo || !userInfo.userid){
 					uni.showToast({
 						title: '请先登录',
 						icon: 'none',
 						duration: 1000,
 						success: function () {
-				
-							uni.setStorageSync('last_url', '/cms/publish/publish?publishtype=' + that.publishtype);
-				
 							uni.navigateTo({
 								url: '/pages/login/login',
-							})
-						}
-					})
+							});
+						},
+					});
+					return;
 				}
+			  
 				
 				var that = this;
 				this.abotapi.abotRequest({
 					url: this.abotapi.globalData.weiduke_server_url + 'index.php/openapi/ArticleImgApi/remark_img',
 					method: 'post',
 					data: {
+						sellerid : that.abotapi.get_sellerid(),
 						token: this.current_cms_token,
 						openid: this.abotapi.get_current_openid(),
 						userid: userInfo.userid,
@@ -776,6 +635,7 @@
 					},
 					success: function (res) {
 						var data = res.data;
+						
 						if (data.code == 1) {
 							uni.setStorageSync('comment_num_' + that.wz_id, that.comment_num_all-1)
 							that.get_remark_list();
@@ -1291,7 +1151,7 @@
 	
 	.comment_list_aa{
 	  display:flex;
-	  margin-top:46rpx;
+	  margin:46rpx 20rpx;
 	
 	}
 	
