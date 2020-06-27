@@ -20,7 +20,7 @@
 	  
 			<view class="flexIcon" :style="{border:'1px solid ' + wxa_shop_nav_bg_color}">
 				<view class="flexIcon-icon iconfont icon-password flexIcon-icon-current"></view>
-				<input type="password" class="flexIcon-text"  name="password"  placeholder-style="color: #999;" @input="passInput"  placeholder="请输入密码" />
+				<input type="text" password class="flexIcon-text"  name="password"  placeholder-style="color: #999;" @input="passInput"  placeholder="请输入密码" />
 			</view>
 	  
 	  
