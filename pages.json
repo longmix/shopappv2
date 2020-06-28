@@ -388,6 +388,13 @@
 		    	"navigationBarTitleText": "关于",
 		    	"softinputNavBar":"none"
 		    }
+		},
+		{
+		    "path" : "pages/about/module_list",
+		    "style": {
+		    	"navigationBarTitleText": "图标",
+		    	"softinputNavBar":"none"
+		    }
 		}
         ,{
             "path" : "pages/locationList/locationList",
