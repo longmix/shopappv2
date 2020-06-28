@@ -233,12 +233,8 @@
 			click_check: function (e) {
 			
 			    var that = this
-			    uni.request({
+			    that.abotapi.abotRequest({
 					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_tokenstr',
-					header: {
-						"Content-Type": "application/x-www-form-urlencoded"
-					},
-					method: "POST",
 					success: function (res) {
 						// console.log(res.data);
 						that.tokenstr = res.data.tokenstr;		
@@ -253,7 +249,7 @@
 				var that = this				  
 				console.log(1111);
 				  
-				uni.request({
+				that.abotapi.abotRequest({
 					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=sendsms',
 					data: {
 						mobile: that.mobile,
@@ -262,10 +258,6 @@
 						//verifycode_sms: that.second,
 						tokenstr: that.tokenstr
 					},
-				    header: {
-						"Content-Type": "application/x-www-form-urlencoded"
-					},
-					method: "POST",
 					success: function (request_data) {
 						console.log(request_data.data)
 						if (request_data.data.code == 1) {
@@ -409,20 +401,8 @@
 									 
 									if(data.code == 1){
 										that.abotapi.set_user_account_info(data.data);
-										
-										// #ifndef MP-WEIXIN
-										//单独处理 is_get_userinfo
-										
-										
-										// #endif
-										
-										
-										
-										
+									
 									}
-									
-									
-									
 									
 									
 									//========显示登录成功的提示================
