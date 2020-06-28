@@ -5,18 +5,15 @@ const globalData = {
 		socket_server: 'https://socketio.tseo.cn',
 		
 		force_sellerid:1,
-		
-		// o2owaimai_server_url: 'https://yanyubao.tseo.cn/hahading/index.php/',
-		
-		
-		// xiaochengxu_appid: 'wx60a801e5fb7f9378',
-		xiaochengxu_appid: 'wx00d1e2843c3b3f77',
+	
+		xiaochengxu_appid: 'wx327955837a9c4090',
 		
 		
-		//通版商城
-		default_shopname: '延誉电商',
-		default_sellerid: 'pQNNmSkaq',
-		default_copyright_text:'延誉宝 @ 版权所有',
+		//腾羽生物
+		default_shopname: '腾羽云商',
+		default_sellerid: 'fSNQPajka',
+		default_copyright_text:'腾羽生物科技 版权所有',
+		
 		
 		//=======以下配置项在发布版本的时候确定，服务器端配置无效===
 		

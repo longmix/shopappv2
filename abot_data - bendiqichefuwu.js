@@ -5,10 +5,8 @@ const globalData = {
 		socket_server: 'https://socketio.tseo.cn',
 		
 		force_sellerid:1,
-		
-		
-		// xiaochengxu_appid: 'wx60a801e5fb7f9378',
-		xiaochengxu_appid: 'wx00d1e2843c3b3f77',
+
+		xiaochengxu_appid: 'wxfc3ddf7ac2c59963',
 	
 		
 		//本地汽车服务

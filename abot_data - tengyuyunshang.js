@@ -6,15 +6,8 @@ const globalData = {
 		
 		force_sellerid:1,
 		
-		// xiaochengxu_appid: 'wx60a801e5fb7f9378',
-		xiaochengxu_appid: 'wx00d1e2843c3b3f77',
-		
-		
-		// default_sellerid : 'fyJSPaVja',
-		// default_sellerid : 'pQNNmSkaq',	
-		
-		// default_sellerid: 'fSNQPajka',
-		
+		xiaochengxu_appid: 'wx327955837a9c4090',
+
 		//腾羽生物
 		default_shopname: '腾羽云商',
 		default_sellerid: 'fSNQPajka',
