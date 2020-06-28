@@ -353,51 +353,50 @@ export default {
 		  method: "POST",
 		  success: function (res) {
 
-			console.log('fffsssssfeefefsf', res.data.menu);
+			console.log('fffsssssfeefefsf', res);
 
 			
 			var data = res.data.data;
-	   
-			if (data.menu == '') {
-			  
-/* 			  uni.showModal({
-				title: '提示',
-				content: '暂时没有商品，请等待...',
-				success(res) {
-				  if (res.confirm) {
-					// uni.navigateTo({
-					//   url: '/pages/shops/shop_detail' + '?id=' + shopId,
-					// })
-					uni.navigateBack({
-					  delta: 1
+			if(res.data.code == 1){
+				if (data.menu == '') {
+					uni.showModal({
+						title: '提示',
+						content: '暂时没有商品，请等待...',
+						success(res) {
+						  if (res.confirm) {
+							// uni.navigateTo({
+							//   url: '/pages/shops/shop_detail' + '?id=' + shopId,
+							// })
+							uni.navigateBack({
+							  delta: 1
+							})
+						  } else if (res.cancel) {
+							uni.navigateBack({
+							  delta: 1
+							})
+						  }
+						}
 					})
-				  } else if (res.cancel) {
-					uni.navigateBack({
-					  delta: 1
-					})
+					return;
+				}
+				
+				var menu_list = data.menu;
+				for(var i=0; i<menu_list.length; i++){
+				  for (var j = 0; j < menu_list[i]['menu'].length; j++){       
+					for(var m=0;m<menu_list[i]['menu'][j].spec_list.length; m++){
+					  menu_list[i]['menu'][j].spec_list[m] = menu_list[i]['menu'][j].spec_list[m].split(':');
+					  menu_list[i]['menu'][j].spec_list[m][1] = menu_list[i]['menu'][j].spec_list[m][1].split('|');
+					}
 				  }
 				}
-			  })
-			  return; */
+				console.log('menu_list===', menu_list)
+				
+				
+				
+				var selectOrder = data.menu[0] ? data.menu[0].id : 0;
+				that.menu_list = menu_list;
+				that.selectOrder = selectOrder;
 			}
-
-			var menu_list = data.menu;
-			for(var i=0; i<menu_list.length; i++){          
-			  for (var j = 0; j < menu_list[i]['menu'].length; j++){       
-				for(var m=0;m<menu_list[i]['menu'][j].spec_list.length; m++){
-				  menu_list[i]['menu'][j].spec_list[m] = menu_list[i]['menu'][j].spec_list[m].split(':');
-				  menu_list[i]['menu'][j].spec_list[m][1] = menu_list[i]['menu'][j].spec_list[m][1].split('|');
-				}
-			  }
-			}
-
-			console.log('menu_list===', menu_list)
-
-
-
-			var selectOrder = data.menu[0] ? data.menu[0].id : 0;
-			that.menu_list = menu_list;
-			that.selectOrder = selectOrder;
 
 		  },
 		  fail: function (e) {

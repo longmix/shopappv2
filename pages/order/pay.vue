@@ -105,7 +105,7 @@
 
 <template>
 	<view>
-		<view v-if="wxa_order_queren_hide_address != 1" style="border-bottom:1px dashed #e5e5e5;">
+		<view v-if="wxa_order_queren_hide_address != 1 || is_waimai == 1" style="border-bottom:1px dashed #e5e5e5;">
 		    <view class="p_all bg_white mt10 font_14" v-if="addemt==0">
 				<view @click="goAddress()">
 					<view class="df">
@@ -118,7 +118,7 @@
 								{{order_address_detail.province_name}}{{order_address_detail.city_name}}{{order_address_detail.district_name}}{{order_address_detail.address}}
 							</view>
 						</view>
-						<image class="x_right mt15" src="../../static/img/x_right.png"></image>			
+						<image class="x_rights" src="../../static/img/x_right.png"></image>			
 					</view>
 				</view>
 			</view>
@@ -127,7 +127,7 @@
 					<view class="df">
 						<view class="df_1 c6">添加收货地址</view>
 		
-						<image class="x_right mt15" src="../../static/img/x_right.png"></image>			
+						<image class="x_rights" src="../../static/img/x_right.png"></image>			
 					</view>
 				</view>
 			</view>
@@ -172,7 +172,7 @@
 		
 		<view class="p_all bg_white df item" style="border-bottom: 1rpx solid #e5e5e5;"  >
 		  <view class="d_name">{{shoplist.name}}</view>
-			<view class="photo_name" v-for="item in cartlist" :key="index">
+			<view class="photo_name" v-for="(item,index) in cartlist" :key="index">
 			  <view class="cp_photo">			
 				<image :src="item.img"></image>
 			  </view>
@@ -274,7 +274,7 @@
 				total:0,
 				vprice:0,
 				vid:0,
-				addemt:1,
+				addemt:0,//为0 的时候显示请去添加地址   1的时候显示的是已经设置过的地址
 				vou:[],
 				orderId:{},
 				amount:'',
@@ -301,11 +301,13 @@
 				shopId: '',
 				shoplist:'',
 				cartlist: '',
-				
+				from_o2owaimai:0,
 				btn_bg_color: '#1AAD19'
 			};
 		},
-		
+		//from_o2owaimai = 1  小商城订单
+		//is_waimai  0  小商城堂食订单  1 小商城外卖订单
+		//from_o2owaimai 为0  和 is_waimai 为空的情况为大商城订单
 		onLoad(options) {
 			var that = this;
 			console.log('order/pay 参数：', options);
@@ -508,7 +510,6 @@
 			              console.log('gggggggggggggg==9999', res)
 			              
 			
-			
 			              uni.hideLoading();
 			              // success
 			              var code = res.data.code
@@ -524,11 +525,11 @@
 			                console.log('gggggggggggggg==6', address)
 			                if (!addressList) {
 								
-							  thats.addemt = 0;
+							  thats.addemt = 1;
 			                  
 			                }
 			              } else {
-			                thats.addemt = 1;
+			                thats.addemt = 0;
 						
 			              }
 			
@@ -809,7 +810,7 @@
 			    var userInfo = that.abotapi.get_user_info();	
 				
 				if(that.from_o2owaimai != 1){
-				
+				console.log('that.from_o2owaimai != 1');
 					if (that.action == "direct_buy") {
 								
 						var data_params = {
@@ -850,7 +851,7 @@
 									
 									var order_address_detail = res.data.address;
 								
-									console.log(order_address_detail);
+									console.log('order_address_detail==>',order_address_detail);
 								
 									if (!order_address_detail) {
 										that.addemt = 1
@@ -973,7 +974,8 @@
 					}
 				
 				}else{
-					
+					console.log('that.from_o2owaimai != 1 else');
+					console.log('that.from_o2owaimai != 1 else userInfo',userInfo);
 					if (userInfo) {
 					      that.abotapi.abotRequest({
 					        url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
@@ -1892,7 +1894,7 @@
 	  align-items:flex-end;
 	}
 	.p_all {
-		padding: 3%;
+		padding: 5%;
 	}
 	.photo_name {
 		display: flex;
@@ -1910,6 +1912,10 @@
 		-ms-flex: 1;
 		flex: 1;
 		-webkit-tap-highlight-color: transparent;	
+	}
+	.x_rights {
+		width:16px;
+		height: 18px;
 	}
 
 

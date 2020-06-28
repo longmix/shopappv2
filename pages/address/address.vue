@@ -106,9 +106,9 @@
 			return {
 				shengArr: [],//省级数组
 				shengId: [],//省级id数组
-				shiArr: [],//城市数组
+				shiArr: ['请选择'],//城市数组
 				shiId: [],//城市id数组
-				quArr: [],//区数组
+				quArr: ['请选择'],//区数组
 				quId:[],//区id数组
 				shengIndex:0,
 				shiIndex: 0,
@@ -362,8 +362,6 @@
 				this.shengIndex = e.detail.value;
 				this.shiArr = [];
 				this.shiId = [];
-				this.quArr = [];
-				this.quiId = [];
 			    var that = this;
 			    var region_Id = ++e.detail.value;
 			    console.log('123?',region_Id);
@@ -515,6 +513,29 @@
 				var formdata = e.detail.value
 				that.form_list = formdata
 				console.log('form_list：',that.form_list);
+				console.log('2form_list：',that.province);
+				console.log('1form_list：',that.city);
+				console.log('form_list：',that.area);
+				
+				if(!formdata.name){
+					uni.showToast({
+						title:'请填写收件人'
+					})
+					return;
+				}
+				if(!formdata.phone){
+					uni.showToast({
+						title:'请填写电话号码'
+					})
+					return;
+				}
+				
+				if(!that.province || !that.city ||!that.area){
+					uni.showToast({
+						title:'请选择省市区'
+					})
+					return;
+				}
 				
 				that.save();
 			},
@@ -610,6 +631,9 @@
 		save:function(){
 			var that = this;
 			var userInfo = this.abotapi.get_user_info();
+			if(!that.action){
+				that.action = 'add';
+			}
 			uni.request({
 				url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_save',
 				header: {  
@@ -638,6 +662,12 @@
 							icon: 'success',
 							duration: 2000
 						});
+						
+						setTimeout(function() {
+							uni.navigateBack({
+							    delta: 1
+							});
+						}, 2000);
 					}
 				},			
 			});
