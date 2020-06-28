@@ -26,11 +26,22 @@
 				module_icon_list:'',
 			}
 		},
-		onLoad(Option){
+		onLoad(option){
+			uni.setNavigationBarTitle({
+				title:'常用功能列表'
+			})
+			
+			this.abotapi.set_option_list_str(this, this.callback_set_option_list_str);
+			
+			
 			this.get_yanyubao_module_list_for_tseo_cn();
 		},
 		
 		methods:{
+			callback_set_option_list_str:function(that, option_list){
+				that.abotapi.getColor();
+			},
+			
 			//调用接口
 			get_yanyubao_module_list_for_tseo_cn:function(){
 				// console.log('jun')
