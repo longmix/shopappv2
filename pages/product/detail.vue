@@ -347,7 +347,7 @@ export default {
 			goods_detail:{
 				name:'',
 				price: '',
-				inventory:''
+				inventory:1
 			},
 			//轮播图下标
 			currentSwiper: 0,
@@ -805,17 +805,15 @@ export default {
 				return;
 			}
 			
+			var that = this;
+			
 			this.abotapi.abotRequest({
 				url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=cart_list',
-				method: 'post',
 				data: {
 					userid: userInfo.userid,
 					checkstr: userInfo.checkstr,
 					page: 1,
 					sellerid: this.abotapi.get_sellerid()
-				},
-				header: {
-					'Content-Type': 'application/x-www-form-urlencoded'
 				},
 				success: (res) => {
 					console.log('res',res);
@@ -823,12 +821,17 @@ export default {
 					let amount = 0
 					if(res.data.code == 1){
 						let cart_list = res.data.data;
+						
+						console.log('cart_list cart_list cart_list ====>>>', cart_list);
+						
 						for(let i=0;i<cart_list.length;i++){
-							amount += cart_list[i].amount;
+							amount += parseInt(cart_list[i].amount);
+							
+							console.log('cart_list cart_list cart_list ====>>>', amount);
 						}
 					}
 					
-					this.cart_amount = amount
+					that.cart_amount = amount
 			
 				},
 			});

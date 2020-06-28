@@ -655,12 +655,13 @@ module.exports = {
 	    * page_type normal/switchTab
 	    */
 	goto_user_login: function (last_url, var_list=null, ret_page=''){
+		
 		var userInfo = this.get_user_info();
+		
 		console.log('goto_user_login:');
 		console.log(userInfo);
  
 		if ((!userInfo) || (!userInfo.userid)) {
-			console.log('goto_user_login:222222222222');
  
 			return uni.showModal({
 				title: '提示',
@@ -686,7 +687,6 @@ module.exports = {
 			
 		}; 
 		
-		console.log('goto_user_login:333333333');
 		
 		this.call_h5browser_or_other_goto_url(last_url, var_list, ret_page);
 	
@@ -851,6 +851,18 @@ module.exports = {
 	
 	getColor:function(){
 		//这个函数的功能已经被    get_and_set_color 替代，并且在 这个文件中调用，不会被外部使用。
+		var shop_option_data = uni.getStorageSync('shop_option_data_' + this.globalData.default_sellerid);
+			
+		//console.log("获取商城选项数据====：", shop_option_data);
+			
+		if (!shop_option_data) {
+			return null;
+		}
+		
+		var option_data =  JSON.parse(shop_option_data);
+		var option_list = option_data.option_list;
+		
+		return option_list.wxa_shop_nav_bg_color;
 	},	
 	__get_and_set_color:function(){
 		//从本地读取
@@ -960,10 +972,15 @@ module.exports = {
 		this.globalData.is_user_user_in_tabbar = 1;
 		//购物车在底部导航栏（如果购物车在底部导航栏，请务必选择此项，避免向购物车跳转失败）
 		this.globalData.is_shop_cart_in_tabbar = 1;
+		
+		//商品分类是否在底部导航
+		this.globalData.is_category_index_in_tabbar = 1;
+		
 		//判断发布的栏目在底部导航  1就是在底部导航
 		this.globalData.is_publish_index_in_tabbar = 0;
 		//判断文章列表在底部导航   1就是在底部导航
 		this.globalData.is_publish_list_in_tabbar = 1;
+		
 		
 		if (!isNullOrUndefined(option_list.is_index_index_in_tabbar)) {
 		  this.globalData.is_index_index_in_tabbar = option_list.is_index_index_in_tabbar;
@@ -974,6 +991,11 @@ module.exports = {
 		if (!isNullOrUndefined(option_list.is_shop_cart_in_tabbar)) {
 		  this.globalData.is_shop_cart_in_tabbar = option_list.is_shop_cart_in_tabbar;
 		}
+		
+		if (!isNullOrUndefined(option_list.is_category_index_in_tabbar)) {
+		  this.globalData.is_category_index_in_tabbar = option_list.is_category_index_in_tabbar;
+		}
+		
 		if (!isNullOrUndefined(option_list.is_publish_index_in_tabbar)) {
 		  this.globalData.is_publish_index_in_tabbar = option_list.is_publish_index_in_tabbar;
 		}		
@@ -1236,12 +1258,47 @@ module.exports = {
 			})
 		  }
 		}
-		else if (url == '/pages/index/index' || url == '/pages/category/index' || url == '/pages/cart/cart' || url == '/pages/user/user') {
+		else if ((url == '/pages/index/index') || (url == '/pages/category/index') 
+			|| (url == '/pages/cart/cart') || (url == '/pages/user/user') ) {
+			if((url == '/pages/index/index') && (this.globalData.is_index_index_in_tabbar == 1)){
+				uni.switchTab({
+					url: url,
+				})
+			}
+			else if((url == '/pages/category/index') && (this.globalData.is_category_index_in_tabbar == 1)){
+				uni.switchTab({
+					url: url,
+				})
+			}
+			else if((url == '/pages/cart/cart') && (this.globalData.is_shop_cart_in_tabbar == 1)){
+				uni.switchTab({
+					url: url,
+				})
+			}
+			else if((url == '/pages/user/user') && (this.globalData.is_user_user_in_tabbar == 1)){
+				uni.switchTab({
+					url: url,
+				})
+			}
+			else if((url == '/pages/publish/index') && (this.globalData.is_publish_index_in_tabbar == 1)){
+				uni.switchTab({
+					url: url,
+				})
+			}
+			else if((url == '/pages/publish/list') && (this.globalData.is_publish_list_in_tabbar == 1)){
+				uni.switchTab({
+					url: url,
+				})
+			}
+			else{
+				uni.navigateTo({
+					url:'/pages/cart/cart'
+				})
+			}
 			
-			uni.switchTab({
-				url: url,
-			})
-		} else if (url == '/pages/help_detail/help_detail') {
+			
+		}
+		else if (url == '/pages/help_detail/help_detail') {
 			var browser_cache_id = uni.getStorageSync('browser_cache_id');
 			if (browser_cache_id) {
 				uni.navigateTo({

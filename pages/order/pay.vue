@@ -231,7 +231,9 @@
 		
 			<view class="p_all mt10">
 				<view class="btnGreen">
-					<button class="xx_pay_submit" type="default" id="xxPay" :disabled="btnDisabled" style="width: 90%;" formType="submit" @tap="createOrder">提交订单</button>
+					<button class="xx_pay_submit" type="default" id="xxPay" 
+						:disabled="btnDisabled" :style="{width: '90%', backgroundColor:btn_bg_color+' !important'}" 
+						formType="submit" @tap="createOrder">提交订单</button>
 				</view>
 			</view>
 		
@@ -298,7 +300,9 @@
 				is_waimai: '',
 				shopId: '',
 				shoplist:'',
-				cartlist: ''
+				cartlist: '',
+				
+				btn_bg_color: '#1AAD19'
 			};
 		},
 		
@@ -306,8 +310,10 @@
 			var that = this;
 			console.log('order/pay 参数：', options);
 			
-			this.abotapi.set_option_list_str(this, ()=>{
-				this.abotapi.getColor();
+			this.abotapi.set_option_list_str(this, (that, option_list)=>{
+				//console.log('color:  ===>>>>> ', that.abotapi.getColor());
+				
+				that.btn_bg_color = that.abotapi.getColor();
 			});
 			
 			// #ifdef H5
@@ -318,37 +324,37 @@
 			})
 			
 			
-			 console.log('options============', options)
+			//console.log('options============', options)
 			 
-				if(options.from_o2owaimai){
-					that.from_o2owaimai = options.from_o2owaimai
-				}
-			 
-				
-				var is_waimai = options.is_waimai;
-				that.is_waimai = is_waimai
-				
-			   
-			    if (options.shopId) {
-					
-					that.shopId = options.shopId
-			    }
+			if(options.from_o2owaimai){
+				that.from_o2owaimai = options.from_o2owaimai
+			}
+		 
 			
+			var is_waimai = options.is_waimai;
+			that.is_waimai = is_waimai
 			
-				if(options.total) {			
-					that.all_price = options.total;
-					that.pay_price = options.total,
-					that.pay_price_origin = options.total,
-					that.address_total = options.total
-			    }
+		   
+			if (options.shopId) {
 				
-				console.log('that.all_price', that.all_price)
+				that.shopId = options.shopId
+			}
+		
+		
+			if(options.total) {			
+				that.all_price = options.total;
+				that.pay_price = options.total,
+				that.pay_price_origin = options.total,
+				that.address_total = options.total
+			}
 			
-			    if (options.cart_count) {
-					
-					that.cart_count = options.cart_count
-					
-			    }
+			console.log('that.all_price', that.all_price)
+		
+			if (options.cart_count) {
+				
+				that.cart_count = options.cart_count
+				
+			}
 			
 			
 			
@@ -405,11 +411,18 @@
 			that.amount = options.amount;
 			that.action = options.action;
 			
-			if (options.paysuccess_url){
+			if (options.paysuccess_url && (typeof(options.paysuccess_url) == 'string') ){
 				uni.setStorageSync('paysuccess_url', decodeURIComponent(options.paysuccess_url));
-				console.log('uni.getStorageSync paysuccess_url==>>>', uni.getStorageSync('paysuccess_url'));
+				
+				console.log('uni.setStorageSync paysuccess_url==>>>', uni.getStorageSync('paysuccess_url'));
 			}
-			console.log("options==>>",options);
+			else{
+				console.log('uni.setStorageSync paysuccess_url 失败==>>>', options.paysuccess_url);
+				
+				uni.removeStorageSync('paysuccess_url');
+			}
+			
+			//console.log("options==>>", options);
 			
 			this.abotapi.set_option_list_str(this, this.loadProductDetail);
 			this.abotapi.set_option_list_str(this, this.callback_function);
@@ -814,7 +827,7 @@
 						}
 								
 					  
-						uni.request({
+						that.abotapi.abotRequest({
 							url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_queren',
 							method: 'post',
 							data: data_params,
@@ -896,7 +909,7 @@
 									data_params.ucid = that.ucid
 								}
 						
-								uni.request({
+								that.abotapi.abotRequest({
 									url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_queren',
 									method: 'post',
 									data: data_params,
@@ -962,7 +975,7 @@
 				}else{
 					
 					if (userInfo) {
-					      uni.request({
+					      that.abotapi.abotRequest({
 					        url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
 					        data: {
 					          sellerid: that.abotapi.get_sellerid(),
@@ -1043,7 +1056,7 @@
 			get_address_list:function(){
 				var that = this;
 				var userInfo = this.abotapi.get_user_info();
-				uni.request({
+				that.abotapi.abotRequest({
 					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_list',
 					data: {
 						checkstr: userInfo.checkstr,
@@ -1372,8 +1385,9 @@
 			//调起微信支付
 			wxpay_after_option_key_value: function (e) {
 			    var that=this;
+				
 			    var userInfo = this.abotapi.get_user_info();
-			    uni.request({
+			    that.abotapi.abotRequest({
 					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_buy',
 					data: {
 						orderid: that.orderid,
@@ -1425,7 +1439,7 @@
 					   
 							var payment_parameter = JSON.parse(payment_parameter_str);
 			          
-							uni.requestPayment({
+							that.abotapi.abotRequestPayment({
 								appId: payment_parameter.appId,
 								timeStamp: payment_parameter.timeStamp,
 								nonceStr: payment_parameter.nonceStr,

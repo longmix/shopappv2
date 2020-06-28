@@ -498,7 +498,7 @@
 			goto_user_function(url){
 				
 				
-				var last_url = 'switchTab /pages/user/user';
+				var last_url = '/pages/user/user';
 				
 				var userInfo = this.abotapi.get_user_info();
 				if (!userInfo) {

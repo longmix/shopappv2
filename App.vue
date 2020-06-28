@@ -92,6 +92,7 @@
 			  console.log('this.abotapi.globalData.default_copyright_text ==>> ', this.abotapi.globalData.default_copyright_text);
 			}
 			
+			//====这里的判断已经不重要了，改成从服务器上读取配置====
 			if (extConfig.is_shop_cart_in_tabbar) {
 			  this.abotapi.globalData.is_shop_cart_in_tabbar = extConfig.is_shop_cart_in_tabbar;
 			}
@@ -101,7 +102,7 @@
 			if (extConfig.is_publish_list_in_tabbar) {
 			  this.abotapi.globalData.is_publish_list_in_tabbar = extConfig.is_publish_list_in_tabbar;
 			}
-			
+			//============= End ==================
 			
 		
 			//以下是更多扩展使用

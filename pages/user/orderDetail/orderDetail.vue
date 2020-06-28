@@ -7,7 +7,7 @@
 	</view>
 	<view class="w100">
 			
-	    <navigator :open-type="[wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate']" :url="'../product/detail?productid=' + item.productid"  class="p_all bg_white df item" v-for="item in orderList" :key="productid">
+	    <navigator :open-type="[wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate']" :url="'../../product/detail?productid=' + item.productid"  class="p_all bg_white df item" v-for="item in orderList" :key="productid">
 	
 				<view class="cp_photo">			
 					<image :src="item.picture"></image>
@@ -221,15 +221,11 @@
 			      console.log('userstr', userInfo.checkstr);
 			      that.abotapi.abotRequest({
 			        url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_xiangqing',
-			        method: 'post',
 			        data: {
 			          orderid: that.orderId,
 			          userid: userInfo.userid,
 			          checkstr: userInfo.checkstr,
 			          sellerid: that.abotapi.get_sellerid()
-			        },
-			        header: {
-			          'Content-Type': 'application/x-www-form-urlencoded'
 			        },
 			        success: function (res) {
 			          var code = res.data.code;

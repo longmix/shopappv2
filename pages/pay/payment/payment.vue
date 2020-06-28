@@ -70,7 +70,7 @@
 				<view class='view2'>{{orderData.price}}</view>
 			</view>
 			<view class='vw1'>
-				 <text>快递费：</text>
+				<text>快递费：</text>
 				<view class='view2'>{{orderData.price3}}</view>
 			</view>
 			<view class='vw1'>
@@ -90,109 +90,114 @@
 				<view class='view2'>{{pay_price}}</view>
 			</view>
 		</view>
-		
-		
-		<view :style="pay_price != 0.00?'':'display:none'"> 
-		
+
+
+		<view :style="pay_price != 0.00?'':'display:none'">
+
 			<view ng-if="pay_type">
-		        <view style="width: 94%;height:35px;line-height:35px;font-size: 14px;color:#666;margin:30px auto 0 auto; ">支付方式</view>
-		            
-		        <view style="width: 100%;border-bottom: 1px solid #e6e6e6;border-top: 1px solid #e6e6e6;">
-		            <view class="payment_box">
+				<view style="width: 94%;height:35px;line-height:35px;font-size: 14px;color:#666;margin:30px auto 0 auto; ">支付方式</view>
+
+				<view style="width: 100%;border-bottom: 1px solid #e6e6e6;border-top: 1px solid #e6e6e6;">
+					<view class="payment_box">
 						<radio-group class="radio-group" @change="radioChange">
 							<view class="zhifu_li" v-if="show_weixin_pay==1">
 								<image src="../../../static/img/kefu.png" class="tubiao_zhifu"></image>
 								<view class="zhifu_name">微信支付</view>
-								
+
 								<radio value='wx_pay' checked='true' style='margin-left:90%;margin-top:7px;'></radio>
 							</view>
-		
+
 							<view class="zhifu_li" v-if="show_zhuanzhang_pay==1">
 								<image src="../../../static/img/payment_zhuanzhang.png" class="tubiao_zhifu"></image>
 								<view class="zhifu_name">转账支付</view>
-								<radio value='zz_pay'  style='margin-left:90%;margin-top:7px;'></radio>
+								<radio value='zz_pay' style='margin-left:90%;margin-top:7px;'></radio>
 							</view>
-		
+
 						</radio-group>
-		
+
 					</view>
-		
-		
-					<view class="zhifu_li" :key="index" :data-index='index' @tap='zhuangzhangPay($event)' v-for="(item,index) in pay_list" :style='key==index?"background-color:#e6e6e6":""+zz_pay?"display:none":"display:block"' >
+
+
+					<view class="zhifu_li" :key="index" :data-index='index' @tap='zhuangzhangPay($event)' v-for="(item,index) in pay_list"
+					 :style='key==index?"background-color:#e6e6e6":""+zz_pay?"display:none":"display:block"'>
 						<view class="zhifu_name" :key="index" :data-index='index' @tap='zhuangzhangPay($event)'>{{item.pay_name}}</view>
 					</view>
-				   <view :style="payView?'display:none':'display:block'+';font-size:15px;margin-bottom:100px;'">
+					<view :style="payView?'display:none':'display:block'+';font-size:15px;margin-bottom:100px;'">
 						<view :style="zz_pay?'display:none':'display:block'">
 							<view v-if="payList.pay_type==0">
 								<view class="section">
 									<label class='section_view'>收款人：</label>
-									<view class='section_view2'>{{payList.username}}</view>     
-								</view> 
+									<view class='section_view2'>{{payList.username}}</view>
+								</view>
 								<view class="section">
 									<label class='section_view'>收款银行：</label>
-									<view class='section_view2'>{{payList.bank_name}}</view>     
+									<view class='section_view2'>{{payList.bank_name}}</view>
 								</view>
 								<view class="section">
 									<label class='section_view'>收款账号：</label>
-									<view class='section_view2'>{{payList.card_num}}</view>     
+									<view class='section_view2'>{{payList.card_num}}</view>
 								</view>
 							</view>
-							
+
 							<view style='text-align:center' v-else>
 								<image style='width:250px;' mode='widthFix' :src='payList.card_num'></image>
 							</view>
-							
+
 							<view>
 								<view style='margin-top: 20rpx;color: gray;'>转账后请填写以下信息，以便于与财务对账</view>
 								<form @submit="formSubmit" @reset="formReset">
 									<view class="section">
-		                                <label class='section_view' style="line-height:50rpx">汇款人：</label>
-		                                <input type="text" name="name" placeholder="请填写汇款人" :value="adds.name"/>
+										<label class='section_view' style="line-height:50rpx">汇款人：</label>
+										<input type="text" name="name" placeholder="请填写汇款人" :value="adds.name" />
 									</view>
 									<view class="section">
 										<label class='section_view' style="line-height:50rpx">汇款方式：</label>
-										<input type="text" name="huikuan_pingtai" placeholder="如工行转账、建设银行等" :value="adds.huikuan_pingtai"/>
+										<input type="text" name="huikuan_pingtai" placeholder="如工行转账、建设银行等" :value="adds.huikuan_pingtai" />
 									</view>
 									<view class="section">
 										<label class='section_view'>汇款日期：</label>
 										<!--<view class='section_view2'>{{time}}</view>-->
-		                            
-										<picker mode="date" :value="date" start="2018-09-01" end="2030-06-01" @change="bindDateChange">                 
-		                                    <input placeholder="请输入日期" @input="dateInput"  :value="date"/>
+
+										<picker mode="date" :value="date" start="2018-09-01" end="2030-06-01" @change="bindDateChange">
+											<input placeholder="请输入日期" @input="dateInput" :value="date" />
 										</picker>
 									</view>
-									
+
 									<view class="section">
 										<label class='section_view'>汇款时间：</label>
 										<!--<view class='section_view2'>{{time}}</view>-->
-		                            
-										<picker mode="time" @value="time" start="00:01" end="23:59" @change="bindTimeChange">                 
-											<input placeholder="请输入时间" @input="timeInput"  :value="time"/>
+
+										<picker mode="time" @value="time" start="00:01" end="23:59" @change="bindTimeChange">
+											<input placeholder="请输入时间" @input="timeInput" :value="time" />
 										</picker>
-									</view>                          
+									</view>
 									<view class="section">
 										<view class='section_view'>汇款金额：</view>
-										<view class='section_view2'>{{pay_price}}</view>      
-									</view> 
-									<view class="pay_submit">     
-										<button class="pay_submit" type="default" id="Pay"  formType="submit" :data-price="pay_price" @tap="createProductOrderByZZ()">确认支付</button>       
-									</view>             
+										<view class='section_view2'>{{pay_price}}</view>
+									</view>
+									<view class="pay_submit">
+										<button class="pay_submit" type="default" id="Pay" formType="submit" :data-price="pay_price" @tap="createProductOrderByZZ()">确认支付</button>
+									</view>
 								</form>
-							</view> 
+							</view>
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
-		
+
 		<view class="pay_submit" v-if="zz_pay">
-			<button type="default" id="Pay" formType="submit" :data-price="pay_price" @tap="zz_pay?createProductOrderByWX():createProductOrderByZZ()">确认支付</button>
+			<button type="default" id="Pay" formType="submit" 
+				:style="{backgroundColor:btn_bg_color+' !important'}"
+				:data-price="pay_price" @tap="zz_pay?createProductOrderByWX():createProductOrderByZZ()">确认支付</button>
 		</view>
 		<view class="pay_submit" v-if="pay_price == 0.00">
-			<button type="default" id="Pay" formType="submit" :data-price="pay_price" @tap="createProductOrderByZZ()">确认支付</button>
+			<button type="default" id="Pay" formType="submit" 
+				:style="{backgroundColor:btn_bg_color+' !important'}"
+				:data-price="pay_price" @tap="createProductOrderByZZ()">确认支付</button>
 		</view>
-		
-		
+
+
 		<!--
 			<view class="p_all">
 				<view class="btnGreen">
@@ -201,7 +206,7 @@
 		  	</view>
 			</view>
 		  -->
-		
+
 	</view>
 </template>
 
@@ -265,35 +270,43 @@
 	var util = require('../../../common/util.js');
 	export default {
 		data() {
-			return{
-				date:'2016-09-01',
-				zz_pay:true,
-				payView:true,
-				pageBackgroundColor:'',
-				orderData:'',
-				orderno:'',
-				balance_dikou:'',
-				balance_zengsong_dikou:'',
-				pay_price:'',
-				show_weixin_pay:'',
-				show_zhuanzhang_pay:'',
-				pay_list:'',
-				payList:'',
-				pay_type:'',
-				adds:'',
-				name:'',
-				time:'',
-				orderId:'',
-				key:''
+			return {
+				date: '2016-09-01',
+				zz_pay: true,
+				payView: true,
+				pageBackgroundColor: '',
+				orderData: '',
+				orderno: '',
+				balance_dikou: '',
+				balance_zengsong_dikou: '',
+				pay_price: '',
+				show_weixin_pay: '',
+				show_zhuanzhang_pay: '',
+				pay_list: '',
+				payList: '',
+				pay_type: '',
+				adds: '',
+				name: '',
+				time: '',
+				orderId: '',
+				key: '',
+				
+				btn_bg_color: '#1AAD19'
 			}
 		},
-		onShow: function () {
-	    
+		onShow: function() {
+
 		},
-		onLoad: function (options) {
+		onLoad: function(options) {
 			console.log('options', options)
+			
 			var that = this;
-			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
+			
+			this.abotapi.set_option_list_str(this, (_self, option_list)=>{
+				that.btn_bg_color = _self.abotapi.getColor();
+				
+			});
+			
 			var date = util.formatTime(new Date());
 			var time = util.formatTime2(new Date());
 			// 再通过setData更改Page()里面的data，动态更新页面的数据
@@ -302,29 +315,30 @@
 			showView: (options.showView == "true" ? true : false)
 			that.orderId = options.orderId;
 			that.traffic_price = options.traffic_price ? options.traffic_price : 0;
-			if (options.balance_zengsong_dikou){
+			if (options.balance_zengsong_dikou) {
 				that.balance_zengsong_dikou = options.balance_zengsong_dikou
 			} else {
 				that.balance_zengsong_dikou = util.sprintf("%6.2f", 0);
 			}
-		
+
 			if (options.balance_dikou) {
-				
+
 				that.balance_dikou = options.balance_dikou;
-			}else{
+			} else {
 				that.balance_dikou = util.sprintf("%6.2f", 0);
 			}
-		
-			if (options.recharge){
+
+			if (options.recharge) {
 				that.recharge = options.recharge;
 			}
-		
+
 			var huikuan_info = uni.getStorageSync('huikuan_info');
-			if (huikuan_info){
+			if (huikuan_info) {
 				that.adds = huikuan_info
 			}
 			that.loadOrderDetail();
-			uni.request({
+			
+			that.abotapi.abotRequest({
 				url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=payment_type_list',
 				method: 'post',
 				data: {
@@ -334,29 +348,29 @@
 				header: {
 					'Content-Type': 'application/x-www-form-urlencoded'
 				},
-				success: function (res) {
-					console.log("res111",res);
+				success: function(res) {
+					console.log("res111", res);
 					var code = res.data.code;
 					if (code == 1) {
 						var type_list = res.data.data;
-		
-		
+
+
 						var show_weixin_pay = 0;
 						var show_zhuanzhang_pay = 0;
-						for(var i=0; i<type_list.length; i++){
-							if (type_list[i].payment_type == 3){
+						for (var i = 0; i < type_list.length; i++) {
+							if (type_list[i].payment_type == 3) {
 								show_weixin_pay = 1;
 							}
-		
+
 							if (type_list[i].payment_type == 6) {
 								show_zhuanzhang_pay = 1;
 							}
 						}
-		 
+
 						that.type_list = type_list
 						that.show_weixin_pay = show_weixin_pay;
 						that.show_zhuanzhang_pay = show_zhuanzhang_pay
-						console.log("that.show_zhuanzhang_pay",that.show_zhuanzhang_pay);
+						console.log("that.show_zhuanzhang_pay", that.show_zhuanzhang_pay);
 					} else {
 						uni.showToast({
 							title: res.data.msg,
@@ -364,7 +378,7 @@
 						});
 					}
 				},
-				fail: function () {
+				fail: function() {
 					// fail
 					uni.showToast({
 						title: '网络异常！',
@@ -373,22 +387,22 @@
 				}
 			});
 		},
-		methods:{
-			radioChange: function (e) {
-				console.log('change-->e',e);
+		methods: {
+			radioChange: function(e) {
+				console.log('change-->e', e);
 				var that = this;
 				var pay = e.detail.value;
-				if (pay=='zz_pay'){
-					that.zz_pay =false
-				}else{
+				if (pay == 'zz_pay') {
+					that.zz_pay = false
+				} else {
 					that.zz_pay = true;
 					that.payView = true
 				}
 				var userInfo = that.abotapi.get_user_info();
 				var pay_list = that.pay_list
-				console.log('pay_list1',pay_list);
-				if (pay_list == ''){
-					uni.request({
+				console.log('pay_list1', pay_list);
+				if (pay_list == '') {
+					that.abotapi.abotRequest({
 						url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=offlinepay_get',
 						method: 'post',
 						data: {
@@ -399,12 +413,12 @@
 						header: {
 							'Content-Type': 'application/x-www-form-urlencoded'
 						},
-						success: function (res) {
-		
+						success: function(res) {
+
 							var code = res.data.code;
 							if (code == 1) {
 								var pay_list = res.data.data;
-								console.log('pay_list',pay_list);
+								console.log('pay_list', pay_list);
 								that.pay_list = pay_list;
 							} else {
 								uni.showToast({
@@ -413,20 +427,20 @@
 								});
 							}
 						},
-						fail: function () {
+						fail: function() {
 							// fail
 							uni.showToast({
 								title: '网络异常！',
 								duration: 2000
 							});
 						}
-					}); 
-				}   
+					});
+				}
 			},
-			loadOrderDetail: function () {
+			loadOrderDetail: function() {
 				var that = this;
 				var userInfo = that.abotapi.get_user_info();
-				uni.request({
+				that.abotapi.abotRequest({
 					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_xiangqing',
 					method: 'post',
 					data: {
@@ -438,36 +452,36 @@
 					header: {
 						'Content-Type': 'application/x-www-form-urlencoded'
 					},
-					success: function (res) {
-						console.log("1122334",res);
-						
+					success: function(res) {
+						console.log("1122334", res);
+
 						var code = res.data.code;
 						if (code == 1) {
 							that.orderData = res.data.orderinfo;
-							
+
 							that.pay_price = parseFloat(that.orderData.order_total_price);
-				  
-		
-							if(that.balance_zengsong_dikou < that.pay_price){
+
+
+							if (that.balance_zengsong_dikou < that.pay_price) {
 								that.pay_price = that.pay_price - that.balance_zengsong_dikou;
-							}else{
+							} else {
 								that.pay_price = 0
 							}
-		
-				  
+
+
 							if (that.balance_dikou < that.pay_price) {
 								that.pay_price = that.pay_price - that.balance_dikou;
 							} else {
 								that.pay_price = 0
 							}
-		
-				  
+
+
 							that.pay_price = util.sprintf("%6.2f", that.pay_price);
-		
-							if (that.pay_price == 0.00){
+
+							if (that.pay_price == 0.00) {
 								that.zz_pay = false
 							}
-				
+
 						} else {
 							uni.showToast({
 								title: res.data.msg,
@@ -475,7 +489,7 @@
 							});
 						}
 					},
-					fail: function () {
+					fail: function() {
 						// fail
 						uni.showToast({
 							title: '网络异常！',
@@ -484,50 +498,50 @@
 					}
 				});
 			},
-			
-			
+
+
 			//微信支付
-			createProductOrderByWX: function (e) {
+			createProductOrderByWX: function(e) {
 				this.paytype = 'weixin'
-				this.wxpay();
+				this.call_weixin_pay();
 			},
-			bindDateChange: function (e) {
+			bindDateChange: function(e) {
 				var that = this;
 				that.date = e.detail.value;
 				console.log(e);
 				that.date = e.detail.value
 			},
-			bindTimeChange: function (e) {
+			bindTimeChange: function(e) {
 				var that = this;
 				that.time = e.detail.value;
 				console.log(e);
 				that.time = e.detail.value
 			},
-			formSubmit: function (e) {
+			formSubmit: function(e) {
 				var that = this;
 				var adds = e.detail.value;
-			
+
 				uni.setStorageSync('huikuan_info', adds)
 				that.adds = adds
-		
+
 			},
-			dateInput:function(){
+			dateInput: function() {
 				var that = this;
 				var date = e.detail.value;
 				console.log(e);
 				that.date = date
 			},
-			timeInput: function () {
+			timeInput: function() {
 				var that = this;
 				var time = e.detail.value;
 				console.log(e);
 				that.time = time
 			},
-			zhuangzhangPay: function (e) {
+			zhuangzhangPay: function(e) {
 				var that = this;
 				var key = e.target.dataset.index;
 				console.log(key);
-				if(key==null){
+				if (key == null) {
 					return;
 				};
 				var pay_list = that.pay_list;
@@ -536,14 +550,14 @@
 				that.key = e.target.dataset.index
 			},
 			//线下支付
-			createProductOrderByZZ: function (e) {
+			createProductOrderByZZ: function(e) {
 				this.paytype = 'zhuanzhang'
 				this.zzpay();
 			},
-			zzpay:function(){
+			zzpay: function() {
 				var that = this;
 				var userInfo = that.abotapi.get_user_info();
-		
+
 				var data_params = {
 					orderid: that.orderId,
 					payment_type: 6,
@@ -560,63 +574,34 @@
 					body: "商城支付订单",
 					subject: "商城支付订单",
 				}
-		
-		
-				if(that.pay_price != 0.00){
+
+
+				if (that.pay_price != 0.00) {
 					data_params.offlinepayid = that.payList.offlinepayid;
 					data_params.huikuan_pingtai = that.adds.huikuan_pingtai;
 					data_params.name = that.adds.name;
 				}
-		
-				uni.request({
+
+				that.abotapi.abotRequest({
 					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_buy',
 					data: data_params,
-					method: 'POST', 
+					method: 'POST',
 					header: {
 						'Content-Type': 'application/x-www-form-urlencoded'
 					}, // 设置请求的 header
-					success: function (res) {
+					success: function(res) {
 						if (res.data.code == 1) {
-		
+
 							uni.showModal({
 								title: '提示',
 								content: res.data.msg,
 								showCancel: false,
-								success(res) {
-									if (res.confirm) {
-										uni.showLoading({
-											title: '正在跳转...',
-										})
-										setTimeout(function () {
-											uni.hideLoading()
-			
-											var paysuccess_url = uni.getStorageSync('paysuccess_url');
-											console.log('paysuccess_url===', paysuccess_url)
-											if (paysuccess_url) {
-												paysuccess_url = paysuccess_url.replace('%orderid%', that.orderId);
-												that.abotapi.call_h5browser_or_other_goto_url(paysuccess_url);
-												uni.removeStorageSync('paysuccess_url');
-			
-												return;
-											}
-		
-		
-											if (that.recharge == 1) {
-												uni.switchTab({
-													url: '/pages/tabBar/user/user',
-												});
-											} else {
-												uni.navigateTo({
-													url: '/pages/user/order_list/order_list?currentTab=0&otype=',
-												});
-											}
-										}, 1500);
-									} 
+								success(res001) {									
+									that.__goto_pay_success_url();						
+									
 								}
 							})
-				
-		
-					  
+
 						} else {
 							uni.showToast({
 								title: "支付失败",
@@ -624,7 +609,7 @@
 							});
 						}
 					},
-					fail: function () {
+					fail: function() {
 						// fail
 						uni.showToast({
 							title: '网络异常！',
@@ -633,11 +618,13 @@
 					}
 				})
 			},
-			wxpay: function (e) {
-				console.log('eeee',e)
-				var that=this;
+			call_weixin_pay: function(e) {
+				//console.log('eeee',e)
+
+				var that = this;
+				
 				var userInfo = that.abotapi.get_user_info();
-				uni.request({
+				that.abotapi.abotRequest({
 					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_buy',
 					data: {
 						// productid: that.productid,
@@ -645,7 +632,7 @@
 						payment_type: 3,
 						trade_type: 'JSAPI_WXA',
 						appid: that.abotapi.globalData.xiaochengxu_appid,
-						openid: userInfo.user_openid,
+						openid: that.abotapi.get_current_openid(),
 						userid: userInfo.userid,
 						checkstr: userInfo.checkstr,
 						//sub_appid :'wx00d1e2843c3b3f77'
@@ -666,125 +653,86 @@
 					header: {
 						'Content-Type': 'application/x-www-form-urlencoded'
 					}, // 设置请求的 header
-					success: function (res) {
+					success: function(res) {
 						console.log('order_buy order_buy order_buy', res);
-		
-						if (res.data.code == 1) {
-							if (res.data.str == 'yue') {
-								uni.showToast({
-									title: "支付成功!",
-									duration: 2000,
-								});
-		
-								setTimeout(function () {
-		
-									var paysuccess_url = uni.getStorageInfoSync('paysuccess_url');
-		
-									console.log('paysuccess_url===', paysuccess_url)
-		
-									if (paysuccess_url) {
-										paysuccess_url = paysuccess_url.replace('%orderid%', that.orderId);
-		
-										that.abotapi.call_h5browser_or_other_goto_url(paysuccess_url);
-										uni.removeStorageSync('paysuccess_url');
-		
-										return;
-									}
-		
-									if(that.recharge == 1){
-										uni.switchTab({
-											url: '/pages/user/user',
-										});
-									}else{
-										uni.navigateTo({
-											url: '../user/dingdan?currentTab=0&otype=',
-										});
-									}
-					  
-								}, 500);
-								return;
-							}
-				 
-		
-							if (res.data.wxpay_params && res.data.wxpay_params.errcode == 1) {
-								// uni.showToast({
-								//   title: "网络错误!",
-								//   duration: 2000,
-								//   icon: 'none',
-								// });
-		
-								uni.showModal({
-									title: '提示',
-									content: '启动微信钱包失败！',
-								})
-		
-		
-								return;
-							}
-		
-							var payment_parameter_str = res.data.wxpay_params.parameters;
-		
-		
-				  
-		
-							var payment_parameter = JSON.parse(payment_parameter_str);
-				  
-							uni.requestPayment({
-								appId: payment_parameter.appId,
-								timeStamp: payment_parameter.timeStamp,
-								nonceStr: payment_parameter.nonceStr,
-								package: payment_parameter.package,
-								signType: payment_parameter.signType,
-								paySign: payment_parameter.paySign,
-		
-								success: function (res) {
-									uni.showToast({
-										title: "支付成功!",
-										duration: 2000,
-									});
-		
-									setTimeout(function () {
-		
-										var paysuccess_url = uni.getStorageInfoSync('paysuccess_url');
-		
-										console.log('paysuccess_url===', paysuccess_url)
-										if (paysuccess_url){
-											paysuccess_url = paysuccess_url.replace('%orderid%', that.orderId);
-		
-											that.abotapi.call_h5browser_or_other_goto_url(paysuccess_url);
-											uni.removeStorageSync('paysuccess_url');
-		
-											return;
-										}
-		
-										if (that.recharge == 1) {
-											uni.switchTab({
-												url: '/pages/user/user',
-											});
-										} else {
-											uni.navigateTo({
-												url: '../user/dingdan?currentTab=0&otype=',
-											});
-										}
-									}, 2500);
-		
-								},
-								fail: function (res) {
-									uni.showToast({
-										title: '支付失败',
-										duration: 3000
-									})
-								}
+
+						if (res.data.code != 1) {
+							uni.showModal({
+								title: '提示',
+								content: '发起支付申请失败:'+res.data.msg,
 							})
-						} else {
-							uni.showToast({
-								title: res.data.msg,
-								icon: 'none',
-								duration: 2000
-							});
+
+							return;
 						}
+
+						if (res.data.str && (res.data.str == 'yue')) {
+							//使用余额或者其他优惠，总之不需要再支付了
+							that.__goto_pay_success_url();
+
+							return;
+						}
+
+
+						//通过微信支付
+						if (!res.data.wxpay_params) {
+							uni.showModal({
+								title: '提示',
+								content: '没有微信支付的参数',
+							})
+
+							return;
+						}
+
+						var payment_parameter_str = res.data.wxpay_params.parameters;
+
+
+						if (res.data.wxpay_params && res.data.wxpay_params.errcode == 1) {
+							// uni.showToast({
+							//   title: "网络错误!",
+							//   duration: 2000,
+							//   icon: 'none',
+							// });
+
+							uni.showModal({
+								title: '提示',
+								content: '启动微信钱包失败！',
+							})
+
+
+							return;
+						}
+
+
+						var payment_parameter = JSON.parse(payment_parameter_str);
+
+						uni.requestPayment({
+							appId: payment_parameter.appId,
+							timeStamp: payment_parameter.timeStamp,
+							nonceStr: payment_parameter.nonceStr,
+							package: payment_parameter.package,
+							signType: payment_parameter.signType,
+							paySign: payment_parameter.paySign,
+
+							success: function(res) {
+								uni.showModal({
+									title:'提示',
+									content:'支付成功',
+									showCancel:false,
+									success:function(rrr){
+										that.__goto_pay_success_url();
+									}
+								});
+
+							},
+							fail: function(res) {
+								uni.showToast({
+									title: '支付失败',
+									duration: 3000
+								})
+							}
+						})
 					},
-					fail: function () {
+					fail: function() {
 						// fail
 						uni.showToast({
 							title: '网络异常！',
@@ -793,65 +741,41 @@
 					}
 				})
 			},
+			__goto_pay_success_url:function(){
+				
+				var paysuccess_url = uni.getStorageSync('paysuccess_url');
+												
+				console.log('paysuccess_url===', paysuccess_url)
+				
+				if (paysuccess_url && (typeof(paysuccess_url) == 'string') ){
+					paysuccess_url = paysuccess_url.replace('%orderid%', this.orderId);
+												
+					this.abotapi.call_h5browser_or_other_goto_url(paysuccess_url);
+					uni.removeStorageSync('paysuccess_url');
+												
+					return;
+				}
+				
+				console.log('11111111');
+												
+				if (this.recharge == 1) {
+					console.log('2222222');
+					
+					this.abotapi.call_h5browser_or_other_goto_url('/pages/user/user');
+				} 
+				else {
+					console.log('333333333333');
+					
+					uni.navigateTo({
+						//url: '../user/dingdan?currentTab=0&otype=',
+						url: '/pages/user/order_list/order_list?currentTab=0&otype=',
+					});
+				}
+				
+			}
 		}
-	  // dikouzhifu: function(e) {
-	  //   console.log('88888',this)
-	  //   var that = this;
-	  //   var userInfo = that.abotapi.get_user_info();
-	  //   uni.request({
-	  //     url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_buy',
-	  //     data: {
-	  //       orderid: that.orderId,
-	  //       payment_type: 6,
-	  //       userid: userInfo.userid,
-	  //       checkstr: userInfo.checkstr,
-	  //       sellerid: that.abotapi.get_sellerid(),
-	  //       money: 0,
-	  //       yue_amount: that.balance_dikou,
-	  //       zengkuan_amount: that.balance_zengsong_dikou,
-	  //       offlinepayid: that.payList.offlinepayid,
-	  //       time: that.date + ' ' + that.time,
-	  //       huikuan_pingtai: that.adds.huikuan_pingtai,
-	  //       name: that.adds.name,
-	  //       body: "商城支付订单",
-	  //       subject: "商城支付订单",
-	  //     },
-	  //     method: 'POST',
-	  //     header: {
-	  //       'Content-Type': 'application/x-www-form-urlencoded'
-	  //     }, // 设置请求的 header
-	  //     success: function (res) {
-	  //       if (res.data.code == 1) {
-	  //         uni.showToast({
-	  //           title: res.data.msg,
-	  //           duration: 2000,
-	  //         });
-	
-	  //         setTimeout(function () {
-	  //           uni.navigateTo({
-	  //             url: '../user/dingdan?currentTab=0&otype=',
-	
-	  //           });
-	  //         }, 2500);
-	  //       } else {
-	  //         uni.showToast({
-	  //           title: "支付失败",
-	  //           duration: 2000
-	  //         });
-	  //       }
-	  //     },
-	  //     fail: function () {
-	  //       // fail
-	  //       uni.showToast({
-	  //         title: '网络异常！',
-	  //         duration: 2000
-	  //       });
-	  //     }
-	  //   })
-	
-	
-	  // },
-	
+
+
 	}
 </script>
 
@@ -860,99 +784,111 @@
 
 
 <style lang="scss">
-.section{
-  font-size: 30rpx; 
-  display: flex;
-  padding: 20rpx 30rpx;
-  border-bottom: 1px solid #e6e6e6;
-}
-.section_view{
-  width: 160rpx;
-}
-.pay_submit button{
-  display:block;
-  position:fixed;
-  bottom:0;
-  left:0;
-  background-color: #1AAD19;
-  z-index:100;
-  text-align: center;
-  width:100%;
-  font-size:16px;
-  border-top:1px solid #eee;
-  line-height:50px;
-  font-weight: 700;
-  color: #fff;
-}
-.view1{
-  font-family: "微软雅黑";
-  font-size: 28rpx;
-  margin-top: 100rpx;
-  color: #666; 
-}
-.vw{
-  font-family: "微软雅黑";
-  font-size: 34rpx;
-  margin-left: 40rpx;
-  color: black;
-}
-.vw1{
- width: 96%;
- height: 80rpx;
- border-bottom: 1px solid #e6e6e6;
- margin:0 auto;
-}
-.vw1 text{
-  line-height: 80rpx;
-  margin-left: 30rpx;
-}
-.view2{
-  line-height: 80rpx;
-  color: red;
-  margin-right: 30rpx;
-  text-align: right;
-  float: right;
-}
-wx_pay_submit{
-  margin-top:100rpx;
-}
-.xx_pay_submit{
-  margin-top: 30rpx;
-}
-.p_all{
-  width: 80%;
-  margin:0 auto;
-}
+	.section {
+		font-size: 30rpx;
+		display: flex;
+		padding: 20rpx 30rpx;
+		border-bottom: 1px solid #e6e6e6;
+	}
+
+	.section_view {
+		width: 160rpx;
+	}
+
+	.pay_submit button {
+		display: block;
+		position: fixed;
+		bottom: 20rpx;
+		left: 0;
+		background-color: #1AAD19;
+		z-index: 100;
+		text-align: center;
+		width: 100%;
+		font-size: 16px;
+		border-top: 1px solid #eee;
+		line-height: 50px;
+		font-weight: 700;
+		color: #fff;
+	}
+
+	.view1 {
+		font-family: "微软雅黑";
+		font-size: 28rpx;
+		margin-top: 100rpx;
+		color: #666;
+	}
+
+	.vw {
+		font-family: "微软雅黑";
+		font-size: 34rpx;
+		margin-left: 40rpx;
+		color: black;
+	}
+
+	.vw1 {
+		width: 96%;
+		height: 80rpx;
+		border-bottom: 1px solid #e6e6e6;
+		margin: 0 auto;
+	}
+
+	.vw1 text {
+		line-height: 80rpx;
+		margin-left: 30rpx;
+	}
+
+	.view2 {
+		line-height: 80rpx;
+		color: red;
+		margin-right: 30rpx;
+		text-align: right;
+		float: right;
+	}
+
+	wx_pay_submit {
+		margin-top: 100rpx;
+	}
+
+	.xx_pay_submit {
+		margin-top: 30rpx;
+	}
+
+	.p_all {
+		width: 80%;
+		margin: 0 auto;
+	}
 
 
 
-.payment_box {
-    width: 94%;
-    margin: 0 auto;
-}
-.zhifu_li {
-    width: 100%;
-    height: 80rpx;
-    background: #fff;
-    background-color: #fff;
-    position: relative;
-    border-bottom: 1px solid #e6e6e6;
-}
-.tubiao_zhifu {
-    width: 50rpx;
-    height: 50rpx;
-    display: block;
-    border-radius: 50%;
-    overflow: hidden;
-    position: absolute;
-    top: 18rpx;
-}
-.zhifu_name {
-    font-size: 30rpx;
-    color: #222;
-    position: absolute;
-    top: 20rpx;
-    left: 80rpx;
-}
+	.payment_box {
+		width: 94%;
+		margin: 0 auto;
+	}
 
+	.zhifu_li {
+		width: 100%;
+		height: 80rpx;
+		background: #fff;
+		background-color: #fff;
+		position: relative;
+		border-bottom: 1px solid #e6e6e6;
+	}
+
+	.tubiao_zhifu {
+		width: 50rpx;
+		height: 50rpx;
+		display: block;
+		border-radius: 50%;
+		overflow: hidden;
+		position: absolute;
+		top: 18rpx;
+	}
+
+	.zhifu_name {
+		font-size: 30rpx;
+		color: #222;
+		position: absolute;
+		top: 20rpx;
+		left: 80rpx;
+	}
 </style>

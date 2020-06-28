@@ -526,9 +526,8 @@
 			              duration: 2000
 			            });
 			          }
-					  uni.switchTab({
-					  	url:'../../pages/user/user',
-					  })
+					  
+					  this.abotapi.call_h5browser_or_other_goto_url('/pages/user/user');
 			        },
 			        fail: function () {
 			          // fail
