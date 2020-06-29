@@ -213,6 +213,18 @@
 				"navigationBarTitleText":"我的设置"
 			}
         }
+		,{	//用户设置
+		    "path" : "pages/user/logscore",
+		    "style" : {
+				"navigationBarTitleText":"我的设置"
+			}
+		}
+		,{	//用户设置
+		    "path" : "pages/user/log",
+		    "style" : {
+				"navigationBarTitleText":"我的设置"
+			}
+		}
         ,{
             "path" : "pages/user/myQR/myQR",
             "style" : {

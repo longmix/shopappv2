@@ -9,6 +9,7 @@
 		<!-- 商品列表 -->
 		<view class="goods-list">
 			<view class="tis" v-if="cart_list.length == 0 ">购物车是空的哦~</view>
+			<!-- <image style="width:50%;" mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/empty_cart.png"></image> -->
             <view class="row" v-else v-for="(item,index) in cart_list" :key="index" >
 				<!-- 删除按钮 -->
 				<view class="menu" @tap.stop="deleteGoods(index)">
@@ -554,7 +555,12 @@
 	.checkbox-box{
 		display: flex;
 		align-items: center;
-		.checkbox{
+	}
+	.checkbox-box .text{
+			font-size: 28upx;
+			margin-left: 10upx;
+		}
+	.checkbox-box .checkbox{
 			width: 35upx;
 			height: 35upx;
 			border-radius: 100%;
@@ -562,18 +568,14 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			.on{
+		}
+	.checkbox-box .checkbox .on{
 				width: 25upx;
 				height: 25upx;
 				border-radius: 100%;
 				background-color: #f06c7a;
 			}
-		}
-		.text{
-			font-size: 28upx;
-			margin-left: 10upx;
-		}
-	}
+	
 .status {
 		width: 100%;
 		height: 0;
@@ -585,7 +587,6 @@
 		height: var(--status-bar-height);//覆盖样式
 		/*  #endif  */
 	}
-
 	.header{
 		width: 92%;
 		padding: 0 4%;
@@ -599,35 +600,37 @@
 		/*  #ifdef  APP-PLUS  */
 		top: var(--status-bar-height);
 		/*  #endif  */
-		.title{
+	}
+	.header .title{
 			font-size: 36upx;
 		}
-		
-	}
 	.place{
-		
 		background-color: #ffffff;
 		height: 100upx;
 		/*  #ifdef  APP-PLUS  */
 		margin-top: var(--status-bar-height);
 		/*  #endif  */
 	}
+	
 	.goods-list{
 		width: 100%;
 		padding: 20upx 0 120upx 0;
-		.tis{
+	
+	}
+	
+	.goods-list .tis{
 			width: 100%;
 			height: 60upx;
 			display: flex;
 			justify-content: center;
 			align-items: center;
 			font-size: 32upx;
-		}
-		.row{
+	}
+	
+	.goods-list .row{
 			width: calc(92%);
 			height: calc(22vw + 40upx); 
 			margin: 20upx auto;
-			
 			border-radius: 15upx;
 			box-shadow: 0upx 5upx 20upx rgba(0,0,0,0.1);
 			display: flex;
@@ -636,11 +639,9 @@
 			overflow: hidden;
 			z-index: 4;
 			border: 0;
-			.menu{
-				.icon{
-					color: #fff;
-					// font-size: 25upx;
-				}
+	}
+	
+	.goods-list .row .menu{				
 				position: absolute;
 				width: 30%;
 				height: 100%;
@@ -651,8 +652,13 @@
 				background-color: red;
 				color: #fff;
 				z-index: 2;
-			}
-			.carrier{
+	}
+	.goods-list .row .menu .icon{
+		color: #fff;
+		// font-size: 25upx;
+	}
+	
+	.goods-list .row .carrier{
 				@keyframes showMenu {
 					0% {transform: translateX(0);}100% {transform: translateX(-30%);}
 				}
@@ -666,12 +672,6 @@
 					animation: closeMenu 0.15s linear both;
 				}
 				background-color: #fff;
-				.checkbox-box{
-					padding-left: 20upx;
-					flex-shrink: 0;
-					height: 22vw;
-					margin-right: 20upx;
-				}
 				position: absolute;
 				width: 100%;
 				padding: 0 0;
@@ -679,101 +679,112 @@
 				z-index: 3;
 				display: flex;
 				align-items: center;
-
-				.goods-info{
-					width: 100%;
-					display: flex;
-					padding-right: 20upx;
-					.img{
-						width: 22vw;
-						height: 22vw;
-						border-radius: 10upx;
-						overflow: hidden;
-						flex-shrink: 0;
-						margin-right: 10upx;
-						image{
-							width: 22vw;
-							height: 22vw;
-						}
-					}
-					.info{
-						width: 100%;
-						height: 22vw;
-						overflow: hidden;
-						display: flex;
-						flex-wrap: wrap;
-						position: relative;
-						.title{
-							width: 100%;
-							font-size: 28upx;
-							display: -webkit-box;
-							-webkit-box-orient: vertical;
-							-webkit-line-clamp: 2;
-							// text-align: justify;
-							overflow: hidden;
-						}
-						.spec{
-							font-size: 20upx;
-							background-color: #f3f3f3;
-							color: #a7a7a7;
-							height: 30upx;
-							display: flex;
-							align-items: center;
-							padding: 0 10upx;
-							border-radius: 15upx;
-							margin-bottom: 20vw;
-						}
-						.price-number{
-							position: absolute;
-							width: 100%;
-							bottom: 0upx;
-							display: flex;
-							justify-content: space-between;
-							align-items: flex-end;
-							font-size: 28upx;
-							height: 60upx;
-							.price{
-							}
-							.number{
-								display: flex;
-								justify-content: center;
-								align-items: flex-end;
-								.input{
-									width: 60upx;
-									height: 60upx;
-									margin: 0 10upx;
-									background-color: #f3f3f3;
-									input{
-										width: 60upx;
-										height: 60upx;
-										display: flex;
-										justify-content: center;
-										align-items: center;
-										text-align: center;
-										font-size: 26upx;
-									}
-								}
-								.sub ,.add{
-									width: 45upx;
-									height: 45upx;
-									background-color: #f3f3f3;
-									border-radius: 5upx;
-									.icon{
-										font-size: 22upx;
-										width: 45upx;
-										height: 45upx;
-										display: flex;
-										justify-content: center;
-										align-items: center;
-										
-									}
-								}
-							}
-						}
-					}
-				}
-			}
+	}
+	
+	
+	.goods-list .row .carrier .checkbox-box{
+		padding-left: 20upx;
+		flex-shrink: 0;
+		height: 22vw;
+		margin-right: 20upx;
+	}
+	
+	.goods-list .row .carrier .goods-info .img{
+			width: 22vw;
+			height: 22vw;
+			border-radius: 10upx;
+			overflow: hidden;
+			flex-shrink: 0;
+			margin-right: 10upx;
 		}
+	.goods-list .row .carrier .goods-info .img image{
+				width: 22vw;
+				height: 22vw;
+			}
+	.goods-list .row .carrier .goods-info .info .title{
+				width: 100%;
+				font-size: 28upx;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				// text-align: justify;
+				overflow: hidden;
+			}
+	.goods-list .row .carrier .goods-info .info .spec{
+				font-size: 20upx;
+				background-color: #f3f3f3;
+				color: #a7a7a7;
+				height: 30upx;
+				display: flex;
+				align-items: center;
+				padding: 0 10upx;
+				border-radius: 15upx;
+				margin-bottom: 20vw;
+			}
+	.goods-list .row .carrier .goods-info .info .price-number .number .input{
+						width: 60upx;
+						height: 60upx;
+						margin: 0 10upx;
+						background-color: #f3f3f3;
+					}
+	.goods-list .row .carrier .goods-info .info .price-number .number .input input{
+							width: 60upx;
+							height: 60upx;
+							display: flex;
+							justify-content: center;
+							align-items: center;
+							text-align: center;
+							font-size: 26upx;
+						}						
+	.goods-list .row .carrier .goods-info .info .price-number .number{
+					display: flex;
+					justify-content: center;
+					align-items: flex-end;
+				}
+	.goods-list .row .carrier .goods-info .info .price-number .number .sub ,.add{
+						width: 45upx;
+						height: 45upx;
+						background-color: #f3f3f3;
+						border-radius: 5upx;
+					}
+	.goods-list .row .carrier .goods-info .info .price-number .number .sub ,.add .icon{
+							font-size: 22upx;
+							width: 45upx;
+							height: 45upx;
+							display: flex;
+							justify-content: center;
+							align-items: center;
+						}
+	.goods-list .row .carrier .goods-info .info .price-number .number .sub .icon{
+							font-size: 22upx;
+							width: 45upx;
+							height: 45upx;
+							display: flex;
+							justify-content: center;
+							align-items: center;
+						} 														
+	.goods-list .row .carrier .goods-info .info .price-number{
+				position: absolute;
+				width: 100%;
+				bottom: 0upx;
+				display: flex;
+				justify-content: space-between;
+				align-items: flex-end;
+				font-size: 28upx;
+				height: 60upx;
+			}				
+	.goods-list .row .carrier .goods-info .info{
+			width: 100%;
+			height: 22vw;
+			overflow: hidden;
+			flex-wrap: wrap;
+			position: relative;
+			
+		}
+	.goods-list .row .carrier .goods-info{
+		width: 100%;
+		display: flex;
+		padding-right: 20upx;
 	}
 	.footer{
 		width: 92%;
@@ -787,7 +798,8 @@
 		position: fixed;
 		bottom: 0upx;
 		z-index: 5;
-		.delBtn{
+	}
+	.footer .delBtn{
 			border: solid 1upx #f06c7a;
 			color: #f06c7a;
 			padding: 0 30upx;
@@ -797,22 +809,13 @@
 			justify-content: center;
 			align-items: center;
 		}
-		.settlement{
+	.footer .settlement{
 			width: 60%;
 			display: flex;
 			justify-content: flex-end;
 			align-items: center;
-			.sum{
-				width: 56%;
-				font-size: 28upx;
-				margin-right: 10upx;
-				display: flex;
-				justify-content: flex-end;
-				.money{
-					font-weight: 600;
-				}
-			}
-			.btn{
+		}
+	.footer .settlement .btn{
 				padding: 0 20upx;
 				height: 65upx;
 				background-color: #f06c7a;
@@ -820,9 +823,17 @@
 				display: flex;
 				justify-content: center;
 				align-items: center;
-				
-				border-radius: 30upx;
+			}	
+	.footer .settlement .sum{
+				width: 56%;
+				font-size: 28upx;
+				margin-right: 10upx;
+				display: flex;
+				justify-content: flex-end;
+				color: #c2c2c2;
 			}
-		}
-	}
+	.footer .settlement .sum .money{
+					font-weight: 600;
+					color: #000000;
+				}
 </style>
