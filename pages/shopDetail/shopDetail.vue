@@ -645,8 +645,8 @@
 							longitude: data.longitude,
 							name: data.name,
 						};
-
-						uni.setStorageSync("shang_" + data.current_xianmai_shangid + "_detail", shang_detail);
+						console.log('1111shang_huancun',"shang_" + data.xianmai_shangid + "_detail", shang_detail);
+						uni.setStorageSync("shang_" + data.xianmai_shangid + "_detail", shang_detail);
 
 						uni.setStorage({
 							key: 'shoplist',

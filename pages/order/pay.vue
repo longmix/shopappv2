@@ -155,7 +155,7 @@
 				deduction:0,	//抵扣价格
 				//recinfo:'',
 				address:'',
-				
+				shang_detail:[],
 				
 				itemData:{},
 				userId:0,
@@ -191,11 +191,18 @@
 				pay_price:'',
 				util:'',
 				// recinfo:{id:1,name:"大黑哥",head:"大",tel:"18816881688",address:{region:{"label":"广东省-深圳市-福田区","value":[18,2,1],"cityCode":"440304"},detailed:'深南大道1111号无名摩登大厦6楼A2'},isDefault:true}
-				order_address_detail: {},
+				order_address_detail: {
+					name:'',
+					mobile:'',
+					province_name:'',
+					city_name:'',
+					district_name:'',
+					address:'',
+				},
 				is_waimai: 0,
 				xianmaishangid: '',
 				current_shang_item:{'name':''},
-				cartlist: '',
+				cartlist: [],
 				
 				
 				btn_bg_color: '#1AAD19',
@@ -210,8 +217,12 @@
 		 * 
 		 * 主要参数如下：
 		 * 
+continue_to_pay 选填，如果有值且为1，则使用缓存的options参数。
+
+total 合计支付的金额
+
 order_type_001
-	total 合计支付的金额
+	
 	
 	shopmall （默认，可以不传）
 		action 默认不传，支持action=directbuy
@@ -225,6 +236,10 @@ order_type_001
 ucid 优惠券
 	
 price_type 保留参数
+
+
+waimai_list_ + xianmaishangid 读取外卖购物车缓存
+cart_list_ + xianmaishangid 读取堂食购物车缓存
 		
 		 * 
 		 */
@@ -256,7 +271,15 @@ price_type 保留参数
 			if(!userInfo && !userInfo.userid){
 				that.abotapi.goto_user_login(last_url, 'normal');
 				return;
-			}		
+			}
+				
+			//是否使用上一次没有支付完成的参数
+			if(options.continue_to_pay && (options.continue_to_pay == 1)){
+				options = JSON.parse(uni.getStorageSync('last_order_pay_option'));
+			}
+			else{
+				uni.setStorageSync('last_order_pay_option', JSON.stringify(options));
+			}
 			
 			that.current_userinfo = userInfo;
 			
@@ -426,7 +449,7 @@ price_type 保留参数
 			        title: '超出配送范围！',
 			        duration: 4000
 			      });
-			      
+			      this.waimai_rmb = 0;
 				  this.btnDisabled = true;  
 			      
 			    }
@@ -435,6 +458,23 @@ price_type 保留参数
 			
 			__loadOrderDetail:function(){
 				var that = this;
+				
+				
+				that.abotapi.abotRequest({
+				  url: that.abotapi.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/get_shang_detail',
+				  data: {
+				     sellerid:that.abotapi.get_sellerid(),
+					 xianmai_shangid: that.xianmaishangid,
+				  },
+				  success: function (res) {	
+					console.log('res===----', res.data.data);
+				    if (res.data.code == 1) {
+				      that.shang_detail = res.data.data;
+					  console.log('that.shang_detail===----',that.shang_detail);
+				    } 	
+				  }
+				});
+				
 				
 				if(that.order_type_001 == 'shopmall'){
 					this.__load_order_detail_shopmall();
@@ -449,7 +489,7 @@ price_type 保留参数
 				var that = this; 
 				
 				var userInfo = that.current_userinfo;
-				
+				console.log('userInfo====>?',userInfo);
 				that.abotapi.abotRequest({
 				  url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
 				  data: {
@@ -592,13 +632,13 @@ price_type 保留参数
 				var that = this;
 				
 				//外卖订单，重新计算总价
-							
+				var userInfo = that.current_userinfo;	
 				console.log("longitude=====>>>", 'longitude_' + that.xianmaishangid + '_latitude');
 				// var longitude_latitude = wx.getStorageInfoSync('longitude_' + options.xianmaishangid + '_latitude');
 							
 				var get_str = "shang_" + that.xianmaishangid + "_detail";
 				var shang_detail = uni.getStorageSync(get_str);
-				
+				console.log('get_str===',get_str)
 				console.log('shang_detail===',shang_detail)
 							
 				that.current_shang_item = shang_detail
@@ -613,7 +653,7 @@ price_type 保留参数
 				    var data = res.data;
 				    console.log('ffdaaeeqq===', res);
 				    if (data.code == 1) {
-										that.rider_set_data = data.data
+						that.rider_set_data = data.data
 				    }
 				
 							
@@ -639,11 +679,7 @@ price_type 保留参数
 				        uni.hideLoading();
 				        // success
 				        var code = res.data.code
-				        var addressList = res.data.addressList;
-							
-				        console.log('gggggggggggggg==8888', res)
-				        console.log('gggggggggggggg==77777', code==2)
-							
+				       
 				        var address = [];
 							
 				        if (code == 2) {
@@ -651,12 +687,17 @@ price_type 保留参数
 				          console.log('gggggggggggggg==6', address)
 				          if (!addressList) {
 												
-											  thats.addemt = 1;
+							thats.addemt = 1;
 				            
 				          }
 				        } else {
 				          thats.addemt = 0;
-										
+						  var addressList = res.data.addressList;
+						  thats.order_address_detail = addressList[0]; //显示地址信息
+
+						  console.log('gggggggggggggg==8888', res)
+						  console.log('addressList==77777', that.order_address_detail)
+											
 				        }
 							
 				        if (thats.addemt) {
@@ -671,14 +712,14 @@ price_type 保留参数
 							
 				          if (address.length == 0) {
 												
-												thats.addemt = 0;
+								thats.addemt = 1;
 				
 				          }else{
-				            thats.addemt = 1;
+				            thats.addemt = 0;
 											 
 				          }
 											
-											thats.address = address;
+						  thats.address = address;
 				          // 新建百度地图对象 
 				          var BMap = new bmap.BMapWX({
 				            ak: thats.abotapi.globalData.baidu_map_ak
@@ -688,23 +729,20 @@ price_type 保留参数
 				            console.log(data)
 				          };
 				          var success = function (data) {
-						
-						
-												console.log('data==',data);
+							
+							console.log('data==',data);
 				            wxMarkerData = data.wxMarkerData;
 											  
-											  thats.makers = wxMarkerData;
-											  thats.latitude = wxMarkerData[0].latitude;
-											  thats.longitude = wxMarkerData[0].longitude;
-				         
-							
-							
+							thats.makers = wxMarkerData;
+							thats.latitude = wxMarkerData[0].latitude;
+							thats.longitude = wxMarkerData[0].longitude;
+							console.log('shang_detail====',shang_detail)
 				            var distance = thats.abotapi.getDisance(shang_detail.latitude, shang_detail.longitude, thats.latitude, thats.longitude);
 				            
 				            console.log('distance====',distance)
 				          
 											  
-												thats.distance = distance
+							thats.distance = distance
 						
 							
 				            thats.compare_distance();
@@ -712,8 +750,10 @@ price_type 保留参数
 				            //计算配送费
 				            console.log('traffic_price=ffffff11111==>???', thats.waimai_rmb);
 				            if (!thats.waimai_rmb) {
+								console.log('最终配送费2222');
 				              var waimai_rmb = thats.rider_set_data['min_rmb'];
 				            } else {
+								console.log('最终配送费333');
 				              var waimai_rmb = Number(thats.waimai_rmb).toFixed(2);
 				            }
 							
@@ -734,19 +774,20 @@ price_type 保留参数
 				            console.log('all_price===>???', all_price);
 				            console.log('pay_price===>???', pay_price);
 				
-												thats.caiping_all_price = price;
-												thats.traffic_price = traffic_price;
-												thats.all_price = all_price.toFixed(2);
-												thats.pay_price = pay_price.toFixed(2);
-												thats.pay_price_origin = parseFloat(price);
-												thats.yajin = 0.00;
-								
+							thats.caiping_all_price = price;
+							thats.traffic_price = Number(traffic_price).toFixed(2);
+							thats.all_price = all_price.toFixed(2);
+							thats.pay_price = pay_price.toFixed(2);
+							thats.pay_price_origin = parseFloat(price);
+							thats.yajin = 0.00;
+								console.log('最终配送费', thats.traffic_price);
+								console.log('最终配送费', traffic_price);
 				          }
 							
 							
 				          var address = thats.address.province_name + thats.address.city_name + thats.address.district_name + thats.address.address;
 											
-											console.log('address===',address);
+						console.log('address===',address);
 							
 							
 				          // 发起geocoding检索请求 
@@ -767,12 +808,12 @@ price_type 保留参数
 				          console.log('price==============', price)
 											
 											
-											thats.caiping_all_price = price;
-											thats.traffic_price = 0;
-											thats.all_price = price;
-											thats.pay_price = price;
-											thats.pay_price_origin = price;
-											thats.yajin = 0.00;
+						thats.caiping_all_price = price;
+						thats.traffic_price = 0;
+						thats.all_price = price;
+						thats.pay_price = price;
+						thats.pay_price_origin = price;
+						thats.yajin = 0.00;
 				         
 				        }
 							
@@ -869,7 +910,7 @@ price_type 保留参数
 			
 			
 			createOrder:function(){
-				
+				console.log('开始下单');
 				this.btnDisabled = true
 				
 			    var that = this;
@@ -926,7 +967,7 @@ price_type 保留参数
 					}
 				}
 				else if(that.order_type_001 == 'xianmaishang'){
-					if(that.addemt == 0){
+					if(that.addemt == 1){
 					  uni.showToast({
 					    title: '请添加收货地址',
 					    duration: 2000,
