@@ -4,7 +4,7 @@
 		<view class="header">
 			<!-- 头部-默认显示 -->
 			<view class="before" :style="{ opacity: 1 - afterHeaderOpacity, zIndex: beforeHeaderzIndex }">
-				<view class="back"><view class="icon xiangqian" @tap="back" v-if="showBack"></view></view> 
+				<view class="back"><view class="icon xiangqian" @tap="back_return" v-if="showBack"></view></view> 
 				<view class="middle"></view>
 				<view class="icon-btn">
 					<view class="icon tongzhi" @tap="toMsg"></view>
@@ -13,7 +13,7 @@
 			</view>
 			<!-- 头部-滚动渐变显示 -->
 			<view class="after" :style="{ opacity: afterHeaderOpacity, zIndex: afterHeaderzIndex }">
-				<view class="back" ><view class="icon xiangqian" @tap="back" v-if="showBack"></view></view>
+				<view class="back" ><view class="icon xiangqian" @tap="back_return" v-if="showBack"></view></view>
 				<view class="middle">
 					<view v-for="(anchor,index) in anchorlist" :class="[selectAnchor==index ?'on':'']" :key="index" @tap="toAnchor(index)">{{anchor.name}}</view>
 				</view>
@@ -553,15 +553,11 @@ export default {
 		if (userInfo && userInfo.userid){
 			this.abotapi.abotRequest({
 			  url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_favorite',
-			  method: 'post',
 			  data: {
 				productid: this.productid,
 				userid: userInfo.userid,
 				checkstr: userInfo.checkstr,
 				sellerid: this.abotapi.get_sellerid(),
-			  },
-			  header: {
-				'Content-Type': 'application/x-www-form-urlencoded'
 			  },
 			  success: (res) => {
 				//--init data 
@@ -1068,7 +1064,7 @@ export default {
 			}).exec();
 		},
 		//返回上一页
-		back() {
+		back_return() {
 			uni.navigateBack();
 		},
 		//服务弹窗
