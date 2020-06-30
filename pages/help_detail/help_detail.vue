@@ -84,7 +84,8 @@
 							<text class="comment_huifu_text" style="">{{items.reply}}</text>
 						</view>
 					</view>
-					<view class="comment_delete" :data-id="items.id" @tap='deleteRemark'  v-if="userInfo.userid==items.yanyubao_userid">
+					<view class="comment_delete" :data-id="items.id" @tap='deleteRemark'  
+						v-if="userInfo && items && (userInfo.userid==items.yanyubao_userid)">
 						<image src="../../static/img/help/delete_red.png" mode="widthFix"></image>
 					</view>
 				  
@@ -966,10 +967,10 @@
 	.detail_bottom{
 	  position: fixed;
 	  bottom: 0;
-	  border-top: 10rpx solid;
+	  /*border-top: 10rpx solid;
 	  border-image: -webkit-linear-gradient(#fff,rgb(136, 136, 136)) 30 30;
 	  border-image: -moz-linear-gradient(#fff,rgb(136, 136, 136))  30 30;
-	  border-image: linear-gradient(#fff,rgb(136, 136, 136))  30 30;
+	  border-image: linear-gradient(#fff,rgb(136, 136, 136))  30 30;*/
 	  display:inline-block;
 	  background-color: #fff;
 	  width: 100%;
