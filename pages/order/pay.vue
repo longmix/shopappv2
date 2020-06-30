@@ -681,7 +681,7 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 				        var code = res.data.code
 				       
 				        var address = [];
-							
+						var addressList = res.data.addressList;
 				        if (code == 2) {
 				          console.log('gggggggggggggg==5', !address)
 				          console.log('gggggggggggggg==6', address)
@@ -692,15 +692,15 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 				          }
 				        } else {
 				          thats.addemt = 0;
-						  var addressList = res.data.addressList;
+						  
 						  thats.order_address_detail = addressList[0]; //显示地址信息
 
 						  console.log('gggggggggggggg==8888', res)
-						  console.log('addressList==77777', that.order_address_detail)
+						  console.log('addressList==77777', thats.order_address_detail)
 											
 				        }
 							
-				        if (thats.addemt) {
+				        if (thats.addemt == 0) {
 							
 				          for (var i = 0; i < addressList.length; i++) {
 				            if (addressList[i].is_default == 1) {
@@ -713,6 +713,17 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 				          if (address.length == 0) {
 												
 								thats.addemt = 1;
+								var price = Number(thats.all_price).toFixed(2);
+								console.log('price==============', price)
+													
+													
+								thats.caiping_all_price = price;
+								thats.traffic_price = '0.00';
+								thats.all_price = price;
+								thats.pay_price = price;
+								thats.pay_price_origin = price;
+								thats.yajin = 0.00;
+								return;
 				
 				          }else{
 				            thats.addemt = 0;
@@ -809,7 +820,7 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 											
 											
 						thats.caiping_all_price = price;
-						thats.traffic_price = 0;
+						thats.traffic_price = '0.00';
 						thats.all_price = price;
 						thats.pay_price = price;
 						thats.pay_price_origin = price;

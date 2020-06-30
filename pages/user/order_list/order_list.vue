@@ -34,9 +34,14 @@
 							<view class="sp_text" >
 								
 								<view class="sp_tit ovh1">下单时间： {{item.createtime}}</view>
+								<view class="sp_tit ovh1" v-if="item.order_option.order_xianmai_shangdata.name">订单类型： {{item.order_option.order_xianmai_shangdata.name}}</view>
+								
 								<view class="sp_neb">共计{{item.order_option.hahading_order_product_list.length}}商品，总价：￥{{item.all_price}}</view>
-								  
+								
 							</view>
+							<view  class="btn_b" style='overflow: hidden;'>
+								<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
+							</view> 
 						</block>
 						
 						<block v-else>
@@ -637,6 +642,11 @@
 							  if (list[i].order_option && ('hahading_order_product_list' in list[i].order_option) && list[i].order_option.hahading_order_product_list) {
 								console.log(i, list[i].order_option.hahading_order_product_list)
 								list[i].order_option.hahading_order_product_list = JSON.parse(list[i].order_option.hahading_order_product_list)
+								
+								if(list[i].order_option.order_xianmai_shangdata){
+									list[i].order_option.order_xianmai_shangdata = JSON.parse(list[i].order_option.order_xianmai_shangdata)
+								}
+								
 								list[i].order_option.hahading_order_product_list_length = list[i].order_option.hahading_order_product_list.length;
 							  }else{
 								console.log('ddd88', list[i]);
@@ -764,6 +774,11 @@
 						  if (list[i].order_option && ('hahading_order_product_list' in list[i].order_option) && list[i].order_option.hahading_order_product_list) {
 							console.log(i, list[i].order_option.hahading_order_product_list)
 							list[i].order_option.hahading_order_product_list = JSON.parse(list[i].order_option.hahading_order_product_list)
+							//console.log('gggggggggg', list[i].order_option.order_xianmai_shangdata)
+							if(list[i].order_option.order_xianmai_shangdata){
+								list[i].order_option.order_xianmai_shangdata = JSON.parse(list[i].order_option.order_xianmai_shangdata)
+							}
+							
 							list[i].order_option.hahading_order_product_list_length = list[i].order_option.hahading_order_product_list.length;
 						  }else{
 							console.log('ddd88', list[i]);

@@ -163,7 +163,7 @@
 		
 		onLoad(options) {
 			var that = this;
-			
+			console.log('options',options);
 			uni.getSystemInfo({
 			    success: function (res) {
 					console.log('getSystemInfo==',res)

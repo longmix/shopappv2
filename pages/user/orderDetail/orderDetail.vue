@@ -10,14 +10,14 @@
 	    <navigator :open-type="[wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate']" :url="'../../product/detail?productid=' + item.productid"  class="p_all bg_white df item" v-for="item in orderList" :key="productid">
 	
 				<view class="cp_photo">			
-					<image :src="item.picture"></image>
+					<image :src="item.picture?item.picture:item.img"></image>
 				</view>
 				<view class="df_1">	
 					<view class="font_14 mt5 ovh1">
 			           {{item.name}}
 			        </view>
-				<text class="gm_ovh_1h pt10" >数量：{{item.amount}} 单价：¥{{item.price}}</text>
-				<text class="gm_ovh_1h pt10" style="font-weight:bold;color: #333;">¥{{item.price2}}</text>
+				<text class="gm_ovh_1h pt10" >数量：{{item.amount?item.amount:item.count}} 单价：¥{{item.price}}</text>
+				<text class="gm_ovh_1h pt10" style="font-weight:bold;color: #333;">¥{{item.price2?item.price2:item.price}}</text>
 				</view>
 	    </navigator>
 	
@@ -229,10 +229,21 @@
 			        },
 			        success: function (res) {
 			          var code = res.data.code;
+					  var orderData = res.data.orderinfo;
 			          if (code == 1) {
-			            var orderData = res.data.orderinfo;
-						that.orderData = orderData;
-						that.orderList = orderData.orderProduct;
+						  
+						if(orderData.order_option && (orderData.order_option.xianmai_order_type == 1)){
+							var order_product_list = JSON.parse(orderData.order_option.hahading_order_product_list);
+							console.log('order_product_list',order_product_list);
+							that.orderData = orderData;
+							that.orderList = order_product_list;
+						}else{
+							that.orderData = orderData;
+							that.orderList = orderData.orderProduct;
+						}
+						  
+			           
+						
 			          
 			            console.log(that.orderList);
 			          } else {

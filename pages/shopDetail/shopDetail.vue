@@ -1,8 +1,29 @@
 <template>
 	<view>
 		<!-- 状态栏 -->
-		<view v-if="showHeader" class="mystatusbar" :style="{ position: headerPosition,top:statusTop,opacity: afterHeaderOpacity}"></view>
-	
+		<view v-if="showHeader" class="mystatusbar" :style="{ position: headerPosition,top:statusTop,opacity: afterHeaderOpacitys}"></view>
+		<view class="header">
+			<!-- 头部-默认显示 -->
+			<view class="before" :style="{ opacity: 1 - afterHeaderOpacity, zIndex: beforeHeaderzIndex }">
+				<view class="back"><view class="icon xiangqian" @tap="back_return" v-if="showBack"></view></view> 
+				<view class="middle"></view>
+				<view class="icon-btn">
+					<!-- <view class="icon tongzhi" @tap="toMsg"></view> -->
+					<view class="icon zhuye" @tap="toindex"></view>
+				</view>
+			</view>
+			<!-- 头部-滚动渐变显示 -->
+			<view class="after" :style="{ opacity: afterHeaderOpacity, zIndex: afterHeaderzIndex }">
+				<view class="back" ><view class="icon xiangqian" @tap="back_return" v-if="showBack"></view></view>
+				<view class="middle">
+					<view v-for="(anchor,index) in anchorlist" :class="[selectAnchor==index ?'on':'']" :key="index" @tap="toAnchor(index)">{{anchor.name}}</view>
+				</view>
+				<view class="icon-btn">
+					<!-- <view class="icon tongzhi" @tap="toMsg"></view> -->      <!-- 下版本-> toMsg -->
+					<view class="icon zhuye" @tap="toindex"></view>
+				</view>
+			</view>
+		</view>
 		<view class="welcome_image">
 			<view v-if="current_shang_detail.mendian_image">
 				<image @load="imageLoad($event)" :data-id='index' mode="widthFix" style="width: 100%;" :src="current_shang_detail.mendian_image"></image>
@@ -265,6 +286,16 @@
 		},
 		data() {
 			return {
+				beforeHeaderzIndex: 11,//层级
+				afterHeaderzIndex: 10,//层级
+				beforeHeaderOpacity: 1,//不透明度
+				afterHeaderOpacity: 0,//不透明度
+				showBack:true,
+				//是否显示返回按钮
+				// #ifndef MP
+				showBack:true,
+				// #endif
+				
 				ak: "", //填写申请到的ak，从shop_option中获取 baidu_map_ak_wxa这个属性
 				markers: [],
 				longitude: '', //经度
@@ -288,7 +319,7 @@
 				isShoucang: 0,
 				
 				showHeader: true,
-				afterHeaderOpacity: 1, //不透明度
+				afterHeaderOpacitys: 1, //不透明度
 				headerPosition: 'fixed',
 				
 				headerTop: null,
@@ -349,7 +380,10 @@
 				xianmai_shangid = options.scene
 			}
 
-
+		// #ifdef MP
+		//小程序隐藏返回按钮
+		this.showBack = false;
+		// #endif
 
 			this.current_xianmai_shangid = xianmai_shangid;
 
@@ -369,7 +403,16 @@
 			this.headerTop = e.scrollTop >= 0 ? null : 0;
 			this.statusTop = e.scrollTop >= 0 ? null : -this.statusHeight + 'px';
 		
-		
+			//锚点切换
+			//this.selectAnchor = e.scrollTop>=this.anchorlist[2].top?2:e.scrollTop>=this.anchorlist[1].top?1:0;
+			//导航栏渐变
+			let tmpY = 175;
+			e.scrollTop = e.scrollTop > tmpY ? 175 : e.scrollTop;
+			this.afterHeaderOpacity = e.scrollTop * (1 / tmpY);
+			this.beforeHeaderOpacity = 1 - this.afterHeaderOpacity;
+			//切换层级
+			this.beforeHeaderzIndex = e.scrollTop > 0 ? 10 : 11;
+			this.afterHeaderzIndex = e.scrollTop > 0 ? 11 : 10;
 		
 		},
 		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
@@ -458,7 +501,20 @@
 					url: '/pages/product/detail?productid=' + productid
 				});
 			},
-
+			//返回上一页
+			back_return() {
+				uni.navigateBack();
+			},
+			//跳转到首页
+			toindex:function(){
+				console.log('toCart 向首页跳转')
+				
+				uni.switchTab({
+					url:'../index/index'
+				})
+				
+				
+			},
 			imageLoad: function(e) { //获取图片真实宽度  
 
 				var imgwidth = e.detail.width,
@@ -1497,7 +1553,118 @@
 		border: none;
 	
 	}
+	.header {
+		width: 100%;
 	
+		height: 100upx;
+		display: flex;
+		align-items: center;
+		position: fixed;
+		top: 0;
+		z-index: 10;
+		/*  #ifdef  APP-PLUS  */
+		top: var(--status-bar-height);
+		/*  #endif  */
+		.before,
+		.after {
+			width: 92%;
+			padding: 0 4%;
+			height: 100upx;
+			display: flex;
+			align-items: center;
+			position: fixed;
+			top: 0;
+			/*  #ifdef  APP-PLUS  */
+				top: var(--status-bar-height);
+			/*  #endif  */
+			transition: opacity 0.05s linear;
+			.back {
+				width: 125upx;
+				height: 60upx;
+				flex-shrink: 0;
+				.icon {
+					margin-left: -10%;
+					width: 60upx;
+					height: 60upx;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					font-size: 42upx;
+				}
+			}
+			.middle {
+				width: 100%;
+			}
+			.icon-btn {
+				width: 60rpx;
+				height: 60rpx;
+				flex-shrink: 0;
+				display: flex;
+				.icon {
+					&:first-child{
+						margin-right: 5upx;
+					}
+					width: 60upx;
+					height: 60upx;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					font-size: 42upx;
+				}
+			}
+		}
+		.before {
+			.back {
+				.icon {
+					color: #fff;
+					background-color: rgba(0, 0, 0, 0.2);
+					border-radius: 100%;
+				}
+			}
+			.icon-btn {
+				.icon {
+					color: #fff;
+					background-color: rgba(0, 0, 0, 0.2);
+					border-radius: 100%;
+					
+				}
+			}
+		}
+		.after {
+			background-color: #f1f1f1;
+			.back {
+				.icon {
+					color: #666;
+				}
+			}
+			.icon-btn {
+				.icon {
+					color: #666;
+				}
+			}
+			.middle {
+				font-size: 32upx;
+				height: 90upx;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				padding: 0 7%;
+				view {
+					width: (100%/3);
+					padding: 0 3%;
+					margin: 0 3%;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					&.on {
+						margin-bottom: -4upx;
+						color: #f47952;
+						border-bottom: solid 4upx #f47952;
+					}
+				}
+			}
+		}
+	}
 	.share-btn{
 		line-height: normal;
 		background-color: transparent;
