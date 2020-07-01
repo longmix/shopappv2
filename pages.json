@@ -1,7 +1,7 @@
 {	
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
-		"navigationBarTitleText" : "腾羽云商",
+		"navigationBarTitleText" : "通版商城通用导航",
 		"navigationBarBackgroundColor" : "#2d96ff",
 		"backgroundColor" : "#2d96ff",
 		"backgroundColorTop":"#2d96ff",
@@ -60,7 +60,7 @@
 			"style": {
 				"navigationBarTitleText":"分类列表",
 				"enablePullDownRefresh": true,
-				"app-plus": {
+				"app-plus888": {
 					"titleNView": false ,//禁用原生导航栏
 					"bounce":"none",
 					"navigationBarTextStyle":"black"
@@ -73,7 +73,7 @@
 			"style": {
 				"navigationBarTitleText":"商品分类导航",
 				"enablePullDownRefresh": true,
-				"app-plus": {
+				"app-plus888": {
 					"titleNView": false ,//禁用原生导航栏
 					"bounce":"none",
 					"navigationBarTextStyle":"black"
@@ -85,10 +85,10 @@
 			"path": "pages/cart/cart",
 			"style": {
 				"enablePullDownRefresh": true,
-				"app-plus": {
+				"app-plus888": {
 					"titleNView": false ,//禁用原生导航栏
 					"softinputNavBar":"none",
-					"subNVues":[{  
+					"subNVues8888":[{  
 						"id": "cartTitleNvue", // 唯一标识  
 						"path": "pages/cart/subNvue/cartTitleNvue", // 页面路径  
 						"type":"navigationBar"
@@ -312,11 +312,11 @@
         ,{
             "path" : "pages/h5browser/h5browser",
             "style" : {
-				"app-plus": {
+				"app-plus888": {
 					"titleNView": {
 						"backgroundColor888":"#f37404",
 						"titlecolor888":"#ffffff",
-						"autoBackButton":false,
+						"autoBackButton":true,
 						"homeButton":true,
 						"splitLine888":{ "color":"#e9e9e9" } 					
 					} ,//禁用原生导航栏
