@@ -3,13 +3,14 @@
 		<!-- 状态栏 -->
 		<view class="status" :style="{position:headerPosition}"></view>
         <view class="header" :style="{position:headerPosition}">
-			
+			<view class="icon-btn">
+				<view class="icon xiangqian" @tap="back_return"></view>
+			</view>
 			<view class="input-box">
 				<input placeholder="默认关键字" placeholder-style="color:#c0c0c0;" @tap="toSearch()"/>
 				<view class="icon search"></view>
 			</view>
 			<view class="icon-btn">
-				<view class="icon tongzhi" @tap="toMsg"></view>
 				<view class="icon cart" @tap="toCart"></view>
 			</view>
 		</view>
@@ -67,7 +68,11 @@
 				// typeTree:{},
 				currType:0,
 				"types":[],
-				typeTree:[]
+				typeTree:[],
+				//是否显示返回按钮
+				// #ifndef MP
+				showBack:true,
+				// #endif
 			}
 		},
 		onPageScroll(e){
@@ -82,7 +87,10 @@
 			this.abotapi.set_option_list_str(this, this.callback_function);
 
 			// that.tapType();
-
+		// #ifdef MP
+		//小程序隐藏返回按钮
+		this.showBack = false;
+		// #endif
 			
 		},
 		methods: {
@@ -189,7 +197,10 @@
 					}
 				});
 			},
-			
+			//返回上一页
+			back_return() {
+				uni.navigateBack();
+			},
 			
 			//分类切换显示
 			showCategory(e,index){

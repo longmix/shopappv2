@@ -60,7 +60,7 @@
 			"style": {
 				"navigationBarTitleText":"分类列表",
 				"enablePullDownRefresh": true,
-				"app-plus888": {
+				"app-plus": {
 					"titleNView": false ,//禁用原生导航栏
 					"bounce":"none",
 					"navigationBarTextStyle":"black"
@@ -73,7 +73,7 @@
 			"style": {
 				"navigationBarTitleText":"商品分类导航",
 				"enablePullDownRefresh": true,
-				"app-plus888": {
+				"app-plus": {
 					"titleNView": false ,//禁用原生导航栏
 					"bounce":"none",
 					"navigationBarTextStyle":"black"

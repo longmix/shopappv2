@@ -4,10 +4,17 @@
 		<view v-if="showHeader" class="status" :style="{ position: headerPosition,top:statusTop,opacity: afterHeaderOpacity}"></view>
 
 		<!-- 商品搜索 -->
-		<view v-if="1" class="scroll-txt" @tap="goto_search" data-value="">
-			<icon type="search" size="14" style="margin: 0px 10rpx 0 0"></icon>
-			<text class="scroll-ads">搜索</text>
+		<view style="display: flex;align-items: center;">
+			<view class="icon-btn" @click="back_return">
+				<view class="icon xiangqian before"></view>
+			</view>
+			<view v-if="1" class="scroll-txt" @tap="goto_search" data-value="">
+				<icon type="search" size="14" style="margin: 0px 10rpx 0 0"></icon>
+				<text class="scroll-ads">搜索</text>
+			</view>
+			<view class="icon zhuye before" @click="toindex"></view>
 		</view>
+		
 
 
 		<!-- 左侧类型 -->
@@ -38,9 +45,9 @@
 					</view>
 				</block>
 				<block v-if="wxa_product_super_list_style == 1">
-					<view class="logo_info navigator" v-for="(item,index) in typeTree" :key="index" open-type='navigateTo'>
+					<view class="logo_info navigator" v-for="(item,index) in typeTree" :key="index" open-type='navigate'>
 
-						<navigator style="" :url="'../product/detail?productid=' + item.productid" open-type='navigateTo'>
+						<navigator style="" :url="'../product/detail?productid=' + item.productid" open-type='navigate'>
 							<view class="logo_pic" style="margin-top:18rpx;">
 								<image :src="item.picture" style="width:100%;" mode="widthFix"></image>
 							</view>
@@ -60,7 +67,7 @@
 							</view>
 
 							<view style="float:right;margin-top: 8rpx;">
-								<image style="padding:0 10px;width:36rpx;height:36rpx;" @tap.prevent="addCart" src="../../static/img/car.png"
+								<image style="padding:0 10px;width:36rpx;height:36rpx;" src="../../static/img/car.png"
 								 :data-productid="item.productid"></image>
 							</view>
 						</navigator>
@@ -81,6 +88,7 @@
 			return {
 				// types: null,
 				//typeTree: {}, // 数据缓存
+				
 				currType: 0,
 				// 当前类型
 				"types": [],
@@ -96,6 +104,10 @@
 				headerTop: null,
 				statusTop: null,
 				afterHeaderOpacity: 1, //不透明度
+				//是否显示返回按钮
+				// #ifndef MP
+				showBack:true,
+				// #endif
 			}
 		},
 		onPageScroll(e) {
@@ -142,6 +154,11 @@
 			});
 			this.showHeader = false;
 			this.statusHeight = plus.navigator.getStatusbarHeight();
+			// #endif
+			
+			// #ifdef MP
+			//小程序隐藏返回按钮
+			this.showBack = false;
 			// #endif
 		},
 		onPullDownRefresh: function() {
@@ -242,9 +259,19 @@
 					});
 				}
 			},
-
-
+			//返回上一页
+			back_return() {
+				uni.navigateBack();
+			},
+			//跳转到首页
+			toindex:function(){
+				console.log('toCart 向首页跳转');
+				
+				this.abotapi.call_h5browser_or_other_goto_url('/pages/index/index');
+				
+			},
 			addCart: function(e) {
+				console.log('请求');
 				var that = this;
 				var userInfo = that.abotapi.get_user_info();
 				if (!userInfo) {
@@ -562,13 +589,18 @@
 
 	.right_one_line_one_title {
 		text-align: left;
-		height: 80rpx;
 		overflow: hidden;
 		margin-bottom: 10rpx;
+		text-overflow: ellipsis;
+		
+		display: -webkit-box;
+		-webkit-line-clamp: 2;  
+		-webkit-box-orient: vertical;
 	}
 
 	/* 搜索相关 */
 	.scroll-txt {
+		width: 80%;
 		text-align: center;
 		margin: 10rpx 20rpx;
 		border: 20rpx red;
@@ -600,5 +632,33 @@
 		/*  #ifdef  APP-PLUS  */
 		height: var(--status-bar-height); //覆盖样式
 		/*  #endif  */
+	}
+	.icon-btn{
+		width: 60rpx;
+		height: 60rpx;
+		-webkit-flex-shrink: 0;
+		flex-shrink: 0;
+		display: -webkit-box;
+		display: -webkit-flex;
+		display: flex;
+		margin-left: 10rpx;
+	}
+	.before{
+		color: #fff;
+		background-color: rgba(0, 0, 0, 0.2);
+		border-radius: 100%;
+		margin-right: 5rpx;
+		width: 60rpx;
+		height: 60rpx;
+		display: -webkit-box;
+		display: -webkit-flex;
+		display: flex;
+		-webkit-box-pack: center;
+		-webkit-justify-content: center;
+		justify-content: center;
+		-webkit-box-align: center;
+		-webkit-align-items: center;
+		align-items: center;
+		font-size: 42rpx;
 	}
 </style>

@@ -880,7 +880,7 @@
 	background: #fff;
 	z-index: 2;
 	/*  #ifdef  APP-PLUS  */
-	margin-top: var(--status-bar-height);
+	// margin-top: var(--status-bar-height);
 	/*  #endif  */
 	}
 	.scroll-txt {
@@ -904,7 +904,7 @@
 		align-items: center;
 		font-size: 28rpx;
 		color: #aaa;
-		margin-bottom: 27rpx;
+		margin-bottom: 17rpx;
 		margin-top: 27rpx;
 
 	}
