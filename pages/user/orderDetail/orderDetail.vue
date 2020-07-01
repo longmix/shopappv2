@@ -232,7 +232,7 @@
 					  var orderData = res.data.orderinfo;
 			          if (code == 1) {
 						  
-						if(orderData.order_option && (orderData.order_option.xianmai_order_type == 1)){
+						if(orderData.order_option && (orderData.order_option.xianmai_order_type)){
 							var order_product_list = JSON.parse(orderData.order_option.hahading_order_product_list);
 							console.log('order_product_list',order_product_list);
 							that.orderData = orderData;

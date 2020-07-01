@@ -26,7 +26,7 @@
 				
 				<view v-if="item.youhui_detail" style="font-size: 24rpx;">
 					<view class="youhui">优惠</view>
-					<text>{{item.youhui_detail}}</text>
+					<text style="font-size: 22rpx;">{{item.youhui_detail}}</text>
 				</view>
 				
 				<view class="a">进入店铺</view>

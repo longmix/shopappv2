@@ -8,7 +8,7 @@
 				<view class="middle"></view>
 				<view class="icon-btn">
 					<view class="icon tongzhi" @tap="toMsg"></view>
-					<view class="icon cart" @tap="toCart"></view>
+					<view class="icon zhuye" @tap="toindex"></view>   <!-- 跳转购物车 toCart -->
 				</view>
 			</view>
 			<!-- 头部-滚动渐变显示 -->
@@ -19,7 +19,7 @@
 				</view>
 				<view class="icon-btn">
 					<view class="icon tongzhi" @tap="toMsg"></view>      <!-- 下版本-> toMsg -->
-					<view class="icon cart" @tap="toCart"></view>
+					<view class="icon zhuye" @tap="toindex"></view>
 				</view>
 			</view>
 		</view>
@@ -1175,7 +1175,16 @@ export default {
 			
 			
 		},
-		
+		//跳转到首页
+		toindex:function(){
+			console.log('toCart 向首页跳转')
+			
+			uni.switchTab({
+				url:'../index/index'
+			})
+			
+			
+		},
 		block_tanchuang:function(productid){
 			console.log('productid',productid);
 		

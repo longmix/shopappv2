@@ -913,11 +913,7 @@
 		width: 30%;
 
 	}
-	.label-line-a {
-		border: 1px solid #eee;
-		width: 30%;
-
-	}
+	
 	.top-input-con {
 		display: flex;
 		justify-content: space-between;

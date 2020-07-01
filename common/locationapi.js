@@ -152,7 +152,13 @@ module.exports = {
 						
 						return;		
 						
-				    }
+				    },
+					fail:function (res) {
+						console.log('getLocation获取地址失败');
+					},
+					complete:function(){
+						console.log('getLocation失败成功都进入');
+					}
 				});
 				
 				
