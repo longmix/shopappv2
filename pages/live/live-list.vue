@@ -187,7 +187,7 @@
 			}
 		},
 		onLoad(options) {
-			
+			/*
 			uni.setTabBarBadge({
 			  index: 3,
 			  text: '3'
@@ -195,7 +195,7 @@
 			uni.setTabBarBadge({
 			  index: 1,
 			  text: '6'
-			})
+			})*/
 			
 			
 			this.abotapi.set_shop_option_data(null, function(){

@@ -1177,12 +1177,9 @@ export default {
 		},
 		//跳转到首页
 		toindex:function(){
-			console.log('toCart 向首页跳转')
+			console.log('toCart 向首页跳转');
 			
-			uni.switchTab({
-				url:'../index/index'
-			})
-			
+			this.abotapi.call_h5browser_or_other_goto_url('/pages/index/index');
 			
 		},
 		block_tanchuang:function(productid){

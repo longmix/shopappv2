@@ -293,10 +293,12 @@
 									for (var i = 0; i < carts.length; i++) {
 										total_amount += carts[i].amount
 									}
+									
+									/*
 									uni.setTabBarBadge({
 										index: 2,
 										text: total_amount.toString()
-									})
+									})*/
 
 								} else if (res.data.code == 2) {
 
