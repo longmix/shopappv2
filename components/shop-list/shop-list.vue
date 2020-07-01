@@ -24,9 +24,9 @@
 					
 				</view>
 				
-				<view v-if="item.youhui_detail" style="font-size: 24rpx;">
+				<view v-if="item.youhui_detail" style="font-size: 24rpx;display: flex;">
 					<view class="youhui">优惠</view>
-					<text style="font-size: 22rpx;">{{item.youhui_detail}}</text>
+					<view style="font-size: 22rpx;">{{item.youhui_detail}}</view>
 				</view>
 				
 				<view class="a">进入店铺</view>
@@ -85,14 +85,14 @@
 		margin-right: 10rpx;
 	}
 	.youhui{
-		width: 76rpx;
+		width: 100rpx;
 		background: red linear-gradient(to right, rgba(255,255,255,0), rgba(2555,255,255,.5));
 		display: inline-block;
 		text-align: center;
 		color: #fff;
 		border-radius: 6rpx;
 		margin-right: 10rpx;
-	
+		height: 37rpx;
 	}
 
 </style>
