@@ -24,7 +24,9 @@
 						</view>
 					</view>
 					<!-- 商品信息 -->
+					<view v-if="item.status != 1" style="background: #000;position: absolute;width: 100%;height: 100px;z-index: 1000;right: 0px;top: 1px;opacity: 0.2;"></view>
 					<view class="goods-info" @tap="toGoods(item.productid)">
+						
 						<view class="img">
 							<image :src="item.picture"></image>
 						</view>
@@ -272,7 +274,7 @@
 				console.log('encodeURIComponent(JSON.stringify(proId))==',encodeURIComponent(JSON.stringify(proId)));
 				
 				//存回data
-				uni.navigateTo({
+				uni.navigateTo({ 
 					url: '/pages/order/pay?productid=' + encodeURIComponent(JSON.stringify(proId)),
 				})
 			},
@@ -419,7 +421,11 @@
 			allSelect(){
 				let len = this.cart_list.length;
 				let arr = [];
+				
 				for(let i=0;i<len;i++){
+					if(this.cart_list[i].status != 1){
+						continue;
+					}
 					this.cart_list[i].selected = this.isAllselected? false : true;
 					arr.push(this.cart_list[i].productid);
 				}

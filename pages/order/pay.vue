@@ -37,7 +37,7 @@
 				</view>
 				<view class="df_1">
 					<view class="font_14 mt5">
-						{{item.name}} {{item.option_name}}
+						{{item.name}}  <block v-if="item.option_name">{{item.option_name}}</block>
 					</view>
 				</view>
 			</view>
@@ -127,8 +127,8 @@
 			<view class="p_all mt10">
 				<view class="btnGreen">
 					<button class="xx_pay_submit" type="default" id="xxPay" 
-						:disabled="btnDisabled" :style="{width: '90%', backgroundColor:btn_bg_color+' !important'}" 
-						formType="submit" @tap="createOrder">提交订单</button>
+						 :style="{width: '90%', backgroundColor:btn_bg_color+' !important'}" 
+						formType="submit" @tap="createOrder">提交订单</button><!-- :disabled="btnDisabled" -->
 				</view>
 			</view>
 		
@@ -450,10 +450,21 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 				  this.btnDisabled = false;
 			      
 			    } else if (distance > rider_option.max_km){
-			      uni.showToast({
-			        title: '超出配送范围！',
-			        duration: 4000
-			      });
+					console.log('超出配送范围111111')
+					uni.showModal({
+						title:'超出配送范围!',
+						showCancel:false,
+						success() {
+							console.log('点击确定或者取消')
+						},
+						fail() {
+							console.log('失败')
+						}
+					})
+			      // uni.showToast({
+			      //   title: '超出配送范围！',
+			      //   duration: 4000
+			      // });
 			      this.waimai_rmb = 0;
 				  this.btnDisabled = true;  
 			      
@@ -523,8 +534,12 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 				if(that.is_waimai == 1){
 					that.__load_order_detail_xianmaishang_waimai();
 					
-					//强制显示配送地址
-					that.wxa_order_queren_hide_address = 0
+					//外卖配送订单，强制显示配送地址
+					that.wxa_order_queren_hide_address = 0;
+				}
+				else{
+					//到店自提订单，强制隐藏配送地址
+					that.wxa_order_queren_hide_address = 1;
 				}
 				
 			},
@@ -926,7 +941,16 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 			
 			createOrder:function(){
 				console.log('开始下单');
-				this.btnDisabled = true
+				
+				if(this.btnDisabled){
+					uni.showModal({
+						title:'超出配送范围',
+						showCancel:false,
+					})
+					return;
+				}
+				
+				// this.btnDisabled = true
 				
 			    var that = this;
 				var userInfo = that.current_userinfo;

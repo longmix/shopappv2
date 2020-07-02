@@ -7,7 +7,7 @@
 	</view>
 	<view class="w100">
 			
-	    <navigator :open-type="[wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate']" :url="'../../product/detail?productid=' + item.productid"  class="p_all bg_white df item" v-for="item in orderList" :key="productid">
+	    <navigator v-if="waimai_order_type != 1" :open-type="[wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate']" :url="'../../product/detail?productid=' + item.productid"  class="p_all bg_white df item" v-for="(item,index) in orderList" :key="index">
 	
 				<view class="cp_photo">			
 					<image :src="item.picture?item.picture:item.img"></image>
@@ -20,7 +20,19 @@
 				<text class="gm_ovh_1h pt10" style="font-weight:bold;color: #333;">¥{{item.price2?item.price2:item.price}}</text>
 				</view>
 	    </navigator>
-	
+		<view v-if="waimai_order_type == 1" class="p_all bg_white df item" v-for="(item,index) in orderList" :key="index">
+			
+				<view class="cp_photo">			
+					<image :src="item.picture?item.picture:item.img"></image>
+				</view>
+				<view class="df_1">	
+					<view class="font_14 mt5 ovh1">
+			           {{item.name}}
+			        </view>
+				<text class="gm_ovh_1h pt10" >数量：{{item.amount?item.amount:item.count}} 单价：¥{{item.price}}</text>
+				<text class="gm_ovh_1h pt10" style="font-weight:bold;color: #333;">¥{{item.price2?item.price2:item.price}}</text>
+				</view>
+		</view>
 	
 			
 			<view class="p_all bg_white mt10 font_14" v-if="orderData.realname">
@@ -153,8 +165,8 @@
 				},
 				wxa_shop_nav_bg_color:'',
 				wxa_order_hide_daishouhuo_refund_after:'',
-				orderno:''
-				
+				orderno:'',
+				waimai_order_type:0,
 			}
 		},
 		
@@ -237,6 +249,7 @@
 							console.log('order_product_list',order_product_list);
 							that.orderData = orderData;
 							that.orderList = order_product_list;
+							that.waimai_order_type = 1;
 						}else{
 							that.orderData = orderData;
 							that.orderList = orderData.orderProduct;

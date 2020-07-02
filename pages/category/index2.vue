@@ -4,7 +4,7 @@
 		<view v-if="showHeader" class="status" :style="{ position: headerPosition,top:statusTop,opacity: afterHeaderOpacity}"></view>
 
 		<!-- 商品搜索 -->
-		<view style="display: flex;align-items: center;">
+		<view class="product_sousuo">
 			<view class="icon-btn" @click="back_return">
 				<view class="icon xiangqian before"></view>
 			</view>
@@ -18,7 +18,7 @@
 
 
 		<!-- 左侧类型 -->
-		<scroll-view scroll-y="true" class="left">
+		<scroll-view scroll-y="true" class="left" :style="{top: app_top + 'rpx'}">
 			<view v-for="(item,idx) in types" :key="idx" :data-idx='idx' @tap="tapType" :class="[idx == currType ? 'active' : '']"
 			 style="font-size:33rpx；">
 				{{item.name}}
@@ -103,6 +103,7 @@
 				headerPosition: 'fixed',
 				headerTop: null,
 				statusTop: null,
+				app_top:'',
 				afterHeaderOpacity: 1, //不透明度
 				//是否显示返回按钮
 				// #ifndef MP
@@ -144,7 +145,19 @@
 			this.busPos['x'] = 234.375; //购物车的位置
 			this.busPos['y'] = that.abotapi.globalData.hh - 32;
 
+			uni.getSystemInfo({
+			    success: function (res) {
+					console.log('resppppggg',res.statusBarHeight);
+			        this.app_top = parseInt(res.statusBarHeight) + 100;
+					console.log('resppppggg',this.app_top);
+			    }
+			});
 			// #ifdef APP-PLUS
+			
+			
+			
+			//this.app_top = 200;
+			
 			this.nVueTitle = uni.getSubNVueById('homeTitleNvue');
 			this.nVueTitle.onMessage(res => {
 				let type = res.data.type;
@@ -425,7 +438,7 @@
 		text-align: center;
 		font-size: 28rpx;
 		/*  #ifdef  APP-PLUS  */
-		top: 130rpx; //覆盖样式
+		top: 180rpx; //覆盖样式
 		/*  #endif  */
 	}
 
@@ -613,7 +626,7 @@
 		border-radius: 60rpx;
 		height: 50rpx;
 		/*  #ifdef  APP-PLUS  */
-		margin-top: var(--status-bar-height); //覆盖样式
+		//margin-top: var(--status-bar-height); //覆盖样式
 		/*  #endif  */
 	}
 
@@ -660,5 +673,14 @@
 		-webkit-align-items: center;
 		align-items: center;
 		font-size: 42rpx;
+	}
+	.product_sousuo{
+		display: flex;
+		align-items: center;
+		/*  #ifdef  APP-PLUS  */
+		margin-top:var(--status-bar-height); //覆盖样式
+		margin-bottom: 100rpx;
+		/*  #endif  */
+		
 	}
 </style>

@@ -16,7 +16,7 @@
 		<view class="swiper">
 			<view class="swiper-box">
 				<swiper circular="true" autoplay="true"  :style="{height:imgheights[current] + 'px'} ">
-					<swiper-item v-for="(swiper,index) in productLists" :key="swiper.id"><!-- @click="toAdDetails(swiper.url)" -->
+					<swiper-item v-for="(swiper,index) in productLists" :key="swiper.id" @click="toAdDetails(swiper.url)"><!-- @click="toAdDetails(swiper.url)" -->
 						<image @load="imageLoad($event)"  :data-id='index' :src="swiper.image" mode="widthFix"></image>
 					</swiper-item>
 				</swiper>
@@ -114,7 +114,7 @@
 				headerTop:null,
 				statusTop:null,
 				nVueTitle:null,
-				productLists:'',
+				productLists:[],
 				pictures:'',
 				yingxiao_list:'',
 				page_num:1,
@@ -529,7 +529,7 @@
 						'type': 4
 					},
 					success: function (res) {
-						
+						console.log('ppppppp===>>',res);
 						that.productLists = res.data.data;
 					}
 				})
@@ -611,14 +611,14 @@
 					
 					
 				}else if(searchtype == 'cataName'){
-					
+					console.log('进入筛选');
 					this.shaixuan_name = '筛选';
 					
 					var cata_names = cata_list[index];
-
+					console.log('cata_names',cata_names);
 					this.fenlei_name = cata_names;
 					var xz_cataid = h_cata_lsit[cata_names]; // 选择的分类id
-					
+					console.log('xz_cataid',xz_cataid);
 					//筛选全部商家的分类id为xz_cataid;
 					var xz_shang_list = [];
 					for(var i in shang_list){
@@ -626,8 +626,26 @@
 							xz_shang_list.push(shang_list[i]);
 						}
 					}
-					this.sx_shang_list = xz_shang_list;
+					console.log('xz_shang_list',xz_shang_list);
+					if(xz_shang_list.length == 0){
+						var that = this;
+						uni.showModal({
+							title:'没有对应商家',
+							showCancel:false,
+							success:function(){
+								that.shuaxin();
+							},
+							fail:function(){
+								that.shuaxin();
+							},
+						})
+						this.sx_shang_list = [];
+					}else{
+						this.sx_shang_list = xz_shang_list;
+					}
+					
 				}else if(searchtype == 'spec'){
+					console.log('进入分类');
 					this.fenlei_name = '分类';
 					
 					var spec_names = spec_list[index];
@@ -859,10 +877,16 @@
 			
 			//首页导航图标、轮播图、平面广告跳转
 			toAdDetails:function(url){
+				// var var_list = Object();
+				
+				// this.abotapi.call_h5browser_or_other_goto_url(url, var_list, '');
+				
+				
+				var that = this;
 				var var_list = Object();
+				console.log('toAdDetails- to url ====>>>>>>', url);
 				
 				this.abotapi.call_h5browser_or_other_goto_url(url, var_list, '');
-				
 			},
 			
 		}

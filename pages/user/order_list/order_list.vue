@@ -30,13 +30,14 @@
 						</navigator> 
 					
 						<block v-if="item.order_option.hahading_order_product_list_length > 0">
-							<image class="sh_slt" :src="item.order_option.hahading_order_product_list[0].img"></image>  
-							<view class="sp_text" >
+							<image class="sh_slt" :src="item.order_option.hahading_order_product_list[0].img" style="margin-bottom: 10px;"></image>  
+							<view class="xianmaishang_order_detail" >
+								<view class="sp_neb">共计{{item.order_option.hahading_order_product_list.length}}商品</view>
+								<view class="sp_tit ovh1">下单时间：<view style="float: right;color: #666;">{{item.createtime}}</view> </view>
+								<view class="sp_tit ovh1" v-if="item.order_option.order_xianmai_shangdata.name">订单类型： <view style="float: right;color: #666;">{{item.order_option.order_xianmai_shangdata.name}}</view></view>
+								<view class="sp_tit ovh1" v-if="item.order_option.order_xianmai_shangdata.name">总价： <view style="float: right;color: #666;">￥{{item.all_price}}</view></view>
 								
-								<view class="sp_tit ovh1">下单时间： {{item.createtime}}</view>
-								<view class="sp_tit ovh1" v-if="item.order_option.order_xianmai_shangdata.name">订单类型： {{item.order_option.order_xianmai_shangdata.name}}</view>
 								
-								<view class="sp_neb">共计{{item.order_option.hahading_order_product_list.length}}商品，总价：￥{{item.all_price}}</view>
 								
 							</view>
 							<view  class="btn_b" style='overflow: hidden;'>
@@ -1269,6 +1270,7 @@
 	.btn_b{
 	  /* height: 12px; */
 	  padding-bottom: 5px;
+	  overflow: hidden;
 	}
 	.borb{
 	  margin-bottom: 10rpx;
@@ -1280,5 +1282,8 @@
 	.fl_r{ float: right;}
 	.font_14 view{
 		height: 48upx;
+	}
+	.xianmaishang_order_detail{
+		margin-bottom: 30rpx;
 	}
 </style>
