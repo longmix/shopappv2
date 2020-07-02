@@ -1,7 +1,7 @@
 {	
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
-		"navigationBarTitleText" : "通版商城通用导航",
+		"navigationBarTitleText" : "腾羽云商",
 		"navigationBarBackgroundColor" : "#2d96ff",
 		"backgroundColor" : "#2d96ff",
 		"backgroundColorTop":"#2d96ff",
@@ -84,6 +84,7 @@
 		{	//购物车
 			"path": "pages/cart/cart",
 			"style": {
+				"navigationBarTitleText":"购物车",
 				"enablePullDownRefresh": true,
 				"app-plus888": {
 					"titleNView": false ,//禁用原生导航栏

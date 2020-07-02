@@ -206,6 +206,10 @@
 			
 			// #ifdef MP-BAIDU
 				that.about = '百度小程序'
+				
+				uni.setNavigationBarTitle({
+					title:'会员中心'
+				})
 			// #endif
 			
 			
@@ -239,9 +243,6 @@
 				}
 				//this.shop_info_from_server = shop_info;
 			})		
-			
-			
-			
 			
 			
 			this.statusHeight = 0;
