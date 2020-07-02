@@ -210,6 +210,7 @@
 			//修改头像
 			upLoadTouxiang:function(){
 				var that=this;
+				var userInfo = that.abotapi.get_user_info();
 				uni.chooseImage({
 					success: function(chooseImageRes) {
 						count:1;
