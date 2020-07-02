@@ -77,13 +77,13 @@
 								<switch color="#f06c7a" :checked="isDefault" name="is_default" @change="isDefaultChange" />
 						</view>
 					</view>
-					<view class="row" v-if="editType=='edit'" @tap="delAddress(address_detail.addressid)">
+					<view class="row" v-if="action=='edit'" @tap="delAddress(address_detail.addressid)">
 						<view class="del">
 							删除收货地址
 						</view><br>
 							
 					</view>						
-					<view class="row" v-if="editType=='edit'" >
+					<view class="row">
 						<button class="baocun"  form-type="submit">
 							保存地址
 						</button>
@@ -127,7 +127,7 @@
 				address_detail:'',
 				
 				
-				addressid:'',
+				addressId:'',
 				user_address:'',
 				editType: 'edit',
 				// id: '',
@@ -141,12 +141,16 @@
 			};
 		},
 		onLoad:function(options) {
+			console.log('16494165465sssss',options);
 			var that = this;
+			
 			var userInfo = this.abotapi.get_user_info();
 			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 			//获取传递过来的参数
-			console.log('options',options);
+			
 			this.addressid = options.addressId;
+			console.log('9999999999',this.addressid);
+			
 			this.cartId = options.cartId;
 			this.action = options.action;
 			  
@@ -508,10 +512,11 @@
 			
 			
 			formSubmit: function(e) {
+				console.log('asdsdsd66666',this.addressId)
 				var that = this;
 				console.log('form发生了submit事件，携带数据为：',e)
-				var formdata = e.detail.value
-				that.form_list = formdata
+				var formdata = e.detail.value;
+				that.form_list = formdata;
 				console.log('form_list：',that.form_list);
 				console.log('2form_list：',that.province);
 				console.log('1form_list：',that.city);
@@ -631,6 +636,7 @@
 		save:function(){
 			var that = this;
 			var userInfo = this.abotapi.get_user_info();
+			console.log('asdsdsd',this.addressId)
 			if(!that.action){
 				that.action = 'add';
 			}
@@ -802,7 +808,7 @@
 	 align-items: center;
 	 font-size: 36upx;
 	 color:#FFFFFF;
-	 background-color:#0d7dfc;
+	 background-color:#07c160;
 	 border-bottom: solid 1upx #eee;
 	 margin-top: 20upx;	
 	 border-radius:30upx;

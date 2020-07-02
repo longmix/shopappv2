@@ -82,8 +82,9 @@
 							删除收货地址
 						</view>
 					</view>
-					<view class="button_su">
-						<button formType="submit" style="width:100%;">保存地址</button>
+					
+					<view class="row">
+						<button class="del" formType="submit" style="background: #1AAD19;margin-top: 10rpx;">保存地址</button>
 					</view>
 					
 				</view>
@@ -679,7 +680,6 @@
 		}
 	}
 	.content{
-		display: flex;
 		flex-wrap: wrap;
 		view{
 			display: flex;
@@ -718,6 +718,7 @@
 				background-color:#E64340;
 				border: solid 1px #eee;
 				border-radius: 10rpx;
+				margin: auto;
 			}
 		}
 	}
@@ -758,11 +759,10 @@
 	  margin-top:15rpx;
 	  color: #fff;
 	  background-color: #1AAD19;
-	  margin-left: 25rpx;
 	}
 	.button_su{
 		width:94%;
-		margin: 10rpx auto;
+		margin: 10rpx;
 	}
 	.picker {
 	  width: 600rpx;

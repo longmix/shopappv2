@@ -28,7 +28,7 @@
 				
 			</view>
 			<view class="list">			
-				<navigator url='/pages/user/address/address' class="row">
+				<navigator url='/pages/address/user-address/user-address' class="row">
 					<view class="title">收货地址</view>
 					<view class="right"><view class="tis"></view><view class="icon xiangyou"></view></view>
 				</navigator>

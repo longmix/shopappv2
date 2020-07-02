@@ -62,12 +62,34 @@
 		        <icon></icon>
 		        <text :hidden="item.is_default==0?false:true"></text>
 		      </view>
-		      <view>
-		        <text :hidden="item.is_default==0?false:true" @tap="setDefault" :data-id="item.addressid">设置默认</text>
-		        <text style="letter-spacing: 20upx;":hidden="item.is_default==0?false:true"> | </text>
-		        <text style="letter-spacing:20upx;" :data-id="item.addressid" @tap="saveAddress($event)">编辑</text>
-		        <text> | </text>
-		        <text style="letter-spacing: 20upx;" :data-id="item.addressid" @tap="delAddress($event)">删除</text>
+		      <view style="overflow: hidden; display: flex;align-items: center;">
+				  <view style="margin-right: 180rpx;color: #868686;">
+					  <text :hidden="item.is_default==0?false:true" @tap="setDefault" :data-id="item.addressid">设置默认</text>
+				  </view>
+				  <view class="address_add" :data-id="item.addressid" @tap="saveAddress($event)">
+					  <image style="width: 40rpx;" mode="widthFix" src="../../../static/img/address.png"></image>
+					  <text style="color: #868686;font-size: 17px;">编辑</text>
+				  </view>
+				  <view class="address_add" :data-id="item.addressid" @tap="delAddress($event)">
+					  <image style="width: 40rpx;" mode="widthFix" src="../../../static/img/edit.png"></image>
+					  <text style="color: #868686;font-size: 17px;">删除</text>
+				  </view>
+		        
+						
+						
+						
+				<!-- <view class="delect">
+					<view  :data-id="item.addressid" @tap="saveAddress($event)">
+						<image style="width: 40rpx;" mode="widthFix" src="../../../static/img/address.png"></image>
+						<text style="letter-spacing:5upx;">编辑</text>
+					</view>
+					<view :data-id="item.addressid" @tap="delAddress($event)">
+						<image style="width: 40rpx;" mode="widthFix" src="../../../static/img/edit.png"></image>
+						<text style="letter-spacing: 5upx;font-size: 25px;">删除</text>
+					</view>
+				</view> -->
+				
+				
 		      </view>
 		    </view>
 		  </view>
@@ -76,6 +98,12 @@
 		<view @click="add()">
 			<view :hidden="hiddenAddress" class="add-address">
 				<view class="btn_max">新增地址</view>
+			</view>
+		</view>
+		
+		<view @click="add()">
+			<view :hidden="hiddenAddress" class="add-address">
+				<view class="btn_weixin">使用微信地址</view>
 			</view>
 		</view>
 		
@@ -278,7 +306,7 @@
 			saveAddress:function (e) {
 				var that = this;
 			    var addressId = e.currentTarget.dataset.id;
-				console.log('that.action==',that.action)
+				console.log('that.action==',addressId)
 			    uni.redirectTo({
 					url: '/pages/address/address?action=edit&addressId=' + addressId + '&amount=' + that.amount + '&productid=' + that.productid + '&action_pay=' + that.action_pay,
 			    }); 
@@ -520,5 +548,19 @@
 	  font-size: 36rpx;
 	  text-align: center;
 	  width: 100%;
+	}
+	.btn_weixin{
+	 background-color: #1AAD19;
+	 border-radius: 5px;
+	 line-height: 2.55;
+	 color: #FFFFFF;
+	 font-size: 36rpx;
+	 text-align: center;
+	 width: 100%;
+	}
+	.address_add{
+		display: flex;
+		margin-left: 20px;
+		align-items: center;
 	}
 </style>
