@@ -295,10 +295,15 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 			//根据不同的类型带的参数
 			if(that.order_type_001 == 'shopmall'){
 				if(options.productid){
-					that.productid = options.productid;
+					
+					//that.productid = options.productid;
 					
 					// #ifdef H5
-						options.productid = encodeURIComponent(options.productid);
+					options.productid = encodeURIComponent(options.productid);
+					// #endif
+					
+					// #ifdef APP-PLUS
+					options.productid = encodeURIComponent(options.productid);
 					// #endif
 				}
 			}
@@ -543,7 +548,6 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 				} 
 				else {
 					data_params = {
-						// productid: that.productId,
 						productid: that.productid,
 						userid: userInfo.userid,
 						checkstr: userInfo.checkstr,
