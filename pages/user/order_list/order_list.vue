@@ -108,7 +108,7 @@
 								<view>订单金额：<view class='fl_r'>￥{{item.all_price}}</view></view>
 								<view>余额支付：<view class='fl_r'>￥{{item.yue_price}}</view></view>
 								<view>赠款支付：<view class='fl_r'>￥{{item.coupon_price}}</view></view>        
-								<view>实际支付：<view class='fl_r'>￥{{item.pay_price}}</view></view>
+								<view>实际s支付：<view class='fl_r'>￥{{item.pay_price}}</view></view>
 								<!-- <view>支付方式：<view class='fl_r'>{{item.payment_name}}</view></view> -->
 							</view>
 						
@@ -1267,7 +1267,7 @@
 	  color: #FFFFFF;
 	}
 	.btn_b{
-	  height: 12px;
+	  /* height: 12px; */
 	  padding-bottom: 5px;
 	}
 	.borb{
