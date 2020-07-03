@@ -188,13 +188,11 @@
 						
 						</block>
 						<view v-if="item.buyer_memo != ''">备注：{{item.buyer_memo}}</view>
-						<!-- <view  class="btn_b">
-							<navigator class="font_12 btn_min fl_r" @tap="refundOrder" v-if="wxa_order_hide_daishouhuo_refund == 0" :data-order-id="item.orderid">申请退款</navigator>
-							<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
-						</view> --> 
 						<view  class="btn_b">
+							<!-- <navigator class="font_12 btn_min fl_r" @tap="refundOrder" v-if="wxa_order_hide_daishouhuo_refund == 0" :data-order-id="item.orderid">申请退款</navigator> -->
 							<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
-						</view>
+						</view> 
+						
 					</view>
 				</swiper-item>
   
@@ -376,7 +374,7 @@
 				orderList3:[],
 				orderList4:[],
 				
-				
+				wxa_order_hide_daishouhuo_refund:'',
 				wxa_order_hide_daishouhuo_refund_after:'',
 				
 			}
@@ -425,7 +423,7 @@
 		
 		methods:{
 			callback_set_option: function (that, cb_params) {
-				
+				console.log('wxa_order_hide_daishouhuo_refund',cb_params)
 				var option_list = cb_params;
 				
 				if (!option_list) {
@@ -582,6 +580,8 @@
 					title: '提示',
 					content: '你确定要申请退款吗？',
 					success: function (res) {
+						
+						var userInfo = that.abotapi.get_user_info();
 						res.confirm && uni.request({
 							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_tuikuan_direct',
 							method: 'post',
@@ -596,6 +596,7 @@
 							},
 							success: function (res) {
 								//--init data
+								console.log('reszz',res);
 								var code = res.data.code;
 								if (code == 1) {
 									uni.showToast({

@@ -42,8 +42,18 @@
 					<view class="l_h20 mt5" style="font-size: 25rpx;">地址：<text v-if="!wxa_order_hide_sanji_address">{{orderData.address01}}</text>{{orderData.address02}}</view>
 					</view>
 				</view>
-			</view>	
-	
+			</view>
+			<view style="overflow: hidden;margin-right: 3%;">
+				<view class="font_12 btn_min fl_r mr_5" @tap="refundOrder" 
+				v-if="wxa_order_hide_daishouhuo_refund == 0 && orderData.status_str=='待发货'" 
+				:data-order-id="orderData.orderid">
+				申请退款
+				</view>
+				<view class="font_12 btn_min fl_r mr_5" @tap="refundOrder"
+				v-if="wxa_order_hide_daishouhuo_refund_after == 0 && orderData.status_str=='待收货'" :data-order-id="orderData.orderid">
+				申请退款
+				</view>
+			</view>
 			<view class="p_all bg_white mt10 c6 l_h20  font_14">
 				<view >
 				订单状态：<text class="red">{{orderData.status_str}}</text>
@@ -165,6 +175,7 @@
 				},
 				wxa_shop_nav_bg_color:'',
 				wxa_order_hide_daishouhuo_refund_after:'',
+				wxa_order_hide_daishouhuo_refund:'',
 				orderno:'',
 				waimai_order_type:0,
 			}
@@ -202,14 +213,17 @@
 		
 		methods:{
 			  callback_set_option: function (that, option_list){
-			    console.log('getShopOptionAndRefresh+++++:::' + option_list)
+			    console.log('getShopOptionAndRefresh+++++:::', option_list)
 			
 			   
 			    if (!option_list) {
 			      return;
 			    }
 			
-			
+				if(option_list.wxa_order_hide_daishouhuo_refund){
+					this.wxa_order_hide_daishouhuo_refund = option_list.wxa_order_hide_daishouhuo_refund;
+				}
+				
 			    if (option_list.wxa_shop_nav_bg_color) {
 					that.wxa_shop_nav_bg_color = option_list.wxa_shop_nav_bg_color;
 			    }
@@ -292,7 +306,56 @@
 						}
 					});
 				},
-				
+				//申请退款
+				refundOrder: function (e) {
+					var that = this;
+					var orderId = e.currentTarget.dataset.orderId;
+					uni.showModal({
+						title: '提示',
+						content: '你确定要申请退款吗？',
+						success: function (res) {
+							
+							var userInfo = that.abotapi.get_user_info();
+							res.confirm && uni.request({
+								url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_tuikuan_direct',
+								method: 'post',
+								data: {
+									orderid: orderId,
+									sellerid: that.abotapi.get_sellerid(),
+									checkstr: userInfo.checkstr,
+									userid: userInfo.userid
+								},
+								header: {
+									'Content-Type': 'application/x-www-form-urlencoded'
+								},
+								success: function (res) {
+									//--init data
+									console.log('reszz',res);
+									var code = res.data.code;
+									if (code == 1) {
+										uni.showToast({
+											title: res.data.msg,
+											duration: 2000
+										});
+										that.loadOrderList();
+									} else {
+										uni.showToast({
+											title: res.data.msg,
+											duration: 2000
+										});
+									}
+								},
+								fail: function () {
+									// fail
+									uni.showToast({
+										title: '网络异常！',
+										duration: 2000
+									});
+								}
+							});
+						}
+					});
+				},
 				  //确认收货
 				recOrder:function(e){
 					
