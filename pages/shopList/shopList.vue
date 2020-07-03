@@ -31,7 +31,7 @@
 		  <view class='label-line-a'></view>
 		</view>
 		
-		<view  class="top-input-con" id="affix"> 
+		<view  class="top-input-con" style="margin-top: 0rpx;" id="affix"> 
 		
 			<!-- 全部美食按钮 -->
 			<view class="ab" @click="shuaxin()" style="width:25%;float:left;">
