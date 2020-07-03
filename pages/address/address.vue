@@ -106,7 +106,7 @@
 			return {
 				shengArr: [],//省级数组
 				shengId: [],//省级id数组
-				shiArr: ['请选择'],//城市数组
+				shiArr: [],//城市数组
 				shiId: [],//城市id数组
 				quArr: ['请选择'],//区数组
 				quId:[],//区id数组
@@ -125,6 +125,7 @@
 				action: 'add',
 				name:'',
 				address_detail:'',
+				region_id:'',
 				
 				
 				addressId:'',
@@ -141,9 +142,10 @@
 			};
 		},
 		onLoad:function(options) {
+			
 			console.log('16494165465sssss',options);
 			var that = this;
-			
+			console.log('44444',options)
 			var userInfo = this.abotapi.get_user_info();
 			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 			//获取传递过来的参数
@@ -354,8 +356,8 @@
 			this.action = options.action;
 			if(this.action == 'edit'){
 				that.region_id = this.province;
-				that.bindPickerChangeshiArr();
-				that.bindPickerChangequArr();
+				// that.bindPickerChangeshiArr();
+				// that.bindPickerChangequArr();
 			};
 		},
 		
@@ -364,6 +366,7 @@
 			bindPickerChangeshengArr: function (e) {
 			    console.log(e);
 				this.shengIndex = e.detail.value;
+				console.log('this.addressId====bindPickerChangeshengArr>>',this.addressId)
 				this.shiArr = [];
 				this.shiId = [];
 			    var that = this;
@@ -412,8 +415,9 @@
 			},
 			
 			bindPickerChangeshiArr: function (e) {
-				console.log('e',e);
+				console.log('e==>>',e);
 				this.shiIndex = e.detail.value;
+				console.log('e==>sssss>',this.shiIndex);
 				this.quArr = [];
 				this.quiId = [];
 			    var that = this;
@@ -472,6 +476,7 @@
 			},
 			
 			bindPickerChangequArr: function (e) {
+				console.log('this.addressId====bindPickerChangequArr>>',this.addressId)
 				this.quIndex = e.detail.value;
 				var that = this;
 				var qu_id = this.quIndex;
@@ -512,10 +517,13 @@
 			
 			
 			formSubmit: function(e) {
-				console.log('asdsdsd66666',this.addressId)
+				
+				console.log('this.addressId====formSubmit>>',this.addressId)
+				console.log('asdsdsd66666',e)
 				var that = this;
 				console.log('form发生了submit事件，携带数据为：',e)
 				var formdata = e.detail.value;
+				console.log('form发生了formdata事件，携带数据为：',formdata)
 				that.form_list = formdata;
 				console.log('form_list：',that.form_list);
 				console.log('2form_list：',that.province);
@@ -636,10 +644,11 @@
 		save:function(){
 			var that = this;
 			var userInfo = this.abotapi.get_user_info();
-			console.log('asdsdsd',this.addressId)
+			console.log('this.addressId123====>>',this.addressId)
 			if(!that.action){
 				that.action = 'add';
 			}
+			console.log('12132312',that.action)
 			uni.request({
 				url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_save',
 				header: {  
@@ -801,7 +810,7 @@
 	  justify-content: center;
 	}
 	
-	uni-button {
+	.baocun{
 	 width: 100%;
 	 height: 100upx;
 	 justify-content: center;

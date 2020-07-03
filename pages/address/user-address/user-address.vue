@@ -59,7 +59,7 @@
 		    </view>
 		    <view class="address-edit">
 		      <view>
-		        <icon></icon>
+		        <icon type="icon" size="26"/>
 		        <text :hidden="item.is_default==0?false:true"></text>
 		      </view>
 		      <view style="overflow: hidden; display: flex;align-items: center;">
@@ -101,7 +101,7 @@
 			</view>
 		</view>
 		
-		<view @click="add()">
+		<view @click="wxaddress()">
 			<view :hidden="hiddenAddress" class="add-address">
 				<view class="btn_weixin">使用微信地址</view>
 			</view>
@@ -128,7 +128,8 @@
 				productid:'',
 				amount:'',
 				action:'',
-				action_pay:''
+				action_pay:'',
+				hiddenAddress:''
 			};
 		},
 		onShow() {
@@ -294,8 +295,27 @@
 			
 			//新增地址
 			add(){
+				
+				var url = '/pages/address/address?cartId='+this.cartId+'&action=add&amount='+this.amount+'&productid='+this.productid+'&action_pay='+this.action_pay
+			
 				uni.navigateTo({
-					url:'/pages/address/address?cartId='+this.cartId+'&action=add&amount='+this.amount+'&productid='+this.productid+'&action='+this.action+'&action_pay='+this.action_pay
+					url:url
+				})
+			},
+			
+			//调用微信地址
+			wxaddress(){
+				uni.chooseAddress({
+				  success(res) {
+				    console.log(res.userName)
+				    console.log(res.postalCode)
+				    console.log(res.provinceName)
+				    console.log(res.cityName)
+				    console.log(res.countyName)
+				    console.log(res.detailInfo)
+				    console.log(res.nationalCode)
+				    console.log(res.telNumber)
+				  }
 				})
 			},
 			
@@ -306,7 +326,7 @@
 			saveAddress:function (e) {
 				var that = this;
 			    var addressId = e.currentTarget.dataset.id;
-				console.log('that.action==',addressId)
+				console.log('that.addressId==',addressId)
 			    uni.redirectTo({
 					url: '/pages/address/address?action=edit&addressId=' + addressId + '&amount=' + that.amount + '&productid=' + that.productid + '&action_pay=' + that.action_pay,
 			    }); 
