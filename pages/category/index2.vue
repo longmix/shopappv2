@@ -147,9 +147,9 @@
 
 			uni.getSystemInfo({
 			    success: function (res) {
-					console.log('resppppggg',res.statusBarHeight);
+					
 			        this.app_top = parseInt(res.statusBarHeight) + 100;
-					console.log('resppppggg',this.app_top);
+					
 			    }
 			});
 			// #ifdef APP-PLUS
@@ -676,10 +676,10 @@
 	}
 	.product_sousuo{
 		display: flex;
+		height: 100rpx;
 		align-items: center;
 		/*  #ifdef  APP-PLUS  */
 		margin-top:var(--status-bar-height); //覆盖样式
-		margin-bottom: 100rpx;
 		/*  #endif  */
 		
 	}

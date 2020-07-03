@@ -897,15 +897,15 @@
 	
 	
 	.top-input-con {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 10rpx 20rpx;
-	background: #fff;
-	z-index: 2;
-	/*  #ifdef  APP-PLUS  */
-	// margin-top: var(--status-bar-height);
-	/*  #endif  */
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 10rpx 20rpx;
+		background: #fff;
+		z-index: 2;
+		/*  #ifdef  APP-PLUS  */
+		margin-top: var(--status-bar-height);
+		/*  #endif  */
 	}
 	.scroll-txt {
 		text-align: center;
