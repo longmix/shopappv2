@@ -247,7 +247,7 @@
 			          title: '网络异常！',
 			          duration: 2000
 			        });
-			      }
+			      },
 			    })
 		},
 		methods:{
@@ -307,17 +307,70 @@
 			
 			//调用微信地址
 			wxaddress(){
+				var that = this;
+				var userInfo = that.abotapi.get_user_info();
 				uni.chooseAddress({
+					
 				  success(res) {
-				    console.log('aaaaasss',res)
-				    
+					  
+					console.log('aaaaasss',res);
+					var provinceName = res.provinceName;
+					var cityName = res.cityName;
+					var countyName = res.countyName;
+					var Name = res.Name;
+					var telNumber = res.telNumber;
+					var detailInfo = res.detailInfo;
+					console.log('aaaaas====ss',countyName);
+					that.abotapi.abotRequest({
+						url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_city_coding',
+						data: {
+							userid: userInfo.userid,
+							checkstr: userInfo.checkstr,
+							sellerid: that.abotapi.get_sellerid(),
+							provinceName:provinceName,   
+							cityName:cityName,      
+							countyName:countyName,
+						},
+						success: function (res) {
+							var province = res.provinceCode;
+							var city = res.cityCode;
+							var county =res.countyCode;
+							console.log("ORDER_QUEREN_res",res);
+					that.abotapi.abotRequest({
+						url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_save',
+						data: {
+							action:'add',
+							checkstr:userInfo.checkstr,
+							userid:userInfo.userid,
+							sellerid:that.abotapi.get_sellerid(),
+							name:Name,
+							mobile:telNumber,
+							province:province,
+							city: city,
+							district:county,
+							address:detailInfo,
+						},
+						 
+								
+						});
+							
+						},
+						fail: function () {
+							// fail
+							uni.showToast({
+								title: '网络异常！',
+								duration: 2000
+							});
+						}
+					});
 				  },
 				  fail:function(){
 					  console.log(456789);
 				  },
 				  complete:function(){
 					  console.log(741822);
-				  },
+				  }
+				
 				})
 			},
 			
