@@ -63,16 +63,16 @@
 		        <text :hidden="item.is_default==0?false:true"></text>
 		      </view>
 		      <view style="overflow: hidden; display: flex;align-items: center;">
-				  <view style="margin-right: 180rpx;color: #868686;">
+				  <view style="margin-right: 120rpx;color: #868686;font-size: 35rpx;">
 					  <text :hidden="item.is_default==0?false:true" @tap="setDefault" :data-id="item.addressid">设置默认</text>
 				  </view>
 				  <view class="address_add" :data-id="item.addressid" @tap="saveAddress($event)">
 					  <image style="width: 40rpx;" mode="widthFix" src="../../../static/img/address.png"></image>
-					  <text style="color: #868686;font-size: 17px;">编辑</text>
+					  <text style="color: #868686;font-size: 35rpx;">编辑</text>
 				  </view>
 				  <view class="address_add" :data-id="item.addressid" @tap="delAddress($event)">
 					  <image style="width: 40rpx;" mode="widthFix" src="../../../static/img/edit.png"></image>
-					  <text style="color: #868686;font-size: 17px;">删除</text>
+					  <text style="color: #868686;font-size: 35rpx;">删除</text>
 				  </view>
 		        
 						
@@ -309,7 +309,7 @@
 			wxaddress(){
 				uni.chooseAddress({
 				  success(res) {
-				    console.log(res)
+				    console.log('aaaaasss',res)
 				    
 				  },
 				  fail:function(){
@@ -317,7 +317,7 @@
 				  },
 				  complete:function(){
 					  console.log(741822);
-				  }
+				  },
 				})
 			},
 			
