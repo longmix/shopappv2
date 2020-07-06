@@ -50,7 +50,7 @@
 		  </view>
 		  
 		  <view class="address-detail">
-		    <view @tap="select_address_to_order" :data-id="item.addressid">
+		    <view :data-id="item.addressid">
 		    <view class="address-name-phone">
 		      <text class="address-name">{{item.name}}</text>
 		      <text class="address-phone">{{item.mobile}}</text>
@@ -228,7 +228,8 @@
 			          var address = res.data.addressList;
 			        }
 			
-			          that.address = address          
+			          that.address = address      
+					console.log('aaadddddd====',that.address);
 			
 			        if (cartId) {
 			            that.cartId = cartId
@@ -270,6 +271,7 @@
 						console.log('res',res);
 						if(res.data.code == 1){
 							that.address = res.data.addressList;
+							console.log('res==',that.address);
 							uni.getStorage({
 								key:'delAddress',
 								success: (e) => {
@@ -307,14 +309,14 @@
 			wxaddress(){
 				uni.chooseAddress({
 				  success(res) {
-				    console.log(res.userName)
-				    console.log(res.postalCode)
-				    console.log(res.provinceName)
-				    console.log(res.cityName)
-				    console.log(res.countyName)
-				    console.log(res.detailInfo)
-				    console.log(res.nationalCode)
-				    console.log(res.telNumber)
+				    console.log(res)
+				    
+				  },
+				  fail:function(){
+					  console.log(456789);
+				  },
+				  complete:function(){
+					  console.log(741822);
 				  }
 				})
 			},

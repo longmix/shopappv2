@@ -74,7 +74,7 @@
 						</view>
 						<view class="input switch">
 						
-								<switch color="#f06c7a" :checked="isDefault" name="is_default" @change="isDefaultChange" />
+								<switch color="#f06c7a"  data-name="moren" @change="isDefaultChange" />
 						</view>
 					</view>
 					<view class="row" v-if="action=='edit'" @tap="delAddress(address_detail.addressid)">
@@ -108,7 +108,7 @@
 				shengId: [],//省级id数组
 				shiArr: [],//城市数组
 				shiId: [],//城市id数组
-				quArr: ['请选择'],//区数组
+				quArr: [],//区数组
 				quId:[],//区id数组
 				shengIndex:0,
 				shiIndex: 0,
@@ -136,7 +136,7 @@
 				mobile: '',
 				// city:'',
 				address:'',
-				isDefault: false,
+				moren: '',
 				cityPickerValue: [0, 0, 1],
 				themeColor: '#007AFF',
 			};
@@ -194,6 +194,7 @@
 						//区
 						that.district = that.address_detail.district;
 						that.district = ++that.district;
+						
 						
 						that.shengIndex = that.province;
 						that.shiIndex = that.city;
@@ -648,7 +649,7 @@
 			if(!that.action){
 				that.action = 'add';
 			}
-			console.log('12132312',that.action)
+			console.log('121323125555',that.area)
 			uni.request({
 				url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_save',
 				header: {  
@@ -667,7 +668,8 @@
 					district: that.area,
 					address: that.form_list.address,
 					is_default: that.form_list.is_default,
-					addressid: this.addressid
+					addressid: this.addressid,
+					moren:this.moren
 				},    
 				success:function(res){
 					console.log('success=====>>>>>>',res);
@@ -677,7 +679,6 @@
 							icon: 'success',
 							duration: 2000
 						});
-						
 						setTimeout(function() {
 							uni.navigateBack({
 							    delta: 1
@@ -698,6 +699,24 @@
 		// 		this.$refs.mpvueCityPicker.pickerCancel()
 		// 	}
 		// }
+		
+		isDefaultChange:function(e){
+			var name = e.target.dataset.name;
+			console.log('aaaaa5555555',name);	
+			
+			if(name = 'moren'){
+				var moren = e.detail.value;
+			}
+			if(moren == true){
+				this.moren =1;
+			console.log('closeLikeeeeeeeeeeeee',this.moren);	
+			}
+			else{
+				this.moren =0;
+				console.log('closeLikeeeeeeeeeeeee',this.moren);
+			}
+			
+		}
 	}
 }
 </script>
