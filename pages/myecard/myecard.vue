@@ -2,9 +2,7 @@
 	<view :style="[{'background-image':'url('+ bg_img.page_bg_img_body +')' }]" >
 		
 		<view >			
-			<view class="head_c">
-				<image :src="head_img"></image>
-			</view>
+				<image class="head_c" :src="head_img"></image>
 			
 			<view :style="[{'background-image':'url('+ current_user_card_data.card_bg_img +')' }]" class="c">
 				<view class="a">
@@ -23,22 +21,22 @@
 		<view style="text-align: center;margin-top:100rpx;background-color: #FFFFFF;margin-bottom: 10rpx;">
 			<view class="mid-tips" style="border-right: 1rpx solid #c5c5c5;">
 				<view class="mid-level">会员等级</view>
-				<view>{{current_user_card_data.level_name}}</view>
+				<view style="font-size: 30rpx;font-weight: bold;">{{current_user_card_data.level_name}}</view>
 			</view>
 
 			<view class="mid-tips" style="border-right: 1rpx solid #c5c5c5;">
 				<view class="mid-level">卡内余额</view>
-				<view>{{current_user_card_data.balance}}</view>
+				<view style="font-size: 30rpx;font-weight: bold;">{{current_user_card_data.balance}}</view>
 			</view>
 
 			<view class="mid-tips" style="border-right: 1rpx solid #c5c5c5;">
 				<view class="mid-level">可用积分</view>
-				<view>{{current_user_card_data.member_score}}</view>
+				<view style="font-size: 30rpx;font-weight: bold;">{{current_user_card_data.member_score}}</view>
 			</view>
 
 			<view class="mid-tips">
 				<view class="mid-level">优惠券</view>
-				<view>{{current_user_card_data.youhui_count}}</view>
+				<view style="font-size: 30rpx;font-weight: bold;">{{current_user_card_data.youhui_count}}</view>
 			</view>
 
 		</view>
@@ -435,7 +433,7 @@
 					
 					
 					console.log(22222222222222222222);
-					console.log(res.data);
+					console.log('2222222222222222222233333',res.data);
 					
 					that.current_user_card_data = res.data.data;
 					
@@ -697,9 +695,7 @@
 		text-align: center;
 		display: inline-block;
 		width: 100%;
-	}
-	.head_c image{
-		width: 100%;
+		height: 250rpx;
 	}
 		
 	.c {

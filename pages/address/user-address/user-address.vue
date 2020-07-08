@@ -317,7 +317,7 @@
 					var provinceName = res.provinceName;
 					var cityName = res.cityName;
 					var countyName = res.countyName;
-					var Name = res.Name;
+					var Name = res.userName;
 					var telNumber = res.telNumber;
 					var detailInfo = res.detailInfo;
 					console.log('aaaaas====ss',countyName);
@@ -330,12 +330,14 @@
 							provinceName:provinceName,   
 							cityName:cityName,      
 							countyName:countyName,
+							Name:Name
 						},
 						success: function (res) {
-							var province = res.provinceCode;
-							var city = res.cityCode;
-							var county =res.countyCode;
-							console.log("ORDER_QUEREN_res",res);
+							console.log('aaaaaname',res);
+							var province = res.data.data.provinceCode;
+							var city = res.data.data.cityCode;
+							var county =res.data.data.countyCode;
+							
 					that.abotapi.abotRequest({
 						url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_save',
 						data: {
@@ -350,7 +352,14 @@
 							district:county,
 							address:detailInfo,
 						},
-						 
+						success:function(){
+						uni.showToast({
+							title: '添加成功！',
+						});
+						},
+						 fail:function(){
+							 
+						 }
 								
 						});
 							

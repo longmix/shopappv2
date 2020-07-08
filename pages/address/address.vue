@@ -18,7 +18,7 @@
 							电话号码
 						</view>
 						<view class="input">
-							<input placeholder="请输入收件人电话号码" type="text" name="phone" :value="address_detail.mobile" />
+							<input placeholder="请输入收件人电话号码" type="number" name="phone" maxlength="11" :value="address_detail.mobile" />
 						</view>
 					</view>
 					<view class="row">
@@ -104,12 +104,12 @@
 		
 		data() {
 			return {
-				shengArr: [],//省级数组
-				shengId: [],//省级id数组
-				shiArr: [],//城市数组
-				shiId: [],//城市id数组
-				quArr: [],//区数组
-				quId:[],//区id数组
+				shengArr: ['请选择'],//省级数组
+				shengId: [0],//省级id数组
+				shiArr: ['请选择'],//城市数组
+				shiId: [0],//城市id数组
+				quArr: ['请选择'],//区数组
+				quId:[0],//区id数组
 				shengIndex:0,
 				shiIndex: 0,
 				quIndex: 0,
@@ -234,8 +234,8 @@
 								console.log('city111111111111',city);
 								if (code == 1) {
 									var shiIndex = 0;
-									that.shiArr.push('请选择');
-									that.shiId.push('0');
+									// that.shiArr.push('请选择');
+									// that.shiId.push('0');
 									
 									console.log('that.shixb==', that.shixb)
 									
@@ -285,8 +285,8 @@
 								console.log('city',city);
 								if (res.data.code == 1) {
 									var quIndex = 0;
-									that.quArr.push('请选择');
-									that.quId.push('0');
+									// that.quArr.push('请选择');
+									// that.quId.push('0');
 									for (var i = 0; i < city.length; i++) {
 										that.quArr.push(city[i].region_name);
 										that.quId.push(city[i].region_id);
@@ -330,8 +330,8 @@
 					var city = res.data.data;
 					if (code == 1) {
 						
-						that.shengArr.push('请选择');
-						that.shengId.push('0');
+						// that.shengArr.push('请选择');
+						// that.shengId.push('0');
 						for (var i = 0; i < city.length; i++) {
 							that.shengArr.push(city[i].region_name);
 							that.shengId.push(city[i].region_id);
@@ -524,6 +524,7 @@
 				var that = this;
 				console.log('form发生了submit事件，携带数据为：',e)
 				var formdata = e.detail.value;
+				var rephone =/^[1][3,4,5,7,8][0-9]{9}$/; 
 				console.log('form发生了formdata事件，携带数据为：',formdata)
 				that.form_list = formdata;
 				console.log('form_list：',that.form_list);
@@ -537,12 +538,25 @@
 					})
 					return;
 				}
-				if(!formdata.phone){
+				// if(!formdata.phone){
+				// 	uni.showToast({
+				// 		title:'请填写电话号码'
+				// 	})
+				// 	return;
+				// }
+				console.log('=========>',formdata.phone);
+				 console.log(rephone.test(formdata.phone));
+				if(!rephone.test(formdata.phone)) {
 					uni.showToast({
-						title:'请填写电话号码'
+						title:'请写填正确的电话号码'
 					})
 					return;
-				}
+				  	}
+				// function checkMobile(formdata.phone){
+				// 	return RegExp(/^1[34578]\d{9}$/).test(formdata.phone);
+				// }
+				
+				
 				
 				if(!that.province || !that.city ||!that.area){
 					uni.showToast({
