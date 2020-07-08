@@ -3,7 +3,7 @@
     "appid" : "__UNI__A79BAA4",
     "description" : "",
     "versionName" : "1.5.3",
-    "versionCode" : 128,
+    "versionCode" : 129,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true, //是否启用`自定义组件模式`，为true表示新的`自定义组件模式` ，否则为`template模板模式`   
@@ -67,9 +67,9 @@
                     "NSPhotoLibraryUsageDescription" : "读取相册以用于设置头像",
                     "NSPhotoLibraryAddUsageDescription" : "保存视频或图片素材到相册",
                     "NSCameraUsageDescription" : "使用相机拍摄商品以及设置头像",
-                    "NSLocationWhenInUseUsageDescription" : "访问位置以获取当前所在城市",
-                    "NSLocationAlwaysUsageDescription" : "访问位置以获取当前所在城市",
-                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "访问位置以获取当前所在城市"
+                    "NSLocationWhenInUseUsageDescription" : "访问位置以计算最近的服务网点",
+                    "NSLocationAlwaysUsageDescription" : "访问位置以计算最近的服务网点",
+                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "访问位置以计算最近的服务网点"
                 }
             },
             /* ios打包配置 */
