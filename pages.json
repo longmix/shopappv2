@@ -504,6 +504,14 @@
 				}
 			}
         },
+		
+		{
+		    "path" : "pages/live/live-historylog",
+		    "style" : {
+				"navigationBarTitleText":"直播记录"
+			}
+		},
+		
 		{
 		    "path" : "pages/live/live-pusher",
 		    "style" : {
