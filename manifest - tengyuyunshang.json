@@ -83,7 +83,7 @@
                 "payment" : {
                     "weixin" : {
                         "appid" : "wx12224323423",
-                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/tengyumall"
+                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/tengyumall/"
                     }
                 },
                 "ad" : {},

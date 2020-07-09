@@ -83,7 +83,7 @@
                 "payment" : {
                     "weixin" : {
                         "appid" : "wx1313473301",
-                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/yyds"
+                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/yyds/"
                     }
                 },
                 "ad" : {},
