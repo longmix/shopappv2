@@ -217,13 +217,13 @@
 		,{	//用户设置
 		    "path" : "pages/user/logscore",
 		    "style" : {
-				"navigationBarTitleText":"我的设置"
+				"navigationBarTitleText":"我的积分"
 			}
 		}
 		,{	//用户设置
 		    "path" : "pages/user/log",
 		    "style" : {
-				"navigationBarTitleText":"我的设置"
+				"navigationBarTitleText":"我的余额"
 			}
 		}
         ,{

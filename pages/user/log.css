@@ -37,7 +37,7 @@
 		width: 30%;
 		float: left;
 		margin-left: 15rpx;
-		margin-top: 10rpx;
+		margin-top: 15rpx;
 		border: none;
 		outline: none;
 		background-color: #007AFF;
@@ -64,6 +64,7 @@
 		background-color: #FFFFFF;
 		margin-bottom: 10rpx;
 		line-height: 40rpx;
+		color: #333;
 	}
 	
 	.save {
@@ -75,6 +76,7 @@
 	.edit {
 		/* margin-top: 5rpx; */
 		margin-left: 20rpx;
+		font-size: 40rpx;
 	}
 	.tixian{
 			font-size: 24rpx;
@@ -104,14 +106,18 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		width: 60%;
+		color: #333;
 	}
 	.type{
 		margin-left: 15rpx;
+		font-size: 25rpx;
 		float: left;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		width: 70%;
+		color: #333;
+
 	}
 	.time {
 		margin-top: 5rpx;
@@ -136,10 +142,11 @@
 	}
 	.jifeng {
 		color: red;
-		font-size: 18px;
+		font-size: 40rpx;
 		padding-right:20rpx ;
 		text-align: right;
-		font-weight: bold;
+		height: 60rpx;
+		line-height: 60rpx;
 	}
 	.headboss{
 		padding-right:20rpx ;
@@ -154,4 +161,7 @@
 	.bottom_tip{
 		text-align: center;
 		color: #666666;
+		padding: 80rpx;
+		background-color: #fff;
+
 	}

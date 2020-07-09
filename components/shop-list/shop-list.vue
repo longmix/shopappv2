@@ -25,7 +25,7 @@
 				</view>
 				
 				<view v-if="item.youhui_detail" style="font-size: 24rpx;display: flex;">
-					<view class="youhui">优惠</view>
+					<view class="youhui" style="font-size: 24rpx;">优惠</view>
 					<view style="font-size: 22rpx;">{{item.youhui_detail}}</view>
 				</view>
 				
