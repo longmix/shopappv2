@@ -1,23 +1,29 @@
 <template>
 	<view style="background: #ccc;height: 100%;"><!-- 历史记录 -->
-		<view style="display: flex;align-items: center;background: #ffffff;margin: 10rpx;
-		padding: 10rpx 20rpx;color: #333;border-radius: 20rpx;">
+		<view v-for="(item,key) in video_live_log_list" :key="key" class="log_list_box">
 			<view style="width:200rpx;height:200rpx;">
-				<image src="../../static/img/share/wx.png" style="width:200rpx;height:200rpx;"></image>
+				<image style="width:200rpx;height:200rpx;" :src="item.coverImg"></image>
 			</view>
-			<view style="display: flex;width: 100%;justify-content: space-between;align-items: center;margin-left: 20rpx;"><!-- 右侧数据 -->
+			<view class="log_text_box"><!-- 右侧数据 -->
 				<view>
-					<view>2020/07/08 12:00:00</view>
-					<view>梁gg</view>
-					<view>liang15948187241</view>
+					<view>{{item.startTime}}</view>
+					<view>{{item.anchorName}}</view>
+					<view>{{item.anchorWechat}}</view>
 				</view>
-				<view>
+				<!-- <view>
 					<view>查看</view>
 					<view>删除</view>
-				</view>
+				</view> -->
 			</view>
 		</view>
 		<!-- 结束 -->
+		
+		<!-- 说明 -->
+		<view style="text-align: center;color: #333;background: #ffffff;">
+			<image style="width: 50%;" :src="video_live_log.qrcode"></image>
+			<view>{{video_live_log.qrcode_msg}}</view>
+			<view>{{video_live_log.zhubo_msg}}</view>
+		</view>
 		
 	</view>
 </template>
@@ -27,7 +33,8 @@
 			
 			data() {
 				return {
-					
+					video_live_log_list:[],
+					video_live_log:[],
 				};
 			},
 			
@@ -50,6 +57,8 @@
 			methods: {
 				get_video_live_log:function(){
 					
+					var that = this;
+					
 					var userInfo = this.abotapi.get_user_info();
 					
 					this.abotapi.abotRequest({
@@ -60,11 +69,12 @@
 					    userid: userInfo.userid
 					  },
 					  success: function (res) {	
-						  console.log('res===>',res);
-					    if (res.data.code == 1) {
-					      that.balance = res.data.data.balance;
-					      that.balance_zengsong = res.data.data.balance_zengsong;
-					    } 	
+						console.log('res===>',res);
+						
+						var video_live_log_list = res.data.data;
+						console.log('video_live_log_list===>',video_live_log_list);
+						that.video_live_log_list = video_live_log_list;
+						that.video_live_log = res.data;
 					  }
 					});
 				},
@@ -74,4 +84,19 @@
 </script>
 
 <style>
+	.log_list_box{
+		display: flex;
+		align-items: center;
+		background: #ffffff;
+		margin: 10rpx 0rpx;
+		padding: 10rpx 20rpx;
+		color: #333;
+	}
+	.log_text_box{
+		display: flex;
+		width: 100%;
+		justify-content: space-between;
+		align-items: center;
+		margin-left: 20rpx;
+	}
 </style>
