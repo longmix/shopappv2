@@ -1,17 +1,17 @@
 <template>
 
 	<form>
-		<view class="head">
+	<!-- 	<view class="head">
 			<h1>请填写直播信息</h1>
-		</view>
+		</view> -->
 
 		<view class="head-img">
-			<view style="margin-right: 450rpx;color: #cbcbcb;">请设置分享图片</view>
+			<view style="margin-right: 450rpx;color: #666666;font-size: 36rpx">请设置分享图片</view>
 			<view>
 				<image :src="shareImg" @tap="upLoadimgs(2)" mode="widthFix"></image>
 				<view style="display: flex;float: right;margin-right: 15rpx;">
 					<view style="color: red;margin-top: 4rpx;">*</view>
-					<view style="color:#666666 ;">建议像素800*640，大小不超过2M</view>
+					<view style="color:#cbcbcb ;">建议像素800*640，大小不超过2M</view>
 				</view>
 
 			</view>
@@ -21,13 +21,13 @@
 		</view>
 
 		<view class="head-img" v-if="zhibotype == 'weixin'">
-			<view style="margin-right: 350rpx;color: #cbcbcb;">请设置直播间背景图片</view>
+			<view style="margin-right: 350rpx;color: #666666;font-size: 36rpx">请设置直播间背景图片</view>
 			<view>
 				<image :src="coverImg" @tap="upLoadimgs(1)" mode="widthFix"></image>
 
 				<view style="display: flex;float: right;margin-right: 15rpx;">
 					<view style="color: red;margin-top: 4rpx;">*</view>
-					<view style="color:#666666 ;">建议像素1080*1920，大小不超过2M</view>
+					<view style="color:#cbcbcb ;">建议像素1080*1920，大小不超过2M</view>
 				</view>
 
 			</view>
@@ -262,6 +262,30 @@
 
 			this.live_goods_lists();
 			
+			var userInfo = this.abotapi.get_user_info();
+			uni.request({
+			  url: this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/VideoLiveData/is_video_live_status',
+			  data: {
+			    userid:userInfo.userid,
+			    sellerid: this.abotapi.get_sellerid(),
+				checkstr: userInfo.checkstr
+			  },
+			  method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+			  header: {// 设置请求的 header
+			    'Content-Type':  'application/x-www-form-urlencoded'
+			  },
+			  success:function(res){
+				  console.log('huhuhu',res)
+				  if(code == 0){
+					  uni.showToast({
+					  	title:'请先完成之前直播！'
+					  })
+					  return;
+				  }
+			  }
+			  
+			  });
+			  
 			
 			
 
@@ -300,12 +324,12 @@
 				
 				var name = e.target.dataset.name;
 				
-				console.log('789sssss',name);
+				console.log('789sssss',e.target.dataset.name);
 				
 				if(name == 'closeLike'){
 					var closeLike = e.detail.value;
 					
-					if(closeLike){
+					if(closeLike==true){
 						this.closeLike =1;
 					console.log('closeLikeeeeeeeeeeeee',this.closeLike);	
 					}
@@ -680,7 +704,7 @@
 	}
 
 	.error-msg {
-		margin-top: 15rpx;
+		margin-top: 35rpx;
 		margin-left: 40rpx;
 		font-size: 30rpx;
 	}
@@ -767,11 +791,13 @@
 	}
 	
 	.name {
+		margin-left: 20rpx;
 		flex-shrink: 0;
 	}
 	
 	.value {
 		flex: 1;
+		margin-right: 20rpx;
 	}
 	
 	.right-icon {
