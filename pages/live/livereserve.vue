@@ -180,9 +180,9 @@
 		
 
 		<view class="goods" v-for="(item,index) in recommend_product_list" :key="index" @click="live_goods($event)"
-		 :data-productid="item.productid">
+		 :data-productid="item.goodsId">
 			<label>
-				<image :src="item.picture" style="width: 200rpx;" mode="widthFix"></image>
+				<image :src="item.coverImgUrl" style="width: 200rpx;" mode="widthFix"></image>
 				<checkbox value="" style="text-align: center;margin-left: 40px;margin-top: 10px;" />
 			</label>
 		</view>
@@ -275,7 +275,10 @@
 			    'Content-Type':  'application/x-www-form-urlencoded'
 			  },
 			  success:function(res){
-				  console.log('huhuhu',res)
+				  console.log('huhuhu',res);
+				  var code = res.data.code;
+				  console.log('huhuhu15111',code);
+				  
 				  if(code == 0){
 					  uni.showToast({
 					  	title:'请先完成之前直播！'
@@ -629,18 +632,19 @@
 				var userInfo = this.abotapi.get_user_info();
 
 				this.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + 'Yanyubao/ShopApp/product_list',
+					url: that.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/VideoLiveData/get_video_wxa_live_goods_list',
 					method: 'post',
 					data: {
 						sellerid: that.abotapi.globalData.default_sellerid,
-						//is_recommend:1,
-						page_num: 6,
+						// //is_recommend:1,
+						// page_num: 6,
 					},
 					success(res) {
 						console.log('11111111===', res)
 
-						var recommend_product_list = res.data.product_list;
+						var recommend_product_list = res.data.data;
 						that.recommend_product_list = recommend_product_list;
+						console.log('11111111==666=', recommend_product_list)
 
 
 					},
@@ -661,14 +665,13 @@
 
 			},
 			live_goods: function(e) {
-
+				console.log('aaaaaaaa11111888', e);
 				var productid = e.currentTarget.dataset.productid;
 
 				console.log('aaaaaaaa11111', productid);
 
 
 				var index = this.productid_str.indexOf(productid);
-
 				if (index != -1) {
 					console.log('ssss')
 					this.productid_str.splice(index, 1);
