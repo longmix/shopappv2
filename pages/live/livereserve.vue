@@ -423,7 +423,7 @@
 						console.log('8888888888', res.tempFilePaths[0])
 						console.log('8888888888===>', that.abotapi.globalData.yanyubao_server_url);
 						uni.uploadFile({
-							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=upload_image_file',
+							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=upload_image_file_by_user',
 							filePath: filepath,
 							name: 'file',
 							formData: {
@@ -611,6 +611,7 @@
 						  title: res.data.msg,
 						  duration: 2000
 						});
+						
 						console.log('99999999ssss9998888====',that.productid_str );
 						
 						if(that.zhibotype == 'weixin'){
@@ -627,18 +628,15 @@
 								},
 								success(res) {
 									console.log("aaaaa111", res)
-									console.log('99999999ssss999====',livetips );
-									uni.showToast({
-									  title: res.data.msg,
-									  duration: 2000
-									});
-									
 								},
 								fail(error) {
 									console.log("ccccccc====", error)
 								}
 							})
 						}
+						uni.navigateTo({
+						  url: 'pages/live/live-historylog',
+						})
 						
 					},
 					fail(error) {
