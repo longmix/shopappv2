@@ -605,25 +605,46 @@
 					success(res) {
 						console.log("aaaaa111", res)
 						console.log('99999999ssss999====',livetips );
+						var roomid = res.data.roomid;
+						console.log('99999999ooo',roomid );
 						uni.showToast({
 						  title: res.data.msg,
 						  duration: 2000
 						});
+						console.log('99999999ssss9998888====',that.productid_str );
+						
+						if(that.zhibotype == 'weixin'){
+							
+							that.abotapi.abotRequest({
+								url: that.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/VideoLiveData/video_wxa_broadcast_room',
+								method: 'POST',
+								data:{
+									userid: userInfo.userid,
+									sellerid: that.abotapi.globalData.default_sellerid,
+									checkstr: userInfo.checkstr,
+									ids:encodeURIComponent(JSON.stringify(that.productid_str)),
+									roomid:roomid,
+								},
+								success(res) {
+									console.log("aaaaa111", res)
+									console.log('99999999ssss999====',livetips );
+									uni.showToast({
+									  title: res.data.msg,
+									  duration: 2000
+									});
+									
+								},
+								fail(error) {
+									console.log("ccccccc====", error)
+								}
+							})
+						}
+						
 					},
 					fail(error) {
 						console.log("ccccccc====", error)
 					}
-
-
-
 				})
-
-
-
-
-
-
-
 			},
 
 			//推荐商品接口
