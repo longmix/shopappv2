@@ -280,8 +280,8 @@
 				  console.log('huhuhu15111',code);
 				  
 				  if(code == 0){
-					  uni.showToast({
-					  	title:'请先完成之前直播！'
+					  uni.showModal({
+					  	title:'请先完成之前直播!'
 					  })
 					  return;
 				  }
@@ -479,8 +479,8 @@
 					'productid_str': this.productid_str.join(","),
 					'zhibotype':this.zhibotype
 				}
-				
-					var that
+					console.log('5555aaaa==',this.shareImg);
+					// var that
 				if (!this.anchorName) {
 					uni.showToast({
 						title: '请输入主播名字！',
@@ -527,6 +527,14 @@
 					})
 					return;
 				}
+				if (!this.shareImg) {
+					uni.showToast({
+						title: '请上传分享图片！',
+						icon: 'fail',
+						duration: 2000
+					})
+					return;
+				}
 				// if (!this.startTime) {
 				// 	uni.showToast({
 				// 		title: '请输入开始时间！',
@@ -553,7 +561,7 @@
 				// };
 				
 				if(this.zhibotype == 'weixin'){
-					var that = this
+					// var that = this
 					var userInfo = this.abotapi.get_user_info();
 					var livetips={
 						userid: userInfo.userid,
@@ -577,7 +585,8 @@
 						coverImg:this.coverImg,
 						wxa_appid: this.abotapi.globalData.xiaochengxu_appid,
 					}
-					
+					console.log('5555aaaa==',this.shareImg);
+					console.log('5555aaaa==',this.coverImg);
 					
 				}
 				else{
@@ -635,8 +644,10 @@
 							})
 						}
 						uni.navigateTo({
-						  url: 'pages/live/live-historylog',
-						})
+						  url:"/pages/live/live-historylog",
+						})	
+					
+						
 						
 					},
 					fail(error) {
@@ -813,13 +824,13 @@
 	}
 	
 	.name {
-		margin-left: 20rpx;
+		margin-left: 44rpx;
 		flex-shrink: 0;
 	}
 	
 	.value {
 		flex: 1;
-		margin-right: 20rpx;
+		margin-right: 44rpx;
 	}
 	
 	.right-icon {
