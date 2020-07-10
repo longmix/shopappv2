@@ -232,7 +232,8 @@
 				date_end_val:'',//显示开始的时间
 				date:'2020-06-22', //显示开始的时间
 				date_end:'', //显示结束的时间
-				defaultValue: '2020-06-08 10:30' // 默认值
+				defaultValue: '2020-06-08 10:30', // 默认值
+				videocode:''
 			}
 		},
 		onLoad(option) {
@@ -276,12 +277,15 @@
 			  },
 			  success:function(res){
 				  console.log('huhuhu',res);
-				  var code = res.data.code;
-				  console.log('huhuhu15111',code);
+				  // var videocode = res.data.code;
+				  var videocode =0;
+				  console.log('huhuhu15111',videocode);
+				 
 				  
-				  if(code == 0){
+				  if(videocode == 0){
 					  uni.showModal({
-					  	title:'请先完成之前直播!'
+						title:'提示！',
+					  	content:'请先完成之前直播!',
 					  })
 					  return;
 				  }
@@ -612,6 +616,13 @@
 					data:livetips,
 					
 					success(res) {
+						if(this.videocode == 0){
+						  uni.showModal({
+							title:'提示！',
+							content:'请先完成之前直播!',
+						  })
+						  return;
+						}
 						console.log("aaaaa111", res)
 						console.log('99999999ssss999====',livetips );
 						var roomid = res.data.roomid;

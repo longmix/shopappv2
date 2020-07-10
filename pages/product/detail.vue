@@ -1183,11 +1183,12 @@ export default {
 			
 		},
 		block_tanchuang:function(productid){
-			console.log('productid',productid);
-		
+			console.log('productid====》》》》',productid);
+			var productid = productid.currentTarget.dataset.productid;
+			console.log('6666666pppppp',productid);
 			uni.navigateTo({
 				
-			    url: 'goods?productid=' + productid  //这是跳转到的页面路径，？id=1这些都是传递的数据，可以直接在test页面接受
+			    url: 'detail?productid=' + productid  //这是跳转到的页面路径，？id=1这些都是传递的数据，可以直接在test页面接受
 			});
 		},
 		loadCataXiangqing:function(){

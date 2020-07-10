@@ -106,42 +106,8 @@
 
 
 		<!-- 新增插件 begin -->
-		<view :class="plugin_list">
-			<block v-for="(item,index) in plugin_data_list" :key="index">
-				<navigator :url="item.url" open-type="navigate" v-if="item.type == 'url'">
-					<view class="weui_cell">
-						<view class="weui_cell_bd">
-							<view class="weui_cell_bd_p" :style="item.title_style">{{item.title}}</view>
-						</view>
-
-						<view class="with_arrow"></view>
-					</view>
-				</navigator>
-
-				<view v-elif="item.type == 'tel'" class="weui_cell" @tap="callTel" :data-tel="item.tel">
-					<view class="weui_cell_bd">
-						<view class="weui_cell_bd_p" :style="item.title_style"> {{item.title}} </view>
-					</view>
-
-					<view class="with_arrow"></view>
-				</view>
-
-				<view v-elif="item.type == 'miniprog'" class="weui_cell" @tap="toOther" :data-envVersion="item.envVersion"
-				 :data-appid="item.appId" :data-path="item.path">
-					<view class="weui_cell_bd">
-						<view class="weui_cell_bd_p" :style="item.title_style"> {{item.title}} </view>
-					</view>
-
-					<view class="with_arrow"></view>
-				</view>
-
-			</block>
-
-		</view>
-		<!-- 新增插件 end -->
-        
-        
-
+		<view style="background-color: #FFFFFF;">
+		
 		<view class="info_list" v-for="(item,index) in list_two" :key="index">
 		
 			<navigator :url="item.url" open-type="navigate">
@@ -152,8 +118,8 @@
 					</view>
 				</view>
 			</navigator>
-	
-	
+			
+			
 		</view>
 		
 		
@@ -161,33 +127,42 @@
 			<image src="https://yanyubao.tseo.cn/Tpl/static/ecard_module/mobile.png" style="width:30px;height:30px;margin-left:-5px;"></image>
 			<view style='position:absolute;top:5px;left:35px;'>{{current_user_card_data.shang_telephone}}</view>
 		</view>
-
+		
 		<view style='font-size:15px; margin:10px;position:relative;' v-if="ecard_option_list.ecard_show_index_address == 1">
 			<image src="../../static/img/category/weizhi.png" style="width:30px;height:30px;margin-left:-5px;"></image>
-
+		
 			<view style='position:absolute;top:5px;left:35px;' @tap="openLocation">{{current_user_card_data.shang_address}}</view>
 		</view>
-
-
+		
+		
 		<view style='font-size:15px; margin:10px;position:relative;' v-if="ecard_option_list.ecard_show_copyright_text == 1">
-
+		
 			<view style='position:absolute;top:10px;text-align: center;width: 100%;color: #666;'>Copyright ©
 				{{ecard_option_list.ecard_copyright_text}}</view>
 		</view>
-
-
+		
+		
+		
+		</view>
 		<view :class="changefootnav" @tap="payMoney">
 			<!-- :style="{'border': solid 2rpx ecard_option_list.ecard_shop_nav_bg_color;'background-color':ecard_option_list.ecard_shop_nav_bg_color;}" -->
 			<!-- <image src="../../images/fk.png" style="width:100%;height:100%;"></image> -->
 			<image v-if="ecard_option_list.ecard_shop_nav_font_color == '#000000'" src="https://yanyubao.tseo.cn/Tpl/static/ecard_module/icon/fukuan3.svg"
 			 style="width:50px;height:50px;margin: 5px;" />
 			<image src="https://yanyubao.tseo.cn/Tpl/static/ecard_module/icon/fukuan2.svg" style="width:50px;height:50px;margin: 5px;" />
-
+		
 		</view>
-
-
+		
+		
 		<view style="display:block; height:50rpx;">
 		</view>
+			
+
+		<!-- 新增插件 end -->
+        
+        
+
+		
 
 
 
@@ -831,11 +806,14 @@
 	}
 	.weui_cell_bd{
 		display:flex;
-		margin-left: 10rpx;
+		margin-left: 30rpx;
 	}
 	.weui_cell_bd image{
 		width: 80rpx;
 		height:80rpx;
+	}
+	.supplier-image-list{
+		font-size: 0;
 	}
 </style>
 
