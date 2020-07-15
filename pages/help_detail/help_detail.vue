@@ -336,7 +336,12 @@
 					}
 				}
 			},
-			
+			onShareTimeline: function () {
+				
+			},
+			onAddToFavorites: function () {
+				//this.onShareTimeline();
+			},
 			//h5点击分享触发
 			share_publish:function(){
 				console.log('==================>>>h5');

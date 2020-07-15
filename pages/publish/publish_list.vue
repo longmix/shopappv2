@@ -171,7 +171,12 @@
 		},
 		onShareAppMessage: function () {
 		},
-		
+		onShareTimeline: function () {
+			
+		},
+		onAddToFavorites: function () {
+			//this.onShareTimeline();
+		},
 		methods: {
 			get_api_publish_list:function(that,publishData){
 				console.log('publishData',publishData);

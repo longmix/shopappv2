@@ -1364,7 +1364,12 @@ export default {
 	      }
 	    }
 	},
-	
+	onShareTimeline: function () {
+		
+	},
+	onAddToFavorites: function () {
+		//this.onShareTimeline();
+	},
 	filters: {
 		/**
 		 * 处理富文本里的图片宽度自适应

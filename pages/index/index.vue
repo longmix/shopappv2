@@ -521,26 +521,24 @@ export default {
 		    },
 		});
 	},
-	
+	 
 	onShareTimeline: function () {
-		//console.log('app.globalData.shop_name : '+app.globalData.shop_name);
-
-		// return {
-		//   title:this.wxa_share_title,
-			 
-		//   query: '', 
-		//   imageUrl:this.wxa_share_img
-		// }
+		
 	},
 	onAddToFavorites: function () {
-		this.onShareTimeline();
+		//this.onShareTimeline();
 	},
 	
 	onShareAppMessage: function () {
 		
 	},
 	
-	
+	onShareTimeline: function () {
+		
+	},
+	onAddToFavorites: function () {
+		//this.onShareTimeline();
+	},
 	methods: {
 		//获取天气
 		get_tianqi:function(){

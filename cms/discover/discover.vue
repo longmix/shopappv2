@@ -328,7 +328,12 @@
 	
 	
 	  },
-	
+	onShareTimeline: function () {
+		
+	},
+	onAddToFavorites: function () {
+		//this.onShareTimeline();
+	},
 	  /**
 	  * 页面相关事件处理函数--监听用户下拉动作
 	  */

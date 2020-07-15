@@ -189,6 +189,12 @@
 		},
 		onShareAppMessage: function () {
 		},
+		onShareTimeline: function () {
+			
+		},
+		onAddToFavorites: function () {
+			//this.onShareTimeline();
+		},
 		methods: {
 			//猜你喜欢
 			get_product_list:function(){

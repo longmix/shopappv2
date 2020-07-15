@@ -305,6 +305,12 @@
 		},
 		onShareAppMessage: function () {
 		},
+		onShareTimeline: function () {
+			
+		},
+		onAddToFavorites: function () {
+			//this.onShareTimeline();
+		},
 		methods: {
 			// 跳转直播间
 			  toLiveStudio: function(e){

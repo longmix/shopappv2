@@ -343,7 +343,12 @@
 			
 		},
 
-
+onShareTimeline: function () {
+		
+	},
+	onAddToFavorites: function () {
+		//this.onShareTimeline();
+	},
 		//调用接口
 		methods: {
 

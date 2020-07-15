@@ -90,6 +90,12 @@
 		},
 		onShareAppMessage: function () {
 		},
+		onShareTimeline: function () {
+			
+		},
+		onAddToFavorites: function () {
+			//this.onShareTimeline();
+		},
 		methods: {
 			initArticleList: function () {
 				

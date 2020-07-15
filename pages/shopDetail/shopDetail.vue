@@ -465,8 +465,13 @@
 
 		},
 
-
-
+		onShareTimeline: function () {
+				
+		},
+		onAddToFavorites: function () {
+			//this.onShareTimeline();
+		},
+	
 
 		methods: {
 			//h5点击分享触发

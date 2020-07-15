@@ -451,7 +451,12 @@ export default {
 	    }
 	
 	  },
-	
+		onShareTimeline: function () {
+
+		},
+		onAddToFavorites: function () {
+		//this.onShareTimeline();
+		},
 	  videometa:function(e){
 	    console.log('videometa======>>>>>', e);
 	
