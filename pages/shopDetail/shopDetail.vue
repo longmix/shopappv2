@@ -105,7 +105,7 @@
 
 		<view>
 			<!-- 按钮1 -->
-			<view class="paidui-con">
+			<view class="paidui-con" v-if="!user_console_setting.shop_product_hidden || user_console_setting.shop_product_hidden == 0">
 				<image class="icon-a" src="../../static/img/category/diancan.png"></image>
 				<view class="paidui-a">
 					<view class="icon-title">
@@ -126,7 +126,7 @@
 			<!-- 按钮1   end -->
 
 			<!-- 按钮2 -->
-			<view class="paidui-con">
+			<view class="paidui-con" v-if="!user_console_setting.waimai_product_hidden || user_console_setting.waimai_product_hidden == 0">
 				<image style="height: 85upx;" class="icon-a" src="../../static/img/category/faster.png"></image>
 				<view class="paidui-a">
 					<view class="icon-title">

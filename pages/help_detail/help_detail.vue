@@ -42,9 +42,11 @@
 				
 				<!-- 自定义属性 -->
 				<view class="wenzhang_meihua" 
-					v-for="value_item in wz_text.value_list" :key="value_item">
-					<block v-if="value_item.fieldvalue">
-					<view class="wenzhang_meihua_name">{{value_item.displayname}}</view>：{{value_item.fieldvalue}}
+					v-for="value_item in wz_text.value_list" :key="value_item" >
+					<block v-if="value_item.fieldvalue" >
+					<view class="wenzhang_meihua_name">{{value_item.displayname}}</view>：
+					<text v-if="value_item.fieldname == 'mobile'" @click="call_mobile(value_item.fieldvalue)">{{value_item.fieldvalue}}</text>
+					<text v-else>{{value_item.fieldvalue}}</text>
 					</block>
 				</view>
 				
@@ -279,7 +281,7 @@
 						//console.log('成功返回商户头条信息:' + res);
 						//console.log(mars.html2json(res.data.data.info));
 						var wz_keyword = res.data.data.keyword;
-					  
+					  console.log('dddddd',res);
 						that.wz_text = res.data.data;
 						that.wz_keyword2 = wz_keyword;
 						that.wz_title = res.data.data.title;
@@ -301,6 +303,14 @@
 				this.abotapi.httpPost(url, data, cbSuccess, cbError);
 					//========End====================
 			},
+			
+			call_mobile:function(mobile){
+				console.log(mobile);
+				uni.makePhoneCall({
+				    phoneNumber: mobile 
+				});
+			},
+			
 			onShareAppMessage: function () {
 				console.log('==================>>>');
 				var that = this;

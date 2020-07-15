@@ -301,7 +301,11 @@ export default {
 			w1:'',
 			temperature:'',
 			show_weather_forecast_in_index:0,
-			default_copyright_text:''
+			default_copyright_text:'',
+			
+			//分享转发
+			 wxa_share_img:'',
+			 wxa_share_title:''
 		};
 	},
 	
@@ -517,7 +521,23 @@ export default {
 		    },
 		});
 	},
+	
+	onShareTimeline: function () {
+		//console.log('app.globalData.shop_name : '+app.globalData.shop_name);
+
+		// return {
+		//   title:this.wxa_share_title,
+			 
+		//   query: '', 
+		//   imageUrl:this.wxa_share_img
+		// }
+	},
+	onAddToFavorites: function () {
+		this.onShareTimeline();
+	},
+	
 	onShareAppMessage: function () {
+		
 	},
 	
 	
@@ -845,7 +865,18 @@ export default {
 			  
 			    that.show_weather_forecast_in_index = cb_params.option_list.show_weather_forecast_in_index;
 			}
+			if (cb_params.option_list.wxa_share_title) {
+				//分享转发标题
+			  
+			    that.wxa_share_title = cb_params.option_list.wxa_share_title;
+			}
 			
+			if (cb_params.option_list.wxa_share_img) {
+				//分享转发图片
+			  
+			    that.wxa_share_img = cb_params.option_list.wxa_share_img;
+			}
+			cb_params
 			
 			that.get_flash_ad_list();
 			that.get_flash_img_list();

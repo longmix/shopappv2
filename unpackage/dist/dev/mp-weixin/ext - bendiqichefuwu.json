@@ -48,15 +48,15 @@
       },
       {
         "pagePath": "pages/category/category",
-        "iconPath": "static/img/tabBar/publish.png",
-        "selectedIconPath": "static/img/tabBar/publish-on.png",
-        "text": "商品分类"
+        "iconPath": "static/img/tabBar/category.png",
+        "selectedIconPath": "static/img/tabBar/category-on.png",
+        "text": "汽车用品"
       },
       {
         "pagePath": "pages/shopList/shopList",
-        "iconPath": "static/img/tabBar/cart.png",
-        "selectedIconPath": "static/img/tabBar/cart-on.png",
-        "text": "品质商家"
+        "iconPath": "static/img/tabBar/shang.png",
+        "selectedIconPath": "static/img/tabBar/shang-on.png",
+        "text": "实体店铺"
       },
       {
         "pagePath": "pages/user/user",
