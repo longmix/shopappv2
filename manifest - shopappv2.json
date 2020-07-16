@@ -82,13 +82,26 @@
                 },
                 "payment" : {
                     "weixin" : {
-                        "appid" : "wx1313473301",
+                        "appid" : "wx029e1ddb38b4c630",
                         "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/yyds/"
                     }
                 },
                 "ad" : {},
                 "speech" : {
                     "ifly" : {}
+                },
+                "oauth" : {
+                    "weixin" : {
+                        "appid" : "wx029e1ddb38b4c630",
+                        "appsecret" : "aaaaaaaaaaaaaaaaaaaaaaa",
+                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/yyds/"
+                    }
+                },
+                "share" : {
+                    "weixin" : {
+                        "appid" : "wx029e1ddb38b4c630",
+                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/yyds/"
+                    }
                 }
             },
             "icons" : {

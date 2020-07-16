@@ -1,5 +1,5 @@
 {
-    "name" : "腾羽云商",
+    "name" : "延誉电商",
     "appid" : "__UNI__A79BAA4",
     "description" : "",
     "versionName" : "1.5.3",
@@ -76,19 +76,32 @@
             "sdkConfigs" : {
                 "maps" : {
                     "amap" : {
-                        "appkey_ios" : "d82e3eb6e2abf0888cbc6131603f5414",
-                        "appkey_android" : "b04606272e2eb3efd20cf0134ce91df5"
+                        "appkey_ios" : "93094a28bc895a74cd1690bf390ba6ea",
+                        "appkey_android" : "647d08ffaa523902a2503fa958e5afa7"
                     }
                 },
                 "payment" : {
                     "weixin" : {
-                        "appid" : "wx12224323423",
-                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/tengyumall/"
+                        "appid" : "wx029e1ddb38b4c630",
+                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/yyds/"
                     }
                 },
                 "ad" : {},
                 "speech" : {
                     "ifly" : {}
+                },
+                "oauth" : {
+                    "weixin" : {
+                        "appid" : "wx029e1ddb38b4c630",
+                        "appsecret" : "aaaaaaaaaaaaaaaaaaaaaaa",
+                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/yyds/"
+                    }
+                },
+                "share" : {
+                    "weixin" : {
+                        "appid" : "wx029e1ddb38b4c630",
+                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/yyds/"
+                    }
                 }
             },
             "icons" : {
@@ -175,7 +188,7 @@
 		 }*/
     "h5" : {
         "router" : {
-            "base" : "/o2oh5/",
+            "base" : "/h5/abotds/",
             "mode" : "hash"
         },
         "devServer" : {
@@ -184,7 +197,7 @@
         "uniStatistics" : {
             "enable" : false
         },
-        "title" : "腾羽云商",
+        "title" : "延誉电商",
         "template" : "h5_index_template.html"
     },
     "uniStatistics" : {
