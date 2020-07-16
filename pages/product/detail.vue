@@ -2,6 +2,14 @@
 	<view>
 		<view class="status" :style="{ opacity: afterHeaderOpacity }"></view>
 		<view class="header">
+			
+			<abotshare 
+			ref="share_api"
+			@click_wxa_share="click_wxa_share"   
+			@click_wxa_circle_share='click_wxa_circle_share'  
+			@click_wxa_applet_share='click_wxa_applet_share'  
+			@click_wxa_system_share='click_wxa_system_share'
+			></abotshare>
 			<!-- 头部-默认显示 -->
 			<view class="before" :style="{ opacity: 1 - afterHeaderOpacity, zIndex: beforeHeaderzIndex }">
 				<view class="back"><view class="icon xiangqian" @tap="back_return" v-if="showBack"></view></view> 
@@ -31,7 +39,7 @@
 			<view class="icons">
 			
 				
-				<!-- #ifdef MP-WEIXIN || APP-PLUS -->
+				<!-- #ifdef MP-WEIXIN -->
 				
 				<button class="box share-btn" open-type="share">
 					<view class="icon fenxiang"></view>
@@ -40,6 +48,18 @@
 				</button>
 				<!-- <button style="padding-left: 0;padding-right: 0;" open-type="share">分享</button> -->
 				<!-- #endif -->
+				
+				<!-- #ifdef APP-PLUS -->
+				
+				<button class="box share-btn" @click="is_show">
+					<view class="icon fenxiang"></view>
+					<view class="text">分享</view>
+					<!-- <button class="text" open-type="share">分享</button> -->
+				</button>
+				<!-- <button style="padding-left: 0;padding-right: 0;" open-type="share">分享</button> -->
+				<!-- #endif -->
+				
+				
 				<!-- #ifdef H5 --> 
 				<view class="box" @tap="share_shang_detail">
 					<view class="icon fenxiang"></view>
@@ -323,6 +343,9 @@
 		</view>
 		
 		<view class="copyright_info">{{default_copyright_text}}</view>
+		
+		
+		
 	</view>
 </template>
 
@@ -330,7 +353,13 @@
 	// var app = getApp();
 	// var abotapi = require("../../common/abotapi.js");
 	var productid;
+	import abotshare from '../../components/abot_share_api/abot_share_api.vue';
+	import abotsharejs from '../../common/abot_share_api.js';
+	//import abot_share_vue from '../../components/product-list/product-list.vue';
 export default {
+	components:{
+		abotshare
+	},
 	data() {
 		return {
 			//控制渐变标题栏的参数
@@ -414,8 +443,12 @@ export default {
 			xianshimiaosha:'',
 			wxa_show_kucun_xiaoliang: '',
 			cart_amount:0,
-			default_copyright_text:''
-
+			default_copyright_text:'',
+			// app分享
+			share_imageUrl:'',
+			share_href:'',
+			share_summary:'',
+			share_titles:''
 		};
 	},
 	onLoad(option) {
@@ -483,6 +516,13 @@ export default {
 					that.picture_list = that.goods_detail.picture_list;
 					that.picture_length = that.goods_detail.picture_list ? that.goods_detail.picture_list.length : 0;
 					that.attribute_list = that.goods_detail.attribute_list;
+					
+					// app分享
+					that.share_imageUrl = that.goods_detail.picture_list[0]['picture'];
+					that.share_href = that.goods_detail['url'];
+					that.share_summary = that.goods_detail['brief'];
+					that.share_titles = that.goods_detail['name'];
+					
 					
 					 var attr_list = that.goods_detail.attr_list
 					 
@@ -1332,6 +1372,30 @@ export default {
 				
 				return;
 			},
+			
+			//app  分享点击
+			click_wxa_share:function (){
+				abotsharejs.click_wxa_share(this.share_href, this.share_titles, this.share_summary, this.share_imageUrl);
+			},
+			
+			click_wxa_circle_share:function (){
+				abotsharejs.click_wxa_circle_share(this.share_href, this.share_titles, this.share_summary, this.share_imageUrl);
+			},
+			
+			
+			click_wxa_applet_share:function (){
+				var path = 'pages/product/detail?productid='+productid;
+				var account = this.abotapi.globalData.xiaochengxu_account;
+				abotsharejs.click_wxa_applet_share(this.share_href, this.share_titles, path, this.share_imageUrl, account);
+			},
+			
+			
+			click_wxa_system_share:function (){
+				abotsharejs.click_wxa_system_share();
+			},
+			is_show:function(){
+				this.$refs.share_api.is_show();
+			}
 	},
 	
 	onShareAppMessage: function () {
@@ -1451,6 +1515,7 @@ page {
 	top: 0;
 	/*  #ifdef  APP-PLUS  */
 	height: var(--status-bar-height); //覆盖样式
+	margin-top: var(--status-bar-height);
 	/*  #endif  */
 	background-color: #f1f1f1;
 	transition: opacity 0.05s linear;
@@ -1571,6 +1636,9 @@ page {
 	position: relative;
 	width: 100%;
 	height: 100vw;
+	/*  #ifdef  APP-PLUS  */
+		top: var(--status-bar-height);
+	/*  #endif  */
 	swiper {
 		width: 100%;
 		height: 100vw;
@@ -1597,6 +1665,9 @@ page {
 	}
 }
 .info-box {
+	/*  #ifdef  APP-PLUS  */
+		margin-top: var(--status-bar-height);
+	/*  #endif  */
 	width: 92%;
 	padding: 20upx 4%;
 	background-color: #fff;
