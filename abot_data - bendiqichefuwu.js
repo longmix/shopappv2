@@ -7,6 +7,7 @@ const globalData = {
 		force_sellerid:1,
 
 		xiaochengxu_appid: 'wxfc3ddf7ac2c59963',
+		xiaochengxu_account:'gh_a95e5a0852aa',
 	
 		
 		//本地汽车服务

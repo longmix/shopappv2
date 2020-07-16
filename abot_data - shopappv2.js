@@ -7,6 +7,7 @@ const globalData = {
 		force_sellerid:1,
 	
 		xiaochengxu_appid: 'wx00d1e2843c3b3f77',
+		xiaochengxu_account:'gh_a95e5a0852aa',
 		
 		//通版商城
 		default_shopname: '延誉电商',

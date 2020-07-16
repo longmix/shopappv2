@@ -7,6 +7,7 @@ const globalData = {
 		force_sellerid:1,
 		
 		xiaochengxu_appid: 'wx327955837a9c4090',
+		xiaochengxu_account:'gh_a95e5a0852aa',
 
 		//腾羽生物
 		default_shopname: '腾羽云商',

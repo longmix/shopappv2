@@ -7,7 +7,7 @@
 			<!-- 定位城市 -->
 			<navigator url="../locationList/locationList" class="addr" :style="{fontSize:current_citynameWidth+'px'}">
 				<view class="icon location"></view>
-				<view style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap; ">{{current_cityname}}</view>
+				<view style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:28rpx;">{{current_cityname}}</view>
 			</navigator>
 			<!-- 搜索框 -->
 			<view class="input-box">
