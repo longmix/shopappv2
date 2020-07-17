@@ -123,7 +123,7 @@
 		        <view class="comment_num" :hidden="!comment_num">{{comment_num}}</view>
 		        <image class="comment_img comment_right_img" :style="comment_num ? 'margin-left:0':''" :src="isShoucang==true ?  '../../static/img/help/star_on.png': '../../static/img/help/star_off.png'" @tap='shoucang' ></image>
 		        <button  class="share" open-type="share"></button>
-				<!-- #ifdef MP-WEIXIN -->
+				<!-- #ifdef MP -->
 				<image class="comment_img comment_right_img" src="../../static/img/help/share.png" open-type="share"></image>
 				<!-- #endif -->
 				<!-- #ifdef APP-PLUS -->

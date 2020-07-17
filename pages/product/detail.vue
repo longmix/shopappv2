@@ -39,7 +39,7 @@
 			<view class="icons">
 			
 				
-				<!-- #ifdef MP-WEIXIN -->
+				<!-- #ifdef MP -->
 				
 				<button class="box share-btn" open-type="share">
 					<view class="icon fenxiang"></view>
