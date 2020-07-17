@@ -106,6 +106,9 @@
 
 				wxa_shop_nav_bg_color: '',
 				wxa_shop_nav_font_color: '',
+				
+				wxa_shop_operation_logo_url:'',
+				wxa_shop_new_name:'',
 
 
 				kefu_qq: '',
@@ -118,19 +121,28 @@
 		},
 		onLoad(options) {
 			var that = this;
+			
 			var userInfo = that.abotapi.get_user_info();
+			
 			// userAcountInfo = that.abotapi.get_user_account_info();
+			
 			this.abotapi.set_option_list_str(that, function(that001, cb_params) {
 				that001.abotapi.getColor();
+				
+				console.log('cb_params=====>>>>', cb_params);
 
 				that001.wxa_shop_operation_logo_url = cb_params.wxa_shop_operation_logo_url;
 				that001.wxa_shop_new_name = cb_params.wxa_shop_new_name;
+				
+				console.log('cb_params=====>>>>', that001.wxa_shop_operation_logo_url);
+				console.log('cb_params=====>>>>', that001.wxa_shop_new_name);
 			});
 
 			if (options.about) {
 				uni.setNavigationBarTitle({
 					title: options.about
 				})
+				
 				that.about_title = options.about;
 			}
 
@@ -171,7 +183,7 @@
 
 
 			mytiaozhuan: function(e) {
-				that = this;
+				var that = this;
 
 				var url = e.currentTarget.dataset.url;
 				console.log('user mytiaozhuan准备跳转：' + url);
@@ -217,6 +229,18 @@
 				// #endif
 
 				// #ifdef APP-PLUS
+				uni.makePhoneCall({
+					phoneNumber: this.shop_info_from_server.telephone,
+				})
+				// #endif
+				
+				// #ifdef MP-BAIDU
+				uni.makePhoneCall({
+					phoneNumber: this.shop_info_from_server.telephone,
+				})
+				// #endif
+				
+				// #ifdef MP-ALIPAY
 				uni.makePhoneCall({
 					phoneNumber: this.shop_info_from_server.telephone,
 				})

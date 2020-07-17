@@ -1,4 +1,4 @@
-<template style="padding: 0upx;margin: 0upx;">
+<template style="padding: 0upx;margin: 0upx; display:block;">
 	<view :style="[{'background-image':'url('+ bg_img.page_bg_img_body +')' }]" >
 		
 		<view >			
@@ -201,7 +201,7 @@
 				mode: 'aspectFit',
 				userInfo: {},
 				headlineItem: '电子会员卡',
-				hidden: true,
+				show_hidden: true,
 				nocancel: false,
 				changefootnav: 'footnav',
 				plugin_list: '',
@@ -220,6 +220,7 @@
 			//uni.setNavigationBarTitle({
 			//	title: this.abotapi.globalData.shop_name
 			//})
+			
 			
 			var that = this
 
@@ -311,7 +312,7 @@
 			//检查用户是否绑手机号码 
 			if ((!userInfo) || (!userInfo.userid) || (userInfo.userid == 0)) {
 
-				that.hidden = false;
+				that.show_hidden = false;
 
 			}
 
@@ -353,12 +354,13 @@
 			
 		},
 
-onShareTimeline: function () {
+		onShareTimeline: function () {
+			
+		},
+		onAddToFavorites: function () {
+			//this.onShareTimeline();
+		},
 		
-	},
-	onAddToFavorites: function () {
-		//this.onShareTimeline();
-	},
 		//调用接口
 		methods: {
 
