@@ -266,114 +266,132 @@
 						sellerid: this.abotapi.globalData.default_sellerid,
 					},
 					success: function (request_res) {
-						console.log(4444444444444444444);
-						console.log(request_res);
+						console.log('login_by_password=====>>>>>', request_res);
+						
 						var data = request_res.data;
+						
 						//var res = JSON.parse(data);
 						//console.log(res);
-						console.log(request_res.data);
-						if (request_res.data && (request_res.data.code == 1)){
-							
-							if(that.current_userinfo){
-								that.abotapi.globalData.userInfo = that.current_userinfo;
-							}
-							else{
-								that.abotapi.globalData.userInfo = that.abotapi.get_user_info();
-							}
-							
-							console.log('that.abotapi.globalData.userInfo=====>>>>', that.abotapi.globalData.userInfo);
-							
-							//保存openid
-							if(request_res.data.openid){
-								that.abotapi.globalData.userInfo.user_openid = request_res.data.openid;
-								that.abotapi.set_current_openid(request_res.data.openid);
-							}
-							
-							if(!that.abotapi.globalData.userInfo.user_openid && !request_res.data.openid){
-								that.abotapi.set_current_openid('userid_openid_' + request_res.data.userid);
-							}
-							
-							that.abotapi.globalData.userInfo.userid = request_res.data.userid;          
-							that.abotapi.globalData.userInfo.checkstr = request_res.data.checkstr;
-							  
-				      
-					
-							console.log('更新缓存的用户信息:');
-							console.log(that.abotapi.globalData.userInfo);
-
-							that.abotapi.set_user_info(that.abotapi.globalData.userInfo);
-
-							that.abotapi.abotRequest({
-							     url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=get_user_info',
-							     data: {
-							       sellerid: that.abotapi.globalData.default_sellerid,
-							       checkstr: request_res.data.checkstr,
-							       userid: request_res.data.userid,
-							     },
-							     success: function (res) {
-							       console.log('ddd', res);
-							       // console.log('ddd', res.data.code);
-									
-									var	data = res.data;						      
-									 
-									 if(data.code == 1){
-										 
-										 that.abotapi.set_user_account_info(data.data)
-										 
-									 }
-								
-							     }
-							   })
-				 
-				 
-				      
+						
+						if(!data){
 							uni.showModal({
-								title: '提示',
-								content: request_res.data.msg,
-								showCancel: false,
-								success: function (res) {
-									//console.log("回调结果"+res.code);
-									if (res.confirm) {		 
-										
-									}
-									
-									//=======检查登录成功之后的跳转=======
-									var login_last_url = uni.getStorageSync('login_last_url');
-									
-									if (login_last_url) {
-										var var_list = uni.getStorageSync('login_var_list');
-										var ret_page = uni.getStorageSync('login_ret_page');
-										
-										that.abotapi.call_h5browser_or_other_goto_url(login_last_url, var_list, ret_page);
-										
-										uni.removeStorageSync('login_last_url');
-										uni.removeStorageSync('login_var_list');
-										uni.removeStorageSync('login_ret_page');
-										 
-										return;
-										
-										//===========End================
-									}									
-									else{
-										uni.switchTab({
-											url: '/pages/index/index'
-										})
-									}
-								}
-							});
-						}else {
-							console.log(request_res);
-							uni.showToast({
 								title: '登录失败',
-								icon: 'fail',
-								duration: 2000
-							});
+								content: '登录失败！',
+								showCancel: false,
+							})
+							
+							return;
 						}
-				    
-						console.log("延誉宝服务器解析jscode并返回以下内容：");
-						console.log(request_res);
-						// this.abotapi.globalData.user_openid = request_res.data.openid;
+
+						
+						if (request_res.data.code != 1){
+							uni.showModal({
+								title: '登录失败',
+								content: data.msg,
+								showCancel: false,
+							})
+							
+							return;
+						}
+						
+							
+						if(that.current_userinfo){
+							that.abotapi.globalData.userInfo = that.current_userinfo;
+						}
+						else{
+							that.abotapi.globalData.userInfo = that.abotapi.get_user_info();
+						}
+						
+						console.log('that.abotapi.globalData.userInfo=====>>>>', that.abotapi.globalData.userInfo);
+						
+						that.abotapi.globalData.userInfo = that.abotapi.get_user_info();
+						if(!that.abotapi.globalData.userInfo){
+							that.abotapi.globalData.userInfo = {};
+						}
+						
+						//保存openid
+						if(request_res.data.openid){
+							that.abotapi.globalData.userInfo.user_openid = request_res.data.openid;
+							that.abotapi.set_current_openid(request_res.data.openid);
+						}
+						
+						if(!that.abotapi.globalData.userInfo.user_openid && !request_res.data.openid){
+							that.abotapi.set_current_openid('userid_openid_' + request_res.data.userid);
+						}
+						
+						that.abotapi.globalData.userInfo.userid = request_res.data.userid;          
+						that.abotapi.globalData.userInfo.checkstr = request_res.data.checkstr;
+						  
+						console.log('更新缓存的用户信息:');
+						console.log(that.abotapi.globalData.userInfo);
+
+						that.abotapi.set_user_info(that.abotapi.globalData.userInfo);
+						
 						that.abotapi.globalData.tokenstr = request_res.data.tokenstr;
+
+						that.abotapi.abotRequest({
+							 url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=get_user_info',
+							 data: {
+							   sellerid: that.abotapi.globalData.default_sellerid,
+							   checkstr: request_res.data.checkstr,
+							   userid: request_res.data.userid,
+							 },
+							 success: function (res) {
+								console.log('login_by_password=====>>>>>get_user_info===>>>>', res);
+								 
+								var	data = res.data;
+								 
+								if(data.code != 1){
+									return;
+								}
+								
+								
+								that.abotapi.set_user_account_info(data.data);
+								
+								//========显示登录成功的提示================	 
+								
+								uni.showModal({
+									title: '提示',
+									content: request_res.data.msg,
+									showCancel: false,
+									success: function (res) {
+										//console.log("回调结果"+res.code);
+										if (res.confirm) {		 
+											
+										}
+										
+										//=======检查登录成功之后的跳转=======
+										var login_last_url = uni.getStorageSync('login_last_url');
+										
+										if (login_last_url) {
+											var var_list = uni.getStorageSync('login_var_list');
+											var ret_page = uni.getStorageSync('login_ret_page');
+											
+											that.abotapi.call_h5browser_or_other_goto_url(login_last_url, var_list, ret_page);
+											
+											uni.removeStorageSync('login_last_url');
+											uni.removeStorageSync('login_var_list');
+											uni.removeStorageSync('login_ret_page');
+											 
+											return;
+											
+											//===========End================
+										}									
+										else{
+											uni.switchTab({
+												url: '/pages/index/index'
+											})
+										}
+									}
+								});
+									 
+									
+									 
+								
+							}
+						})
+			 
+						
 						
 					}
 				});

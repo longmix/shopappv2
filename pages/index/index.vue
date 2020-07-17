@@ -472,7 +472,7 @@ export default {
 		
 		if(this.is_OK){
 			uni.showToast({
-				title: '暂无数据',
+				title: '已经到底了~',
 				duration: 2000
 			});
 			return;
@@ -507,7 +507,7 @@ export default {
 				}else if(res.data.code == 0){
 					that.is_OK = true;
 					uni.showToast({
-						title: '暂无数据',
+						title: '已经到底了~',
 						duration: 2000
 					});
 					return;
@@ -515,7 +515,7 @@ export default {
 		    },
 		    fail: function (e) {
 				uni.showToast({
-					title: '暂无数据！',
+					title: '已经到底了~',
 					duration: 2000
 				});
 		    },

@@ -145,7 +145,7 @@
 
 							<view>
 								<view style='margin-top: 20rpx;color: gray;'>转账后请填写以下信息，以便于与财务对账</view>
-								<form @submit="formSubmit" @reset="formReset">
+								<form @submit="formSubmit">
 									<view class="section">
 										<label class='section_view' style="line-height:50rpx">汇款人：</label>
 										<input type="text" name="name" placeholder="请填写汇款人" :value="adds.name" />
@@ -724,16 +724,13 @@
 
 
 						var payment_parameter = JSON.parse(payment_parameter_str);
-
-						uni.requestPayment({
+						
+						console.log('准备调用 uni.requestPayment====>>>>>payment_parameter===>>>', payment_parameter);
+						
+						
+						var uni_pay_params = {
 							provider: payment_provider,
-							appId: payment_parameter.appId,
-							timeStamp: payment_parameter.timeStamp,
-							nonceStr: payment_parameter.nonceStr,
-							package: payment_parameter.package,
-							signType: payment_parameter.signType,
-							paySign: payment_parameter.paySign,
-
+							
 							success: function(res) {
 								uni.showModal({
 									title:'提示',
@@ -746,12 +743,46 @@
 
 							},
 							fail: function(res) {
+								console.log('uni.requestPayment====>>>>>fail====>>>>', res);
+								
 								uni.showToast({
 									title: '支付失败',
 									duration: 3000
 								})
 							}
-						})
+						};
+						
+						// #ifdef APP-PLUS
+							uni_pay_params.timeStamp = payment_parameter.timestamp;
+							uni_pay_params.nonceStr = payment_parameter.noncestr;
+							uni_pay_params.package = payment_parameter.package;
+							uni_pay_params.signType = payment_parameter.signType;
+							uni_pay_params.paySign = payment_parameter.sign;
+							
+							uni_pay_params.orderInfo = JSON.stringify({
+											appid: payment_parameter.appid,  
+											noncestr: payment_parameter.noncestr,  
+											package: payment_parameter.package,  
+											partnerid: payment_parameter.partnerid,  
+											prepayid: payment_parameter.prepayid,  
+											timestamp: payment_parameter.timestamp,  
+											sign: payment_parameter.sign,  
+										});
+						// #endif
+						
+						// #ifdef MP-WEIXIN
+							uni_pay_params.timeStamp = payment_parameter.timeStamp;
+							uni_pay_params.nonceStr = payment_parameter.nonceStr;
+							uni_pay_params.package = payment_parameter.package;
+							uni_pay_params.signType = payment_parameter.signType;
+							uni_pay_params.paySign = payment_parameter.paySign;
+						// #endif
+						
+						//appId: payment_parameter.appId,
+						
+						console.log('开始调用 uni.requestPayment====>>>>>uni_pay_params===>>>', uni_pay_params);
+						
+						uni.requestPayment(uni_pay_params);
 					},
 					fail: function() {
 						// fail
