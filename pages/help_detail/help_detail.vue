@@ -53,7 +53,9 @@
 				<view class="wenzhang_meihua" v-for="(value_item,index) in wz_text.value_list" :key="index" >
 					<block v-if="value_item.fieldvalue" >
 					<view class="wenzhang_meihua_name">{{value_item.displayname}}</view>：
+					
 					<text v-if="value_item.fieldname == 'mobile'" @click="call_mobile(value_item.fieldvalue)">{{value_item.fieldvalue}}</text>
+					<image v-if="value_item.fieldname == 'mobile'" @click="call_mobile(value_item.fieldvalue)" style="margin-left: 10rpx;width: 30rpx;height: 30rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_phone.png"></image>
 					<text v-else>{{value_item.fieldvalue}}</text>
 					</block>
 				</view>
