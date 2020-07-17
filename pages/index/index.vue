@@ -31,7 +31,9 @@
 			<view class="swiper-box">
 				<swiper circular="true" autoplay="true" @change="swiperChange" :style="{height:imgheights[current] + 'px'} ">
 					<swiper-item v-for="(swiper,index) in flash_ad_list" :key="swiper.id" @click="toAdDetails(flash_ad_list[index].url)">
-						<image @load="imageLoad($event)"  :data-id='index' :src="swiper.image" mode="widthFix"></image>
+						<image class="img_swiper" @load="imageLoad($event)" 
+							 :style="{height:imgheights[current] + 'px'} "
+							:data-id='index' :src="swiper.image" mode="widthFix"></image>
 					</swiper-item>
 				</swiper>
 			</view>
@@ -317,14 +319,14 @@ export default {
 		
 		var that = this;
 		
-		uni.getSystemInfo({
-		    success: function (res) {
-				console.log('getSystemInfo==',res)
-				that.windowWidth = res.windowWidth;
-				that.windowHeight = res.windowHeight;
-				
-		    }
-		});
+		var system_info = uni.getSystemInfoSync();
+		
+		console.log('getSystemInfo==>>>system_info==>>>', system_info)
+		console.log('getSystemInfo==>>>system_info==>>>', system_info.windowWidth)
+		that.windowWidth = system_info.windowWidth;
+		that.windowHeight = system_info.windowHeight;
+		
+		
 		
 		//=====判断sellerid和parentid Begin=====
 		var sellerid = null;
@@ -1572,22 +1574,29 @@ export default {
 		
 		imageLoad: function (e) {//获取图片真实宽度  
 				
-		    var imgwidth = e.detail.width,
-		    imgheight = e.detail.height,
+		    var imgwidth = e.detail.width;
+		    var imgheight = e.detail.height;
 		      //宽高比  
-		    ratio = imgwidth / imgheight;
-			  
+		    var ratio = imgwidth / imgheight;
+			
+			console.log('imageLoad id===>>> '+e.target.dataset.id +'实际大小：');
 		    console.log(imgwidth, imgheight)
 			
 		    //计算的高度值  
-		    var viewHeight = (this.windowWidth * 2 * 0.92)/ ratio;
-		    var imgheight = viewHeight;
+		    var imgheight = (this.windowWidth * 0.92)/ ratio;
+			
+			console.log('imageLoad id===>>> '+e.target.dataset.id +'显示大小：');
+			console.log(this.windowWidth * 0.92, imgheight)
+			
 		    var imgheights = this.imgheights;
 			
+			console.log('sdhsdshjdsk',imgheights);
+			
 		    //把每一张图片的对应的高度记录到数组里  
-		    imgheights[e.target.dataset.id] = uni.upx2px(imgheight);
+		    //imgheights[e.target.dataset.id] = uni.upx2px(imgheight);
+			imgheights[e.target.dataset.id] = imgheight;
 	
-		    console.log('id===>>>'+e.target.dataset.id+", imgheights====>>>", imgheights);		
+		    console.log('imageLoad id===>>> '+e.target.dataset.id +", imgheights====>>>", imgheights);		
 	
 		     this.imgheights = imgheights
 		   
@@ -1742,12 +1751,10 @@ page{position: relative;background-color: #fff;}
 	width: 100%;
 	margin-top: 10upx;
 	display: flex;
-	
 	justify-content: center;
 	.swiper-box {
 		width: 92%;
 		// height: 30.7vw;
-
 		overflow: hidden;
 		border-radius: 15upx;
 		box-shadow: 0upx 8upx 25upx rgba(0, 0, 0, 0.2);
@@ -1760,6 +1767,7 @@ page{position: relative;background-color: #fff;}
 			swiper-item {
 				image {
 					width: 100%;
+					height: auto;
 				}
 			}
 		}
@@ -2074,5 +2082,7 @@ page{position: relative;background-color: #fff;}
 	position: absolute;
 	left: 16upx;
 }
-
+.img_swiper{
+	height: 100%;
+}
 </style>

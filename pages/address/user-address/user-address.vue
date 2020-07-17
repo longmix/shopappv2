@@ -44,7 +44,7 @@
 		
 		<!--地址管理-->
 		<radio-group class="radio-group">
-		<view :hidden="hiddenAddress" class="address" v-for="(item,index) in address" :key="index">
+		<view class="address" v-for="(item,index) in address" :key="index">
 		  <view class="address-icon" @tap="setDefault($event)" :data-id="item.addressid">
 		    <radio :checked="item.is_default==1?true:false" value="index" />
 		  </view>
@@ -60,11 +60,11 @@
 		    <view class="address-edit">
 		      <view>
 		        <icon type="icon" size="26"/>
-		        <text :hidden="item.is_default==0?false:true"></text>
+		        <text :hidden_address="item.is_default==0?false:true"></text>
 		      </view>
 		      <view style="overflow: hidden; display: flex;align-items: center;">
 				  <view style="margin-right: 120rpx;color: #868686;font-size: 35rpx;">
-					  <text :hidden="item.is_default==0?false:true" @tap="setDefault" :data-id="item.addressid">设置默认</text>
+					  <text :hidden_address="item.is_default==0?false:true" @tap="setDefault" :data-id="item.addressid">设置默认</text>
 				  </view>
 				  <view class="address_add" :data-id="item.addressid" @tap="saveAddress($event)">
 					  <image style="width: 40rpx;" mode="widthFix" src="../../../static/img/address.png"></image>
@@ -96,16 +96,17 @@
 		</view>
 		</radio-group>
 		<view @click="add()">
-			<view :hidden="hiddenAddress" class="add-address">
+			<view class="add-address">
 				<view class="btn_max">新增地址</view>
 			</view>
 		</view>
-		
+		<!-- #ifdef MP-WEIXIN -->
 		<view @click="wxaddress()">
-			<view :hidden="hiddenAddress" class="add-address">
+			<view class="add-address">
 				<view class="btn_weixin">使用微信地址</view>
 			</view>
 		</view>
+		<!-- #endif -->
 		
 		
 		
@@ -129,7 +130,6 @@
 				amount:'',
 				action:'',
 				action_pay:'',
-				hiddenAddress:''
 			};
 		},
 		onShow() {
