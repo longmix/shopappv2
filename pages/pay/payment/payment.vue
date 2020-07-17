@@ -624,19 +624,16 @@
 				var that = this;
 				
 				var userInfo = that.abotapi.get_user_info();
-				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_buy',
-					data: {
+				
+				var payment_provider = 'wxpay';
+				
+				
+				var post_data = {
 						// productid: that.productid,
 						orderid: that.orderId,
-						payment_type: 3,
-						trade_type: 'JSAPI_WXA',
-						appid: that.abotapi.globalData.xiaochengxu_appid,
-						openid: that.abotapi.get_current_openid(),
+						payment_type: 3,						//支付类型，将来作为函数参数传入。3代表微信支付   2 代表支付宝支付
 						userid: userInfo.userid,
 						checkstr: userInfo.checkstr,
-						//sub_appid :'wx00d1e2843c3b3f77'
-						client: 'wxa',
 						sellerid: that.abotapi.get_sellerid()
 						/*
 						appid:
@@ -648,7 +645,30 @@
 						sign:
 						sub_mch_id:
 						*/
-					},
+				};
+				
+				// #ifdef APP-PLUS
+				post_data.appid = that.abotapi.globalData.weixin_open_platform_appid;
+				
+				if(post_data.payment_type == 3){
+					payment_provider = 'wxpay';
+				}
+				// #endif
+				
+				// #ifdef MP-WEIXIN
+				post_data.trade_type = 'JSAPI_WXA';
+				post_data.appid = that.abotapi.globalData.xiaochengxu_appid;
+				post_data.openid = that.abotapi.get_current_openid();
+				post_data.client = 'wxa';
+				
+				payment_provider = 'wxpay';
+				// #endif
+				
+				
+				
+				that.abotapi.abotRequest({
+					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_buy',
+					data: post_data,
 					method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
 					header: {
 						'Content-Type': 'application/x-www-form-urlencoded'
@@ -706,6 +726,7 @@
 						var payment_parameter = JSON.parse(payment_parameter_str);
 
 						uni.requestPayment({
+							provider: payment_provider,
 							appId: payment_parameter.appId,
 							timeStamp: payment_parameter.timeStamp,
 							nonceStr: payment_parameter.nonceStr,
