@@ -1805,7 +1805,7 @@ page {
 		position: relative;
 	}
 	.content{
-		padding-bottom: 170rpx;
+		padding-bottom: 50rpx;
 	}
 }
 .footer {
@@ -2362,6 +2362,9 @@ margin-left: 40rpx;
 	line-height: normal;
 	background-color: transparent;
 	padding:0,
+}
+.copyright_info{
+	margin-bottom: 140rpx;
 }
 
 </style>
