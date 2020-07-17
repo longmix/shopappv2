@@ -3,6 +3,7 @@
 		<view class='wz_title'>{{wz_text.title}}</view>
 		
 		<view class="title_box" v-if="form_page == 'publish_list'"><!--   -->
+			
 			 <!-- 头像和昵称 -->
 			<view class="head_img">
 				<image :src="wz_text.user_detail.headimgurl"></image>
@@ -20,6 +21,14 @@
 				</view>
 			</view>
 		</view>
+		<abotshare
+		ref="share_api"
+		@click_wxa_share="click_wxa_share"   
+		@click_wxa_circle_share='click_wxa_circle_share'  
+		@click_wxa_applet_share='click_wxa_applet_share'  
+		@click_wxa_system_share='click_wxa_system_share'
+		></abotshare>
+		
 		
 		<view style='margin-top:10rpx;margin-bottom:250rpx;'>
 		
@@ -41,8 +50,7 @@
 				</view>
 				
 				<!-- 自定义属性 -->
-				<view class="wenzhang_meihua" 
-					v-for="value_item in wz_text.value_list" :key="value_item" >
+				<view class="wenzhang_meihua" v-for="(value_item,index) in wz_text.value_list" :key="index" >
 					<block v-if="value_item.fieldvalue" >
 					<view class="wenzhang_meihua_name">{{value_item.displayname}}</view>：
 					<text v-if="value_item.fieldname == 'mobile'" @click="call_mobile(value_item.fieldvalue)">{{value_item.fieldvalue}}</text>
@@ -96,6 +104,12 @@
 			</view>
 				<view class="comment_list_bottom"></view>
 		</view>
+		
+		
+		
+		
+		
+		
 		<view class='detail_bottom'>
 		
 			<view class="comment">
@@ -109,10 +123,12 @@
 		        <view class="comment_num" :hidden="!comment_num">{{comment_num}}</view>
 		        <image class="comment_img comment_right_img" :style="comment_num ? 'margin-left:0':''" :src="isShoucang==true ?  '../../static/img/help/star_on.png': '../../static/img/help/star_off.png'" @tap='shoucang' ></image>
 		        <button  class="share" open-type="share"></button>
-				<!-- #ifdef MP-WEIXIN || APP-PLUS -->
+				<!-- #ifdef MP-WEIXIN -->
 				<image class="comment_img comment_right_img" src="../../static/img/help/share.png" open-type="share"></image>
 				<!-- #endif -->
-				
+				<!-- #ifdef APP-PLUS -->
+				<image class="comment_img comment_right_img" src="../../static/img/help/share.png" @click="is_show"></image>
+				<!-- #endif -->
 		        <!-- #ifdef H5 -->
 		        <image class="comment_img comment_right_img" src="../../static/img/help/share.png" @tap="share_publish"></image>
 		        <!-- #endif -->
@@ -126,7 +142,13 @@
 
 <script>
 	var userInfo = null;
+	import abotshare from '../../components/abot_share_api/abot_share_api.vue';
+	import abotsharejs from '../../common/abot_share_api.js';
+	
 	export default {
+		components:{
+			abotshare
+		},
 		data() {
 			return {
 				headlineItem_img:'',
@@ -164,8 +186,13 @@
 				is_Focus:false,
 				is_OK:false,
 				app_name_chat_title:'',
-				current_cms_token:''
+				current_cms_token:'',
 				
+				//app分享
+				share_imageUrl:'',
+				share_href:'',
+				share_summary:'',
+				share_titles:'',
 			}
 		},
 		
@@ -286,6 +313,12 @@
 						that.wz_keyword2 = wz_keyword;
 						that.wz_title = res.data.data.title;
 						that.dianzan_status = res.data.data.dianzan_status;
+						
+						that.share_href = res.data.data.h5_url;
+						that.share_titles = res.data.data.title;
+						that.share_summary = res.data.data.text;
+						that.share_imageUrl = res.data.data.pic;
+						
 					  // uni.setNavigationBarTitle({
 					  //   title: res.data.data.title
 					  // })
@@ -340,7 +373,7 @@
 				
 			},
 			onAddToFavorites: function () {
-				//this.onShareTimeline();
+				this.onShareTimeline();
 			},
 			//h5点击分享触发
 			share_publish:function(){
@@ -807,6 +840,36 @@
 					})
 				})
 			},
+			
+			
+			//app  分享点击
+			click_wxa_share:function (){
+				console.log(this.share_href);
+				console.log(this.share_titles);
+				console.log(this.share_summary);
+				console.log(this.share_imageUrl);
+				abotsharejs.click_wxa_share(this.share_href, this.share_titles, this.share_summary, this.share_imageUrl);
+			},
+			
+			click_wxa_circle_share:function (){
+				abotsharejs.click_wxa_circle_share(this.share_href, this.share_titles, this.share_summary, this.share_imageUrl);
+			},
+			
+			
+			click_wxa_applet_share:function (){
+				var path = 'pages/help_detail/help_detail?id='+ this.id + '&form_page=' + this.form_page;
+				var account = this.abotapi.globalData.xiaochengxu_account;
+				abotsharejs.click_wxa_applet_share(this.share_href, this.share_titles, path, this.share_imageUrl, account);
+			},
+			
+			
+			click_wxa_system_share:function (){
+				
+				abotsharejs.click_wxa_system_share(this.share_summary, this.share_href);
+			},
+			is_show:function(){
+				this.$refs.share_api.is_show();
+			}
 		},
 		
 		filters: {

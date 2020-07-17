@@ -1,7 +1,7 @@
 <template>
 	<view style="width: 100%;text-align: center;" v-if="SHOW">
 		       
-		<view style="width: 100%;display: flex;background: #FFFFFF;padding: 120rpx 0rpx;position: fixed;bottom: 0;">
+		<view style="width: 100%;display: flex;background: #FFFFFF;padding: 120rpx 0rpx;position: fixed;bottom: 0;z-index: 1000;">
 			<view style="width: 25%;text-align: center;" @click="click_wxa_share">
 				<image style="width: 100rpx;height: 100rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/app_icon/wxhyfx.png"></image>
 				<view style="font-size: 28rpx;color: #333333;">好友</view>
@@ -23,7 +23,7 @@
 			</view>
 			
 		</view>
-		<view style="font-size: 28rpx;color:#ccc;width: 100%;position: fixed;bottom: 0;padding-bottom: 50rpx;" @click="is_show_no">取消</view>
+		<view style="font-size: 28rpx;color:#ccc;width: 100%;position: fixed;bottom: 0;padding-bottom: 50rpx;z-index: 1000;" @click="is_show_no">取消</view>
 	</view>
 	
 </template>

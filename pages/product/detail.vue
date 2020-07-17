@@ -1384,14 +1384,15 @@ export default {
 			
 			
 			click_wxa_applet_share:function (){
-				var path = 'pages/product/detail?productid='+productid;
+				var path = 'pages/product/detail?'+ this.options_str;
 				var account = this.abotapi.globalData.xiaochengxu_account;
 				abotsharejs.click_wxa_applet_share(this.share_href, this.share_titles, path, this.share_imageUrl, account);
 			},
 			
 			
 			click_wxa_system_share:function (){
-				abotsharejs.click_wxa_system_share();
+				
+				abotsharejs.click_wxa_system_share(this.share_summary, this.share_href);
 			},
 			is_show:function(){
 				this.$refs.share_api.is_show();
