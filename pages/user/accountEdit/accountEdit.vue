@@ -10,16 +10,16 @@
 	    <view class="weui-cell">
 	          <view class="weui-cell__hd"><label class="weui-label">新密码</label></view>
 	          <view class="weui-cell__bd">
-	              <input class="weui-input" v-model="new_password" placeholder="请输入新密码"></input>
+	              <input class="weui-input" v-model="new_password" password="true" placeholder="请输入新密码"></input>
 	          </view>
 	    </view>
 	    <view class="weui-cell">
 	          <view class="weui-cell__hd"><label class="weui-label">确认密码</label></view>
 	          <view class="weui-cell__bd">
-	              <input class="weui-input" v-model="new_password2" placeholder="请再次输入新密码"></input>
+	              <input class="weui-input" v-model="new_password2" password="true" placeholder="请再次输入新密码"></input>
 	          </view>
 	    </view>
-	    <button class="weui-btn weui-btn_primary" formType="submit">确认修改</button>
+	    <button class="weui-btn weui-btn_primary" :style="{background:wxa_shop_nav_bg_color}" formType="submit">确认修改</button>
 	</form>
 	
 	</view>
@@ -34,6 +34,7 @@
 				account:'',
 				new_password:'',
 				new_password2: '',
+				wxa_shop_nav_bg_color:'',
 			};
 		},
 		onLoad(options) {
@@ -41,7 +42,12 @@
 			this.abotapi.getColor()
 			this.userAcountInfo = this.abotapi.get_user_account_info();
 			this.account = this.userAcountInfo.account || '';
-			
+			this.abotapi.set_option_list_str(this,
+				function(that001, option_list){
+					console.log('option_list',option_list);
+					that001.wxa_shop_nav_bg_color = option_list.wxa_shop_nav_bg_color
+				}
+				)
 		},
 		methods:{
 			  
