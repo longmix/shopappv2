@@ -260,15 +260,15 @@
 <style>
 	.logo_box {
 		width: 98%;
-		height: 200px;
+		height: 400rpx;
 		margin: 0 auto;
 
 	}
 
 	.box_img {
-		height: 160px;
+		height: 320rpx;
 		margin: 0 auto;
-		padding-top: 30px;
+		padding-top: 60rpx;
 
 	}
 
@@ -276,30 +276,30 @@
 		width: 80px;
 		height: 80px;
 		margin: 0 auto;
-		border-radius: 10px;
+		border-radius: 20rpx;
 	}
 
 	.logo_img image {
 		width: 100%;
 		height: 100%;
-		border-radius: 10px;
+		border-radius: 20rpx;
 	}
 
 	.code_num {
 		width: 100%;
-		height: 60px;
-		line-height: 60px;
+		height: 120rpx;
+		line-height: 120rpx;
 		text-align: center;
-		font-size: 14px;
-		color: #666;
+		font-size: 25rpx;
+		color: #888;
 	}
 
 	.code_num2 {
 		width: 100%;
-		height: 30px;
+		height: 60rpx;
 		line-height: 40px;
 		text-align: center;
-		font-size: 20px;
+		font-size: 40rpx;
 		color: #666;
 	}
 
@@ -321,24 +321,24 @@
 		font-size: 32rpx;
 		text-indent: 16rpx;
 		float: left;
-		color: #999;
+		color: #2a2a2a;
 	}
 
 	.li_info {
 		width: 50%;
-		height: 35px;
-		line-height: 35px;
+		height: 70rpx;
+		line-height: 70rpx;
 		font-size: 16px;
 		float: right;
-		color: #999;
+		color: #2a2a2a;
 		box-sizing: border-box;
 		text-align: right;
 		padding-right: 8px;
 	}
 
 	.jiantou {
-		width: 20px;
-		height: 20px;
+		width: 40rpx;
+		height: 40rpx;
 		margin-top: 6px;
 		float: right;
 	}

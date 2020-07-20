@@ -70,13 +70,13 @@
 			<!-- 营业时间 地址 -->
 			<view class="shijian_dizhi">
 				<!-- 营业时间-->
-				<view style="display: flex;justify-content: space-between;align-items: center;padding: 20upx;">
+				<view style="display: flex;justify-content: space-between;align-items: center;padding: 30upx 20upx;">
 
 					<view style="color:#333;font-size: 28upx;display: flex;align-items: center;">
-						<image style="width: 30upx;height: 30upx;" src="../../static/img/share/time1.png"></image>
+						<image style="width: 30upx;height: 30upx;" src="https://yanyubao.tseo.cn/Tpl/static/images/time.png"></image>
 						<span style="margin-left: 25upx;">营业时间 | {{current_shang_detail.yingyeshijian}}</span>
 					</view>
-					<image style="width: 30upx;height: 30upx;" src="../../static/img/user/point.png"></image>
+					<image style="width: 30upx;height: 30upx; display:none;" src="https://yanyubao.tseo.cn/Tpl/static/images/time.png"></image>
 
 
 				</view>
@@ -84,7 +84,7 @@
 				<navigator :url="'/pages/shopMap/shopMap?address=' + current_shang_detail.address + '&latitude=' + current_shang_detail.latitude + '&longitude=' + current_shang_detail.longitude + '&name=' + current_shang_detail.name + '&telephone=' + current_shang_detail.telephone"
 				 class="shang_detail_address">
 					<view style="color:#333;font-size: 28upx;display: flex;align-items: center;">
-						<image style="width:40upx;height:40upx;" src="../../static/img/user/adress1.png"></image>
+						<image style="width:40upx;height:40upx;" src="https://yanyubao.tseo.cn/Tpl/static/images/weizhi.png"></image>
 						<view style="width: 100%;">
 							<span style="margin-left: 25upx;">{{current_shang_detail.address}}</span>
 						</view>
@@ -106,7 +106,7 @@
 		<view>
 			<!-- 按钮1 -->
 			<view class="paidui-con" v-if="!user_console_setting.shop_product_hidden || user_console_setting.shop_product_hidden == 0">
-				<image class="icon-a" src="../../static/img/category/diancan.png"></image>
+				<image class="icon-a" :src="user_console_setting.shop_product_icon"></image>
 				<view class="paidui-a">
 					<view class="icon-title">
 
@@ -127,7 +127,7 @@
 
 			<!-- 按钮2 -->
 			<view class="paidui-con" v-if="!user_console_setting.waimai_product_hidden || user_console_setting.waimai_product_hidden == 0">
-				<image style="height: 85upx;" class="icon-a" src="../../static/img/category/faster.png"></image>
+				<image style="height: 85upx;" class="icon-a" :src="user_console_setting.waimai_product_icon"></image>
 				<view class="paidui-a">
 					<view class="icon-title">
 
@@ -165,7 +165,7 @@
 		<!-- 优惠 -->
 		<view style="border-bottom:6px solid #eee;" v-if="current_shang_detail.youhui_title != ''">
 			<view class="icon-title2">
-				<image src="../../static/img/category/youhui.png"></image>
+				<image :src="user_console_setting.user_console_icon_youhui"></image>
 				<view class='biaoti'>优惠活动</view>
 			</view>
 
@@ -186,7 +186,7 @@
 		<!--商家简介-->
 		<view style="border-bottom:6px solid #eee;" v-if="current_shang_detail.brief != ''">
 			<view class="icon-title2">
-				<image src="../../static/img/category/jianjie.png"></image>
+				<image :src="user_console_setting.user_console_icon_jianjie"></image>
 				<view class='biaoti'>商家简介</view>
 			</view>
 			<block v-if="current_shang_detail.brief == ''">
@@ -1811,7 +1811,10 @@
 	}
 	
 	.shang_detail_address {
-		display: flex;justify-content: space-between;align-items: center;padding: 20upx;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 20rpx 20rpx 40rpx 20rpx;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		overflow: hidden;

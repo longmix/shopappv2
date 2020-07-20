@@ -6,13 +6,13 @@
 			  <view style="color: #808080;display:inline-block;">当前位置：</view>{{address_info_current}}
 			</view>
 		      <!-- <view calss="right">切换区县<img style="width: 35rpx; height: 33rpx;"
-			   src="../../static/img/category/down.png" alt=""></view> -->
+			   src="https://yanyubao.tseo.cn/Tpl/static/images/down.png" alt=""></view> -->
 		</view>
 		
 		<view class="middle">
 			<!-- <view class="hui">定位/最近访问</view>
 			 -->	
-			<!-- <view class="a"><img style="width: 35rpx;height: 30rpx;" src="../../static/img/category/weizhi.png" alt="">
+			<!-- <view class="a"><img style="width: 35rpx;height: 30rpx;" src="https://yanyubao.tseo.cn/Tpl/static/imagesweizhi.png" alt="">
 				上海
 			</view> -->
 			<!-- <view class="hui">热门城市</view> -->
