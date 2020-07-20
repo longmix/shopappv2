@@ -11,7 +11,7 @@
 		</view>
 		<view class="sou">
 			
-			<input  type="text" placeholder="请输入搜索条件" v-model="search_text"/>
+			<input style="background: #DFDFDF;" type="text" placeholder="请输入搜索条件" v-model="search_text"/>
 			<image @tap="search_article_list()" src="../../static/img/search.png"></image>
 		</view>
 		

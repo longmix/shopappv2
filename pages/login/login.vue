@@ -23,12 +23,12 @@
 			<view class="flexIcon" :style="{border:'1px solid ' + wxa_shop_nav_bg_color}">
 			  <view class="flexIcon-icon iconfont icon-moban flexIcon-icon-current"></view>
 				<image @click="click_check" :src="img_checkcode_url" mode="widthFix" class="img_checkcode"></image>
-				<input type="text" class="flexIcon-text" placeholder-class="cl-white" name="telephone" @input="imgInput" placeholder-style="color: #999;" placeholder="请输入答案" />
+				<input style="width: 60%;" type="text" class="flexIcon-text" placeholder-class="cl-white" name="telephone" @input="imgInput" placeholder-style="color: #999;" placeholder="请输入答案" />
 			</view>
-			<view class="flexIcon" :style="{border:'1px solid ' + wxa_shop_nav_bg_color}">
+			<view class="flexIcon" :style="{border:'1px solid ' + wxa_shop_nav_bg_color}" style="overflow: hidden;">
 				<view class="flexIcon-icon iconfont icon-password flexIcon-icon-current"></view>
 				<button type="primary"  @click="send_btn" :disabled="disabled" :style="{background:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" class="send_btn">{{second}}</button>
-				<input type="text" class="flexIcon-text"  name="password"  placeholder-class="cl-white" @input="telInput" placeholder-style="color: #999;"  placeholder="请输入手机验证码" />
+				<input style="width: 60%;" type="text" class="flexIcon-text"  name="password"  placeholder-class="cl-white" @input="telInput" placeholder-style="color: #999;"  placeholder="请输入手机验证码" />
 			</view>
 			<div></div>
 			<button type="primary"  formType="submit" 
@@ -39,7 +39,7 @@
 				
 				class="btn-row-submit"
 				:style="{background:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" 
-				style="width: 84%;background: #2E85D8;">登陆</button>
+				style="width: 84%;background: #2E85D8;margin: auto;">登陆</button>
 			<div class="flex mgb-20">
 				<navigator class="cl-black pointer flex-1" open-type="redirect" url="/pages/login/login_by_password">手机不在身边？账号密码登录</navigator>
 			</div>
@@ -730,7 +730,7 @@
 	margin-top: -8upx;
 	font-size: 24upx;
 	padding: 0 40upx;
-	margin-right: 8upx;
+	/* margin-right: 8upx; */
 	color:#007aff;	
 	background-color:#fff;
 }
@@ -742,7 +742,7 @@
 	width: 25%;
 	float: right;
 	margin-top: -4upx;
-	margin-right: 16upx;
+	/* margin-right: 16upx; */
 	height: 56upx;
 }
 	

@@ -67,7 +67,7 @@
 							</view>
 
 							<view style="float:right;margin-top: 8rpx;">
-								<image style="padding:0 10px;width:36rpx;height:36rpx;" src="../../static/img/car.png"
+								<image style="margin-right: 10rpx;width:36rpx;height:36rpx;" src="../../static/img/car.png"
 								 :data-productid="item.productid"></image>
 							</view>
 						</navigator>
@@ -559,7 +559,7 @@
 		background: #fff;
 		margin-bottom: 16rpx;
 		float: left;
-		width: 95%;
+		width: 89%;
 	}
 
 	.logo_pic {

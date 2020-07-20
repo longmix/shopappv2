@@ -15,7 +15,7 @@
 	    <button type="primary" :disabled="disabled"  @tap="send_btn" class="send_btn">{{second}}</button>
 	  </view>
 	
-	  <button type="primary" @tap="check_button" class="check_btn" >设置手机号码</button>
+	  <button type="primary" @tap="check_button" class="check_btn" :style="{background:wxa_shop_nav_bg_color}">设置手机号码</button>
 	
 	</view>
 	
@@ -53,7 +53,8 @@
 				mobile: '', //手机号
 				img:'', 	//图片验证码
 				tel:'',		//手机验证码
-				img_checkcode_url:''
+				img_checkcode_url:'',
+				wxa_shop_nav_bg_color:'',
 			};
 		},
 		onLoad(options) {
@@ -62,6 +63,12 @@
 			this.userAcountInfo = this.abotapi.get_user_account_info();
 			this.mobile = this.userAcountInfo.mobile || '';
 			
+			this.abotapi.set_option_list_str(this,
+				function(that001, option_list){
+					console.log('option_list',option_list);
+					that001.wxa_shop_nav_bg_color = option_list.wxa_shop_nav_bg_color
+				}
+			)
 			
 			that.abotapi.getColor();
 			

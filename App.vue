@@ -156,7 +156,7 @@
 		text-align: center;
 		font-size: 25rpx;
 		color: #666;
-		margin-bottom: 80rpx;
+		padding-bottom: 80rpx;
 	}
 
 	

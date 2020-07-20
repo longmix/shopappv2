@@ -41,7 +41,7 @@
 				
 				<!-- #ifdef MP -->
 				
-				<button class="box share-btn" open-type="share">
+				<button class="box share-btn" open-type="share" style="background: none;outline: none;border: none;">
 					<view class="icon fenxiang"></view>
 					<view class="text">分享</view>
 					<!-- <button class="text" open-type="share">分享</button> -->

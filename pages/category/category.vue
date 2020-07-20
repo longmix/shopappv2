@@ -6,8 +6,8 @@
 			<view class="icon-btn">
 				<view class="icon xiangqian" @tap="back_return"></view>
 			</view>
-			<view class="input-box">
-				<input placeholder="默认关键字" placeholder-style="color:#c0c0c0;" @tap="toSearch()"/>
+			<view class="input-box" @tap="toSearch()">
+				<input placeholder="默认关键字" placeholder-style="color:#c0c0c0;" style="background: #f5f5f5;margin-left: 5rpx;"/>
 				<view class="icon search"></view>
 			</view>
 			<view class="icon-btn">

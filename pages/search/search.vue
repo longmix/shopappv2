@@ -601,11 +601,12 @@
 	}
 	.w100 button{
 	    text-align: center;
-	    line-height: 20px;
+		height: 40rpx;
+	    line-height: 40rpx;
 	    margin: 3% 2% 0 0;
 	    display: inline-table;
-	    padding:5px 10px;
-	    font-size: 12px;
+	    padding:10rpx 20rpx;
+	    font-size: 24rpx;
 	}
 	.cont{
 	     width: 94%;
