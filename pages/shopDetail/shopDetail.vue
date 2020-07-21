@@ -206,9 +206,15 @@
 				</view>
 			</block>
 		</view>
-		<view class="bottom">
-
+		
+		<view class="page_bottom">
+			
+			<image v-if="user_console_setting.show_shang_shop_wxa_qrcode == 1" 
+				:src="shang_shop_wxa_qrcode_url" 
+				style="width:120rpx;"></image>
+			
 		</view>
+		
 		<view v-if="user_console_setting.user_console_quick_button_position == 'left' || !user_console_setting.user_console_quick_button_position">
 			<view @tap="isShoucang==1?Shoucang('del'):Shoucang('add')" class="home-p">
 				<image v-if="isShoucang == 0" src="../../static/img/help/star_off.png"></image>
@@ -366,6 +372,8 @@
 				
 				shop_product_btn_show: 0,
 				waimai_product_btn_show:0,
+				
+				shang_shop_wxa_qrcode_url:'',	//商家的小程序码
 			};
 		},
 		
@@ -507,7 +515,14 @@
 				
 				if(user_console_setting.waimai_product_hidden && (user_console_setting.waimai_product_hidden == 1)){
 					this.waimai_product_btn_show = 0;
-				}				
+				}
+								
+				if(user_console_setting.show_shang_shop_wxa_qrcode){
+					this.shang_shop_wxa_qrcode_url = 'https://yanyubao.tseo.cn/openapi/SupplierInfo/getwxacodeunlimit?appid=';
+					this.shang_shop_wxa_qrcode_url += this.abotapi.globalData.xiaochengxu_appid;
+					this.shang_shop_wxa_qrcode_url += '&path=pages%2FshopDetail%2FshopDetail&shortcode=';
+					this.shang_shop_wxa_qrcode_url += this.current_xianmai_shangid;
+				}
 				
 				
 				this.get_shang_detail();
@@ -1545,9 +1560,10 @@
 		margin-left: 10rpx;
 	}
 
-	.bottom {
+	.page_bottom {
 		width: 100%;
 		height: 150rpx;
+		padding-bottom: 200rpx;
 	}
 
 	.ps-btn {
