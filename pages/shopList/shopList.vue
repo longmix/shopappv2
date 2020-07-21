@@ -6,7 +6,7 @@
 		<view class="top-input-con">
 
 			<view  class="scroll-txt" >   
-				<input type="text" v-model="search_text" placeholder="搜索附近商家" style="background: #e6e6e6;"/>
+				<input type="text" v-model="search_text" placeholder="搜索附近商家" confirm-type="search" style="background: #e6e6e6;" @confirm="search()"/>
 				<icon type="search" size="15" style="margin: 0px 10rpx 0 0;position:absolute;right:30rpx;" @tap="search()"></icon>
 				<!-- <text class="scroll-ads">搜索附近商家</text> -->
 			</view>
