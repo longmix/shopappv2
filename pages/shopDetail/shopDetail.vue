@@ -15,9 +15,13 @@
 			<!-- 头部-滚动渐变显示 -->
 			<view class="after" :style="{ opacity: afterHeaderOpacity, zIndex: afterHeaderzIndex }">
 				<view class="back" ><view class="icon xiangqian" @tap="back_return" v-if="showBack"></view></view>
+				
+				<!--
 				<view class="middle">
 					<view v-for="(anchor,index) in anchorlist" :class="[selectAnchor==index ?'on':'']" :key="index" @tap="toAnchor(index)">{{anchor.name}}</view>
 				</view>
+				-->
+				
 				<view class="icon-btn">
 					<!-- <view class="icon tongzhi" @tap="toMsg"></view> -->      <!-- 下版本-> toMsg -->
 					<view class="icon zhuye" @tap="toindex"></view>
@@ -105,7 +109,7 @@
 
 		<view>
 			<!-- 按钮1 -->
-			<view class="paidui-con" v-if="!user_console_setting.shop_product_hidden || user_console_setting.shop_product_hidden == 0">
+			<view class="paidui-con" v-if="shop_product_btn_show == 1">
 				<image class="icon-a" :src="user_console_setting.shop_product_icon"></image>
 				<view class="paidui-a">
 					<view class="icon-title">
@@ -126,7 +130,7 @@
 			<!-- 按钮1   end -->
 
 			<!-- 按钮2 -->
-			<view class="paidui-con" v-if="!user_console_setting.waimai_product_hidden || user_console_setting.waimai_product_hidden == 0">
+			<view class="paidui-con" v-if="waimai_product_btn_show == 1">
 				<image style="height: 85upx;" class="icon-a" :src="user_console_setting.waimai_product_icon"></image>
 				<view class="paidui-a">
 					<view class="icon-title">
@@ -359,6 +363,9 @@
 				
 				//商家评论相关
 				current_faquanList: [],
+				
+				shop_product_btn_show: 0,
+				waimai_product_btn_show:0,
 			};
 		},
 		
@@ -380,17 +387,18 @@
 				xianmai_shangid = options.scene
 			}
 
-		// #ifdef MP
-		//小程序隐藏返回按钮
-		this.showBack = false;
-		// #endif
+			// #ifdef MP
+			//小程序隐藏返回按钮
+			this.showBack = false;
+			// #endif
 
 			this.current_xianmai_shangid = xianmai_shangid;
 
 
 			this.abotapi.set_option_list_str(that, that.abotapi.getColor());
-
-			this.abotapi.get_xianmaishang_setting_list(this.callback_func_for_xianmaishang_setting_list);
+			
+			this.get_merchant_basic_data();
+			
 
 		},
 		onShow() {
@@ -422,7 +430,7 @@
 			that.abotapi.get_xianmaishang_setting_list_remove();
 		
 		
-			this.abotapi.get_xianmaishang_setting_list(this.callback_func_for_xianmaishang_setting_list);
+			this.get_merchant_basic_data();
 			
 			this.__getFaquanList();
 		
@@ -492,9 +500,19 @@
 				// console.log('xianmaishang_setting_list==',xianmaishang_setting_list);
 
 				this.user_console_setting = user_console_setting;
-
+				
+				if(user_console_setting.shop_product_hidden && (user_console_setting.shop_product_hidden == 1)){
+					this.shop_product_btn_show = 0;
+				}				
+				
+				if(user_console_setting.waimai_product_hidden && (user_console_setting.waimai_product_hidden == 1)){
+					this.waimai_product_btn_show = 0;
+				}				
+				
+				
 				this.get_shang_detail();
-
+				
+				
 			},
 
 
@@ -635,6 +653,59 @@
 					},
 				});
 			},
+			
+			get_merchant_basic_data:function(){
+				var that = this;
+				
+				
+				// 获取商家详情
+				var post_data = {
+					sellerid: this.abotapi.globalData.default_sellerid,
+					xianmai_shangid: this.current_xianmai_shangid,
+				}
+				
+				
+				this.abotapi.abotRequest({
+					url: this.abotapi.globalData.o2owaimai_server_url + 'openapi/PublicData/get_merchant_basic_data',
+					data: post_data,
+					success: function(res) {
+						
+						console.log('xiangqing', res);
+						
+						if(res.data.code == 0){
+							uni.showToast({
+								title:res.data.msg,
+							})
+							return;
+						}
+						
+						//根据商户的设置，觉得是否展示堂食和外卖 ！！！！！！
+						if(user_console_setting.shop_product_hidden && (user_console_setting.shop_product_hidden == 1)){
+							this.shop_product_btn_show = 0;
+						}
+						else{
+							this.shop_product_btn_show = 1;
+						}
+						
+						if(user_console_setting.waimai_product_hidden && (user_console_setting.waimai_product_hidden == 1)){
+							this.waimai_product_btn_show = 0;
+						}
+						else{
+							this.waimai_product_btn_show = 1;
+						}
+						
+						
+						this.abotapi.get_xianmaishang_setting_list(this.callback_func_for_xianmaishang_setting_list);
+						
+						
+					},
+					fail: function(e) {
+				
+					},
+				})
+				
+				
+			},
 
 			//获取商家详情
 			get_shang_detail: function() {
@@ -653,10 +724,6 @@
 				this.abotapi.abotRequest({
 					url: this.abotapi.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/get_shang_detail',
 					data: post_data,
-					header: {
-						"Content-Type": "application/x-www-form-urlencoded"
-					},
-					method: "POST",
 					success: function(res) {
 						console.log('xiangqing', res);
 						
