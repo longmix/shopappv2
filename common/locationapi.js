@@ -91,9 +91,69 @@ module.exports = {
 			
 			/* 获取定位地理位置 */
 			// 新建bmap对象
-			var baidu_map_ak;
+			var baidu_map_ak = '';
+			
+			
 			// #ifdef H5
+				console.log('进入，没有缓存，H5开始');
 				baidu_map_ak = that.abotapi.globalData.option_list.baidu_map_ak_h5;
+				
+				var geolocation = new BMap.Geolocation();
+				
+				geolocation.getCurrentPosition(
+					function (r) {
+						//alert('status:' + this.getStatus());//alert('aaaa');//return;
+						
+				        if (this.getStatus() != BMAP_STATUS_SUCCESS) {
+							alert('geolocation.getCurrentPosition success===>>>>但是状态不对====>>>>'+JSON.stringify(this.getStatus()));
+							
+							return;
+						}
+						
+						var mk = new BMap.Marker(r.point);
+						            
+						
+						
+						var locationData = {};
+						locationData.latitude = r.point.lat;  
+						locationData.longitude = r.point.lng;
+						
+						//
+						
+						var pt = new BMap.Point(locationData.longitude, locationData.latitude);  
+						var geoc = new BMap.Geocoder(); 
+						geoc.getLocation(pt, function (rs) {
+							locationData.addressComponent = rs.addressComponents;
+							 
+							 //缓存位置信息			getStorageSync
+							 uni.setStorageSync('locationData', locationData)
+							 
+							 console.log('进入 H5 获取经纬度完成=====>>>>>>', locationData);
+							 
+							 typeof callback_function == "function" && callback_function(that, locationData);
+						
+						});
+						
+						
+					},
+					function(r){    
+						
+					    	alert('geolocation.getCurrentPosition failure===>>>>'+JSON.stringify(r));
+														
+					},
+					{
+					            // 指示浏览器获取高精度的位置，默认为false
+					            enableHighAcuracy: false,
+					            // 指定获取地理位置的超时时间，默认不限时，单位为毫秒
+					            timeout: 2000,
+					            // 最长有效期，在重复获取地理位置时，此参数指定多久再次获取位置。
+					            maximumAge: 0
+					},
+				);
+				
+				
+				
+				
 			// #endif
 			
 			// #ifdef APP-PLUS-AAA
