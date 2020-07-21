@@ -211,7 +211,7 @@
 			
 			<image v-if="user_console_setting.show_shang_shop_wxa_qrcode == 1" 
 				:src="shang_shop_wxa_qrcode_url" 
-				style="width:120rpx;"></image>
+				style="width:150rpx; height:150rpx; margin: 0 auto;"></image>
 			
 		</view>
 		
@@ -254,9 +254,18 @@
 			</view>
 			<view style="width: 25%;background: #FFFFFF;text-align: center;font-size:32rpx;" class="icons">
 				<!-- <image src="../../static/img/addricon.png"></image> -->
-				<!-- #ifdef MP-WEIXIN || APP-PLUS --> 
+				<!-- #ifdef MP-WEIXIN --> 
 				<!-- <button style="padding-left: 0;padding-right: 0;" open-type="share">分享</button> -->
 				<button class="box share-btn btn_box" open-type="share">
+					<image style="width:40rpx;height:40rpx;padding-right:10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_share.png"></image>
+					<view  style="font-size:32rpx;">分享</view>
+					<!-- <button class="text" open-type="share">分享</button> -->
+				</button>
+				
+				<!-- #endif -->
+				<!-- #ifdef APP-PLUS -->
+				<!-- <button style="padding-left: 0;padding-right: 0;" open-type="share">分享</button> -->
+				<button class="box share-btn btn_box" @click="is_show()">
 					<image style="width:40rpx;height:40rpx;padding-right:10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_share.png"></image>
 					<view  style="font-size:32rpx;">分享</view>
 					<!-- <button class="text" open-type="share">分享</button> -->
@@ -284,15 +293,28 @@
 			</view>
 			
 		</view>
+		
+		<!-- app 分享 -->
+		<abotshare
+		ref="share_api"
+		@click_wxa_share="click_wxa_share"   
+		@click_wxa_circle_share='click_wxa_circle_share'  
+		@click_wxa_applet_share='click_wxa_applet_share'  
+		@click_wxa_system_share='click_wxa_system_share'
+		></abotshare>
+		
 	</view>
 </template>
 
 <script>
 	import discoverList from '../../components/discover-list/discover-list.vue';
+	import abotshare from '../../components/abot_share_api/abot_share_api.vue';
+	import abotsharejs from '../../common/abot_share_api.js';
 	
 	export default {
 		components:{
-			discoverList
+			discoverList,
+			abotshare,
 		},
 		data() {
 			return {
@@ -374,6 +396,12 @@
 				waimai_product_btn_show:0,
 				
 				shang_shop_wxa_qrcode_url:'',	//商家的小程序码
+				
+				// 分享
+				share_href:'', 
+				share_titles:'',
+				share_summary:'',
+				share_imageUrl:'',
 			};
 		},
 		
@@ -501,7 +529,31 @@
 				return;
 			},
 
-
+			//app  分享点击
+			click_wxa_share:function (){
+				abotsharejs.click_wxa_share(this.share_href, this.share_titles, this.share_summary, this.share_imageUrl);
+			},
+			
+			click_wxa_circle_share:function (){
+				abotsharejs.click_wxa_circle_share(this.share_href, this.share_titles, this.share_summary, this.share_imageUrl);
+			},
+			
+			
+			click_wxa_applet_share:function (){
+				var path = 'pages/shopDetail/shopDetail?shangid='+ this.xianmai_shangid;
+				var account = this.abotapi.globalData.xiaochengxu_account;
+				abotsharejs.click_wxa_applet_share(this.share_href, this.share_titles, path, this.share_imageUrl, account);
+			},
+			
+			
+			click_wxa_system_share:function (){
+				
+				abotsharejs.click_wxa_system_share(this.share_summary, this.share_href);
+			},
+			is_show:function(){
+				this.$refs.share_api.is_show();
+			},
+			
 			callback_func_for_xianmaishang_setting_list: function(user_console_setting) {
 
 				console.log('user_console_setting==', user_console_setting);
@@ -694,23 +746,25 @@
 							return;
 						}
 						
+						var data = res.data.data;
+						
 						//根据商户的设置，觉得是否展示堂食和外卖 ！！！！！！
-						if(user_console_setting.shop_product_hidden && (user_console_setting.shop_product_hidden == 1)){
-							this.shop_product_btn_show = 0;
+						if(data.show_diancan_button && (data.show_diancan_button == 1)){
+							that.shop_product_btn_show = 1;
 						}
 						else{
-							this.shop_product_btn_show = 1;
+							that.shop_product_btn_show = 0;
 						}
 						
-						if(user_console_setting.waimai_product_hidden && (user_console_setting.waimai_product_hidden == 1)){
-							this.waimai_product_btn_show = 0;
+						if(data.show_waimai_button && (data.show_waimai_button == 1)){
+							that.waimai_product_btn_show = 1;
 						}
 						else{
-							this.waimai_product_btn_show = 1;
+							that.waimai_product_btn_show = 0;
 						}
 						
 						
-						this.abotapi.get_xianmaishang_setting_list(this.callback_func_for_xianmaishang_setting_list);
+						that.abotapi.get_xianmaishang_setting_list(that.callback_func_for_xianmaishang_setting_list);
 						
 						
 					},
@@ -769,6 +823,13 @@
 						that.current_shang_detail = data;
 						that.shang_faquan_list = data.shang_faquan_list;
 						that.spec = spec;
+						
+						
+						// 分享
+						that.share_href = data.h5_url;
+						that.share_titles = data.name;
+						that.share_summary = data.brief;
+						that.share_imageUrl = data.icon_image;
 						
 						
 						uni.setNavigationBarTitle({
@@ -1562,8 +1623,9 @@
 
 	.page_bottom {
 		width: 100%;
-		height: 150rpx;
-		padding-bottom: 200rpx;
+		height: 180rpx;
+		padding-bottom: 120rpx;
+		text-align: center;
 	}
 
 	.ps-btn {
