@@ -273,9 +273,13 @@
 		},
 		//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
 		onReachBottom() {
-			console.log(this.is_xiala);
+			
 			if(this.is_xiala == 0){
 				this.jiazai();
+			}else{
+				uni.showToast({
+					title:'已经到底了~'
+				})
 			}
 			
 		},
@@ -348,6 +352,9 @@
 						}
 						if(res.data.xianmai_shang_list.length < shang_num){
 							that.is_xiala = 1;
+							uni.showToast({
+								title:'已经到底了~'
+							})
 						}
 						var id = 0;
 						

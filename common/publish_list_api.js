@@ -13,7 +13,7 @@ module.exports = {
 		if(!that.is_get_article_list){
 			
 			//阻止继续向服务器请求数据
-			publishData['title'] = '暂无相关文章';
+			publishData['title'] = '已经到底了~';
 			
 			console.log('没有更多文章');
 			typeof callback_function == "function" && callback_function(that, publishData);
