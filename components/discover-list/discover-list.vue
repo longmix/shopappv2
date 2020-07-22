@@ -165,8 +165,8 @@
 			fanquanCollect:function(e){
 				this.$emit('fanquanCollect',e);
 			},
-			onShareAppMessage:function(e){
-				this.$emit('onShareAppMessage',e);
+			click_share_btn:function(e){
+				this.$emit('click_share_btn',e);
 			},
 			img_or_video_download:function(e){
 				this.$emit('img_or_video_download',e);

@@ -86,7 +86,7 @@
 	@oneClickSave="oneClickSave" 
 	@fanquanCollect="fanquanCollect"
 	@copyText="copyText"
-	@onShareAppMessage="onShareAppMessage"
+	@click_share_btn="click_share_btn"
 	@img_or_video_download="img_or_video_download"
 	>
 	</discoverList>
@@ -1023,7 +1023,7 @@
 			
 			
 			  //分享
-			  clickBtn:function(e){
+			  click_share_btn:function(e){
 			    console.log('clickBtn===>>>', e)
 			
 			    this.onShareAppMessage(e);

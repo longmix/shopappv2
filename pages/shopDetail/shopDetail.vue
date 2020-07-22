@@ -21,7 +21,7 @@
 					<view v-for="(anchor,index) in anchorlist" :class="[selectAnchor==index ?'on':'']" :key="index" @tap="toAnchor(index)">{{anchor.name}}</view>
 				</view>
 				-->
-				
+				<view class="middle"></view>
 				<view class="icon-btn">
 					<!-- <view class="icon tongzhi" @tap="toMsg"></view> -->      <!-- 下版本-> toMsg -->
 					<view class="icon zhuye" @tap="toindex"></view>
@@ -158,7 +158,7 @@
 	:faquanList="current_faquanList"
 	@fanquaDianzan="fanquaDianzan"
 	@fanquanCollect="fanquanCollect"
-	@onShareAppMessage="onShareAppMessage">
+	@click_share_btn="click_share_btn">
 	<!-- @bigImg="bigImg"
 	@videometa="videometa"
 	@change_faquan_status="change_faquan_status"
@@ -226,9 +226,18 @@
 
 				<view>
 					<!-- <image src="../../static/img/addricon.png"></image> -->
-					<!-- #ifdef MP-WEIXIN || APP-PLUS --> 
+					<!-- #ifdef MP-WEIXIN --> 
 					<button style="padding-left: 0;padding-right: 0;" open-type="share">分享</button>
 					<!-- #endif -->
+					
+					<!-- #ifdef MP-ALIPAY -->
+					<button style="padding-left: 0;padding-right: 0;" open-type="share">分享</button>
+					<!-- #endif -->
+					
+					<!-- #ifdef APP-PLUS -->
+					<button style="padding-left: 0;padding-right: 0;"  @click="is_show()">分享</button>
+					<!-- #endif -->
+					
 					<!-- #ifdef H5 --> 
 					<button style="padding-left: 0;padding-right: 0;" @click="share_shang_detail">分享</button>
 					<!-- #endif -->
@@ -263,6 +272,16 @@
 				</button>
 				
 				<!-- #endif -->
+				<!-- #ifdef MP-ALIPAY -->
+				<!-- <button style="padding-left: 0;padding-right: 0;" open-type="share">分享</button> -->
+				<button class="box share-btn btn_box" open-type="share" style="background: none;outline: none;border: none;">
+					<image style="width:40rpx;height:40rpx;padding-right:10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_share.png"></image>
+					<view  style="font-size:32rpx;">分享</view>
+					<!-- <button class="text" open-type="share">分享</button> -->
+				</button>
+				
+				<!-- #endif -->
+				
 				<!-- #ifdef APP-PLUS -->
 				<!-- <button style="padding-left: 0;padding-right: 0;" open-type="share">分享</button> -->
 				<button class="box share-btn btn_box" @click="is_show()">
@@ -518,6 +537,9 @@
 	
 
 		methods: {
+			click_share_btn:function(){
+				this.onShareAppMessage();
+			},
 			//h5点击分享触发
 			share_shang_detail:function(){
 				console.log('==================>>>h5');
@@ -540,7 +562,8 @@
 			
 			
 			click_wxa_applet_share:function (){
-				var path = 'pages/shopDetail/shopDetail?shangid='+ this.xianmai_shangid;
+				
+				var path = 'pages/shopDetail/shopDetail?shangid='+ this.current_xianmai_shangid;
 				var account = this.abotapi.globalData.xiaochengxu_account;
 				abotsharejs.click_wxa_applet_share(this.share_href, this.share_titles, path, this.share_imageUrl, account);
 			},
@@ -828,7 +851,7 @@
 						// 分享
 						that.share_href = data.h5_url;
 						that.share_titles = data.name;
-						that.share_summary = data.brief;
+						that.share_summary = data.name;
 						that.share_imageUrl = data.icon_image;
 						
 						
