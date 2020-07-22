@@ -1,10 +1,10 @@
 {	
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
-		"navigationBarTitleText" : "腾羽云商",
-		"navigationBarBackgroundColor" : "#2d96ff",
-		"backgroundColor" : "#2d96ff",
-		"backgroundColorTop":"#2d96ff",
+		"navigationBarTitleText" : "延誉电商",
+		"navigationBarBackgroundColor" : "#f37404",
+		"backgroundColor" : "#f37404",
+		"backgroundColorTop":"#ffffff",
 		"backgroundColorBottom":"#ffffff"
 	},
 	"tabBar": {
@@ -19,16 +19,16 @@
 				"text": "首页"
 			},
 			{
-				"pagePath": "pages/category/category",
-				"iconPath": "static/img/tabBar/category.png",
-				"selectedIconPath": "static/img/tabBar/category-on.png",
-				"text": "商品"
+				"pagePath": "pages/publish/publish_list",
+				"iconPath": "static/img/tabBar/imglist.png",
+				"selectedIconPath": "static/img/tabBar/imglist-on.png",
+				"text": "创业与开业"
 			},
 			{
 				"pagePath": "pages/shopList/shopList",
-				"iconPath": "static/img/tabBar/cart.png",
-				"selectedIconPath": "static/img/tabBar/cart-on.png",
-				"text": "商家"
+				"iconPath": "static/img/tabBar/category.png",
+				"selectedIconPath": "static/img/tabBar/category-on.png",
+				"text": "城市合伙人"
 			},
 			{
 				"pagePath": "pages/user/user",

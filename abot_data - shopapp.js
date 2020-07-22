@@ -9,7 +9,7 @@ const globalData = {
 		
 		xiaochengxu_appid: 'wx00d1e2843c3b3f77',			//微信小程序的appid
 		xiaochengxu_account: 'gh_a95e5a0852aa',				//微信小程序的账号
-		weixin_open_platform_appid: 'wx029e1ddb38b4c630',	//微信开发平台中登记的APP对应的appid（务必与manifest中的配置一致）
+		weixin_open_platform_appid: 'wx029e1ddb38b4c630',	//微信开放平台中登记的APP对应的appid（务必与manifest中的配置一致）
 		
 		//通版商城
 		default_shopname: '延誉电商',

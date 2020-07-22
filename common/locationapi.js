@@ -181,6 +181,48 @@ module.exports = {
 				console.log('结束');
 			// #endif
 			
+			// #ifdef MP-BAIDU
+				console.log('百度智能小程序中获取坐标');
+				
+				baidu_map_ak = that.abotapi.globalData.option_list.baidu_map_ak_wxa;
+				
+				console.log('结束1',baidu_map_ak);
+				
+				var BMap_obj = new bmap.BMapWX({
+					ak: baidu_map_ak
+				});
+				
+				console.log('实例化百度地图完成', BMap_obj);
+					
+				BMap_obj.regeocoding({
+					fail: regeocoding_fail,
+					success: regeocoding_success,
+					complete: regeocoding_complete
+				});
+				console.log('结束');
+			// #endif
+			
+			// #ifdef MP-ALIPAY
+				console.log('支付宝小程序中获取坐标');
+				
+				baidu_map_ak = that.abotapi.globalData.option_list.baidu_map_ak_wxa;
+				
+				console.log('结束1',baidu_map_ak);
+				
+				var BMap_obj = new bmap.BMapWX({
+					ak: baidu_map_ak
+				});
+				
+				console.log('实例化百度地图完成', BMap_obj);
+					
+				BMap_obj.regeocoding({
+					fail: regeocoding_fail,
+					success: regeocoding_success,
+					complete: regeocoding_complete
+				});
+				console.log('结束');
+			// #endif
+			
 			// #ifdef APP-PLUS
 				console.log('进入没有缓存app开始');
 				// baidu_map_ak = that.abotapi.globalData.option_list.baidu_map_ak_wxa;
@@ -236,26 +278,7 @@ module.exports = {
 				console.log('结束');
 			// #endif
 			
-			// #ifdef MP-BAIDU
-				console.log('百度智能小程序中获取坐标');
-				
-				baidu_map_ak = that.abotapi.globalData.option_list.baidu_map_ak_wxa;
-				
-				console.log('结束1',baidu_map_ak);
-				
-				var BMap_obj = new bmap.BMapWX({
-					ak: baidu_map_ak
-				});
-				
-				console.log('实例化百度地图完成', BMap_obj);
-					
-				BMap_obj.regeocoding({
-					fail: regeocoding_fail,
-					success: regeocoding_success,
-					complete: regeocoding_complete
-				});
-				console.log('结束');
-			// #endif
+			
 			
 			
 			
