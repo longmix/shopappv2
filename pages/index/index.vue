@@ -181,6 +181,32 @@
 		
 		<view class="copyright_info">{{default_copyright_text}}</view>
 		
+		
+		<!-- yinsi_cfg_shiyongxieyi_cms_token:'',
+		yinsi_cfg_yinsizhengce_cms_token:'',
+		yinsi_cfg_yinsizhengce_imgid:'',   
+		yinsi_cfg_shiyongxieyi_imgid:'', -->
+		<!-- 隐私协议的弹层 begin-->
+		<view class="zhezhao" v-if="know==true"></view>
+		<view class="kcrzxy" v-if="know==true">
+		    <view class="kcrzxyhd" :style="{background:wxa_shop_nav_bg_color + ';font-size:26upx;'}">服务协议和私政策</view>
+		    <scroll-view scrollY class="kcrzxybd" style="height: 600rpx;">
+		        <view style="width: 100%;overflow: hidden;" auto-height='true'>
+					<view style="float: left;">请你务必审慎阅读、充分理解“服务协议”和“隐私政策”的各条款，包括但不限于、内容分享等服务，我们需要收集你的设备信息、操作日志等个人信息。你可以在“设置”中查看、变更、删除个人信息并系统应用管理中删除此应用。你可以阅读</view>
+					<navigator style="color: #0055FF;float: left;" :url="'/pages/help_detail/help_detail?id='+ yinsi_cfg_yinsizhengce_imgid +'&form_page=spec_cms_token&cms_token='+ yinsi_cfg_yinsizhengce_cms_token +'&hidden_remark=1'">《隐私政策》</navigator> 
+					<view style="float: left;">和</view>
+					<navigator style="color: #0055FF;float: left;" :url="'/pages/help_detail/help_detail?id='+ yinsi_cfg_shiyongxieyi_imgid +'&form_page=spec_cms_token&cms_token='+ yinsi_cfg_shiyongxieyi_cms_token +'&hidden_remark=1'">《服务协议》</navigator>
+					<block>了解详细信息，如果同意，请点击“同意”开始接受我们的服务。</block>
+				</view>
+		    </scroll-view>
+			<view style="display: flex;justify-content: center;">
+				<view @click="tongyi_yinsi_cfg" data-index='2' class="queren" style="font-size:26upx;background: #ccc;" >不同意</view>
+				<view @click="tongyi_yinsi_cfg" data-index='1' class="queren" :style="{background:wxa_shop_nav_bg_color + ';font-size:26upx;'}">同意</view>
+				
+			</view>
+		</view>
+		
+		<!-- end -->
 	</view>
 </template>
 
@@ -308,17 +334,33 @@ export default {
 			
 			//分享转发
 			 wxa_share_img:'',
-			 wxa_share_title:''
+			 wxa_share_title:'',
+			 know:'',
+			 
+			 //隐私协议相关
+			 yinsi_cfg_shiyongxieyi_cms_token:'',
+			 yinsi_cfg_yinsizhengce_cms_token:'',
+			 yinsi_cfg_yinsizhengce_imgid:'',   
+			 yinsi_cfg_shiyongxieyi_imgid:'',
 		};
 	},
 	
 	onLoad: function (options) {
 		///this.bindKeyInput();
-		var that = this;	
 		
 		console.log('pages/tabBar/index/index====>>>>', options);
 		
 		var that = this;
+		
+		
+		var yinsi_cfg_if_consent = uni.getStorageSync('yinsi_cfg_if_consent'+this.abotapi.globalData.version_code);
+		if(!yinsi_cfg_if_consent){
+			this.know = true;
+			uni.hideTabBar({
+				
+			})
+		}
+		
 		
 		var system_info = uni.getSystemInfoSync();
 		
@@ -877,7 +919,32 @@ export default {
 			  
 			    that.wxa_share_img = cb_params.option_list.wxa_share_img;
 			}
-			cb_params
+			
+			//隐私政策和使用协议
+			if (cb_params.option_list.yinsi_cfg_shiyongxieyi_imgid) {
+				//使用协议的文章id
+			  
+			    that.yinsi_cfg_shiyongxieyi_imgid = cb_params.option_list.yinsi_cfg_shiyongxieyi_imgid;
+			}
+			
+			if (cb_params.option_list.yinsi_cfg_yinsizhengce_imgid) {
+				//隐私政策的文章id
+			  
+			    that.yinsi_cfg_yinsizhengce_imgid = cb_params.option_list.yinsi_cfg_yinsizhengce_imgid;
+			}
+			
+			if (cb_params.option_list.yinsi_cfg_yinsizhengce_cms_token) {
+				//隐私政策的cms token
+			  
+			    that.yinsi_cfg_yinsizhengce_cms_token = cb_params.option_list.yinsi_cfg_yinsizhengce_cms_token;
+			}
+			
+			if (cb_params.option_list.yinsi_cfg_shiyongxieyi_cms_token) {
+				//使用协议的cms token
+			  
+			    that.yinsi_cfg_shiyongxieyi_cms_token = cb_params.option_list.yinsi_cfg_shiyongxieyi_cms_token;
+			}
+			
 			
 			that.get_flash_ad_list();
 			that.get_flash_img_list();
@@ -1627,6 +1694,29 @@ export default {
 		    })
 		},
 		
+		//隐私协议同意不同意
+		tongyi_yinsi_cfg:function(e){
+			var index = e.currentTarget.dataset.index;
+			
+			if(index == 1){
+				//同意  写缓存   关闭弹层
+				this.know = false;
+				
+				uni.setStorageSync('yinsi_cfg_if_consent'+ this.abotapi.globalData.version_code,'1');
+				uni.showTabBar({
+					
+				})
+			}
+			else{
+				//不同意  弹tost
+				uni.showModal({
+					title:'提示',
+					content:'您必须同意服务协议才可以继续',
+					showCancel:false,
+				})
+			}
+		},
+		
 	}
 };
 </script>
@@ -2085,5 +2175,56 @@ page{position: relative;background-color: #fff;}
 }
 .img_swiper{
 	height: 100%;
-}
+}.zhezhao {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	background: rgba(0,0,0,0.7);
+	z-index: 998;
+	
+	}
+	.kcrzxy {
+	width: 70%;
+	left: 50%;
+	top: 15%;
+	position: fixed;
+	transform: translate(-50%,0);
+	background: #fff;
+	border-radius: 10px;
+	z-index: 999;
+	
+	}
+	
+	.kcrzxyhd {
+	text-align: center;
+	font-size: 30rpx;
+	background: #f44444;
+	height: 70rpx;
+	line-height: 70rpx;
+	color: white;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	
+	}
+	
+	.kcrzxybd {
+	font-size: 28rpx;
+	padding: 20rpx 30rpx;
+	box-sizing: border-box;
+	
+	}
+	.queren {
+	height: 70rpx;
+	width: 30%;
+	font-size: 30rpx;
+	line-height: 70rpx;
+	text-align: center;
+	color: white;
+	background: #f44444;
+	border-radius: 10rpx;
+	margin: 10rpx 10rpx;
+	
+	}
 </style>

@@ -37,8 +37,10 @@ module.exports = {
 		});
 	},
 	click_wxa_applet_share:function(href, title, path, imageUrl, account){
+		
 		console.log('我是微信小程序分享',account);
 		console.log('我是微信小程序分享s',path);
+		console.log('我是微信小程序分享ssss',imageUrl);
 		console.log('我是微信小程序分享ss',href);
 		uni.share({
 		    provider: 'weixin',

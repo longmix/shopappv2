@@ -60,7 +60,7 @@
 					</block>
 				</view>
 				
-				<view class="article_bottom">
+				<view class="article_bottom" v-if="hidden_remark != 1">
 					<view style="color:#bfbfbf;">阅读 {{wz_text.click}}</view>
 					<!-- 点赞 -->
 					<view style="display: flex;">
@@ -80,7 +80,7 @@
 			
 			
 			<!-- 评论 -->
-			<view class="comment_list" id="the-id">
+			<view class="comment_list" id="the-id"  v-if="hidden_remark != 1">
 				<view :style="{'border-left': 6 +'upx' + 'solid' + theme_color_wenku}"  style="padding-left:20rpx;margin-top:36rpx;margin-bottom:36rpx;font-size:26rpx;color:#999">热门评论</view>
 				<view class="comment_list_aa" v-if="remarkList.length" v-for="(items,index) in remarkList" :key="index">
 					<image class="comment_list_user_icon" :src="items.headimgurl" mode="widthFix"></image>
@@ -112,7 +112,7 @@
 		
 		
 		
-		<view class='detail_bottom'>
+		<view class='detail_bottom' v-if="hidden_remark != 1">
 		
 			<view class="comment">
 		     
@@ -180,15 +180,21 @@
 				remarkList:'',
 				openid:'',
 				inputValue:'',
-				form_page:'',//用来判断显示头像昵称
+				
 				comment_num:'',
 				info:'',
-				wz_id:'',
+				
 				publishtype:'',
 				is_Focus:false,
 				is_OK:false,
 				app_name_chat_title:'',
+				
+				form_page:'',//用来判断显示头像昵称
+				
+				wz_id:'',
 				current_cms_token:'',
+				
+				hidden_remark:0,
 				
 				//app分享
 				share_imageUrl:'',
@@ -202,17 +208,32 @@
 		/**
 		 * @param {Object} options
 		 *  form_page  如果为 publish_list 代表从论坛的文章列表点击过来，默认为从商户头条点击过来
+		 * 
+		 * /page/help/help_detail?id=1234							//读取商户头条
+		 * /page/help/help_detail?id=1234&form_page=publish_list	//读取论坛文章
+		 * /page/help/help_detail?id=1234&form_page=spec_cms_token&cms_token=abcdefg		//读取指定文章，例如隐私政策等，具体的内容由id来标志
+		 * 
 		 */
 		onLoad: function (options) {
 		  
 			console.log('options==>>',options);
 			var that = this
 			
-		    that.wz_id = options.id;		    
+		    var options_str = '';
+			
+			that.wz_id = options.id;		    
+			
+			options_str += '?id=' +  options.id;
 			
 			//跳转过来的页面参数用来判断头像和昵称的显示
 			if(options.form_page){
 				that.form_page = options.form_page; //'publish_list'
+				options_str += '&form_page=' + options.form_page;
+			}
+			
+			if(options.hidden_remark && (options.hidden_remark == 1)){
+				that.hidden_remark = 1;
+				options_str += '&hidden_remark=' + options.hidden_remark;
 			}
 			
 			
@@ -220,6 +241,18 @@
 			console.log("商户头条id:"+options.id);
 			console.log("sellerid:" + options.sellerid);
 			
+			
+			if(that.form_page == 'spec_cms_token'){
+				
+				that.current_cms_token = options.cms_token;
+				options_str += '&cms_token=' + options.cms_token;
+				
+			}
+			else{
+				that.current_cms_token = this.abotapi.get_current_weiduke_token();
+			}
+			
+			this.options_str = options_str;
 			
 			this.abotapi.set_option_list_str(that, that.callback_set_option);
 			var userInfo = this.abotapi.get_user_info();
@@ -280,12 +313,11 @@
 					that.wxa_show_article_detail_category = option_list.wxa_show_article_detail_category    
 				}
 				
+				
 				if(that.form_page == 'publish_list'){
 					that.current_cms_token = option_list.cms_token;
 				}
-				else{
-					that.current_cms_token = this.abotapi.get_current_weiduke_token();
-				}
+				
 				
 			},
 			__get_img_from_weiduke: function (imgid, that){
@@ -846,10 +878,7 @@
 			
 			//app  分享点击
 			click_wxa_share:function (){
-				console.log(this.share_href);
-				console.log(this.share_titles);
-				console.log(this.share_summary);
-				console.log(this.share_imageUrl);
+				
 				abotsharejs.click_wxa_share(this.share_href, this.share_titles, this.share_summary, this.share_imageUrl);
 			},
 			
@@ -859,7 +888,7 @@
 			
 			
 			click_wxa_applet_share:function (){
-				var path = 'pages/help_detail/help_detail?id='+ this.id + '&form_page=' + this.form_page;
+				var path = 'pages/help_detail/help_detail'+ this.options_str;
 				var account = this.abotapi.globalData.xiaochengxu_account;
 				abotsharejs.click_wxa_applet_share(this.share_href, this.share_titles, path, this.share_imageUrl, account);
 			},

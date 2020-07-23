@@ -5,7 +5,7 @@ const globalData = {
 		socket_server: 'https://socketio.tseo.cn',
 		
 		version_number:'Ver 1.6.1 Build 139',
-		version_code:139
+		version_code:139,
 		
 		force_sellerid:1,
 
