@@ -51,16 +51,16 @@
 						<!-- 点赞和浏览 -->
 						<view style="display: flex;align-items: center;margin-right: 20upx;width:33%;">
 							<image src="../../static/img/help/click_view.png" style="width: 40rpx;height:40rpx;"></image>
-							<view style="color: #333;font-size: 22upx;margin-left: 10upx;">{{item.click}}人浏览</view>
+							<view style="color: #333;font-size: 22upx;margin-left: 10upx;">{{item.click}}浏览</view>
 						</view>
 						<view style="display: flex;align-items: center;margin-right: 20upx;width:33%;">
 							<image src="../../static/img/help/dianzan_grey.png" style="width: 40rpx;height:40rpx;"></image>
-							<view style="color: #333;font-size: 22upx;margin-left: 10upx;">{{item.dianzan_num}}人点赞</view>
+							<view style="color: #333;font-size: 22upx;margin-left: 10upx;">{{item.dianzan_num}}点赞</view>
 						</view>
 						
 						<view style="display: flex;align-items: center;width:33%;">
 							<image src="../../static/img/help/comment.png" style="width: 40rpx;height:40rpx;"></image>
-							<view style="color: #333;font-size: 22upx;margin-left: 10upx;">{{item.remark_num}}人评论</view>
+							<view style="color: #333;font-size: 22upx;margin-left: 10upx;">{{item.remark_num}}评论</view>
 						</view>
 					</view>
 					<view style="color:#2cb2f0;width: 40%;text-align: right;">
