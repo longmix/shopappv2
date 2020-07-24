@@ -86,6 +86,17 @@
 				</view>
 			</view>
 		</view>
+		
+		
+		<!-- 隐私协议 -->
+		<view style="display: flex;justify-content: center;margin-bottom: 15rpx;align-items: center;">
+			
+			<navigator style="color: #0055FF;float: left;font-size: 25rpx;margin-right: 5rpx;" :url="'/pages/help_detail/help_detail?id='+ yinsi_cfg_shiyongxieyi_imgid +'&form_page=spec_cms_token&cms_token='+ yinsi_cfg_shiyongxieyi_cms_token +'&hidden_remark=1'">服务协议</navigator>
+			|
+			<navigator style="color: #0055FF;float: left;font-size: 25rpx;margin-left: 5rpx;" :url="'/pages/help_detail/help_detail?id='+ yinsi_cfg_yinsizhengce_imgid +'&form_page=spec_cms_token&cms_token='+ yinsi_cfg_yinsizhengce_cms_token +'&hidden_remark=1'">隐私政策</navigator>
+		</view>
+		<!-- end -->
+		
 	</view>
 </template>
 <script>
@@ -117,6 +128,13 @@
 				version_number: '',
 				jubao_link_url: '',
 				about_title: '',
+				
+				
+				//隐私协议相关
+				yinsi_cfg_shiyongxieyi_cms_token:'',
+				yinsi_cfg_yinsizhengce_cms_token:'',
+				yinsi_cfg_yinsizhengce_imgid:'',   
+				yinsi_cfg_shiyongxieyi_imgid:'',
 			}
 		},
 		onLoad(options) {
@@ -126,16 +144,43 @@
 			
 			// userAcountInfo = that.abotapi.get_user_account_info();
 			
-			this.abotapi.set_option_list_str(that, function(that001, cb_params) {
+			this.abotapi.set_option_list_str(that, function(that001, option_list) {
 				that001.abotapi.getColor();
 				
-				console.log('cb_params=====>>>>', cb_params);
+				console.log('option_list=====>>>>', option_list);
 
-				that001.wxa_shop_operation_logo_url = cb_params.wxa_shop_operation_logo_url;
-				that001.wxa_shop_new_name = cb_params.wxa_shop_new_name;
+				that001.wxa_shop_operation_logo_url = option_list.wxa_shop_operation_logo_url;
+				that001.wxa_shop_new_name = option_list.wxa_shop_new_name;
 				
-				console.log('cb_params=====>>>>', that001.wxa_shop_operation_logo_url);
-				console.log('cb_params=====>>>>', that001.wxa_shop_new_name);
+				console.log('option_list=====>>>>', that001.wxa_shop_operation_logo_url);
+				console.log('option_list=====>>>>', that001.wxa_shop_new_name);
+				
+				
+				//隐私政策和使用协议
+				if (option_list.yinsi_cfg_shiyongxieyi_imgid) {
+					//使用协议的文章id
+				  
+				    that001.yinsi_cfg_shiyongxieyi_imgid = option_list.yinsi_cfg_shiyongxieyi_imgid;
+				}
+				
+				if (option_list.yinsi_cfg_yinsizhengce_imgid) {
+					//隐私政策的文章id
+				  
+				    that001.yinsi_cfg_yinsizhengce_imgid = option_list.yinsi_cfg_yinsizhengce_imgid;
+				}
+				
+				if (option_list.yinsi_cfg_yinsizhengce_cms_token) {
+					//隐私政策的cms token
+				  
+				    that001.yinsi_cfg_yinsizhengce_cms_token = option_list.yinsi_cfg_yinsizhengce_cms_token;
+				}
+				
+				if (option_list.yinsi_cfg_shiyongxieyi_cms_token) {
+					//使用协议的cms token
+				  
+				    that001.yinsi_cfg_shiyongxieyi_cms_token = option_list.yinsi_cfg_shiyongxieyi_cms_token;
+				}
+				
 			});
 
 			if (options.about) {
