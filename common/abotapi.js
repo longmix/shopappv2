@@ -1206,11 +1206,11 @@ module.exports = {
 				  if (code == 1) {
 					  
 					if(res.data.oneclicklogin){
-						url = url.replace('%oneclicklogin%', res.data.oneclicklogin);
+						url = url.replace('%oneclicklogin%', encodeURIComponent(res.data.oneclicklogin));
 					}
 					
 					if (res.data.refresh_token){
-					  url = url.replace('%refresh_token%', res.data.refresh_token);
+					  url = url.replace('%refresh_token%', encodeURIComponent(res.data.refresh_token));
 					}
 		
 					that.call_h5browser_or_other_goto_url(url, var_list, ret_page);
