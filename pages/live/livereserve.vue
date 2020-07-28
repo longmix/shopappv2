@@ -264,20 +264,17 @@
 			this.live_goods_lists();
 			
 			var userInfo = this.abotapi.get_user_info();
-			uni.request({
+			this.abotapi.abotRequest({
 			  url: this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/VideoLiveData/is_video_live_status',
 			  data: {
-			    userid:userInfo.userid,
-			    sellerid: this.abotapi.get_sellerid(),
-				checkstr: userInfo.checkstr
-			  },
-			  method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-			  header: {// 设置请求的 header
-			    'Content-Type':  'application/x-www-form-urlencoded'
+				  sellerid: this.abotapi.get_sellerid(),
+				  userid:userInfo.userid,
+				  checkstr: userInfo.checkstr
 			  },
 			  success:function(res){
 				  console.log('huhuhu',res);
 				  // var videocode = res.data.code;
+				  
 				  var videocode =0;
 				  console.log('huhuhu15111',videocode);
 				 
@@ -612,9 +609,7 @@
 				var userInfo = this.abotapi.get_user_info();
 				this.abotapi.abotRequest({
 					url: that.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/VideoLiveData/set_plan_video_live',
-					method: 'POST',
 					data:livetips,
-					
 					success(res) {
 						if(this.videocode == 0){
 						  uni.showModal({
