@@ -297,8 +297,7 @@
 						</block>
 						<view v-if="item.buyer_memo != ''">备注：{{item.buyer_memo}}</view>
 						<view  class="btn_b">
-							<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid&'balance_zengsong_dikou='+item.coupon_price&'balance_dikou='+item.yue_price" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
-							
+							<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
 						</view>
 					</view>
 				</swiper-item>

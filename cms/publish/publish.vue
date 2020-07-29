@@ -303,7 +303,7 @@
 				}
 				
 				that.disable = true;
-				
+				console.log('===>>>>>.',that.abotapi.globalData.xiaochengxu_appid);
 				var data_params = {
 					sellerid: that.abotapi.globalData.default_sellerid,
 					appid: that.abotapi.globalData.xiaochengxu_appid,
@@ -527,7 +527,7 @@
 			            });
 			          }
 					  
-					  this.abotapi.call_h5browser_or_other_goto_url('/pages/user/user');
+					  that.abotapi.call_h5browser_or_other_goto_url('/pages/user/user');
 			        },
 			        fail: function () {
 			          // fail

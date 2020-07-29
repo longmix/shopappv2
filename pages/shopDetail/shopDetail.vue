@@ -1647,7 +1647,7 @@
 	.page_bottom {
 		width: 100%;
 		height: 180rpx;
-		padding-bottom: 120rpx;
+		padding: 120rpx 0rpx;
 		text-align: center;
 	}
 

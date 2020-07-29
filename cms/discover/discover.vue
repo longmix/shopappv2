@@ -6,7 +6,7 @@
 	  <swiper @change="bindchange" indicator-dots="true" autoplay="true" interval="5000" duration="500" style="height:imgheights[current]+'upx';">
 	    <block v-for="(item,index) in imgUrls" :key="index">
 	      <swiper-item>
-	        <image :src="item.image"  :data-id="index"  mode="widthFix" class="slide-image" @load="imageLoad($event)" @tap="toProductDetail" :data-url="item.url"/>
+	        <image :src="item.image"  @load="imageLoad($event)" mode="widthFix" class="slide-image" @tap="toProductDetail" :data-url="item.url" :data-id="index" />
 	      </swiper-item>
 	    </block>
 	  </swiper>
@@ -20,13 +20,17 @@
 	
 	<!-- 我收藏、发布的按钮 -->
 	<view class='publish_box' v-if="faquan_button_status==1">
-		<view class='my_publish' @click="my_publish_and_collect" data-type="my_publish">
+		<view class='my_publish' @click="my_publish_and_collect" data-type="my_publish" v-if="is_my_show == 1">
 			<image style="width: 40rpx;height: 40rpx;margin-right: 10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/edit.png"></image>
 			<view>我的发布</view>
 		</view>
-		<view class="my_collection" @click="my_publish_and_collect" data-type="my_collection">
+		<view class="my_collection" @click="my_publish_and_collect" data-type="my_collection" v-if="is_collection_show == 1">
 			<image style="width: 40rpx;height: 40rpx;margin-right: 10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/favorite.png"></image>
 			<view>我的收藏</view>
+		</view>
+		<view class="my_collection" @click="my_publish_and_collect" data-type="recently_update" v-if="is_recently_show == 1">
+			<image style="width: 40rpx;height: 40rpx;margin-right: 10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/weather_icon/qing.png"></image>
+			<view>最近更新</view>
 		</view>
 	</view>
 	
@@ -79,6 +83,7 @@
 	:is_my_discover_collection="is_my_discover_collection"
 	:faquan_tag_status="faquan_tag_status" 
 	:disabled="disabled"
+	:videometa_width_height_list = "videometa_width_height_list"
 	@fanquaDianzan="fanquaDianzan"
 	@bigImg="bigImg"
 	@videometa="videometa"
@@ -156,6 +161,12 @@
 				idx2:'',
 				disabled:false,
 				sousuo_text:'',
+				isShowBanner:false,
+				
+				//按钮显示
+				is_my_show:1,
+				is_collection_show:1,
+				is_recently_show:0,
 			};
 		},
 		onLoad(options) {
@@ -416,9 +427,35 @@
 		    this.videometa_width_height_list = videometa_width_height_list;
 		    
 		},
+		
+		bigImg:function(e){
+			console.log(e);
+			var index = e.currentTarget.dataset.index;
+			var index2 = e.currentTarget.dataset.index2;
+			var img_or_video_list = this.faquanList[index].img_or_video_list; //点击的那一组图片列表
 			
+			var imgList = [];
 			
+			for(var i=0; i<img_or_video_list.length; i++){
+				imgList.push(img_or_video_list[i].url);
+			}
+			uni.previewImage({
+				current: imgList[index2],
+				urls: imgList,
+			})
+			
+			console.log(img_or_video_list); 
+		},
+		change_faquan_status:function(){
+			
+		},
+		
+		copyText:function(){
+			
+		},
+		
 		callback_flash_ad_list: function (that, cms_faquan_setting){
+			console.log('cms_faquan_setting=========>',cms_faquan_setting);
 			    if (!cms_faquan_setting){
 			      return;
 			    }
@@ -515,7 +552,7 @@
 			
 			   
 			      that.isShowBanner = type!=888 ?  true : false ;
-			  
+			  console.log('66666666666666666q',that.isShowBanner)
 			    if(type != 888){
 			      uni.request({
 			        url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_flash_ad_list',
@@ -818,6 +855,7 @@
 			  
 			  //点击收藏、发布按钮
 			  my_publish_and_collect:function(e){
+				 
 				  console.log('eeeee',e);
 				  if(e.currentTarget.dataset.type == 'my_publish'){
 					  //我的发布
@@ -825,6 +863,11 @@
 					  this.faquanList = [];
 					  this.is_my_discover = 1;
 					  this.is_my_discover_collection = 0;
+					  
+					  this.is_my_show = 0;
+					  this.is_recently_show = 1;
+					  this.is_collection_show = 1;
+					  
 					  this.__getFaquanList();
 				  }else if(e.currentTarget.dataset.type == 'my_collection'){
 					  //我的收藏
@@ -832,6 +875,25 @@
 					  this.faquanList = [];
 					  this.is_my_discover = 0;
 					  this.is_my_discover_collection = 1;
+					  
+					  this.is_collection_show = 0;
+					  this.is_my_show = 1;
+					  this.is_recently_show = 1;
+					  
+					  this.__getFaquanList();
+				  }
+				  
+				  else if(e.currentTarget.dataset.type == 'recently_update'){
+					  //最近更新
+					  this.page = 1;
+					  this.faquanList = [];
+					  this.is_my_discover = 0;
+					  this.is_my_discover_collection = 0;
+					  
+					  this.is_collection_show = 1;
+					  this.is_my_show = 1;
+					  this.is_recently_show = 0;
+					  
 					  this.__getFaquanList();
 				  }
 				  //e.detail.width  my_publish">my_collection    e.currentTarget.dataset.type;
@@ -1030,20 +1092,20 @@
 			  },
 			
 			
-			
+			//跳转到商品详情
+			toProductDetail:function(e){
+				var url = e.target.dataset.url;
+				var that = this;
+				var var_list = Object();
+				
+				this.abotapi.call_h5browser_or_other_goto_url(url);
+				
+			},
 			
 			
 			 },
 		
-				//跳转到商品详情
-				toProductDetail:function(e){
-					var url = e.target.dataset.url;
-					var that = this;
-					var var_list = Object();
-					
-					this.abotapi.call_h5browser_or_other_goto_url(url);
-					
-				}
+				
 					
 					
 			};

@@ -23,7 +23,7 @@
 		                    <text class="list-des" @tap="copyText" :data-text="item.text" :data-id="item.faquanid">{{item.text}}</text>
 		
 		                    <view v-if="item.type == 0">  
-		                         <image v-for="(item2,index2) in item.img_or_video_list" :key="index2" lazy-load="true"  @tap='bigImg' mode="aspectFill" :data-index="idx" :data-index2="idx2"  class="list-image"  :src="item2.url"  :data-id="item.faquanid"></image>                        
+		                         <image v-for="(item2,index2) in item.img_or_video_list" :key="index2" lazy-load="true"  @tap='bigImg' mode="aspectFill" :data-index="idx" :data-index2="index2"  class="list-image"  :src="item2.url"  :data-id="item.faquanid"></image>                        
 		                    </view>
 		
 		                    <view v-else>
@@ -34,8 +34,10 @@
 		                        :src="item2.url"  :poster='item2.video_img'
 		                        controls="true"
 		                        @loadedmetadata="videometa"
-		                        style="{width:videometa_width_height_list[item2.index][0] + 'upx',height:videometa_width_height_list[item2.index][1] + 'upx'}"></video>
-		                        {{item2.index}}
+		                        :style="{width:videometa_width_height_list[item2.index][0] + 'rpx',height:videometa_width_height_list[item2.index][1] + 'rpx'}">
+								
+								</video>
+		                        
 		                    </view>
 		                    
 		                </view>  <!-- End of 003  -->
@@ -56,6 +58,7 @@
 		                      
 		                  </view>
 		                </block>
+						
 		                <block v-if="is_my_discover">
 		                  <view class="" style="margin-left: 0;height: 40rpx;line-height: 40rpx;font-size: 26rpx;text-align: left;color:#666;">
 		                      <view><text style="font-weight:bold;">点赞</text> <text style="margin-left:20rpx;">{{item.like_num}}</text>
@@ -139,6 +142,8 @@
 			is_my_discover_collection:0,
 			faquan_tag_status:0,
 			disabled:false,
+			tag:[],
+			videometa_width_height_list:[],
 		},
 		methods:{
 			fanquaDianzan:function(fanquaDianzan){
