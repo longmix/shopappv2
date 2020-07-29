@@ -34,6 +34,7 @@ const abotRequest = (params) => {
 
 module.exports = {
 	abotRequest,
+	isNullOrUndefined,
 
 	current_chat_gui:"",
 	current_chat_page:"", 		

@@ -12,9 +12,9 @@
 			</view>
 		</view>
 		<view class="list">
-			<view class="list_li" v-if="shop_info_from_server.telephone">
+			<view class="list_li" v-if="kefu_telephone">
 				<view class="li_title">客服电话</view>
-				<view class="li_info" bindtap="callTel">{{shop_info_from_server.telephone}}</view>
+				<view class="li_info" bindtap="callTel">{{kefu_telephone}}</view>
 			</view>
 			<view class="list_li" v-if="kefu_qq">
 				<view class="li_title">客服</view>
@@ -122,6 +122,8 @@
 				wxa_shop_new_name:'',
 
 
+				
+				kefu_telephone:'',
 				kefu_qq: '',
 				kefu_website: '',
 				kefu_gongzhonghao: '',
@@ -140,9 +142,16 @@
 		onLoad(options) {
 			var that = this;
 			
-			var userInfo = that.abotapi.get_user_info();
+			//var userInfo = that.abotapi.get_user_info();
 			
 			// userAcountInfo = that.abotapi.get_user_account_info();
+			
+			that.kefu_telephone = that.abotapi.globalData.kefu_telephone;
+			that.kefu_qq = that.abotapi.globalData.kefu_qq;
+			that.kefu_website = that.abotapi.globalData.kefu_website;
+			that.kefu_gongzhonghao = that.abotapi.globalData.kefu_gongzhonghao;
+			
+			that.version_number = that.abotapi.globalData.version_number;
 			
 			this.abotapi.set_option_list_str(that, function(that001, option_list) {
 				that001.abotapi.getColor();
@@ -154,6 +163,19 @@
 				
 				console.log('option_list=====>>>>', that001.wxa_shop_operation_logo_url);
 				console.log('option_list=====>>>>', that001.wxa_shop_new_name);
+				
+				if(!that001.abotapi.isNullOrUndefined(option_list.kefu_telephone)){
+					that001.kefu_telephone = option_list.kefu_telephone;
+				}
+				if(!that001.abotapi.isNullOrUndefined(option_list.kefu_qq)){
+					that001.kefu_qq = option_list.kefu_qq;
+				}
+				if(!that001.abotapi.isNullOrUndefined(option_list.kefu_website)){
+					that001.kefu_website = option_list.kefu_website;
+				}
+				if(!that001.abotapi.isNullOrUndefined(option_list.kefu_gongzhonghao)){
+					that001.kefu_gongzhonghao = option_list.kefu_gongzhonghao;
+				}
 				
 				
 				//隐私政策和使用协议
@@ -206,10 +228,7 @@
 				}
 			});
 
-			that.kefu_qq = that.abotapi.globalData.kefu_qq;
-			that.kefu_website = that.abotapi.globalData.kefu_website;
-			that.kefu_gongzhonghao = that.abotapi.globalData.kefu_gongzhonghao;
-			that.version_number = that.abotapi.globalData.version_number;
+			
 
 
 			that.abotapi.get_shop_info_from_server(that.callback_func_for_shop_info)
@@ -255,6 +274,10 @@
 
 				this.shop_userid = shop_info.userid;
 				this.shop_name = shop_info.shop_name;
+				
+				if(this.shop_info_from_server.telephone){
+					this.kefu_telephone = this.shop_info_from_server.telephone;
+				}
 
 			},
 
@@ -275,19 +298,19 @@
 
 				// #ifdef APP-PLUS
 				uni.makePhoneCall({
-					phoneNumber: this.shop_info_from_server.telephone,
+					phoneNumber: this.kefu_telephone,
 				})
 				// #endif
 				
 				// #ifdef MP-BAIDU
 				uni.makePhoneCall({
-					phoneNumber: this.shop_info_from_server.telephone,
+					phoneNumber: this.kefu_telephone,
 				})
 				// #endif
 				
 				// #ifdef MP-ALIPAY
 				uni.makePhoneCall({
-					phoneNumber: this.shop_info_from_server.telephone,
+					phoneNumber: this.kefu_telephone,
 				})
 				// #endif
 
