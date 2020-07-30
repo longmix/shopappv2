@@ -67,6 +67,13 @@
 					<view class="right"><view class="tis"></view><view class="icon xiangyou"></view></view>
 				</navigator>
 			</view>
+			
+			<view class="list">
+				<view class="row" @tap="Cancelaccount">
+					<view class="title">注销账号</view>
+					<view class="right"><view class="tis"></view><view class="icon xiangyou"></view></view>
+				</view>
+			</view>
 		</view>
 		<!-- <view class="btm-list">
 			<view style="text-align: center;" @click="keep_button()">确认修改</view>
@@ -281,6 +288,32 @@
 				this.abotapi.clearStorage();
 			},
 			
+			Cancelaccount:function(){
+				var that= this;
+				uni.showModal({
+				    title: '注销账号',
+				    content: '此操作将导致账号内的所有设置被删除，确认要注销此账号吗？',
+				    success: function (res) {
+				        if (res.confirm) {
+				            console.log('用户点击确定');
+							uni.showModal({
+							    title: ' 操作完成',
+							    content: '账号已经在注销中，请在30天内不要使用此账号做任何操作，以避免注销流程失效。',
+								showCancel: false,
+							    success: function (res) {
+							       if (res.confirm) {
+									   that.logout();
+								   }
+							    }
+							});
+							
+				        } else if (res.cancel) {
+				            console.log('用户点击取消');
+				        }
+				    }
+				});
+			}
+			
 		}
 	}
 </script>
@@ -367,6 +400,7 @@ page{
 	background-color: #fa5151;
 	color:#fff;
 }
+
 
 
 

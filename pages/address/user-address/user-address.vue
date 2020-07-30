@@ -52,8 +52,8 @@
 		  <view class="address-detail">
 		    <view :data-id="item.addressid">
 		    <view class="address-name-phone">
-		      <text class="address-name">{{item.name}}</text>
-		      <text class="address-phone">{{item.mobile}}</text>
+		      <view class="address-name">{{item.name}}</view>
+		      <view class="address-phone">{{item.mobile}}</view>
 		    </view>
 		    <view class="address-info">{{item.province_name}}{{item.city_name}}{{item.district_name}}{{item.address}}</view>
 		    </view>
@@ -596,10 +596,15 @@
 	  margin-bottom: 20rpx;
 	  font-size: 11pt;
 	  font-weight: 900;
+	  display: flex;
 	}
 	
 	.address-name{
 	  margin-right: 20rpx;
+	  font-size: 35rpx;
+	}
+	.address-phone{
+	  font-size: 35rpx;	
 	}
 	
 	.address-info {
@@ -619,7 +624,7 @@
 	  align-items: center;
 	  margin-top: 20px;
 	  padding: 18rpx;
-	  background-color: #fff;
+	  background-color: #efeff4;
 	  font-size: 11pt;
 	  font-weight: 900;
 	}
