@@ -217,7 +217,7 @@
 								  
 							</view>
 						</block>
-						<block>
+						<block v-else>
 							<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../../product/detail?productid='+product_item.productid" class="df_1 borb" style='display:flex;' v-for="(product_item,index) in item.orderProduct" :for-item="product_item" :key="index"> 
 								<image class="sh_slt" :src="product_item.picture"></image>           
 								<view class="sp_text">
@@ -275,7 +275,7 @@
 								  
 							</view>
 						</block>
-						<block>
+						<block v-else>
 							<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../../product/detail?productid='+product_item.productid" class="df_1 borb" style='display:flex;' v-for="(product_item,index) in item.orderProduct" v-for-item="product_item" :key="index">
 								<image class="sh_slt" :src="product_item.picture"></image>            
 								<view class="sp_text">
