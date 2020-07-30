@@ -309,6 +309,7 @@
 			wxaddress(){
 				var that = this;
 				var userInfo = that.abotapi.get_user_info();
+				console.log('hushuyi',userInfo);
 				uni.chooseAddress({
 					
 				  success(res) {
