@@ -351,7 +351,7 @@
 		{
 		    "path" : "pages/address/user-address/user-address",
 		    "style": {
-		    	"navigationBarTitleText": "收货地址",
+		    	"navigationBarTitleText": "地址管理",
 		    	"softinputNavBar":"none"
 		    }
 		},
