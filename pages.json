@@ -313,7 +313,7 @@
         ,{
             "path" : "pages/h5browser/h5browser",
             "style" : {
-				"app-plus888": {
+				"app-plus": {
 					"titleNView": {
 						"backgroundColor888":"#f37404",
 						"titlecolor888":"#ffffff",
