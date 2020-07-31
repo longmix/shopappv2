@@ -167,7 +167,7 @@
 				that001.abotapi.getColor();
 				
 				that001.wxa_shop_nav_bg_color = option_list.wxa_shop_nav_bg_color
-				console.log('backgcoyrdnd',that001.wxa_shop_nav_bg_color);
+				console.log('backgcoyrdnd',option_list);
 			}
 			);
 
@@ -367,7 +367,9 @@
 										uni.showToast({
 											title: '添加成功！',
 										});
+										that.DataonLoad();
 									},
+									
 									fail: function() {
 
 									}

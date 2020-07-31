@@ -57,6 +57,7 @@
 						url = url.replace("*", "?");
 					}
 						url = url
+						console.log('888888888====',url);
 				}
 		        else if (url_data[1] == 'shortu') {
 					var short_code = url_data[0];
@@ -75,6 +76,7 @@
 		
 		            if (res.data.code == 1) {
 							url = res.data.longurl
+							console.log('dizhizaina',url);
 		            }
 		            else {
 						uni.showModal({
