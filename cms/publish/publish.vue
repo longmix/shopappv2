@@ -31,13 +31,14 @@
 			  </label>
 		      <label class='pub-xieyi'  v-if="faquan_xieyi_show_directly == 0">
 		        <checkbox :value="checked"  :checked="checked"/>完成立即发布表示同意
-				<view @click='readAgreement' style='float:right'>《发布许可协议》</view> 
 		      </label>
+			  <view v-if="faquan_xieyi_show_directly == 0" @click='readAgreement' style='float:right;color:red;margin-top:24rpx;height: 40rpx;line-height: 40rpx;'>《{{faquan_xieyi_title}}》</view>
+			  
 		    </checkbox-group >
 		  </view>
 		</view>
 		
-		<view class="wx-popup" :hidden="flag">
+		<view class="wx-popup" v-if="flag == 2">
 		  <view class='popup-container'>
 		    <view class="wx-popup-title">发布许可协议</view>
 		    <view class="wx-popup-subtitle">{{faquan_xieyi_title}}</view>
@@ -55,7 +56,8 @@
 		  </view>
 		</view>
 		
-		<view class='' v-if="faquan_xieyi_show_directly == 1">
+		<!-- 1 显示在立即发布按钮下方  0 弹窗-->
+		<view class='' v-if="faquan_xieyi_show_directly == 1 && faquan_xieyi_status == 1">
 		    <view class="wx-popup-title">{{faquan_xieyi_title}}</view>
 		    <view class="wx-popup-subtitle" style="display:none;"></view>
 		    <view class="wx-popup-con">
@@ -88,6 +90,8 @@
 				video:'',
 				xianmai_shangid:'',
 				orderid:'',
+				ideaText:'',
+				scrollLeft:'',
 			}
 		},
 		
@@ -189,23 +193,24 @@
 			    
 			
 			    if (cms_faquan_setting.faquan_xieyi_status) {
-			      
+					//发圈协议状态是否启用
 					that.faquan_xieyi_status = cms_faquan_setting.faquan_xieyi_status;
 			      
 			    }
 			
 			    if (cms_faquan_setting.faquan_xieyi_title) {
+					//《》中间的文字内容
 			      console.log('cms_faquan_setting.faquan_xieyi_title',cms_faquan_setting.faquan_xieyi_title);
 					that.faquan_xieyi_title = cms_faquan_setting.faquan_xieyi_title;
 			    }
 			
 			
 			    if (cms_faquan_setting.faquan_xieyi_content) {
-			     
+					//协议内容
 					that.faquan_xieyi_content = cms_faquan_setting.faquan_xieyi_content;
 			    }
 				if (cms_faquan_setting.faquan_xieyi_show_directly) {
-				  
+					//显示方式
 					that.faquan_xieyi_show_directly = cms_faquan_setting.faquan_xieyi_show_directly;
 				  
 				}
@@ -454,14 +459,14 @@
 			                    uni.switchTab({
 			                      url: '/cms/discover/discover',
 			                    })
-			                    
-			                    
 			                  }
 			                })
 			              } else {
-			                uni.showToast({
-			                  title: '上传失败',
-			                })
+			               uni.showModal({
+			               	title: '提示',
+			               	content:'上传失败',
+			               	showCancel:false,
+			               });
 			                
 							that.disable = true;
 			              }
@@ -479,7 +484,7 @@
 			  
 			  
 			    readAgreement: function (e) {
-				  this.flag = 0;
+				  this.flag = 2;
 			    },
 			  
 			    checkBox: function (e) {
@@ -489,7 +494,7 @@
 			  
 			    selectAgree: function (e) {
 				  this.flag = 1;
-				  this.checked = true;
+				  this.checked = !this.checked;
 			    },
 			  
 			  
@@ -516,14 +521,11 @@
 			              title: '操作成功！',
 			              duration: 2000
 			            });
-						
-						
-						
-			           
 			          } else {
-			            uni.showToast({
-			              title: res.data.msg,
-			              duration: 2000
+			            uni.showModal({
+			            	title: '提示',
+							content:res.data.msg,
+							showCancel:false,
 			            });
 			          }
 					  
@@ -624,6 +626,7 @@
 	  height: 40rpx;
 	  line-height: 40rpx;
 	  display: block;
+	  float:left;
 	}
 	
 	.pub-xieyi checkbox{

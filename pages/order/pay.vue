@@ -9,7 +9,7 @@
 								<view class="l_h20" style="font-size:40upx;margin-right:56upx;">{{order_address_detail.name}}</view>
 								<view class="l_h20 " style="font-size:40upx;">{{order_address_detail.mobile}}</view>
 							</view>
-							<view class="l_h20 mt5" style="font-size:22upx;margin-top:22upx;">
+							<view class="l_h20 mt5" style="font-size:32upx;margin-top:22upx;">
 								{{order_address_detail.province_name}}{{order_address_detail.city_name}}{{order_address_detail.district_name}}{{order_address_detail.address}}
 							</view>
 						</view>
@@ -119,8 +119,9 @@
 				</view>
 			</view>
 
-			<b><text style="font-size:28upx;padding-left:3%;margin-left: 20upx;">备注</text></b>
+			
 			<view class="p_all bg_white mt10 font_14">
+				<b><text style="font-size:28upx;margin-bottom: 20upx;">备注</text></b>
 				<textarea class="min_60" auto-height name="remark" placeholder="如有备注请填写" @input="remarkInput" :value="remark" rows="3" />
 				</view>	
 		
@@ -1653,7 +1654,6 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 	.heji_con{
 	  display:flex;
 	  justify-content:space-between;
-	  padding: 0 20upx;
 	}
 	
 	.a-dikou{

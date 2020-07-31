@@ -158,8 +158,10 @@
 	:faquanList="current_faquanList"
 	@fanquaDianzan="fanquaDianzan"
 	@fanquanCollect="fanquanCollect"
-	@click_share_btn="click_share_btn">
-	<!-- @bigImg="bigImg"
+	@click_share_btn="click_share_btn"
+	@bigImg="bigImg"
+	>
+	<!-- 
 	@videometa="videometa"
 	@change_faquan_status="change_faquan_status"
 	@oneClickSave="oneClickSave" 
@@ -798,6 +800,27 @@
 				
 				
 			},
+			
+			//点击图片放大
+			bigImg:function(e){
+				console.log(e);
+				var index = e.currentTarget.dataset.index;
+				var index2 = e.currentTarget.dataset.index2;
+				var img_or_video_list = this.current_faquanList[index].img_or_video_list; //点击的那一组图片列表
+				
+				var imgList = [];
+				
+				for(var i=0; i<img_or_video_list.length; i++){
+					imgList.push(img_or_video_list[i].url);
+				}
+				uni.previewImage({
+					current: imgList[index2],
+					urls: imgList,
+				})
+				
+				console.log(img_or_video_list); 
+			},
+
 
 			//获取商家详情
 			get_shang_detail: function() {

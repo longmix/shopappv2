@@ -34,9 +34,8 @@
 				</view>
 		</view>
 	
-			
 			<view class="p_all bg_white mt10 font_14" v-if="orderData.realname">
-				<view class="df">
+				<view class="df" v-if="orderData.order_option && orderData.order_option.xianmai_order_type == 1">
 					<view class="df_1 c6">
 					<view class="l_h20" style="font-weight: bold;color: #333;">{{orderData.realname}}   <text>{{orderData.mobile}}</text> </view>
 					<view class="l_h20 mt5" style="font-size: 25rpx;">地址：<text v-if="!wxa_order_hide_sanji_address">{{orderData.address01}}</text>{{orderData.address02}}</view>
@@ -53,17 +52,25 @@
 				v-if="wxa_order_hide_daishouhuo_refund_after == 0 && orderData.status_str=='待收货'" :data-order-id="orderData.orderid">
 				申请退款
 				</view>
+				<navigator v-if="orderData.status_str=='待付款'" :url="'../../pay/payment/payment?orderId=' + orderData.orderid + '&balance_zengsong_dikou=' + orderData.coupon_price + '&balance_dikou=' + orderData.yue_price" class="font_12 fl_r mr_5 btn_min">立即支付</navigator>
+				<view v-if="orderData.status_str=='待收货'" @click="recOrder" :data-orderid="orderData.orderid" class="font_12 fl_r mr_5 btn_min">确认收货</view>
+				<view v-if="orderData.status_str=='订单已完成'" class="font_12 fl_r mr_5 btn_min" @click="pingjia" :data-orderid='orderData.orderid' :data-xianmaishangid='orderData.order_option.hahading_order_xianmai_shangid'>立即评价</view>
 			</view>
 			<view class="p_all bg_white mt10 c6 l_h20  font_14">
+				<view v-if="orderData.order_option">
+					<view>订单类型<view class='fl_r'>商家订单</view></view>
+				</view>
+				
+				<view v-if="order_xianmai_shangdata.name">
+					<view>商家名称<view class='fl_r'>{{order_xianmai_shangdata.name}}</view></view>
+				</view>
+				
 				<view >
-				订单状态：<text class="red">{{orderData.status_str}}</text>
-	      <navigator v-if="orderData.status_str=='待付款'" :url="'../../pay/payment/payment?orderId=' + orderData.orderid + '&balance_zengsong_dikou=' + orderData.coupon_price + '&balance_dikou=' + orderData.yue_price" class="font_12 fl_r mr_5 btn_min">立即支付</navigator>
-		  <view v-if="orderData.status_str=='待收货'" @click="recOrder" :data-orderid="orderData.orderid" class="font_12 fl_r mr_5 btn_min">确认收货</view>
-		  <view v-if="orderData.status_str=='订单已完成'" class="font_12 fl_r mr_5 btn_min" @click="pingjia" :data-orderid='orderData.orderid' :data-xianmaishangid='orderData.order_option.hahading_order_xianmai_shangid'>立即评价</view>
+					<view>订单状态<view class='fl_r'>{{orderData.status_str}}</view></view>
 				</view>
 				
 				<view class="mt10">
-				订单时间：<text style="color:#333; font-weight:bold;">{{orderData.createtime}}</text>
+				订单时间<view class='fl_r'>{{orderData.createtime}}</view>
 				</view>  
 	
 	      <view class="mt10" v-if="orderData.buyer_memo">
@@ -179,6 +186,8 @@
 				wxa_order_hide_daishouhuo_refund:'',
 				orderno:'',
 				waimai_order_type:0,
+				order_xianmai_shangdata:'', //商家信息
+				
 			}
 		},
 		
@@ -258,6 +267,11 @@
 			          var code = res.data.code;
 					  var orderData = res.data.orderinfo;
 			          if (code == 1) {
+						  
+						if(orderData.order_option && (orderData.order_option.order_xianmai_shangdata)){
+							that.order_xianmai_shangdata = JSON.parse(orderData.order_option.order_xianmai_shangdata); //商家信息
+						}
+						  
 						  
 						if(orderData.order_option && (orderData.order_option.xianmai_order_type)){
 							var order_product_list = JSON.parse(orderData.order_option.hahading_order_product_list);

@@ -120,7 +120,7 @@
 
 					<view class="zhifu_li" :key="index" :data-index='index' @tap='zhuangzhangPay($event)' v-for="(item,index) in pay_list"
 					 :style='key==index?"background-color:#e6e6e6":""+zz_pay?"display:none":"display:block"'>
-						<view class="zhifu_name" :key="index" :data-index='index' @tap='zhuangzhangPay($event)'>{{item.pay_name}}</view>
+						<view class="zhifu_name" :key="index" :data-index='index' @tap='zhuangzhangPay($event)' style="font-weight: bold;">{{item.pay_name}}</view>
 					</view>
 					<view :style="payView?'display:none':'display:block'+';font-size:15px;margin-bottom:100px;'">
 						<view :style="zz_pay?'display:none':'display:block'">
@@ -144,7 +144,7 @@
 							</view>
 
 							<view>
-								<view style='margin-top: 20rpx;color: gray;'>转账后请填写以下信息，以便于与财务对账</view>
+								<view style='margin-top: 20rpx;color: gray;padding: 20rpx 30rpx;'>转账后请填写以下信息，以便于与财务对账</view>
 								<form @submit="formSubmit">
 									<view class="section">
 										<label class='section_view' style="line-height:50rpx">汇款人：</label>

@@ -30,35 +30,22 @@
 						</navigator> 
 					
 						<block v-if="item.order_option.hahading_order_product_list_length > 0">
-							<image class="sh_slt" :src="item.order_option.hahading_order_product_list[0].img" style="margin-bottom: 10px;"></image>  
-							<view class="xianmaishang_order_detail" >
-								<view class="sp_neb">
-									共计{{item.order_option.hahading_order_product_list.length}}商品
+							<view class="df_1 borb" style='display:flex;'>
+								<image class="sh_slt" :src="item.order_option.hahading_order_product_list[0].img"></image>  
+								<view class="sp_text">
+									<view v-if="item.order_option.order_xianmai_shangdata">{{item.order_option.order_xianmai_shangdata.name}}</view>
+									<view>共计{{item.order_option.hahading_order_product_list.length}}商品</view>
+									<view>￥{{item.all_price}}</view>
+									
 								</view>
-								<view class="sp_tit ovh1" v-if="item.order_option.order_xianmai_shangdata.name">
-									总价： 
-									<view style="float: right;color: #666;">
-										￥{{item.all_price}}
-									</view>
-								</view>
-								<view class="sp_tit ovh1" v-if="item.order_option.order_xianmai_shangdata.name">
-									订单类型： 
-									<view style="float: right;color: #666;">
-										{{item.order_option.order_xianmai_shangdata.name}}
-									</view>
-								</view>
+							</view>
+							<view class="borderb bordert font_14">
 								
-								<view class="sp_tit ovh1">
-									下单时间：
-									<view style="float: right;color: #666;">
-										{{item.createtime}}
-									</view> 
-								</view>
+								<view>订单金额：<view class='fl_r'>￥{{item.all_price}}</view></view>
+								<view>订单类型：<view class='fl_r'>商家订单</view></view>
+								<view>下单时间：<view class='fl_r'>{{item.createtime}}</view></view>
 								
-								
-								
-								
-								
+								<!-- <view>支付方式：<view class='fl_r'>{{item.payment_name}}</view></view> -->
 							</view>
 							<view  class="btn_b" style='overflow: hidden;'>
 								<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
@@ -104,12 +91,22 @@
 						<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator> 
 						
 						<block v-if="item.order_option.hahading_order_product_list_length > 0">
-							<image class="sh_slt" :src="item.order_option.hahading_order_product_list[0].img"></image>  
-							<view class="sp_text" >
+							<view class="df_1 borb" style='display:flex;'>
+								<image class="sh_slt" :src="item.order_option.hahading_order_product_list[0].img"></image>  
+								<view class="sp_text">
+									<view v-if="item.order_option.order_xianmai_shangdata">{{item.order_option.order_xianmai_shangdata.name}}</view>
+									<view>共计{{item.order_option.hahading_order_product_list.length}}商品</view>
+									<view>￥{{item.all_price}}</view>
+									
+								</view>
+							</view>
+							<view class="borderb bordert font_14">
 								
-								<view class="sp_tit ovh1">下单时间： {{item.createtime}}</view>
-								<view class="sp_neb">共计{{item.order_option.hahading_order_product_list.length}}商品，总价：￥{{item.all_price}}</view>
-								  
+								<view>订单金额：<view class='fl_r'>￥{{item.all_price}}</view></view>
+								<view>订单类型：<view class='fl_r'>商家订单</view></view>
+								<view>下单时间：<view class='fl_r'>{{item.createtime}}</view></view>
+								
+								<!-- <view>支付方式：<view class='fl_r'>{{item.payment_name}}</view></view> -->
 							</view>
 						</block>
 						<block v-else>
@@ -157,12 +154,22 @@
 						<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator> 
 						
 						<block v-if="item.order_option.hahading_order_product_list_length > 0">
-							<image class="sh_slt" :src="item.order_option.hahading_order_product_list[0].img"></image>  
-							<view class="sp_text" >
+							<view class="df_1 borb" style='display:flex;'>
+								<image class="sh_slt" :src="item.order_option.hahading_order_product_list[0].img"></image>  
+								<view class="sp_text">
+									<view v-if="item.order_option.order_xianmai_shangdata">{{item.order_option.order_xianmai_shangdata.name}}</view>
+									<view>共计{{item.order_option.hahading_order_product_list.length}}商品</view>
+									<view>￥{{item.all_price}}</view>
+									
+								</view>
+							</view>
+							<view class="borderb bordert font_14">
 								
-								<view class="sp_tit ovh1">下单时间： {{item.createtime}}</view>
-								<view class="sp_neb">共计{{item.order_option.hahading_order_product_list.length}}商品，总价：￥{{item.all_price}}</view>
-								  
+								<view>订单金额：<view class='fl_r'>￥{{item.all_price}}</view></view>
+								<view>订单类型：<view class='fl_r'>商家订单</view></view>
+								<view>下单时间：<view class='fl_r'>{{item.createtime}}</view></view>
+								
+								<!-- <view>支付方式：<view class='fl_r'>{{item.payment_name}}</view></view> -->
 							</view>
 						</block>
 						<block v-else>
@@ -209,16 +216,26 @@
 						<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator>      
 						
 						<block v-if="item.order_option.hahading_order_product_list_length > 0">
-							<image class="sh_slt" :src="item.order_option.hahading_order_product_list[0].img"></image>  
-							<view class="sp_text" >
+							<view class="df_1 borb" style='display:flex;'>
+								<image class="sh_slt" :src="item.order_option.hahading_order_product_list[0].img"></image>  
+								<view class="sp_text">
+									<view v-if="item.order_option.order_xianmai_shangdata">{{item.order_option.order_xianmai_shangdata.name}}</view>
+									<view>共计{{item.order_option.hahading_order_product_list.length}}商品</view>
+									<view>￥{{item.all_price}}</view>
+									
+								</view>
+							</view>
+							<view class="borderb bordert font_14">
 								
-								<view class="sp_tit ovh1">下单时间： {{item.createtime}}</view>
-								<view class="sp_neb">共计{{item.order_option.hahading_order_product_list.length}}商品，总价：￥{{item.all_price}}</view>
-								  
+								<view>订单金额：<view class='fl_r'>￥{{item.all_price}}</view></view>
+								<view>订单类型：<view class='fl_r'>商家订单</view></view>
+								<view>下单时间：<view class='fl_r'>{{item.createtime}}</view></view>
+								
+								<!-- <view>支付方式：<view class='fl_r'>{{item.payment_name}}</view></view> -->
 							</view>
 						</block>
 						<block v-else>
-							<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../../product/detail?productid='+product_item.productid" class="df_1 borb" style='display:flex;' v-for="(product_item,index) in item.orderProduct" :for-item="product_item" :key="index"> 
+							<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../../product/detail?productid='+product_item.productid" class="df_1 borb" style='display:flex;' v-for="(product_item,index) in item.orderProduct"  :key="index"> 
 								<image class="sh_slt" :src="product_item.picture"></image>           
 								<view class="sp_text">
 									<view class="sp_tit ovh1">{{product_item.name}}</view>
@@ -267,16 +284,27 @@
 						<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator>
 						
 						<block v-if="item.order_option.hahading_order_product_list_length > 0">
-							<image class="sh_slt" :src="item.order_option.hahading_order_product_list[0].img"></image>  
-							<view class="sp_text" >
-								
-								<view class="sp_tit ovh1">下单时间： {{item.createtime}}</view>
-								<view class="sp_neb">共计{{item.order_option.hahading_order_product_list.length}}商品，总价：￥{{item.all_price}}</view>
-								  
+							<view class="df_1 borb" style='display:flex;'>
+								<image class="sh_slt" :src="item.order_option.hahading_order_product_list[0].img"></image>  
+								<view class="sp_text">
+									<view v-if="item.order_option.order_xianmai_shangdata">{{item.order_option.order_xianmai_shangdata.name}}</view>
+									<view>共计{{item.order_option.hahading_order_product_list.length}}商品</view>
+									<view>￥{{item.all_price}}</view>
+									
+								</view>
 							</view>
+							<view class="borderb bordert font_14">
+								
+								<view>订单金额：<view class='fl_r'>￥{{item.all_price}}</view></view>
+								<view>订单类型：<view class='fl_r'>商家订单</view></view>
+								<view>下单时间：<view class='fl_r'>{{item.createtime}}</view></view>
+								
+								<!-- <view>支付方式：<view class='fl_r'>{{item.payment_name}}</view></view> -->
+							</view>
+							
 						</block>
 						<block v-else>
-							<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../../product/detail?productid='+product_item.productid" class="df_1 borb" style='display:flex;' v-for="(product_item,index) in item.orderProduct" v-for-item="product_item" :key="index">
+							<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../../product/detail?productid='+product_item.productid" class="df_1 borb" style='display:flex;' v-for="(product_item,index) in item.orderProduct" :key="index">
 								<image class="sh_slt" :src="product_item.picture"></image>            
 								<view class="sp_text">
 									<view class="sp_tit ovh1">{{product_item.name}}</view>
