@@ -1383,6 +1383,13 @@ module.exports = {
 				})
 			}
 		}
+		else if (url.indexOf('tel:') == 0) {
+		  url = url.replace(/tel:/, '');
+	
+		  uni.makePhoneCall({
+			phoneNumber: url,
+		  })
+		}
 		else {
 			uni.navigateTo({
 				url: url
