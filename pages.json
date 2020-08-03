@@ -475,7 +475,10 @@
         },
 		{
 		    "path" : "cms/discover/discover",
-		    "style" : {}
+		    "style" : {
+		    	"navigationBarTitleText":"",
+		    	"enablePullDownRefresh": true
+		    }
 		}
 		,{
 			"path" : "cms/publish/publish",

@@ -345,26 +345,27 @@
 	onAddToFavorites: function () {
 		//this.onShareTimeline();
 	},
-	  /**
-	  * 页面相关事件处理函数--监听用户下拉动作
-	  */
-	  onPullDownRefresh: function () {
-		
-		  that.page = 1;
-		  that.isShowBottomLine = 0;
-		  that.faquanList = [];
+	
+  /**
+  * 页面相关事件处理函数--监听用户下拉动作
+  */
+  onPullDownRefresh: function () {
+	
+	  this.page = 1;
+	  this.isShowBottomLine = 0;
+	  this.faquanList = [];
 
-	
-		this.abotapi.delFaquanSetting();
-		this.abotapi.getFaquanSetting(this, this.callback_flash_ad_list);
-	
-		this.__getFaquanList();
-	
-		console.log('下拉刷新==============')
-		//停止当前页面的下拉刷新
-	
-		uni.stopPullDownRefresh();
-	 },
+
+	this.abotapi.delFaquanSetting();
+	this.abotapi.getFaquanSetting(this, this.callback_flash_ad_list);
+
+	this.__getFaquanList();
+
+	console.log('下拉刷新==============')
+	//停止当前页面的下拉刷新
+
+	uni.stopPullDownRefresh();
+ },
 	  
 	
 		

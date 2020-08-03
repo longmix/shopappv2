@@ -142,8 +142,8 @@
 			is_my_discover_collection:0,
 			faquan_tag_status:0,
 			disabled:false,
-			tag:[],
-			videometa_width_height_list:[],
+			tag:'',
+			videometa_width_height_list:'',
 		},
 		methods:{
 			fanquaDianzan:function(fanquaDianzan){
