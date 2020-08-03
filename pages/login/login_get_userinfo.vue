@@ -53,7 +53,7 @@
 		},
 		onLoad: function(options) {
 			this.abotapi.set_option_list_str(this, function(that, option_list){
-				this.abotapi.getColor();
+				that.abotapi.getColor();
 				
 				that.wxa_shop_operation_logo_url = option_list.wxa_shop_operation_logo_url;
 			});
