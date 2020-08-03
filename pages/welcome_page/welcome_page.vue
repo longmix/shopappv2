@@ -41,8 +41,13 @@
 		    </block>
 		
 		</view>
-		 
-		
+		<view style="padding-bottom:120rpx;"></view>
+		<view class="zdy_btn_box" :style="{background:welcome_page_bottom_bg_color,color:welcome_page_bottom_font_color,borderTop:'1rpx solid '+ welcome_page_bottom_font_color}">
+		    <view :class="[welcome_page_btn_count > 2 ? 'btn_up_and_dow' : 'btn_left_and_right']" v-for="(item,index) in welcome_page_bottom_icon_list" :key="index" @click="btn_to_page" :data-url="item.url">
+		        <image :style="{width:welcome_page_bottom_icon_size,height:welcome_page_bottom_icon_size}" :src="item.src" style="width:40rpx;height:40rpx;"></image> 
+		        <view :style="{fontSize:welcome_page_bottom_font_size}">{{item.name}}</view>
+		    </view>
+		</view>
 		
 	</view>
 </template>
@@ -73,6 +78,16 @@ export default {
 			describe:'',
 			shopList:[],
 			page:1,
+			
+			//底部导航按钮
+			welcome_page_bottom_font_color:'#fff',
+			welcome_page_bottom_bg_color:'#000',
+			welcome_page_bottom_icon_list:[],
+			welcome_page_btn_count:'',
+			
+			//按钮的数量控制字体和图片的大小
+			welcome_page_bottom_font_size:'30rpx',
+			welcome_page_bottom_icon_size:'40rpx',
 		};
 	},
 	onPageScroll: function (e) {
@@ -161,7 +176,8 @@ export default {
 			this.content_type = 'pic';
 		  }
 		}
-		this.abotapi.set_option_list_str(this, this.__handle_option_list());
+		
+		this.abotapi.set_option_list_str(this, this.__handle_option_list);
 		
 	},
 	onShow:function(){
@@ -173,7 +189,44 @@ export default {
 	methods: {
 		__handle_option_list:function(that, option_list){
 		    this.abotapi.getColor();
-		
+			console.log('1222dsfsd23456',option_list);
+			
+			//获取自定义页面导航图标
+			if(option_list && option_list.welcome_page_bottom_icon_list){
+				console.log('122223456',option_list.welcome_page_bottom_icon_style);
+				//设置底部导航的颜色风格
+				
+				if(option_list.welcome_page_bottom_icon_style && (option_list.welcome_page_bottom_icon_style == 1)){
+				  //底色变成文字的颜色，文字变成底色
+					that.welcome_page_bottom_bg_color = option_list.wxa_shop_nav_font_color;
+					that.welcome_page_bottom_font_color = option_list.wxa_shop_nav_bg_color;
+				}
+				else{
+					that.welcome_page_bottom_bg_color = option_list.wxa_shop_nav_bg_color;
+					that.welcome_page_bottom_font_color = option_list.wxa_shop_nav_font_color;
+				}
+					
+				that.welcome_page_bottom_icon_list = option_list.welcome_page_bottom_icon_list;
+				that.welcome_page_btn_count = option_list.welcome_page_bottom_icon_list.length;
+				
+				
+				if(option_list.welcome_page_bottom_icon_list.length == 1){
+					that.welcome_page_bottom_font_size = '60rpx';
+					that.welcome_page_bottom_icon_size = '70rpx';
+				}
+				else if(option_list.welcome_page_bottom_icon_list.length == 2){
+					that.welcome_page_bottom_font_size = '45rpx';
+					that.welcome_page_bottom_icon_size = '52rpx';
+				}
+				if(option_list.welcome_page_bottom_icon_list.length == 3){
+					that.welcome_page_bottom_font_size = '35rpx';
+					that.welcome_page_bottom_icon_size = '40rpx';
+				}
+				
+			}
+			
+			
+			
 		    if(this.get_default_imgid && option_list && option_list.wxa_default_imgid_in_welcome_page){
 		      this.__get_img_from_weiduke(option_list.wxa_default_imgid_in_welcome_page, this);
 		    }
@@ -422,7 +475,13 @@ export default {
 		     this.imgheights = imgheights
 		   
 		  },
-		
+		 //自定义页面底部导航跳转
+		  btn_to_page:function(e){
+		    console.log(e);
+		    var url = e.currentTarget.dataset.url;
+		    this.abotapi.call_h5browser_or_other_goto_url(url);
+		  }
+
 		
 	},
 	//播放点击视频并停止播放其他视频
@@ -521,4 +580,38 @@ export default {
 </script>
 
 <style>
+	/* 底部导航 */
+	.zdy_btn_box{
+	  position: fixed;
+	  left:0;
+	  bottom:0;
+	  width:100%;
+	  background:#ffffff;
+	  z-index:10;
+	  height:120rpx;
+	  display:flex;
+	  font-size:30rpx;
+	}
+	
+	.btn_left_and_right{
+	  display: flex;
+	  height: 120rpx;
+	  justify-content: center;
+	  align-items: center;
+	  width: 100%;
+	  font-size:30rpx;
+	}
+	
+	.btn_left_and_right image{
+	  margin-right:15rpx;
+	}
+	
+	.btn_up_and_dow{
+	  display: flex;
+	  height: 120rpx;
+	  width: 100%;
+	  flex-direction:column;
+	  justify-content: center;
+	  align-items: center;
+	}
 </style>
