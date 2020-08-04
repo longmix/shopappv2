@@ -48,13 +48,17 @@
 				:data-order-id="orderData.orderid">
 				申请退款
 				</view>
-				<view class="font_12 btn_min fl_r mr_5 mg_l" @tap="refundOrder"
-				v-if="wxa_order_hide_daishouhuo_refund_after == 0 && orderData.status_str=='待收货'" :data-order-id="orderData.orderid">
-				申请退款
-				</view>
+				
 				<navigator v-if="orderData.status_str=='待付款'" :url="'../../pay/payment/payment?orderId=' + orderData.orderid + '&balance_zengsong_dikou=' + orderData.coupon_price + '&balance_dikou=' + orderData.yue_price" class="font_12 fl_r mr_5 btn_min mg_l">立即支付</navigator>
+				
+				
+				<view class="font_12 btn_min fl_r mr_5 mg_l" @tap="refundOrder" v-if="wxa_order_hide_daishouhuo_refund_after == 0 && orderData.status_str=='待收货'" :data-order-id="orderData.orderid">申请退款</view>
 				<view v-if="orderData.status_str=='待收货'" @click="recOrder" :data-orderid="orderData.orderid" class="font_12 fl_r mr_5 btn_min mg_l">确认收货</view>
-				<view v-if="orderData.status_str=='订单已完成'" class="font_12 fl_r mr_5 btn_min mg_l" @click="pingjia" :data-orderid='orderData.orderid' :data-xianmaishangid='orderData.order_option.hahading_order_xianmai_shangid'>立即评价</view>
+				<view v-if="orderData.status_str=='待收货' && xianmai_shang_order_remark == ''" class="font_12 fl_r mr_5 btn_min mg_l" @click="pingjia" :data-orderid='orderData.orderid' :data-xianmaishangid='orderData.order_option.hahading_order_xianmai_shangid'>立即评价</view>
+				<view v-if="orderData.status_str=='待收货' && xianmai_shang_order_remark" class="font_12 fl_r mr_5 btn_min mg_l" @click="go_to_page" :data-faquanid='xianmai_shang_order_remark'>查看评价</view>
+				
+				<view v-if="orderData.status_str=='订单已完成' && xianmai_shang_order_remark == ''" class="font_12 fl_r mr_5 btn_min mg_l" @click="pingjia" :data-orderid='orderData.orderid' :data-xianmaishangid='orderData.order_option.hahading_order_xianmai_shangid'>立即评价</view>
+				<view v-if="xianmai_shang_order_remark" class="font_12 fl_r mr_5 btn_min mg_l" @click="go_to_page" :data-faquanid='xianmai_shang_order_remark'>查看评价</view>
 			</view>
 			<view class="p_all bg_white mt10 c6 l_h20  font_14">
 				<view v-if="orderData.order_option">
@@ -188,6 +192,8 @@
 				waimai_order_type:0,
 				order_xianmai_shangdata:'', //商家信息
 				
+				
+				xianmai_shang_order_remark:'',//订单是否评价过
 			}
 		},
 		
@@ -283,7 +289,10 @@
 							that.orderData = orderData;
 							that.orderList = orderData.orderProduct;
 						}
-						  
+						 
+						if(orderData.order_option && (orderData.order_option.xianmai_shang_order_remark)){
+							that.xianmai_shang_order_remark = orderData.order_option.xianmai_shang_order_remark;
+						}
 			           
 						
 			          
@@ -304,6 +313,17 @@
 			        }
 			      });
 			    },
+				
+				//评价完成 之后点击完成按钮跳转发圈页面
+				go_to_page:function(e){
+					console.log(e);
+					var faquanid = e.currentTarget.dataset.faquanid;
+					
+					uni.navigateTo({
+						url: '/cms/discover/discover?faquanid=' + faquanid +'&xianmai_shangid=' + this.orderData.order_option.hahading_order_xianmai_shangid,
+					})
+					
+				},
 				
 				//复制剪切板
 				Clipboard_text:function(text){

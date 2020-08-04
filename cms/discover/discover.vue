@@ -1,15 +1,19 @@
 <template>
 	<view>
 	<!--cms/discover/discover.wxml-->
+	
 	<!--滚动图片start-->
-	 <view v-if="!is_my_discover_collection && !is_my_discover && isShowBanner">
-	  <swiper @change="bindchange" indicator-dots="true" autoplay="true" interval="5000" duration="500" style="height:imgheights[current]+'upx';">
-	    <block v-for="(item,index) in imgUrls" :key="index">
-	      <swiper-item>
-	        <image :src="item.image"  @load="imageLoad($event)" mode="widthFix" class="slide-image" @tap="toProductDetail" :data-url="item.url" :data-id="index" />
-	      </swiper-item>
-	    </block>
-	  </swiper>
+	<view class="swiper" v-if="!is_my_discover_collection && !is_my_discover && isShowBanner">
+		<view class="swiper-box">
+			<swiper circular="true" autoplay="true" @change="swiperChange" :style="{height:imgheights[current] + 'px'} ">
+				<swiper-item v-for="(swiper,index) in imgUrls" :key="index" @click="toAdDetails(imgUrls[index].url)">
+					<image class="img_swiper" @load="imageLoad($event)" 
+						 :style="{height:imgheights[current] + 'px'}"
+						 style="width:100%;"
+						:data-id='index' :src="swiper.image" mode="widthFix"></image>
+				</swiper-item>
+			</swiper>
+		</view>
 	</view>
 	<!--滚动图片end-->
 	
@@ -167,6 +171,9 @@
 				is_my_show:1,
 				is_collection_show:1,
 				is_recently_show:0,
+				
+				//订单跳转查看订单评价    商家id  请求接口用
+				xianmai_shangid:'',
 			};
 		},
 		onLoad(options) {
@@ -175,11 +182,16 @@
 			this.abotapi.set_option_list_str(this, this.callback_set_option_list_str);
 			this.callback_func_for_shop_info;
 			
-			
-			
-			
-			
 			console.log('discover options====>>>>', options);
+			var that = this;
+			
+			var system_info = uni.getSystemInfoSync();
+			
+			console.log('getSystemInfo==>>>system_info==>>>', system_info)
+			console.log('getSystemInfo==>>>system_info==>>>', system_info.windowWidth)
+			that.windowWidth = system_info.windowWidth;
+			that.windowHeight = system_info.windowHeight;
+			
 			
 			if(options){
 			  if (options.faquanid){
@@ -204,6 +216,17 @@
 				
 		
 			  }
+			 
+			 
+			 //订单跳转查看订单评价
+			 if(options.xianmai_shangid){
+				 this.xianmai_shangid = options.xianmai_shangid;
+				 this.is_search = false;
+				 this.is_my_discover = 1;
+				 this.is_my_show = 0;
+				 this.is_collection_show = 0;
+				 this.is_recently_show = 0;
+			 }
 			  
 			}
 		
@@ -350,13 +373,13 @@
   * 页面相关事件处理函数--监听用户下拉动作
   */
   onPullDownRefresh: function () {
+	var that = this;
+	this.page = 1;
+	this.isShowBottomLine = 0;
+	this.faquanList = [];
 	
-	  this.page = 1;
-	  this.isShowBottomLine = 0;
-	  this.faquanList = [];
 
-
-	this.abotapi.delFaquanSetting();
+	uni.removeStorageSync("cms_faquan_setting");
 	this.abotapi.getFaquanSetting(this, this.callback_flash_ad_list);
 
 	this.__getFaquanList();
@@ -371,25 +394,58 @@
 		
 	methods: {
 		imageLoad: function (e) {//获取图片真实宽度
-		   var imgwidth = e.detail.width,
-		     imgheight = e.detail.height,
-		     //宽高比  
-		     ratio = imgwidth / imgheight;
-			 
-		   console.log(imgwidth, imgheight)
 		   
-		   //计算的高度值  
-		   var viewHeight = 750 / ratio;
-		   var imgheight = viewHeight;
-		   var imgheights = this.imgheights;
-		   //把每一张图片的对应的高度记录到数组里  
-		   imgheights[e.target.dataset.id] = imgheight;
-			  
-		   console.log(imgheights);
-			  
+			 var imgwidth = e.detail.width;
+			 var imgheight = e.detail.height;
+			   //宽高比  
+			 var ratio = imgwidth / imgheight;
+			 
+			 console.log('imageLoad id===>>> '+e.target.dataset.id +'实际大小：');
+			 console.log(imgwidth, imgheight)
+			 
+			 //计算的高度值  
+			 imgheight = (this.windowWidth * 0.92)/ ratio;
+			 
+			 console.log('imageLoad id===>>> '+e.target.dataset.id +'显示大小：');
+			 console.log(this.windowWidth * 0.92, imgheight)
+			 
+			 
+			 var img_heights = this.imgheights;
+			 
+			 
+			 //把每一张图片的对应的高度记录到数组里   
+			 //imgheights[e.target.dataset.id] = uni.upx2px(imgheight);
+			 img_heights[e.target.dataset.id] = imgheight;
+			 	
+			 console.log('imageLoad id===>>> '+e.target.dataset.id +", imgheights====>>>", img_heights);		
+			 	console.log("imgheights:"+typeof(img_heights))
+			 this.imgheights = img_heights;
+			 this.current = e.target.dataset.id;
+			 
+		},
 		
-		     this.imgheights = imgheights;
-		  
+		//轮播图指示器
+		swiperChange(event) {
+			console.log('dddddddaaaaaa',event);
+			this.current = event.detail.current;
+		},
+		ddddd:function(){
+			console.log(11111111);
+			this.imgheights = [163];
+		},
+		
+		//首页导航图标、轮播图、平面广告跳转
+		toAdDetails:function(url){
+			
+			// var home_url = '/pages/index/index';
+			// this.abotapi.goto_user_login(home_url, 'switchTab');
+			
+			var that = this;
+			var var_list = Object();
+			console.log('toAdDetails- to url ====>>>>>>', url);
+			
+			this.abotapi.call_h5browser_or_other_goto_url(url, var_list, '');
+			
 		},
 		
 		videometa:function(e){
@@ -601,7 +657,7 @@
 			  
 			  bindchange: function (e) {
 								var that = this;
-			    // console.log(e.detail.current)
+			    console.log('1111111111dddddddd',e.detail.current)
 			  				that.current = e.detail.current
 			  },
 			  //跳转发圈
@@ -735,7 +791,10 @@
 			      post_data.checkstr = userInfo.checkstr;
 			    }
 			
-			    
+			    if(this.xianmai_shangid){
+					post_data.extend_id = this.xianmai_shangid;
+					post_data.faquan_type = 1;
+				}
 				
 			    this.abotapi.abotRequest({
 			      url: post_url,
@@ -1112,7 +1171,7 @@
 			};
 </script>
 
-<style>
+<style lang="scss">
 /* cms/discover/discover.wxss */
 .slide-image{
   width:100%;
@@ -1372,5 +1431,50 @@ margin-top: 20rpx;
 	margin: 2%;
 	border-radius: 10rpx;
 	border: 1px solid #ccc;
+}
+.swiper {
+	width: 100%;
+	margin-top: 10upx;
+	display: flex;
+	justify-content: center;
+	.swiper-box {
+		width: 92%;
+		// height: 30.7vw;
+		overflow: hidden;
+		border-radius: 15upx;
+		box-shadow: 0upx 8upx 25upx rgba(0, 0, 0, 0.2);
+		//兼容ios，微信小程序
+		position: relative;
+		z-index: 1;
+		swiper {
+			width: 100%;
+			// height: 30.7vw;
+			swiper-item {
+				image {
+					width: 100%;
+					height: auto;
+				}
+			}
+		}
+		.indicator {
+			position: absolute;
+			bottom: 20upx;
+			left: 20upx;
+			background-color: rgba(255, 255, 255, 0.4);
+			width: 150upx;
+			height: 5upx;
+			border-radius: 3upx;
+			overflow: hidden;
+			display: flex;
+			.dots {
+				width: 0upx;
+				background-color: rgba(255, 255, 255, 1);
+				transition: all 0.3s ease-out;
+				&.on {
+					width: (100%/3);
+				}
+			}
+		}
+	}
 }
 </style>

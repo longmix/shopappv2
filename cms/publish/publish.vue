@@ -321,6 +321,7 @@
 				if(that.xianmai_shangid){
 					data_params.faquan_type = 1;
 					data_params.extend_id = that.xianmai_shangid;
+					data_params.xianmai_shang_orderid = that.orderid;
 				}
 						
 				that.abotapi.abotRequest({
@@ -367,21 +368,27 @@
 											var data = res.data;
 											data = JSON.parse(data);
 											if (data.code == 1) {
-												uni.showToast({
+												
+												uni.showModal({
 													title: '上传成功',
+													showCancel:false,
 													success: function (e) {
-														console.log('e=======456', e)
-
-														that.ideaText = '';
-														if (that.orderid){
-															that.order_finish();
+														if (res.confirm) {
+															//确定
+															console.log('e=======456', e)
+															
+															that.ideaText = '';
+															if (that.orderid){
+																that.order_finish();
+															}
+															console.log('e=======123')
+															uni.navigateTo({
+																url: '/cms/discover/discover?display_type=my',
+															})
 														}
-														console.log('e=======123')
-														uni.navigateTo({
-															url: '/cms/discover/discover?display_type=my',
-														})
 													}
 												})
+												
 											} else {
 												uni.showToast({
 													title: '上传失败',
@@ -449,20 +456,26 @@
 			              console.log('data===', data)
 			              data = JSON.parse(data);
 			              if (data.code == 1) {
-			                uni.showToast({
-			                  title: '上传成功',
-			                  success: function (e) {
-			                    console.log('e=======', e)
-			                    
-								that.ideaText = '';
-			                    if (that.orderid){
-			                      that.order_finish();
-			                    }
-			                    uni.navigateTo({
-			                      url: '/cms/discover/discover?display_type=my',
-			                    })
-			                  }
-			                })
+							
+							uni.showModal({
+								title: '上传成功',
+								showCancel:false,
+								success: function (e) {
+									if (res.confirm) {
+										//确定
+										console.log('e=======', e)
+										
+										that.ideaText = '';
+										if (that.orderid){
+										  that.order_finish();
+										}
+										uni.navigateTo({
+										  url: '/cms/discover/discover?display_type=my',
+										})
+									}
+								}
+							})
+							
 			              } else {
 			               uni.showModal({
 			               	title: '提示',
@@ -524,11 +537,12 @@
 			              duration: 2000
 			            });
 			          } else {
-			            uni.showModal({
+			            /*uni.showModal({
 			            	title: '提示',
 							content:res.data.msg,
 							showCancel:false,
-			            });
+			            });*/
+						return;
 			          }
 					  
 					  that.abotapi.call_h5browser_or_other_goto_url('/pages/user/user');
