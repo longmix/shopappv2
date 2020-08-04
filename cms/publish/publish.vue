@@ -24,7 +24,7 @@
 		
 		<view>
 		  <view class='pub-btn-con'>
-		    <view class='pub-btn' @click="publishIdea">立即发布</view>
+		    <view class='pub-btn' @click="publishIdea" :style="{background:btn_bg_color}">立即发布</view>
 		    <checkbox-group @change="checkBox" class="" v-if="faquan_xieyi_status=='1'">
 			  <label class='pub-xieyi' v-if="faquan_xieyi_show_directly == 1">
 				<checkbox :value="checked"  :checked="checked"/>我已阅读并同意以下协议
@@ -92,6 +92,7 @@
 				orderid:'',
 				ideaText:'',
 				scrollLeft:'',
+				btn_bg_color:'',
 			}
 		},
 		
@@ -147,7 +148,7 @@
 			
 				//var last_url = '/cms/publish/publish?publishtype=' + that.publishtype;
 				
-				var last_url = '/cms/discover/discover';
+				var last_url = '/cms/discover/discover?display_type=my';
 				
 				that.abotapi.goto_user_login(last_url, 'normal');
 				return;
@@ -155,7 +156,7 @@
 			
 			
 			
-			
+			this.btn_bg_color = this.abotapi.getColor();
 			
 			
 			
@@ -369,14 +370,15 @@
 												uni.showToast({
 													title: '上传成功',
 													success: function (e) {
-														console.log('e=======', e)
+														console.log('e=======456', e)
 
 														that.ideaText = '';
 														if (that.orderid){
 															that.order_finish();
 														}
+														console.log('e=======123')
 														uni.navigateTo({
-															url: '/cms/discover/discover',
+															url: '/cms/discover/discover?display_type=my',
 														})
 													}
 												})
@@ -456,8 +458,8 @@
 			                    if (that.orderid){
 			                      that.order_finish();
 			                    }
-			                    uni.switchTab({
-			                      url: '/cms/discover/discover',
+			                    uni.navigateTo({
+			                      url: '/cms/discover/discover?display_type=my',
 			                    })
 			                  }
 			                })

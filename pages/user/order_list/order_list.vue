@@ -33,9 +33,9 @@
 							<view class="df_1 borb" style='display:flex;'>
 								<image class="sh_slt" :src="item.order_option.hahading_order_product_list[0].img"></image>  
 								<view class="sp_text">
-									<view v-if="item.order_option.order_xianmai_shangdata">{{item.order_option.order_xianmai_shangdata.name}}</view>
-									<view>共计{{item.order_option.hahading_order_product_list.length}}商品</view>
-									<view>￥{{item.all_price}}</view>
+									<view class="sp_tit ovh1" v-if="item.order_option.order_xianmai_shangdata">{{item.order_option.order_xianmai_shangdata.name}}</view>
+									<view class="sp_neb">共计{{item.order_option.hahading_order_product_list.length}}商品</view>
+									<view class="sp_jg">￥{{item.all_price}}</view>
 									
 								</view>
 							</view>
@@ -94,9 +94,9 @@
 							<view class="df_1 borb" style='display:flex;'>
 								<image class="sh_slt" :src="item.order_option.hahading_order_product_list[0].img"></image>  
 								<view class="sp_text">
-									<view v-if="item.order_option.order_xianmai_shangdata">{{item.order_option.order_xianmai_shangdata.name}}</view>
-									<view>共计{{item.order_option.hahading_order_product_list.length}}商品</view>
-									<view>￥{{item.all_price}}</view>
+									<view class="sp_tit ovh1" v-if="item.order_option.order_xianmai_shangdata">{{item.order_option.order_xianmai_shangdata.name}}</view>
+									<view class="sp_neb">共计{{item.order_option.hahading_order_product_list.length}}商品</view>
+									<view class="sp_jg">￥{{item.all_price}}</view>
 									
 								</view>
 							</view>
@@ -157,9 +157,9 @@
 							<view class="df_1 borb" style='display:flex;'>
 								<image class="sh_slt" :src="item.order_option.hahading_order_product_list[0].img"></image>  
 								<view class="sp_text">
-									<view v-if="item.order_option.order_xianmai_shangdata">{{item.order_option.order_xianmai_shangdata.name}}</view>
-									<view>共计{{item.order_option.hahading_order_product_list.length}}商品</view>
-									<view>￥{{item.all_price}}</view>
+									<view class="sp_tit ovh1" v-if="item.order_option.order_xianmai_shangdata">{{item.order_option.order_xianmai_shangdata.name}}</view>
+									<view class="sp_neb">共计{{item.order_option.hahading_order_product_list.length}}商品</view>
+									<view class="sp_jg">￥{{item.all_price}}</view>
 									
 								</view>
 							</view>
@@ -219,9 +219,9 @@
 							<view class="df_1 borb" style='display:flex;'>
 								<image class="sh_slt" :src="item.order_option.hahading_order_product_list[0].img"></image>  
 								<view class="sp_text">
-									<view v-if="item.order_option.order_xianmai_shangdata">{{item.order_option.order_xianmai_shangdata.name}}</view>
-									<view>共计{{item.order_option.hahading_order_product_list.length}}商品</view>
-									<view>￥{{item.all_price}}</view>
+									<view class="sp_tit ovh1" v-if="item.order_option.order_xianmai_shangdata">{{item.order_option.order_xianmai_shangdata.name}}</view>
+									<view class="sp_neb">共计{{item.order_option.hahading_order_product_list.length}}商品</view>
+									<view class="sp_jg">￥{{item.all_price}}</view>
 									
 								</view>
 							</view>
@@ -287,9 +287,9 @@
 							<view class="df_1 borb" style='display:flex;'>
 								<image class="sh_slt" :src="item.order_option.hahading_order_product_list[0].img"></image>  
 								<view class="sp_text">
-									<view v-if="item.order_option.order_xianmai_shangdata">{{item.order_option.order_xianmai_shangdata.name}}</view>
-									<view>共计{{item.order_option.hahading_order_product_list.length}}商品</view>
-									<view>￥{{item.all_price}}</view>
+									<view class="sp_tit ovh1" v-if="item.order_option.order_xianmai_shangdata">{{item.order_option.order_xianmai_shangdata.name}}</view>
+									<view class="sp_neb">共计{{item.order_option.hahading_order_product_list.length}}商品</view>
+									<view class="sp_jg">￥{{item.all_price}}</view>
 									
 								</view>
 							</view>

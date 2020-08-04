@@ -43,18 +43,18 @@
 				</view>
 			</view>
 			<view style="overflow: hidden;margin-right: 3%;">
-				<view class="font_12 btn_min fl_r mr_5" @tap="refundOrder" 
+				<view class="font_12 btn_min fl_r mr_5 mg_l" @tap="refundOrder" 
 				v-if="wxa_order_hide_daishouhuo_refund == 0 && orderData.status_str=='待发货'" 
 				:data-order-id="orderData.orderid">
 				申请退款
 				</view>
-				<view class="font_12 btn_min fl_r mr_5" @tap="refundOrder"
+				<view class="font_12 btn_min fl_r mr_5 mg_l" @tap="refundOrder"
 				v-if="wxa_order_hide_daishouhuo_refund_after == 0 && orderData.status_str=='待收货'" :data-order-id="orderData.orderid">
 				申请退款
 				</view>
-				<navigator v-if="orderData.status_str=='待付款'" :url="'../../pay/payment/payment?orderId=' + orderData.orderid + '&balance_zengsong_dikou=' + orderData.coupon_price + '&balance_dikou=' + orderData.yue_price" class="font_12 fl_r mr_5 btn_min">立即支付</navigator>
-				<view v-if="orderData.status_str=='待收货'" @click="recOrder" :data-orderid="orderData.orderid" class="font_12 fl_r mr_5 btn_min">确认收货</view>
-				<view v-if="orderData.status_str=='订单已完成'" class="font_12 fl_r mr_5 btn_min" @click="pingjia" :data-orderid='orderData.orderid' :data-xianmaishangid='orderData.order_option.hahading_order_xianmai_shangid'>立即评价</view>
+				<navigator v-if="orderData.status_str=='待付款'" :url="'../../pay/payment/payment?orderId=' + orderData.orderid + '&balance_zengsong_dikou=' + orderData.coupon_price + '&balance_dikou=' + orderData.yue_price" class="font_12 fl_r mr_5 btn_min mg_l">立即支付</navigator>
+				<view v-if="orderData.status_str=='待收货'" @click="recOrder" :data-orderid="orderData.orderid" class="font_12 fl_r mr_5 btn_min mg_l">确认收货</view>
+				<view v-if="orderData.status_str=='订单已完成'" class="font_12 fl_r mr_5 btn_min mg_l" @click="pingjia" :data-orderid='orderData.orderid' :data-xianmaishangid='orderData.order_option.hahading_order_xianmai_shangid'>立即评价</view>
 			</view>
 			<view class="p_all bg_white mt10 c6 l_h20  font_14">
 				<view v-if="orderData.order_option">
@@ -65,7 +65,7 @@
 					<view>商家名称<view class='fl_r'>{{order_xianmai_shangdata.name}}</view></view>
 				</view>
 				
-				<view >
+				<view class="bordert">
 					<view>订单状态<view class='fl_r'>{{orderData.status_str}}</view></view>
 				</view>
 				
@@ -644,5 +644,8 @@
 		padding: 0 18rpx;
 		border-radius: 5px;
 		font-size: 24rpx;
+	}
+	.mg_l{
+		margin-left:10rpx;
 	}
 </style>

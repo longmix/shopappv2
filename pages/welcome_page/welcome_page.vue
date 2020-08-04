@@ -44,8 +44,8 @@
 		<view style="padding-bottom:120rpx;"></view>
 		<view class="zdy_btn_box" :style="{background:welcome_page_bottom_bg_color,color:welcome_page_bottom_font_color,borderTop:'1rpx solid '+ welcome_page_bottom_font_color}">
 		    <view :class="[welcome_page_btn_count > 2 ? 'btn_up_and_dow' : 'btn_left_and_right']" v-for="(item,index) in welcome_page_bottom_icon_list" :key="index" @click="btn_to_page" :data-url="item.url">
-		        <image :style="{width:welcome_page_bottom_icon_size,height:welcome_page_bottom_icon_size}" :src="item.src" style="width:40rpx;height:40rpx;"></image> 
-		        <view :style="{fontSize:welcome_page_bottom_font_size}">{{item.name}}</view>
+		        <image :style="{width:welcome_page_bottom_icon_size + 'rpx',height:welcome_page_bottom_icon_size + 'rpx'}" :src="item.src" style="width:40rpx;height:40rpx;"></image> 
+		        <view :style="{fontSize:welcome_page_bottom_font_size + 'rpx'}">{{item.name}}</view>
 		    </view>
 		</view>
 		
@@ -86,8 +86,8 @@ export default {
 			welcome_page_btn_count:'',
 			
 			//按钮的数量控制字体和图片的大小
-			welcome_page_bottom_font_size:'30rpx',
-			welcome_page_bottom_icon_size:'40rpx',
+			welcome_page_bottom_font_size:'30',
+			welcome_page_bottom_icon_size:'40',
 		};
 	},
 	onPageScroll: function (e) {
@@ -211,16 +211,16 @@ export default {
 				
 				
 				if(option_list.welcome_page_bottom_icon_list.length == 1){
-					that.welcome_page_bottom_font_size = '60rpx';
-					that.welcome_page_bottom_icon_size = '70rpx';
+					that.welcome_page_bottom_font_size = '60';
+					that.welcome_page_bottom_icon_size = '70';
 				}
 				else if(option_list.welcome_page_bottom_icon_list.length == 2){
-					that.welcome_page_bottom_font_size = '45rpx';
-					that.welcome_page_bottom_icon_size = '52rpx';
+					that.welcome_page_bottom_font_size = '45';
+					that.welcome_page_bottom_icon_size = '52';
 				}
 				if(option_list.welcome_page_bottom_icon_list.length == 3){
-					that.welcome_page_bottom_font_size = '35rpx';
-					that.welcome_page_bottom_icon_size = '40rpx';
+					that.welcome_page_bottom_font_size = '35';
+					that.welcome_page_bottom_icon_size = '40';
 				}
 				
 			}
