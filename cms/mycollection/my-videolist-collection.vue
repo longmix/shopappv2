@@ -1,6 +1,54 @@
 <template>
 	<view>
-		<include  src="../quanquan/quanquanlist.wxml"/>
+		<!--滚动图片start-->
+			<view v-if="!is_my_video_collection">
+			  <swiper @change="bindchange" indicator-dots="true" autoplay="true" interval="5000" duration="500" :style="{height:imgheights[current] + 'rpx'}">
+				<block v-for="(item,index) in imgUrls" :key="index">
+				  <swiper-item>
+					<image :src="item.image"  :data-id='index' mode="widthFix"  class="slide-image" @load='imageLoad'  @click="toAdDetails" :data-url="item.url"/>
+				  </swiper-item>
+				</block>
+			  </swiper>
+			</view>
+		
+			<!-- 筛选 -->
+			<view class="section">
+			  <picker class="a-1 a-2" @change="bindPickerChangeMonth"  :range="monthArr">
+				<view class="picker">
+				  月份<image class='xiala' src="../../static/img/xiala.png"></image>
+				</view>
+			  </picker>
+			  <picker class="a-1" @change="bindPickerChangeCata"  :range="cataArr">
+				<view class="picker">
+				  分类<image class='xiala' src="../../static/img/xiala.png"></image>
+				</view>
+			  </picker>
+			</view>
+			<view class="a-3">{{page_info}}</view>
+		
+		<!-- 视频 -->
+		
+			<view class='b-1' style="">
+			
+			  <view class="c-1" :data-videoid='item.videoid' @click='tovideo_details' v-for="(item,index) in videoList" :key='index' >
+				<text class="e-1">{{item.cata}}</text>
+				<image class='video-img' mode="widthFix" :src="item.img_url"></image>
+				<view class='c-2'>{{item.title}}</view>
+				<view class="d-1">
+				  <view>{{item.number}}人观看</view>
+				  <image class="time" src="../../static/img/VIP.png"></image>
+				  <view class='c-3'>{{item.month}}</view>
+				  <view>{{item.video_type_text}}</view>
+				</view>
+			  </view>
+			
+			</view>
+		
+			<view class="bottom-line" v-if="isShowBottomLine">
+				<view class='bottom-line-a'></view>
+				<view>我也是有底线的</view>
+				<view class='bottom-line-a'></view>
+			</view>
 	</view>
 </template>
 
@@ -38,8 +86,8 @@
 				},
 				success: function (res) {
 					var banner = res.data.data;
-					console.log('res',res);
-					console.log('banner',banner);
+					console.log('res++++》',res);
+					console.log('banner====？',banner);
 						
 					//that.initProductData(data);
 					that.imgUrls = banner;

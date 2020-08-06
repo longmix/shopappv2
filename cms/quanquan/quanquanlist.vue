@@ -14,12 +14,12 @@
 	
 		<!-- 筛选 -->
 		<view class="section">
-		  <picker class="a-1 a-2" @change="bindPickerChangeMonth" :value="index" :range="monthArr">
+		  <picker class="a-1 a-2" @change="bindPickerChangeMonth"  :range="monthArr">
 			<view class="picker">
 			  月份<image class='xiala' src="../../static/img/xiala.png"></image>
 			</view>
 		  </picker>
-		  <picker class="a-1" @change="bindPickerChangeCata" :value="index" :range="cataArr">
+		  <picker class="a-1" @change="bindPickerChangeCata"  :range="cataArr">
 			<view class="picker">
 			  分类<image class='xiala' src="../../static/img/xiala.png"></image>
 			</view>
@@ -37,7 +37,7 @@
 			<view class='c-2'>{{item.title}}</view>
 			<view class="d-1">
 			  <view>{{item.number}}人观看</view>
-			  <image class="time" src="../../images/time.png"></image>
+			  <image class="time" src="../../static/img/VIP.png"></image>
 			  <view class='c-3'>{{item.month}}</view>
 			  <view>{{item.video_type_text}}</view>
 			</view>
@@ -56,7 +56,7 @@
 
 <script>
 	
-	export default {
+	export default { 
 		
 		data() {
 			return {
@@ -366,6 +366,7 @@
 
 				console.log('month===',e);
 				var value = e.detail.value  
+				this.cata = '';
 				this.month = value == 0 ? '' : this.monthArr[value];
 				this.page = 1;
 				this.getVideoList();
@@ -376,6 +377,7 @@
 			bindPickerChangeCata: function (e) {
 				console.log('cata===', e);
 				var value = e.detail.value
+				this.month = '';
 				this.cata = value==0 ? '' : this.cataArr[value];
 				this.page = 1;
 				this.getVideoList();

@@ -37,11 +37,24 @@
 		      </text>
 		      </block>
 		    </view>
-		    <view style="display: flex;align-items: center;width:33%;justify-content: center;position: relative;">
-		            <image src="../../static/img/help/share.png"  style='width:30rpx;height:30rpx;margin-right:10rpx;'></image>
-		            <text style='font-size:26rpx;'>转发</text>
-		            <button class="share" open-type="share"></button>
-		    </view>
+		   
+			<!-- #ifdef MP-WEIXIN -->
+			
+			<view style="display: flex;align-items: center;width:33%;justify-content: center;position: relative;">
+			        <image src="../../static/img/help/share.png"  style='width:30rpx;height:30rpx;margin-right:10rpx;'></image>
+			        <text style='font-size:26rpx;'>转发</text>
+			        <button class="share" open-type="share"></button>
+			</view>
+			
+			<!-- #endif -->
+			<!-- #ifdef APP-PLUS -->
+			<view style="display: flex;align-items: center;width:33%;justify-content: center;position: relative;" @click="is_show()">
+			        <image src="../../static/img/help/share.png"  style='width:30rpx;height:30rpx;margin-right:10rpx;'></image>
+			        <text style='font-size:26rpx;'>转发</text>
+			        <button class="share"></button>
+			</view>
+			
+			<!-- #endif -->
 		
 		  </view>
 		
@@ -77,13 +90,25 @@
 		    <view  class="sendbutton" @click='sendRemark'>发送</view>
 		  </view>
 
+
+			<abotshare
+			ref="share_api"
+			@click_wxa_share="click_wxa_share"   
+			@click_wxa_circle_share='click_wxa_circle_share'  
+			@click_wxa_applet_share='click_wxa_applet_share'  
+			@click_wxa_system_share='click_wxa_system_share'
+			></abotshare>
 	</view>
 </template>
 
 <script>
+	import abotshare from '../../components/abot_share_api/abot_share_api.vue';
+	import abotsharejs from '../../common/abot_share_api.js';
 	
 	export default {
-		
+		components:{
+			abotshare,
+		},
 		data() {
 			return {
 			    faquan_one_click_to_save:0,
@@ -94,6 +119,7 @@
 				showCostDetail:false,
 				remarktext:'',
 				disabled:false,
+				animationData:'',
 			};
 		},
 		onLoad(options) {
@@ -365,7 +391,35 @@
 					imageUrl:this.video_data.img_url
 				}
 			},
-			  
+			
+			//app  分享点击
+			click_wxa_share:function (){
+				abotsharejs.click_wxa_share(this.share_href, this.share_titles, this.share_summary, this.share_imageUrl);
+			},
+			
+			click_wxa_circle_share:function (){
+				abotsharejs.click_wxa_circle_share(this.share_href, this.share_titles, this.share_summary, this.share_imageUrl);
+			},
+			
+			
+			click_wxa_applet_share:function (){
+				
+				var path = 'pages/shopDetail/shopDetail?shangid='+ this.current_xianmai_shangid;
+				var account = this.abotapi.globalData.xiaochengxu_account;
+				abotsharejs.click_wxa_applet_share(this.share_href, this.share_titles, path, this.share_imageUrl, account);
+			},
+			
+			
+			click_wxa_system_share:function (){
+				
+				abotsharejs.click_wxa_system_share(this.share_summary, this.share_href);
+			},
+			
+			is_show:function(){
+				this.$refs.share_api.is_show();
+			},
+			
+			
 			inputContent:function(e){
 				var remarktext = e.detail.value;
 				this.remarktext = remarktext;
@@ -391,17 +445,14 @@
 			        success: function (res) {
 			  
 			          if(res.data.code == 1){
-			            uni.showToast({
-			              title: '评论成功',
-			            })
-						
+			            
 						that.remarktext = '';
 			            
 			  
 			            uni.showModal({
 			              cancelColor: 'cancelColor',
 			              title:'提示',
-			              content:res.msg,
+			              content:res.data.msg,
 			              showCancel:false
 			            })
 			          }
@@ -437,17 +488,21 @@
 
 			        var is_get_userinfo = userInfo.is_get_userinfo;
 			      }
+				  
+				  if(!uni.getSystemInfoSync().platform == 'android' && !uni.getSystemInfoSync().platform == 'ios'){
+					  if (!is_get_userinfo) {
+					  
+					    uni.setStorageSync('get_userinfo_last_url', '/cms/quanquan/quanquan_details?videoid=' + that.videoid)
+					  			  
+					    uni.navigateTo({
+					      url: '/pages/login/login_get_userinfo',
+					    });
+					  
+					    return;
+					  }
+				  }
 
-			      if (!is_get_userinfo) {
-
-			        uni.setStorageSync('get_userinfo_last_url', '/cms/quanquan/quanquan_details?videoid=' + that.videoid)
-			  
-			        uni.navigateTo({
-			          url: '/pages/login/login_get_userinfo',
-			        });
-
-			        return;
-			      }
+			      
 
 					this.abotapi.abotRequest({
 						url: this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/VideoListRemarkData/add_video_collect',
@@ -490,21 +545,28 @@
 			  
 			      
 			      var userInfo = this.abotapi.get_user_info();
-				  
+				  console.log('1111122222',userInfo);
 			      if ('is_get_userinfo' in userInfo) {
 			        var is_get_userinfo = userInfo.is_get_userinfo;
+					console.log('1111122222',is_get_userinfo);
 			      }
 				  
-			      if (!is_get_userinfo) {
-			        uni.setStorageSync('get_userinfo_last_url', '/cms/quanquan/quanquan_details?videoid=' + this.videoid)
-			        uni.navigateTo({
-			          url: '/pages/login/login_get_userinfo',
-			        });
-					
-			        return;
-			      }
+				  
+				  if(!uni.getSystemInfoSync().platform == 'android' && !uni.getSystemInfoSync().platform == 'ios'){
+					  if (!is_get_userinfo) {
+					    uni.setStorageSync('get_userinfo_last_url', '/cms/quanquan/quanquan_details?videoid=' + this.videoid)
+					    uni.navigateTo({
+					      url: '/pages/login/login_get_userinfo',
+					    });
+					  					
+					    return;
+					  }
+				  }
+				  
+			      
 				  
 			      if (!this.showCostDetail){
+					  console.log(1);
 			        var animation = uni.createAnimation({
 			          duration: 200,
 			          timingFunction: "linear",
@@ -522,6 +584,7 @@
 			          this.animationData = animation.export();
 			        }.bind(this), 200)
 			      } else {
+					  console.log(2);
 			        var animation = uni.createAnimation({
 			          duration: 200,
 			          timingFunction: "linear",
