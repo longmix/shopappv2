@@ -483,8 +483,23 @@
 		,{
 			"path" : "cms/publish/publish",
 		    "style" : {}
-		}
-		,
+		},
+		{	//资料库收藏
+			"path": "cms/mycollection/my-videolist-collection",
+			"style": {}
+		},
+		{	//资料库带参数中转
+			"path": "cms/quanquan/quanquan",
+			"style": {}
+		},
+		{	//资料库列表
+			"path": "cms/quanquan/quanquanlist",
+			"style": {}
+		},
+		{	//资料库详情
+			"path": "cms/quanquan/quanquan_details",
+			"style": {}
+		},
 		{
 			"path" : "pages/login/login_get_userinfo",
 		    "style" : {}
