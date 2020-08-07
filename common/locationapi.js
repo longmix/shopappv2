@@ -205,7 +205,7 @@ module.exports = {
 			// #ifdef MP-ALIPAY
 				console.log('支付宝小程序中获取坐标');
 				
-				baidu_map_ak = that.abotapi.globalData.option_list.baidu_map_ak_wxa;
+				/* baidu_map_ak = that.abotapi.globalData.option_list.baidu_map_ak_wxa;
 				
 				console.log('结束1',baidu_map_ak);
 				
@@ -220,6 +220,59 @@ module.exports = {
 					success: regeocoding_success,
 					complete: regeocoding_complete
 				});
+				*/ 
+				
+				uni.getLocation({
+				    type: 'wgs84',
+					geocode:true,
+				    success: function (res) {
+						//let translate = that002.gcj2bd(res.latitude,res.longitude); //坐标转换
+				        console.log('当前位置的经度：' + res.longitude);
+				        console.log('当前位置的纬度：' + res.latitude);
+						//console.log('当前位置的经度：' + translate);
+						console.log('当前位置的经度：' + JSON.stringify(res.address));
+						
+						var locationData = {};
+						locationData.latitude = res.latitude;
+						locationData.longitude = res.longitude;
+						
+						locationData.addressComponent = res.address;
+									
+						
+						//缓存位置信息			getStorageSync		
+						uni.setStorageSync('locationData', locationData)
+						
+						console.log('进入1');
+						
+						typeof callback_function == "function" && callback_function(that, locationData);
+						
+						return;		
+						
+				    },
+					fail:function (res) {
+						console.log('getLocation获取地址失败，使用模拟坐标====>>>>');
+						
+						
+						var locationData = {};
+						locationData.latitude = '31.235891';
+						locationData.longitude = '121.52378';
+						
+						locationData.addressComponent = {city:'上海'};
+						
+						console.log('模拟坐标====>>>>', locationData);
+									
+						
+						//缓存位置信息			getStorageSync		
+						uni.setStorageSync('locationData', locationData)
+						
+						typeof callback_function == "function" && callback_function(that, locationData);
+					},
+					complete:function(){
+						console.log('getLocation失败成功都进入');
+					}
+				});
+				
+				
 				console.log('结束');
 			// #endif
 			

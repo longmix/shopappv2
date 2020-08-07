@@ -489,15 +489,29 @@ export default {
 		var that = this;
 		
 		console.log('onPullDownRefresh=====>>>>>');
+		
+		// #ifndef MP-ALIPAY
 		uni.showToast({
 			title: '数据更新中……',
-			icon:'loading'
+			icon:'loading',
 		});
+		// #endif
 		
-		setTimeout(function() {
-			uni.stopPullDownRefresh();
-			uni.hideToast();
-		}, 500);
+		// #ifdef MP-ALIPAY
+		uni.showToast({
+			title: '数据更新中……',
+			//icon:'loading', 	//支付宝不支持icon为 loading
+			//duration:2000
+		});
+		// #endif
+		
+		
+		
+		/*uni.showLoading({
+			title:'数据更新中……'
+		})*/
+		
+		
 		
 		uni.removeStorageSync("coordinate_array");
 		uni.removeStorageSync("cata_list");
@@ -512,7 +526,15 @@ export default {
 		that.abotapi.get_shop_info_from_server(that.callback_func_for_shop_info);
 		that.abotapi.get_xianmaishang_setting_list_remove();
 		
-		
+		setTimeout(function() {
+			console.log('timeout===>>>stopPullDownRefresh===>>>hideToast');
+			
+			uni.stopPullDownRefresh();
+			
+			uni.hideToast();
+			//uni.hideLoading();
+			
+		}, 2000);
 	},
 	
 	//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
@@ -1039,6 +1061,8 @@ export default {
 			if(!isNullOrUndefined(locationData.addressComponent)){
 				that.current_cityname = locationData.addressComponent.city;
 			}
+			
+			console.log('locationData.addressComponent================>>>>>>', that.current_cityname);
 			
 			
 			var coordinate = [];
@@ -1715,9 +1739,19 @@ export default {
 				this.know = false;
 				
 				uni.setStorageSync('yinsi_cfg_if_consent'+ this.abotapi.globalData.version_code,'1');
-				uni.showTabBar({
+				
+				this.abotapi.set_shop_option_data(this, function(that, cb_params){
+					if(cb_params.option_list && (cb_params.option_list.wxa_hidden_tabbar == 1)){
+						
+					}
+					else{
+						uni.showTabBar({							
+						})
+					}
 					
-				})
+				});
+				
+				
 			}
 			else{
 				//不同意  弹tost

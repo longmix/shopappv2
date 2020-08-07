@@ -33,7 +33,7 @@
   },
   "tabBar": {
     "color": "#515151",
-    "selectedColor": "#d81e06",
+    "selectedColor": "#269ad7",
     "borderStyle": "black",
     "backgroundColor": "#ffffff",
     "list": [
@@ -65,7 +65,7 @@
   },
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#f37404",
+    "navigationBarBackgroundColor": "#269ad7",
     "navigationBarTitleText": "延誉电商",
     "navigationBarTextStyle": "white"
   },

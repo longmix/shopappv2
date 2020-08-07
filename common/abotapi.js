@@ -876,7 +876,8 @@ module.exports = {
 	
 			uni.showToast({
 				title: '数据更新中……',
-				icon:'loading'
+				//icon:'loading'
+				duration:2000
 			});
 	
 	
@@ -940,7 +941,8 @@ module.exports = {
 			
 			uni.showToast({
 				title: '数据更新中……',
-				icon:'loading'
+				//icon:'loading'
+				duration:2000
 			});
 			
 			

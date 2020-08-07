@@ -247,9 +247,11 @@
 			var that = this;
 			
 			console.log('onPullDownRefresh=====>>>>>');
+			
+			
 			uni.showToast({
 				title: '数据更新中……',
-				icon:'loading'
+				//icon:'loading'
 			});
 			
 			setTimeout(function() {
