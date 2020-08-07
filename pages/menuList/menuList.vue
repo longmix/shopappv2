@@ -346,6 +346,7 @@ export default {
 		  data: {
 			xianmai_shangid: that.shopId,
 			is_waimai: is_waimai,
+			sellerid:this.abotapi.globalData.default_sellerid,
 		  },
 		  header: {
 			"Content-Type": "application/x-www-form-urlencoded"

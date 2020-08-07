@@ -494,7 +494,9 @@
 		},
 		{	//资料库列表
 			"path": "cms/quanquan/quanquanlist",
-			"style": {}
+			"style": {
+				"enablePullDownRefresh": true
+			}
 		},
 		{	//资料库详情
 			"path": "cms/quanquan/quanquan_details",
