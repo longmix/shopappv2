@@ -910,6 +910,14 @@ module.exports = {
 				});
 			}
 	    }
+		
+		
+		//2020.7.29. 隐藏底部导航的选项
+		if(option_list && (option_list.wxa_hidden_tabbar == 1)){
+		  wx.hideTabBar({
+			animation: false,
+		  })
+		}
 	
 	    
 	    return option_list.wxa_shop_nav_bg_color;

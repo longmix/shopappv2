@@ -352,6 +352,10 @@ export default {
 		
 		var that = this;
 		
+		uni.setNavigationBarTitle({
+			title:that.abotapi.globalData.default_shopname
+		})
+		
 		
 		var yinsi_cfg_if_consent = uni.getStorageSync('yinsi_cfg_if_consent'+this.abotapi.globalData.version_code);
 		if(!yinsi_cfg_if_consent){
@@ -438,10 +442,10 @@ export default {
 		this.abotapi.set_sellerid(sellerid);
 		//========  End =======
 			
-			
+		this.abotapi.get_shop_info_from_server(this.callback_func_for_shop_info);	
 		
 		this.abotapi.set_shop_option_data(this, this.callback_function_shop_option_data);
-		this.abotapi.get_shop_info_from_server(this.callback_func_for_shop_info);
+		
 		
 		
 		// locationapi.get_location(this, this.call_back_get_shang_list2);
@@ -736,6 +740,12 @@ export default {
 			
 			if(!cb_params.option_list){
 				return;
+			}
+			
+			if(cb_params.option_list.wxa_shop_new_name){
+				uni.setNavigationBarTitle({
+					title:cb_params.option_list.wxa_shop_new_name
+				})
 			}
 			
 			that.wxa_shop_nav_bg_color  = cb_params.option_list.wxa_shop_nav_bg_color;
@@ -1184,9 +1194,9 @@ export default {
 			
 			this.supplierid = shop_info.supplierid;
 			
-			uni.setNavigationBarTitle({
+			/*uni.setNavigationBarTitle({
 				title:shop_name
-			})
+			})*/
 			
 			if(userInfo && userInfo.userid){
 				console.log('88888====')
