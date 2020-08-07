@@ -47,9 +47,7 @@
 								
 								<!-- <view>支付方式：<view class='fl_r'>{{item.payment_name}}</view></view> -->
 							</view>
-							<view  class="btn_b" style='overflow: hidden;'>
-								<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
-							</view> 
+							
 						</block>
 						
 						<block v-else>
@@ -71,11 +69,12 @@
 								<view>实际支付：<view class='fl_r'>￥{{item.pay_price}}</view></view>
 								<!-- <view>支付方式：<view class='fl_r'>{{item.payment_name}}</view></view> -->
 							</view>
-							<view v-if="item.buyer_memo != ''">备注：{{item.buyer_memo}}</view>
-							<view  class="btn_b">
-								<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
-							</view> 
+							
 						</block>
+						<view class="sp_neb" v-if="item.buyer_memo != ''">备注：<view class='fl_r'>{{item.buyer_memo}}</view></view>
+						<view  class="btn_b">
+							<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
+						</view> 
 					</view>
 				</swiper-item>
 
@@ -131,7 +130,7 @@
 							</view>
 						
 						</block>
-						<view v-if="item.buyer_memo != ''">备注：{{item.buyer_memo}}</view>
+						<view class="sp_neb" v-if="item.buyer_memo != ''">备注：<view class='fl_r'>{{item.buyer_memo}}</view></view>
 						<view  class="btn_b">
 							<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
 						</view> 
@@ -194,7 +193,7 @@
 							</view>
 						
 						</block>
-						<view v-if="item.buyer_memo != ''">备注：{{item.buyer_memo}}</view>
+						<view class="sp_neb" v-if="item.buyer_memo != ''">备注：<view class='fl_r'>{{item.buyer_memo}}</view></view>
 						<view  class="btn_b">
 							<!-- <navigator class="font_12 btn_min fl_r" @tap="refundOrder" v-if="wxa_order_hide_daishouhuo_refund == 0" :data-order-id="item.orderid">申请退款</navigator> -->
 							<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
@@ -255,7 +254,7 @@
 								<!-- <view>支付方式：<view class='fl_r'>{{item.payment_name}}</view></view> -->
 							</view>
 						</block>
-						<view v-if="item.buyer_memo != ''">备注：{{item.buyer_memo}}</view>
+						<view class="sp_neb" v-if="item.buyer_memo != ''">备注：<view class='fl_r'>{{item.buyer_memo}}</view></view>
 						<!-- <view  class="btn_b">
 							<navigator v-if="wxa_order_hide_daishouhuo_refund_after == 0" class="font_12 btn_min fl_r" :url="'tuihuo?orderId='+item.orderid">申请退款</navigator>
 							<view class="font_12 btn_min fl_r mr_5" @tap="recOrder" :data-order-id="item.orderid">确认收货</view>
@@ -323,7 +322,7 @@
 								<!-- <view>支付方式：<view class='fl_r'>{{item.payment_name}}</view></view> -->
 							</view>
 						</block>
-						<view v-if="item.buyer_memo != ''">备注：{{item.buyer_memo}}</view>
+						<view  class="sp_neb" v-if="item.buyer_memo != ''">备注：<view class='fl_r'>{{item.buyer_memo}}</view></view>
 						<view  class="btn_b">
 							<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
 						</view>

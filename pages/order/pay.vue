@@ -889,7 +889,7 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 			  
 			
 			remarkInput:function(e){
-				that.remark = e.detail.value
+				this.remark = e.detail.value
 			},
 			
 			

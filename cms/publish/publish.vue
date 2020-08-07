@@ -215,7 +215,12 @@
 					that.faquan_xieyi_show_directly = cms_faquan_setting.faquan_xieyi_show_directly;
 				  
 				}
+				
+				uni.setNavigationBarTitle({
+					title:cms_faquan_setting.faquan_page_title
 			
+				})
+				
 			},
 			  
 			// 分类改变函数  （从shopapp搬过来的  前端执行该方法的注释了没有搬）

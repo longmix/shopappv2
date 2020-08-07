@@ -928,6 +928,9 @@
 					  this.is_recently_show = 1;
 					  this.is_collection_show = 1;
 					  
+					  uni.setNavigationBarTitle({
+					  	title:'我的发布'
+					  })				  
 					  this.__getFaquanList();
 				  }else if(e.currentTarget.dataset.type == 'my_collection'){
 					  //我的收藏
@@ -939,7 +942,9 @@
 					  this.is_collection_show = 0;
 					  this.is_my_show = 1;
 					  this.is_recently_show = 1;
-					  
+					  uni.setNavigationBarTitle({
+					  	title:'我的收藏'
+					  })	
 					  this.__getFaquanList();
 				  }
 				  
@@ -953,6 +958,10 @@
 					  this.is_collection_show = 1;
 					  this.is_my_show = 1;
 					  this.is_recently_show = 0;
+					  
+					  uni.setNavigationBarTitle({
+					  	  title: this.current_page_title
+					  })	
 					  
 					  this.__getFaquanList();
 				  }
