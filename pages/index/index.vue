@@ -510,7 +510,7 @@ export default {
 		setTimeout(function() {
 			uni.stopPullDownRefresh();
 			uni.hideToast();
-		}, 1000);
+		}, 500);
 	},
 	
 	//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"

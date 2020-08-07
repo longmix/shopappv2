@@ -95,6 +95,8 @@
 						<view class="text">积分</view>
 					</view>
 				</view>
+				
+				
 				<view class="right" v-if="wxa_show_recharge_button_in_usercenter == 1">
 					<view class="box" @tap="toDeposit">
 						<view class="img">
@@ -102,8 +104,7 @@
 						</view>
 						<view class="text">充值</view>
 					</view>
-				</view>
-				
+				</view>				
 				<view class="right" v-else>
 					<view class="box" >
 						<view class="img logo-img">
@@ -280,8 +281,9 @@
 					
 					if(option_list.wxa_show_recharge_button_in_usercenter){
 						that.wxa_show_recharge_button_in_usercenter = option_list.wxa_show_recharge_button_in_usercenter;
-						that.wxa_shop_operation_logo_url = option_list.wxa_shop_operation_logo_url;
 					}
+					
+					that.wxa_shop_operation_logo_url = option_list.wxa_shop_operation_logo_url;
 					
 					if(option_list.wxa_show_zengkuan_in_usercenter){
 						that.wxa_show_zengkuan_in_usercenter = option_list.wxa_show_zengkuan_in_usercenter;
