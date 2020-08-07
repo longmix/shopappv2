@@ -147,7 +147,7 @@
 		<!-- 商品列表 -->
 		<view v-if="!wxa_hidden_product_list || wxa_hidden_product_list==0"
 			style="font-size:30upx;text-align: center;color:#ccc;padding: 30upx auto;display: block;height: 80upx;width: 100%;">———— ※ 最新上架 ※ ————</view>
-		<productList  :productsList="current_product_list" :loadingText="loadingText" :showKucunSale="wxa_show_kucun_in_list" @toGoods="toGoods"></productList>	
+		<productList v-if="!wxa_hidden_product_list || wxa_hidden_product_list==0" :productsList="current_product_list" :loadingText="loadingText" :showKucunSale="wxa_show_kucun_in_list" @toGoods="toGoods"></productList>	
 
 		<!-- 客服按钮 -->
 		<view class="u-tap-btn" v-if="(wxa_show_kefu_button==1) && (wxa_kefu_bg_no_color_flag == 0)">

@@ -119,7 +119,7 @@
 		<!-- 工具栏 -->
 		<view class="toolbar">
 			<view class="title">我的工具栏</view>
-			<view class="list">
+			<view class="list" v-if="wxa_usercenter_function_list == 0">
 				<view class="box" v-for="(row,index) in user_function_list" :key="index" @tap="goto_user_function(row.url)">
 					<view class="img">
 						<image :src="row.src"></image>
@@ -133,6 +133,23 @@
 					<view class="text">{{about}}</view>
 				</navigator>
 			</view>
+			<view class="list" v-else>
+				<view style="width:100%;padding:10rpx 40rpx;line-height:60rpx;margin-top: 20rpx;border-bottom:1px solid #999999;overflow: hidden;" v-for="(row,index) in user_function_list" :key="index" @tap="goto_user_function(row.url)">
+					<view style='float: left;'>
+						<image style="width:35px;height:35px;margin-right:20px;" :src="row.src"></image>
+					</view>
+					<view style="float:left;">{{row.name}}</view>
+				</view>
+				
+				
+				<navigator style="width:100%;padding:10rpx 40rpx;line-height:60rpx;margin-top: 20rpx;border-bottom:1px solid #999999;overflow: hidden;" :url="'/pages/about/about?about=' + about">
+					<view style='float: left;'>
+						<image style="width:35px;height:35px;margin-right:20px;" src="https://yanyubao.tseo.cn/Tpl/static/images/aboutus.png"></image>
+					</view>
+					<view style="float:left;">{{about}}</view>
+				</navigator>
+				
+			</view>
 		</view>
 		
 <!-- 		<navigator url="/pages/live/live-pusher">主播控制台</navigator> -->
@@ -141,6 +158,11 @@
 		
 		<!-- 占位 -->
 		<view class="place-bottom"></view>
+		
+		<view class='icon-jump' @click='toPageIndex' :style="{background: icon_jump_bg_color}" v-if="wxa_show_return_to_index_in_usercenter == 1">
+		      <image src="../../static/img/help/home_page.png"></image>
+		      <view :style="{color:wxa_shop_nav_font_color}">首页</view>     
+		</view>
 		
 		<!-- 著作信息 -->
 		<view class="copyright_info">{{default_copyright_text}}</view>
@@ -190,8 +212,10 @@
 				scrollLeft:'',
 				//shop_info_from_server: ''
 				wxa_shop_operation_logo_url:'',
+				wxa_show_return_to_index_in_usercenter:0,  //控制返回首页是否显示
 				
-				
+				icon_jump_bg_color:'#000', //返回首页的悬浮图标的背景颜色
+				wxa_usercenter_function_list:0, //控制工具栏的样式  是九宫格还是列表
 			}
 		},
 		
@@ -235,7 +259,17 @@
 						that.user_center_function_list_icon_list = option_list.user_center_function_list_icon_list;
 					}
 					
+					if(option_list.wxa_show_return_to_index_in_usercenter){
+						that.wxa_show_return_to_index_in_usercenter = option_list.wxa_show_return_to_index_in_usercenter;
+					}
 					
+					if(option_list.wxa_shop_nav_bg_color){
+						that.icon_jump_bg_color = option_list.wxa_shop_nav_bg_color;
+					}
+					
+					if(option_list.wxa_usercenter_function_list){
+						that.wxa_usercenter_function_list = option_list.wxa_usercenter_function_list;
+					}
 					
 					that001.get_current_userinfo();
 					
@@ -536,7 +570,12 @@
 			},
 			hideMemberExplain(){
 				this.explainFlag = 1;
-			}
+			},
+			toPageIndex:function(e){
+				uni.switchTab({
+					url: '/pages/index/index',
+				})
+			},
 		}
 	} 
 </script>
@@ -873,5 +912,37 @@
 	  height: 300px;
 	  text-align: left;
 	  white-space: pre-line;
+	}
+	
+	.icon-jump{
+	  width: 120rpx;
+	  height: 120rpx;
+	  position: fixed;
+	  right: 40rpx;
+	  bottom: 120rpx;
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	  border-radius: 100px;
+	  background: #00FF00;
+	  flex-direction: column;
+	  font-size: 28rpx;
+	}
+	
+	.icon-jump image{
+	  width: 60rpx;
+	  height: 60rpx;
+	}
+	
+	.icon-list{
+	  width: 33%;
+	  height: 220rpx;
+	  text-align: center;
+	  float: left;
+	}
+	.icon-list image{
+	  height: 120rpx;
+	  width: 120rpx;
+	  margin-top: 50rpx;
 	}
 </style>

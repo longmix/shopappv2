@@ -74,13 +74,11 @@
 				</view>
 				
 				<view class="mt10">
-				订单时间<view class='fl_r'>{{orderData.createtime}}</view>
+					订单时间<view class='fl_r'>{{orderData.createtime}}</view>
 				</view>  
 	
-	      <view class="mt10" v-if="orderData.buyer_memo">
-				留言备注：<view style="font-size:24rpx; color:#666;">
-				  {{orderData.buyer_memo?orderData.buyer_memo:''}} 
-			  </view>	
+				<view class="mt10" v-if="orderData.buyer_memo">
+					留言备注：<view class='fl_r' style="font-size:24rpx; color:#666;">{{orderData.buyer_memo?orderData.buyer_memo:''}}</view>
 				</view> 
 	
 	      
