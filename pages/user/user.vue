@@ -347,6 +347,13 @@
 				icon:'loading'
 			});
 			
+			setTimeout(function () {
+			    uni.stopPullDownRefresh();
+				
+				uni.hideToast();
+				
+			}, 1000);
+			
 			this.abotapi.set_option_list_str(this,
 				function(that001, option_list){					
 					
@@ -363,12 +370,7 @@
 				}
 			);
 			
-		    setTimeout(function () {
-		        uni.stopPullDownRefresh();
-				
-				uni.hideToast();
-				
-		    }, 1000);
+		    
 		},
 		
 		onPageScroll(e){

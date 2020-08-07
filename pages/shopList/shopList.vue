@@ -251,6 +251,11 @@
 				title: '数据更新中……',
 				icon:'loading'
 			});
+			
+			setTimeout(function() {
+				uni.stopPullDownRefresh();
+				uni.hideToast();
+			}, 1000);
 			 
 			
 			locationapi.get_location_remove();
@@ -266,10 +271,7 @@
 			
 			
 			
-			setTimeout(function() {
-				uni.stopPullDownRefresh();
-				uni.hideToast();
-			}, 2000);
+			
 		},
 		//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
 		onReachBottom() {

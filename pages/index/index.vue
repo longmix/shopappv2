@@ -494,6 +494,11 @@ export default {
 			icon:'loading'
 		});
 		
+		setTimeout(function() {
+			uni.stopPullDownRefresh();
+			uni.hideToast();
+		}, 500);
+		
 		uni.removeStorageSync("coordinate_array");
 		uni.removeStorageSync("cata_list");
 		uni.removeStorageSync("spec_list");
@@ -507,10 +512,7 @@ export default {
 		that.abotapi.get_shop_info_from_server(that.callback_func_for_shop_info);
 		that.abotapi.get_xianmaishang_setting_list_remove();
 		
-		setTimeout(function() {
-			uni.stopPullDownRefresh();
-			uni.hideToast();
-		}, 500);
+		
 	},
 	
 	//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
