@@ -31,7 +31,7 @@
 			</view>
 			<!-- 二维码按钮 -->
 			<view class="erweima" @tap="toMyQR">
-				<view class="icon qr"></view>
+				<view class="icon scan_qr"></view>
 			</view>
 		</view>
 		<!-- VIP banner -->
