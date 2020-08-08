@@ -8,6 +8,8 @@
 	url('https://yanyubao.tseo.cn/Tpl/static/iconfont/shopappv2/iconfont.svg#uxiconfont') format('svg'); /* iOS 4.1- */
 }
 
+/*  将woff文件放在本地是为了让android手机中可以正常使用 */
+
 .icon-weixin:before {
   content: "\e614";
   font-size: 120upx;
@@ -184,6 +186,3 @@
 }
 
 
-.icon .tongzhi:before {
-		content: '\e729';
-	}
