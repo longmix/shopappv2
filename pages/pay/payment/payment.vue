@@ -603,10 +603,12 @@
 							})
 
 						} else {
-							uni.showToast({
-								title: "支付失败",
-								duration: 2000
+							uni.showModal({
+								title:'支付失败',
+								showCancel:false,
+								content:"支付失败："+res.data.msg,
 							});
+							
 						}
 					},
 					fail: function() {
@@ -678,9 +680,10 @@
 
 						if (res.data.code != 1) {
 							uni.showModal({
-								title: '提示',
-								content: '发起支付申请失败:'+res.data.msg,
-							})
+								title:'支付失败',
+								showCancel:false,
+								content:"发起支付申请失败："+res.data.msg,
+							});
 
 							return;
 						}
@@ -696,10 +699,11 @@
 						//通过微信支付
 						if (!res.data.wxpay_params) {
 							uni.showModal({
-								title: '提示',
-								content: '没有微信支付的参数',
-							})
-
+								title:'支付失败',
+								showCancel:false,
+								content:"没有微信支付的参数",
+							});
+							
 							return;
 						}
 
@@ -716,6 +720,7 @@
 							uni.showModal({
 								title: '提示',
 								content: '启动微信钱包失败！',
+								showCancel:false,
 							})
 
 
@@ -745,10 +750,12 @@
 							fail: function(res) {
 								console.log('uni.requestPayment====>>>>>fail====>>>>', res);
 								
-								uni.showToast({
+								uni.showModal({
 									title: '支付失败',
-									duration: 3000
+									content: ''+JSON.stringify(res),
+									showCancel:false,
 								})
+								
 							}
 						};
 						

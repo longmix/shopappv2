@@ -1222,8 +1222,9 @@
 	.sp_neb{
 	    width: 100%;
 	    overflow: hidden;
-	    font-size: 12px;
-	    color: #999;
+	    font-size: 24rpx;
+	    color: #666;
+		padding: 10rpx 0 20rpx 0;
 	}
 	.sp_jg{
 	    width: 100%;
