@@ -145,9 +145,9 @@
 				</view>
 				
 				
-				<navigator style="width:100%;padding:10rpx 40rpx;line-height:60rpx;margin-top: 20rpx;border-bottom:1px solid #eee;overflow: hidden;" :url="'/pages/about/about?about=' + about">
+				<navigator class="icon_box_item" :url="'/pages/about/about?about=' + about">
 					<view style='float: left;'>
-						<image style="width:35px;height:35px;margin-right:20px;" src="https://yanyubao.tseo.cn/Tpl/static/images/aboutus.png"></image>
+						<image style="width:70rpx;height:70rpx;margin-right:40rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/aboutus.png"></image>
 					</view>
 					<view style="float:left;">{{about}}</view>
 				</navigator>
