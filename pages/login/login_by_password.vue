@@ -594,6 +594,7 @@
 	background:inherit;
 	outline: 0;
 	font-size: 35.2upx;
+	width: 65%;
 }
  
 .loginBox {

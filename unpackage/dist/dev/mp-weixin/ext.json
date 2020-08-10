@@ -1,6 +1,6 @@
 {
   "extEnable": true,
-  "extAppid": "wx3b96d83a469ad710",
+  "extAppid": "wxe6565fced2f812da",
   "directCommit": true,
   "ext": {
     "name": "wechat",
@@ -11,17 +11,17 @@
         "user_2"
       ]
     },
-    "xiaochengxu_appid": "wx3b96d83a469ad710",
+    "xiaochengxu_appid": "wxe6565fced2f812da",
     "force_sellerid_flag": 1,
-    "force_sellerid_value": "pNJNyxkkP",
-    "shop_name": "陆家嘴电脑维修",
-    "version_number": "Ver 1.6.2 Build 150",
+    "force_sellerid_value": "pQNNmSkaq",
+    "shop_name": "延誉电商",
+    "version_number": "Ver 1.6.0 Build 132",
     "navigationBarBackgroundColor_fixed": 1,
     "kefu_telephone": "",
     "kefu_qq": "",
     "kefu_website": "",
     "kefu_gongzhonghao": "",
-    "default_copyright_text": "电脑维修 - 延誉宝 @ 技术支持"
+    "default_copyright_text": "延誉电商 - 延誉宝 @ 版权所有"
   },
   "extPages": {
     "pages/publish/publish_list": {
