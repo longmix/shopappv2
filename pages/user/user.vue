@@ -134,7 +134,7 @@
 				</navigator>
 			</view>
 			<view class="list" v-else>
-				<view style="width:100%;padding:10rpx 40rpx;line-height:60rpx;margin-top: 20rpx;border-bottom:1px solid #999999;overflow: hidden;" v-for="(row,index) in user_function_list" :key="index" @tap="goto_user_function(row.url)">
+				<view style="width:100%;padding:10rpx 40rpx;line-height:60rpx;margin-top: 20rpx;border-bottom:1px solid #eee;overflow: hidden;" v-for="(row,index) in user_function_list" :key="index" @tap="goto_user_function(row.url)">
 					<view style='float: left;'>
 						<image style="width:35px;height:35px;margin-right:20px;" :src="row.src"></image>
 					</view>
@@ -160,7 +160,7 @@
 		<view class="place-bottom"></view>
 		
 		<view class='icon-jump' @click='toPageIndex' :style="{background: icon_jump_bg_color}" v-if="wxa_show_return_to_index_in_usercenter == 1">
-		      <image src="../../static/img/help/home_page.png"></image>
+		      <image src="../../static/img/shouye.svg"></image>
 		      <view :style="{color:wxa_shop_nav_font_color}">首页</view>     
 		</view>
 		

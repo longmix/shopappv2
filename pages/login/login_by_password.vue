@@ -36,7 +36,7 @@
 				
 				open-type="getUserInfo"  @getuserinfo="btnWxaGetUserinfo"
 				@click="btn_user_login"
-				
+				style="margin-left: 8%;"
 				formType="submit" >登陆</button>
 			<div class="flex mgb-20">
 				<navigator class="cl-black pointer flex-1" open-type="redirect" url="/pages/login/login">忘记密码？手机验证码登录</navigator>
