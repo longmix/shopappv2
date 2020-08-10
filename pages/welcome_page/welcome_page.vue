@@ -8,7 +8,13 @@
 		
 		<block v-if="content_type == 'cms'">
 		<view class='wenzhang_detail'>
+<!-- #ifdef MP-ALIPAY -->			
+			<rich-text :nodes="describe"></rich-text>
+<!-- #endif -->				
+<!-- #ifndef MP-ALIPAY -->
 			<rich-text v-if="describe" :nodes="describe|formatRichText"></rich-text>
+<!-- #endif -->
+			
 		</view>
 		</block>
 		
@@ -61,6 +67,11 @@ var ttt = 0;
 // import locationapi from '../../common/locationapi.js'; 
 
 //import abotapi001 from '../../../common/abotapi.js';
+
+// #ifdef MP-ALIPAY
+	import parseHtml from "../../common/html-parser.js"
+// #endif
+
 
 export default {
 	data() {
@@ -313,6 +324,31 @@ export default {
 				that.describe = res.data.data.info;
 		        
 		        //WxParse.wxParse('content', 'html', res.data.data.info, that, 15);
+				
+// #ifdef MP-ALIPAY		
+						console.log('that.describe====>>>>', that.describe);
+						
+						const filter = that.$options.filters["formatRichText"];
+						that.describe = filter(that.describe);
+						
+						console.log('that.describe====>>>>', that.describe);
+						
+						let data001 = that.describe;
+						let newArr = [];
+						let arr = parseHtml(data001);
+						arr.forEach((item, index)=>{
+							newArr.push(item);
+						});
+						
+						//console.log('arr arr arr====>>>>', arr);
+						//console.log('newArr newArr newArr====>>>>', newArr);
+						
+						that.describe = newArr;
+
+// #endif				
+							
+				
+				
 		
 		        if (res.data.data.video_url) {
 		          that.video_url = res.data.data.video_url;
@@ -407,6 +443,28 @@ export default {
 		        that.current_title = res.data.data.title;
 		
 				that.describe = res.data.data.info;
+				
+// #ifdef MP-ALIPAY		
+						
+						const filter = that.$options.filters["formatRichText"];
+						that.describe = filter(that.describe);
+						
+						//console.log('that.describe====>>>>', that.describe);
+						
+						let data001 = that.describe;
+						let newArr = [];
+						let arr = parseHtml(data001);
+						arr.forEach((item, index)=>{
+							newArr.push(item);
+						});
+						
+						//console.log('arr arr arr====>>>>', arr);
+						//console.log('newArr newArr newArr====>>>>', newArr);
+						
+						that.describe = newArr;
+
+// #endif				
+				
 		
 		        if(res.data.data.video_url){
 					that.video_url = res.data.data.video_url;
@@ -557,6 +615,9 @@ export default {
 		 * @returns {void|string|*}
 		 */
 		formatRichText (html) { //控制小程序中图片大小
+		
+			//console.log('html====>>>>', html);
+		
 			let newContent= html.replace(/<img[^>]*>/gi,function(match,capture){
 				match = match.replace(/style="[^"]+"/gi, '').replace(/style='[^']+'/gi, '');
 				match = match.replace(/width="[^"]+"/gi, '').replace(/width='[^']+'/gi, '');
@@ -572,6 +633,9 @@ export default {
 			newContent = newContent.replace(/<p[^>]*>/gi, '<p style="margin:40upx;">');
 			
 			newContent = newContent.replace(/\<img/gi, '<img style="max-width:100%;height:auto;display:inline-block;margin:10upx auto;vertical-align: middle;"');
+			
+			newContent = newContent.replace(/<h1[^>]*>/gi, '<h1 class="wxParse-h1">');
+			newContent = newContent.replace(/<h2[^>]*>/gi, '<h2 class="wxParse-h2">');
 			
 			return newContent;
 		}	
@@ -614,4 +678,6 @@ export default {
 	  justify-content: center;
 	  align-items: center;
 	}
+	
+	
 </style>

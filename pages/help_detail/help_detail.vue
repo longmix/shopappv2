@@ -42,7 +42,16 @@
 				<view class="wxParse"> 
 					<scroll-view  scroll-y='true'>
 						<!-- <view v-html="info" ></view> -->
-						<rich-text :nodes="info|formatRichText"></rich-text>
+						
+						
+<!-- #ifdef MP-ALIPAY -->			
+					<rich-text :nodes="info"></rich-text>
+<!-- #endif -->				
+<!-- #ifndef MP-ALIPAY -->
+					<rich-text :nodes="info|formatRichText"></rich-text>
+<!-- #endif -->						
+						
+						
 					</scroll-view>
 				</view>
 				<view style="margin-top: 10px;" v-for="img_item in wz_text.picture_list" :key="img_item" v-if="form_page == 'publish_list'">
@@ -146,6 +155,11 @@
 	var userInfo = null;
 	import abotshare from '../../components/abot_share_api/abot_share_api.vue';
 	import abotsharejs from '../../common/abot_share_api.js';
+	
+// #ifdef MP-ALIPAY
+	import parseHtml from "../../common/html-parser.js"
+// #endif	
+	
 	
 	export default {
 		components:{
@@ -362,6 +376,30 @@
 							that.isShoucang = is_col
 						}
 						that.info = res.data.data.info;
+						
+						
+// #ifdef MP-ALIPAY		
+						console.log('that.info====>>>>', that.info);
+						
+						const filter = that.$options.filters["formatRichText"];
+						that.info = filter(that.info);
+						
+						console.log('that.info====>>>>', that.info);
+						
+						let data001 = that.info;
+						let newArr = [];
+						let arr = parseHtml(data001);
+						arr.forEach((item, index)=>{
+							newArr.push(item);
+						});
+						
+						//console.log('arr arr arr====>>>>', arr);
+						//console.log('newArr newArr newArr====>>>>', newArr);
+						
+						that.info = newArr;
+
+// #endif						
+						
 					}
 				};
 				var cbError = function (res) {
@@ -930,8 +968,12 @@
 				
 				newContent = newContent.replace(/\<img/gi, '<img style="max-width:100%;height:auto;display:inline-block;margin:10rpx auto;vertical-align: middle;"');
 				
+				newContent = newContent.replace(/<h1[^>]*>/gi, '<h1 class="wxParse-h1">');
+				newContent = newContent.replace(/<h2[^>]*>/gi, '<h2 class="wxParse-h2">');
+				
 				return newContent;
-			}	
+			}
+			
 		}
 	}
 	

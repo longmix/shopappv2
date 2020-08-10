@@ -337,7 +337,14 @@
 		<view class="description">
 			<view class="title">———— ※ 商品详情 ※ ————</view>
 			<view class="content">
-				<rich-text :nodes="describe|formatRichText"></rich-text>
+<!-- #ifdef MP-ALIPAY -->			
+			<rich-text :nodes="describe"></rich-text>
+<!-- #endif -->				
+<!-- #ifndef MP-ALIPAY -->
+			<rich-text :nodes="describe|formatRichText"></rich-text>
+<!-- #endif -->			
+			
+			
 			</view>
 			
 		</view>
@@ -356,6 +363,13 @@
 	import abotshare from '../../components/abot_share_api/abot_share_api.vue';
 	import abotsharejs from '../../common/abot_share_api.js';
 	//import abot_share_vue from '../../components/product-list/product-list.vue';
+	
+// #ifdef MP-ALIPAY
+	import parseHtml from "../../common/html-parser.js"
+// #endif	
+	
+	
+	
 export default {
 	components:{
 		abotshare
@@ -512,6 +526,29 @@ export default {
 					that.goods_detail = res.data.data;
 					console.log('that.goods_detail',that.goods_detail);
 					that.describe = that.goods_detail.describe;
+					
+					
+// #ifdef MP-ALIPAY		
+						
+						const filter = that.$options.filters["formatRichText"];
+						that.describe = filter(that.describe);
+						
+						//console.log('that.describe====>>>>', that.describe);
+						
+						let data001 = that.describe;
+						let newArr = [];
+						let arr = parseHtml(data001);
+						arr.forEach((item, index)=>{
+							newArr.push(item);
+						});
+						
+						//console.log('arr arr arr====>>>>', arr);
+						//console.log('newArr newArr newArr====>>>>', newArr);
+						
+						that.describe = newArr;
+
+// #endif	
+					
 
 					that.picture_list = that.goods_detail.picture_list;
 					that.picture_length = that.goods_detail.picture_list ? that.goods_detail.picture_list.length : 0;
@@ -548,9 +585,9 @@ export default {
 						var attr_key_arr = []
 						var attr_list_arr = {}                  
 						for(var i = 0; i<attr_list.length; i++){
-						  var arr = attr_list[i].option_name.split(' ');         
-						  if (attr_key_arr.indexOf(arr[0]) == -1) {
-							attr_key_arr.push(arr[0]);                        
+						  var arr001 = attr_list[i].option_name.split(' ');         
+						  if (attr_key_arr.indexOf(arr001[0]) == -1) {
+							attr_key_arr.push(arr001[0]);                        
 						  }              
 						}
 			
@@ -559,10 +596,10 @@ export default {
 						for (var j=0; j < attr_key_arr.length; j++){
 						  var attr_arr = []
 						  for (var i = 0; i < attr_list.length; i++) {
-							var arr = attr_list[i].option_name.split(' ');
+							var arr001 = attr_list[i].option_name.split(' ');
 			
-							if ((attr_key_arr[j] == arr[0]) && arr[1]){
-							  attr_arr.push(arr[1])
+							if ((attr_key_arr[j] == arr001[0]) && arr001[1]){
+							  attr_arr.push(arr001[1])
 							}
 						  }
 						  attr_list_arr[attr_key_arr[j]] = attr_arr
@@ -729,6 +766,27 @@ export default {
 				  that.goods_detail = res.data.data;
 				  console.log('that.goods_detail',that.goods_detail);
 				  that.describe = that.goods_detail.describe;
+				  
+// #ifdef MP-ALIPAY
+					
+					const filter = that.$options.filters["formatRichText"];
+					that.describe = filter(that.describe);
+					
+					//console.log('that.describe====>>>>', that.describe);
+					
+					let data001 = that.describe;
+					let newArr = [];
+					let arr = parseHtml(data001);
+					arr.forEach((item, index)=>{
+						newArr.push(item);
+					});
+					
+					//console.log('arr arr arr====>>>>', arr);
+					//console.log('newArr newArr newArr====>>>>', newArr);
+					
+					that.describe = newArr;
+
+// #endif	
 
 				  that.picture_list = that.goods_detail.picture_list;
 				  that.picture_length = that.goods_detail.picture_list ? that.goods_detail.picture_list.length : 0;		   
@@ -1446,6 +1504,7 @@ export default {
 		 * @returns {void|string|*}
 		 */
 		formatRichText (html) { //控制小程序中图片大小
+		
 			let newContent= html.replace(/<img[^>]*>/gi,function(match,capture){
 				match = match.replace(/style="[^"]+"/gi, '').replace(/style='[^']+'/gi, '');
 				match = match.replace(/width="[^"]+"/gi, '').replace(/width='[^']+'/gi, '');
@@ -1461,6 +1520,9 @@ export default {
 			newContent = newContent.replace(/<p[^>]*>/gi, '<p style="margin:10px;">');
 			
 			newContent = newContent.replace(/\<img/gi, '<img style="max-width:100%;height:auto;display:inline-block;margin:10rpx auto;vertical-align: middle;"');
+			
+			newContent = newContent.replace(/<h1[^>]*>/gi, '<h1 class="wxParse-h1">');
+			newContent = newContent.replace(/<h2[^>]*>/gi, '<h2 class="wxParse-h2">');
 			
 			return newContent;
 		}	
