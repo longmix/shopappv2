@@ -120,6 +120,7 @@
 		<view class="toolbar">
 			<view class="title">我的工具栏</view>
 			<view class="list" v-if="wxa_usercenter_function_list == 0">
+				<!-- 九宫格 -->
 				<view class="box" v-for="(row,index) in user_function_list" :key="index" @tap="goto_user_function(row.url)">
 					<view class="img">
 						<image :src="row.src"></image>
@@ -134,11 +135,13 @@
 				</navigator>
 			</view>
 			<view class="list" v-else>
-				<view style="width:100%;padding:10rpx 40rpx;line-height:60rpx;margin-top: 20rpx;border-bottom:1px solid #eee;overflow: hidden;" v-for="(row,index) in user_function_list" :key="index" @tap="goto_user_function(row.url)">
+				<!-- 列表 style="width:100%;padding:10rpx 40rpx;line-height:60rpx;margin-top: 20rpx;border-bottom:1px solid #eee;overflow: hidden;"-->
+				<view class="icon_box_item" v-for="(row,index) in user_function_list" :key="index" @tap="goto_user_function(row.url)">
 					<view style='float: left;'>
-						<image style="width:35px;height:35px;margin-right:20px;" :src="row.src"></image>
-					</view>
-					<view style="float:left;">{{row.name}}</view>
+						<image style="width:70rpx;height:70rpx;margin-right:40rpx;" :src="row.src"></image>
+					</view> 
+					<view style="float:left;"><text style="color:#333;font-size:35rpx;">{{row.name}}</text></view>
+					<view style="clear:both;"></view>
 				</view>
 				
 				
@@ -946,5 +949,17 @@
 	  height: 120rpx;
 	  width: 120rpx;
 	  margin-top: 50rpx;
+	}
+	.icon_box_item{
+	  line-height: 80rpx;
+	  margin: 10rpx 20rpx 10rpx 20rpx;
+	  border-bottom: 1px solid #eee;
+	  padding: 0 0 0 30rpx;
+	  height: 80rpx;
+	  width: 90%;
+	  float: left;
+	  clear: both;
+	
+	
 	}
 </style>
