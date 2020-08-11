@@ -10,17 +10,16 @@
 
 /*  将woff文件放在本地是为了让android手机中可以正常使用 */
 
-.icon-weixin:before {
-  content: "\e614";
-  font-size: 120upx;
-}
-
-
 .icon {
 	font-family: 'HM-font' !important;
 	font-size: 60upx;
 	font-style: normal;
 	color: #000000;
+	
+	&.weixin-icon:before {
+	  content: "\e61c";
+	  font-size: 120upx;
+	}
 	&.yuyin-home:before {
 		content: '\e64e';
 	}
