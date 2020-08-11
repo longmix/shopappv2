@@ -40,18 +40,17 @@
 			</view>
 		</view>
 		
-		<view style="display: flex;align-items: center;padding-top: 20rpx;padding-left: 10rpx;" v-if="show_weather_forecast_in_index == 1">
-			<image  mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/weather_icon/dayu.png" style="margin-right:20rpx;width: 100rpx;" 
+		<view class="content_block" v-if="show_weather_forecast_in_index == 1">
+			<image  mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/weather_icon/dayu.png" class="weatherinfo_icon" 
 			v-if="weather!='多云'&&weather!='晴'&&weather!='阴'"></image>
-			<image  mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/weather_icon/yin.png" style="margin-right:20rpx;width: 100rpx;" 
+			<image  mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/weather_icon/yin.png" class="weatherinfo_icon"  
 			v-if="weather=='阴'"></image>
-			<image  mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/weather_icon/qing.png" style="margin-right:20rpx;width: 100rpx;" 
+			<image  mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/weather_icon/qing.png" class="weatherinfo_icon"  
 			v-if="weather=='晴'"></image>
-			<image  mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/weather_icon/duoyun.png" style="margin-right:20rpx;width: 100rpx;" 
+			<image  mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/weather_icon/duoyun.png" class="weatherinfo_icon"  
 			v-if="weather == '多云'"></image>
 			<view class="weather" style="font-size: 28rpx;color: #333;">
-				<view class="weatherinfo gobyndsingle">{{area}} {{temperature}}℃  {{weather}}</view>
-				<view class="weathertime">{{reporttime}} {{w1}}</view>
+				<view class="weatherinfo gobyndsingle">{{area}} {{temperature}}℃  {{weather}}  {{reporttime}} {{w1}}</view>
 			</view>
 		</view>
 		
@@ -2272,5 +2271,17 @@ page{position: relative;background-color: #fff;}
 	border-radius: 10rpx;
 	margin: 10rpx 10rpx;
 	
+	}
+	
+	.content_block{
+		display: flex;
+		align-items: center;
+		padding-top: 20rpx;
+		padding-left: 40rpx;
+	}
+	
+	.weatherinfo_icon{
+		margin-right:20rpx;
+		width: 50rpx;
 	}
 </style>

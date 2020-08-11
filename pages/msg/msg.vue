@@ -185,8 +185,19 @@
 		},
 		onLoad() {
 			var that = this;
+			
+			that.abotapi.set_option_list_str(that, that.abotapi.getColor());
+			
+			var userInfo =  that.abotapi.get_user_info();
+			
+			if(!userInfo || !userInfo.userid){
+				var last_url = '/pages/msg/msg';
+				that.abotapi.goto_user_login(last_url, 'normal');
+				return;
+			}
+			
 			that.getLastMsg();
-			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
+			
 			that.abotapi.current_chat_gui = this;
 			that.abotapi.current_chat_handle = this;
 			that.abotapi.current_chat_page = '/pages/msg/msg';
@@ -195,7 +206,9 @@
 			
 			getLastMsg:function(){
 				var that = this;
+				
 				var userInfo = that.abotapi.get_user_info();
+				
 				uni.request({
 				     url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ChatData/chat_history',
 				     data: {

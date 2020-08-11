@@ -130,11 +130,10 @@
 }
 .kuai{
 	float: left;
-	width: 21%;
 	background: #fff;
 	margin: 10rpx 1.5%;
 	text-align: center;
-	padding: 10rpx 0px;
+	padding: 10rpx 20rpx;
 	border-radius: 10rpx;
 	border: 1rpx solid #a2a2a2;
 	height: 35rpx;
