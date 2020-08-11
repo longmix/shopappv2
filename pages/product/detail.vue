@@ -1473,8 +1473,8 @@ export default {
 	      share_path += '&userid='+userInfo.userid;
 	    }
 	
-	    var share_img = this.shop_info.icon;
-	
+	    var share_img = that.share_imageUrl;
+
 	    return {
 	      title: share_title + ' ￥' + that.goods_detail.price,
 	      path: share_path,
@@ -1488,10 +1488,31 @@ export default {
 	    }
 	},
 	onShareTimeline: function () {
+		var that = this;
+			
+		var share_title = that.goods_detail.name;
+		if(share_title.length > 22){
+		  share_title = share_title.substr(0, 20) + '...';
+		}
+			
+		var share_path = 'productid=' + that.productid + '&sellerid' + this.abotapi.get_sellerid();
+			
+		var userInfo = this.abotapi.get_user_info();
+			
+		if (userInfo && userInfo.userid) {
+		  share_path += '&userid='+userInfo.userid;
+		}
+			
+		var share_img = that.share_imageUrl;
 		
+		return {
+		    title: share_title + ' ￥' + that.goods_detail.price,
+		    query: share_path,
+		    imageUrl:share_img,
+		}
 	},
 	onAddToFavorites: function () {
-		//this.onShareTimeline();
+		this.onShareTimeline();
 	},
 	filters: {
 		/**

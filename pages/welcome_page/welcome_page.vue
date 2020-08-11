@@ -99,6 +99,9 @@ export default {
 			//按钮的数量控制字体和图片的大小
 			welcome_page_bottom_font_size:'30',
 			welcome_page_bottom_icon_size:'40',
+			
+			current_params_str:'',
+			wxa_share_img:''
 		};
 	},
 	onPageScroll: function (e) {
@@ -116,6 +119,27 @@ export default {
 	onLoad: function (options) {
 		
 		console.log('welcome welcome welcome ====>>123', options);
+		
+		//=====分析参数=====
+		if(options){
+		  var arr = Object.keys(options);
+		  var options_len = arr.length;
+				
+		  if (options_len > 0){
+			var params_str = '';
+				
+			for(var key in options){
+			  params_str += key+'='+options[key]+'&';
+			}
+			params_str = params_str.substr(0, params_str.length - 1);
+				
+			that.current_params_str = params_str;
+		  }
+		}
+		//===== End ======
+		
+		this.abotapi.set_option_list_str(this, this.__handle_option_list);
+		
 		if (options.scene != null) {
 			
 			//1、指定渠道
@@ -188,18 +212,56 @@ export default {
 		  }
 		}
 		
-		this.abotapi.set_option_list_str(this, this.__handle_option_list);
 		
 	},
 	onShow:function(){
 		
 	},
-	
+	onShareAppMessage: function () {
+		console.log('app.globalData.shop_name : ' + app.globalData.shop_name);
+		
+		var last_url = '/pages/welcome_page/welcome_page';
+		if(that.current_params_str.length > 5){
+			last_url = '/pages/welcome_page/welcome_page?'+that.current_params_str;
+		}
+		
+		
+		return {
+		  title: '' + this.data.current_title,
+		  path: last_url,
+		  success: function (res) {
+			// 分享成功
+		  },
+		  fail: function (res) {
+			// 分享失败
+		  }
+		}
+		
+	},
+	onShareTimeline: function () {
+		var last_url = '';
+		if(that.current_params_str.length > 5){
+			last_url = ''+that.current_params_str;
+		}
+		
+		var share_img = that.wxa_share_img;
+		
+		return {
+		    title: '' + this.data.current_title,
+		    query: last_url,
+		    imageUrl:share_img,
+		}
+		
+	},
+	onAddToFavorites: function () {
+		this.onShareTimeline();
+	},
 	
 	
 	methods: {
 		__handle_option_list:function(that, option_list){
-		    this.abotapi.getColor();
+		    that.abotapi.getColor();
+			
 			console.log('1222dsfsd23456',option_list);
 			
 			//获取自定义页面导航图标
@@ -236,7 +298,11 @@ export default {
 				
 			}
 			
-			
+			if (option_list.wxa_share_img) {
+				//分享转发图片
+			  
+			    that.wxa_share_img = option_list.wxa_share_img;
+			}
 			
 		    if(this.get_default_imgid && option_list && option_list.wxa_default_imgid_in_welcome_page){
 		      this.__get_img_from_weiduke(option_list.wxa_default_imgid_in_welcome_page, this);
@@ -547,34 +613,8 @@ export default {
 		console.log('start_and_stop_other_videos=====>>>>', e);
 		var video_id = e.currentTarget.dataset.id;
 	},
-	/**
-	   * 用户点击右上角分享
-	   */
-	  onShareAppMessage: function () {
-	    console.log('app.globalData.shop_name : ' + app.globalData.shop_name);
 	
-	    //var share_url = '/pages/index/index?sellerid=' + app.globalData.sellerid;
-	
-	    
-	    return {
-	      title: '' + this.data.current_title,
-	      //path: share_url,
-	      success: function (res) {
-	        // 分享成功
-	      },
-	      fail: function (res) {
-	        // 分享失败
-	      }
-	    }
-	
-	  },
-		onShareTimeline: function () {
-
-		},
-		onAddToFavorites: function () {
-		//this.onShareTimeline();
-		},
-	  videometa:function(e){
+	videometa:function(e){
 	    console.log('videometa======>>>>>', e);
 	
 	    var imgwidth = e.detail.width;

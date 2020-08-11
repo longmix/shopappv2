@@ -102,7 +102,7 @@
 									
 								</checkbox>
 						</checkbox-group>
-						<view>我已阅读并同意<text @click="knows" style="color: #007AFF;">《发布须知》</text></view>
+						<view>我已阅读并同意<text @click="knows" style="color: #007AFF;">《内容规范》</text></view>
 					</view>
 					<button formType="submit" :style="{backgroundColor:wxa_shop_nav_bg_color + ';font-size: 32upx'}" class="btn-row-submit">{{submit_text}}</button>
 				</form>
@@ -110,9 +110,9 @@
 				<!-- 发布须知的弹层 -->
 				<view class="zhezhao" v-if="know==true"></view>
 				<view class="kcrzxy" v-if="know==true">
-				    <view class="kcrzxyhd" :style="{background:wxa_shop_nav_bg_color + ';font-size:26upx;'}">发布须知</view>
+				    <view class="kcrzxyhd" :style="{background:wxa_shop_nav_bg_color + ';font-size:26upx;'}">内容规范</view>
 				    <scroll-view scrollY class="kcrzxybd" style="height: 600rpx;">
-				        <textarea :value="publish_write_fabu_xuzhi" style="width: 100%;" auto-height='true'></textarea>
+				        <textarea :value="publish_write_fabu_xuzhi" style="width: 100%;" auto-height='true' maxlength="-1"></textarea>
 				    </scroll-view>
 				    <view @click="knows" class="queren" :style="{background:wxa_shop_nav_bg_color + ';font-size:26upx;'}">确定</view>
 				</view>
@@ -159,6 +159,8 @@
 				submit_url:'', //即将提交表单的url 如果没有就用默认
 				wxa_shop_nav_bg_color:'',
 				publish_write_fabu_xuzhi:'',//发帖须知
+				
+				current_params_str:''
 			}
 			
 		},
@@ -174,9 +176,26 @@
 			
 		onLoad: function (options) {
 			console.log('sssssss',options)
+			
 			var that = this;
 			
-			
+			//=====分析参数=====
+			if(options){
+			  var arr = Object.keys(options);
+			  var options_len = arr.length;
+		
+			  if (options_len > 0){
+				var params_str = '';
+		
+				for(var key in options){
+				  params_str += key+'='+options[key]+'&';
+				}
+				params_str = params_str.substr(0, params_str.length - 1);
+		
+				that.current_params_str = params_str;
+			  }
+			}
+			//===== End ======
 			
 			this.form_typ = 3;
 			//console.log('options',options);
@@ -199,6 +218,7 @@
 			this.abotapi.set_option_list_str(that, function(that002, shop_option_data){
 				console.log('shop_option_data',shop_option_data);
 				that002.abotapi.getColor();
+				
 				that002.publish_write_fabu_xuzhi = shop_option_data.publish_write_fabu_xuzhi;
 				that002.wxa_shop_nav_bg_color = shop_option_data.wxa_shop_nav_bg_color;
 				
@@ -209,7 +229,13 @@
 			//判断登录
 			var userInfo = that.abotapi.get_user_info();		
 			if(!userInfo || !userInfo.userid){
-				var last_url = '/pages/publish/publish_write?classid='+this.formid+'&name='+this.catename+'&submit_url='+this.submit_url+'&form_type='+this.form_type;
+				
+				
+				//var last_url = '/pages/publish/publish_write?classid='+this.formid+'&name='+this.catename+'&submit_url='+this.submit_url+'&form_type='+this.form_type;
+				var last_url = '/pages/publish/publish_write';
+				if(that.current_params_str.length > 5){
+					last_url = '/pages/publish/publish_write?'+that.current_params_str;
+				}
 				
 				this.abotapi.goto_user_login(last_url, 'normal');
 								
@@ -438,8 +464,6 @@
 				// 微读客获取文章列表  				
 				that.abotapi.abotRequest({
 					url:url,
-					method:'POST',
-					header:{'Content-Type': 'application/x-www-form-urlencoded'},
 					data:post_data,
 					success(res) {
 						
