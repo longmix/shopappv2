@@ -58,7 +58,7 @@
 			</div>
 			<div class="flex flex-center2">
 				<!-- <button open-type="getUserInfo" @getuserinfo="wxLogin" class="btn-round bg-success icon-weixin"></button> -->
-				<button open-type="getPhoneNumber" plain="true" class="btn-round bg-success icon-weixin" @getphonenumber="btn_wxa_one_click_login"></button>
+				<button open-type="getPhoneNumber" plain="true" class="btn-round bg-success icon weixin-icon" @getphonenumber="btn_wxa_one_click_login"></button>
 			</div>
 			<!-- #endif -->
 			
