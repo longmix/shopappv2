@@ -62,7 +62,7 @@
 		    <view class="wx-popup-subtitle" style="display:none;"></view>
 		    <view class="wx-popup-con">
 		      
-		    <scroll-view scroll-y class="a-1" :scroll-left="scrollLeft" bindscrolltolower="lower" style="height: 600rpx;">     
+		    <scroll-view scroll-y class="a-1" :scroll-left="scrollLeft" bindscrolltolower="lower" style="text-align:left;">     
 		     <text>{{faquan_xieyi_content}}</text>
 		    </scroll-view>  
 		    </view>

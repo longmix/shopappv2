@@ -225,6 +225,10 @@
 		onLoad() {
 			var that = this;
 			
+			uni.setNavigationBarTitle({
+				title:'会员中心'
+			})
+			
 			that.about = '关于我们';
 			
 			// #ifdef H5

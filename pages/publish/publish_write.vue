@@ -319,10 +319,13 @@
 				input_value = encodeURIComponent(JSON.stringify(input_value));			
 				var userInfo = that.abotapi.get_user_info();
 				
+				var submit_url =  '';
+				var post_data = {}
+				
 				if(that.form_type == 1){//延誉宝会员扩展属性
-					var submit_url = that.abotapi.globalData.yanyubao_server_url+'index.php/Yanyubao/ShopAppWxa/user_set_ext_info_list';
+					submit_url = that.abotapi.globalData.yanyubao_server_url+'index.php/Yanyubao/ShopAppWxa/user_set_ext_info_list';
 					
-					var post_data = {
+					post_data = {
 						sellerid:that.abotapi.globalData.default_sellerid,
 						userid: userInfo.userid,
 						checkstr: userInfo.checkstr,
@@ -334,9 +337,9 @@
 					}
 					console.log(post_data);
 				}else if(that.form_type == 2){//微读客的万能表单
-					var submit_url = that.abotapi.globalData.weiduke_server_url+'index.php/openapi/SelfformData/submit_data_url_selfform';
+					submit_url = that.abotapi.globalData.weiduke_server_url+'index.php/openapi/SelfformData/submit_data_url_selfform';
 					
-					var post_data = {
+					post_data = {
 						token:that.cms_token,
 						formid:that.formid,
 						openid:this.abotapi.get_current_openid(),
@@ -347,9 +350,9 @@
 					}
 					
 				}else if(that.form_type == 3){//微读客的帖子
-					var submit_url = that.abotapi.globalData.weiduke_server_url+'index.php/openapi/ArticleImgApi/add_article_item';
+					submit_url = that.abotapi.globalData.weiduke_server_url+'index.php/openapi/ArticleImgApi/add_article_item';
 					
-					var post_data = {
+					post_data = {
 						classid:that.formid,
 						userid: userInfo.userid,
 						checkstr: userInfo.checkstr,
@@ -360,8 +363,9 @@
 					
 				}
 				
+				
 				if(that.submit_url){
-					var submit_url = that.submit_url;
+					submit_url = that.submit_url;
 				}
 				
 				that.abotapi.abotRequest({
@@ -376,9 +380,11 @@
 							
 							setTimeout(function(){
 								
-								uni.reLaunch({
+								/*uni.reLaunch({
 									url:"../publish/publish_list"
-								});
+								});*/
+								that.abotapi.call_h5browser_or_other_goto_url('/pages/index/index')
+								
 							},1000);
 						}else if(res.data.code == -1){
 							

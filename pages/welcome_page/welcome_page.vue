@@ -133,7 +133,7 @@ export default {
 			}
 			params_str = params_str.substr(0, params_str.length - 1);
 				
-			that.current_params_str = params_str;
+			this.current_params_str = params_str;
 		  }
 		}
 		//===== End ======

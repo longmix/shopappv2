@@ -356,7 +356,9 @@
 						//console.log('成功返回商户头条信息:' + res);
 						//console.log(mars.html2json(res.data.data.info));
 						var wz_keyword = res.data.data.keyword;
+						
 					  console.log('dddddd',res);
+						
 						that.wz_text = res.data.data;
 						that.wz_keyword2 = wz_keyword;
 						that.wz_title = res.data.data.title;
@@ -367,9 +369,19 @@
 						that.share_summary = res.data.data.text;
 						that.share_imageUrl = res.data.data.pic;
 						
-					  // uni.setNavigationBarTitle({
-					  //   title: res.data.data.title
-					  // })
+						//更改标题的内容
+						if(res.data.data.title){
+							if(res.data.data.title.length > 15){
+								uni.setNavigationBarTitle({
+									title: res.data.data.title.substring(0, 12)+'...'
+								})
+							}
+							else{
+								uni.setNavigationBarTitle({
+									title: res.data.data.title
+								})
+							}	
+						}
 					
 						var is_col = that.wz_text.is_col;
 						if (is_col && is_col == 1) {
@@ -426,7 +438,7 @@
 					success: function(res) {
 					// 分享成功
 						uni.showToast({
-							title: '转发成功',
+							title: '分享完成',
 							icon: 'success',
 							duration: 2000
 						})
@@ -434,7 +446,7 @@
 					fail: function(res) {
 						// 分享失败
 						uni.showToast({
-							title: '转发失败',
+							title: '分享失败',
 							icon: 'success',
 							duration: 2000
 						})

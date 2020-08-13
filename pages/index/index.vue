@@ -768,7 +768,9 @@ export default {
 			if(cb_params.option_list.wxa_shop_new_name){
 				uni.setNavigationBarTitle({
 					title:cb_params.option_list.wxa_shop_new_name
-				})
+				});
+				
+				that.abotapi.globalData.default_shopname = cb_params.option_list.wxa_shop_new_name
 			}
 			
 			that.wxa_shop_nav_bg_color  = cb_params.option_list.wxa_shop_nav_bg_color;
@@ -988,13 +990,15 @@ export default {
 			
 			that.call_back_get_shang_list();
 			
-			publish_list_api.get_publish_list(that,that.get_api_publish_list);				
+			if(that.abotapi.globalData.default_publish_list_count_in_front_page > 0){
+				publish_list_api.get_publish_list(that,that.get_api_publish_list);
+			}
 			
 		},
 		
 		get_api_publish_list:function(that,publishData){
 			//帖子列表
-			console.log('publishData',publishData);
+			console.log('publishData====>>>>',publishData);
 			
 			for(var i in publishData.index_list){
 				that.index_list.push(publishData.index_list[i]);

@@ -120,10 +120,31 @@
 				remarktext:'',
 				disabled:false,
 				animationData:'',
+				
+				current_params_str:'',
 			};
 		},
 		onLoad(options) {
 			var that = this;
+			
+			//=====分析参数=====
+			if(options){
+			  var arr = Object.keys(options);
+			  var options_len = arr.length;
+					
+			  if (options_len > 0){
+				var params_str = '';
+					
+				for(var key in options){
+				  params_str += key+'='+options[key]+'&';
+				}
+				params_str = params_str.substr(0, params_str.length - 1);
+					
+				this.current_params_str = params_str;
+			  }
+			}
+			//===== End ======
+			
 			var userInfo = this.abotapi.get_user_info();
 			
 			    
@@ -191,15 +212,30 @@
 	   * 用户点击右上角分享
 	   */
 		onShareAppMessage: function (res) {
-			
+			return {
+			  title: '' + this.video_data.title,
+			  path: '/cms/quanquan/quanquan_details?videoid=' + this.videoid,
+			  success: function (res) {
+				// 分享成功
+			  },
+			  fail: function (res) {
+				// 分享失败
+			  }
+			}
 		},
 		onShareTimeline: function () {
 			console.log('app.globalData.shop_name : '+app.globalData.shop_name);
 			
+			return {
+				title: this.video_data.title,
+				query: 'videoid=' + this.videoid, 
+				imageUrl:this.video_data.img_url
+			}
+			
 			return this.share_return();
 		},
 		onAddToFavorites: function () {
-			 return this.share_return();
+			 return this.onShareTimeline();
 		},
 	
 		/**
@@ -219,6 +255,19 @@
 	
 		
 		methods: {
+			check_user_login:function(){
+				//判断登录
+				var userInfo = this.abotapi.get_user_info();		
+				if(!userInfo || !userInfo.userid){
+					var last_url = '/cms/quanquan/quanquan_details?videoid=' + this.videoid;
+					
+					this.abotapi.goto_user_login(last_url, 'normal');
+					
+					return 0;				
+				}
+				
+				return 1;
+			},
 			
 			get_video_list_option:function(){
 				
@@ -247,7 +296,13 @@
 			  
 			  //下载视频
 			  saveVedio:function(e){
-				  console.log(e);
+				  console.log('saveVedio=====>>>>>', e);
+				  
+				  if(this.check_user_login() != 1){
+					  return;
+				  }
+				  
+				  
 			    var that = this;
 			
 			    var last_url = '/cms/quanquan/quanquan_details?videoid=' + that.videoid;
@@ -383,14 +438,6 @@
 			      }
 			    });
 			  },
-			  
-			share_return: function () {
-				return {
-					title: this.video_data.title,
-					query: 'videoid=' + this.videoid, 
-					imageUrl:this.video_data.img_url
-				}
-			},
 			
 			//app  分享点击
 			click_wxa_share:function (){
@@ -426,6 +473,10 @@
 			},
 			  
 			sendRemark:function(){
+				if(this.check_user_login() != 1){
+					return;
+				}
+				
 				var that = this;
 			  
 				var last_url = '/cms/quanquan/quanquan_details?videoid=' + that.videoid;
@@ -478,6 +529,10 @@
 			  
 			  
 			    collectVedio:function(e){
+					if(this.check_user_login() != 1){
+						return;
+					}
+					
 			      var that = this;
 			  
 			      var last_url = '/cms/quanquan/quanquan_details?videoid=' + that.videoid;
