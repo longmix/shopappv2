@@ -1,6 +1,12 @@
 <template>
-	<view>
-        <view class="chat-list">
+	<view class="chat_main">
+        <view class="chat_empty" v-if="latestMsgList_count == 0">
+			<image src="https://yanyubao.tseo.cn/Tpl/static/images/empty_remark.png"
+				mode="widthFix"
+				style="max-width: 80%; width:300rpx; margin: 50rpx auto;display: block;"></image>
+			<view style="display: block;width: 100%;text-align: center;font-size: 20px;color: #5a5a5a;">暂无消息</view>
+		</view>
+		<view class="chat-list" v-else>
 			<view class="chat" v-for="(chat,index) in latestMsgList" :key="index" v-if="chat.chat_type == 1">
 				<view class="row" @tap="toChat(chat)">
 					<view class="left">
@@ -174,7 +180,8 @@
 					}
 
 				],
-				latestMsgList: []
+				latestMsgList: [],
+				latestMsgList_count: 0
 			}
 		},
 		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
@@ -230,8 +237,12 @@
 							
 							that.latestMsgList = data.data
 							
+							that.latestMsgList_count = that.latestMsgList.length;
+							
 						 } else {
 							 that.latestMsgList = [];
+							 
+							 that.latestMsgList_count = 0;
 						 }
 						 
 						 uni.setStorageSync('latestMsgList_cache',that.latestMsgList);
@@ -259,8 +270,8 @@
 </script>
 
 <style  lang="scss">
-	page{
-		background-color: rgba(0,0,0,0);
+	.chat_main{
+		background-color: rgba(255, 255, 255, 0);
 	}
 	.chat-list{
 		width: 94%;

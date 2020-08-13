@@ -507,7 +507,9 @@
 				        console.log('条码内容：' + res.result);
 						
 						var result = res.result;
-						if ((result.indexOf('http://') == 0)||(result.indexOf('https://') == 0)){
+						if ((result.indexOf('http://') == 0)
+							||(result.indexOf('https://') == 0)
+							||(result.indexOf('/') == 0)){
 							var var_list = Object();
 							that.abotapi.call_h5browser_or_other_goto_url(result, var_list);
 						}else{

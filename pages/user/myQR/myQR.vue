@@ -8,7 +8,7 @@
 				<image :src="qrcode_url"></image>
 			</view>
 			<view class="title" :style="{backgroundColor:wxa_shop_nav_bg_color,fontColor:wxa_shop_nav_font_color}">
-				扫描二维码，加我好友
+				请用手机扫描二维码
 			</view>
 			<view class="btn" v-show="showBtn" @tap="printscreen">
 				{{tis}} 
@@ -63,17 +63,35 @@
 		methods:{
 			
 			getImg:function(){
-				var userInfo = this.abotapi.get_user_info();
+				//var userInfo = this.abotapi.get_user_info();
 				var that = this;
-				uni.request({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_my_qrcode',
-					method:'post',
-					data: {
+				
+				//判断登录
+				var userInfo = this.abotapi.get_user_info();		
+				if(!userInfo || !userInfo.userid){
+					var last_url = '/pages/user/myQR/myQR';
+					
+					this.abotapi.goto_user_login(last_url, 'normal');
+					
+					return;				
+				}
+				
+				var post_data = {
 						sellerid: this.abotapi.get_sellerid(),
 						checkstr: userInfo.checkstr,
 						userid: userInfo.userid,
 						appid: this.abotapi.globalData.xiaochengxu_appid,
-					},
+					};
+					
+				// #ifdef MP-ALIPAY
+				post_data.qrcode_type = 'normal_qrcode';
+				// #endif
+				
+				
+				uni.request({
+					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_my_qrcode',
+					method:'post',
+					data: post_data,
 					header: {
 						'Content-Type':  'application/x-www-form-urlencoded'
 					},
