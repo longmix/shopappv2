@@ -142,7 +142,17 @@
 				this.url = 'https://www.abot.cn'
 			}
 		
-		    },
+		},
+		onNavigationBarButtonTap:function(e){
+			console.log('onNavigationBarButtonTap=====>>>>', e);
+			
+			console.log(e.text);//提交
+			console.log(e.fontSize);//16px
+			
+			if(e.text == '首页'){
+				this.abotapi.call_h5browser_or_other_goto_url('/pages/index/index');
+			}
+		},
 		methods: {
 			
 		}

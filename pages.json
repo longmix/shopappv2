@@ -318,8 +318,18 @@
 						"backgroundColor888":"#f37404",
 						"titlecolor888":"#ffffff",
 						"autoBackButton":true,
-						"homeButton":true,
-						"splitLine888":{ "color":"#e9e9e9" } 					
+						"homeButton888":true,
+						"splitLine888":{ "color":"#e9e9e9" },
+						"buttons":[
+							{
+								"text":"首页",
+								"type":"none",
+								"color":"#FFFFFF",
+								"background":"#000000",
+								"fontSize":"16px",
+								"float":"right"
+							}
+						]
 					} ,//禁用原生导航栏
 					"softinputNavBar":"none",
 					"subNVues888":[{
@@ -536,7 +546,7 @@
 		    "path" : "pages/live/live-pusher",
 		    "style" : {
 		    	"navigationBarTitleText":"主播控制台",
-		    	"navigationBarBackgroundColor":"#1569DB",
+		    	//"navigationBarBackgroundColor":"#1569DB",
 				"navigationBarTextStyle":"white"
 				
 		    }
