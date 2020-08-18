@@ -17,11 +17,11 @@
 		        <section class="aui-scrollView">
 		            <div class="aui-flex b-line">
 		                <div class="aui-flex-user">
-		                    <image src="../../static/img/VIP.png"></image>
+		                    <image :src="citizen_detail.head_icon"></image>
 		                </div>
 		                <div class="aui-flex-box">
-		                    <h2>张阿三</h2>
-		                    <p>13312341234</p>
+		                    <h2>{{citizen_detail.name}}</h2>
+		                    <p>{{citizen_detail.mobile}}</p>
 		                </div>
 		            </div>
 		           <!-- <div class="aui-palace">
@@ -44,45 +44,27 @@
 		                    </div>
 		                </a>
 		            </div> -->
-		            <div class="aui-det-list">
-		                <a href="javascript:;" class="aui-flex b-line">
-		                    <div class="aui-flex-box">
-		                        <h2>详细地址</h2>
-		                    </div>
-		                    <div class="aui-arrow">
-		                        <p>上海市 浦东新区 xxxx</p>
-		                    </div>
-		                </a>
-		                <a href="javascript:;" class="aui-flex b-line">
-		                    <div class="aui-flex-box">
-		                        <h2>类型</h2>
-		                    </div>
-		                    <div class="aui-arrow">
-		                        <p>精神</p>
-		                    </div>
-		                </a>
-		                <a href="javascript:;" class="aui-flex b-line">
-		                    <div class="aui-flex-box">
-		                        <h2>性别</h2>
-		                    </div>
-		                    <div class="aui-arrow">
-		                        <p>男</p>
-		                    </div>
-		                </a>
-		                
-		            </div>
+		            <view class="aui-det-list">
+		                <view href="javascript:;" class="aui-flex b-line" v-for="(item,index) in citizen_detail.detail_list" :key="index">
+		                    <view class="aui-flex-box">
+		                        <view>{{item.name}}</view>
+		                    </view>
+		                    <view class="aui-flex-box" style="text-align: right;">
+		                        <view>{{item.value}}</view>
+		                    </view>
+		                </view>
+						
+		            </view>
 					
-					<view style="text-align: center;">
-						<view class="aui-footer aui-footer-fixed">
-						    <view class="aui-tabBar-item ">
-						        打卡
-						    </view>
+					<view style="text-align: center;" v-if="citizen_detail.buttons">
+						<view class="aui-footer aui-footer-fixed"  v-for="(item,index) in citizen_detail.buttons" :key="index">
+						    <navigator :url="item.url">
+								<view class="aui-tabBar-item " :style="{'backgroundColor':btn_bg_color}">
+									{{item.name}}
+								</view>
+							</navigator>
 						</view>
-						<view class="aui-footer aui-footer-fixed">
-						    <view class="aui-tabBar-item ">
-						        打卡记录
-						    </view>
-						</view>
+						
 					</view>
 					
 		
@@ -99,17 +81,25 @@
 			return {
 				citizen_userid:'',
 				citizen_detail_url:'http://192.168.0.205/yanyubao_web/yidaozhucan_server/index.php/openapi/UserApi/get_member_detail',
+				citizen_detail:[],
+				btn_bg_color:'',
 			}
 		},
 		
 		onLoad(options) {
+			
 			if(options.userid){
 				this.citizen_userid = options.userid;
+			}
+			
+			if(options.citizen_detail_url){
+				this.citizen_userid = options.citizen_detail_url;
 			}
 			
 			
 			this.get_citizen_detail();
 			
+			this.abotapi.set_option_list_str(this, this.call_back_set_option);
 		},
 		onReady(){
 			
@@ -126,6 +116,33 @@
 			
 		},
 		methods: {
+			
+			call_back_set_option:function(that, cb_params){
+				
+				//状态未固定或者不固定时候的导航条样式
+				console.log('====>',that.abotapi.globalData.navigationBarBackgroundColor_fixed);
+				if(that.abotapi.globalData.navigationBarBackgroundColor_fixed == 1){
+					uni.setNavigationBarColor({
+						backgroundColor:that.abotapi.globalData.navigationBar_bg_color,
+						frontColor:that.abotapi.globalData.navigationBar_font_color,
+					})
+					
+					that.btn_bg_color = that.abotapi.globalData.navigationBar_bg_color;
+					
+				}else{
+					uni.setNavigationBarColor({
+						backgroundColor:cb_params.wxa_shop_nav_bg_color,
+						frontColor:cb_params.wxa_shop_nav_font_color,
+					})
+					
+					that.btn_bg_color = cb_params.wxa_shop_nav_bg_color;
+				}
+				
+				
+				
+				console.log('cb_params',cb_params);
+			},
+			
 			get_citizen_detail:function(){
 				
 				var that = this;
@@ -136,11 +153,12 @@
 						sellerid: that.abotapi.globalData.default_sellerid,
 						checkstr: 123456,
 						citizen_userid: this.citizen_userid,
+						userid:'123',
 					},
 					success: function (res) {
 						
 						if(res.data.code == 1){
-							that.citizen_list = res.data.data;
+							that.citizen_detail = res.data.data;
 						}else{
 							uni.showToast({
 								title:'获取失败'
@@ -474,7 +492,6 @@
 	    width: 180rpx;
 	    height: 180rpx;
 	    margin-right: 0.8rem;
-	    margin-top: -30rpx;
 	}
 	
 	.aui-flex-user image {
@@ -579,12 +596,12 @@
 	
 	.aui-arrow {
 	    text-align: right;
-	    color: #808080;
-	    padding-right: 26rpx;
+	    color: #333;
+	    padding-right: 28rpx;
 	    position: relative;
 	}
 	
-	.aui-arrow:after {
+	/* .aui-arrow:after {
 	    content: " ";
 	    display: inline-block;
 	    height: 16rpx;
@@ -602,7 +619,7 @@
 	    right: 4rpx;
 	    border-radius: 2rpx;
 	}
-	
+	 */
 	.tab-nav {
 	    height: 80rpx;
 	    line-height: 80rpx;
