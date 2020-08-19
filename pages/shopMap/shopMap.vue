@@ -2,7 +2,7 @@
 	<view>
 		<view class="map_container"> 
 		  <!-- <map class="map" id="map" longitude="121.159498" latitude="31.24321" scale="14" show-location="true" markers="{{markers}}" bindmarkertap="makertap"></map>  -->
-		  <map class="map" id="map" :longitude="longitude" :latitude="latitude" scale="14" show-location="true" :markers="markers" bindmarkertap="makertap"></map> 
+		  <map class="map" id="map" :longitude="longitude" :latitude="latitude" scale="14" show-location="true" :markers="markers" bindmarkertap="map_tap"></map> 
 		</view> 
 		
 		<view class="btm">
@@ -20,48 +20,112 @@
 	var bmap = require('../../common/SDK/bmap-wx.js');
 	var wxMarkerData = [];
 	
+	var locationapi = require('../../common/locationapi.js');
+	
 	
 	export default {
 		data() {
 			return {
 				markers: [],
-				latitude: '',
-				longitude: '',
+				
+				//腾讯地图的坐标点
+				qqmap_latitude: '',
+				qqmap_longitude: '',
+				
+				//百度地图的坐标点
+				bmap_latitude: '',
+				bmap_longitude: '',
+				
+				
+				from_page:1,
+				
 				rgcData: {},
 				detail:[],
 				shopInfo: {}
 			}
 		},
+		/**
+		 * 
+		 * @param {Object} options
+		 * 
+		 * 参数：
+		 * longitude 百度地图的经度
+		 * latitude 百度地图的纬度
+		 * 
+		 * from_page 选填，来自哪个功能模块， 1 商家详情页面 2 会员卡页面 3 打开签到页面
+		 * 
+		 * address 必填，详细地址
+		 * name  商户名称
+		 * telephone  商户电话
+		 * 
+		 * 
+		 * 
+		 */
 		onLoad(options){
-			var that = this;	
-			this.abotapi.set_option_list_str(that,that.abotapi.getColor());
-			var markers = [];		
-			var res = that.abotapi.bMapToQQMap(options.longitude,options.latitude);
-			options.longitude = res[0];
-			options.latitude = res[1];
+			//var that = this;
 			
-			markers.push(options);
+			this.abotapi.set_option_list_str(this, this.abotapi.getColor());
+			
+			//记录百度地图的坐标点
+			this.bmap_latitude = options.latitude
+			this.bmap_longitude = options.longitude	
+			
+			
+			var markers = [];		
+			var res = this.abotapi.bMapToQQMap(this.bmap_longitude, this.bmap_latitude);
+			
+			this.qqmap_latitude = res[1]
+			this.qqmap_longitude = res[0]	
+			
+			markers.push({'id':0, longitude':this.qqmap_longitude, 'latitude':this.qqmap_latitude});
+			//markers.push({'id':1, longitude':that.qqmap_longitude, 'latitude':that.qqmap_latitude});
 						
-			that.markers = markers;
-			that.shopInfo = options;
-			that.latitude = options.latitude
-			that.longitude = options.longitude		
+			this.markers = markers;
+			this.shopInfo = options;
+			
+			
+			this.from_page = options.from_page;
+			
 		},
 		methods: {
-			  seeRoute:function(e){
-			    var latitude = parseFloat(this.markers[0].latitude)
-			    var longitude = parseFloat(this.markers[0].longitude)
-			    uni.openLocation({
-			      latitude,
-			      longitude,
-			      scale: 18
-			    })
-			  },
-			  call_seller: function () {			      
+			map_tap:function(e){
+				
+			},
+			seeRoute:function(e){
+				  
+				if((this.from_page == 1) || (this.from_page == 2)  ){
+					//进图导航功能
+					var latitude = parseFloat(this.markers[0].latitude);
+					var longitude = parseFloat(this.markers[0].longitude);
+					
+					uni.openLocation({
+					  latitude,
+					  longitude,
+					  scale: 18
+					})
+					
+				}
+				else if(this.from_page == 3){
+					//进去打卡签到功能
+					
+					//打卡的目标GPS
+					var latitude = this.bmap_latitude;
+					var longitude = this.bmap_longitude;
+					
+					locationapi.get_location(this, function(that001, locationData){
+						//ajax请求，保存签到数据
+					})
+					
+					
+				}
+			    
+				
+			},
+			call_seller: function () {			      
 			      uni.makePhoneCall({
 			  		phoneNumber: this.shopInfo.telephone,
 			      })
-			  },
+			},
 		}
 		
 	};
