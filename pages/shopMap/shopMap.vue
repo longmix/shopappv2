@@ -2,14 +2,15 @@
 	<view>
 		<view class="map_container"> 
 		  <!-- <map class="map" id="map" longitude="121.159498" latitude="31.24321" scale="14" show-location="true" markers="{{markers}}" bindmarkertap="makertap"></map>  -->
-		  <map class="map" id="map" :longitude="longitude" :latitude="latitude" scale="14" show-location="true" :markers="markers" bindmarkertap="map_tap"></map> 
+		  <map class="map" id="map" :longitude="qqmap_longitude" :latitude="qqmap_latitude" scale="14" show-location="true" :markers="markers" bindmarkertap="map_tap"></map> 
 		</view> 
 		
 		<view class="btm">
 			<view class="name">{{shopInfo.name}}</view>
 			<view class="adderss">{{shopInfo.address}}</view>
 			<view class="adderss" @tap="call_seller">{{shopInfo.telephone}}</view>
-			<view @tap="seeRoute" class="seeroute">到这去</view>
+			<view v-if="from_page == 1 || from_page == 2" @tap="seeRoute" class="seeroute">到这去</view>
+			<view v-else-if="from_page == 3" @tap="seeRoute" class="seeroute">打卡</view>
 		</view>
 		
 	</view>
@@ -67,25 +68,31 @@
 			this.abotapi.set_option_list_str(this, this.abotapi.getColor());
 			
 			//记录百度地图的坐标点
-			this.bmap_latitude = options.latitude
-			this.bmap_longitude = options.longitude	
+			this.bmap_latitude = options.latitude;
+			this.bmap_longitude = options.longitude;
 			
 			
 			var markers = [];		
 			var res = this.abotapi.bMapToQQMap(this.bmap_longitude, this.bmap_latitude);
 			
-			this.qqmap_latitude = res[1]
-			this.qqmap_longitude = res[0]	
+			this.qqmap_latitude = res[1];
+			this.qqmap_longitude = res[0];
 			
-			markers.push({'id':0, longitude':this.qqmap_longitude, 'latitude':this.qqmap_latitude});
+			markers.push({
+							'id':0,
+			                'latitude': this.qqmap_latitude,
+			                'longitude': this.qqmap_longitude,
+							
+			            });
+			//markers.push({'longitude':this.qqmap_longitude, 'latitude':this.qqmap_latitude});
 			//markers.push({'id':1, longitude':that.qqmap_longitude, 'latitude':that.qqmap_latitude});
-						
+					
 			this.markers = markers;
 			this.shopInfo = options;
 			
 			
 			this.from_page = options.from_page;
-			
+			console.log('this.from_page',this.from_page);
 		},
 		methods: {
 			map_tap:function(e){
@@ -114,6 +121,45 @@
 					
 					locationapi.get_location(this, function(that001, locationData){
 						//ajax请求，保存签到数据
+						var userInfo = that001.abotapi.get_user_info();
+						
+						var lbs02 = [];
+						lbs02['latitude'] = that001.bmap_latitude;
+						lbs02['longitude'] = that001.bmap_longitude;
+						
+						var lbs_json = encodeURIComponent(JSON.stringify(lbs02));
+						console.log('lbs_json==>',lbs_json);
+						//checkin_latitude  checkin_longitude 受助者的坐标地址
+						var post_data = {
+							sellerid:that001.abotapi.globalData.default_sellerid,
+							userid:123456,
+							latitude:locationData.latitude,
+							longitude:locationData.longitude,
+							city:locationData.addressComponent.city,
+							address:locationData.address,
+							lbs02:lbs_json,
+						}
+						
+						//签退的时候
+						if(0){
+							post_data.tongji_key = 'checkout';
+						}else if(1){
+							post_data.tongji_key = 'checkin';
+						}
+						
+						
+						
+						
+						that001.abotapi.abotRequest({
+							url: 'http://192.168.0.205/yanyubao_server/index.php/openapi/LbsCheckinData/set_data_tongji',
+							method: 'post',
+							data: post_data,
+							success: function (res) {
+								console.log(res);
+							}
+						})
+						
+						console.log('=>',locationData);
 					})
 					
 					

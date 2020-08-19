@@ -575,6 +575,12 @@
 		},{
 			"path" : "pages/member/detail",
 			"style" : {}
+		},{
+			"path" : "pages/checkin/checkin",
+			"style" : {}
+		},{
+			"path" : "pages/checkin/history",
+			"style" : {}
 		}
     ],	
 	"condition" : { //模式配置，仅开发期间生效

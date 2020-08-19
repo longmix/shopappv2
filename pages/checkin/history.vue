@@ -7,103 +7,58 @@
 					<i class="icon icon-return"></i>
 				</a>
 				<view class="aui-center">
-					<text class="aui-center-title">用户列表</text>
+					<text class="aui-center-title">打卡</text>
 				</view>
 				<a href="javascript:;" class="aui-navBar-item">
 					<i class="icon icon-sys"></i>
 				</a>
 			</view>
 			<!-- #endif -->
-		            <view class="aui-scrollView">
-		                <view class="aui-extreme">
-							<!-- 开始 -->
-							
-							<block v-for="(item,index) in citizen_list" :key="index">
-								
-								<view class="aui-extreme-item">
-									<navigator :url="'detail?userid='+item.userid">
-										<view class="aui-flex aui-flex-pic">
-											<view class="aui-flex-eme">
-												<image :src="item.head_icon"></image>
-											</view>
-											<view class="aui-flex-box">
-												<h2>{{item.name}}</h2>
-												<p>{{item.mobile}}</p>
-											</view>
-											<view class="aui-hot">
-												<image src="https://www.17sucai.com/preview/1268063/2018-12-05/extreme/images/icon-hot.png"></image>
-											</view>
-										</view>
-									</navigator>
-								    <view class="aui-palace" v-if="item.balance">
-								        <view href="javascript:;" class="aui-palace-grid">
-								            <view class="aui-palace-grid-text">
-								                <h2 class="red">￥{{item.balance.yue}}</h2>
-								                <p>可用余额(元)</p>
-								            </view>
-								        </view>
-								        <view href="javascript:;" class="aui-palace-grid">
-								            <view class="aui-palace-grid-text">
-								                <h2>￥{{item.balance.zengkuan}}</h2>
-								                <p>可用赠款(元)</p>
-								            </view>
-								        </view>
-								        <view href="javascript:;" class="aui-palace-grid">
-								            <view class="aui-palace-grid-text">
-								                <h2>{{item.balance.jifen}}</h2>
-								                <p>可用赠款积分</p>
-								            </view>
-								        </view>
-								    </view>
-									 
-									<view class="server_btn_list">
-									    <view href="javascript:;" :style="{'backgroundColor':btn_bg_color}" class="server_btn_style" v-for="(btn_item,btn_index) in item.buttons" :key="btn_index">
-									       <navigator :url="btn_item.url">
-												<view class="server_btn_font_style">
-													<p>{{btn_item.name}}</p>
-												</view>
-											</navigator>
-									    </view>
-									</view>
-								</view>
-								
-							</block>
-							
-							
-							
-							<!-- 结束 -->
-		                </view>
-		            </view>
-		        </view>
+			<view>
+				<map  style="width: 100%; height: 300px;" :longitude="longitude" :latitude="latitude" :markers="covers"></map>
+				
+			</view>
+		</view>
 	</view>
 </template>
 
 <script>
 	
-	
+	import locationapi from '../../common/locationapi.js'
 	
 	export default {
 		data() {
 			return {
-				//citizen_list_url:'https://app.tseo.cn/zhucan/openapi/UserApi/get_member_list',
-				citizen_list_url:'http://192.168.0.205/yanyubao_web/yidaozhucan_server/index.php/openapi/UserApi/get_member_list', //获取数据的api
-				citizen_list :[], //数据
-				btn_bg_color:'', //按钮颜色
+				longitude:'',
+				latitude:'',
+				covers: [ {
+				                latitude: '',
+				                longitude: '',
+				                iconPath: '../../static/img/addricon.png',
+								width:'50rpx',
+								height:'60rpx',
+				            }]
 			}
 		},
 		
 		onLoad(options) {
+			var that = this
+			uni.getLocation({
+			    type: 'gcj02',
+			    success: function (res) {
+			        console.log('当前位置的经度：' + res.longitude);
+			        console.log('当前位置的纬度：' + res.latitude);
+					that.longitude = res.longitude;
+					that.latitude = res.latitude;
+					that.covers[0].longitude = res.longitude;
+					that.covers[0].latitude = res.latitude;
+			    }
+			});
 			
-			//如果带了citizen_list_url 参数就会覆盖data 的citizen_list_url
-			if(options.citizen_list_url){
-				this.citizen_list_url = options.citizen_list_url;
-			}
 			
-			this.get_citizen_list();
+			locationapi.get_location_remove();
 			
-			//获取配置项
-			this.abotapi.set_option_list_str(this, this.call_back_set_option);
-			
+			locationapi.get_location(this,this.get_locations);
 		},
 		onReady(){
 			
@@ -123,7 +78,13 @@
 			this.statusTop = e.scrollTop>=0?null:-this.statusHeight+'px';
 		},
 		methods: {
-			
+			get_locations:function(that,locationData){
+				console.log('locationData=====>',locationData);
+				that.longitude = locationData.longitude;
+				that.latitude = locationData.latitude;
+				that.covers[0].longitude = locationData.longitude;
+				that.covers[0].latitude = locationData.latitude;
+			},
 			call_back_set_option:function(that, cb_params){
 				
 				//状态未固定或者不固定时候的导航条样式
