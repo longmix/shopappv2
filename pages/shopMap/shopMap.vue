@@ -70,7 +70,7 @@
 			//记录百度地图的坐标点
 			this.bmap_latitude = options.latitude;
 			this.bmap_longitude = options.longitude;
-			
+			console.log('this.bmap_latitude',this.bmap_latitude);
 			
 			var markers = [];		
 			var res = this.abotapi.bMapToQQMap(this.bmap_longitude, this.bmap_latitude);
@@ -123,13 +123,15 @@
 						//ajax请求，保存签到数据
 						var userInfo = that001.abotapi.get_user_info();
 						
-						var lbs02 = [];
-						lbs02['latitude'] = that001.bmap_latitude;
-						lbs02['longitude'] = that001.bmap_longitude;
+						var lbs02 = {
+							latitude:latitude,
+							longitude:longitude,
+						};
+						var lbs_json = encodeURIComponent(JSON.stringify(lbs02))
 						
-						var lbs_json = encodeURIComponent(JSON.stringify(lbs02));
-						console.log('lbs_json==>',lbs_json);
+						
 						//checkin_latitude  checkin_longitude 受助者的坐标地址
+						
 						var post_data = {
 							sellerid:that001.abotapi.globalData.default_sellerid,
 							userid:123456,

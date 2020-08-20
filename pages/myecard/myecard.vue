@@ -133,7 +133,7 @@
 		</view>
 		
 		<view class="weizhi_msg">
-			<view style='font-size:15px;position:relative;' @tap='shangPhoneClick' v-if="ecard_option_list.ecard_show_index_phone == 1">
+			<view style='font-size:15px;position:relative;margin:10px;' @tap='shangPhoneClick' v-if="ecard_option_list.ecard_show_index_phone == 1">
 				<image src="https://yanyubao.tseo.cn/Tpl/static/ecard_module/mobile.png" style="width:30px;height:30px;margin-left:-5px;"></image>
 				<view style='position:absolute;top:5px;left:35px;'>{{current_user_card_data.shang_telephone}}</view>
 			</view>
@@ -213,7 +213,8 @@
 				list_two:[],
 				list_first:[],
 				head_img:'',
-				bg_img:''
+				bg_img:'',
+				
 			}
 		},
 		onLoad(options) {
@@ -423,7 +424,6 @@
 					}
 					
 					
-					
 					console.log(22222222222222222222);
 					console.log('2222222222222222222233333',res.data);
 					
@@ -544,12 +544,17 @@
 			openLocation: function() {
 
 				//var value = e.detail.value
-				uni.openLocation({
-					longitude: Number(this.data.longitude),
-					latitude: Number(this.data.latitude)
+				// uni.openLocation({
+				// 	longitude: Number(this.data.longitude),
+				// 	latitude: Number(this.data.latitude)
+				// })
+				
+				var data = this.current_user_card_data;
+				
+				uni.navigateTo({
+					url:'../shopMap/shopMap?from_page=2&latitude='+data.latitude+'&longitude='+data.longitude + '&name='+data.shang_name+'&address='+data.shang_address+'&telephone='+data.shang_telephone
 				})
 			},
-
 
 			
 			//商户头条

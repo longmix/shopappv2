@@ -71,22 +71,7 @@ export default {
 		  success: (res) => {
 			  console.log('set_plan_video_live=====',res)
 			  let data = res.data;
-			if(data.code == 1){
-					
-				console.log('data.pusher_url==',data.pusher_url)
-				this.pusher = plus.video.createLivePusher("livepusher", {    
-				// url:'rtmp://101619.livepush.myqcloud.com/live/tengyumall?txSecret=e809b255904e3bce90dcadd1bab34018&txTime=5EFAECD4',    
-				 url: data.pusher_url,
-				 //url: 'rtmp://101619.livepush.myqcloud.com/live/live_71297?txSecret=2d0f51a4be51b243c55b211e0223a4ea&txTime=5EE1F571',
-				top:'0px',    
-				left:'0px',    
-				width: '100%',    
-				height: '375px',
-				position: 'static'    
-				});
-				currentWebview.append(this.pusher); 
 			
-			}
 			
 			
 		  },
