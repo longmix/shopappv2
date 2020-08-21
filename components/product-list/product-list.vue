@@ -1,25 +1,7 @@
 <template>
 	<view class="goods-list">
 		<view class="product-list">
-			<!-- cataid传值时 -->
-			<block v-if="cataid && item.cataid == cataid">
-				<view class="product"  v-for="(item,indexs) in productsList" :key="indexs" @click="toGoods(item)">
-					
-					<image class="shouqing" v-if="item.inventory == 0" src="https://yanyubao.tseo.cn/Tpl/static/images/shouqing.png" ></image>
-					<image mode="widthFix" :src="item.picture"></image>
-					<view class="name">{{item.name}}</view>
-					<view class="kucun-sale" v-if="showKucunSale==1">
-						<view>销量：{{item.sale_volume}}</view>
-						<view>库存：{{item.inventory}}</view>
-					</view>
-					<view class="info">
-						<view class="price">￥ {{item.price}}</view>
-						<!-- <view class="slogan">{{item.seller_name}}</view> -->
-					</view>
-				</view>
-			</block>
-			<!-- cataid没有传值时 -->
-			<block v-else>
+	
 				<view class="product"  v-for="(item,indexs) in productsList" :key="indexs" @click="toGoods(item)">
 					
 					<image class="shouqing" v-if="item.inventory == 0" src="https://yanyubao.tseo.cn/Tpl/static/images/shouqing.png" ></image>
@@ -34,9 +16,9 @@
 						<!-- <view class="slogan">{{item.seller_name}}</view> -->
 					</view>
 				</view>
-			</block>
+
 		</view>
-		<view v-if="!productsList" class="loading-text">{{loadingText}}</view>
+		
 	</view>
 </template>
 
@@ -76,15 +58,6 @@
 			color:#999;
 		}
 		
-		.loading-text{
-			width: 100%;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			// height: 60upx;
-			color: #979797;
-			font-size: 24upx;
-		}
 		.product-list{
 			width: 92%;
 			padding: 0 4% 3vw 4%; 

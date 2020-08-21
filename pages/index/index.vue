@@ -1998,9 +1998,10 @@ page{position: relative;background-color: #fff;}
 }
 
 .toutiao_left image{
-  width:80rpx;
-  height:80rpx;
+  width:55rpx;
+  height:55rpx;
   float:left;
+  margin: 15px;
 }
 
 .toutiao_right{

@@ -462,7 +462,11 @@ export default {
 			share_imageUrl:'',
 			share_href:'',
 			share_summary:'',
-			share_titles:''
+			share_titles:'',
+			
+			//商品的来源渠道，默认0为SaaS云平台的商品，1为淘宝客等推广联盟的商品
+			product_source_channel:0,
+			product_channel_name:'',	// jingdong / taobao / pinduoduo
 		};
 	},
 	onLoad(option) {
@@ -503,22 +507,27 @@ export default {
 		that.options_str = options_str ;
 		
 		
+		//渠道商品 2020.8.21.
+		if(!this.abotapi.isNullOrUndefined(option.product_source_channel)){
+			this.product_source_channel = option.product_source_channel;
+			
+			this.product_channel_name = option.product_channel_name;
+		}
 		
-		this.get_yanyubao_goods_recommend('recommend');
-		this.get_yanyubao_goods_recommend('hot');
+		
+		var detail_url = this.abotapi.globalData.yanyubao_server_url +  '?g=Yanyubao&m=ShopAppWxa&a=product_detail';
+		var detail_data = {productid:this.productid};
+		
+		if(this.product_source_channel == 1){
+			detail_url = this.abotapi.globalData.yanyubao_server_url +  'openapi/UnionPromotionData/get_product_detail';
+			detail_data.union_name = this.product_channel_name;
+		}
+		
 		
 		
 		this.abotapi.abotRequest({
-			
-		    url: this.abotapi.globalData.yanyubao_server_url +  '?g=Yanyubao&m=ShopAppWxa&a=product_detail',
-		    method: 'POST',
-		    data: {
-				productid:this.productid
-		    },
-			
-		    header: {
-				'Content-Type': 'application/x-www-form-urlencoded'
-		    },
+		    url: detail_url,
+		    data: detail_data,		    
 		    success: function (res) {
 				console.log('5555588558===', res);
 				
@@ -626,6 +635,10 @@ export default {
 		    },
 
 		});
+		
+		
+		this.get_yanyubao_goods_recommend('recommend');
+		this.get_yanyubao_goods_recommend('hot');
 
 		if (userInfo && userInfo.userid){
 			this.abotapi.abotRequest({
