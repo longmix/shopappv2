@@ -113,10 +113,15 @@
 						if(res.data.code == 1) { 
 							// var that = this;
 							that.categoryList = res.data.data;
+							
 							that.showCategoryIndex = 0;
-							console.log("categoryList",that.categoryList);
+							
+							console.log("categoryList", that.categoryList);
 							// var typeTree = that.categoryList[0].sub_cata;
+							
 							var Goods_cataid = that.categoryList[0].cataid;
+							
+							
 				            that.currType = Goods_cataid;
 							console.log("that.currType",that.currType);
 							
@@ -209,9 +214,32 @@
 			},
 			toCategory(cataid, cata_name){
 				// uni.setStorageSync('catName',e.name);
-				uni.navigateTo({
-					url: '/pages/product/goods-list/goods-list?cataid='+cataid+'&cata_name=' + cata_name
+				
+				this.cataList.forEach((item, index, arr01)=>{
+					if(item.cataid == cataid){
+						var new_path = '/pages/product/goods-list/goods-list?cata_name=' + cata_name;
+						
+						if(item.cata_ext && (item.cata_ext.ext_type == 'union_cata')){
+							var product_source_channel = 1;
+							var product_channel_name = item.cata_ext.union_name;
+							
+							cataid = item.cata_ext.union_cataid;
+							
+							new_path += '&cataid='+cataid+'&product_source_channel=1&product_channel_name='+product_channel_name;
+						}
+						else{
+							new_path += '&cataid='+cataid;
+						}
+						
+						uni.navigateTo({
+							url: new_path
+						});
+												
+						
+					}
 				});
+				
+				
 			},
 			//搜索跳转
 			toSearch() {
