@@ -18,7 +18,7 @@
 		                <view class="aui-extreme">
 							<!-- 开始 -->
 							
-							<block v-for="(item,index) in citizen_list" :key="index">
+							<block v-for="(item,index) in worker_to_citizen_list" :key="index">
 								
 								<view class="aui-extreme-item">
 									<navigator :url="'detail?userid='+item.userid">
@@ -27,7 +27,7 @@
 												<image :src="item.head_icon"></image>
 											</view>
 											<view class="aui-flex-box">
-												<h2>{{item.name}}</h2>
+												<h2>{{item.citizen_citizenid}}</h2>
 												<p>{{item.mobile}}</p>
 											</view>
 											<view class="aui-hot">
@@ -35,36 +35,7 @@
 											</view>
 										</view>
 									</navigator>
-								    <view class="aui-palace" v-if="item.balance">
-								        <view href="javascript:;" class="aui-palace-grid">
-								            <view class="aui-palace-grid-text">
-								                <h2 class="red">￥{{item.balance.yue}}</h2>
-								                <p>可用余额(元)</p>
-								            </view>
-								        </view>
-								        <view href="javascript:;" class="aui-palace-grid">
-								            <view class="aui-palace-grid-text">
-								                <h2>￥{{item.balance.zengkuan}}</h2>
-								                <p>可用赠款(元)</p>
-								            </view>
-								        </view>
-								        <view href="javascript:;" class="aui-palace-grid">
-								            <view class="aui-palace-grid-text">
-								                <h2>{{item.balance.jifen}}</h2>
-								                <p>可用赠款积分</p>
-								            </view>
-								        </view>
-								    </view>
-									 
-									<view class="server_btn_list">
-									    <view href="javascript:;" :style="{'backgroundColor':btn_bg_color}" class="server_btn_style" v-for="(btn_item,btn_index) in item.buttons" :key="btn_index">
-									       <navigator :url="btn_item.url">
-												<view class="server_btn_font_style">
-													<p>{{btn_item.name}}</p>
-												</view>
-											</navigator>
-									    </view>
-									</view>
+								    
 								</view>
 								
 							</block>
@@ -86,8 +57,8 @@
 		data() {
 			return {
 				//citizen_list_url:'https://app.tseo.cn/zhucan/openapi/UserApi/get_member_list',
-				citizen_list_url:'http://192.168.0.205/yanyubao_web/yidaozhucan_server/index.php/openapi/UserApi/get_member_list', //获取数据的api
-				citizen_list :[], //数据
+				citizen_list_url:'http://192.168.0.205/yanyubao_web/yidaozhucan_server/index.php/openapi/UserApi/get_worker_to_citizen', //获取数据的api
+				worker_to_citizen_list :[], //数据
 				btn_bg_color:'', //按钮颜色
 			}
 		},
@@ -99,7 +70,7 @@
 				this.citizen_list_url = options.citizen_list_url;
 			}
 			
-			this.get_citizen_list();
+			this.get_worker_to_citizen_list();
 			
 			//获取配置项
 			this.abotapi.set_option_list_str(this, this.call_back_set_option);
@@ -151,7 +122,7 @@
 			},
 			
 			
-			get_citizen_list:function(){
+			get_worker_to_citizen_list:function(){
 				
 				var that = this;
 				
@@ -165,7 +136,7 @@
 					success: function (res) {
 						
 						if(res.data.code == 1){
-							that.citizen_list = res.data.data;
+							that.worker_to_citizen_list = res.data.data;
 						}else{
 							uni.showToast({
 								title:'获取失败'

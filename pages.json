@@ -571,7 +571,9 @@
 			}
         },{
 			"path" : "pages/member/list",
-			"style" : {}
+			"style" : {
+				"enablePullDownRefresh": true
+			}
 		},{
 			"path" : "pages/member/detail",
 			"style" : {}

@@ -126,6 +126,7 @@
 						var lbs02 = {
 							latitude:latitude,
 							longitude:longitude,
+							userid:123456,
 						};
 						var lbs_json = encodeURIComponent(JSON.stringify(lbs02))
 						
@@ -158,7 +159,27 @@
 							data: post_data,
 							success: function (res) {
 								console.log(res);
-							}
+								if(res.data.code == 1){
+									uni.showToast({
+										title:res.data.msg
+									})
+									// setTimeout(function () {
+									// 	console.log(132);
+									//   uni.navigateTo({
+									//   	url:'/pages/checkin/checkin'
+									//   })
+									 
+									// }, 2000)
+									
+									setTimeout(function(){
+										console.log(1);
+										uni.switchTab({
+											url:"/pages/checkin/checkin"
+										})
+									},1000)
+									
+								}
+							} 
 						})
 						
 						console.log('=>',locationData);

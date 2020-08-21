@@ -113,7 +113,7 @@
 		},
 		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
 		onPullDownRefresh() {
-			
+			this.get_citizen_list();
 		},
 		
 		onPageScroll(e){
@@ -154,7 +154,8 @@
 			get_citizen_list:function(){
 				
 				var that = this;
-				
+				console.log('======>',this.citizen_list_url);
+				console.log('======>', that.abotapi.globalData.default_sellerid);
 				this.abotapi.abotRequest({
 					url: this.citizen_list_url,
 					data: {
