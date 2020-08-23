@@ -247,6 +247,19 @@
 			</view>
 		</view> -->
 		
+		<!-- 2020.8.23. 推广联盟的商品 -->
+		<view class="coupon_ticket" 
+			v-if="(product_source_channel == 1) && goods_detail.coupon_info"
+			@tap="goto_buy_union_product"
+			:data-buyurl="goods_detail.coupon_info.buyurl"
+			:data-buymsg="goods_detail.coupon_info.buymsg">
+			<view class="coupon_ticket_left">{{goods_detail.coupon_info.text01}}</view>
+			<view class="coupon_ticket_right">{{goods_detail.coupon_info.text02}}</view>
+		</view>
+		
+		
+		
+		
 		<!-- 促销活动 -->
 		  <view class="block_ladder">
 			<view class="drpt_0" :style="{display:jietijiage==1?'block':'none'}">
@@ -472,7 +485,9 @@ export default {
 	onLoad(option) {
 		this.abotapi.set_option_list_str(this, this.callback_set_option_list_str);
 		this.abotapi.get_shop_info_from_server(this.callback_func_for_shop_info);
-		console.log('/pages/product/detail=====',option);
+		
+		console.log('/pages/product/detail=====', option);
+		
 		var that = this;
 		
 		var options_str = '';
@@ -514,9 +529,14 @@ export default {
 			this.product_channel_name = option.product_channel_name;
 		}
 		
-		
+		//请求的网址
 		var detail_url = this.abotapi.globalData.yanyubao_server_url +  '?g=Yanyubao&m=ShopAppWxa&a=product_detail';
-		var detail_data = {productid:this.productid};
+		//请求的参数
+		var detail_data = {
+			sellerid: that.abotapi.globalData.default_sellerid,
+			productid:this.productid,
+			platform: that.abotapi.globalData.current_platform,
+		};
 		
 		if(this.product_source_channel == 1){
 			detail_url = this.abotapi.globalData.yanyubao_server_url +  'openapi/UnionPromotionData/get_product_detail';
@@ -709,6 +729,65 @@ export default {
 	// onReachBottom() {
 	// 	uni.showToast({ title: '触发上拉加载' });
 	// },
+	
+	
+	onShareAppMessage: function () {
+	    var that = this;
+	
+	    var share_title = that.goods_detail.name;
+	    if(share_title.length > 22){
+	      share_title = share_title.substr(0, 20) + '...';
+	    }
+	
+	    var share_path = '/pages/product/detail?productid=' + that.productid + '&sellerid' + this.abotapi.get_sellerid();
+	
+	    var userInfo = this.abotapi.get_user_info();
+	
+	    if (userInfo && userInfo.userid) {
+	      share_path += '&userid='+userInfo.userid;
+	    }
+	
+	    var share_img = that.share_imageUrl;
+	
+	    return {
+	      title: share_title + ' ￥' + that.goods_detail.price,
+	      path: share_path,
+	      imageUrl : share_img,
+	      success: function (res) {
+	        // 分享成功
+	      },
+	      fail: function (res) {
+	        // 分享失败
+	      }
+	    }
+	},
+	onShareTimeline: function () {
+		var that = this;
+			
+		var share_title = that.goods_detail.name;
+		if(share_title.length > 22){
+		  share_title = share_title.substr(0, 20) + '...';
+		}
+			
+		var share_path = 'productid=' + that.productid + '&sellerid' + this.abotapi.get_sellerid();
+			
+		var userInfo = this.abotapi.get_user_info();
+			
+		if (userInfo && userInfo.userid) {
+		  share_path += '&userid='+userInfo.userid;
+		}
+			
+		var share_img = that.share_imageUrl;
+		
+		return {
+		    title: share_title + ' ￥' + that.goods_detail.price,
+		    query: share_path,
+		    imageUrl:share_img,
+		}
+	},
+	onAddToFavorites: function () {
+		this.onShareTimeline();
+	},
 	
 	methods: {
 		
@@ -1467,66 +1546,56 @@ export default {
 			},
 			is_show:function(){
 				this.$refs.share_api.is_show();
+			},
+			goto_buy_union_product:function(e){
+				//推广联盟的优惠券
+				
+				var buyurl = e.currentTarget.dataset.buyurl;
+				var buymsg = e.currentTarget.dataset.buymsg;
+				
+				// #ifdef MP-WEIXIN
+				uni.setClipboardData({
+					data : buyurl,
+					success(){
+						uni.showToast({
+							title:'复制成功！'
+						})
+					}
+				})
+				
+				
+				uni.showModal({
+					title:'复制成功',
+					content:buymsg,
+					showCancel:false
+				})
+				// #endif
+				
+				// #ifdef APP-PLUS
+				uni.setClipboardData({
+					data : buyurl,
+					success(){
+						uni.showToast({
+							title:'复制成功！'
+						})
+					}
+				});
+				
+				
+				this.abotapi.call_h5browser_or_other_goto_url(buyurl);
+				
+				// #endif
+				
+				
+				// #ifdef H5
+				///this.abotapi.call_h5browser_or_other_goto_url(buyurl);
+				location.href = buyurl;
+				// #endif
+				
+				
 			}
 	},
 	
-	onShareAppMessage: function () {
-	    var that = this;
-	
-	    var share_title = that.goods_detail.name;
-	    if(share_title.length > 22){
-	      share_title = share_title.substr(0, 20) + '...';
-	    }
-	
-	    var share_path = '/pages/product/detail?productid=' + that.productid + '&sellerid' + this.abotapi.get_sellerid();
-	
-	    var userInfo = this.abotapi.get_user_info();
-	
-	    if (userInfo && userInfo.userid) {
-	      share_path += '&userid='+userInfo.userid;
-	    }
-	
-	    var share_img = that.share_imageUrl;
-
-	    return {
-	      title: share_title + ' ￥' + that.goods_detail.price,
-	      path: share_path,
-	      imageUrl : share_img,
-	      success: function (res) {
-	        // 分享成功
-	      },
-	      fail: function (res) {
-	        // 分享失败
-	      }
-	    }
-	},
-	onShareTimeline: function () {
-		var that = this;
-			
-		var share_title = that.goods_detail.name;
-		if(share_title.length > 22){
-		  share_title = share_title.substr(0, 20) + '...';
-		}
-			
-		var share_path = 'productid=' + that.productid + '&sellerid' + this.abotapi.get_sellerid();
-			
-		var userInfo = this.abotapi.get_user_info();
-			
-		if (userInfo && userInfo.userid) {
-		  share_path += '&userid='+userInfo.userid;
-		}
-			
-		var share_img = that.share_imageUrl;
-		
-		return {
-		    title: share_title + ' ￥' + that.goods_detail.price,
-		    query: share_path,
-		    imageUrl:share_img,
-		}
-	},
-	onAddToFavorites: function () {
-		this.onShareTimeline();
-	},
 	filters: {
 		/**
 		 * 处理富文本里的图片宽度自适应
@@ -2346,6 +2415,7 @@ margin-left: 40rpx;
 .re-commend	{
 	background-color: white;
 	overflow: hidden;
+	clear:both;
 }
 .re-h{
 	margin:20upx ;
@@ -2462,6 +2532,35 @@ margin-left: 40rpx;
 }
 .copyright_info{
 	margin-bottom: 140rpx;
+}
+
+.coupon_ticket {
+	display: block;
+	border: 1rpx solid #FF6103;
+	width: 90%;
+	margin: 20rpx auto;
+	border-radius: 10rpx;
+	padding: 10rpx;
+	background-color: #FF6103;
+	color: #ffffff;
+	height: 100rpx;
+}
+.coupon_ticket_left {
+	float: left;
+	width: 48%;
+	border-right: 2rpx solid #fff;
+	text-align: center;
+	height: 90rpx;
+	line-height: 90rpx;
+	font-size: 36rpx;
+}
+.coupon_ticket_right {
+	float: left;
+	width: 48%;
+	text-align: center;
+	height: 90rpx;
+	line-height: 90rpx;
+	font-size: 36rpx;
 }
 
 </style>

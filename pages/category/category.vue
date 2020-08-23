@@ -169,15 +169,12 @@
 			
 			get_cataList:function(){
 				var that = this;
-				uni.request({
+				this.abotapi.abotRequest({
 					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_cata_supplier',
-					method:'post',
 					data: {
 					  sellerid: this.abotapi.globalData.default_sellerid,
-					  cataid: that.currType
-					  },
-					header: {
-						'Content-Type':  'application/x-www-form-urlencoded'
+					  cataid: that.currType,
+					  platform: that.abotapi.globalData.current_platform,
 					},
 					success: function (res) {
 						// var code = res.data.code;
@@ -250,20 +247,20 @@
 			
 			tapType: function (e){
 				console.log('e',e);
+				
 				var that = this;
+				
 				that.currType = e;
+				
 				console.log(that.currType);
 				
-				uni.request({
+				this.abotapi.abotRequest({
 					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_cata_supplier',
-					method:'post',
 					data: {
 					  sellerid: this.abotapi.globalData.default_sellerid,
-					  cataid:that.currType
+					  cataid:that.currType,
+					  platform: that.abotapi.globalData.current_platform,
 					  },
-					header: {
-						'Content-Type':  'application/x-www-form-urlencoded'
-					},
 					success: function (res) {
 						// var code = res.data.code;
 						console.log(res.data);

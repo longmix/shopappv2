@@ -187,7 +187,8 @@
 					      keyword:'', 
 					      sort: that.sorts,
 					      page: that.current_page,
-						  cataid:that.cataid
+						  cataid:that.cataid,
+						  platform: that.abotapi.globalData.current_platform,
 					    },
 					    success: function (res) {
 							if(res.data.code == 1){
@@ -239,7 +240,8 @@
 					      sellerid: that.abotapi.globalData.default_sellerid,
 					      union_name: that.product_channel_name, 
 					      page: that.current_page,
-						  cataid:that.cataid
+						  cataid:that.cataid,
+						  platform: that.abotapi.globalData.current_platform,
 					    },
 					    success: function (res) {
 							if(res.data.code == 1){
