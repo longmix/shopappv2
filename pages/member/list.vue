@@ -93,11 +93,30 @@
 		},
 		
 		onLoad(options) {
+			console.log('options===>',options);
 			
 			//如果带了citizen_list_url 参数就会覆盖data 的citizen_list_url
 			if(options.citizen_list_url){
 				this.citizen_list_url = options.citizen_list_url;
 			}
+			
+			//参数拼接
+			var params_str = '';
+			for(var key in options){
+			  params_str += key+'='+options[key]+'&';
+			}
+			
+			//登录之后跳转的页面
+			var last_url = '/pages/member/list?'+params_str;
+			
+			var userInfo = this.abotapi.get_user_info();
+			if (!userInfo) {
+			  this.abotapi.goto_user_login(last_url);
+						
+			  return;
+			}		
+			
+			
 			
 			this.get_citizen_list();
 			
@@ -154,14 +173,17 @@
 			get_citizen_list:function(){
 				
 				var that = this;
+				
+				var userInfo = this.abotapi.get_user_info();
+				
 				console.log('======>',this.citizen_list_url);
 				console.log('======>', that.abotapi.globalData.default_sellerid);
 				this.abotapi.abotRequest({
 					url: this.citizen_list_url,
 					data: {
 						sellerid: that.abotapi.globalData.default_sellerid,
-						checkstr: 123456,
-						userid: 123456,
+						checkstr: userInfo.checkstr,
+						userid: userInfo.userid,
 					},
 					success: function (res) {
 						

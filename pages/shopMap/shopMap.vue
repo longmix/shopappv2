@@ -10,7 +10,7 @@
 			<view class="adderss">{{shopInfo.address}}</view>
 			<view class="adderss" @tap="call_seller">{{shopInfo.telephone}}</view>
 			<view v-if="from_page == 1 || from_page == 2" @tap="seeRoute" class="seeroute">到这去</view>
-			<view v-else-if="from_page == 3" @tap="seeRoute" class="seeroute">打卡</view>
+			<view v-else-if="from_page == 3" :style="{background: btn_bg_color,color:frontColor}" @tap="seeRoute" class="seeroute">打卡</view>
 		</view>
 		
 	</view>
@@ -42,7 +42,10 @@
 				
 				rgcData: {},
 				detail:[],
-				shopInfo: {}
+				shopInfo: {},
+				options_userid:'',//受助人userid
+				btn_bg_color:'',
+				frontColor:'',
 			}
 		},
 		/**
@@ -64,8 +67,15 @@
 		 */
 		onLoad(options){
 			//var that = this;
+			console.log('this.options',options);
 			
-			this.abotapi.set_option_list_str(this, this.abotapi.getColor());
+			if(options.userid){
+				//受助人userid
+				
+				this.options_userid = options.userid;
+			}
+			
+			this.abotapi.set_option_list_str(this, this.call_back_set_option);
 			
 			//记录百度地图的坐标点
 			this.bmap_latitude = options.latitude;
@@ -98,6 +108,32 @@
 			map_tap:function(e){
 				
 			},
+			
+			call_back_set_option:function(that, cb_params){
+				
+				console.log('cb_params==>',cb_params);
+				
+				this.abotapi.getColor()
+				
+				if(that.abotapi.globalData.navigationBarBackgroundColor_fixed == 1){
+					uni.setNavigationBarColor({
+						backgroundColor:that.abotapi.globalData.navigationBar_bg_color,
+						frontColor:that.abotapi.globalData.navigationBar_font_color,
+					})
+					that.frontColor = that.abotapi.globalData.navigationBar_font_color;
+					that.btn_bg_color = that.abotapi.globalData.navigationBar_bg_color;
+					
+				}else{
+					uni.setNavigationBarColor({
+						backgroundColor:cb_params.wxa_shop_nav_bg_color,
+						frontColor:cb_params.wxa_shop_nav_font_color,
+					})
+					console.log('cb_params==>',cb_params.wxa_shop_nav_font_color);
+					that.frontColor = cb_params.wxa_shop_nav_font_color;
+					that.btn_bg_color = cb_params.wxa_shop_nav_bg_color;
+				}
+			},
+			
 			seeRoute:function(e){
 				  
 				if((this.from_page == 1) || (this.from_page == 2)  ){
@@ -126,7 +162,7 @@
 						var lbs02 = {
 							latitude:latitude,
 							longitude:longitude,
-							userid:123456,
+							userid:that001.options_userid,
 						};
 						var lbs_json = encodeURIComponent(JSON.stringify(lbs02))
 						
@@ -135,7 +171,7 @@
 						
 						var post_data = {
 							sellerid:that001.abotapi.globalData.default_sellerid,
-							userid:123456,
+							userid:userInfo.userid,
 							latitude:locationData.latitude,
 							longitude:locationData.longitude,
 							city:locationData.addressComponent.city,

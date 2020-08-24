@@ -147,13 +147,15 @@
 				
 				var that = this;
 				
+				var userInfo = this.abotapi.get_user_info();
+				
 				this.abotapi.abotRequest({
 					url: this.citizen_detail_url,
 					data: {
 						sellerid: that.abotapi.globalData.default_sellerid,
-						checkstr: 123456,
+						checkstr: userInfo.checkstr,
 						citizen_userid: this.citizen_userid,
-						userid:'123',
+						userid: userInfo.userid,
 					},
 					success: function (res) {
 						

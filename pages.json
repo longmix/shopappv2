@@ -585,7 +585,9 @@
 			"style" : {}
 		},{
 			"path" : "pages/checkin/checkin",
-			"style" : {}
+			"style" : {
+				"enablePullDownRefresh": true
+			}
 		},{
 			"path" : "pages/checkin/history",
 			"style" : {}

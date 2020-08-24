@@ -18,17 +18,18 @@
 		                <view class="aui-extreme">
 							<!-- 开始 -->
 							
-							<block v-for="(item,index) in worker_to_citizen_list" :key="index">
+							<block v-for="(item,index) in checkin_list" :key="index">
 								
 								<view class="aui-extreme-item">
 									<navigator :url="'detail?userid='+item.userid">
 										<view class="aui-flex aui-flex-pic">
-											<view class="aui-flex-eme">
-												<image :src="item.head_icon"></image>
-											</view>
+											
 											<view class="aui-flex-box">
-												<h2>{{item.citizen_citizenid}}</h2>
-												<p>{{item.mobile}}</p>
+												<h2>{{item.checkin_name}}</h2>
+												<p>{{item.checkin_date}}——{{item.checkinout_date}}</p>
+												
+												<p>{{item.checkout_address}}</p>
+												<p>{{item.total_time}}(小时)</p>
 											</view>
 											<view class="aui-hot">
 												<image src="https://www.17sucai.com/preview/1268063/2018-12-05/extreme/images/icon-hot.png"></image>
@@ -57,8 +58,8 @@
 		data() {
 			return {
 				//citizen_list_url:'https://app.tseo.cn/zhucan/openapi/UserApi/get_member_list',
-				citizen_list_url:'http://192.168.0.205/yanyubao_web/yidaozhucan_server/index.php/openapi/UserApi/get_worker_to_citizen', //获取数据的api
-				worker_to_citizen_list :[], //数据
+				citizen_list_url:'http://192.168.0.205/yanyubao_web/yidaozhucan_server/index.php/openapi/UserApi/get_checkin_list', //获取数据的api
+				checkin_list :[], //数据
 				btn_bg_color:'', //按钮颜色
 			}
 		},
@@ -70,7 +71,7 @@
 				this.citizen_list_url = options.citizen_list_url;
 			}
 			
-			this.get_worker_to_citizen_list();
+			this.get_checkin_list();
 			
 			//获取配置项
 			this.abotapi.set_option_list_str(this, this.call_back_set_option);
@@ -84,7 +85,7 @@
 		},
 		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
 		onPullDownRefresh() {
-			
+			this.get_checkin_list();
 		},
 		
 		onPageScroll(e){
@@ -122,21 +123,23 @@
 			},
 			
 			
-			get_worker_to_citizen_list:function(){
+			get_checkin_list:function(){
 				
 				var that = this;
+				
+				var userInfo = this.abotapi.get_user_info();
 				
 				this.abotapi.abotRequest({
 					url: this.citizen_list_url,
 					data: {
 						sellerid: that.abotapi.globalData.default_sellerid,
-						checkstr: 123456,
-						userid: 123456,
+						checkstr: userInfo.checkstr,
+						userid: userInfo.checkstr,
 					},
 					success: function (res) {
 						
 						if(res.data.code == 1){
-							that.worker_to_citizen_list = res.data.data;
+							that.checkin_list = res.data.data;
 						}else{
 							uni.showToast({
 								title:'获取失败'
@@ -290,7 +293,7 @@
 	    align-items: center;
 	    padding: 15px;
 	    position: relative;
-		border-bottom: 1px dashed #D9D9D9;
+		/* border-bottom: 1px dashed #D9D9D9; */
 	}
 	
 	.aui-flex-box {
@@ -441,29 +444,7 @@
 	    overflow: hidden;
 	}
 	
-	.aui-flex-pic:after {
-	    content: '';
-	    position: absolute;
-	    bottom: -10px;
-	    left: -8px;
-	    width: 15px;
-	    height: 15px;
-	    background: #f0f0f0;
-	    border-radius: 100%;
-	    z-index: 10;
-	}
 	
-	.aui-flex-pic:before {
-	    content: '';
-	    position: absolute;
-	    bottom: -10px;
-	    right: -8px;
-	    width: 15px;
-	    height: 15px;
-	    background: #f0f0f0;
-	    border-radius: 100%;
-	    z-index: 10;
-	}
 	
 	.aui-palace-grid {
 	    position: relative;
