@@ -2,7 +2,7 @@
 	<view>
 	        <view class="uni-padding-wrap uni-common-mt">
 	            <view>
-	                <video id="myVideo" :src="player_url" :style="{height: 400 + 'px',width: windowWidth + 'px'}"
+	                <video  style="z-index:99;" id="myVideo" :src="player_url" :style="{height: 250 + 'px',width: windowWidth + 'px'}"
 	                    @error="videoErrorCallback" :danmu-list="danmuList" enable-danmu danmu-btn controls></video>
 					<!-- <video id="myVideo" src="rtmp://live.tengyumall.com/live001/tengyumall" :style="{height: windowHeight + 'px',width: windowWidth + 'px'}"
 					    @error="videoErrorCallback" :danmu-list="danmuList" enable-danmu danmu-btn controls></video>	 -->
@@ -12,25 +12,29 @@
 					<view class="uni-list uni-common-mt">
 						<view class="uni-list-cell">
 							<view>
-								<view v-for="(item, index) in msgList" class="uni-label">{{item.name}}: {{item.content}}</view>
+								<view style="margin: 150px auto;text-align: center;font-size: 80rpx;color: #dcdcdc;overflow: hidden;">直播已经结束啦！</view>
+								
+								<view class="uni-label" v-for="(item, index) in msgList" :key="index">
+									<view class="uni-label-name">{{item.name}}:</view>
+									<view class="uni-label-content">{{item.content}}</view>
+								</view>
 							</view>
 							<view class="uni-list-cell-db">
-								<input v-model="danmuValue" class="uni-input" type="text" placeholder="输入内容" />
-								
+								<input v-model="danmuValue" class="uni-input" type="text" placeholder="发个弹幕呗~" />
 								<button @click="sendMsg" class="page-body-button">发送</button>
 								
 							</view>
+							
 						</view>
 					</view>			
 				</view>
 				
-				<view  class="prdoucts" >
-					
-				<navigator :url="'/pages/product/detail?productid=' + item.productid" v-for="(item, index) in product_list">
+				<!-- <view  class="prdoucts" >
+				<navigator :url="'/pages/product/detail?productid=' + item.productid" v-for="(item, index) in product_list" :key="index">
 					<image :src="item.picture" mode="widthFix"></image>
 					{{item.brief}}
 				</navigator>
-				</view>
+				</view> -->
 				<!-- #ifndef MP-ALIPAY -->
 	            <!-- #endif -->
 	        </view>
@@ -57,11 +61,11 @@
 				windowHeight: '',
 				player_url: '',
 				msgList: [
-							{'name':'111','content': '1111'},
-							{'name':'222','content':'2222'},
-							{'name':'333','content':'3333'},
-							{'name':'444','content':'4444'},
-							{'name':'555','content':'5555'},
+							{'name':'往事随风','content': '怎么还不开播啊？'},
+							{'name':'雨后天晴','content':'开播了吗？主播迟到了吗？'},
+							{'name':'一只肥羊','content':'来了来了！'},
+							{'name':'天道酬勤','content':'我等的花都谢了'},
+							{'name':'天天向上','content':'主播在赶来的路上了！'},
 						],
 				roomid: '',
 				product_list: '',
@@ -461,10 +465,10 @@
 			},
 			videoErrorCallback: function(e) {
 				console.log('e===',e);
-				uni.showModal({
-					content: '该用户没有直播',
-					showCancel: false
-				})
+				// uni.showModal({
+				// 	content: '该用户没有直播',
+				// 	showCancel: false
+				// })
 			},
 			getRandomColor: function() {
 				const rgb = []
@@ -488,15 +492,17 @@
 
 	.danmu-con{
 		position: fixed;
-		bottom: 100px;
+		bottom: 20rpx;
 		width: 100%;
-		z-index: 10000;
+		z-index: 10;
+		
 	}
 	
 	.uni-list-cell-db{
 		display: flex;
 		justify-content: space-between;
 		width: 100%;
+		border-top:1rpx solid #d0d0d0 ;
 	}
 	.page-body-button::after{
 		border: none;
@@ -505,14 +511,40 @@
 	
 	.page-body-button{
 		line-height: normal;
-		background-color: transparent;
-		padding:0,
+		background-color:#4fc08d;
+		padding:0;
+		color:#EEEEEE;
+		padding: 1rpx;
+		line-height: 50rpx;
+		margin-top: 10rpx;
 	}
 	.prdoucts{
 		position: fixed;
-		bottom: 20px;
+		bottom: 40rpx;
 	}
 	.prdoucts image{
-		width: 20px;
+		width: 40rpx;
+	}
+	.uni-list-cell-db input{
+	border: 1rpx solid #d0d0d0;
+	height: 50rpx;
+	width: 80%;
+	margin: 0 auto;
+	border-radius: 30rpx;
+	line-height: 50rpx;
+	padding-left:30rpx ;
+	background-color: #e1e1e1;
+	margin-top: 10rpx;
+	}
+	.uni-label{
+	margin-left: 15rpx;
+	}
+	.uni-label-name{
+	float: left;
+	color: #989898;
+	
+	}
+	.uni-label-content{
+	margin-bottom: 10rpx;
 	}
 </style>
