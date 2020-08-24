@@ -179,6 +179,10 @@
 			reload(){
 				var that = this;
 				
+				uni.showLoading({
+					title: '加载中...',
+				})
+				
 				if(that.product_source_channel == 0){
 					that.abotapi.abotRequest({
 					    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
@@ -191,6 +195,8 @@
 						  platform: that.abotapi.globalData.current_platform,
 					    },
 					    success: function (res) {
+							uni.hideLoading();
+							
 							if(res.data.code == 1){
 								console.log('aaafff===', res);
 								
@@ -224,6 +230,8 @@
 							}
 					    },
 					    fail: function (e) {
+							uni.hideLoading();
+							
 							uni.showToast({
 								title: '网络异常！',
 								duration: 2000
@@ -244,6 +252,8 @@
 						  platform: that.abotapi.globalData.current_platform,
 					    },
 					    success: function (res) {
+							uni.hideLoading();
+							
 							if(res.data.code == 1){
 								console.log('aaafff===', res);
 								
@@ -278,6 +288,8 @@
 							}
 					    },
 					    fail: function (e) {
+							uni.hideLoading();
+							
 							uni.showToast({
 								title: '网络异常！',
 								duration: 2000

@@ -42,18 +42,24 @@
         "iconPath": "static/img/tabBar/home.png",
         "selectedIconPath": "static/img/tabBar/home-on.png",
         "text": "首页"
-      },
-      {
-        "pagePath": "pages/live/live-list",
-        "iconPath": "static/img/tabBar/imglist.png",
-        "selectedIconPath": "static/img/tabBar/imglist-on.png",
-        "text": "热播"
-      },
+      },      
       {
         "pagePath": "pages/category/category",
         "iconPath": "static/img/tabBar/category.png",
         "selectedIconPath": "static/img/tabBar/category-on.png",
         "text": "分类"
+      },
+      {
+        "pagePath": "pages/shopList/shopList",
+        "iconPath": "static/img/tabBar/shang.png",
+        "selectedIconPath": "static/img/tabBar/shang-on.png",
+        "text": "商家"
+      },
+      {
+        "pagePath": "pages/live/live-list",
+        "iconPath": "static/img/tabBar/imglist.png",
+        "selectedIconPath": "static/img/tabBar/imglist-on.png",
+        "text": "直播"
       },
       {
         "pagePath": "pages/user/user",
@@ -66,7 +72,7 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#3D9140",
-    "navigationBarTitleText": "延誉电商",
+    "navigationBarTitleText": "志购",
     "navigationBarTextStyle": "white"
   },
   "networkTimeout": {

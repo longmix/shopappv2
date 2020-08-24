@@ -292,7 +292,7 @@
 			this.userInfo = this.abotapi.get_user_info();
 			
 			uni.showLoading({
-				title: '加载中',
+				title: '加载中...',
 			})
 			
 			setTimeout(function () {

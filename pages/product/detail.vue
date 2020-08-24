@@ -78,14 +78,17 @@
 				</view>
 				<view class="box" @tap="toCart">
 					<view class="icon cart"></view>
-					<view class="text">购物车</view>
+					<view class="text">{{icon_btn_gouwuche_text}}</view>
 					<view class="amount" v-if="cart_amount > 0">{{cart_amount}}</view>
 				</view>
 				
 			</view>
 			<view class="btn">
-				<view :class="[goods_detail.inventory == 0? 'joinCart-null':'joinCart']" data-type="addcart" data-status="2" @tap="goods_detail.inventory == 0?'':setModalStatus($event)">加入购物车</view>
-				<view :class="[goods_detail.inventory == 0? 'buy-null':'buy']" data-status="1" @tap="goods_detail.inventory == 0? '':setModalStatus($event)">立即购买</view>
+				<!-- 加入购物车  立即购买 -->
+				<view :class="[goods_detail.inventory == 0? 'joinCart-null':'joinCart']" 
+					data-type="addcart" data-status="2" @tap="goods_detail.inventory == 0?'':setModalStatus($event)">{{btn_gouwuche_text}}</view>
+				<view :class="[goods_detail.inventory == 0? 'buy-null':'buy']" 
+					data-status="1" @tap="goods_detail.inventory == 0? '':setModalStatus($event)">立即购买</view>
 			</view>
 		</view>
 		<!-- share弹窗 -->
@@ -480,6 +483,10 @@ export default {
 			//商品的来源渠道，默认0为SaaS云平台的商品，1为淘宝客等推广联盟的商品
 			product_source_channel:0,
 			product_channel_name:'',	// jingdong / taobao / pinduoduo
+			
+			icon_btn_gouwuche_text:'购物车',
+			btn_gouwuche_text:'加入购物车',
+			
 		};
 	},
 	onLoad(option) {
@@ -527,6 +534,8 @@ export default {
 			this.product_source_channel = option.product_source_channel;
 			
 			this.product_channel_name = option.product_channel_name;
+			
+			this.icon_btn_gouwuche_text = '购买';
 		}
 		
 		//请求的网址
@@ -969,7 +978,18 @@ export default {
 			}, 150);
 		},
 		toCart:function(){
-			console.log('toCart 向购物车跳转')
+			console.log('toCart 向购物车跳转');
+			
+			//2020.8.23. 推广联盟
+			if(this.product_source_channel == 1){
+				uni.showModal({
+					title:'请通过领取按钮购买',
+					content:buymsg,
+					showCancel:false
+				})
+				
+				return;
+			}
 			
 			if(this.abotapi.globalData.is_shop_cart_in_tabbar == 1){
 				uni.switchTab({
@@ -1110,6 +1130,13 @@ export default {
 				this.status = '2';
 				this.action_type = action_type;
 		    }
+			
+			//2020.8.23. 推广联盟
+			if(this.product_source_channel == 1){
+				this.buys = '立即购买';
+				this.status = '1';
+				this.action_type = action_type;
+			}
 		},
 		
 		

@@ -144,9 +144,13 @@
 		<publishList v-if="index_list" :index_list="index_list" @goForum="goForum" @previewImage="previewImage"></publishList>
 			
 		<!-- 商品列表 -->
-		<view v-if="!wxa_hidden_product_list || wxa_hidden_product_list==0"
-			style="font-size:30upx;text-align: center;color:#ccc;padding: 30upx auto;display: block;height: 80upx;width: 100%;">———— ※ 最新上架 ※ ————</view>
-		<productList v-if="!wxa_hidden_product_list || wxa_hidden_product_list==0" :productsList="current_product_list" :loadingText="loadingText" :showKucunSale="wxa_show_kucun_in_list" @toGoods="toGoods"></productList>	
+		<view v-if="current_product_list && (wxa_hidden_product_list ==0)"
+			class="zhuanti_title">———— ※ 最新上架 ※ ————</view>
+		<productList v-if="current_product_list && (wxa_hidden_product_list == 0)" 
+			:productsList="current_product_list" 
+			:loadingText="loadingText" 
+			:showKucunSale="wxa_show_kucun_in_list" 
+			@toGoods="toGoods"></productList>	
 
 		<!-- 客服按钮 -->
 		<view class="u-tap-btn" v-if="(wxa_show_kefu_button==1) && (wxa_kefu_bg_no_color_flag == 0)">
@@ -300,7 +304,7 @@ export default {
 			
 			
 			wxa_product_list_show_type:'',
-			wxa_hidden_product_list:'',
+			wxa_hidden_product_list:0,
 			
 			imgheights: [],
 			current: 0,
@@ -856,6 +860,7 @@ export default {
 			if (cb_params.option_list.wxa_hidden_product_list) {
 			  
 			    that.wxa_hidden_product_list = cb_params.option_list.wxa_hidden_product_list
+				console.log('that.wxa_hidden_product_list=====>>>>', that.wxa_hidden_product_list);
 			  
 			}
 			
@@ -2028,6 +2033,17 @@ page{position: relative;background-color: #fff;}
   text-overflow: ellipsis;
 }
 
+
+.zhuanti_title {
+	font-size:30rpx;
+	text-align: center;
+	color:#ccc;
+	padding: 30rpx auto;
+	margin-top: 30rpx;
+	display: block;
+	height: 80rpx;
+	width: 100%;
+}
 
 
 
