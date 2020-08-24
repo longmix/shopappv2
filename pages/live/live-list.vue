@@ -5,7 +5,7 @@
 			<navigator v-if="!is_weixin" v-for="(item,index) in liveList" :key="index" 
 			:url="'/pages/live/live-player?live_userid=' + item.key"  class="live_list_li">
 				<view class="live_list_li_ve">
-					<image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1591620095324&di=a27d97a3e70055c422631d5dfee2903f&imgtype=0&src=http%3A%2F%2Fimg4.imgtn.bdimg.com%2Fit%2Fu%3D1659259599%2C380003090%26fm%3D214%26gp%3D0.jpg" mode="aspectFill"></image>
+					<image :src="item.text_shareImg" mode="aspectFill"></image>
 					<view class="live_list_li_ve_title">
 						<view class="live_list_li_ve_title_l">
 							<view>{{item.name}}</view>

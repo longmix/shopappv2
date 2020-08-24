@@ -273,12 +273,10 @@
 			  },
 			  success:function(res){
 				  console.log('huhuhu',res);
-				  // var videocode = res.data.code;
-				  
-				  var videocode =0;
+				  var videocode = res.data.code;				  
+				  //var videocode =0;
 				  console.log('huhuhu15111',videocode);
-				 
-				  
+
 				  if(videocode == 0){
 					  uni.showModal({
 						title:'提示！',
@@ -611,10 +609,12 @@
 					url: that.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/VideoLiveData/set_plan_video_live',
 					data:livetips,
 					success(res) {
+						console.log('jjjjjjjjjjjjjjjsssssssssss',res);
+						var videocode = res.data.code;
 						if(this.videocode == 0){
 						  uni.showModal({
 							title:'提示！',
-							content:'请先完成之前直播!',
+							content:'请先实名微信号!',
 						  })
 						  return;
 						}
