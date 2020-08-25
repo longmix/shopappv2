@@ -1,6 +1,6 @@
 {
     "name" : "志购",
-    "appid" : "__UNI__A79BAA4",
+    "appid" : "__UNI__27F82A3",
     "description" : "田震电商志购APP",
     "versionName" : "1.6.3",
     "versionCode" : 150,
@@ -25,7 +25,6 @@
             "VideoPlayer" : {},
             "Maps" : {},
             "Speech" : {},
-            "Push" : {},
             "Payment" : {}
         },
         /* 模块配置 */
@@ -142,9 +141,9 @@
             },
             "splashscreen" : {
                 "android" : {
-                    "hdpi" : "unpackage/res/splashscreen/welandroid_480x762.png",
-                    "xhdpi" : "unpackage/res/splashscreen/welandroid_720x1242.png",
-                    "xxhdpi" : "unpackage/res/splashscreen/welandroid_1080x1882.png"
+                    "hdpi" : "unpackage/res/splashscreen_zhigouapp/tianzheng_welcome_480x762.png",
+                    "xhdpi" : "unpackage/res/splashscreen_zhigouapp/tianzheng_welcome_720x1242.png",
+                    "xxhdpi" : "unpackage/res/splashscreen_zhigouapp/tianzheng_welcome_1080x1882.png"
                 },
                 "ios" : {
                     "iphone" : {
@@ -156,7 +155,9 @@
                         "retina40" : "unpackage/res/splashscreen/welcome_640x1136.png",
                         "retina35" : "unpackage/res/splashscreen/welcome_640x960.png"
                     }
-                }
+                },
+                "iosStyle" : "common",
+                "androidStyle" : "default"
             }
         },
         "uniStatistics" : {
