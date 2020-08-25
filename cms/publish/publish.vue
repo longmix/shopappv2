@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="a-con-textarea">
-		  <textarea @click='inputContent' class="a-textarea" v-model="ideaText"  placeholder="在此输入文字" />
+		  <textarea @input='inputContent' class="a-textarea" v-model="ideaText"  placeholder="在此输入文字" />
 		</view>
 		
 		<view style='padding:20rpx;display:flex;flex-wrap:wrap;'>
@@ -93,6 +93,8 @@
 				ideaText:'',
 				scrollLeft:'',
 				btn_bg_color:'',
+				
+				page_not_in_tabbar:0
 			}
 		},
 		
@@ -221,6 +223,12 @@
 			
 				})
 				
+				if(cms_faquan_setting.page_not_in_tabbar){
+					that.page_not_in_tabbar = cms_faquan_setting.page_not_in_tabbar;
+				}
+				
+				console.log('that.page_not_in_tabbar ===>>> ', that.page_not_in_tabbar);
+				
 			},
 			  
 			// 分类改变函数  （从shopapp搬过来的  前端执行该方法的注释了没有搬）
@@ -314,7 +322,9 @@
 				}
 				
 				that.disable = true;
+				
 				console.log('===>>>>>.',that.abotapi.globalData.xiaochengxu_appid);
+				
 				var data_params = {
 					sellerid: that.abotapi.globalData.default_sellerid,
 					appid: that.abotapi.globalData.xiaochengxu_appid,
@@ -331,11 +341,7 @@
 						
 				that.abotapi.abotRequest({
 					url: that.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/add_faquan_text',
-					method: 'post',
 					data: data_params,
-					header: {
-						'Content-Type': 'application/x-www-form-urlencoded'
-					},
 					success: function (res) {
 						if (res.data.code == 1) {
 							var faquanid = res.data.faquanid
@@ -371,14 +377,20 @@
 										console.log('res===========', res)
 										if (res.errMsg == "uploadFile:ok") {
 											var data = res.data;
+											
+											console.log('上传结果01====>>>>', data);
+											
 											data = JSON.parse(data);
+											
+											console.log('上传结果02====>>>>', data);
+											
 											if (data.code == 1) {
 												
 												uni.showModal({
 													title: '上传成功',
 													showCancel:false,
 													success: function (e) {
-														if (res.confirm) {
+														if (e.confirm) {
 															//确定
 															console.log('e=======456', e)
 															
@@ -387,9 +399,20 @@
 																that.order_finish();
 															}
 															console.log('e=======123')
-															uni.navigateTo({
-																url: '/cms/discover/discover?display_type=my',
-															})
+															
+															if(that.page_not_in_tabbar){
+																uni.navigateTo({
+																	url: '/cms/discover/discover?display_type=my',
+																})
+															}
+															else{
+																console.log('准备switchtab跳转到===>>>/cms/discover/discover');
+																
+																uni.switchTab({
+																	url: '/cms/discover/discover',
+																})
+															}
+															
 														}
 													}
 												})
@@ -466,17 +489,26 @@
 								title: '上传成功',
 								showCancel:false,
 								success: function (e) {
-									if (res.confirm) {
+									if (e.confirm) {
 										//确定
 										console.log('e=======', e)
 										
 										that.ideaText = '';
+										
 										if (that.orderid){
 										  that.order_finish();
 										}
-										uni.navigateTo({
-										  url: '/cms/discover/discover?display_type=my',
-										})
+										
+										if(that.page_not_in_tabbar){
+											uni.navigateTo({
+												url: '/cms/discover/discover?display_type=my',
+											})
+										}
+										else{
+											uni.switchTab({
+												url: '/cms/discover/discover',
+											})
+										}
 									}
 								}
 							})

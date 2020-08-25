@@ -83,7 +83,7 @@
 		                        <block v-if="item.status == 4">
 		                        <text style="margin-left:20rpx; color:blue;" :data-faquanid='item.faquanid' data-status='1' @tap="change_faquan_status">显示</text>
 		                        </block>
-		                        <block>
+		                        <block v-if="item.status == 1">
 		                          <text style="margin-left:20rpx; color:blue;" :data-faquanid='item.faquanid' data-status='4' @tap="change_faquan_status">隐藏</text>
 		                        </block>
 		

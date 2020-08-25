@@ -56,10 +56,10 @@
         "text": "商家"
       },
       {
-        "pagePath": "pages/live/live-list",
+        "pagePath": "cms/discover/discover",
         "iconPath": "static/img/tabBar/imglist.png",
         "selectedIconPath": "static/img/tabBar/imglist-on.png",
-        "text": "直播"
+        "text": "随拍"
       },
       {
         "pagePath": "pages/user/user",

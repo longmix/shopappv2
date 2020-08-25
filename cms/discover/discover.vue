@@ -107,7 +107,7 @@
 	
 	<view class="bottom-line" v-if="isShowBottomLine">
 	    <view class='bottom-line-a'></view>
-	    <view>我也是有底线的</view>
+	    <view>我也是有底线的~</view>
 	     <view class='bottom-line-a'></view>
 	</view>
 	
@@ -503,8 +503,61 @@
 			
 			console.log(img_or_video_list); 
 		},
-		change_faquan_status:function(){
+		change_faquan_status:function(e){
+			console.log('change_faquan_status====>>>', e);
 			
+			var faquanid = e.currentTarget.dataset.faquanid;
+			var status = e.currentTarget.dataset.status;
+		
+			var userInfo = this.abotapi.get_user_info();
+			if (!userInfo){
+			  return;
+			}
+		
+			var that = this;
+			that.abotapi.abotRequest({
+			  url: that.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/change_faquan_status',
+			  data: {
+				appid: that.abotapi.globalData.xiaochengxu_appid,
+				sellerid: that.abotapi.get_sellerid(),
+				
+				userid: userInfo.userid,
+				checkstr: userInfo.checkstr,
+		
+				faquanid: faquanid,
+				status:status
+			  },
+			  success: function (res) {
+				if (res.data.code == 1) {
+				  uni.showModal({
+					title: '操作成功',
+					content: res.data.msg,
+					showCancel: false,
+					success(){
+					  that.page = 1;
+		
+					  that.faquanList = [];
+		
+					  that.__getFaquanList();
+					}
+				  })
+				}
+				else{
+				  uni.showModal({
+					title: '操作失败',
+					content: res.data.msg,
+					showCancel: false
+				  })
+				}
+		
+			  },
+			  fail: function (e) {
+				wx.showToast({
+				  title: '网络异常！',
+				  duration: 2000
+				});
+			  },
+			});
 		},
 		
 		copyText:function(){
@@ -817,11 +870,14 @@
 			         
 			            that.isShowBottomLine = 1;
 			      
-			          uni.showToast({
+			          /*uni.showToast({
 			            title: '到底了!',
 			            icon: 'none',
 			            duration: 2000,
-			          })
+			          })*/
+					  
+					  
+					  
 			        }
 			      },
 			      fail: function (e) {

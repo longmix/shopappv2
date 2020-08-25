@@ -555,7 +555,27 @@
 											 
 											 if(data.code == 1){
 												 
-												 that.abotapi.set_user_account_info(data.data)
+												 that.abotapi.set_user_account_info(data.data);
+												 
+												 //=======检查登录成功之后的跳转=======
+												 
+												 var login_last_url = uni.getStorageSync('login_last_url');
+												 
+												 if (login_last_url) {
+												 	var var_list = uni.getStorageSync('login_var_list');
+												 	var ret_page = uni.getStorageSync('login_ret_page');
+												 	
+												 	that.abotapi.call_h5browser_or_other_goto_url(login_last_url, var_list, ret_page);
+												 	
+												 	uni.removeStorageSync('login_last_url');
+												 	uni.removeStorageSync('login_var_list');
+												 	uni.removeStorageSync('login_ret_page');
+												 }
+												 else{
+												 	uni.switchTab({
+												 		url: '/pages/index/index'
+												 	})
+												 }
 												 
 											 }
 										
@@ -570,25 +590,7 @@
 										duration: 2000
 									})
 				  
-									//=======检查登录成功之后的跳转=======
 									
-									var login_last_url = uni.getStorageSync('login_last_url');
-									
-									if (login_last_url) {
-										var var_list = uni.getStorageSync('login_var_list');
-										var ret_page = uni.getStorageSync('login_ret_page');
-										
-										that.abotapi.call_h5browser_or_other_goto_url(login_last_url, var_list, ret_page);
-										
-										uni.removeStorageSync('login_last_url');
-										uni.removeStorageSync('login_var_list');
-										uni.removeStorageSync('login_ret_page');
-									}
-									else{
-										uni.switchTab({
-											url: '/pages/index/index'
-										})
-									}
 									
 			
 								}else {
