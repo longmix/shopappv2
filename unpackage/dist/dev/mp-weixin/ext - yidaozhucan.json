@@ -44,10 +44,16 @@
         "text": "首页"
       },
       {
-        "pagePath": "pages/publish/publish_list",
+        "pagePath": "pages/member/list",
+        "iconPath": "static/img/tabBar/category.png",
+        "selectedIconPath": "static/img/tabBar/category-on.png",
+        "text": "记录"
+      },
+      {
+        "pagePath": "pages/checkin/checkin",
         "iconPath": "static/img/tabBar/imglist.png",
         "selectedIconPath": "static/img/tabBar/imglist-on.png",
-        "text": "记录"
+        "text": "打卡记录"
       },
       {
         "pagePath": "pages/user/user",
