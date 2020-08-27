@@ -1997,16 +1997,16 @@ page{position: relative;background-color: #fff;}
 }
 
 .toutiao_left{
-  width:80rpx;
-  height:80rpx;
-  float:left;
+  width: 80rpx;
+  height: 100rpx;
+  float: left;
 }
 
 .toutiao_left image{
-  width:55rpx;
-  height:55rpx;
-  float:left;
-  margin: 15px;
+  width: 100%;
+  height: 50rpx;
+  float: left;
+  margin-top: 20rpx;
 }
 
 .toutiao_right{

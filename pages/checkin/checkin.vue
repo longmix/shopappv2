@@ -32,7 +32,7 @@
 												<p>{{item.total_time}}(小时)</p>
 											</view>
 											<view class="aui-hot">
-												<image src="https://www.17sucai.com/preview/1268063/2018-12-05/extreme/images/icon-hot.png"></image>
+												<!-- <image src="https://www.17sucai.com/preview/1268063/2018-12-05/extreme/images/icon-hot.png"></image> -->
 											</view>
 										</view>
 									</navigator>
@@ -41,6 +41,7 @@
 								
 							</block>
 							
+							<view v-if="is_msg_show == 1" style="color: #999999;font-size: 36rpx;text-align: center;width: 100%;margin-top: 100rpx;">暂无数据</view>
 							
 							
 							<!-- 结束 -->
@@ -57,10 +58,12 @@
 	export default {
 		data() {
 			return {
-				//citizen_list_url:'https://app.tseo.cn/zhucan/openapi/UserApi/get_member_list',
-				citizen_list_url:'http://192.168.0.205/yanyubao_web/yidaozhucan_server/index.php/openapi/UserApi/get_checkin_list', //获取数据的api
+				
+				citizen_list_url:'https://yanyubao.tseo.cn/fulaozhucan/index.php/openapi/UserApi/get_checkin_list',
+				//citizen_list_url:'http://192.168.0.205/yanyubao_web/yidaozhucan_server/index.php/openapi/UserApi/get_checkin_list', //获取数据的api
 				checkin_list :[], //数据
 				btn_bg_color:'', //按钮颜色
+				is_msg_show: 0,
 			}
 		},
 		
@@ -81,7 +84,7 @@
 			
 		},
 		onShow(){
-			
+			this.get_checkin_list();
 		},
 		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
 		onPullDownRefresh() {
@@ -134,16 +137,19 @@
 					data: {
 						sellerid: that.abotapi.globalData.default_sellerid,
 						checkstr: userInfo.checkstr,
-						userid: userInfo.checkstr,
+						userid: userInfo.userid,
 					},
 					success: function (res) {
 						
 						if(res.data.code == 1){
 							that.checkin_list = res.data.data;
+							that.is_msg_show = 0;
 						}else{
 							uni.showToast({
-								title:'获取失败'
+								title:'暂无数据'
 							})
+							
+							that.is_msg_show = 1;
 						}
 						
 						//console.log('wode res',res);

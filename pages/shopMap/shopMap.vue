@@ -190,7 +190,7 @@
 						
 						
 						that001.abotapi.abotRequest({
-							url: 'http://192.168.0.205/yanyubao_server/index.php/openapi/LbsCheckinData/set_data_tongji',
+							url: that001.abotapi.globalData.yanyubao_server_url + 'openapi/LbsCheckinData/set_data_tongji',
 							method: 'post',
 							data: post_data,
 							success: function (res) {

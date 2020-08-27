@@ -80,7 +80,8 @@
 		data() {
 			return {
 				citizen_userid:'',
-				citizen_detail_url:'http://192.168.0.205/yanyubao_web/yidaozhucan_server/index.php/openapi/UserApi/get_member_detail',
+				
+				citizen_detail_url:'https://yanyubao.tseo.cn/fulaozhucan/index.php/openapi/UserApi/get_member_detail',
 				citizen_detail:[],
 				btn_bg_color:'',
 			}
