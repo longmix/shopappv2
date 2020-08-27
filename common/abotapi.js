@@ -669,10 +669,16 @@ module.exports = {
 				content:'请先登录',
 				showCancel: false,
 				success: function (res) {
+					
+					console.log('准备跳转到登录页面===>>>login_last_url===>>>', last_url);
+					console.log('准备跳转到登录页面===>>>login_var_list===>>>', var_list);
+					console.log('准备跳转到登录页面===>>>login_ret_page===>>>', ret_page);
 	 
 					if (last_url) {
 						//uni.setStorageSync('last_url', last_url);
 						//uni.setStorageSync('page_type', page_type);
+						
+						
 						
 						uni.setStorageSync('login_last_url', last_url);
 						uni.setStorageSync('login_var_list', var_list);
@@ -1013,7 +1019,9 @@ module.exports = {
 		if (!isNullOrUndefined(option_list.is_publish_list_in_tabbar)) {
 		  this.globalData.is_publish_list_in_tabbar = option_list.is_publish_list_in_tabbar;
 		}
-		
+		if (!isNullOrUndefined(option_list.is_member_list_in_tabbar)) {
+		  this.globalData.is_member_list_in_tabbar = option_list.is_member_list_in_tabbar;
+		}
 		
 	},
 	
@@ -1269,8 +1277,9 @@ module.exports = {
 			})
 		  }
 		}
-		else if ((url == '/pages/index/index') || (url == '/pages/category/index') 
-			|| (url == '/pages/cart/cart') || (url == '/pages/user/user') ) {
+		else if ((url == '/pages/index/index') || (url == '/pages/category/category') 
+			|| (url == '/pages/cart/cart') || (url == '/pages/user/user') 
+			|| (url == '/pages/member/list')) {
 			if((url == '/pages/index/index') && (this.globalData.is_index_index_in_tabbar == 1)){
 				uni.switchTab({
 					url: url,
@@ -1301,9 +1310,14 @@ module.exports = {
 					url: url,
 				})
 			}
+			else if((url == '/pages/member/list') && (this.globalData.is_member_list_in_tabbar == 1)){
+				uni.switchTab({
+					url: url,
+				})
+			}
 			else{
 				uni.navigateTo({
-					url:'/pages/cart/cart'
+					url:'/pages/index/index'
 				})
 			}
 			

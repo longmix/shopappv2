@@ -399,8 +399,7 @@
 							     },
 							     method: "POST",
 							     success: function (res) {
-							       console.log('ddd', res);
-							       // console.log('ddd', res.data.code);
+							       console.log('g=Yanyubao&m=ShopApp&a=get_user_info===>>>>手机验证码登录===>>>', res);
 									
 									var	data = res.data;						      
 									 
@@ -553,8 +552,7 @@
 									     },
 									     method: "POST",
 									     success: function (res) {
-									       console.log('ddd', res);
-									       // console.log('ddd', res.data.code);
+									       console.log('g=Yanyubao&m=ShopApp&a=get_user_info===>>>微信一键登录===>>>', res);
 											
 											var	data = res.data;						      
 											 
@@ -569,12 +567,14 @@
 												 if (login_last_url) {
 												 	var var_list = uni.getStorageSync('login_var_list');
 												 	var ret_page = uni.getStorageSync('login_ret_page');
+													
+													uni.removeStorageSync('login_last_url');
+													uni.removeStorageSync('login_var_list');
+													uni.removeStorageSync('login_ret_page');
 												 	
 												 	that.abotapi.call_h5browser_or_other_goto_url(login_last_url, var_list, ret_page);
 												 	
-												 	uni.removeStorageSync('login_last_url');
-												 	uni.removeStorageSync('login_var_list');
-												 	uni.removeStorageSync('login_ret_page');
+												 	
 												 }
 												 else{
 												 	uni.switchTab({
@@ -762,9 +762,11 @@
 .otherBox-line {
 	width: 100%;
 	height: 2.2upx;
-	background-color: #d0d0d0;
-	top: 39.6upx;
+	/*background-color: #d0d0d0;
 	position: absolute;
+	*/
+	top: 39.6upx;
+	
 }
 
 /* .otherBox-text {
@@ -783,10 +785,7 @@
 	text-align: center;
 	padding: 0rpx 22rpx;
 	line-height: 79.2rpx;
-	position: absolute;
-	width: 264rpx;
 	left: 50%;
-	margin-left: -132rpx;
 	color: #444;
 	font-size: 34rpx;
 	-webkit-box-sizing: border-box;

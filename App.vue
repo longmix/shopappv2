@@ -103,6 +103,9 @@
 				if (extConfig.is_publish_list_in_tabbar) {
 				  this.abotapi.globalData.is_publish_list_in_tabbar = extConfig.is_publish_list_in_tabbar;
 				}
+				if (extConfig.is_member_list_in_tabbar) {
+				  this.abotapi.globalData.is_member_list_in_tabbar = extConfig.is_member_list_in_tabbar;
+				}
 				//============= End ==================
 				
 						

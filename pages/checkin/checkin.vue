@@ -41,13 +41,15 @@
 								
 							</block>
 							
-							<view v-if="is_msg_show == 1" style="color: #999999;font-size: 36rpx;text-align: center;width: 100%;margin-top: 100rpx;">暂无数据</view>
-							
+							<view v-if="is_empty_msg_show == 1" style="text-align: center;margin-top: 100upx;">
+								<image style="width: 150upx;" mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/empty_order2.png"></image>
+								<text style="display: block;color: #8a8a8a;">暂无数据/(ㄒoㄒ)/~~</text>
+							</view>
 							
 							<!-- 结束 -->
 		                </view>
 		            </view>
-		        </view>
+		</view>
 	</view>
 </template>
 
@@ -63,11 +65,50 @@
 				//citizen_list_url:'http://192.168.0.205/yanyubao_web/yidaozhucan_server/index.php/openapi/UserApi/get_checkin_list', //获取数据的api
 				checkin_list :[], //数据
 				btn_bg_color:'', //按钮颜色
-				is_msg_show: 0,
+				is_empty_msg_show: 0,
+				
+				current_params_str:'',
 			}
 		},
 		
 		onLoad(options) {
+			
+			//获取配置项
+			this.abotapi.set_option_list_str(this, this.call_back_set_option);
+			
+			uni.setNavigationBarTitle({
+				title:'打卡记录'
+			})
+			
+			//参数拼接
+			for(var key in options){
+			  this.current_params_str += key+'='+options[key]+'&';
+			}			
+			
+			//检查用户是否登录
+			var userInfo = this.abotapi.get_user_info();
+			if (!userInfo) {
+				//登录之后跳转的页面
+				var last_url = '/pages/checkin/checkin';
+				
+				//如果在TabBar
+				if(this.abotapi.globalData.is_member_list_in_tabbar == 1){
+					last_url = 'switchTab /pages/checkin/checkin';
+				}
+				
+				if(options.length > 0){
+					last_url += '?' + this.current_params_str;
+				}
+				
+				//不太确定是否在tabbar，登录成功后跳转到首页吧
+				last_url = '/pages/index/index'
+				
+				
+				this.abotapi.goto_user_login(last_url);
+						
+			  return;
+			}
+			
 			
 			//如果带了citizen_list_url 参数就会覆盖data 的citizen_list_url
 			if(options.citizen_list_url){
@@ -76,8 +117,7 @@
 			
 			this.get_checkin_list();
 			
-			//获取配置项
-			this.abotapi.set_option_list_str(this, this.call_back_set_option);
+			
 			
 		},
 		onReady(){
@@ -143,13 +183,13 @@
 						
 						if(res.data.code == 1){
 							that.checkin_list = res.data.data;
-							that.is_msg_show = 0;
+							that.is_empty_msg_show = 0;
 						}else{
 							uni.showToast({
 								title:'暂无数据'
 							})
 							
-							that.is_msg_show = 1;
+							that.is_empty_msg_show = 1;
 						}
 						
 						//console.log('wode res',res);

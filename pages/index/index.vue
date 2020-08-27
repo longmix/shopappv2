@@ -74,8 +74,8 @@
 				
 					<swiper class="toutiao_right2" vertical="true" autoplay="true" circular="true" interval="2000" v-if="wxa_shop_toutiao_flash_line==2">
 						<swiper-item v-for="(item2,index2) in articlelist2" :key="index2" @tap="touTiaoList(item2.id)">
-							<view>•  {{item2[0].title}}</view>
-							<view>•  {{item2[1].title}}</view>
+							<view class="toutiao_right2_item">{{item2[0].title}}</view>
+							<view class="toutiao_right2_item">{{item2[1].title}}</view>
 						</swiper-item>
 					</swiper>
 			   </view>
@@ -351,6 +351,21 @@ export default {
 	onLoad: function (options) {
 		///this.bindKeyInput();
 		
+// #ifdef APP-PLUS
+		this.nVueTitle = uni.getSubNVueById('homeTitleNvue');
+		this.nVueTitle.onMessage(res => {
+			let type = res.data.type;
+			if(type=='focus'){
+				this.toSearch();
+			}
+		});
+		this.showHeader = false;
+		this.statusHeight = plus.navigator.getStatusbarHeight();
+// #endif
+
+		//this.showHeader = false;
+				
+		
 		console.log('pages/tabBar/index/index====>>>>', options);
 		
 		var that = this;
@@ -453,17 +468,9 @@ export default {
 		
 		// locationapi.get_location(this, this.call_back_get_shang_list2);
 		
-// #ifdef APP-PLUS
-		this.nVueTitle = uni.getSubNVueById('homeTitleNvue');
-		this.nVueTitle.onMessage(res => {
-			let type = res.data.type;
-			if(type=='focus'){
-				this.toSearch();
-			}
-		});
-		this.showHeader = false;
-		this.statusHeight = plus.navigator.getStatusbarHeight();
-// #endif
+
+		
+		
 		
 		//开启定时器
 		this.Timer();
@@ -543,14 +550,20 @@ export default {
 	//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
 	onReachBottom: function () {
 		var that = this;
+		
+		if(that.wxa_hidden_product_list == 1){
+			return;
+		}
+		
 		var page_num = that.page_num;
 		that.page_num ++;
 		
 		if(this.is_OK){
-			uni.showToast({
+			/*uni.showToast({
 				title: '已经到底了~',
 				duration: 2000
-			});
+			});*/
+			
 			return;
 		}
 		
@@ -822,6 +835,11 @@ export default {
 			if (cb_params.option_list.wxa_show_search_input) {
 			  
 			    that.wxa_show_search_input = cb_params.option_list.wxa_show_search_input
+				
+				if (cb_params.option_list.wxa_show_search_input != 1) {
+					that.showHeader = false;
+				}
+				
 			  
 			}
 			if (cb_params.option_list.wxa_show_toutiao) {
@@ -1014,6 +1032,11 @@ export default {
 		call_back_get_shang_list:function(){
 			
 			var that = this;
+			
+			if(!this.showHeader){
+				console.log('隐藏了搜索框，所以没有顶部的城市定位，不再获取附件商家');
+				return;
+			}
 			
 			var arr = uni.getStorageSync('all_shang_jingwei_list');
 			var arr_save_time = uni.getStorageSync('all_shang_jingwei_list_save_time');
@@ -2033,6 +2056,11 @@ page{position: relative;background-color: #fff;}
   text-overflow: ellipsis;
 }
 
+.toutiao_right2_item{
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
 
 .zhuanti_title {
 	font-size:30rpx;
@@ -2298,7 +2326,7 @@ page{position: relative;background-color: #fff;}
 		display: flex;
 		align-items: center;
 		padding-top: 20rpx;
-		padding-left: 40rpx;
+		padding-left: 20rpx;
 	}
 	
 	.weatherinfo_icon{

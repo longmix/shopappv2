@@ -47,7 +47,7 @@
         "pagePath": "pages/member/list",
         "iconPath": "static/img/tabBar/category.png",
         "selectedIconPath": "static/img/tabBar/category-on.png",
-        "text": "记录"
+        "text": "受助人"
       },
       {
         "pagePath": "pages/checkin/checkin",
@@ -65,7 +65,7 @@
   },
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#B0171F",
+    "navigationBarBackgroundColor": "#f37404",
     "navigationBarTitleText": "壹道助残",
     "navigationBarTextStyle": "white"
   },
