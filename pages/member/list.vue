@@ -161,6 +161,14 @@
 		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
 		onPullDownRefresh() {
 			this.get_citizen_list();
+			
+			setTimeout(function() {
+				console.log('timeout===>>>stopPullDownRefresh===>>>hideToast');
+				
+				uni.stopPullDownRefresh();
+				
+				
+			}, 2000);
 		},
 		
 		onPageScroll(e){
@@ -205,6 +213,10 @@
 			
 			get_citizen_list:function(){
 				
+				uni.showLoading({
+					title:'数据更新中……'
+				})
+				
 				var that = this;
 				
 				var userInfo = this.abotapi.get_user_info();
@@ -219,6 +231,8 @@
 						userid: userInfo.userid,
 					},
 					success: function (res) {
+						
+						uni.hideLoading();
 						
 						if(res.data.code == 1){
 							that.citizen_list = res.data.data;
@@ -236,6 +250,8 @@
 						//console.log('wode res',res);
 					},
 					fail:function(){
+						uni.hideLoading();
+						
 						uni.showToast({
 							title:'网络错误'
 						})

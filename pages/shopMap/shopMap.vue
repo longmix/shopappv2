@@ -197,24 +197,22 @@
 							success: function (res) {
 								console.log(res);
 								if(res.data.code == 1){
+									uni.showModal({
+										title:'打卡成功',
+										content:res.data.msg,
+										showCancel:false,
+										success: (res) => {
+											uni.switchTab({
+												url:"/pages/checkin/checkin"
+											})
+										}
+									})
+									
+								}
+								else{
 									uni.showToast({
 										title:res.data.msg
 									})
-									// setTimeout(function () {
-									// 	console.log(132);
-									//   uni.navigateTo({
-									//   	url:'/pages/checkin/checkin'
-									//   })
-									 
-									// }, 2000)
-									
-									setTimeout(function(){
-										console.log(1);
-										uni.switchTab({
-											url:"/pages/checkin/checkin"
-										})
-									},1000)
-									
 								}
 							} 
 						})
