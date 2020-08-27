@@ -43,7 +43,7 @@
 				rgcData: {},
 				detail:[],
 				shopInfo: {},
-				options_userid:'',//受助人userid
+				options_citizenid:'',//受助人userid
 				btn_bg_color:'',
 				frontColor:'',
 			}
@@ -69,10 +69,10 @@
 			//var that = this;
 			console.log('this.options',options);
 			
-			if(options.userid){
-				//受助人userid
+			if(options.citizenid){
+				//受助人citizenid
 				
-				this.options_userid = options.userid;
+				this.options_citizenid = options.citizenid;
 			}
 			
 			this.abotapi.set_option_list_str(this, this.call_back_set_option);
@@ -162,7 +162,7 @@
 						var lbs02 = {
 							latitude:latitude,
 							longitude:longitude,
-							userid:that001.options_userid,
+							citizenid:that001.options_citizenid,
 						};
 						var lbs_json = encodeURIComponent(JSON.stringify(lbs02))
 						
@@ -172,6 +172,7 @@
 						var post_data = {
 							sellerid:that001.abotapi.globalData.default_sellerid,
 							userid:userInfo.userid,
+							checkstr: userInfo.checkstr,
 							latitude:locationData.latitude,
 							longitude:locationData.longitude,
 							city:locationData.addressComponent.city,

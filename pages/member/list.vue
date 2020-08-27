@@ -23,7 +23,7 @@
 							<block v-for="(item,index) in citizen_list" :key="index">
 								
 								<view class="aui-extreme-item">
-									<navigator :url="'detail?userid='+item.userid">
+									<navigator :url="'detail?citizenid='+item.citizenid">
 										<view class="aui-flex aui-flex-pic">
 											<view class="aui-flex-eme">
 												<image :src="item.head_icon"></image>
@@ -224,6 +224,8 @@
 							that.citizen_list = res.data.data;
 							that.is_empty_msg_show = 0;
 						}else{
+							
+							that.citizen_list = [];
 							uni.showToast({
 								title:'暂无数据'
 							})

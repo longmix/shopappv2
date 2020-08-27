@@ -79,7 +79,7 @@
 	export default {
 		data() {
 			return {
-				citizen_userid:'',
+				citizen_citizenid:'',
 				
 				citizen_detail_url:'https://yanyubao.tseo.cn/fulaozhucan/index.php/openapi/UserApi/get_member_detail',
 				citizen_detail:[],
@@ -89,12 +89,12 @@
 		
 		onLoad(options) {
 			
-			if(options.userid){
-				this.citizen_userid = options.userid;
+			if(options.citizenid){
+				this.citizen_citizenid = options.citizenid;
 			}
 			
 			if(options.citizen_detail_url){
-				this.citizen_userid = options.citizen_detail_url;
+				this.citizen_detail_url = options.citizen_detail_url;
 			}
 			
 			
@@ -155,7 +155,7 @@
 					data: {
 						sellerid: that.abotapi.globalData.default_sellerid,
 						checkstr: userInfo.checkstr,
-						citizen_userid: this.citizen_userid,
+						citizen_citizenid: this.citizen_citizenid,
 						userid: userInfo.userid,
 					},
 					success: function (res) {
