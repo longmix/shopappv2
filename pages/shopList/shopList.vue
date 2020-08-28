@@ -164,6 +164,7 @@
 		onLoad(options) {
 			var that = this;
 			console.log('options',options);
+			
 			uni.getSystemInfo({
 			    success: function (res) {
 					console.log('getSystemInfo==',res)
@@ -173,18 +174,26 @@
 			    }
 			});
 			
+			//如果不是挂接在Tabbar，则可以读取以下参数
 			if(options.fenlei_name){
 				this.fenlei_name = options.fenlei_name;				
 				var xz_cataid = h_cata_lsit[options.fenlei_name]; // 选择的分类id
 				
 				//筛选全部商家的分类id为xz_cataid;
 				var xz_shang_list = [];
+				
+				var shang_list = this.shang_list;
+				
 				for(var i in shang_list){
 					if(shang_list[i]['cataid'] == xz_cataid){
 						xz_shang_list.push(shang_list[i]);
 					}
 				}
 				this.sx_shang_list = xz_shang_list;
+			}
+			
+			if(options.cataid){
+				uni.setStorageSync('current_shang_cataid', options.cataid);
 			}
 			
 			this.abotapi.set_option_list_str(this, function(that, option_list){
@@ -303,21 +312,29 @@
 			get_shang_list:function(){
 				
 				var that = this;
+				
 				console.log('7777778888',this.search_shang_list);
+				
+				var shang_list = null;
+				
 				if(that.search_shang_list.length != 0){
-					var shang_list = that.search_shang_list;
+					shang_list = that.search_shang_list;
 				}else{
-					var shang_list = that.shang_list;
+					shang_list = that.shang_list;
 				}
 				
 				
 				
 				if(that.sx_shang_list.length != 0){
 					
-					var shang_list = that.sx_shang_list;
+					shang_list = that.sx_shang_list;
 				}
+				
+				
+				
 				console.log(that.sx_shang_list.length);
-				console.log('77777788883333',shang_list);
+				console.log('77777788883333', shang_list);
+				
 				var page = this.page;
 				var shang_num = this.shang_num;
 				
@@ -480,6 +497,57 @@
 				
 				
 				console.log('that.shang_list===>',that.shang_list);
+				
+				
+				//==== 2020.8.28. 如果是跳转过来的时候带了cataid参数，则先过滤 ====
+				if(uni.getStorageSync('current_shang_cataid')){
+					var cataid = uni.getStorageSync('current_shang_cataid');
+					
+					
+					uni.removeStorage({
+						key:'current_shang_cataid'
+					});
+					
+					var shang_list = this.shang_list;
+					
+					//var cata_list = this.cata_list; // 分类列表 （渲染的数据）
+					
+					var xz_cataid = cataid; // 选择的分类id
+					
+					console.log('xz_cataid',xz_cataid);
+					
+					//筛选全部商家的分类id为xz_cataid;
+					var xz_shang_list = [];
+					for(var i in shang_list){
+						if(shang_list[i]['cataid'] == xz_cataid){
+							xz_shang_list.push(shang_list[i]);
+						}
+					}
+					
+					console.log('xz_shang_list',xz_shang_list);
+					
+					if(xz_shang_list.length == 0){
+						var that = this;
+						uni.showModal({
+							title:'没有对应商家',
+							showCancel:false,
+							success:function(){
+								that.shuaxin();
+							},
+							fail:function(){
+								that.shuaxin();
+							},
+						})
+						this.sx_shang_list = [];
+					}else{
+						this.sx_shang_list = xz_shang_list;
+					}
+					
+					
+				}
+				//====================== End ===============
+				
+				
 				
 				
 				that.get_shang_list();
