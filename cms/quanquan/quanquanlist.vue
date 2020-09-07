@@ -86,6 +86,9 @@
 				}
 			}
 			
+			if (options && options.userid) {
+			  this.abotapi.set_current_parentid(options.userid);
+			}
 			    
 			
 			//this.abotapi.set_option_list_str(null, this.abotapi.getColor());
@@ -247,6 +250,7 @@
 			console.log('onShareAppMessage=========',res)
 			console.log('onShareAppMessage')
 
+			var userInfo = this.abotapi.get_user_info();
 			var faquanid = res.target.dataset.id;
 
 			var faquanList = this.faquanList;
@@ -255,7 +259,7 @@
 
 			var current_faquan = null;
 
-			var share_path = 'pages/discover/discover?faquanid='+faquanid;
+			var share_path = 'pages/discover/discover?faquanid='+faquanid + 'userid=' + userInfo.userid;
 			var share_title = this.current_page_title;
 			var share_img = this.shop_info.icon;
 	
