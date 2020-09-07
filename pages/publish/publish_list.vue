@@ -110,6 +110,27 @@
 				this.cms_cataid = options.cataid;
 			}
 			
+			//==== 2020.9.7. 如果是跳转过来的时候带了cataid参数，则先过滤 ====
+			if(uni.getStorageSync('current_publish_list_cataid')){
+				this.cms_cataid = uni.getStorageSync('current_publish_list_cataid');				
+				
+				uni.removeStorage({
+					key:'current_publish_list_cataid'
+				});				
+			}
+			//====================== End ===============
+			
+			//==== 2020.9.7. 如果是跳转过来的时候带了search 参数，则先过滤 ====
+			if(uni.getStorageSync('current_publish_list_search')){
+				this.search_text = uni.getStorageSync('current_publish_list_search');				
+				
+				uni.removeStorage({
+					key:'current_publish_list_search'
+				});				
+			}
+			//====================== End ===============
+			
+			
 			
 			uni.getSystemInfo({
 				//获取手机信息
@@ -205,16 +226,19 @@
 				if(shop_option_data.option_list.wxa_shop_nav_bg_color){
 					that.wxa_shop_nav_bg_color = shop_option_data.option_list.wxa_shop_nav_bg_color; //头部导航的颜色
 				}
-				
-				
+								
 				
 				that.publish_img_cata_list = shop_option_data.option_list.publish_img_cata_list;
-
-				publish_list_api.get_publish_list(that,that.get_api_publish_list);
-
-			
 				
-				
+				if(that.search_text){
+					this.index_list = [];
+					this.current_page = 1;
+					this.is_get_article_list = true;
+					publish_list_api.get_publish_list(this,this.get_api_publish_list,'search')
+				}
+				else{
+					publish_list_api.get_publish_list(that,that.get_api_publish_list);
+				}
 			
 				
 			},
