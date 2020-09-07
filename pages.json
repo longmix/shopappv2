@@ -1,15 +1,15 @@
 {	
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
-		"navigationBarTitleText" : "志购",
-		"navigationBarBackgroundColor" : "#3D9140",
-		"backgroundColor" : "#3D9140",
-		"backgroundColorTop":"#ffffff",
+		"navigationBarTitleText" : "通版商城V2",
+		"navigationBarBackgroundColor" : "#2d96ff",
+		"backgroundColor" : "#2d96ff",
+		"backgroundColorTop":"#2d96ff",
 		"backgroundColorBottom":"#ffffff"
 	},
 	"tabBar": {
 		"color": "#333333",
-		"selectedColor": "#3D9140",
+		"selectedColor": "#f06c7a",
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
 		"list": [{
@@ -22,20 +22,14 @@
 				"pagePath": "pages/category/category",
 				"iconPath": "static/img/tabBar/category.png",
 				"selectedIconPath": "static/img/tabBar/category-on.png",
-				"text": "分类"
+				"text": "商品"
 			},
 			{
 				"pagePath": "pages/shopList/shopList",
-				"iconPath": "static/img/tabBar/shang.png",
-				"selectedIconPath": "static/img/tabBar/shang-on.png",
+				"iconPath": "static/img/tabBar/cart.png",
+				"selectedIconPath": "static/img/tabBar/cart-on.png",
 				"text": "商家"
 			},
-			{
-				"pagePath": "pages/live/live-list",
-				"iconPath": "static/img/tabBar/imglist.png",
-				"selectedIconPath": "static/img/tabBar/imglist-on.png",
-				"text": "直播"
-			},					
 			{
 				"pagePath": "pages/user/user",
 				"iconPath": "static/img/tabBar/user.png",
@@ -392,6 +386,11 @@
 		    }
 		},
 		{
+		    "path" : "pages/shopList/shopList2",
+		    "style": {
+		    }
+		},
+		{
 		    "path" : "pages/shopDetail/shopDetail",
 		    "style": {
 		    	"navigationBarTitleText": "商家详情",
@@ -459,6 +458,10 @@
 		    	"enablePullDownRefresh": true,
 		    	"onReachBottomDistance":50
 		    }
+		},
+		{
+		    "path" : "pages/publish/publish_list2",
+		    "style" : {}
 		},
 		{
 		    "path" : "pages/publish/publish_home",
