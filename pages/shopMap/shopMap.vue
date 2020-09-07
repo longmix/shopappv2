@@ -180,7 +180,7 @@
 							lbs02:lbs_json,
 						}
 						
-						//签退的时候
+						//签退的时候  目前没有用到这里  判断是签到签退在服务器端判断了
 						if(0){
 							post_data.tongji_key = 'checkout';
 						}else if(1){

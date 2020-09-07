@@ -170,7 +170,9 @@
 				
 			}, 2000);
 		},
-		
+		onReachBottom: function () {
+			
+		},
 		onPageScroll(e){
 			//兼容iOS端下拉时顶部漂移
 			this.headerPosition = e.scrollTop>=0?"fixed":"absolute";

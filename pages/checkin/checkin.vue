@@ -68,6 +68,8 @@
 				is_empty_msg_show: 0,
 				
 				current_params_str:'',
+				page:1,//分页页数
+				is_get_user:true,
 			}
 		},
 		
@@ -115,19 +117,20 @@
 				this.citizen_list_url = options.citizen_list_url;
 			}
 			
-			this.get_checkin_list();
-			
-			
 			
 		},
 		onReady(){
 			
 		},
 		onShow(){
+			
 			this.get_checkin_list();
 		},
 		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
 		onPullDownRefresh() {
+			this.is_get_user = true;
+			this.checkin_listp = [];
+			this.page = 1;
 			this.get_checkin_list();
 		},
 		
@@ -137,6 +140,13 @@
 			this.headerTop = e.scrollTop>=0?null:0;
 			this.statusTop = e.scrollTop>=0?null:-this.statusHeight+'px';
 		},
+		onReachBottom() {
+			
+			this.page++;
+			this.get_checkin_list();
+			
+		},
+		
 		methods: {
 			
 			call_back_set_option:function(that, cb_params){
@@ -169,6 +179,10 @@
 			get_checkin_list:function(){
 				
 				var that = this;
+				console.log('that.is_get_user',that.is_get_user);
+				if(!that.is_get_user){
+					return;
+				}
 				
 				var userInfo = this.abotapi.get_user_info();
 				
@@ -178,18 +192,28 @@
 						sellerid: that.abotapi.globalData.default_sellerid,
 						checkstr: userInfo.checkstr,
 						userid: userInfo.userid,
+						page:this.page,
 					},
 					success: function (res) {
 						
 						if(res.data.code == 1){
-							that.checkin_list = res.data.data;
+							
+							for(var i=0; i<res.data.data.length; i++){
+							     that.checkin_list.push(res.data.data[i]);
+							}
+							
 							that.is_empty_msg_show = 0;
 						}else{
-							uni.showToast({
-								title:'暂无数据'
-							})
 							
-							that.is_empty_msg_show = 1;
+							that.is_get_user = false
+							
+							if(!that.checkin_list){
+								uni.showToast({
+									title:'暂无数据'
+								})
+								that.is_empty_msg_show = 1;
+							}
+							
 						}
 						
 						//console.log('wode res',res);
