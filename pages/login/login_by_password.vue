@@ -264,6 +264,7 @@
 						tokenstr: that.tokenstr,
 						verifycode: that.img,
 						sellerid: this.abotapi.globalData.default_sellerid,
+						parentid: that.abotapi.get_current_parentid(),
 					},
 					success: function (request_res) {
 						console.log('login_by_password=====>>>>>', request_res);
@@ -335,6 +336,7 @@
 							   sellerid: that.abotapi.globalData.default_sellerid,
 							   checkstr: request_res.data.checkstr,
 							   userid: request_res.data.userid,
+							   parentid: that.abotapi.get_current_parentid(),
 							 },
 							 success: function (res) {
 								console.log('login_by_password=====>>>>>get_user_info===>>>>', res);

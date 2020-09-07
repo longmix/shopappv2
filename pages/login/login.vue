@@ -340,7 +340,8 @@
 				    data: { 
 						mobile: that.mobile,
 						verifycode_sms: that.tel,
-						sellerid: this.abotapi.globalData.default_sellerid,
+						sellerid: that.abotapi.globalData.default_sellerid,
+						parentid: that.abotapi.get_current_parentid(),
 				    },
 				    success: function (request_res) {
 						console.log(4444444444444444444);
@@ -509,7 +510,7 @@
 								iv: e.detail.iv,
 								encryptedData: e.detail.encryptedData,
 								sellerid: that.abotapi.globalData.default_sellerid,
-								parentid: 0,
+								parentid: that.abotapi.get_current_parentid(),
 							},
 							success: function (res) {
 								console.log(res);
@@ -546,6 +547,7 @@
 									       sellerid: that.abotapi.globalData.default_sellerid,
 									       checkstr: res.data.checkstr,
 									       userid: res.data.userid,
+										   parentid: that.abotapi.get_current_parentid(),
 									     },
 									     header: {
 									       "Content-Type": "application/x-www-form-urlencoded"
@@ -648,6 +650,7 @@
 								iv: e.detail.iv,
 								encryptedData: e.detail.encryptedData,
 								sellerid: that.abotapi.globalData.default_sellerid,
+								parentid: that.abotapi.get_current_parentid(),
 							},
 							success: function (res) {
 								console.log(res);
