@@ -179,7 +179,7 @@
 			get_checkin_list:function(){
 				
 				var that = this;
-				console.log('that.is_get_user',that.is_get_user);
+				
 				if(!that.is_get_user){
 					return;
 				}
