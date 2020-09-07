@@ -74,6 +74,10 @@
 			}
 		},
 		onLoad(options){
+			console.log('aaaaaaaa=?',options);
+			uni.setNavigationBarTitle({
+			    title: options.livername
+			});
 			var that = this;
 			let userInfo = this.abotapi.get_user_info();
 			//渲染头部和文字颜色

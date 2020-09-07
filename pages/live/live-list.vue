@@ -3,7 +3,7 @@
 	<view>
 		<view class="live_list">
 			<navigator v-if="!is_weixin" v-for="(item,index) in liveList" :key="index" 
-			:url="'/pages/live/live-player?live_userid=' + item.key"  class="live_list_li">
+			:url="'/pages/live/live-player?live_userid=' + item.key + '&livername='+item.name"  class="live_list_li">
 				<view class="live_list_li_ve">
 					<image :src="item.text_shareImg" mode="aspectFill"></image>
 					<view class="live_list_li_ve_title">
@@ -196,6 +196,7 @@
 			  index: 1,
 			  text: '6'
 			})*/
+			
 			
 			
 			this.abotapi.set_shop_option_data(null, function(){
