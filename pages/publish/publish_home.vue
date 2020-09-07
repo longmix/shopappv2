@@ -97,7 +97,17 @@
 				console.log('缺少cataid');
 				return;
 			}
+			
 			this.cms_cataid = options.cataid;
+			
+			//==== 2020.9.7. 如果是跳转过来的时候带了search 参数，则先过滤 ====
+			if(options.search){
+				this.search_text = options.search			
+			}
+			//====================== End ===============
+			
+			
+			
 			uni.getSystemInfo({
 				//获取手机信息
 				success:res => {
@@ -170,8 +180,18 @@
 					that.wxa_shop_nav_bg_color = shop_option_data.option_list.wxa_shop_nav_bg_color; //头部导航的颜色
 				}
 				
-				publish_list_api.get_publish_list(that,that.get_api_publish_list);
+				//publish_list_api.get_publish_list(that,that.get_api_publish_list);
 				//取帖子分类列表publish_hiddend_btn_for_write__checkbox
+				
+				if(that.search_text){
+					this.index_list = [];
+					this.current_page = 1;
+					this.is_get_article_list = true;
+					publish_list_api.get_publish_list(this,this.get_api_publish_list,'search')
+				}
+				else{
+					publish_list_api.get_publish_list(that,that.get_api_publish_list);
+				}
 			
 				
 				

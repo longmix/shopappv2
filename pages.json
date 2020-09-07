@@ -460,10 +460,6 @@
 		    }
 		},
 		{
-		    "path" : "pages/publish/publish_list2",
-		    "style" : {}
-		},
-		{
 		    "path" : "pages/publish/publish_home",
 		    "style" : {
 				"navigationBarTitleText": "文章列表-分类",
