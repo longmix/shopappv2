@@ -86,9 +86,7 @@
 				}
 			}
 			
-			if (options && options.userid) {
-			  this.abotapi.set_current_parentid(options.userid);
-			}
+			
 			    
 			
 			//this.abotapi.set_option_list_str(null, this.abotapi.getColor());

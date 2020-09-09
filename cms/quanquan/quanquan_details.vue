@@ -128,6 +128,11 @@
 			var that = this;
 			
 			//=====分析参数=====
+			
+			if (options && options.userid) {
+			  this.abotapi.set_current_parentid(options.userid);
+			}
+			
 			if(options){
 			  var arr = Object.keys(options);
 			  var options_len = arr.length;
@@ -212,9 +217,11 @@
 	   * 用户点击右上角分享
 	   */
 		onShareAppMessage: function (res) {
+			var userInfo = this.abotapi.get_user_info();
+			
 			return {
 			  title: '' + this.video_data.title,
-			  path: '/cms/quanquan/quanquan_details?videoid=' + this.videoid,
+			  path: '/cms/quanquan/quanquan_details?videoid=' + this.videoid + '&userid=' + userInfo.userid,
 			  success: function (res) {
 				// 分享成功
 			  },
