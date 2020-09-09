@@ -3,7 +3,7 @@
     "appid" : "__UNI__27F82A3",
     "description" : "田震电商志购APP",
     "versionName" : "1.6.3",
-    "versionCode" : 150,
+    "versionCode" : 155,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true, //是否启用`自定义组件模式`，为true表示新的`自定义组件模式` ，否则为`template模板模式`   
@@ -75,8 +75,8 @@
             "sdkConfigs" : {
                 "maps" : {
                     "amap" : {
-                        "appkey_ios" : "93094a28bc895a74cd1690bf390ba6ea",
-                        "appkey_android" : "647d08ffaa523902a2503fa958e5afa7"
+                        "appkey_ios" : "82f5646f60f0a3e897d2d2c9eb62c8e8",
+                        "appkey_android" : "f1706cbdd7c6e72cee8c028686be600b"
                     }
                 },
                 "payment" : {
@@ -154,9 +154,10 @@
                         "retina47" : "unpackage/res/splashscreen/welcome_750x1334.png",
                         "retina40" : "unpackage/res/splashscreen/welcome_640x1136.png",
                         "retina35" : "unpackage/res/splashscreen/welcome_640x960.png"
-                    }
+                    },
+                    "storyboard" : "E:/dev/yanyubao/vue/apple dev - zhigouapp/CustomStoryboard.zip"
                 },
-                "iosStyle" : "common",
+                "iosStyle" : "storyboard",
                 "androidStyle" : "default"
             }
         },
