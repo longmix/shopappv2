@@ -90,7 +90,7 @@
 	:videometa_width_height_list = "videometa_width_height_list"
 	@fanquaDianzan="fanquaDianzan"
 	@bigImg="bigImg"
-	@videometa="videometa"
+	@videometa_handle = "videometa_handle"
 	@change_faquan_status="change_faquan_status"
 	@oneClickSave="oneClickSave" 
 	@fanquanCollect="fanquanCollect"
@@ -448,8 +448,8 @@
 			
 		},
 		
-		videometa:function(e){
-		    console.log('videometa======>>>>>', e);
+		videometa_handle:function(e){
+		    console.log('videometa_handle======>>>>>', e);
 		
 		    var current_id = e.target.dataset.id;
 		    var current_index = e.target.dataset.index;
@@ -865,6 +865,24 @@
 						
 			            that.faquanList = that.faquanList.concat(faquanList);
 			            that.page = that.page + 1;
+						
+						//====== 初始化视频的大小
+						console.log('准备初始化视频大小');
+						
+						for (var index in that.faquanList){
+							var videometa_width_height_list = that.videometa_width_height_list;
+							var current_index = videometa_width_height_list.length;
+							
+							console.log('准备初始化视频大小 current_index ===>>>', current_index);
+							
+							videometa_width_height_list[current_index] = [500, 300];
+									
+							//console.log('videometa_width_height_list====>>>>', videometa_width_height_list);
+									
+							that.videometa_width_height_list = videometa_width_height_list;
+						}
+						
+						//====== End ================
 		
 			        } else {
 			         

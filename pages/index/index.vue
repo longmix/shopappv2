@@ -351,7 +351,9 @@ export default {
 	onLoad: function (options) {
 		///this.bindKeyInput();
 		
-// #ifdef APP-PLUS
+		
+		//以下代码加载了会出错，所以不是用
+// #ifdef APP-PLUS-H5
 		this.nVueTitle = uni.getSubNVueById('homeTitleNvue');
 		this.nVueTitle.onMessage(res => {
 			let type = res.data.type;

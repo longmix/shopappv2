@@ -33,7 +33,7 @@
 		                        @tap='start_and_stop_other_videos' 
 		                        :src="item2.url"  :poster='item2.video_img'
 		                        controls="true"
-		                        @loadedmetadata="videometa"
+		                        @loadedmetadata="videometa_handle"
 		                        :style="{width:videometa_width_height_list[item2.index][0] + 'rpx',height:videometa_width_height_list[item2.index][1] + 'rpx'}">
 								
 								</video>
@@ -158,8 +158,8 @@
 			start_and_stop_other_videos:function(e){
 				this.$emit('start_and_stop_other_videos',e);
 			},
-			videometa:function(e){
-				this.$emit('videometa',e);
+			videometa_handle:function(e){
+				this.$emit('videometa_handle', e);
 			},
 			change_faquan_status:function(e){
 				this.$emit('change_faquan_status',e);
