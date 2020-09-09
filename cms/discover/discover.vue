@@ -869,17 +869,46 @@
 						//====== 初始化视频的大小
 						console.log('准备初始化视频大小');
 						
-						for (var index in that.faquanList){
-							var videometa_width_height_list = that.videometa_width_height_list;
-							var current_index = videometa_width_height_list.length;
-							
-							console.log('准备初始化视频大小 current_index ===>>>', current_index);
-							
-							videometa_width_height_list[current_index] = [500, 300];
+						for (var ii=0; ii < that.faquanList.length; ii ++){
+							if(that.faquanList[ii]['type'] == 1){
+								for(var jj=0; jj < that.faquanList[ii]['img_or_video_list'].length; jj++){
+									var imgwidth = that.faquanList[ii]['img_or_video_list'][jj]['width'];
+									var imgheight = that.faquanList[ii]['img_or_video_list'][jj]['height'];
 									
-							//console.log('videometa_width_height_list====>>>>', videometa_width_height_list);
 									
-							that.videometa_width_height_list = videometa_width_height_list;
+									//宽高比
+									var ratio = imgwidth / imgheight;
+											
+									console.log(imgwidth, imgheight)
+											
+									//var current_view_width = this.data.current_view_width;
+											
+									// rpx（responsive pixel）: 可以根据屏幕宽度进行自适应。规定屏幕宽为750rpx。
+									// 如在 iPhone6 上，屏幕宽度为375px，共有750个物理像素，则750rpx = 375px = 750物理像素，1rpx = 0.5px = 1物理像素。
+									var current_view_width = 750;
+											
+									current_view_width = current_view_width*0.9*0.9;
+											
+									//计算的高度值  
+									var current_view_height = current_view_width / ratio;									
+									
+									
+									//读取已经设置的宽高列表
+									var videometa_width_height_list = that.videometa_width_height_list;
+									var current_index = videometa_width_height_list.length;
+									
+									console.log('准备初始化视频大小 current_index ===>>>', current_index);
+									
+									videometa_width_height_list[current_index] = [current_view_width, current_view_height];
+											
+									//console.log('videometa_width_height_list====>>>>', videometa_width_height_list);
+											
+									that.videometa_width_height_list = videometa_width_height_list;
+									
+								}
+								
+							}
+							
 						}
 						
 						//====== End ================
