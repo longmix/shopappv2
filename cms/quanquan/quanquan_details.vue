@@ -232,10 +232,10 @@
 		},
 		onShareTimeline: function () {
 			console.log('app.globalData.shop_name : '+app.globalData.shop_name);
-			
+			var userInfo = this.abotapi.get_user_info();
 			return {
 				title: this.video_data.title,
-				query: 'videoid=' + this.videoid, 
+				query: 'videoid=' + this.videoid + '&userid=' + userInfo.userid, 
 				imageUrl:this.video_data.img_url
 			}
 			
