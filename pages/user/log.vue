@@ -5,9 +5,10 @@
 			<view class="jifeng_box">
 				<view style="margin-left: 20rpx;float: left;">余额</view>
 				<view class="edit">	￥{{balance_total}}</view>
+				<block v-if="userid002 == 0">
 				<button type="text" v-if="current_balance_type == 'balance'" class="tixian" @click="tixian(40)" :style="{backgroundColor:btn_color}"
 				>提现</button>
-					
+				</block>
 				
 			</view>
 
