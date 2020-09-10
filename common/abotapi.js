@@ -1204,9 +1204,9 @@ module.exports = {
 			
 			var new_url = this.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=one_click_login_str';
 			
-		  if (url.indexOf("%refresh_token%") != -1){
-			new_url = this.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=generate_refresh_token_value_for_other_system';
-		  }
+			if (url.indexOf("%refresh_token%") != -1){
+				new_url = this.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=generate_refresh_token_value_for_other_system';
+			}
 			
 			uni.request({
 				url: new_url,
