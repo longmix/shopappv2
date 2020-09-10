@@ -511,6 +511,12 @@
 							||(result.indexOf('https://') == 0)
 							||(result.indexOf('/') == 0)){
 							var var_list = Object();
+							
+							//这个地方不能调用 decodeURIComponent， 
+							//因为此时的网址中还包含 %oneclicklogin%，遇到  % 都有转为 %25 才可以。
+							//result = decodeURIComponent(result);							
+							//console.log('条码内容==>>decodeURIComponent==>>：' + result);
+							
 							that.abotapi.call_h5browser_or_other_goto_url(result, var_list);
 						}else{
 							uni.showModal({
