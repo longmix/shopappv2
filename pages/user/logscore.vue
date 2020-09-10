@@ -48,12 +48,17 @@
 				page_size:1,
 				balance:'',
 				score_data:[],
-				log_list:[]
+				log_list:[],
+				userid002:0
 			}
 			
 		},
 		
 		onLoad(option){
+			if(option.userid002){
+				this.userid002 = option.userid002;
+			}
+			
 			this.abotapi.set_option_list_str(this, function(that, option_list){
 				that.abotapi.getColor();
 			});
@@ -85,7 +90,8 @@
 						sellerid: that.abotapi.globalData.default_sellerid,
 						checkstr: userInfo.checkstr,
 						userid: userInfo.userid,
-						balance_type_ext:balance
+						balance_type_ext:balance,
+						userid002:that.userid002
 					},
 					success(res){
 						console.log('aaaabbbb',res)

@@ -38,21 +38,23 @@
 										</view>
 									</navigator>
 								    <view class="aui-palace" v-if="item.balance">
+										<navigator :url="'../user/log?userid002='+ item.userid">
+											<view href="javascript:;" class="aui-palace-grid">
+												<view class="aui-palace-grid-text">
+													<h2 class="red">￥{{item.balance}}</h2>
+													<p>可用余额(元)</p>
+												</view>
+											</view>
+										</navigator>
 								        <view href="javascript:;" class="aui-palace-grid">
 								            <view class="aui-palace-grid-text">
-								                <h2 class="red">￥{{item.balance.yue}}</h2>
-								                <p>可用余额(元)</p>
-								            </view>
-								        </view>
-								        <view href="javascript:;" class="aui-palace-grid">
-								            <view class="aui-palace-grid-text">
-								                <h2>￥{{item.balance.zengkuan}}</h2>
+								                <h2>￥{{item.balance_zengsong}}</h2>
 								                <p>可用赠款(元)</p>
 								            </view>
 								        </view>
 								        <view href="javascript:;" class="aui-palace-grid">
 								            <view class="aui-palace-grid-text">
-								                <h2>{{item.balance.jifen}}</h2>
+								                <h2>{{item.score}}</h2>
 								                <p>可用赠款积分</p>
 								            </view>
 								        </view>
@@ -68,6 +70,7 @@
 									    </view>
 									</view>
 								</view>
+								
 								
 							</block>
 							
@@ -92,12 +95,17 @@
 	export default {
 		data() {
 			return {
-				citizen_list_url:'https://yanyubao.tseo.cn/fulaozhucan/index.php/openapi/UserApi/get_member_list',
-				//citizen_list_url:'http://192.168.0.205/yanyubao_web/yidaozhucan_server/index.php/openapi/UserApi/get_member_list', //获取数据的api
+				data_url:'https://yanyubao.tseo.cn/fulaozhucan/index.php/openapi/UserApi/get_member_list',
+				//data_url:'http://192.168.0.205/yanyubao_web/yidaozhucan_server/index.php/openapi/UserApi/get_member_list', //获取数据的api
+				
+				data_url_flag:0,//判断options 中 有没有data_url
+				
+				
 				citizen_list :[], //数据
 				btn_bg_color:'', //按钮颜色
 				is_empty_msg_show:0,
-				
+				is_get_user_list:0,
+				page:1,
 				current_params_str:'', 
 			}
 		},
@@ -108,6 +116,13 @@
 			uni.setNavigationBarTitle({
 				title:'会员列表'
 			})
+			
+			//如果带了data_url 参数就会覆盖data 的data_url
+			if(options.data_url){
+				this.data_url = decodeURIComponent( options.data_url);
+				
+				this.data_url_flag = 1;
+			}
 			
 			//获取配置项
 			this.abotapi.set_option_list_str(this, this.call_back_set_option);
@@ -141,10 +156,6 @@
 			}		
 			
 			
-			//如果带了citizen_list_url 参数就会覆盖data 的citizen_list_url
-			if(options.citizen_list_url){
-				this.citizen_list_url = options.citizen_list_url;
-			}
 			
 			
 			this.get_citizen_list();
@@ -160,8 +171,13 @@
 		},
 		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
 		onPullDownRefresh() {
-			this.get_citizen_list();
 			
+			this.page = 1;
+			this.is_get_user_list = 0;
+			this.is_empty_msg_show = 0;
+			this.citizen_list = [];
+			
+			this.get_citizen_list();
 			setTimeout(function() {
 				console.log('timeout===>>>stopPullDownRefresh===>>>hideToast');
 				
@@ -171,6 +187,9 @@
 			}, 2000);
 		},
 		onReachBottom: function () {
+			
+			this.page++;
+			this.get_citizen_list();
 			
 		},
 		onPageScroll(e){
@@ -202,18 +221,22 @@
 					that.btn_bg_color = cb_params.wxa_shop_nav_bg_color;
 				}
 				
-				
+				//配置项中的数据源网址
+				if(cb_params.member_list_data_url && (that.data_url_flag == 0)){
+					that.data_url = cb_params.member_list_data_url;
+				}
 				
 				console.log('cb_params',cb_params);
-				
-				
-				
 				
 				
 			},
 			
 			
 			get_citizen_list:function(){
+				
+				if(this.is_get_user_list == 1){
+					return;
+				}
 				
 				uni.showLoading({
 					title:'数据更新中……'
@@ -223,30 +246,39 @@
 				
 				var userInfo = this.abotapi.get_user_info();
 				
-				console.log('======>',this.citizen_list_url);
+				console.log('======>',this.data_url);
 				console.log('======>', that.abotapi.globalData.default_sellerid);
 				this.abotapi.abotRequest({
-					url: this.citizen_list_url,
+					url: this.data_url,
 					data: {
 						sellerid: that.abotapi.globalData.default_sellerid,
 						checkstr: userInfo.checkstr,
 						userid: userInfo.userid,
+						
+						page:that.page,
 					},
 					success: function (res) {
 						
 						uni.hideLoading();
 						
 						if(res.data.code == 1){
-							that.citizen_list = res.data.data;
-							that.is_empty_msg_show = 0;
+							
+							for(var i=0; i<res.data.data.length; i++){
+							     that.citizen_list.push(res.data.data[i]);
+							}
+							
+							that.is_get_user_list = 0;
 						}else{
 							
-							that.citizen_list = [];
 							uni.showToast({
 								title:'暂无数据'
 							})
+							console.log('===-------',that.citizen_list);
+							if(that.citizen_list.length == 0){
+								that.is_empty_msg_show = 1;
+							}
 							
-							that.is_empty_msg_show = 1;
+							that.is_get_user_list = 1;
 						}
 						
 						//console.log('wode res',res);

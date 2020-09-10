@@ -73,6 +73,8 @@
 					contentrefresh: "正在加载...",
 					contentnomore: "没有更多数据了"
 				},
+				
+				userid002:0
 			}
 
 		},
@@ -84,6 +86,10 @@
 				uni.setNavigationBarTitle({
 					title:'赠款明细'
 				})
+			}
+			console.log('option.userid002',option.userid002);
+			if(option.userid002){
+				this.userid002 = option.userid002;
 			}
 			
 			this.abotapi.set_option_list_str(this, function(that, option_list){
@@ -125,6 +131,7 @@
 						balance_type_ext: balance,
 						page_size: that.page_size,
 						tag:that.tag,
+						userid002:that.userid002
 					},
 					success(res) {
 						console.log('aaaabbbb', res);
@@ -175,6 +182,7 @@
 						userid: userInfo.userid,
 						balance_type_ext: balance,
 						page_size: that.page_size,
+						userid002:that.userid002
 					},
 					success(res) {
 						console.log('aaaabbbb', res)
