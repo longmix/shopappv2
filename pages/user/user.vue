@@ -116,6 +116,12 @@
 				</view>
 			</view>
 		</view>
+		<!-- 平铺图片 -->
+		<view style="width: 96%;margin-left: 2%;" v-if="wxa_usercenter_ad_list">
+			<image style="width: 100%;" @tap="toUrl(item.url)" v-for="(item,index) in wxa_usercenter_ad_list" :key="index" :src="item.image" mode="widthFix"></image>
+		</view>
+		
+		
 		<!-- 工具栏 -->
 		<view class="toolbar">
 			<view class="title">我的工具栏</view>
@@ -219,6 +225,7 @@
 				
 				icon_jump_bg_color:'#000', //返回首页的悬浮图标的背景颜色
 				wxa_usercenter_function_list:0, //控制工具栏的样式  是九宫格还是列表
+				wxa_usercenter_ad_list:[],//平铺图片
 			}
 		},
 		
@@ -276,6 +283,12 @@
 					
 					if(option_list.wxa_usercenter_function_list){
 						that.wxa_usercenter_function_list = option_list.wxa_usercenter_function_list;
+					}
+					
+					
+					//广告图片
+					if(option_list.wxa_usercenter_ad_list){
+						that.wxa_usercenter_ad_list = option_list.wxa_usercenter_ad_list;
 					}
 					
 					that001.get_current_userinfo();
@@ -456,7 +469,9 @@
 				
 			},
 			
-			
+			toUrl:function(url){
+				this.abotapi.call_h5browser_or_other_goto_url(url);
+			},
 			
 			//消息列表
 			toMsg(){
