@@ -2,8 +2,8 @@
     "name" : "志购",
     "appid" : "__UNI__27F82A3",
     "description" : "田震电商志购APP",
-    "versionName" : "1.6.3",
-    "versionCode" : 155,
+    "versionName" : "1.6.5",
+    "versionCode" : 158,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true, //是否启用`自定义组件模式`，为true表示新的`自定义组件模式` ，否则为`template模板模式`   
@@ -25,7 +25,8 @@
             "VideoPlayer" : {},
             "Maps" : {},
             "Speech" : {},
-            "Payment" : {}
+            "Payment" : {},
+            "Push" : {}
         },
         /* 模块配置 */
         "distribute" : {
@@ -81,8 +82,8 @@
                 },
                 "payment" : {
                     "weixin" : {
-                        "appid" : "wx029e1ddb38b4c630",
-                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/yyds/"
+                        "appid" : "wx029e1ddb38b4c888",
+                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/zhigouapp/"
                     },
                     "alipay" : {}
                 },
@@ -92,20 +93,18 @@
                 },
                 "oauth" : {
                     "weixin" : {
-                        "appid" : "wx029e1ddb38b4c630",
+                        "appid" : "wx029e1ddb38b4c888",
                         "appsecret" : "aaaaaaaaaaaaaaaaaaaaaaa",
-                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/yyds/"
+                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/zhigouapp/"
                     }
                 },
                 "share" : {
                     "weixin" : {
-                        "appid" : "wx029e1ddb38b4c630",
-                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/yyds/"
+                        "appid" : "wx029e1ddb38b4c888",
+                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/zhigouapp/"
                     }
                 },
-                "push" : {
-                    "unipush" : {}
-                }
+                "push" : {}
             },
             "icons" : {
                 "android" : {
