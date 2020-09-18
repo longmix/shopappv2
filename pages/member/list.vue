@@ -273,7 +273,7 @@
 							uni.showToast({
 								title:'暂无数据'
 							})
-							console.log('===-------',that.citizen_list);
+							
 							if(that.citizen_list.length == 0){
 								that.is_empty_msg_show = 1;
 							}

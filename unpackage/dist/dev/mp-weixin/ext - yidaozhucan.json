@@ -44,12 +44,6 @@
         "text": "首页"
       },
       {
-        "pagePath": "pages/member/list",
-        "iconPath": "static/img/tabBar/category.png",
-        "selectedIconPath": "static/img/tabBar/category-on.png",
-        "text": "受助人"
-      },
-      {
         "pagePath": "pages/checkin/checkin",
         "iconPath": "static/img/tabBar/imglist.png",
         "selectedIconPath": "static/img/tabBar/imglist-on.png",

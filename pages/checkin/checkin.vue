@@ -17,7 +17,6 @@
 		            <view class="aui-scrollView">
 		                <view class="aui-extreme">
 							<!-- 开始 -->
-							
 							<block v-for="(item,index) in checkin_list" :key="index">
 								
 								<view class="aui-extreme-item">
@@ -129,7 +128,7 @@
 		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
 		onPullDownRefresh() {
 			this.is_get_user = true;
-			this.checkin_listp = [];
+			this.checkin_list = [];
 			this.page = 1;
 			this.get_checkin_list();
 		},
