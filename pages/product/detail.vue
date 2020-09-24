@@ -35,7 +35,7 @@
 			<view class="warm" v-if="goods_detail.inventory == 0">
 				该商品已经售罄！！！
 			</view>
-		<view class="footer">
+		<view class="footer" >
 			<view class="icons">
 			
 				
@@ -72,18 +72,18 @@
 					<view class="icon kefu"></view>
 					<view class="text">客服</view>
 				</view>
-				<view class="box" @tap="keep_to_collect">
+				<view class="box" @tap="keep_to_collect" v-if="product_source_channel == 0">
 					<view class="icon" :class="[isKeep?'shoucangsel':'shoucang']"></view>
 					<view class="text">{{isKeep?'已':''}}收藏</view>
 				</view>
-				<view class="box" @tap="toCart">
+				<view class="box" @tap="toCart" v-if="product_source_channel == 0">
 					<view class="icon cart"></view>
 					<view class="text">{{icon_btn_gouwuche_text}}</view>
 					<view class="amount" v-if="cart_amount > 0">{{cart_amount}}</view>
 				</view>
 				
 			</view>
-			<view class="btn">
+			<view class="btn" v-if="product_source_channel == 0">
 				<!-- 加入购物车  立即购买 -->
 				<view :class="[goods_detail.inventory == 0? 'joinCart-null':'joinCart']" 
 					data-type="addcart" data-status="2" @tap="goods_detail.inventory == 0?'':setModalStatus($event)">{{btn_gouwuche_text}}</view>
@@ -1869,12 +1869,13 @@ page {
 
 .goods-info {
 	.price {
-		font-size: 46upx;
-		font-weight: 600;
+		font-size: 40upx;
+		font-weight: bold;
 		color: #f47925;
 	}
 	.title {
 		font-size: 30upx;
+		font-weight: bold;
 	}
 }
 .spec {
