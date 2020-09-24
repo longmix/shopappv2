@@ -106,6 +106,13 @@
 
 								<radio value='wx_pay' checked='true' style='margin-left:90%;margin-top:7px;'></radio>
 							</view>
+							
+							<view class="zhifu_li" v-if="show_ali_pay==1">
+								<image src="../../../static/img/alipay.png" class="tubiao_zhifu"></image>
+								<view class="zhifu_name">支付宝支付</view>
+							
+								<radio value='ali_pay' style='margin-left:90%;margin-top:7px;'></radio>
+							</view>
 
 							<view class="zhifu_li" v-if="show_zhuanzhang_pay==1">
 								<image src="../../../static/img/payment_zhuanzhang.png" class="tubiao_zhifu"></image>
@@ -272,16 +279,20 @@
 		data() {
 			return {
 				date: '2016-09-01',
+				
 				zz_pay: true,
 				payView: true,
+				current_payment_type:'',
+				
 				pageBackgroundColor: '',
 				orderData: '',
 				orderno: '',
 				balance_dikou: '',
 				balance_zengsong_dikou: '',
 				pay_price: '',
-				show_weixin_pay: '',
-				show_zhuanzhang_pay: '',
+				show_weixin_pay: 0,
+				show_ali_pay: 0,
+				show_zhuanzhang_pay: 0,
 				pay_list: '',
 				payList: '',
 				pay_type: '',
@@ -340,13 +351,9 @@
 			
 			that.abotapi.abotRequest({
 				url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=payment_type_list',
-				method: 'post',
 				data: {
 					sellerid: that.abotapi.get_sellerid(),
 					appid: that.abotapi.globalData.xiaochengxu_appid
-				},
-				header: {
-					'Content-Type': 'application/x-www-form-urlencoded'
 				},
 				success: function(res) {
 					console.log("res111", res);
@@ -356,20 +363,35 @@
 
 
 						var show_weixin_pay = 0;
+						var show_ali_pay = 0;
 						var show_zhuanzhang_pay = 0;
+						
 						for (var i = 0; i < type_list.length; i++) {
 							if (type_list[i].payment_type == 3) {
 								show_weixin_pay = 1;
 							}
-
-							if (type_list[i].payment_type == 6) {
+							else if (type_list[i].payment_type == 2) {
+								show_ali_pay = 1;
+							}
+							else if (type_list[i].payment_type == 6) {
 								show_zhuanzhang_pay = 1;
 							}
 						}
+						
+						// #ifdef MP-WEIXIN
+							show_ali_pay = 0;
+						// #endif
+						
+						// #ifdef MP-ALIPAY
+							show_weixin_pay = 0;
+						// #endif
 
-						that.type_list = type_list
+						that.type_list = type_list;
+						
 						that.show_weixin_pay = show_weixin_pay;
-						that.show_zhuanzhang_pay = show_zhuanzhang_pay
+						that.show_ali_pay = show_ali_pay;
+						that.show_zhuanzhang_pay = show_zhuanzhang_pay;
+						
 						console.log("that.show_zhuanzhang_pay", that.show_zhuanzhang_pay);
 					} else {
 						uni.showToast({
@@ -389,15 +411,22 @@
 		},
 		methods: {
 			radioChange: function(e) {
-				console.log('change-->e', e);
+				
+				console.log('radioChange change-->e', e);
+				
 				var that = this;
+				
 				var pay = e.detail.value;
+				
 				if (pay == 'zz_pay') {
 					that.zz_pay = false
 				} else {
 					that.zz_pay = true;
-					that.payView = true
+					that.payView = true;
 				}
+				
+				that.current_payment_type = pay;
+				
 				var userInfo = that.abotapi.get_user_info();
 				var pay_list = that.pay_list
 				console.log('pay_list1', pay_list);
@@ -502,7 +531,9 @@
 
 			//微信支付
 			createProductOrderByWX: function(e) {
+				
 				this.paytype = 'weixin'
+				
 				this.call_weixin_pay();
 			},
 			bindDateChange: function(e) {
@@ -629,7 +660,6 @@
 				
 				var payment_provider = 'wxpay';
 				
-				
 				var post_data = {
 						// productid: that.productid,
 						orderid: that.orderId,
@@ -649,21 +679,30 @@
 						*/
 				};
 				
-				// #ifdef APP-PLUS
-				post_data.appid = that.abotapi.globalData.weixin_open_platform_appid;
-				
-				if(post_data.payment_type == 3){
-					payment_provider = 'wxpay';
+				if(that.current_payment_type == 'ali_pay'){
+					//payment_provider = 'alipay';
+					post_data.payment_type = 2;
 				}
+				
+				
+				// #ifdef APP-PLUS
+					post_data.appid = that.abotapi.globalData.weixin_open_platform_appid;
+					
+					if(post_data.payment_type == 3){
+						payment_provider = 'wxpay';
+					}
+					else if(post_data.payment_type == 2){
+						payment_provider = 'alipay';
+					}
 				// #endif
 				
 				// #ifdef MP-WEIXIN
-				post_data.trade_type = 'JSAPI_WXA';
-				post_data.appid = that.abotapi.globalData.xiaochengxu_appid;
-				post_data.openid = that.abotapi.get_current_openid();
-				post_data.client = 'wxa';
-				
-				payment_provider = 'wxpay';
+					post_data.trade_type = 'JSAPI_WXA';
+					post_data.appid = that.abotapi.globalData.xiaochengxu_appid;
+					post_data.openid = that.abotapi.get_current_openid();
+					post_data.client = 'wxa';
+					
+					payment_provider = 'wxpay';
 				// #endif
 				
 				
@@ -676,7 +715,7 @@
 						'Content-Type': 'application/x-www-form-urlencoded'
 					}, // 设置请求的 header
 					success: function(res) {
-						console.log('order_buy order_buy order_buy', res);
+						console.log('order_buy order_buy order_buy====>>>>>>>', res);
 
 						if (res.data.code != 1) {
 							uni.showModal({
@@ -695,42 +734,55 @@
 							return;
 						}
 
+						//用于支付的参数
+						var payment_parameter = null;
 
 						//通过微信支付
-						if (!res.data.wxpay_params) {
-							uni.showModal({
-								title:'支付失败',
-								showCancel:false,
-								content:"没有微信支付的参数",
-							});
+						if (post_data.payment_type == 3)  {
+							if(!res.data.wxpay_params){
+								uni.showModal({
+									title:'支付失败',
+									showCancel:false,
+									content:"没有微信支付的参数",
+								});
+								
+								return;
+							}
 							
-							return;
+							
+							var payment_parameter_str = res.data.wxpay_params.parameters;
+							
+							
+							if (res.data.wxpay_params && res.data.wxpay_params.errcode == 1) {
+								// uni.showToast({
+								//   title: "网络错误!",
+								//   duration: 2000,
+								//   icon: 'none',
+								// });
+							
+								uni.showModal({
+									title: '提示',
+									content: '启动微信钱包失败！',
+									showCancel:false,
+								})
+							
+							
+								return;
+							}
+							
+							
+							payment_parameter = JSON.parse(payment_parameter_str);
+							
+							console.log('准备调用 uni.requestPayment====>>>>>payment_parameter===>>>', payment_parameter);
+							
+							
 						}
-
-						var payment_parameter_str = res.data.wxpay_params.parameters;
-
-
-						if (res.data.wxpay_params && res.data.wxpay_params.errcode == 1) {
-							// uni.showToast({
-							//   title: "网络错误!",
-							//   duration: 2000,
-							//   icon: 'none',
-							// });
-
-							uni.showModal({
-								title: '提示',
-								content: '启动微信钱包失败！',
-								showCancel:false,
-							})
-
-
-							return;
+						else  if (post_data.payment_type == 2){
+							//支付宝支付
+							payment_parameter = res.data.str;
 						}
-
-
-						var payment_parameter = JSON.parse(payment_parameter_str);
 						
-						console.log('准备调用 uni.requestPayment====>>>>>payment_parameter===>>>', payment_parameter);
+
 						
 						
 						var uni_pay_params = {
@@ -760,6 +812,8 @@
 						};
 						
 						// #ifdef APP-PLUS
+						if (post_data.payment_type == 3){
+							//微信支付
 							uni_pay_params.timeStamp = payment_parameter.timestamp;
 							uni_pay_params.nonceStr = payment_parameter.noncestr;
 							uni_pay_params.package = payment_parameter.package;
@@ -775,6 +829,12 @@
 											timestamp: payment_parameter.timestamp,  
 											sign: payment_parameter.sign,  
 										});
+						}
+						else if (post_data.payment_type == 2){
+							//支付宝支付
+							uni_pay_params.orderInfo = payment_parameter;
+						}
+						
 						// #endif
 						
 						// #ifdef MP-WEIXIN
@@ -787,6 +847,7 @@
 						
 						//appId: payment_parameter.appId,
 						
+						console.log('开始调用 uni.requestPayment====>>>>>支付方式===>>>', post_data.payment_type);
 						console.log('开始调用 uni.requestPayment====>>>>>uni_pay_params===>>>', uni_pay_params);
 						
 						uni.requestPayment(uni_pay_params);
