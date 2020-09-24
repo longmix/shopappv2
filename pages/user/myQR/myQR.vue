@@ -81,20 +81,17 @@
 						checkstr: userInfo.checkstr,
 						userid: userInfo.userid,
 						appid: this.abotapi.globalData.xiaochengxu_appid,
+						platform: this.abotapi.globalData.current_platform
 					};
 					
-				// #ifdef MP-ALIPAY
-				post_data.qrcode_type = 'normal_qrcode';
+				// #ifdef MP-WEIXIN
+					post_data.qrcode_type = 'wxa_qrcode';
 				// #endif
 				
 				
-				uni.request({
+				this.abotapi.abotRequest({
 					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_my_qrcode',
-					method:'post',
 					data: post_data,
-					header: {
-						'Content-Type':  'application/x-www-form-urlencoded'
-					},
 					success: function (res) {
 						console.log("res",res);
 						if(res.data.code == 1){
