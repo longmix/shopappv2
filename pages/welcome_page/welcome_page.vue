@@ -48,7 +48,9 @@
 		
 		</view>
 		<view style="padding-bottom:120rpx;"></view>
-		<view class="zdy_btn_box" :style="{background:welcome_page_bottom_bg_color,color:welcome_page_bottom_font_color,borderTop:'1rpx solid '+ welcome_page_bottom_font_color}">
+		<view class="zdy_btn_box" 
+			v-if="welcome_page_btn_count > 0"
+			:style="{background:welcome_page_bottom_bg_color,color:welcome_page_bottom_font_color,borderTop:'1rpx solid '+ welcome_page_bottom_font_color}">
 		    <view :class="[welcome_page_btn_count > 2 ? 'btn_up_and_dow' : 'btn_left_and_right']" v-for="(item,index) in welcome_page_bottom_icon_list" :key="index" @click="btn_to_page" :data-url="item.url">
 		        <image :style="{width:welcome_page_bottom_icon_size + 'rpx',height:welcome_page_bottom_icon_size + 'rpx'}" :src="item.src" style="width:40rpx;height:40rpx;"></image> 
 		        <view :style="{fontSize:welcome_page_bottom_font_size + 'rpx'}">{{item.name}}</view>
@@ -94,7 +96,7 @@ export default {
 			welcome_page_bottom_font_color:'#fff',
 			welcome_page_bottom_bg_color:'#000',
 			welcome_page_bottom_icon_list:[],
-			welcome_page_btn_count:'',
+			welcome_page_btn_count:0,
 			
 			//按钮的数量控制字体和图片的大小
 			welcome_page_bottom_font_size:'30',
