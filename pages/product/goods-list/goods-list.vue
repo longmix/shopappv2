@@ -52,6 +52,7 @@
 				//商品的来源渠道，默认0为SaaS云平台的商品，1为淘宝客等推广联盟的商品
 				product_source_channel:0,
 				product_channel_name:'',	// jingdong / taobao / pinduoduo
+				factoryid:'',//供货商id
 			};
 		},
 		/**
@@ -70,6 +71,10 @@
 			var title = '商品列表';
 			if(option.cata_name){
 				title += '—' + option.cata_name;
+			}
+			
+			if(option.factoryid){
+				this.factoryid = option.factoryid;
 			}
 			
 			uni.setNavigationBarTitle({
@@ -193,6 +198,7 @@
 					      page: that.current_page,
 						  cataid:that.cataid,
 						  platform: that.abotapi.globalData.current_platform,
+						  factoryid: this.factoryid,
 					    },
 					    success: function (res) {
 							uni.hideLoading();

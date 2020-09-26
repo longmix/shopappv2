@@ -865,7 +865,11 @@
 
 
 						console.log('pppppppppppppppp', data);
-
+						
+						if(!data.yingyeshijian){
+							data.yingyeshijian = that.current_shang_detail.yingyeshijian;
+						}
+						
 						that.current_shang_detail = data;
 						that.shang_faquan_list = data.shang_faquan_list;
 						that.spec = spec;

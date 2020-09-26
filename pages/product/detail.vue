@@ -203,6 +203,12 @@
 			</view>
 		</view>
 		
+		<!-- 供货商跳转 -->
+		<navigator :url="'./goods-list/goods-list?factoryid='+goods_detail.factoryid" v-if="goods_detail.factory_name">
+			<view style="border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;padding: 20rpx 4%;font-weight: bold;font-size: 28rpx;">
+				商品由 {{goods_detail.factory_name}} 供货商发货 >>
+			</view>
+		</navigator>
 		<!-- 商品属性 -->
 		<view class="info-box spec" v-if="attribute_list && attribute_list.length>0">
 			<view class="row" @tap="showService">			
