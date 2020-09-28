@@ -776,7 +776,8 @@ export default {
 	      }
 	    }
 	},
-	onShareTimeline: function () {
+	
+	share_return:function(){
 		var that = this;
 			
 		var share_title = that.goods_detail.name;
@@ -792,13 +793,17 @@ export default {
 		  share_path += '&userid='+userInfo.userid;
 		}
 			
-		var share_img = that.share_imageUrl;
+		var share_img = that.goods_detail.pictures;
 		
 		return {
 		    title: share_title + ' ￥' + that.goods_detail.price,
 		    query: share_path,
 		    imageUrl:share_img,
 		}
+	},
+	
+	onShareTimeline: function () {
+		this.share_return();
 	},
 	onAddToFavorites: function () {
 		this.onShareTimeline();
