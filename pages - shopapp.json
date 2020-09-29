@@ -26,8 +26,8 @@
 			},
 			{
 				"pagePath": "pages/shopList/shopList",
-				"iconPath": "static/img/tabBar/cart.png",
-				"selectedIconPath": "static/img/tabBar/cart-on.png",
+				"iconPath": "static/img/tabBar/shang.png",
+				"selectedIconPath": "static/img/tabBar/shang-on.png",
 				"text": "商家"
 			},
 			{

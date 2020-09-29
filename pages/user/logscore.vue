@@ -26,7 +26,7 @@
 					
 					
 				</view>
-				<view class="bottom_tip" v-if="bottom_tip==1">我是有底线的！</view>
+				<view class="bottom_tip" v-if="bottom_tip==1">没有更多数据~</view>
 				
 			</view>
 			

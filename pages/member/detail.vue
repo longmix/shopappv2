@@ -81,20 +81,23 @@
 			return {
 				citizen_citizenid:'',
 				
-				citizen_detail_url:'https://yanyubao.tseo.cn/fulaozhucan/index.php/openapi/UserApi/get_member_detail',
+				citizen_detail_url:'https://yanyubao.tseo.cn/index.php/openapi/UserData/my_user_detail',
 				citizen_detail:[],
 				btn_bg_color:'',
+				
+				data_url_flag:0,//判断options 中 有没有data_url
 			}
 		},
 		
 		onLoad(options) {
 			
-			if(options.citizenid){
-				this.citizen_citizenid = options.citizenid;
+			if(options.userid){
+				this.citizen_citizenid = options.userid;
 			}
 			
 			if(options.citizen_detail_url){
 				this.citizen_detail_url = options.citizen_detail_url;
+				this.data_url_flag = 1;
 			}
 			
 			
@@ -130,7 +133,8 @@
 					
 					that.btn_bg_color = that.abotapi.globalData.navigationBar_bg_color;
 					
-				}else{
+				}
+				else{
 					uni.setNavigationBarColor({
 						backgroundColor:cb_params.wxa_shop_nav_bg_color,
 						frontColor:cb_params.wxa_shop_nav_font_color,
@@ -139,6 +143,10 @@
 					that.btn_bg_color = cb_params.wxa_shop_nav_bg_color;
 				}
 				
+				//配置项中的数据源网址
+				if(cb_params.member_detail_data_url && (that.data_url_flag == 0)){
+					that.citizen_detail_url = cb_params.member_detail_data_url;
+				}
 				
 				
 				console.log('cb_params',cb_params);
@@ -154,9 +162,11 @@
 					url: this.citizen_detail_url,
 					data: {
 						sellerid: that.abotapi.globalData.default_sellerid,
-						checkstr: userInfo.checkstr,
-						citizen_citizenid: this.citizen_citizenid,
 						userid: userInfo.userid,
+						checkstr: userInfo.checkstr,
+						
+						citizen_citizenid: this.citizen_citizenid,
+						
 					},
 					success: function (res) {
 						

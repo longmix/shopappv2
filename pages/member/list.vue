@@ -8,7 +8,7 @@
 					<i class="icon icon-return"></i>
 				</a>
 				<view class="aui-center">
-					<text class="aui-center-title">用户列表</text>
+					<text class="aui-center-title">会员列表</text>
 				</view>
 				<a href="javascript:;" class="aui-navBar-item">
 					<i class="icon icon-sys"></i>
@@ -23,7 +23,7 @@
 							<block v-for="(item,index) in citizen_list" :key="index">
 								
 								<view class="aui-extreme-item">
-									<navigator :url="'detail?citizenid='+item.citizenid">
+									<navigator :url="'detail?userid='+item.userid">
 										<view class="aui-flex aui-flex-pic">
 											<view class="aui-flex-eme">
 												<image :src="item.head_icon"></image>
@@ -38,14 +38,15 @@
 										</view>
 									</navigator>
 								    <view class="aui-palace" v-if="item.balance">
-										<navigator :url="'../user/log?userid002='+ item.userid">
-											<view href="javascript:;" class="aui-palace-grid">
-												<view class="aui-palace-grid-text">
-													<h2 class="red">￥{{item.balance}}</h2>
-													<p>可用余额(元)</p>
-												</view>
+										<!-- <navigator :url="'../user/log?userid002='+ item.userid"></navigator> -->
+										
+										<view href="javascript:;" class="aui-palace-grid">
+											<view class="aui-palace-grid-text">
+												<h2 class="red">￥{{item.balance}}</h2>
+												<p>现金余额(元)</p>
 											</view>
-										</navigator>
+										</view>
+										
 								        <view href="javascript:;" class="aui-palace-grid">
 								            <view class="aui-palace-grid-text">
 								                <h2>￥{{item.balance_zengsong}}</h2>
@@ -55,13 +56,13 @@
 								        <view href="javascript:;" class="aui-palace-grid">
 								            <view class="aui-palace-grid-text">
 								                <h2>{{item.score}}</h2>
-								                <p>可用赠款积分</p>
+								                <p>积分账户余额</p>
 								            </view>
 								        </view>
 								    </view>
 									 
 									<view class="server_btn_list">
-									    <view href="javascript:;" :style="{'backgroundColor':btn_bg_color}" class="server_btn_style" v-for="(btn_item,btn_index) in item.buttons" :key="btn_index">
+									    <view :style="{'backgroundColor':btn_bg_color}" class="server_btn_style" v-for="(btn_item,btn_index) in item.buttons" :key="btn_index">
 									       <navigator :url="btn_item.url">
 												<view class="server_btn_font_style">
 													<p>{{btn_item.name}}</p>
@@ -77,7 +78,7 @@
 							
 							<view v-if="is_empty_msg_show == 1" style="text-align: center;margin-top: 100upx;">
 								<image style="width: 150upx;" mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/empty_order2.png"></image>
-								<text style="display: block;color: #8a8a8a;">暂无数据/(ㄒoㄒ)/~~</text>
+								<text style="display: block;color: #8a8a8a;">{{empty_list_msg}} /(ㄒoㄒ)/~~</text>
 							</view>
 							
 							
@@ -95,7 +96,7 @@
 	export default {
 		data() {
 			return {
-				data_url:'https://yanyubao.tseo.cn/fulaozhucan/index.php/openapi/UserApi/get_member_list',
+				data_url:'https://yanyubao.tseo.cn/index.php/openapi/UserData/my_user_list?list_type=distri_list',
 				//data_url:'http://192.168.0.205/yanyubao_web/yidaozhucan_server/index.php/openapi/UserApi/get_member_list', //获取数据的api
 				
 				data_url_flag:0,//判断options 中 有没有data_url
@@ -106,7 +107,8 @@
 				is_empty_msg_show:0,
 				is_get_user_list:0,
 				page:1,
-				current_params_str:'', 
+				current_params_str:'',
+				 empty_list_msg:'暂无数据',
 			}
 		},
 		
@@ -116,22 +118,6 @@
 			uni.setNavigationBarTitle({
 				title:'会员列表'
 			})
-			
-			//如果带了data_url 参数就会覆盖data 的data_url
-			if(options.data_url){
-				this.data_url = decodeURIComponent( options.data_url);
-				
-				this.data_url_flag = 1;
-			}
-			
-			//获取配置项
-			this.abotapi.set_option_list_str(this, this.call_back_set_option);
-			
-			
-			//参数拼接
-			for(var key in options){
-			  this.current_params_str += key+'='+options[key]+'&';
-			}
 			
 			
 			//检查用户是否登录
@@ -155,11 +141,21 @@
 			  return;
 			}		
 			
+			//参数拼接
+			for(var key in options){
+			  this.current_params_str += key+'='+options[key]+'&';
+			}
 			
 			
+			//如果带了data_url 参数就会覆盖data 的data_url
+			if(options.data_url){
+				this.data_url = decodeURIComponent( options.data_url);
+				
+				this.data_url_flag = 1;
+			}
 			
-			this.get_citizen_list();
-			
+			//获取配置项
+			this.abotapi.set_option_list_str(this, this.call_back_set_option);
 			
 			
 		},
@@ -228,7 +224,7 @@
 				
 				console.log('cb_params',cb_params);
 				
-				
+				this.get_citizen_list();
 			},
 			
 			
@@ -246,6 +242,13 @@
 				
 				var userInfo = this.abotapi.get_user_info();
 				
+				if(!userInfo){
+					uni.showToast({
+						title:'登录验证失败'
+					})
+					return;
+				}
+				
 				console.log('======>',this.data_url);
 				console.log('======>', that.abotapi.globalData.default_sellerid);
 				this.abotapi.abotRequest({
@@ -261,6 +264,12 @@
 						
 						uni.hideLoading();
 						
+						if(res.data.list_title){
+							uni.setNavigationBarTitle({
+								title: res.data.list_title
+							})
+						}
+						
 						if(res.data.code == 1){
 							
 							for(var i=0; i<res.data.data.length; i++){
@@ -268,7 +277,9 @@
 							}
 							
 							that.is_get_user_list = 0;
-						}else{
+							
+						}
+						else{
 							
 							uni.showToast({
 								title:'暂无数据'
@@ -279,6 +290,8 @@
 							}
 							
 							that.is_get_user_list = 1;
+							
+							that.empty_list_msg = res.data.msg;
 						}
 						
 						//console.log('wode res',res);
@@ -726,17 +739,17 @@
 		color:#fff;
 		text-align: center;
 		overflow: hidden;
-		margin-top: 30rpx;
+		margin: 0rpx 30rpx 20rpx 30rpx;
 	}
 	.server_btn_style{
 		
-		width:23%;
 		margin-right: 1%;
 		border-radius: 6rpx;
 		background:#EC652F;
 		float: left;
 		height: 60rpx;
 		line-height: 60rpx;
+		padding: 5rpx 20rpx;
 	}
 	
 </style>
