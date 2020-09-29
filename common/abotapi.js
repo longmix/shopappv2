@@ -987,6 +987,7 @@ module.exports = {
 		
 		this.globalData.is_index_index_in_tabbar = 1;
 		this.globalData.is_user_user_in_tabbar = 1;
+		
 		//购物车在底部导航栏（如果购物车在底部导航栏，请务必选择此项，避免向购物车跳转失败）
 		this.globalData.is_shop_cart_in_tabbar = 1;
 		

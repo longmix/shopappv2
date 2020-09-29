@@ -989,12 +989,12 @@ export default {
 			}, 150);
 		},
 		toCart:function(){
-			console.log('toCart 向购物车跳转');
+			console.log('toCart 向购物车跳转 ===>>>>',  this.abotapi.globalData.is_shop_cart_in_tabbar);
 			
 			//2020.8.23. 推广联盟
 			if(this.product_source_channel == 1){
 				uni.showModal({
-					title:'请通过领取按钮购买',
+					title:'请通过领取优惠券按钮购买',
 					content:buymsg,
 					showCancel:false
 				})
