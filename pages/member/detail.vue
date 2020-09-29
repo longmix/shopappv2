@@ -101,7 +101,7 @@
 			}
 			
 			
-			this.get_citizen_detail();
+			
 			
 			this.abotapi.set_option_list_str(this, this.call_back_set_option);
 		},
@@ -150,6 +150,10 @@
 				
 				
 				console.log('cb_params',cb_params);
+				
+				
+				this.get_citizen_detail();
+				
 			},
 			
 			get_citizen_detail:function(){
