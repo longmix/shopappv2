@@ -91,9 +91,11 @@
 		<!-- 隐私协议 -->
 		<view style="display: flex;justify-content: center;margin-bottom: 15rpx;align-items: center;">
 			
-			<navigator style="color: #0055FF;float: left;font-size: 25rpx;margin-right: 5rpx;" :url="'/pages/help_detail/help_detail?id='+ yinsi_cfg_shiyongxieyi_imgid +'&form_page=spec_cms_token&cms_token='+ yinsi_cfg_shiyongxieyi_cms_token +'&hidden_remark=1'">服务协议</navigator>
+			<navigator style="color: #0055FF;float: left;font-size: 30rpx;margin-right: 5rpx;" 
+				:url="'/pages/help_detail/help_detail?id='+ yinsi_cfg_shiyongxieyi_imgid +'&form_page=spec_cms_token&cms_token='+ yinsi_cfg_shiyongxieyi_cms_token +'&hidden_remark=1'">服务协议</navigator>
 			|
-			<navigator style="color: #0055FF;float: left;font-size: 25rpx;margin-left: 5rpx;" :url="'/pages/help_detail/help_detail?id='+ yinsi_cfg_yinsizhengce_imgid +'&form_page=spec_cms_token&cms_token='+ yinsi_cfg_yinsizhengce_cms_token +'&hidden_remark=1'">隐私政策</navigator>
+			<navigator style="color: #0055FF;float: left;font-size: 30rpx;margin-left: 5rpx;" 
+				:url="'/pages/help_detail/help_detail?id='+ yinsi_cfg_yinsizhengce_imgid +'&form_page=spec_cms_token&cms_token='+ yinsi_cfg_yinsizhengce_cms_token +'&hidden_remark=1'">隐私政策</navigator>
 		</view>
 		<!-- end -->
 		
@@ -341,8 +343,8 @@
 	}
 
 	.logo_img {
-		width: 80px;
-		height: 80px;
+		width: 160rpx;
+		height: 160rpx;
 		margin: 0 auto;
 		border-radius: 20rpx;
 	}
@@ -365,7 +367,7 @@
 	.code_num2 {
 		width: 100%;
 		height: 60rpx;
-		line-height: 40px;
+		line-height: 80rpx;
 		text-align: center;
 		font-size: 40rpx;
 		color: #666;
@@ -379,7 +381,7 @@
 	.list_li {
 		width: 100%;
 		height: 90rpx;
-		border-bottom: 1px solid #ddd;
+		border-bottom: 1rpx solid #ddd;
 	}
 
 	.li_title {
@@ -396,18 +398,18 @@
 		width: 50%;
 		height: 70rpx;
 		line-height: 70rpx;
-		font-size: 16px;
+		font-size: 32rpx;
 		float: right;
 		color: #2a2a2a;
 		box-sizing: border-box;
 		text-align: right;
-		padding-right: 8px;
+		padding-right: 16rpx;
 	}
 
 	.jiantou {
 		width: 40rpx;
 		height: 40rpx;
-		margin-top: 6px;
+		margin-top: 12rpx;
 		float: right;
 	}
 

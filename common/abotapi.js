@@ -1024,6 +1024,19 @@ module.exports = {
 		  this.globalData.is_member_list_in_tabbar = option_list.is_member_list_in_tabbar;
 		}
 		
+		// #ifdef MP-WEIXIN
+		this.globalData.current_platform = 'mp-weixin'
+		// #endif
+		// #ifdef MP-BAIDU
+		this.globalData.current_platform = 'mp-baidu'
+		// #endif
+		// #ifdef MP-ALIPAY
+		this.globalData.current_platform = 'mp-alipay'
+		// #endif
+		// #ifdef H5
+		this.globalData.current_platform = 'h5'
+		// #endif
+		
 	},
 	
 	

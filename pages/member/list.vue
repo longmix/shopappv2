@@ -108,7 +108,7 @@
 				is_get_user_list:0,
 				page:1,
 				current_params_str:'',
-				 empty_list_msg:'暂无数据',
+				 empty_list_msg:'到底了~',
 			}
 		},
 		
@@ -282,7 +282,7 @@
 						else{
 							
 							uni.showToast({
-								title:'暂无数据'
+								title:'到底了~'
 							})
 							
 							if(that.citizen_list.length == 0){
