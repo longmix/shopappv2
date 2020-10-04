@@ -47,20 +47,20 @@
         "pagePath": "pages/category/category",
         "iconPath": "static/img/tabBar/category.png",
         "selectedIconPath": "static/img/tabBar/category-on.png",
-        "text": "分类"
+        "text": "商品分类"
       },
       {
         "pagePath": "pages/shopList/shopList",
         "iconPath": "static/img/tabBar/shang.png",
         "selectedIconPath": "static/img/tabBar/shang-on.png",
-        "text": "商家"
+        "text": "本地生活"
       },
      
       {
         "pagePath": "pages/user/user",
         "iconPath": "static/img/tabBar/user.png",
         "selectedIconPath": "static/img/tabBar/user-on.png",
-        "text": "我的"
+        "text": "个人中心"
       }
     ]
   },
