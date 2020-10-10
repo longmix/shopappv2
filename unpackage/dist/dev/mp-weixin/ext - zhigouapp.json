@@ -15,7 +15,7 @@
     "force_sellerid_flag": 1,
     "force_sellerid_value": "fSSmPaega",
     "shop_name": "志购",
-    "version_number": "Ver 1.6.0 Build 132",
+    "version_number": "Ver 1.6.7 Build 163",
     "navigationBarBackgroundColor_fixed": 1,
     "kefu_telephone": "",
     "kefu_qq": "",
@@ -55,12 +55,7 @@
         "selectedIconPath": "static/img/tabBar/shang-on.png",
         "text": "商家"
       },
-      {
-        "pagePath": "cms/discover/discover",
-        "iconPath": "static/img/tabBar/imglist.png",
-        "selectedIconPath": "static/img/tabBar/imglist-on.png",
-        "text": "随拍"
-      },
+     
       {
         "pagePath": "pages/user/user",
         "iconPath": "static/img/tabBar/user.png",

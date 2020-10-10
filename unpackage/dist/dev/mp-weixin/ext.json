@@ -1,6 +1,6 @@
 {
   "extEnable": true,
-  "extAppid": "wxe6565fced2f812da",
+  "extAppid": "wx35111d4e91dd83fa",
   "directCommit": true,
   "ext": {
     "name": "wechat",
@@ -11,17 +11,17 @@
         "user_2"
       ]
     },
-    "xiaochengxu_appid": "wxe6565fced2f812da",
+    "xiaochengxu_appid": "wx35111d4e91dd83fa",
     "force_sellerid_flag": 1,
-    "force_sellerid_value": "pQNNmSkaq",
-    "shop_name": "延誉电商",
-    "version_number": "Ver 1.6.0 Build 132",
+    "force_sellerid_value": "fSSmPaega",
+    "shop_name": "志购",
+    "version_number": "Ver 1.6.7 Build 163",
     "navigationBarBackgroundColor_fixed": 1,
     "kefu_telephone": "",
     "kefu_qq": "",
     "kefu_website": "",
     "kefu_gongzhonghao": "",
-    "default_copyright_text": "延誉电商 - 延誉宝 @ 版权所有"
+    "default_copyright_text": "上海田震电子商务有限公司 @ 版权所有"
   },
   "extPages": {
     "pages/publish/publish_list": {
@@ -32,7 +32,7 @@
     }
   },
   "tabBar": {
-    "color": "#515151",
+    "color": "#333333",
     "selectedColor": "#d81e06",
     "borderStyle": "black",
     "backgroundColor": "#ffffff",
@@ -42,19 +42,20 @@
         "iconPath": "static/img/tabBar/home.png",
         "selectedIconPath": "static/img/tabBar/home-on.png",
         "text": "首页"
-      },
+      },      
       {
-        "pagePath": "pages/publish/publish_list",
-        "iconPath": "static/img/tabBar/imglist.png",
-        "selectedIconPath": "static/img/tabBar/imglist-on.png",
-        "text": "创业与开业"
+        "pagePath": "pages/category/category",
+        "iconPath": "static/img/tabBar/category.png",
+        "selectedIconPath": "static/img/tabBar/category-on.png",
+        "text": "分类"
       },
       {
         "pagePath": "pages/shopList/shopList",
-        "iconPath": "static/img/tabBar/category.png",
-        "selectedIconPath": "static/img/tabBar/category-on.png",
-        "text": "城市合伙人"
+        "iconPath": "static/img/tabBar/shang.png",
+        "selectedIconPath": "static/img/tabBar/shang-on.png",
+        "text": "商家"
       },
+     
       {
         "pagePath": "pages/user/user",
         "iconPath": "static/img/tabBar/user.png",
@@ -65,8 +66,8 @@
   },
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#f37404",
-    "navigationBarTitleText": "延誉电商",
+    "navigationBarBackgroundColor": "#3D9140",
+    "navigationBarTitleText": "志购",
     "navigationBarTextStyle": "white"
   },
   "networkTimeout": {

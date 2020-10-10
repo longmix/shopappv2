@@ -686,7 +686,11 @@
 				
 				
 				// #ifdef APP-PLUS
-					post_data.appid = that.abotapi.globalData.weixin_open_platform_appid;
+					post_data.trade_type = 'APP';
+					
+					if(that.abotapi.globalData.weixin_open_platform_appid){
+						post_data.appid = that.abotapi.globalData.weixin_open_platform_appid;
+					}
 					
 					if(post_data.payment_type == 3){
 						payment_provider = 'wxpay';

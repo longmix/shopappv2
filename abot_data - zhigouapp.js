@@ -4,14 +4,14 @@ const globalData = {
 		o2owaimai_server_url: 'https://app.tseo.cn/o2owaimai/index.php/',
 		socket_server: 'https://socketio.tseo.cn',
 		
-		version_number:'Ver 1.6.7 Build 163',
-		version_code:163,
+		version_number:'Ver 1.6.7 Build 164',
+		version_code:164,
 		
 		force_sellerid:1,
 	
 		xiaochengxu_appid: 'wx35111d4e91dd83fa',			//微信小程序的appid
 		xiaochengxu_account: 'gh_d27a3d893452',				//微信小程序的账号
-		weixin_open_platform_appid: 'wx029e1ddb38b4c630',	//微信开放平台中登记的APP对应的appid（务必与manifest中的配置一致）
+		weixin_open_platform_appid: 0,	//微信开放平台中登记的APP对应的appid（务必与manifest中的配置一致）
 		
 		//通版商城
 		default_shopname: '志购',
@@ -23,8 +23,8 @@ const globalData = {
 		
 		//平台相关的配置
 		//current_platform : 'app-android',
-		current_platform : 'app-ios',
-		//current_platform : 'mp-weixin',
+		//current_platform : 'app-ios',
+		current_platform : 'mp-weixin',
 		//current_platform : 'mp-baidu',
 		//current_platform : 'mp-alipay',
 		//current_platform : 'h5',
