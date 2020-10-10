@@ -63,11 +63,11 @@
 									 
 									<view class="server_btn_list">
 									    <view :style="{'backgroundColor':btn_bg_color}" class="server_btn_style" v-for="(btn_item,btn_index) in item.buttons" :key="btn_index">
-									       <navigator :url="btn_item.url">
-												<view class="server_btn_font_style">
+									       
+												<view class="server_btn_font_style" @click="go_to_url" :data-url="btn_item.url">
 													<p>{{btn_item.name}}</p>
 												</view>
-											</navigator>
+											
 									    </view>
 									</view>
 								</view>
@@ -227,6 +227,12 @@
 				this.get_citizen_list();
 			},
 			
+			go_to_url:function(e){
+				var url = e.currentTarget.dataset.url;
+				
+				this.abotapi.call_h5browser_or_other_goto_url(url, '', '');
+				
+			},
 			
 			get_citizen_list:function(){
 				
