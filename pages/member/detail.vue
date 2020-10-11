@@ -58,11 +58,11 @@
 					
 					<view style="text-align: center;" v-if="citizen_detail.buttons">
 						<view class="aui-footer aui-footer-fixed"  v-for="(item,index) in citizen_detail.buttons" :key="index">
-						    <navigator :url="item.url">
-								<view class="aui-tabBar-item " :style="{'backgroundColor':btn_bg_color}">
-									{{item.name}}
+						   
+								<view class="aui-tabBar-item " :style="{'backgroundColor':btn_bg_color}" @click="go_to_url" :data-url="item.url">
+									{{item.name}}333
 								</view>
-							</navigator>
+							
 						</view>
 						
 					</view>
@@ -155,6 +155,17 @@
 				this.get_citizen_detail();
 				
 			},
+			
+			//跳转
+			go_to_url:function(e){
+				console.log(url);
+				console.log(e);
+				var url = e.currentTarget.dataset.url;
+				
+				this.abotapi.call_h5browser_or_other_goto_url(url, '', ''); 
+				
+			},
+			
 			
 			get_citizen_detail:function(){
 				
