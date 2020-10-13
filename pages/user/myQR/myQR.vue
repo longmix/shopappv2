@@ -1,6 +1,10 @@
 <template>
 	<view :style="{height:windowHeight+'px',backgroundColor:wxa_shop_nav_bg_color,fontColor:wxa_shop_nav_font_color}">
 		<view :style="{backgroundColor:wxa_shop_nav_bg_color,fontColor:wxa_shop_nav_font_color}">
+			<view class="xuanchuan_img">
+				<image :src="xuanchuan_img" style="width: 100%;"></image>
+			</view>
+			
 			<view class="block">
 				
 			</view>
@@ -29,7 +33,8 @@
 				wxa_shop_nav_bg_color:'',
 				wxa_shop_nav_font_color:'',
 				qrcode_url:'',
-				windowHeight:''
+				windowHeight:'',
+				xuanchuan_img:'',//宣传图片链接  在推广码设置里面设置的
 			};
 		},
 		onLoad() {
@@ -96,6 +101,7 @@
 						console.log("res",res);
 						if(res.data.code == 1){
 							that.qrcode_url = res.data.qrcode_url;
+							that.xuanchuan_img = res.data.option_list.xuanchuan_img;
 						}
 					},
 					fail: function () {
@@ -202,5 +208,10 @@
 		width: 39.6%;
 	}
 	
+}
+.xuanchuan_img{
+	width:100%;
+	background: #fff;
+	padding-bottom: 10px;
 }
 </style>
