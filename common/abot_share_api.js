@@ -59,6 +59,44 @@ module.exports = {
 		    }
 		});
 	},
+	//== 2020.10.13. 胡雨：将指定字符串(分享口令)复制到剪切板 ===
+	//== 1，如果cmd_type等于 product，productid为商品ID。2，如果cmd_type等于 shang，productid为xianmaishangid
+	click_wxa_command_copy:function(abotapi, cmd_type, productid, userid, sellerid){
+		console.log("click_wxa_command_copy ====>>>> 88888");
+		
+		var post_data = {
+				userid: userid,
+				sellerid:sellerid,
+			};
+		
+		if(cmd_type == 'product'){
+			post_data.productid = productid;
+		}
+		else if(cmd_type == 'xianmaishang'){
+			post_data.xianmaishangid = productid;
+		}
+		
+		abotapi.abotRequest({
+			url: abotapi.globalData.yanyubao_server_url + 'openapi/ShareKoulingData/create_command_str',
+			//url:"https://192.168.0.205/yanyubao_server/index.php/OpenApi/ShareKouling/create_command_str",
+			data: post_data,
+			success:function(res){
+				console.log('res555555',res);
+				
+				uni.setClipboardData({
+				    data: res.data.command_str,
+				    success: function () {
+				        console.log('success');
+				    }
+				});
+				
+				},
+		});
+		
+		
+	
+	},
+	//================= End ================
 	click_wxa_system_share:function(summary, href){
 		console.log('我是系统消息分享',href);
 		uni.shareWithSystem({

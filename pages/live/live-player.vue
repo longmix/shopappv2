@@ -89,7 +89,7 @@
 			let live_userid = options.live_userid;
 			
 			this.abotapi.abotRequest({
-			    url: this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/VideoLiveData/get_live_player_and_product_list',
+			    url: this.abotapi.globalData.yanyubao_server_url + 'openapi/VideoLiveData/get_live_player_and_product_list',
 			    method: 'post',
 			    data: {
 					sellerid:this.abotapi.get_sellerid(),

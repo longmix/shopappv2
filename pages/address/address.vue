@@ -21,6 +21,7 @@
 							<input placeholder="请输入收件人电话号码" type="number" name="phone" maxlength="11" :value="address_detail.mobile" />
 						</view>
 					</view>
+
 					<view class="row">
 						<view class="nominal">
 							选择省份

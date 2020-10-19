@@ -163,7 +163,7 @@
 			
 			    
 			this.abotapi.abotRequest({
-				url:this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/VideoListRemarkData/get_video_detail',
+				url:this.abotapi.globalData.yanyubao_server_url + 'openapi/VideoListRemarkData/get_video_detail',
 				method: 'post',
 				data: {
 				  appid: this.abotapi.globalData.xiaochengxu_appid,
@@ -281,7 +281,7 @@
 			    var that = this;
 				
 			    this.abotapi.abotRequest({
-			      url: this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/VideoListRemarkData/get_option_list',
+			      url: this.abotapi.globalData.yanyubao_server_url + 'openapi/VideoListRemarkData/get_option_list',
 			      method: 'post',
 			      data: {
 			        sellerid: this.abotapi.globalData.default_sellerid,
@@ -320,7 +320,7 @@
 			    var video_type = e;
 			
 			    this.abotapi.abotRequest({
-			      url: this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/download_file_token?from=video_list',
+			      url: this.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/download_file_token?from=video_list',
 			      data: {
 			        sellerid: this.abotapi.globalData.default_sellerid,
 			        userid: userInfo.userid,
@@ -492,7 +492,7 @@
 				var userInfo = this.abotapi.get_user_info();
 			      
 				this.abotapi.abotRequest({
-			        url: this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/VideoListRemarkData/add_video_remark',
+			        url: this.abotapi.globalData.yanyubao_server_url + 'openapi/VideoListRemarkData/add_video_remark',
 			        data: {
 			          sellerid: this.abotapi.globalData.default_sellerid,
 			          userid: userInfo.userid,
@@ -567,7 +567,7 @@
 			      
 
 					this.abotapi.abotRequest({
-						url: this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/VideoListRemarkData/add_video_collect',
+						url: this.abotapi.globalData.yanyubao_server_url + 'openapi/VideoListRemarkData/add_video_collect',
 						data: {
 							sellerid: this.abotapi.globalData.default_sellerid,
 							userid: userInfo.userid,

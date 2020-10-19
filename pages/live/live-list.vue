@@ -230,7 +230,7 @@
 				
 				
 				this.abotapi.abotRequest({
-				  url: this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/VideoLiveData/wxa_live_room_list',
+				  url: this.abotapi.globalData.yanyubao_server_url + 'openapi/VideoLiveData/wxa_live_room_list',
 				  method: 'post',
 				  data: {				
 					sellerid: this.abotapi.get_sellerid(),

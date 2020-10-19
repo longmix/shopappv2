@@ -16,6 +16,11 @@ import $abotapi from './common/abotapi.js';
 Vue.prototype.abotapi = $abotapi
 Vue.config.productionTip = false
 
+//引用弹窗控件，可以显示图片。调用示例见 wordpress/pages/index/detail.vue
+//因为在App.vue中无法绘制xml，暂时不用。
+import openAlert from './components/open-alert/open-alert.vue';
+Vue.component('openAlert', openAlert);
+
 App.mpType = 'app'
 
 const app = new Vue({

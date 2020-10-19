@@ -1139,7 +1139,7 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 			
 			    that.abotapi.abotRequest({
 			
-			      url: that.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/XianmaiShangData/order_add_new_option_by_key_value',
+			      url: that.abotapi.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/order_add_new_option_by_key_value',
 			
 			      data: {
 			        sellerid: that.abotapi.get_sellerid(),

@@ -516,7 +516,7 @@
 		
 			var that = this;
 			that.abotapi.abotRequest({
-			  url: that.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/change_faquan_status',
+			  url: that.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/change_faquan_status',
 			  data: {
 				appid: that.abotapi.globalData.xiaochengxu_appid,
 				sellerid: that.abotapi.get_sellerid(),
@@ -817,15 +817,15 @@
 			    var userInfo = this.abotapi.get_user_info();
 				
 				//帖子列表
-			    var post_url = this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/get_faquan_list';
+			    var post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/get_faquan_list';
 			
 			    if(this.is_my_discover){
 					//我的发布
-			      post_url = this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/get_faquan_list_by_userid';
+			      post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/get_faquan_list_by_userid';
 			    }
 			    else if(this.is_my_discover_collection){
 					//我的收藏
-			      post_url = this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/get_faquan_collect_list';
+			      post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/get_faquan_collect_list';
 			    }
 				
 			
@@ -974,7 +974,7 @@
 				}
 			
 			    that.abotapi.abotRequest({
-			      url: this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/faquan_collect',
+			      url: this.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/faquan_collect',
 			      data: {
 			        sellerid: this.abotapi.get_sellerid(),
 			        userid: userInfo ? userInfo.userid : '',
@@ -1110,7 +1110,7 @@
 			    }
 			
 			    that.abotapi.abotRequest({
-			      url: this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/faquan_like',
+			      url: this.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/faquan_like',
 			      method: 'post',
 			      data: {
 			        sellerid: this.abotapi.get_sellerid(),

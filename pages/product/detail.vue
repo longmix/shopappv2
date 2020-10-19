@@ -8,6 +8,7 @@
 			@click_wxa_share="click_wxa_share"   
 			@click_wxa_circle_share='click_wxa_circle_share'  
 			@click_wxa_applet_share='click_wxa_applet_share'  
+			@click_wxa_command_copy='click_wxa_command_copy'
 			@click_wxa_system_share='click_wxa_system_share'
 			></abotshare>
 			<!-- 头部-默认显示 -->
@@ -554,7 +555,7 @@ export default {
 		};
 		
 		if(this.product_source_channel == 1){
-			detail_url = this.abotapi.globalData.yanyubao_server_url +  'openapi/UnionPromotionData/get_product_detail';
+			detail_url = this.abotapi.globalData.yanyubao_server_url +  'index.php/openapi/UnionPromotionData/get_product_detail';
 			detail_data.union_name = this.product_channel_name;
 		}
 		
@@ -603,7 +604,10 @@ export default {
 					that.share_href = that.goods_detail['url'];
 					that.share_summary = that.goods_detail['brief'];
 					that.share_titles = that.goods_detail['name'];
-					
+					// that.share_productid = that.goods_detail['productid'];
+					// that.share_userid = userInfo.userid;
+					// that.share_sellerid = this.abotapi.get_sellerid();
+					// that.share_abotap = require("../../common/abotapi.js");
 					
 					 var attr_list = that.goods_detail.attr_list
 					 
@@ -611,7 +615,7 @@ export default {
 						that.isExistSpec = true;
 					}
 					
-					  console.log('attr_list', attr_list);
+					  console.log('attr_list', that.goods_detail);
 					  
 					  if(that.goods_detail.option_name){
 						var option_list_arr = that.goods_detail.option_name.split(' ');
@@ -876,7 +880,7 @@ export default {
 		        if (code == 1) {
 				  
 				  that.goods_detail = res.data.data;
-				  console.log('that.goods_detail',that.goods_detail);
+				  console.log('that.goods_detail',res);
 				  that.describe = that.goods_detail.describe;
 				  
 // #ifdef MP-ALIPAY
@@ -1003,7 +1007,8 @@ export default {
 			}
 			
 			if(this.abotapi.globalData.is_shop_cart_in_tabbar == 1){
-				uni.switchTab({
+				console.log(this.abotapi.globalData.is_shop_cart_in_tabbar);
+				uni.navigateTo({
 					url:'/pages/cart/cart'
 				})
 			}else{
@@ -1053,7 +1058,6 @@ export default {
 				},
 			});
 		},
-		
 		
 		//收藏
 		keep_to_collect(){
@@ -1576,7 +1580,21 @@ export default {
 				var account = this.abotapi.globalData.xiaochengxu_account;
 				abotsharejs.click_wxa_applet_share(this.share_href, this.share_titles, path, this.share_imageUrl, account);
 			},
-			
+			//== 2020.10.13. 胡雨：将指定字符串复制到剪切板 ===
+			click_wxa_command_copy:function (){
+				var userid = 0;
+				var sellerid = this.abotapi.globalData.default_sellerid;
+				var cmd_type = 'product';
+				
+				var userInfo = this.abotapi.get_user_info();
+				if(userInfo){
+					userid = userInfo.userid;
+				}
+				
+				abotsharejs.click_wxa_command_copy(this.abotapi, cmd_type, this.goods_detail["productid"], userid, sellerid);
+				
+			},
+			//================= End ================
 			
 			click_wxa_system_share:function (){
 				

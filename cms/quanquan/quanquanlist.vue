@@ -127,7 +127,7 @@
 			}
 			
 			this.abotapi.abotRequest({
-				url: this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/VideoListRemarkData/get_cata_month_list',
+				url: this.abotapi.globalData.yanyubao_server_url + 'openapi/VideoListRemarkData/get_cata_month_list',
 				method: 'post',
 				data: post_data,
 				success: function (res) {
@@ -202,7 +202,7 @@
 			  
 			var that = this
 			this.abotapi.abotRequest({
-			  url: this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/VideoListRemarkData/get_video_list',
+			  url: this.abotapi.globalData.yanyubao_server_url + 'openapi/VideoListRemarkData/get_video_list',
 			  method: 'post',
 			  data: {
 				sellerid: this.abotapi.globalData.default_sellerid,
@@ -330,7 +330,7 @@
 				var that = this
 				
 				this.abotapi.abotRequest({
-					url: this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/VideoListRemarkData/get_video_list',
+					url: this.abotapi.globalData.yanyubao_server_url + 'openapi/VideoListRemarkData/get_video_list',
 					method: 'post',
 					data: {
 						sellerid: this.abotapi.globalData.default_sellerid,

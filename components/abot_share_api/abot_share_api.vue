@@ -17,6 +17,11 @@
 				<view style="font-size: 28rpx;color: #333333;">小程序</view>
 			</view>
 			
+			<view style="width: 25%;text-align: center;" @click="click_wxa_command_copy">
+				<image style="width: 100rpx;height: 100rpx;" src="../../static/img/share/koling.png"></image>
+				<view style="font-size: 28rpx;color: #333333;">分享口令</view>
+			</view>
+			
 			<view style="width: 25%;text-align: center;" @click="click_wxa_system_share">
 				<image style="width: 100rpx;height: 100rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/app_icon/share_more.png"></image>
 				<view style="font-size: 28rpx;color: #333333;">更多...</view>
@@ -60,6 +65,9 @@
 			},
 			click_wxa_applet_share:function(){
 				this.$emit('click_wxa_applet_share');
+			},
+			click_wxa_command_copy:function(){
+				this.$emit('click_wxa_command_copy');
 			},
 			click_wxa_system_share:function(){
 				this.$emit('click_wxa_system_share');

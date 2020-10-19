@@ -539,7 +539,7 @@
 						console.log('chooseImageRes',tempFilePaths[2]);
 						for(let i = 0; i < tempFilePaths.length;i++){
 							uni.uploadFile({
-							    url: that.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/ShopAppV2Data/upload_video_or_img', //仅为示例，非真实的接口地址
+							    url: that.abotapi.globalData.yanyubao_server_url + 'openapi/ShopAppV2Data/upload_video_or_img', //仅为示例，非真实的接口地址
 							    filePath: tempFilePaths[i],
 							    name: 'file',
 							    formData: {

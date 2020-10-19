@@ -97,7 +97,7 @@
 					
 					
 					that001.abotapi.abotRequest({
-						url: that001.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/OrderChongZhiData/get_chongzhi_rule_list',
+						url: that001.abotapi.globalData.yanyubao_server_url + 'openapi/OrderChongZhiData/get_chongzhi_rule_list',
 						method: 'post',
 						data: {
 							sellerid: that001.abotapi.get_sellerid(),

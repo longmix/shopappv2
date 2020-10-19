@@ -340,7 +340,7 @@
 				}
 						
 				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/add_faquan_text',
+					url: that.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/add_faquan_text',
 					data: data_params,
 					success: function (res) {
 						if (res.data.code == 1) {
@@ -358,7 +358,7 @@
 								})
 													
 								uni.uploadFile({
-									url: that.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/add_faquan_video_or_img',
+									url: that.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/add_faquan_video_or_img',
 									filePath: that.video,
 									header: {
 										"Content-Type": "multipart/form-data",
@@ -459,7 +459,7 @@
 			        title: '正在上传第' + (i + 1) + '张',
 			      })
 			      uni.uploadFile({
-			        url: that.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/add_faquan_video_or_img',
+			        url: that.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/add_faquan_video_or_img',
 			        filePath: that.imgList[i],
 			        header: {
 			          "Content-Type": "multipart/form-data",

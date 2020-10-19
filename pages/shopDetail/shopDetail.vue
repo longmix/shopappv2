@@ -320,7 +320,8 @@
 		ref="share_api"
 		@click_wxa_share="click_wxa_share"   
 		@click_wxa_circle_share='click_wxa_circle_share'  
-		@click_wxa_applet_share='click_wxa_applet_share'  
+		@click_wxa_applet_share='click_wxa_applet_share'
+		@click_wxa_command_copy='click_wxa_command_copy'  
 		@click_wxa_system_share='click_wxa_system_share'
 		></abotshare>
 		
@@ -569,7 +570,22 @@
 				var account = this.abotapi.globalData.xiaochengxu_account;
 				abotsharejs.click_wxa_applet_share(this.share_href, this.share_titles, path, this.share_imageUrl, account);
 			},
-			
+			click_wxa_command_copy:function (){
+				var userid = 0;
+				var sellerid = this.abotapi.globalData.default_sellerid;
+				var cmd_type = 'xianmaishang';
+				
+				var userInfo = this.abotapi.get_user_info();
+				if(userInfo){
+					userid = userInfo.userid;
+				}
+				
+				
+				console.log("shangid===",this.current_shang_detail)
+				
+				abotsharejs.click_wxa_command_copy(this.abotapi, cmd_type, this.current_shang_detail["xianmai_shangid"], userid, sellerid);
+				
+			},
 			
 			click_wxa_system_share:function (){
 				
@@ -871,6 +887,7 @@
 						}
 						
 						that.current_shang_detail = data;
+						console.log("aaa===>>>>",data);
 						that.shang_faquan_list = data.shang_faquan_list;
 						that.spec = spec;
 						
@@ -946,13 +963,13 @@
 						
 			  var current_faquanid = this.current_faquanid;
 			  
-			  var post_url = this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/get_faquan_list';
+			  var post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/get_faquan_list';
 						
 			  if(this.is_my_discover){
-				post_url = this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/get_faquan_list_by_userid';
+				post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/get_faquan_list_by_userid';
 			  }
 			  else if(this.is_my_discover_collection){
-				post_url = this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/get_faquan_collect_list';
+				post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/get_faquan_collect_list';
 			  }
 							
 						
@@ -1037,7 +1054,7 @@
 			  }
 						
 			  that.abotapi.abotRequest({
-			    url: this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/faquan_like',
+			    url: this.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/faquan_like',
 			    method: 'post',
 			    data: {
 			      sellerid: this.abotapi.get_sellerid(),
@@ -1113,7 +1130,7 @@
 							}
 						
 			  that.abotapi.abotRequest({
-			    url: this.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/FaquanData/faquan_collect',
+			    url: this.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/faquan_collect',
 			    data: {
 			      sellerid: this.abotapi.get_sellerid(),
 			      userid: userInfo ? userInfo.userid : '',
