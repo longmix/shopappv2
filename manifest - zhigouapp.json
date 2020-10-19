@@ -2,8 +2,8 @@
     "name" : "志购",
     "appid" : "__UNI__27F82A3",
     "description" : "田震电商志购APP",
-    "versionName" : "1.6.7",
-    "versionCode" : 163,
+    "versionName" : "1.6.8",
+    "versionCode" : 200,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true, //是否启用`自定义组件模式`，为true表示新的`自定义组件模式` ，否则为`template模板模式`   
@@ -82,7 +82,7 @@
                 },
                 "payment" : {
                     "weixin" : {
-                        "appid" : "wx029e1ddb38b4c888",
+                        "appid" : "wxa1936d5844aefa8b",
                         "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/zhigouapp/"
                     },
                     "alipay" : {}
@@ -93,14 +93,14 @@
                 },
                 "oauth" : {
                     "weixin" : {
-                        "appid" : "wx029e1ddb38b4c888",
+                        "appid" : "wxa1936d5844aefa8b",
                         "appsecret" : "aaaaaaaaaaaaaaaaaaaaaaa",
                         "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/zhigouapp/"
                     }
                 },
                 "share" : {
                     "weixin" : {
-                        "appid" : "wx029e1ddb38b4c888",
+                        "appid" : "wxa1936d5844aefa8b",
                         "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/zhigouapp/"
                     }
                 },

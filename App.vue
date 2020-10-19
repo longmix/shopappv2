@@ -65,6 +65,8 @@
 				if (extConfig.navigationBarBackgroundColor_fixed && (extConfig.navigationBarBackgroundColor_fixed != 'undefined')) {
 					this.abotapi.globalData.navigationBarBackgroundColor_fixed = extConfig.navigationBarBackgroundColor_fixed;
 					console.log('extConfig.navigationBarBackgroundColor_fixed===>>>', extConfig.navigationBarBackgroundColor_fixed);
+					
+					this.abotapi.globalData.navigationBarBackgroundColor = extConfig.navigationBarBackgroundColor;
 				}
 
 

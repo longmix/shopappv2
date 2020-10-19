@@ -11,7 +11,7 @@ const globalData = {
 	
 		xiaochengxu_appid: 'wx35111d4e91dd83fa',			//微信小程序的appid
 		xiaochengxu_account: 'gh_d27a3d893452',				//微信小程序的账号
-		weixin_open_platform_appid: 0,	//微信开放平台中登记的APP对应的appid（务必与manifest中的配置一致）
+		weixin_open_platform_appid: 'wxa1936d5844aefa8b',	//微信开放平台中登记的APP对应的appid（务必与manifest中的配置一致）
 		
 		//通版商城
 		default_shopname: '志购',
@@ -23,8 +23,8 @@ const globalData = {
 		
 		//平台相关的配置
 		//current_platform : 'app-android',
-		//current_platform : 'app-ios',
-		current_platform : 'mp-weixin',
+		current_platform : 'app-ios',
+		//current_platform : 'mp-weixin',
 		//current_platform : 'mp-baidu',
 		//current_platform : 'mp-alipay',
 		//current_platform : 'h5',
