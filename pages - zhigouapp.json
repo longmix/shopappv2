@@ -3,7 +3,7 @@
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText" : "志购",
 		"navigationBarBackgroundColor" : "#3D9140",
-		"backgroundColor" : "#3D9140",
+		"backgroundColor" : "#ffffff",
 		"backgroundColorTop":"#ffffff",
 		"backgroundColorBottom":"#ffffff"
 	},

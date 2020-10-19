@@ -17,6 +17,7 @@
     "shop_name": "本地汽车服务",
     "version_number": "1.4.0",
     "navigationBarBackgroundColor_fixed": 0,
+    "navigationBarBackgroundColor":"#ff0000",
     "kefu_telephone": "",
     "kefu_qq": "",
     "kefu_website": "",

@@ -147,6 +147,10 @@
 						success: (res002) => {
 							console.log("5555588", res002);
 							
+							if(res002.data.code != 1){
+								return;
+							}
+							
 							 var type = res002.data.data.type;
 							 
 							 var product_id = res002.data.data.id;

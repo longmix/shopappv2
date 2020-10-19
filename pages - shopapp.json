@@ -3,8 +3,8 @@
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText" : "通版商城V2",
 		"navigationBarBackgroundColor" : "#2d96ff",
-		"backgroundColor" : "#2d96ff",
-		"backgroundColorTop":"#2d96ff",
+		"backgroundColor" : "#ffffff",
+		"backgroundColorTop":"#ffffff",
 		"backgroundColorBottom":"#ffffff"
 	},
 	"tabBar": {

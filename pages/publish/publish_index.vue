@@ -96,6 +96,10 @@
 			
 			refresh:function(){
 				// this.getPage();
+				
+				this.abotapi.set_shop_option_data(this, this.callback_function);
+				
+				
 				setTimeout(function(){
 					uni.stopPullDownRefresh();
 				},1000)
