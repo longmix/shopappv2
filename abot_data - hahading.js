@@ -9,14 +9,14 @@ const globalData = {
 		
 		force_sellerid:1,
 	
-		xiaochengxu_appid: 'wx35111d4e91dd83fa',			//微信小程序的appid
-		xiaochengxu_account: 'gh_d27a3d893452',				//微信小程序的账号
-		weixin_open_platform_appid: 'wxa1936d5844aefa8b',	//微信开放平台中登记的APP对应的appid（务必与manifest中的配置一致）
+		xiaochengxu_appid: 'wx4b5776869b963bd4',			//微信小程序的appid
+		xiaochengxu_account: 'gh_11bc7e8aa2a5',				//微信小程序的账号
+		weixin_open_platform_appid: 'wxa1936d5844aefa8b---',	//微信开放平台中登记的APP对应的appid（务必与manifest中的配置一致）
 		
 		//通版商城
-		default_shopname: '志购',
-		default_sellerid: 'fSSmPaega',
-		default_copyright_text:'上海田震电子商务有限公司 @ 版权所有',
+		default_shopname: '哈哈订',
+		default_sellerid: 'fimmUPUPV',
+		default_copyright_text:'上海哈哈订信息科技有限公司 @ 版权所有',
 		
 		
 		//=======以下配置项在发布版本的时候确定，服务器端配置无效===
@@ -34,7 +34,7 @@ const globalData = {
 		//并确保与 navigationBarTextStyle / navigationBarBackgroundColor   保持一致
 		navigationBarBackgroundColor_fixed:1,
 		navigationBar_font_color:'#ffffff',
-		navigationBar_bg_color:'#3D9140',
+		navigationBar_bg_color:'#073892',
 		//======================End=======================
 		
 		//======以下选项可以在服务器端修改，这里是默认值=====

@@ -80,18 +80,18 @@
 			<view class="balance-info">
 				<view class="left">
 					<view class="box" @tap="goto_user_function('/pages/user/log')">
-						<view class="num">{{userInfo && userInfo.userid ? fenxiao_info.balance_yuan : '0.00'}}</view>
+						<view class="num">{{fenxiao_info && fenxiao_info.balance_yuan ? fenxiao_info.balance_yuan : '0.00'}}</view>
 						<view class="text">余额</view>
 					</view>
 					
 					<view class="box" 
 						v-if="wxa_show_zengkuan_in_usercenter == 1"
 						@tap="goto_user_function('/pages/user/log?current_balance_type=balance_zengsong')">
-						<view class="num">{{userInfo && userInfo.userid ? fenxiao_info.balance_zengsong_yuan : '0.00'}}</view>
+						<view class="num">{{fenxiao_info && fenxiao_info.balance_zengsong_yuan ? fenxiao_info.balance_zengsong_yuan : '0.00'}}</view>
 						<view class="text">赠款</view>
 					</view>
 					<view class="box" @tap="goto_user_function('/pages/user/logscore')">
-						<view class="num">{{userInfo && userInfo.userid ? fenxiao_info.score : '0'}}</view>
+						<view class="num">{{fenxiao_info && fenxiao_info.score ? fenxiao_info.score : '0'}}</view>
 						<view class="text">积分</view>
 					</view>
 				</view>

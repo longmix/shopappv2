@@ -1,22 +1,34 @@
 <template>
 	<view :style="{height:windowHeight+'px',backgroundColor:wxa_shop_nav_bg_color,fontColor:wxa_shop_nav_font_color}">
 		<view :style="{backgroundColor:wxa_shop_nav_bg_color,fontColor:wxa_shop_nav_font_color}">
-			<view class="xuanchuan_img">
-				<image :src="xuanchuan_img" style="width: 100%;"></image>
+			<view class="xuanchuan_img" v-if="option_list && option_list.xuanchuan_img"
+				style="background-color: #fff;">
+				<image :src="option_list.xuanchuan_img" style="width: 100%;"></image>
 			</view>
 			
-			<view class="block">
+			<view class="myblock" v-if="!option_list || (option_list.hide_qrcode_img != 1)">
 				
 			</view>
-			<view class="QR">
+			<view class="QR" v-if="!option_list || (option_list.hide_qrcode_img != 1)">
 				<image :src="qrcode_url"></image>
 			</view>
-			<view class="title" :style="{backgroundColor:wxa_shop_nav_bg_color,fontColor:wxa_shop_nav_font_color}">
+			<view class="title" v-if="!option_list || (option_list.hide_qrcode_img != 1)"
+				:style="{backgroundColor:wxa_shop_nav_bg_color,fontColor:wxa_shop_nav_font_color}">
 				请用手机扫描二维码
 			</view>
-			<view class="btn" v-show="showBtn" @tap="printscreen">
+			<view class="btn" v-show="showBtn" @tap="printscreen"
+				 v-if="!option_list || (option_list.hide_qrcode_img != 1)">
 				{{tis}} 
 			</view>
+			
+			<view class="mydescribe" v-if="option_list && option_list.describe">
+				{{option_list.describe}} 
+			</view>
+			
+			<view class="xuanchuan_img" v-if="option_list && option_list.xuanchuan_02_img">
+				<image :src="option_list.xuanchuan_02_img" style="width: 100%;"></image>
+			</view>
+			
 			<view class="logo">
 				<!-- <image mode="widthFix" src="../../../static/img/qrlogo.png"></image> -->
 			</view>
@@ -34,14 +46,21 @@
 				wxa_shop_nav_font_color:'',
 				qrcode_url:'',
 				windowHeight:'',
-				xuanchuan_img:'',//宣传图片链接  在推广码设置里面设置的
+				//xuanchuan_img:'',//宣传图片链接  在推广码设置里面设置的
+				option_list:null
 			};
 		},
 		onLoad() {
 			// #ifdef APP-PLUS
 			this.showBtn = true;
 			// #endif
+			
+			// #ifdef H5
+			this.showBtn = true;
+			// #endif
+			
 			var that = this;
+			
 			this.abotapi.set_option_list_str(this,
 				function(that001, option_list){
 					that.abotapi.getColor();
@@ -64,6 +83,28 @@
 			
 			
 			that.getImg();
+		},
+		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
+		onPullDownRefresh() {
+			
+			console.log('onPullDownRefresh onPullDownRefresh onPullDownRefresh');
+			
+			uni.showToast({
+				title: '数据更新中……',
+				//icon:'loading'
+			});
+			
+			setTimeout(function () {
+			    uni.stopPullDownRefresh();
+				
+				uni.hideToast();
+				
+			}, 1000);
+			
+			
+			this.getImg();
+			
+			
 		},
 		methods:{
 			
@@ -99,10 +140,26 @@
 					data: post_data,
 					success: function (res) {
 						console.log("res",res);
-						if(res.data.code == 1){
-							that.qrcode_url = res.data.qrcode_url;
-							that.xuanchuan_img = res.data.option_list.xuanchuan_img;
+						
+						if(res.data.code == -1){
+							that.abotapi.del_user_info();
+							
+							var last_url = '/pages/user/myQR/myQR';							
+							that.abotapi.goto_user_login(last_url, 'normal');
+							return;
 						}
+						else if(res.data.code == 1){
+							that.qrcode_url = res.data.qrcode_url;
+							//that.xuanchuan_img = res.data.option_list.xuanchuan_img;
+							that.option_list = res.data.option_list
+							
+							if(that.option_list && that.option_list.title_text){
+								uni.setNavigationBarTitle({
+									title:that.option_list.title_text
+								})
+							}
+						}
+						
 					},
 					fail: function () {
 						// fail
@@ -156,9 +213,9 @@
 
 <style lang="scss">
 
-.block{
+.myblock{
 	width: 100%;
-	height: 30vh;
+	height: 200rpx;
 	background-color: #fff;
 	display: flex;
 	justify-content: center;
@@ -210,8 +267,15 @@
 	
 }
 .xuanchuan_img{
-	width:100%;
-	background: #fff;
-	padding-bottom: 10px;
+	width:100%;	
+	padding-bottom: 0rpx;
+}
+
+.mydescribe{
+	margin: 40rpx;
+	padding: 20rpx;
+	border: 1rpx solid #fff;
+	border-radius: 10rpx;
+	color: #fff;
 }
 </style>

@@ -41,7 +41,7 @@
 					:style="{background:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" 
 					style="width: 84%;background: #2E85D8;margin: auto;">登陆</button>
 				<div class="flex mgb-20">
-					<navigator class="cl-black pointer flex-1" open-type="redirect" url="/pages/login/login_by_password">手机不在身边？账号密码登录</navigator>
+					<navigator class="cl-black pointer flex-1" open-type="navigate" url="/pages/login/login_by_password">手机不在身边？账号密码登录</navigator>
 				</div>
 			</view>
 			<view class="home-p" :style="{background:wxa_shop_nav_bg_color}" @tap="goHome()">

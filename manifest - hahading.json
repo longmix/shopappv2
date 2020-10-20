@@ -1,7 +1,7 @@
 {
-    "name" : "志购",
-    "appid" : "__UNI__27F82A3",
-    "description" : "田震电商志购APP",
+    "name" : "哈哈订",
+    "appid" : "__UNI__5B54B05",
+    "description" : "哈哈订APP",
     "versionName" : "1.6.8",
     "versionCode" : 200,
     "transformPx" : false,
@@ -140,9 +140,9 @@
             },
             "splashscreen" : {
                 "android" : {
-                    "hdpi" : "unpackage/res/splashscreen_zhigouapp/tianzheng_welcome_480x762.png",
-                    "xhdpi" : "unpackage/res/splashscreen_zhigouapp/tianzheng_welcome_720x1242.png",
-                    "xxhdpi" : "unpackage/res/splashscreen_zhigouapp/tianzheng_welcome_1080x1882.png"
+                    "hdpi" : "unpackage/res/splashscreen_hahading/splashscreen_480x762.png",
+                    "xhdpi" : "unpackage/res/splashscreen_hahading/splashscreen_720x1242.png",
+                    "xxhdpi" : "unpackage/res/splashscreen_hahading/splashscreen_1080x1882.png"
                 },
                 "ios" : {
                     "iphone" : {
@@ -154,7 +154,7 @@
                         "retina40" : "unpackage/res/splashscreen/welcome_640x1136.png",
                         "retina35" : "unpackage/res/splashscreen/welcome_640x960.png"
                     },
-                    "storyboard" : "E:/dev/yanyubao/vue/apple dev - zhigouapp/CustomStoryboard.zip"
+                    "storyboard" : "E:/dev/yanyubao/vue/apple dev - hahading/CustomStoryboard.zip"
                 },
                 "iosStyle" : "storyboard",
                 "androidStyle" : "default"

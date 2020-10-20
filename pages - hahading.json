@@ -1,8 +1,8 @@
 {	
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
-		"navigationBarTitleText" : "志购",
-		"navigationBarBackgroundColor" : "#3D9140",
+		"navigationBarTitleText" : "哈哈订",
+		"navigationBarBackgroundColor" : "#073892",
 		"backgroundColor" : "#ffffff",
 		"backgroundColorTop":"#ffffff",
 		"backgroundColorBottom":"#ffffff"
@@ -19,16 +19,10 @@
 				"text": "首页"
 			},
 			{
-				"pagePath": "pages/category/category",
-				"iconPath": "static/img/tabBar/category.png",
-				"selectedIconPath": "static/img/tabBar/category-on.png",
-				"text": "分类"
-			},
-			{
 				"pagePath": "pages/shopList/shopList",
 				"iconPath": "static/img/tabBar/shang.png",
 				"selectedIconPath": "static/img/tabBar/shang-on.png",
-				"text": "商家"
+				"text": "附近"
 			},
 			{
 				"pagePath": "cms/discover/discover",

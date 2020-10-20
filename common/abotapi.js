@@ -654,6 +654,9 @@ module.exports = {
 	 
 	   /**
 	    * page_type normal/switchTab
+		* 
+		* 如果是服务器返回-1（登录超时），调用此函数前务必调用 this.abotapi.del_user_info()
+		* 否则会造成死循环。
 	    */
 	goto_user_login: function (last_url, var_list=null, ret_page=''){
 		
