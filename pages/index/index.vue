@@ -637,7 +637,7 @@ export default {
 			var AMap_obj = new amap.AMapWX({
 				key: '8ea39971ec18a332e5af9e18795e7604'
 			});
-			console.log('实例化百度地图');
+			console.log('get_tianqi 实例化高德地图');
 				
 			AMap_obj.getWeather({
 				success: function(t) {

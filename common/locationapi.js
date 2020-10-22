@@ -21,7 +21,7 @@ module.exports = {
 			typeof callback_function == "function" && callback_function(that, locationData);
 			return;
 		}else{
-			console.log('进入没有缓存开始');
+			console.log('没有缓存坐标，准备开始获取');
 
 			var regeocoding_success = function (data) {
 				console.log('regeocoding_success locationapi===', data);
@@ -171,7 +171,7 @@ module.exports = {
 					ak: baidu_map_ak
 				});
 				
-				console.log('实例化百度地图');
+				console.log('MP-WEIXIN 实例化百度地图');
 					
 				BMap_obj.regeocoding({
 					fail: regeocoding_fail,
@@ -192,7 +192,7 @@ module.exports = {
 					ak: baidu_map_ak
 				});
 				
-				console.log('实例化百度地图完成', BMap_obj);
+				console.log('MP-BAIDU 实例化百度地图完成', BMap_obj);
 					
 				BMap_obj.regeocoding({
 					fail: regeocoding_fail,
@@ -205,22 +205,6 @@ module.exports = {
 			// #ifdef MP-ALIPAY
 				console.log('支付宝小程序中获取坐标');
 				
-				/* baidu_map_ak = that.abotapi.globalData.option_list.baidu_map_ak_wxa;
-				
-				console.log('结束1',baidu_map_ak);
-				
-				var BMap_obj = new bmap.BMapWX({
-					ak: baidu_map_ak
-				});
-				
-				console.log('实例化百度地图完成', BMap_obj);
-					
-				BMap_obj.regeocoding({
-					fail: regeocoding_fail,
-					success: regeocoding_success,
-					complete: regeocoding_complete
-				});
-				*/ 
 				
 				uni.getLocation({
 				    type: 'wgs84',
@@ -277,7 +261,7 @@ module.exports = {
 			// #endif
 			
 			// #ifdef APP-PLUS
-				console.log('进入没有缓存app开始');
+				console.log('APP开始获取坐标，进入 uni.getLocation');
 				// baidu_map_ak = that.abotapi.globalData.option_list.baidu_map_ak_wxa;
 				// console.log('结束2',baidu_map_ak);
 				
@@ -310,25 +294,33 @@ module.exports = {
 				    },
 					fail:function (res) {
 						console.log('getLocation获取地址失败');
+						uni.showToast({
+							title:'获取GPS坐标失败'
+						});
+						
+						var locationData = {};
+						locationData.latitude = '31.235891';
+						locationData.longitude = '121.52378';
+						
+						locationData.addressComponent = {city:'上海'};
+						
+						console.log('模拟坐标====>>>>', locationData);
+									
+						
+						//缓存位置信息			getStorageSync		
+						uni.setStorageSync('locationData', locationData)
+						
+						typeof callback_function == "function" && callback_function(that, locationData);
+						
+						return;
 					},
 					complete:function(){
 						console.log('getLocation失败成功都进入');
 					}
 				});
 				
-				
-				
-				// var BMap_obj = new bmap.BMapWX({
-				// 	ak: baidu_map_ak
-				// });
-				// console.log('实例化百度地图');
-					
-				// BMap_obj.regeocoding({
-				// 	fail: regeocoding_fail,
-				// 	success: regeocoding_success,
-				// 	complete: regeocoding_complete
-				// });
-				console.log('结束');
+
+				console.log('APP获取坐标结束');
 			// #endif
 			
 			
