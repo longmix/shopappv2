@@ -41,8 +41,15 @@
 			<div class="flex mgb-20">
 				<navigator class="cl-black pointer flex-1" open-type="redirect" url="/pages/login/login">忘记密码？手机验证码登录</navigator>
 			</div>
+			<view class="home-p" :style="{background:wxa_shop_nav_bg_color}" @tap="goHome()">
+				<image src="../../static/img/shouye.svg"></image>
+				<view>
+					首页
+				</view>
+			</view>
 		</form>
 	</view>
+	
 </template>
 
 <script>
@@ -476,7 +483,9 @@
 			  
 			goHome:function(){
 				var that=this;
-				that.abotapi.goHome();
+				uni.switchTab({
+					url:'/pages/index/index'
+				});
 			},
 			tel:function(){
 				if(this.notephone=='请输入手机号码'){
@@ -627,5 +636,27 @@
 	margin-left: 7%;
 	color:#555555;
 }
+.home-p{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-around;
+	background: #f00;
+	width: 130upx;
+	height: 130upx;
+	position: fixed;
+	z-index: 100;
+	right: 60upx;
+	color: #fff;
+	font-size: 28rpx;
+	border-radius: 50%;
+	bottom: 120upx;
+}
+
+.home-p image{
+		width: 50%;
+		height: 50%;
+	}
+
 
 </style>
