@@ -680,7 +680,6 @@
 			height: 20vw;
 			flex-shrink: 0;
 			margin-right: 20upx;
-			border: solid 1upx #fff;
 			border-radius: 100%;
 			image{
 				width: 20vw;
