@@ -126,6 +126,7 @@
 			
 			var that = this;
 			
+			// #ifndef H5
 			uni.getClipboardData({
 				success: function(res) {
 					console.log("command_str888888", res);
@@ -195,6 +196,8 @@
 
 				}
 			});
+			
+			// #endif
 
 
 

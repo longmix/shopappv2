@@ -61,9 +61,9 @@
 				
 			</view>
 			<view class="publist_list_num">
-				<view style="margin-left: 100px;" @click="my_publish_and_collect" data-type="my_publish">{{publish_list.code}}<span style="font-weight: 100; opacity: 0.8;">发布</span></view>
-				<view style="margin-left: 70px;"  @click="my_publish_and_collect" data-type="my_like">{{easylike_list.count_like}}<span style="font-weight: 100; opacity: 0.8;">点赞</span></view>
-				<view style="margin-left: 60px;"  @click="my_publish_and_collect" data-type="my_collection">{{treasure_list.count_collect}}<span style="font-weight: 100; opacity: 0.8;">收藏</span></view>
+				<view style="margin-left: 100px;" @click="my_publish_and_collect" data-type="my_publish">{{publish_list.count_my_publish}}<span style="font-weight: 100; opacity: 0.8;">发布</span></view>
+				<view style="margin-left: 70px;"  @click="my_publish_and_collect" data-type="my_like">{{publish_list.count_like}}<span style="font-weight: 100; opacity: 0.8;">点赞</span></view>
+				<view style="margin-left: 60px;"  @click="my_publish_and_collect" data-type="my_collection">{{publish_list.count_collect}}<span style="font-weight: 100; opacity: 0.8;">收藏</span></view>
 				
 			</view>
 		</view>
@@ -147,9 +147,7 @@
 			return {
 				page: 1,
 				faquanList: [],
-				publish_list:[],  //发布数量
-				easylike_list:[],   //点赞数量
-	            treasure_list:[],   //收藏数量
+				publish_list:'',  //帖子的发布，点赞，收藏数量
 				isShowBottomLine: 0,
 				display_type: 'my',
 				imgheights: [],
@@ -202,13 +200,13 @@
 				
 				//用户的头像和昵称等信息
 				user_account_info:null,
-				
+				nav_title:'',
 				
 			};
 		},
 		onLoad(options) {
 
-			console.log('ddddddddd', options);
+			console.log('ddddddddd',options);
 			this.abotapi.set_option_list_str(this, this.callback_set_option_list_str);
 			this.callback_func_for_shop_info;
 
@@ -937,12 +935,9 @@
 					success: function(res) {
 						var faquanList = res.data.data;
 						that.publish_list = res.data;
-						that.easylike_list = res.data;
-						that.treasure_list = res.data;
+						
 						
 						console.log('8888====11>>', that.publish_list);
-						console.log('7777====11>>', that.easylike_list);
-						console.log('6666====11>>', that.treasure_list);
 						console.log('__getFaquanList===>>>>faquanList====>>>', faquanList);
 
 						if (res.data.code == 1) {
