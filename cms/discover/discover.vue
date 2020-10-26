@@ -3,7 +3,7 @@
 		<!--cms/discover/discover.wxml-->
 
 		<!--滚动图片start-->
-		<view class="swiper" v-if="!is_my_discover_collection && !is_my_discover && isShowBanner">
+		<view class="swiper" v-if="!is_my_discover_collection && !is_my_discover && !is_my_discover_like && isShowBanner">
 			<view class="swiper-box">
 				<swiper circular="true" autoplay="true" @change="swiperChange" :style="{height:imgheights[current] + 'px'} ">
 					<swiper-item v-for="(swiper,index) in imgUrls" :key="index" @click="toAdDetails(imgUrls[index].url)">
@@ -15,7 +15,7 @@
 		</view>
 		<!--滚动图片end-->
 
-		<view v-if="!is_my_discover_collection && !is_my_discover" class='c-1'>
+		<view v-if="!is_my_discover_collection && !is_my_discover && !is_my_discover_like" class='c-1'>
 			<image src="../../static/img/search.png"></image>
 			<input placeholder='搜索' @confirm='searchFaquan' v-model="sousuo_text"> </input>
 		</view>
@@ -35,12 +35,12 @@
 		<!-- 标签end -->
 
 		<!-- 总共收藏数 或 发布  -->
-		<view class='col-con' v-if="is_my_discover_collection || is_my_discover" style="height: 180upx;line-height: 80upx;"
+		<view class='col-con' v-if="is_my_discover_collection || is_my_discover || is_my_discover_like" style="height: 280upx;line-height: 80upx;"
 		 :style="{'background-color': wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}">
 
 			<view>{{nav_title}}</view>
-			<view style="color:#E0B351;margin-left:20rpx;font-weight:normal;"></view>
-			<view class="user" :style="{backgroundColor:wxa_shop_nav_bg_color}">
+			<!-- <view style="color:#E0B351;margin-left:20rpx;font-weight:normal;"></view> -->
+			<view class="icon-number" :style="{backgroundColor:wxa_shop_nav_bg_color}">
 				<!-- 头像 -->
 				<view class="left">
 					<label v-if="user_account_info">
@@ -58,25 +58,19 @@
 						<label v-else @click="toLogin">请先登录</label>
 					</view>
 				</view>
-				<!-- 发布 -->
-				<view class="fabu"  @click="my_publish_and_collect" data-type="my_publish" >
-					<label>520&nbsp;<text style="font-weight: 100; opacity: 0.8;">发布</text></label>
-				</view>
-				<!-- 点赞 -->
-				<view class="zan" @click="my_publish_and_collect" data-type="my_like" >
-					<label>520<text style="font-weight: 100; opacity: 0.8;">点赞</text></label>
-				</view>
-				<!-- 收藏 -->
-				<view class="cang" @click="my_publish_and_collect" data-type="my_collect" >
-					<label>520<text style="font-weight: 100; opacity: 0.8;">收藏</text></label>
-				</view>
+				
+			</view>
+			<view class="publist_list_num">
+				<view style="margin-left: 100px;" @click="my_publish_and_collect" data-type="my_publish">{{publish_list.code}}<span style="font-weight: 100; opacity: 0.8;">发布</span></view>
+				<view style="margin-left: 70px;"  @click="my_publish_and_collect" data-type="my_like">{{easylike_list.count_like}}<span style="font-weight: 100; opacity: 0.8;">点赞</span></view>
+				<view style="margin-left: 60px;"  @click="my_publish_and_collect" data-type="my_collection">{{treasure_list.count_collect}}<span style="font-weight: 100; opacity: 0.8;">收藏</span></view>
 				
 			</view>
 		</view>
        
 	    <!-- 我收藏、发布的按钮 -->
-	    <view class='publish_box' v-if="faquan_button_status==1">
-	    	<view class='my_publish' @click="my_publish_and_collect" data-type="my_publish" v-if="is_my_show == 1">
+	    <view class='publish_box' v-if="faquan_button_status==1"  >
+	    	<view class='my_publish1' @click="my_publish_and_collect" data-type="my_publish" v-if="is_my_show == 1">
 	    		<image style="width: 40rpx;height: 40rpx;margin-right: 10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/edit.png"></image>
 	    		<view>我的发布</view>
 	    	</view>
@@ -88,6 +82,7 @@
 	    		<image style="width: 40rpx;height: 40rpx;margin-right: 10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/weather_icon/qing.png"></image>
 	    		<view>最近更新</view>
 	    	</view>
+			
 	    </view>
 
 		<!-- <import src="../../wxParse/wxParse.wxml"/> 
@@ -101,6 +96,7 @@
 		<!-- 
 			:faquanList="faquanList" 
 			:is_my_discover="is_my_discover"
+			:is_my_discover_like = "is_my_discover_like"
 			:is_my_discover_collection="is_my_discover_collection" 
 			:faquan_tag_status="faquan_tag_status" 
 			:disabled="disabled"
@@ -113,7 +109,7 @@
 			@copyText="copyText" 
 	-->
 		<!-- 发圈列表 start-->
-		<discoverList :faquanList="faquanList" :is_my_discover="is_my_discover" :is_my_discover_collection="is_my_discover_collection"
+		<discoverList :faquanList="faquanList" :is_my_discover="is_my_discover" :is_my_discover_collection="is_my_discover_collection" :is_my_discover_like="is_my_discover_like"
 		 :faquan_tag_status="faquan_tag_status" :disabled="disabled" :videometa_width_height_list="videometa_width_height_list"
 		 @fanquaDianzan="fanquaDianzan" @bigImg="bigImg" @videometa_handle="videometa_handle" @change_faquan_status="change_faquan_status"
 		 @oneClickSave="oneClickSave" @fanquanCollect="fanquanCollect" @copyText="copyText" @click_share_btn="click_share_btn"
@@ -151,6 +147,9 @@
 			return {
 				page: 1,
 				faquanList: [],
+				publish_list:[],  //发布数量
+				easylike_list:[],   //点赞数量
+	            treasure_list:[],   //收藏数量
 				isShowBottomLine: 0,
 				display_type: 'my',
 				imgheights: [],
@@ -184,12 +183,14 @@
 				item2: '',
 				tag: '',
 				idx2: '',
+				index3:'',
 				disabled: false,
 				sousuo_text: '',
 				isShowBanner: false,
 
 				//按钮显示
 				is_my_show: 1,
+				is_like_show: 1,
 				is_collection_show: 1,
 				is_recently_show: 0,
 
@@ -201,6 +202,8 @@
 				
 				//用户的头像和昵称等信息
 				user_account_info:null,
+				
+				
 			};
 		},
 		onLoad(options) {
@@ -212,7 +215,7 @@
 			console.log('discover options====>>>>', options);
 			var that = this;
 
-			var system_info = uni.getSystemInfoSync();
+			var system_info = uni.SystemInfoSync();
 
 			console.log('getSystemInfo==>>>system_info==>>>', system_info)
 			console.log('getSystemInfo==>>>system_info==>>>', system_info.windowWidth)
@@ -238,6 +241,14 @@
 						that.current_page_title = '发现.我收藏的';
 
 					}
+					else if (options.display_type == 'like') {
+					
+						that.is_my_discover_like = 1;
+						that.nav_title = '发现.我点赞的';
+						that.current_page_title = '发现.我点赞的';
+					
+					}
+					
 
 
 				}
@@ -249,6 +260,7 @@
 					this.is_search = false;
 					this.is_my_discover = 1;
 					this.is_my_show = 0;
+					this.is_like_show = 0;
 					this.is_collection_show = 0;
 					this.is_recently_show = 0;
 				}
@@ -281,7 +293,6 @@
 					that.wxa_shop_nav_font_color = option_list.wxa_shop_nav_font_color;
 
 				}
-
 			});
 
 			this.abotapi.get_shop_info_from_server(function(shop_info) {
@@ -375,6 +386,7 @@
 				title: share_title,
 				path: share_path,
 				imageUrl: share_img,
+				iiiifaquan:'',
 				success: function(res) {
 					// 分享成功
 				},
@@ -540,7 +552,7 @@
 
 				var that = this;
 				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/change_faquan_status',
+					url: that.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/get_faquan_collect_list',
 					data: {
 						appid: that.abotapi.globalData.xiaochengxu_appid,
 						sellerid: that.abotapi.get_sellerid(),
@@ -581,8 +593,12 @@
 						});
 					},
 				});
+					
+				
 			},
-
+			
+			
+  
 			copyText: function() {
 
 			},
@@ -644,7 +660,14 @@
 					that.nav_title = cms_faquan_setting.faquan_collect_title;
 					that.current_page_title = cms_faquan_setting.faquan_collect_title;
 
-				} else {
+				} else if (that.is_my_discover_like && cms_faquan_setting.faquan_like_title) {
+
+					that.nav_title = cms_faquan_setting.faquan_like_title;
+					that.current_page_title = cms_faquan_setting.faquan_like_title;
+
+				} 
+				
+				else {
 					if (cms_faquan_setting.faquan_list_title) {
 						that.current_page_title = cms_faquan_setting.faquan_list_title;
 					}
@@ -815,7 +838,7 @@
 			cancelSearch: function(e) {
 				var that = this;
 				that.keyword = '',
-					that.is_search = false;
+				that.is_search = false;
 				that.current_faquanid = 0;
 				that.page = 1;
 				that.faquanList = [];
@@ -870,7 +893,7 @@
 					}
 				}
 				else if (this.is_my_discover_like) {
-					//我的收藏
+					//我的点赞
 					post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/get_faquan_like_list';
 					
 					if (!userInfo) {
@@ -913,8 +936,14 @@
 					},
 					success: function(res) {
 						var faquanList = res.data.data;
-
-						console.log('__getFaquanList===>>>>faquanList====>>>', faquanList)
+						that.publish_list = res.data;
+						that.easylike_list = res.data;
+						that.treasure_list = res.data;
+						
+						console.log('8888====11>>', that.publish_list);
+						console.log('7777====11>>', that.easylike_list);
+						console.log('6666====11>>', that.treasure_list);
+						console.log('__getFaquanList===>>>>faquanList====>>>', faquanList);
 
 						if (res.data.code == 1) {
 							
@@ -1071,7 +1100,7 @@
 				})
 			},
 
-			//点击收藏、发布按钮
+			//点击收藏、发布、点赞按钮
 			my_publish_and_collect: function(e) {
 
 				console.log('eeeee', e);
@@ -1103,15 +1132,14 @@
 					this.is_my_discover_collection = 0;
 					this.is_my_discover_like = 1;
 					
-					this.is_collection_show = 0;
-					this.is_my_show = 1;
+					this.is_like_show = 0;
+					this.is_collection_show = 1;
+					this.is_my_show = 1;		
 					this.is_recently_show = 1;
 					uni.setNavigationBarTitle({
-						title: '我的收藏'
+						title: '我的点赞'
 					})
-					
-					this.__getFaquanList();
-					
+					this.__getFaquanList();	
 				}
 				else if (e.currentTarget.dataset.type == 'my_collection') {
 					//我的收藏
@@ -1138,6 +1166,7 @@
 
 					this.is_collection_show = 1;
 					this.is_my_show = 1;
+					this.is_like_show = 1;
 					this.is_recently_show = 0;
 
 					uni.setNavigationBarTitle({
@@ -1146,7 +1175,7 @@
 
 					this.__getFaquanList();
 				}
-				//e.detail.width  my_publish">my_collection    e.currentTarget.dataset.type;
+				//e.detail.width  my_publish">my_collection  e.currentTarget.dataset.type;
 			},
 
 			//发圈点赞
@@ -1387,15 +1416,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
 	.list-address,
 	.list-time {
 		min-height: 20px;
@@ -1515,11 +1535,12 @@
 
 
 	.col-con {
-		display: flex;
 		height: 30vw;
 		border-bottom: 2rpx solid #eee;
 		padding: 18rpx 0 18rpx 20rpx;
 		font-weight: bold;
+		color: #eee;
+		background-color: #3D9140;
 	}
 
 	.bottom-line {
@@ -1611,7 +1632,7 @@
 		margin-top: 30rpx;
 	}
 
-	.my_publish {
+	.my_publish1 {
 		width: 50%;
 		display: flex;
 		justify-content: center;
@@ -1674,16 +1695,13 @@
 		}
 	}
 
-	.user {
-		width: 92%;
-		padding: 0 4%;
+	.icon-number {
+		width: 100%;
+		margin-left: 10px;
 		display: flex;
-		align-items: center;
-		// position: relative;
-		//background-color: #f06c7a;
-		padding-bottom: 60upx;
+		margin-bottom: 22px;
 
-		.left {
+	.left {
 			width: 15vw;
 			height: 15vw;
 			flex-shrink: 0;
@@ -1698,48 +1716,18 @@
 
 		}
 
-		.right {
+	.right {
 			width: 100%;
-
 			.username {
-				height: 8vw;
-				line-height: 55rpx;
 				font-size: 32upx;
 				color: #FFFFFF;
 			}
 
-			.signature {
-				font-size: 28upx;
-			}
 		}
-
-		.zan {
-			height: 8vw;
-			width: 20vw;
-			margin-top: 200upx;
-			margin-left: -90vw;
-			line-height: 55rpx;
-			color: #FFFFFF;
-		}
-
-		.cang {
-			height: 8vw;
-			width: 20vw;
-			margin-top: 200upx;
-			margin-left: 1vw;
-			line-height: 55rpx;
-			color: #FFFFFF;
-		}
-
-		.fabu {
-			height: 8vw;
-			width: 20vw;
-			margin-top: 200upx;
-			margin-left: 1vw;
-			line-height: 55rpx;
-			color: #FFFFFF;
-
-		}
-
+	}
+	.publist_list_num{
+		display: flex;
+		
+		
 	}
 </style>
