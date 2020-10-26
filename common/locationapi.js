@@ -214,7 +214,7 @@ module.exports = {
 				        console.log('当前位置的经度：' + res.longitude);
 				        console.log('当前位置的纬度：' + res.latitude);
 						//console.log('当前位置的经度：' + translate);
-						console.log('当前位置的经度：' + JSON.stringify(res.address));
+						console.log('当前位置的地址：' + JSON.stringify(res.address));
 						
 						var locationData = {};
 						locationData.latitude = res.latitude;

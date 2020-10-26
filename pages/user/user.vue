@@ -422,7 +422,7 @@
 							console.log('ddd', res);
 				
 							if (res.data.code == "-1") {
-								var last_url = '/pages/user/index';
+								var last_url = '/pages/user/user';
 								that.abotapi.goto_user_login(last_url, 'normal');
 							} else {
 								var data = res.data;

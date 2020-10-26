@@ -1,14 +1,31 @@
 <template>
 	<view>
-		<view class="head">
+		<view class="head" style="margin-top: 40rpx;">
 			<image src="../../static/img/addricon.png" style="width:40upx;height: 40upx;margin-left:20rpx ;"></image>
 			<view style="margin-left: 20upx ;">
-			  <view style="color: #808080;display:inline-block;">当前位置：</view>{{address_info_current}}
+			  <view style="color: #808080;display:inline-block;">当前位置：</view>
 			</view>
+			
 		      <!-- <view calss="right">切换区县<img style="width: 35rpx; height: 33rpx;"
 			   src="https://yanyubao.tseo.cn/Tpl/static/images/down.png" alt=""></view> -->
 		</view>
+		<view class="head">
+
+			<view style="margin-left: 20upx ;">
+			  {{address_info_current}}
+			</view>
+		     
+		</view>
 		
+		<view class="head" style="margin-top: 40rpx;">
+			<image src="../../static/img/VIP.png" style="width:40upx;height: 40upx;margin-left:20rpx ;"></image>
+			<view style="margin-left: 20upx ;">
+			  <view style="color: #808080;display:inline-block;">城市列表：</view>
+			</view>
+			
+		      <!-- <view calss="right">切换区县<img style="width: 35rpx; height: 33rpx;"
+			   src="https://yanyubao.tseo.cn/Tpl/static/images/down.png" alt=""></view> -->
+		</view>
 		<view class="middle">
 			<!-- <view class="hui">定位/最近访问</view>
 			 -->	
@@ -62,7 +79,31 @@
 				
 				console.log('获取城市列表页面locationData',locationData);
 				
-				that.address_info_current = locationData.addressComponent.city; //获取缓存中的当前城市的名称
+				//获取缓存中的当前城市的名称
+				if(locationData.addressComponent){
+					that.address_info_current = locationData.addressComponent.city;
+					if(locationData.addressComponent.district){
+						that.address_info_current += locationData.addressComponent.district;
+					}
+					if(locationData.addressComponent.street){
+						that.address_info_current += locationData.addressComponent.street;
+					}
+					if(locationData.addressComponent.streetNum){
+						that.address_info_current += locationData.addressComponent.streetNum;
+					}
+					if(locationData.addressComponent.poiName){
+						that.address_info_current += locationData.addressComponent.poiName;
+						that.address_info_current += '附近';
+					}
+					else{
+						that.address_info_current += '附近';
+					}
+					
+					//that.address_info_current += that.address_info_current;
+					//that.address_info_current += that.address_info_current;
+				}
+				
+				
 			});
 		},
 		methods: {
@@ -114,7 +155,7 @@
 	outline-width:50upx; 
 	display: flex;
 	align-items: center;
-	line-height: 120upx;
+	line-height: 60upx;
 	font-size: 32upx;
 }
 .right{
