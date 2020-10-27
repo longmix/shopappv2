@@ -212,13 +212,20 @@
 
 			console.log('discover options====>>>>', options);
 			var that = this;
-
-			var system_info = uni.SystemInfoSync();
-
-			console.log('getSystemInfo==>>>system_info==>>>', system_info)
-			console.log('getSystemInfo==>>>system_info==>>>', system_info.windowWidth)
-			that.windowWidth = system_info.windowWidth;
-			that.windowHeight = system_info.windowHeight;
+			
+			
+			setTimeout(() => {
+				var system_info = uni.SystemInfoSync();
+				
+				console.log('getSystemInfo==>>>system_info==>>>', system_info)
+				console.log('getSystemInfo==>>>system_info==>>>', system_info.windowWidth)
+				that.windowWidth = system_info.windowWidth;
+				that.windowHeight = system_info.windowHeight;
+				
+			
+			});
+			
+			
 
 
 			if (options) {
@@ -278,7 +285,6 @@
 					that.current_view_width = res.windowWidth;
 				}
 			})
-
 
 			this.abotapi.getFaquanSetting(that, this.callback_flash_ad_list);
 
@@ -1692,7 +1698,6 @@
 
 	.icon-number {
 		width: 100%;
-		margin-left: 10px;
 		display: flex;
 		margin-bottom: 22px;
 
@@ -1721,8 +1726,6 @@
 		}
 	}
 	.publist_list_num{
-		display: flex;
-		
-		
+		display: flex;	
 	}
 </style>
