@@ -683,7 +683,7 @@ export default {
 			})
 		},
 		goToPublishList:function(){
-			this.abotapi.call_h5browser_or_other_goto_url('/pages/publish/list');
+			this.abotapi.call_h5browser_or_other_goto_url('/pages/publish/publish_list');
 		},
 		// 预览图片
 		previewImage:function(index) {

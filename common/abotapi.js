@@ -1303,7 +1303,11 @@ module.exports = {
 		}
 		else if ((url == '/pages/index/index') || (url == '/pages/category/category') 
 			|| (url == '/pages/cart/cart') || (url == '/pages/user/user') 
-			|| (url == '/pages/member/list')|| (url == '/pages/shopList/shopList')) {
+			||(url == '/pages/publish/publish_index')||(url == '/pages/publish/publish_list')
+			|| (url == '/pages/member/list') || (url == '/pages/shopList/shopList')) {
+				
+				console.log('this.globalData.is_publish_list_in_tabbar====>>>>', this.globalData.is_publish_list_in_tabbar);
+				
 			if((url == '/pages/index/index') && (this.globalData.is_index_index_in_tabbar == 1)){
 				uni.switchTab({
 					url: url,
@@ -1324,12 +1328,12 @@ module.exports = {
 					url: url,
 				})
 			}
-			else if((url == '/pages/publish/index') && (this.globalData.is_publish_index_in_tabbar == 1)){
+			else if((url == '/pages/publish/publish_index') && (this.globalData.is_publish_index_in_tabbar == 1)){
 				uni.switchTab({
 					url: url,
 				})
 			}
-			else if((url == '/pages/publish/list') && (this.globalData.is_publish_list_in_tabbar == 1)){
+			else if((url == '/pages/publish/publish_list') && (this.globalData.is_publish_list_in_tabbar == 1)){
 				uni.switchTab({
 					url: url,
 				})

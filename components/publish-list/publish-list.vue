@@ -80,10 +80,11 @@
 <script>
 	export default {
 		name: 'publish-list',	
-		show_zhuanti_title:0,
+		
 		props: {
 			index_list:'',
 			action:'',
+			show_zhuanti_title:0,
 		},
 		onLoad() {
 			var that = this;
