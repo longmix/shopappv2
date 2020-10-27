@@ -109,11 +109,23 @@
 			@copyText="copyText" 
 	-->
 		<!-- 发圈列表 start-->
-		<discoverList :faquanList="faquanList" :is_my_discover="is_my_discover" :is_my_discover_collection="is_my_discover_collection" :is_my_discover_like="is_my_discover_like"
-		 :faquan_tag_status="faquan_tag_status" :disabled="disabled" :videometa_width_height_list="videometa_width_height_list"
-		 @fanquaDianzan="fanquaDianzan" @bigImg="bigImg" @videometa_handle="videometa_handle" @change_faquan_status="change_faquan_status"
-		 @oneClickSave="oneClickSave" @fanquanCollect="fanquanCollect" @copyText="copyText" @click_share_btn="click_share_btn"
-		 @img_or_video_download="img_or_video_download">
+		<discoverList 
+			:faquanList="faquanList" 
+			:is_my_discover="is_my_discover" 
+			:is_my_discover_collection="is_my_discover_collection" 
+			:is_my_discover_like="is_my_discover_like"
+			:faquan_tag_status="faquan_tag_status" 
+			:disabled="disabled" 
+			:videometa_width_height_list="videometa_width_height_list"
+			@fanquaDianzan="fanquaDianzan" 
+			@bigImg="bigImg"
+			@videometa_handle="videometa_handle" 
+			@change_faquan_status="change_faquan_status"
+			@oneClickSave="oneClickSave" 
+			@fanquanCollect="fanquanCollect" 
+			@copyText="copyText" 
+			@click_share_btn="click_share_btn"
+			@img_or_video_download="img_or_video_download">
 		</discoverList>
 		<!-- End of 004  -->
 
@@ -201,7 +213,7 @@
 				//用户的头像和昵称等信息
 				user_account_info:null,
 				nav_title:'',
-				
+				type:0,
 			};
 		},
 		onLoad(options) {
@@ -556,7 +568,7 @@
 
 				var that = this;
 				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/get_faquan_collect_list',
+					url: that.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/change_faquan_status',
 					data: {
 						appid: that.abotapi.globalData.xiaochengxu_appid,
 						sellerid: that.abotapi.get_sellerid(),
@@ -941,7 +953,9 @@
 					success: function(res) {
 						var faquanList = res.data.data;
 						that.publish_list = res.data;
-						
+						if(faquanList == undefined){
+							return;
+						}
 						
 						console.log('8888====11>>', that.publish_list);
 						console.log('__getFaquanList===>>>>faquanList====>>>', faquanList);
