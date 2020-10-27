@@ -1,5 +1,10 @@
 <template>
+	
 	<view style='background-color: #f4f4f4;padding-top: 10upx;padding-bottom: 5upx;'>
+		<view v-if="show_zhuanti_title == 1" class="zhuanti_title">※ 附近商家 
+			<view class="zhuanti_title_more" @click="toShangList($event)">查看更多&gt;&gt;</view>
+		</view>
+		
 	<block v-for="(item, index) in xianmaishangList" :key="index" style='background-color: #ffffff;'>
 	<view @click="toShangDetail($event)" :data-shangid="item.xianmai_shangid" style="display: flex;padding: 10upx;margin: 10upx;border-radius: 10upx;background: #fff;">
 		<view style="width:200upx;height:200upx;margin-left: 20upx;">
@@ -49,6 +54,7 @@
 		name: 'shop-list',	
 		props: {
 			xianmaishangList:'',
+			show_zhuanti_title: 0,
 		},
 		onLoad() {
 			var that = this;
@@ -56,7 +62,10 @@
 		},
 		methods:{
 			toShangDetail:function(e){
-				this.$emit('toShangDetail',e);
+				this.$emit('toShangDetail', e);
+			},
+			toShangList:function(e){
+				this.$emit('toShangList', e);
 			}
 		}
 		
@@ -94,5 +103,23 @@
 		margin-right: 10rpx;
 		height: 37rpx;
 	}
+	
+	.zhuanti_title {
+		font-size:26rpx;
+		text-align: left;
+		color:#a2a2a2;
+		padding: 30rpx auto;
+		margin: 15px auto 0;
+		display: block;
+		height: 40rpx;
+		width: 90%;
+	}
+	
+	.zhuanti_title_more {
+		display:block;
+		float:right;
+		font-size:26rpx;
+	}
+	
 
 </style>

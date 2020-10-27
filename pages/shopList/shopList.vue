@@ -68,7 +68,10 @@
 		<!-- 筛选按钮结束 -->
 		
 		<!-- 实体商家列表 -->
-		<shopList :xianmaishangList="xianmaishang_list" @toShangDetail="toShangDetail"></shopList>
+		<shopList :xianmaishangList="xianmaishang_list" 
+			@toShangDetail="toShangDetail"
+			@toShangList="toShangList"
+			:show_zhuanti_title = 0></shopList>
 
 		
 		<!-- <view @click="jiazai()">点击加载更多...</view> -->
@@ -814,7 +817,12 @@
 				uni.navigateTo({
 					url: '/pages/shopDetail/shopDetail?shangid='+shangid
 				});
-			}, 
+			},
+			toShangList(){
+				uni.switchTab({
+					url: '/pages/shopList/shopList',
+				})
+			},
 			
 			//搜索
 			search: function (view) {

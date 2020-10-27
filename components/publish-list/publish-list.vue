@@ -1,5 +1,9 @@
 <template>
 	<view style="background-color: #f4f4f4;padding: 1px 0px 1px 0px;">
+		<view v-if="(show_zhuanti_title == 1) && index_list && (index_list.length > 0)" class="zhuanti_title">※ 最近更新
+			<view class="zhuanti_title_more" @click="goToPublishList($event)">查看更多&gt;&gt;</view>
+		</view>
+		
 		<view v-for="(item,index) in index_list" :key="item.id" style="background: #fff;margin: 8upx;border-radius: 8upx;">
 			<view class="title_box">
 				 <view style="display: flex;align-items: center;">
@@ -76,6 +80,7 @@
 <script>
 	export default {
 		name: 'publish-list',	
+		show_zhuanti_title:0,
 		props: {
 			index_list:'',
 			action:'',
@@ -87,6 +92,9 @@
 		methods:{
 			goForum:function(e){
 				this.$emit('goForum',e);
+			},
+			goToPublishList:function(e){
+				this.$emit('goToPublishList',e);
 			},
 			previewImage:function(index){
 				this.$emit('previewImage',index);
@@ -242,5 +250,22 @@
 		text-align: center;
 		line-height: 30px;
 	
+	}
+	
+	.zhuanti_title {
+		font-size:26rpx;
+		text-align: left;
+		color:#a2a2a2;
+		padding: 30rpx auto;
+		margin: 15px auto 0;
+		display: block;
+		height: 40rpx;
+		width: 90%;
+	}
+	
+	.zhuanti_title_more {
+		display:block;
+		float:right;
+		font-size:26rpx;
 	}
 </style>

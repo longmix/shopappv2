@@ -139,9 +139,19 @@
 		</view> -->
 		
 		<!-- 实体商家列表 -->
-		<shopList v-if="twoArr" :xianmaishangList="twoArr" @toShangDetail="toShangDetail"></shopList>
+		<shopList v-if="twoArr" 
+			:xianmaishangList="twoArr" 
+			@toShangDetail="toShangDetail"
+			@toShangList="toShangList"
+			:show_zhuanti_title = 1></shopList>
+		
 		<!-- 实体商家结束 -->
-		<publishList v-if="index_list" :index_list="index_list" @goForum="goForum" @previewImage="previewImage"></publishList>
+		
+		<!-- 论坛发帖列表 -->
+		<publishList v-if="index_list" :index_list="index_list" 
+			@goForum="goForum" @previewImage="previewImage"
+			@goToPublishList="goToPublishList"
+			:show_zhuanti_title = 1></publishList>
 			
 		<!-- 商品列表 -->
 		<view v-if="current_product_list && (wxa_hidden_product_list ==0)"
@@ -671,6 +681,9 @@ export default {
 			uni.navigateTo({
 				url: "/pages/help_detail/help_detail?id=" + id + '&form_page=publish_list' 
 			})
+		},
+		goToPublishList:function(){
+			this.abotapi.call_h5browser_or_other_goto_url('/pages/publish/list');
 		},
 		// 预览图片
 		previewImage:function(index) {
@@ -1697,10 +1710,14 @@ export default {
 		//实体商家跳转
 		toShangDetail(e) {
 			console.log('rrxfff===',e.currentTarget.dataset.shangid);
+			
 			var shangid = e.currentTarget.dataset.shangid;
 			uni.navigateTo({
 				url: '/pages/shopDetail/shopDetail?shangid='+shangid
 			});
+		},
+		toShangList(){
+			this.abotapi.call_h5browser_or_other_goto_url('/pages/shopList/shopList');
 		},
 		//轮播图指示器
 		swiperChange(event) {
@@ -2065,14 +2082,14 @@ page{position: relative;background-color: #fff;}
 }
 
 .zhuanti_title {
-	font-size:30rpx;
-	text-align: center;
-	color:#ccc;
+	font-size:26rpx;
+	text-align: left;
+	color:#a2a2a2;
 	padding: 30rpx auto;
-	margin-top: 30rpx;
+	margin: 15px auto 0;
 	display: block;
-	height: 80rpx;
-	width: 100%;
+	height: 40rpx;
+	width: 90%;
 }
 
 

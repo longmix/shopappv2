@@ -1002,6 +1002,10 @@ module.exports = {
 		//判断文章列表在底部导航   1就是在底部导航
 		this.globalData.is_publish_list_in_tabbar = 1;
 		
+		//2020.10.27.
+		this.globalData.is_member_list_in_tabbar = 1;
+		this.globalData.is_xianmai_shang_list_in_tabbar = 1;
+		
 		
 		if (!isNullOrUndefined(option_list.is_index_index_in_tabbar)) {
 		  this.globalData.is_index_index_in_tabbar = option_list.is_index_index_in_tabbar;
@@ -1025,6 +1029,9 @@ module.exports = {
 		}
 		if (!isNullOrUndefined(option_list.is_member_list_in_tabbar)) {
 		  this.globalData.is_member_list_in_tabbar = option_list.is_member_list_in_tabbar;
+		}
+		if (!isNullOrUndefined(option_list.is_xianmai_shang_list_in_tabbar)) {
+		  this.globalData.is_xianmai_shang_list_in_tabbar = option_list.is_xianmai_shang_list_in_tabbar;
 		}
 		
 		// #ifdef MP-WEIXIN
@@ -1296,7 +1303,7 @@ module.exports = {
 		}
 		else if ((url == '/pages/index/index') || (url == '/pages/category/category') 
 			|| (url == '/pages/cart/cart') || (url == '/pages/user/user') 
-			|| (url == '/pages/member/list')) {
+			|| (url == '/pages/member/list')|| (url == '/pages/shopList/shopList')) {
 			if((url == '/pages/index/index') && (this.globalData.is_index_index_in_tabbar == 1)){
 				uni.switchTab({
 					url: url,
@@ -1328,6 +1335,11 @@ module.exports = {
 				})
 			}
 			else if((url == '/pages/member/list') && (this.globalData.is_member_list_in_tabbar == 1)){
+				uni.switchTab({
+					url: url,
+				})
+			}
+			else if((url == '/pages/shopList/shopList') && (this.globalData.is_xianmai_shang_list_in_tabbar == 1)){
 				uni.switchTab({
 					url: url,
 				})

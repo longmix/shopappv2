@@ -5,7 +5,8 @@
 		:index_list="index_list" 
 		@goForum="goForum" 
 		:action="my_publish"
-		@article_delete="article_delete"
+		@article_delete="article_delete"		
+		:show_zhuanti_title = 0
 		></publishList>
 	</view>
 	

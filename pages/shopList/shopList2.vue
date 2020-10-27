@@ -17,16 +17,13 @@
 			if(options.cataid){
 				//当 pages/shopList/shopList  在tab栏 参数写缓存，然后跳转
 
-				wx.setStorageSync('current_shang_cataid', options.cataid);
-				wx.switchTab({
-					url: '/pages/shopList/shopList',
-				})
+				uni.setStorageSync('current_shang_cataid', options.cataid);
+				
+				this.abotapi.call_h5browser_or_other_goto_url('/pages/shopList/shopList');
 		
 			}
 			else{
-				wx.switchTab({
-					url: '/pages/shopList/shopList',
-				})
+				this.abotapi.call_h5browser_or_other_goto_url('/pages/shopList/shopList');
 			}
 		}
 	}

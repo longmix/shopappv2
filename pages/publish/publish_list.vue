@@ -50,7 +50,9 @@
 			</scroll-view>
 		</view>
 		
-		<publishList :index_list="index_list" @goForum="goForum" @previewImage="previewImage"></publishList>
+		<publishList :index_list="index_list" @goForum="goForum" @previewImage="previewImage"
+			:show_zhuanti_title = 0
+		></publishList>
 	</view>
 </template>
 
