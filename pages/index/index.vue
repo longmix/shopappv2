@@ -2083,7 +2083,7 @@ page{position: relative;background-color: #fff;}
 
 .zhuanti_title {
 	font-size:26rpx;
-	text-align: left;
+	text-align: center;
 	color:#a2a2a2;
 	padding: 30rpx auto;
 	margin: 15px auto 0;
