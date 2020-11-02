@@ -13,7 +13,15 @@ const abotRequest = (params) => {
     success(res) {
       console.log('HTTP Request to ' + params.url);
       console.log('with data ', params.data);
-      console.log('get result', res);
+	  
+	  if(res && JSON.stringify(res.length) > 512){
+		  var res002 = JSON.stringify(res.length);
+		  console.log('get result', res002.substring(0, 500)+'......' );
+	  }
+	  else{
+		  console.log('get result', res);
+	  }
+      
 
       if (params.success) {
         params.success(res);
@@ -995,7 +1003,7 @@ module.exports = {
 		this.globalData.is_shop_cart_in_tabbar = 1;
 		
 		//商品分类是否在底部导航
-		this.globalData.is_category_index_in_tabbar = 1;
+		this.globalData.is_category_category_in_tabbar = 1;
 		
 		//判断发布的栏目在底部导航  1就是在底部导航
 		this.globalData.is_publish_index_in_tabbar = 0;
@@ -1018,7 +1026,7 @@ module.exports = {
 		}
 		
 		if (!isNullOrUndefined(option_list.is_category_index_in_tabbar)) {
-		  this.globalData.is_category_index_in_tabbar = option_list.is_category_index_in_tabbar;
+		  this.globalData.is_category_category_in_tabbar = option_list.is_category_index_in_tabbar;
 		}
 		
 		if (!isNullOrUndefined(option_list.is_publish_index_in_tabbar)) {
@@ -1306,14 +1314,15 @@ module.exports = {
 			||(url == '/pages/publish/publish_index')||(url == '/pages/publish/publish_list')
 			|| (url == '/pages/member/list') || (url == '/pages/shopList/shopList')) {
 				
-				console.log('this.globalData.is_publish_list_in_tabbar====>>>>', this.globalData.is_publish_list_in_tabbar);
+			console.log('this.globalData.is_category_category_in_tabbar====>>>>', this.globalData.is_category_category_in_tabbar);
+			console.log('url=====>>>>>>>'+url);
 				
 			if((url == '/pages/index/index') && (this.globalData.is_index_index_in_tabbar == 1)){
 				uni.switchTab({
 					url: url,
 				})
 			}
-			else if((url == '/pages/category/index') && (this.globalData.is_category_index_in_tabbar == 1)){
+			else if((url == '/pages/category/category') && (this.globalData.is_category_category_in_tabbar == 1)){
 				uni.switchTab({
 					url: url,
 				})
@@ -1349,8 +1358,11 @@ module.exports = {
 				})
 			}
 			else{
+				
+				console.log('url=====不是switchTab，使用navigateTo跳转>>>>>>>'+url);
+				
 				uni.navigateTo({
-					url:'/pages/index/index'
+					url:url
 				})
 			}
 			

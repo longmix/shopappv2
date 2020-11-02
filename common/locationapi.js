@@ -295,7 +295,7 @@ module.exports = {
 					fail:function (res) {
 						console.log('getLocation获取地址失败');
 						uni.showToast({
-							title:'获取GPS坐标失败'
+							title:'GPS定位失败'
 						});
 						
 						var locationData = {};
