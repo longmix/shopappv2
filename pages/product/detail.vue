@@ -186,10 +186,17 @@
 
 		<!-- 商品主图轮播 -->
 		<view class="swiper-box">
-			<swiper circular="true" autoplay="true" @change="swiperChange">
+			<swiper circular="true" autoplay="false" @change="swiperChange" >
+				<swiper-item v-if="goods_detail.video_url!=''">
+						<video 
+							:style="{width:video_url_width + 'rpx',height:video_url_height + 'rpx'}"
+							:src="goods_detail.video_url" 
+							:poster="goods_detail.video_cover_url"
+							></video>
+				</swiper-item>	
+				
 				<swiper-item v-for="picture_item in picture_list" :key="picture_item.id">
 					<image :src="picture_item.picture"></image>
-
 				</swiper-item>
 			</swiper>
 
@@ -410,6 +417,7 @@ export default {
 			// #endif
 			//轮播主图数据
 			picture_list:'',
+			video_list:'',
 			goods_detail:{
 				name:'',
 				price: '',
@@ -493,6 +501,9 @@ export default {
 			
 			icon_btn_gouwuche_text:'购物车',
 			btn_gouwuche_text:'加入购物车',
+			
+			video_url_width:750,
+			video_url_height:750,
 			
 		};
 	},
@@ -596,7 +607,14 @@ export default {
 					
 
 					that.picture_list = that.goods_detail.picture_list;
+					that.video_list = that.goods_detail.video_url;
+					
+					console.log('88888888888999',that.goods_detail.video_url );
 					that.picture_length = that.goods_detail.picture_list ? that.goods_detail.picture_list.length : 0;
+					if(that.goods_detail.video_url){
+						that.picture_length = that.picture_length + 1;
+					}					
+					
 					that.attribute_list = that.goods_detail.attribute_list;
 					
 					// app分享
@@ -905,6 +923,9 @@ export default {
 // #endif	
 
 				  that.picture_list = that.goods_detail.picture_list;
+				  
+				  console.log('that.picture_list===>>>',that.picture_list);
+				  
 				  that.picture_length = that.goods_detail.picture_list ? that.goods_detail.picture_list.length : 0;		   
 
 		        } else {

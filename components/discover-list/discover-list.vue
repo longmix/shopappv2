@@ -4,7 +4,7 @@
 		        <view class='list-con'> <!-- 001 -->
 		            <image class="list-avatar" :src="item.headlogo" ></image> 
 		            <view class="list-item">  <!-- 002 -->
-		                <view :data-id="item.faquanid">
+		                <view :data-id="item.faquanid">  <!-- 003 -->
 		                    <view class="list-type">
 		                      <view class="list-zan-a" v-if="is_my_discover != 1">
 		
@@ -19,7 +19,13 @@
 		                      
 		
 		                    </view>
-		                    <view class="list-name" :data-id="item.faquanid">{{item.username}}</view>               
+		                    <view class="list-name" :data-id="item.faquanid">{{item.username}}</view>     
+						</view>  <!-- End of 003  -->
+					</view>
+					<view>
+						<view>  <!-- 003 -->
+									  
+									  
 		                    <text class="list-des" @tap="copyText" :data-text="item.text" :data-id="item.faquanid">{{item.text}}</text>
 		
 		                    <view v-if="item.type == 0">  
@@ -27,14 +33,14 @@
 		                    </view>
 		
 		                    <view v-else>
-		                        <video v-for="(item2,index2) in item.img_or_video_list" :key="index2"
-		
+		                        <video class="video_list_style" v-for="(item2,index2) in item.img_or_video_list" :key="index2"
 		                        :data-id="item2.imgid" :data-index="item2.index"
-		                        @tap='start_and_stop_other_videos' 
+		                        @play='start_and_stop_other_videos' 
 		                        :src="item2.url"  :poster='item2.video_img'
 		                        controls="true"
 		                        @loadedmetadata="videometa_handle"
-		                        :style="{width:videometa_width_height_list[item2.index][0] + 'rpx',height:videometa_width_height_list[item2.index][1] + 'rpx'}">
+		                        :style="{width:videometa_width_height_list[item2.index][0] + 'rpx',height:videometa_width_height_list[item2.index][1] + 'rpx'}"
+								>
 								
 								</video>
 		                        

@@ -119,6 +119,7 @@
 			:videometa_width_height_list="videometa_width_height_list"
 			@fanquaDianzan="fanquaDianzan" 
 			@bigImg="bigImg"
+			@play="start_and_stop_other_videos"
 			@videometa_handle="videometa_handle" 
 			@change_faquan_status="change_faquan_status"
 			@oneClickSave="oneClickSave" 
@@ -142,10 +143,11 @@
 		<view class='cancel-search' v-if="is_search" @tap='cancelSearch'>
 			<view>取消</view>
 			<view>搜索</view>
-		</view>
+		</view>		
 		<view class="publish-idea" style='' v-if="faquan_button_status==1">
 			<image :src="faquan_add_img_url" @tap="publishIdea"></image>
-		</view>
+		</view>	
+		<!-- <cover-view></cover-view> -->
 	</view>
 </template>
 
@@ -214,6 +216,7 @@
 				user_account_info:null,
 				nav_title:'',
 				type:0,
+				current_video_id_playing:0
 			};
 		},
 		onLoad(options) {
@@ -226,16 +229,14 @@
 			var that = this;
 			
 			
-			setTimeout(() => {
-				var system_info = uni.SystemInfoSync();
+				var box_info = uni.getSystemInfoSync();
 				
-				console.log('getSystemInfo==>>>system_info==>>>', system_info)
-				console.log('getSystemInfo==>>>system_info==>>>', system_info.windowWidth)
-				that.windowWidth = system_info.windowWidth;
-				that.windowHeight = system_info.windowHeight;
+				console.log('getSystemInfo==>>>system_info==>>>', box_info)
+				console.log('getSystemInfo==>>>system_info==>>>', box_info.windowWidth)
+				that.windowWidth = box_info.windowWidth;
+				that.windowHeight = box_info.windowHeight;
 				
 			
-			});
 			
 			
 
@@ -504,6 +505,9 @@
 				console.log('videometa_handle======>>>>>', e);
 
 				var current_id = e.target.dataset.id;
+				console.log('video_id======>>>>>', current_id);
+				
+				
 				var current_index = e.target.dataset.index;
 
 				var imgwidth = e.detail.width;
@@ -521,7 +525,7 @@
 				// 如在 iPhone6 上，屏幕宽度为375px，共有750个物理像素，则750rpx = 375px = 750物理像素，1rpx = 0.5px = 1物理像素。
 				var current_view_width = 750;
 
-				current_view_width = current_view_width * 0.9 * 0.9;
+				current_view_width = current_view_width * 0.9;
 
 				//计算的高度值  
 				var current_view_height = current_view_width / ratio;
@@ -536,6 +540,7 @@
 				this.videometa_width_height_list = videometa_width_height_list;
 
 			},
+			
 
 			bigImg: function(e) {
 				console.log(e);
@@ -986,7 +991,7 @@
 										// 如在 iPhone6 上，屏幕宽度为375px，共有750个物理像素，则750rpx = 375px = 750物理像素，1rpx = 0.5px = 1物理像素。
 										var current_view_width = 750;
 
-										current_view_width = current_view_width * 0.9 * 0.9;
+										current_view_width = current_view_width * 0.9 ;
 
 										//计算的高度值  
 										var current_view_height = current_view_width / ratio;
@@ -1395,6 +1400,36 @@
 				this.abotapi.call_h5browser_or_other_goto_url(url);
 
 			},
+			
+			start_and_stop_other_videos:function(e){
+				console.log('start_and_stop_other_videos=========>>>>>', e);
+				
+				//马上要播放的视频
+			// 	var current_video_id = e.current.dataset....index;
+				
+			// 	//如果视频ID与之前正在播放的不同，那么暂停之前的
+				
+				
+			// 	console.log('faquanlist_num',this.faquanList);
+			// 	var faquanlist = this.faquanList;
+				
+			// 	if(faquanlist.length > 0){
+			// 		for(var i; i<faquanlist.length; i++){
+			// 			if(current_id !=faquanlist.img_or_video_list.imgid ){
+			// 				faquanlist.img_or_video_list[i].pause();
+			// 			}
+			// 		}
+					
+			// 	}
+				
+				
+			// 	this.current_video_id_playing = current_video_id;
+				
+				
+				
+				
+				
+			}
 
 
 		},
@@ -1537,11 +1572,13 @@
 		z-index: 3;
 		flex-direction: column;
 		align-items: center;
+		z-index: 999;
 	}
 
 	.publish-idea image {
 		width: 100rpx;
 		height: 100rpx;
+		z-index: 999;
 	}
 
 	.cancel-search view {
