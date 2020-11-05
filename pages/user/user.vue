@@ -81,7 +81,7 @@
 						   99
 						</div>
 					</view>
-					<view class="text">{{row.text}}222</view>
+					<view class="text">{{row.text}}</view>
 
 				</view>
 			</view>
