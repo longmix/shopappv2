@@ -45,10 +45,10 @@
 						
 						
 <!-- #ifdef MP-ALIPAY -->			
-					<rich-text :nodes="info"></rich-text>
+					<rich-text :nodes="article_info"></rich-text>
 <!-- #endif -->				
 <!-- #ifndef MP-ALIPAY -->
-					<rich-text :nodes="info|formatRichText"></rich-text>
+					<rich-text :nodes="article_info|formatRichText"></rich-text>
 <!-- #endif -->						
 						
 						
@@ -196,7 +196,7 @@
 				inputValue:'',
 				
 				comment_num:'',
-				info:'',
+				article_info:'',
 				
 				publishtype:'',
 				is_Focus:false,
@@ -387,18 +387,18 @@
 						if (is_col && is_col == 1) {
 							that.isShoucang = is_col
 						}
-						that.info = res.data.data.info;
+						that.article_info = res.data.data.info;
 						
 						
 // #ifdef MP-ALIPAY		
-						console.log('that.info====>>>>', that.info);
+						console.log('that.article_info====>>>>', that.article_info);
 						
 						const filter = that.$options.filters["formatRichText"];
-						that.info = filter(that.info);
+						that.article_info = filter(that.article_info);
 						
-						console.log('that.info====>>>>', that.info);
+						console.log('that.article_info====>>>>', that.article_info);
 						
-						let data001 = that.info;
+						let data001 = that.article_info;
 						let newArr = [];
 						let arr = parseHtml(data001);
 						arr.forEach((item, index)=>{
@@ -408,7 +408,7 @@
 						//console.log('arr arr arr====>>>>', arr);
 						//console.log('newArr newArr newArr====>>>>', newArr);
 						
-						that.info = newArr;
+						that.article_info = newArr;
 
 // #endif						
 						

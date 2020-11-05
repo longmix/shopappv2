@@ -2,7 +2,39 @@
 	<view>
 		
 		<view>
+			<view class='wenzhang_detail'>
+			    <image style="width: 100%;" v-if="form_logourl"
+					:src="form_logourl" mode="widthFix"></image>
+			    <view v-if="form_intro" 
+					style="margin: 20rpx;font-size: 28rpx;color: #555;">{{form_intro}}</view>
+
+			    <view class="wxParse"> 
+			        <scroll-view  scroll-y='true'>
+			           <!-- #ifdef MP-ALIPAY -->
+			           					<rich-text :nodes="form_content"></rich-text>
+			           <!-- #endif -->				
+			           <!-- #ifndef MP-ALIPAY -->
+			           					<rich-text :nodes="form_content|formatRichText"></rich-text>
+			           <!-- #endif -->	
+			        </scroll-view>
+			    </view>
+			</view>
+			
+			
+			<!--平铺广告图片start-->
+			<view style='width:100%;background-color: #fff;margin-top: 20rpx;' 
+				v-if="(ad_img_list != null)||(ad_img_list != '')">
+			     <block  v-for="item in ad_img_list" :key="item.swiperid">
+			      <image style='width:100%;vertical-align: middle;' 
+					mode="widthFix" bindtap="go_to_ad_img_url" 
+					:src='item.image' :data-url="item.url"></image>
+			     </block>
+			</view>
+			<!--平铺广告图片end-->
+			
+			
 			<view class="main-body">
+				
 				<form @submit="formSubmit">
 					<block v-for="item in list" :key="item.fieldname">
 						<!-- 帖子的固定字段开始 -->
@@ -47,7 +79,9 @@
 										<text>{{item.displayname}}</text><label class="FH" v-if="item.require == 1">*</label>
 									</view>
 									<view class="box_3">
-										<text class="box_text">{{item.options[item.index]}}</text><image v-if="!item.options[item.index]" style="width: 40upx;" mode="widthFix" src="../../static/img/x_right.png"></image>
+										<text class="box_text">{{item.options[item.index]}}</text>
+										<image v-if="!item.options[item.index]" 
+											style="width: 40upx;" mode="widthFix" src="../../static/img/x_right.png"></image>
 									</view>
 								</view>
 							</picker>
@@ -117,7 +151,7 @@
 				    <view @click="knows" class="queren" :style="{background:wxa_shop_nav_bg_color + ';font-size:26upx;'}">确定</view>
 				</view>
 				
-			</view>
+			</view><!-- End of main-body -->
 		</view>
 	</view>
 </template>
@@ -160,7 +194,14 @@
 				wxa_shop_nav_bg_color:'',
 				publish_write_fabu_xuzhi:'',//发帖须知
 				
-				current_params_str:''
+				current_params_str:'',
+				
+				//微读客CMS平台的万能表单中定义的表单的logo、简介和内容
+				form_logourl:'',
+				form_intro:'',
+				form_content:'',
+				//首页 > 功能扩展 > 万能表单 中定义的平铺广告图片
+				ad_img_list:''
 			}
 			
 		},
@@ -226,9 +267,9 @@
 			
 			
 			
-			//判断登录
+			//判断登录（如果不是 2 万能表单，其他情况都要求用户登录后才能进入填写表单）
 			var userInfo = that.abotapi.get_user_info();		
-			if(!userInfo || !userInfo.userid){
+			if((this.form_type != 2) && (!userInfo || !userInfo.userid)){
 				
 				
 				//var last_url = '/pages/publish/publish_write?classid='+this.formid+'&name='+this.catename+'&submit_url='+this.submit_url+'&form_type='+this.form_type;
@@ -240,6 +281,24 @@
 				this.abotapi.goto_user_login(last_url, 'normal');
 								
 			}
+			
+			
+			//2020.5.7. 加载图片平铺广告
+			this.abotapi.abotRequest({
+			  url: that.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/SelfformData/get_ad_list',
+			  data: {
+				sellerid: that.abotapi.get_sellerid(),
+			  },
+			  success: function (res) {
+				if(res.data && (res.data.code == 1)){
+				  var ad_img_list = res.data.ad_img_list;
+		
+				  that.ad_img_list = ad_img_list;
+				}
+		
+		
+			  },
+			});
 			
 			
 		},
@@ -326,7 +385,7 @@
 					submit_url = that.abotapi.globalData.yanyubao_server_url+'index.php/Yanyubao/ShopAppWxa/user_set_ext_info_list';
 					
 					post_data = {
-						sellerid:that.abotapi.globalData.default_sellerid,
+						sellerid:that.abotapi.get_sellerid(),
 						userid: userInfo.userid,
 						checkstr: userInfo.checkstr,
 					}
@@ -474,7 +533,8 @@
 					success(res) {
 						
 						if(res.data.code == 1){
-							var list = res.data.data;
+							
+							
 							if(res.data.submit_text){
 								that.submit_text = res.data.submit_text;
 							}
@@ -483,6 +543,42 @@
 									title: res.data.title,
 								})
 							}
+							
+							if(res.data.logourl){
+							    that.form_logourl = res.data.logourl;
+							}
+							
+							if (res.data.intro) {
+								that.form_intro = res.data.intro;
+							}
+							
+							if(res.data.content){
+								that.form_content = res.data.content;
+								
+								// #ifdef MP-ALIPAY
+									console.log('that.form_content====>>>>', that.form_content);
+									
+									const filter = that.$options.filters["formatRichText"];
+									that.form_content = filter(that.form_content);
+									
+									console.log('that.form_content====>>>>', that.form_content);
+									
+									let data001 = that.form_content;
+									let newArr = [];
+									let arr = parseHtml(data001);
+									arr.forEach((item, index)=>{
+										newArr.push(item);
+									});
+									
+									//console.log('arr arr arr====>>>>', arr);
+									//console.log('newArr newArr newArr====>>>>', newArr);
+									
+									that.form_content = newArr;
+								
+								// #endif	
+							}
+							
+							var list = res.data.data;
 							
 							for(var i=0; i<list.length; i++){
 								
@@ -505,7 +601,7 @@
 																					
 							}
 								
-								that.list = list;
+							that.list = list;
 							
 								
 							}
@@ -665,7 +761,42 @@
 			},
 
 			
+		},		
+		filters: {
+			/**
+			 * 处理富文本里的图片宽度自适应
+			 * 1.去掉img标签里的style、width、height属性
+			 * 2.img标签添加style属性：max-width:100%;height:auto
+			 * 3.修改所有style里的width属性为max-width:100%
+			 * 4.去掉<br/>标签
+			 * @param html
+			 * @returns {void|string|*}
+			 */
+			formatRichText (html) { //控制小程序中图片大小
+				let newContent= html.replace(/<img[^>]*>/gi,function(match,capture){
+					match = match.replace(/style="[^"]+"/gi, '').replace(/style='[^']+'/gi, '');
+					match = match.replace(/width="[^"]+"/gi, '').replace(/width='[^']+'/gi, '');
+					match = match.replace(/height="[^"]+"/gi, '').replace(/height='[^']+'/gi, '');
+					return match;
+				});
+				newContent = newContent.replace(/style="[^"]+"/gi,function(match,capture){
+					match = match.replace(/width:[^;]+;/gi, 'max-width:100%;').replace(/width:[^;]+;/gi, 'max-width:100%;');
+					return match;
+				});
+				//newContent = newContent.replace(/<br[^>]*\/>/gi, '');
+				
+				newContent = newContent.replace(/<p[^>]*>/gi, '<p style="margin:10px;">');
+				
+				newContent = newContent.replace(/\<img/gi, '<img style="max-width:100%;height:auto;display:inline-block;margin:10rpx auto;vertical-align: middle;"');
+				
+				newContent = newContent.replace(/<h1[^>]*>/gi, '<h1 class="wxParse-h1">');
+				newContent = newContent.replace(/<h2[^>]*>/gi, '<h2 class="wxParse-h2">');
+				
+				return newContent;
+			}
+			
 		},
+		
 	}
 </script>
 

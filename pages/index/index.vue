@@ -1460,7 +1460,7 @@ export default {
 		
 		
 		initArticleList: function () {
-		
+			/*
 		    var that = this
 		
 		    //=====更新商户头条=================
@@ -1475,8 +1475,10 @@ export default {
 		    var cbError = function (res) {
 		
 		    };
-		    this.abotapi.httpPost(url, data, this.yingxiao, cbError);
+		    //this.abotapi.httpPost(url, data, this.get_weiduke_yanyubao_yingxiao_list, cbError);
 		    //========End====================
+			*/
+			this.get_weiduke_yanyubao_yingxiao_list();
 		
 		},
 		  
@@ -1515,7 +1517,7 @@ export default {
 		
 		
 		//商户头条
-		yingxiao:function(){
+		get_weiduke_yanyubao_yingxiao_list:function(){
 			var that = this;
 			this.abotapi.abotRequest({
 				url : this.abotapi.globalData.weiduke_server_url + '?g=Home&m=Yanyubao&a=yingxiao',
@@ -1531,23 +1533,33 @@ export default {
 					console.log('res1',res);
 					that.abotapi.set_current_weiduke_token(res.data.token);
 					if(res.data.code == 1){
-							that.articlelist = res.data.data;
+						that.articlelist = res.data.data;
 						console.log('articlelist',that.articlelist);
 					}
 					
-					
+					//如果显示为两个一组
 					if (that.wxa_shop_toutiao_flash_line == 2) {
-						var data = res.data.data;
-						var articlelist2 = [];
-						for (var i = 0, length = data.length -1; i < (length / 2); i++) {
-							var arr = [data[0], data[1]];
-							articlelist2.push(arr);
-							data.shift()
-							data.shift()
+						
+						var articlelist2_temp = [];
+						
+						//如果只有一条新闻
+						if(that.articlelist.length <= 1){
+							that.wxa_shop_toutiao_flash_line = 1;
 						}
-					
-						that.articlelist2 =  articlelist2;
-						console.log('that.articlelist2',that.articlelist2);
+						else{
+							for (var i = 0, length = that.articlelist.length -1; i < (length / 2); i++) {
+								var arr = [that.articlelist[0], that.articlelist[1]];
+								
+								articlelist2_temp.push(arr);
+								
+								that.articlelist.shift()
+								that.articlelist.shift()
+							}
+							
+							that.articlelist2 =  articlelist2_temp;
+							console.log('that.articlelist2',that.articlelist2);
+						}
+						
 					}
 				},
 				fail:function(res){
