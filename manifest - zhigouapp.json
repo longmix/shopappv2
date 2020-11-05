@@ -2,8 +2,8 @@
     "name" : "志购",
     "appid" : "__UNI__27F82A3",
     "description" : "田震电商志购APP",
-    "versionName" : "1.6.8",
-    "versionCode" : 200,
+    "versionName" : "1.7.0",
+    "versionCode" : 206,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true, //是否启用`自定义组件模式`，为true表示新的`自定义组件模式` ，否则为`template模板模式`   
@@ -87,9 +87,7 @@
                     },
                     "alipay" : {}
                 },
-                "ad" : {
-                    "csj" : {}
-                },
+                "ad" : {},
                 "speech" : {
                     "ifly" : {}
                 },
