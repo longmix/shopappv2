@@ -77,8 +77,8 @@
 				<view class="box" style="width: 25%;" v-for="(row,index) in orderList" :key="index" @tap="toOrderList(row.otype,index)">
 					<view class="img order_icon_msg">
 						<view class="icon" :class="row.icon"></view>
-						<div class="order_icon_alarm">
-						   99
+						<div class="order_icon_alarm" v-if="row.order_num">
+						  {{row.order_num}}
 						</div>
 					</view>
 					<view class="text">{{row.text}}</view>
@@ -207,22 +207,26 @@
 				orderList: [{
 						text: '全部',
 						icon: "pingjia",
-						otype: 0
+						otype: 0,
+						order_num:0,
 					},
 					{
 						text: '待付款',
 						icon: "fukuan",
-						otype: 1
+						otype: 1,
+						order_num:0,
 					},
 					{
 						text: '待发货',
 						icon: "fahuo",
-						otype: 2
+						otype: 2,
+						order_num:0,
 					},
 					{
 						text: '待收货',
 						icon: "shouhuo",
-						otype: 6
+						otype: 6,
+						order_num:0,
 					},
 
 				],
@@ -441,7 +445,9 @@
 						},
 						success: function(res) {
 							console.log('ddd', res);
-
+							
+							
+							
 							if (res.data.code == "-1") {
 								var last_url = '/pages/user/user';
 								that.abotapi.goto_user_login(last_url, 'normal');
@@ -449,8 +455,16 @@
 								var data = res.data;
 								that.user_info = data.data;
 								that.fenxiao_info = that.user_info.fenxiao_info;
-								console.log('data2==>>', that.user_info);
+								console.log('data2==>>', that.user_info.status_count2);
 								console.log('fenxiao_userinfo==>>', that.fenxiao_info);
+								
+								
+								that.orderList[1].order_num = that.user_info.status_count2;
+								that.orderList[2].order_num = that.user_info.status_count3;
+								that.orderList[3].order_num = that.user_info.status_count4;
+								console.log('fenxiao_userinfo==>>====', that.orderList);
+								
+								
 							}
 						}
 					})
@@ -629,6 +643,8 @@
 					url: '/pages/index/index',
 				})
 			},
+			
+				
 		}
 	}
 </script>
