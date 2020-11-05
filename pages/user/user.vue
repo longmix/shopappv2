@@ -459,9 +459,9 @@
 								console.log('fenxiao_userinfo==>>', that.fenxiao_info);
 								
 								
-								that.orderList[1].order_num = that.user_info.status_count2;
-								that.orderList[2].order_num = that.user_info.status_count3;
-								that.orderList[3].order_num = that.user_info.status_count4;
+								that.orderList[1].order_num = that.user_info.status_count1;
+								that.orderList[2].order_num = that.user_info.status_count2;
+								that.orderList[3].order_num = that.user_info.status_count3;
 								console.log('fenxiao_userinfo==>>====', that.orderList);
 								
 								
