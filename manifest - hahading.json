@@ -2,8 +2,8 @@
     "name" : "哈哈订",
     "appid" : "__UNI__5B54B05",
     "description" : "哈哈订APP",
-    "versionName" : "1.6.8",
-    "versionCode" : 200,
+    "versionName" : "1.7.1",
+    "versionCode" : 210,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true, //是否启用`自定义组件模式`，为true表示新的`自定义组件模式` ，否则为`template模板模式`   
@@ -76,14 +76,14 @@
             "sdkConfigs" : {
                 "maps" : {
                     "amap" : {
-                        "appkey_ios" : "82f5646f60f0a3e897d2d2c9eb62c8e8",
-                        "appkey_android" : "f1706cbdd7c6e72cee8c028686be600b"
+                        "appkey_ios" : "615c807e0417fc7daf4b5d9016cbfd2b",
+                        "appkey_android" : "25fd4b4244738832a1397ddbb78eb9eb"
                     }
                 },
                 "payment" : {
                     "weixin" : {
                         "appid" : "wxa1936d5844aefa8b",
-                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/zhigouapp/"
+                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/hahading/"
                     },
                     "alipay" : {}
                 },
@@ -95,13 +95,13 @@
                     "weixin" : {
                         "appid" : "wxa1936d5844aefa8b",
                         "appsecret" : "aaaaaaaaaaaaaaaaaaaaaaa",
-                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/zhigouapp/"
+                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/hahading/"
                     }
                 },
                 "share" : {
                     "weixin" : {
                         "appid" : "wxa1936d5844aefa8b",
-                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/zhigouapp/"
+                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/hahading/"
                     }
                 },
                 "push" : {}
