@@ -4,12 +4,13 @@
 		<view v-if="showHeader" class="header" :style="{position:headerPosition,top:headerTop,backgroundColor:wxa_shop_nav_bg_color,fontColor:wxa_shop_nav_font_color}">
 			<view class="addr"></view>
 			<view class="input-box">
-				
+
 			</view>
 			<view class="icon-btn">
-				<view class="icon tongzhi" @tap="toMsg" :style="{color: wxa_shop_nav_bg_color == '#FFFFFF' ? '#333' : ''}"></view>				<!--下版本替换为: toMsg -->
+				<view class="icon tongzhi" @tap="toMsg" :style="{color: wxa_shop_nav_bg_color == '#FFFFFF' ? '#333' : ''}"></view>
+				<!--下版本替换为: toMsg -->
 				<view class="icon setting" @tap="toSetting" :style="{color: wxa_shop_nav_bg_color == '#FFFFFF' ? '#333' : ''}"></view>
-			</view> 
+			</view>
 		</view>
 		<!-- 占位 -->
 		<view v-if="showHeader" class="place"></view>
@@ -17,13 +18,17 @@
 		<view class="user" :style="{backgroundColor:wxa_shop_nav_bg_color}">
 			<!-- 头像 -->
 			<view class="left">
-				<label v-if="user_info"><image :src="user_info.headimgurl"></image></label>
-				<label v-else><image src="https://yanyubao.tseo.cn/Tpl/static/images/touxiang-white.png"></image></label>
+				<label v-if="user_info">
+					<image :src="user_info.headimgurl"></image>
+				</label>
+				<label v-else>
+					<image src="https://yanyubao.tseo.cn/Tpl/static/images/touxiang-white.png"></image>
+				</label>
 			</view>
 			<!-- 昵称,个性签名 -->
 			<view class="right">
 				<view class="username" :style="{color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}">
-					<label v-if="user_info">{{fenxiao_info.nickname}}</label><label v-else  @click="toLogin">请点击此处登录</label>
+					<label v-if="user_info">{{fenxiao_info.nickname}}</label><label v-else @click="toLogin">请点击此处登录</label>
 				</view>
 				<view class="signature" :style="{color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}">
 					<label v-if="user_info && user_info.signature !=null">{{user_info.signature}}</label><label v-if="user_info.signature == null"></label>
@@ -39,41 +44,45 @@
 			<view class="img">
 				<image src="/static/img/VIP.png"></image>
 			</view>
-			<view class="title">{{userInfo && userInfo.userid ? fenxiao_info.level_name : '开通VIP会员'}}</view>			
+			<view class="title">{{userInfo && userInfo.userid ? fenxiao_info.level_name : '开通VIP会员'}}</view>
 			<view class="tis" @tap="showMemberExplain">会员特权</view>
 		</view>
-		
+
 		<!-- 会员特权说明弹层 -->
 		<view class="wx-popup" :hidden="explainFlag">
-		  <view class='popup-container'>
-		    <view class="wx-popup-title">会员特权</view>
-		    <view class="wx-popup-subtitle">{{fenxiao_info.level_name}}</view>
-		    <view class="wx-popup-con">
-		      
-		    <scroll-view scroll-y class="a-1 wx-popup-content" :scroll-left="scrollLeft" bindscrolltolower="lower"  >     
-		     {{fenxiao_info.level_memo}}   
-		    </scroll-view>  
-		
-		
-		    </view>
-		    <view class="wx-popup-btn">
-		      <text class="btn-ok" @click='hideMemberExplain'>确定</text>
-		    </view>
-		  </view>
+			<view class='popup-container'>
+				<view class="wx-popup-title">会员特权</view>
+				<view class="wx-popup-subtitle">{{fenxiao_info.level_name}}</view>
+				<view class="wx-popup-con">
+
+					<scroll-view scroll-y class="a-1 wx-popup-content" :scroll-left="scrollLeft" bindscrolltolower="lower">
+						{{fenxiao_info.level_memo}}
+					</scroll-view>
+
+
+				</view>
+				<view class="wx-popup-btn">
+					<text class="btn-ok" @click='hideMemberExplain'>确定</text>
+				</view>
+			</view>
 		</view>
 		<!-- 会员特权说明弹层end -->
-		
-		
-		
+
+
+
 		<!-- 订单-余额 -->
 		<view class="order">
 			<!-- 订单类型 -->
 			<view class="list" v-if="wxa_hidden_order_index_in_usercenter != 1">
 				<view class="box" style="width: 25%;" v-for="(row,index) in orderList" :key="index" @tap="toOrderList(row.otype,index)">
-					<view class="img">
+					<view class="img order_icon_msg">
 						<view class="icon" :class="row.icon"></view>
+						<div class="order_icon_alarm">
+						   99
+						</div>
 					</view>
-					<view class="text">{{row.text}}</view>
+					<view class="text">{{row.text}}222</view>
+
 				</view>
 			</view>
 			<!-- 余额 -->
@@ -83,10 +92,8 @@
 						<view class="num">{{fenxiao_info && fenxiao_info.balance_yuan ? fenxiao_info.balance_yuan : '0.00'}}</view>
 						<view class="text">余额</view>
 					</view>
-					
-					<view class="box" 
-						v-if="wxa_show_zengkuan_in_usercenter == 1"
-						@tap="goto_user_function('/pages/user/log?current_balance_type=balance_zengsong')">
+
+					<view class="box" v-if="wxa_show_zengkuan_in_usercenter == 1" @tap="goto_user_function('/pages/user/log?current_balance_type=balance_zengsong')">
 						<view class="num">{{fenxiao_info && fenxiao_info.balance_zengsong_yuan ? fenxiao_info.balance_zengsong_yuan : '0.00'}}</view>
 						<view class="text">赠款</view>
 					</view>
@@ -95,8 +102,8 @@
 						<view class="text">积分</view>
 					</view>
 				</view>
-				
-				
+
+
 				<view class="right" v-if="wxa_show_recharge_button_in_usercenter == 1">
 					<view class="box" @tap="toDeposit">
 						<view class="img">
@@ -104,9 +111,9 @@
 						</view>
 						<view class="text">充值</view>
 					</view>
-				</view>				
+				</view>
 				<view class="right" v-else>
-					<view class="box" >
+					<view class="box">
 						<view class="img logo-img">
 							<image :src="wxa_shop_operation_logo_url" mode="widthFix" class="logo"></image>
 							<!-- <view class="icon chongzhi"></view> -->
@@ -118,10 +125,11 @@
 		</view>
 		<!-- 平铺图片 -->
 		<view style="width: 96%;margin-left: 2%;" v-if="wxa_usercenter_ad_list">
-			<image style="width: 100%;" @tap="toUrl(item.url)" v-for="(item,index) in wxa_usercenter_ad_list" :key="index" :src="item.image" mode="widthFix"></image>
+			<image style="width: 100%;" @tap="toUrl(item.url)" v-for="(item,index) in wxa_usercenter_ad_list" :key="index" :src="item.image"
+			 mode="widthFix"></image>
 		</view>
-		
-		
+
+
 		<!-- 工具栏 -->
 		<view class="toolbar">
 			<view class="title">我的工具栏</view>
@@ -145,34 +153,34 @@
 				<view class="icon_box_item" v-for="(row,index) in user_function_list" :key="index" @tap="goto_user_function(row.url)">
 					<view style='float: left;'>
 						<image style="width:70rpx;height:70rpx;margin-right:40rpx;" :src="row.src"></image>
-					</view> 
+					</view>
 					<view style="float:left;"><text style="color:#333;font-size:35rpx;">{{row.name}}</text></view>
 					<view style="clear:both;"></view>
 				</view>
-				
-				
+
+
 				<navigator class="icon_box_item" :url="'/pages/about/about?about=' + about">
 					<view style='float: left;'>
 						<image style="width:70rpx;height:70rpx;margin-right:40rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/aboutus.png"></image>
 					</view>
 					<view style="float:left;">{{about}}</view>
 				</navigator>
-				
+
 			</view>
 		</view>
-		
-<!-- 		<navigator url="/pages/live/live-pusher">主播控制台</navigator> -->
-<!-- 		<navigator url="/pages/live/live-player">直播页面</navigator> -->
-<!-- 		<navigator url="/pages/live/live-list">直播列表</navigator> -->
-		
+
+		<!-- 		<navigator url="/pages/live/live-pusher">主播控制台</navigator> -->
+		<!-- 		<navigator url="/pages/live/live-player">直播页面</navigator> -->
+		<!-- 		<navigator url="/pages/live/live-list">直播列表</navigator> -->
+
 		<!-- 占位 -->
 		<view class="place-bottom"></view>
-		
+
 		<view class='icon-jump' @click='toPageIndex' :style="{background: icon_jump_bg_color}" v-if="wxa_show_return_to_index_in_usercenter == 1">
-		      <image src="../../static/img/shouye.svg"></image>
-		      <view :style="{color:wxa_shop_nav_font_color}">首页</view>     
+			<image src="../../static/img/shouye.svg"></image>
+			<view :style="{color:wxa_shop_nav_font_color}">首页</view>
 		</view>
-		
+
 		<!-- 著作信息 -->
 		<view class="copyright_info">{{default_copyright_text}}</view>
 	</view>
@@ -180,236 +188,249 @@
 <script>
 	// var abotapi = require("../../../common/abotapi.js");
 	// var app = getApp();
-	
+
 	export default {
 		data() {
 			return {
-				isfirst:true,
-				headerPosition:"fixed",
-				headerTop:null,
-				statusTop:null,
-				showHeader:true,
-				productid:0,
+				isfirst: true,
+				headerPosition: "fixed",
+				headerTop: null,
+				statusTop: null,
+				showHeader: true,
+				productid: 0,
 				//个人信息,
-				user_info:'',
-				fenxiao_info:'',
-				wxa_shop_nav_bg_color:'',
-				wxa_shop_nav_font_color:'',
+				user_info: '',
+				fenxiao_info: '',
+				wxa_shop_nav_bg_color: '',
+				wxa_shop_nav_font_color: '',
 				// 订单类型
-				orderList:[
-					{text:'全部',icon:"pingjia",otype:0},
-					{text:'待付款',icon:"fukuan",otype:1},
-					{text:'待发货',icon:"fahuo",otype:2},
-					{text:'待收货',icon:"shouhuo",otype:6},
-					
+				orderList: [{
+						text: '全部',
+						icon: "pingjia",
+						otype: 0
+					},
+					{
+						text: '待付款',
+						icon: "fukuan",
+						otype: 1
+					},
+					{
+						text: '待发货',
+						icon: "fahuo",
+						otype: 2
+					},
+					{
+						text: '待收货',
+						icon: "shouhuo",
+						otype: 6
+					},
+
 				],
 				// 工具栏列表
-				user_function_list:'',
+				user_function_list: '',
 				default_copyright_text: '',
 				about: '',
 				userInfo: '',
-				
-				user_center_function_list_icon_type:0,
-				user_center_function_list_icon_list:[],
-				
+
+				user_center_function_list_icon_type: 0,
+				user_center_function_list_icon_list: [],
+
 				wxa_show_recharge_button_in_usercenter: 0,
 				wxa_show_zengkuan_in_usercenter: 0,
-				wxa_hidden_order_index_in_usercenter:0,
-				wxa_show_levelname_in_usercenter:0,
-				
-				explainFlag: 1 ,//会员说明显示控制
-				scrollLeft:'',
+				wxa_hidden_order_index_in_usercenter: 0,
+				wxa_show_levelname_in_usercenter: 0,
+
+				explainFlag: 1, //会员说明显示控制
+				scrollLeft: '',
 				//shop_info_from_server: ''
-				wxa_shop_operation_logo_url:'',
-				wxa_show_return_to_index_in_usercenter:0,  //控制返回首页是否显示
-				
-				icon_jump_bg_color:'#000', //返回首页的悬浮图标的背景颜色
-				wxa_usercenter_function_list:0, //控制工具栏的样式  是九宫格还是列表
-				wxa_usercenter_ad_list:[],//平铺图片
+				wxa_shop_operation_logo_url: '',
+				wxa_show_return_to_index_in_usercenter: 0, //控制返回首页是否显示
+
+				icon_jump_bg_color: '#000', //返回首页的悬浮图标的背景颜色
+				wxa_usercenter_function_list: 0, //控制工具栏的样式  是九宫格还是列表
+				wxa_usercenter_ad_list: [], //平铺图片
 			}
 		},
-		
+
 		onLoad() {
 			var that = this;
-			
+
 			uni.setNavigationBarTitle({
-				title:'会员中心'
+				title: '会员中心'
 			})
-			
+
 			that.about = '关于我们';
-			
+
 			// #ifdef H5
-				that.about = '关于我们';
+			that.about = '关于我们';
 			// #endif
-			
+
 			// #ifdef APP-PLUS
-				that.about = '关于APP';
+			that.about = '关于APP';
 			// #endif
-			
+
 			// #ifdef MP-WEIXIN
-				that.about = '关于小程序'
+			that.about = '关于小程序'
 			// #endif
-			
+
 			// #ifdef MP-BAIDU
-				that.about = '百度小程序'
-				
-				uni.setNavigationBarTitle({
-					title:'会员中心'
-				})
+			that.about = '百度小程序'
+
+			uni.setNavigationBarTitle({
+				title: '会员中心'
+			})
 			// #endif
-			
-			
-			
-			that.abotapi.set_option_list_str(that, 
-				function(that001, option_list){
+
+
+
+			that.abotapi.set_option_list_str(that,
+				function(that001, option_list) {
 					//that001.abotapi.getColor();
-					console.log('option_list',option_list);
-					that001.wxa_shop_nav_bg_color  = option_list.wxa_shop_nav_bg_color;
-						
+					console.log('option_list', option_list);
+					that001.wxa_shop_nav_bg_color = option_list.wxa_shop_nav_bg_color;
+
 					that001.wxa_shop_nav_font_color = option_list.wxa_shop_nav_font_color;
-					
+
 					that.user_center_function_list_icon_type = option_list.user_center_function_list_icon_type;
-					if(option_list.user_center_function_list_icon_type == -1){
+					if (option_list.user_center_function_list_icon_type == -1) {
 						that.user_center_function_list_icon_list = option_list.user_center_function_list_icon_list;
 					}
-					
-					if(option_list.wxa_show_return_to_index_in_usercenter){
+
+					if (option_list.wxa_show_return_to_index_in_usercenter) {
 						that.wxa_show_return_to_index_in_usercenter = option_list.wxa_show_return_to_index_in_usercenter;
 					}
-					
-					if(option_list.wxa_shop_nav_bg_color){
+
+					if (option_list.wxa_shop_nav_bg_color) {
 						that.icon_jump_bg_color = option_list.wxa_shop_nav_bg_color;
 					}
-					
-					if(option_list.wxa_usercenter_function_list){
+
+					if (option_list.wxa_usercenter_function_list) {
 						that.wxa_usercenter_function_list = option_list.wxa_usercenter_function_list;
 					}
-					
-					
+
+
 					//广告图片
-					if(option_list.wxa_usercenter_ad_list){
+					if (option_list.wxa_usercenter_ad_list) {
 						that.wxa_usercenter_ad_list = option_list.wxa_usercenter_ad_list;
 					}
-					
+
 					that001.get_current_userinfo();
-					
+
 					that001.get_user_function_list();
-				
+
 				}
 			);
-				
-			
-			that.abotapi.get_shop_info_from_server((shop_info)=>{
-				if(!shop_info){
+
+
+			that.abotapi.get_shop_info_from_server((shop_info) => {
+				if (!shop_info) {
 					return;
 				}
 				//this.shop_info_from_server = shop_info;
-			})		
-			
-			
+			})
+
+
 			this.statusHeight = 0;
 			// #ifdef APP-PLUS
 			this.showHeader = true;
 			this.statusHeight = plus.navigator.getStatusbarHeight();
 			// #endif
 		},
-		onReady(){
+		onReady() {
 			//此处，演示,每次页面初次渲染都把登录状态重置
 			uni.setStorage({
 				key: 'UserInfo',
 				data: false,
-				success: function () {
-				},
-				fail:function(e){
-				}
+				success: function() {},
+				fail: function(e) {}
 			});
 		},
-		onShow(){
+		onShow() {
 			var that = this;
-			
+
 			//更新账号余额等信息
 			this.get_current_userinfo();
-			
+
 			that.abotapi.set_option_list_str(that,
-				function(that001, option_list){
-					
-					if(option_list.wxa_show_recharge_button_in_usercenter){
+				function(that001, option_list) {
+
+					if (option_list.wxa_show_recharge_button_in_usercenter) {
 						that.wxa_show_recharge_button_in_usercenter = option_list.wxa_show_recharge_button_in_usercenter;
 					}
-					
+
 					that.wxa_shop_operation_logo_url = option_list.wxa_shop_operation_logo_url;
-					
-					if(option_list.wxa_show_zengkuan_in_usercenter){
+
+					if (option_list.wxa_show_zengkuan_in_usercenter) {
 						that.wxa_show_zengkuan_in_usercenter = option_list.wxa_show_zengkuan_in_usercenter;
 					}
-					if(option_list.wxa_hidden_order_index_in_usercenter){
+					if (option_list.wxa_hidden_order_index_in_usercenter) {
 						that.wxa_hidden_order_index_in_usercenter = option_list.wxa_hidden_order_index_in_usercenter;
 					}
-					if(option_list.wxa_show_levelname_in_usercenter){
+					if (option_list.wxa_show_levelname_in_usercenter) {
 						that.wxa_show_levelname_in_usercenter = option_list.wxa_show_levelname_in_usercenter;
 					}
-					
-					
+
+
 					that.default_copyright_text = that.abotapi.globalData.default_copyright_text;
-					
-					
+
+
 				}
 			);
-			
+
 		},
 		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
 		onPullDownRefresh() {
-			
+
 			console.log('onPullDownRefresh onPullDownRefresh onPullDownRefresh');
-			
+
 			uni.showToast({
 				title: '数据更新中……',
 				//icon:'loading'
 			});
-			
-			setTimeout(function () {
-			    uni.stopPullDownRefresh();
-				
+
+			setTimeout(function() {
+				uni.stopPullDownRefresh();
+
 				uni.hideToast();
-				
+
 			}, 1000);
-			
+
 			this.abotapi.set_option_list_str(this,
-				function(that001, option_list){					
-					
+				function(that001, option_list) {
+
 					that001.get_current_userinfo();
-					
-					
+
+
 					that001.user_center_function_list_icon_type = option_list.user_center_function_list_icon_type;
-					if(option_list.user_center_function_list_icon_type == -1){
+					if (option_list.user_center_function_list_icon_type == -1) {
 						that001.user_center_function_list_icon_list = option_list.user_center_function_list_icon_list;
 					}
-					
+
 					that001.get_user_function_list();
-				
+
 				}
 			);
-			
-		    
+
+
 		},
-		
-		onPageScroll(e){
+
+		onPageScroll(e) {
 			//兼容iOS端下拉时顶部漂移
-			this.headerPosition = e.scrollTop>=0?"fixed":"absolute";
-			this.headerTop = e.scrollTop>=0?null:0;
-			this.statusTop = e.scrollTop>=0?null:-this.statusHeight+'px';
+			this.headerPosition = e.scrollTop >= 0 ? "fixed" : "absolute";
+			this.headerTop = e.scrollTop >= 0 ? null : 0;
+			this.statusTop = e.scrollTop >= 0 ? null : -this.statusHeight + 'px';
 		},
 		methods: {
 			//获取用户信息
-			get_current_userinfo: function () {
+			get_current_userinfo: function() {
 				var that = this;
 
 				var userInfo = that.abotapi.get_user_info();
 				that.userInfo = userInfo;
-				
-				console.log('get_current_userinfo--userInfo==',userInfo)
-				
-				if(userInfo && userInfo.userid){
+
+				console.log('get_current_userinfo--userInfo==', userInfo)
+
+				if (userInfo && userInfo.userid) {
 					that.abotapi.abotRequest({
 						url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
 						data: {
@@ -418,9 +439,9 @@
 							userid: userInfo.userid,
 							appid: that.abotapi.globalData.xiaochengxu_appid,
 						},
-						success: function (res) {
+						success: function(res) {
 							console.log('ddd', res);
-				
+
 							if (res.data.code == "-1") {
 								var last_url = '/pages/user/user';
 								that.abotapi.goto_user_login(last_url, 'normal');
@@ -428,135 +449,135 @@
 								var data = res.data;
 								that.user_info = data.data;
 								that.fenxiao_info = that.user_info.fenxiao_info;
-								console.log('data2==>>',that.user_info);
-								console.log('fenxiao_userinfo==>>',that.fenxiao_info);
+								console.log('data2==>>', that.user_info);
+								console.log('fenxiao_userinfo==>>', that.fenxiao_info);
 							}
-					    }
-					})	
-				}else{
+						}
+					})
+				} else {
 					that.user_info = '';
 				}
 			},
-			get_user_function_list:function(){
+			get_user_function_list: function() {
 				var that = this;
-				
-				console.log('user_center_function_list_icon_type=====>>>>>>>'+ that.user_center_function_list_icon_type);
-				
-				if(that.user_center_function_list_icon_type == -1){
+
+				console.log('user_center_function_list_icon_type=====>>>>>>>' + that.user_center_function_list_icon_type);
+
+				if (that.user_center_function_list_icon_type == -1) {
 					that.user_function_list = that.user_center_function_list_icon_list;
-					
+
 					return;
 				}
-				
+
 				that.abotapi.abotRequest({
-				    url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_shop_icon_usercenter',
-				    data: {
+					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_shop_icon_usercenter',
+					data: {
 						sellerid: that.abotapi.globalData.default_sellerid,
 					},
-				    success: function (res) {
+					success: function(res) {
 						console.log('kaafff===', res);
 						that.user_function_list = res.data.data;
 						console.log('akafff===', that.user_function_list);
-					  
-				    },
-				    fail: function (e) {
+
+					},
+					fail: function(e) {
 						uni.showToast({
 							title: '网络异常！',
 							duration: 2000
 						});
-				    },
+					},
 				});
-				
+
 			},
-			
-			toUrl:function(url){
+
+			toUrl: function(url) {
 				this.abotapi.call_h5browser_or_other_goto_url(url);
 			},
-			
+
 			//消息列表
-			toMsg(){
+			toMsg() {
 				uni.navigateTo({
-					url:'/pages/msg/msg'
+					url: '/pages/msg/msg'
 				})
 			},
-			toOrderList(row,index){
-				console.log("row",row);
-				console.log("index",index);
-				uni.setStorageSync('tbIndex',index);
-				uni.setStorageSync('tbOtype',row);
+			toOrderList(row, index) {
+				console.log("row", row);
+				console.log("index", index);
+				uni.setStorageSync('tbIndex', index);
+				uni.setStorageSync('tbOtype', row);
 				uni.navigateTo({
-					url:'/pages/user/order_list/order_list?currentTab='+index+'&otype='+row
-				}) 
-			},
-			toSetting(){
-				uni.navigateTo({
-					url:'/pages/user/setting/setting'
+					url: '/pages/user/order_list/order_list?currentTab=' + index + '&otype=' + row
 				})
 			},
-			
+			toSetting() {
+				uni.navigateTo({
+					url: '/pages/user/setting/setting'
+				})
+			},
+
 			//点击商户头条进入列表
-			touTiaoList: function (e) {
-			    console.log('点击商户头条进入列表');
-			    uni.navigateTo({
+			touTiaoList: function(e) {
+				console.log('点击商户头条进入列表');
+				uni.navigateTo({
 					url: '/pages/help/help?sellerid=' + this.abotapi.globalData.default_sellerid
-			    })
+				})
 			},
-			toMyQR(){
+			toMyQR() {
 				// uni.navigateTo({
 				// 	url:'/pages/user/myQR/myQR'
 				// })
 				var that = this;
-				
+
 				var userInfo = that.abotapi.get_user_info();
-				if(!userInfo){
+				if (!userInfo) {
 					uni.showToast({
-						title:'请登录再使用'
+						title: '请登录再使用'
 					})
 					return;
 				}
-				
+
 				uni.scanCode({
-				    success: function (res) {
-						console.log('res===',res);
-				        console.log('条码类型：' + res.scanType);
-				        console.log('条码内容：' + res.result);
-						
+					success: function(res) {
+						console.log('res===', res);
+						console.log('条码类型：' + res.scanType);
+						console.log('条码内容：' + res.result);
+
 						var result = res.result;
-						if ((result.indexOf('http://') == 0)
-							||(result.indexOf('https://') == 0)
-							||(result.indexOf('/') == 0)){
+						if ((result.indexOf('http://') == 0) ||
+							(result.indexOf('https://') == 0) ||
+							(result.indexOf('/') == 0)) {
 							var var_list = Object();
-							
+
 							//这个地方不能调用 decodeURIComponent， 
 							//因为此时的网址中还包含 %oneclicklogin%，遇到  % 都有转为 %25 才可以。
 							//result = decodeURIComponent(result);							
 							//console.log('条码内容==>>decodeURIComponent==>>：' + result);
-							
+
 							that.abotapi.call_h5browser_or_other_goto_url(result, var_list);
-						}else{
+						} else {
 							uni.showModal({
-							    title: '提示',
-							    content: result,
+								title: '提示',
+								content: result,
 								showCancel: false,
-							    success: function (res) {
-							        
-							    }
+								success: function(res) {
+
+								}
 							});
 						}
-						
-				    }
+
+					}
 				});
-				
-				
+
+
 			},
-			toLogin(){
-				
+			toLogin() {
+
 				uni.navigateTo({
-					url:'/pages/login/login'
+					url: '/pages/login/login'
 				})
 				this.isfirst = false;
 			},
-			isLogin(){
+			isLogin() {
 				//实际应用中,用户登录状态应该用token等方法去维持登录状态.
 				const value = uni.getStorageSync('UserInfo');
 				if (value) {
@@ -564,55 +585,59 @@
 				}
 				return false
 			},
-			toDeposit(){
+			toDeposit() {
 				// uni.showToast({title: '该功能升级中'});
 				// return;
 				uni.navigateTo({
-					url:'/pages/user/deposit/deposit'
+					url: '/pages/user/deposit/deposit'
 				})
 			},
-			goto_user_function(url){
-				
-				
+			goto_user_function(url) {
+
+
 				var last_url = '/pages/user/user';
-				
+
 				var userInfo = this.abotapi.get_user_info();
 				if (!userInfo) {
-				  this.abotapi.goto_user_login(last_url);
-			
-				  return;
-				}			
-				
-				
-				var that = this;
-				
-				var var_list = Object();
-				//var url = e.currentTarget.dataset.string;
-				
-				console.log('url1111',url);
-				that.abotapi.call_h5browser_or_other_goto_url(url, var_list);
-							
-				
-			},
-			showMemberExplain(){
-				if(!this.fenxiao_info.level_memo){
+					this.abotapi.goto_user_login(last_url);
+
 					return;
 				}
-				this.explainFlag = 0 
+
+
+				var that = this;
+
+				var var_list = Object();
+				//var url = e.currentTarget.dataset.string;
+
+				console.log('url1111', url);
+				that.abotapi.call_h5browser_or_other_goto_url(url, var_list);
+
+
 			},
-			hideMemberExplain(){
+			showMemberExplain() {
+				if (!this.fenxiao_info.level_memo) {
+					return;
+				}
+				this.explainFlag = 0
+			},
+			hideMemberExplain() {
 				this.explainFlag = 1;
 			},
-			toPageIndex:function(e){
+			toPageIndex: function(e) {
 				uni.switchTab({
 					url: '/pages/index/index',
 				})
 			},
 		}
-	} 
+	}
 </script>
 <style lang="scss">
-	page{position: relative;background-color: #fff;}
+	page {
+		position: relative;
+		background-color: #fff;
+	}
+
 	.mystatusbar {
 		width: 100%;
 		height: 0;
@@ -620,14 +645,14 @@
 		z-index: 10;
 		//background-color: #f06c7a;
 		top: 0;
-		
+
 		/*  #ifdef  APP-PLUS  */
-		height: var(--status-bar-height);//覆盖样式
+		height: var(--status-bar-height); //覆盖样式
 		/*  #endif  */
-		
+
 	}
-	
-	.header{
+
+	.header {
 		width: 92%;
 		padding: 0 4%;
 		height: 100upx;
@@ -640,13 +665,15 @@
 		//background-color: #f06c7a;
 		/*  #ifdef  APP-PLUS  */
 		top: var(--status-bar-height);
+
 		/*  #endif  */
-		.icon-btn{
+		.icon-btn {
 			width: 120upx;
 			height: 60upx;
 			flex-shrink: 0;
 			display: flex;
-			.icon{
+
+			.icon {
 				color: #fff;
 				width: 60upx;
 				height: 60upx;
@@ -657,17 +684,20 @@
 			}
 		}
 	}
-	.place{
+
+	.place {
 		//background-color: #f06c7a;
 		height: 100upx;
 		/*  #ifdef  APP-PLUS  */
 		margin-top: var(--status-bar-height);
 		/*  #endif  */
 	}
-	.place-bottom{
+
+	.place-bottom {
 		height: 150upx;
 	}
-	.user{
+
+	.user {
 		width: 92%;
 		padding: 0 4%;
 		display: flex;
@@ -675,70 +705,83 @@
 		// position: relative;
 		//background-color: #f06c7a;
 		padding-bottom: 120upx;
-		.left{
+
+		.left {
 			width: 20vw;
 			height: 20vw;
 			flex-shrink: 0;
 			margin-right: 20upx;
 			border-radius: 100%;
-			image{
+
+			image {
 				width: 20vw;
 				height: 20vw;
 				border-radius: 100%;
 			}
-			
+
 		}
-		.right{
+
+		.right {
 			width: 100%;
-			.username{
+
+			.username {
 				font-size: 36upx;
 				color: #fff;
 			}
-			.signature{
+
+			.signature {
 				color: #eee;
 				font-size: 28upx;
 			}
 		}
-		.erweima{
+
+		.erweima {
 			flex-shrink: 0;
 			width: 10vw;
 			height: 10vw;
 			margin-left: 5vw;
 			border-radius: 100%;
-		
+
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			background: linear-gradient(to left, #fbbb37 0%,#fcf0d0 105%);
-			.icon{
+			background: linear-gradient(to left, #fbbb37 0%, #fcf0d0 105%);
+
+			.icon {
 				color: #7b6335;
 				font-size: 42upx;
 			}
 		}
 	}
-	.order{
+
+	.order {
 		width: 84%;
 		margin: 30upx 4% 30upx 4%;
 		padding: 30upx 4% 20upx 4%;
 		background-color: #fff;
-		box-shadow: 0upx 0upx 25upx rgba(0,0,0,0.1);
+		box-shadow: 0upx 0upx 25upx rgba(0, 0, 0, 0.1);
 		border-radius: 15upx;
-		.list{
+
+		.list {
 			display: flex;
 			border-bottom: solid 1upx #17e6a1;
 			padding-bottom: 10upx;
-			.box{
+
+			.box {
 				width: 20%;
-				.img{
+
+				.img {
 					width: 100%;
 					display: flex;
 					justify-content: center;
-					.icon{
+
+					.icon {
 						font-size: 50upx;
 						color: #464646;
 					}
 				}
-				.text{
+
+				.text {
 					width: 100%;
 					display: flex;
 					justify-content: center;
@@ -747,17 +790,20 @@
 				}
 			}
 		}
-		.balance-info{
+
+		.balance-info {
 			display: flex;
 			padding: 10upx 0;
-			.left{
+
+			.left {
 				width: 75%;
 				display: flex;
-				.box{
+
+				.box {
 					width: 50%;
 					font-size: 28upx;
-					
-					.num{
+
+					.num {
 						width: 100%;
 						height: 50upx;
 						display: flex;
@@ -765,7 +811,8 @@
 						align-items: flex-end;
 						color: #f9a453;
 					}
-					.text{
+
+					.text {
 						width: 100%;
 						display: flex;
 						justify-content: center;
@@ -774,23 +821,27 @@
 					}
 				}
 			}
-			.right{
+
+			.right {
 				border-left: solid 1upx #17e6a1;
 				width: 25%;
-				.box{
-					
-					.img{
+
+				.box {
+
+					.img {
 						width: 100%;
 						height: 50upx;
 						display: flex;
 						justify-content: center;
 						align-items: flex-end;
-						.icon{
+
+						.icon {
 							font-size: 45upx;
 							color: #e78901;
 						}
 					}
-					.text{
+
+					.text {
 						width: 100%;
 						display: flex;
 						justify-content: center;
@@ -801,30 +852,35 @@
 			}
 		}
 	}
-	.VIP{
+
+	.VIP {
 		width: 84%;
 		margin: -65upx auto 20upx auto;
 		padding: 30upx 4%;
-		background: linear-gradient(to left, #dea96d 0%,#f6d59b 100%);
-		box-shadow: 0upx 0upx 25upx rgba(0,0,0,0.2);
+		background: linear-gradient(to left, #dea96d 0%, #f6d59b 100%);
+		box-shadow: 0upx 0upx 25upx rgba(0, 0, 0, 0.2);
 		border-radius: 15upx;
 		display: flex;
 		align-items: center;
-		.img{
+
+		.img {
 			flex-shrink: 0;
 			width: 60upx;
 			height: 60upx;
-			image{
+
+			image {
 				width: 60upx;
 				height: 60upx;
 			}
 		}
-		.title{
+
+		.title {
 			width: 100%;
 			color: #796335;
 			font-size: 30upx;
 		}
-		.tis{
+
+		.tis {
 			width: 100%;
 			display: flex;
 			justify-content: flex-end;
@@ -832,14 +888,16 @@
 			font-size: 26upx;
 		}
 	}
-	.toolbar{
+
+	.toolbar {
 		width: 92%;
 		margin: 0 4% 0 4%;
 		padding: 0 0 20upx 0;
 		background-color: #fff;
-		box-shadow: 0upx 0upx 25upx rgba(0,0,0,0.1);
+		box-shadow: 0upx 0upx 25upx rgba(0, 0, 0, 0.1);
 		border-radius: 15upx;
-		.title{
+
+		.title {
 			padding-top: 10upx;
 			margin: 0 0 10upx 3%;
 			font-size: 30upx;
@@ -847,24 +905,28 @@
 			display: flex;
 			align-items: center;
 		}
-		.list{
+
+		.list {
 			display: flex;
 			flex-wrap: wrap;
-			.box{
+
+			.box {
 				width: 25%;
 				margin-bottom: 30upx;
-				.img{
+
+				.img {
 					width: 23vw;
 					height: 10.5vw;
 					display: flex;
 					justify-content: center;
-					
-					image{
+
+					image {
 						width: 9vw;
 						height: 9vw;
 					}
 				}
-				.text{
+
+				.text {
 					width: 100%;
 					display: flex;
 					justify-content: center;
@@ -874,118 +936,159 @@
 			}
 		}
 	}
-	
-	.logo-img{
+
+	.logo-img {
 		margin-top: 22px;
 	}
-	.logo{
+
+	.logo {
 		width: 90rpx;
 	}
+
 	.wx-popup {
-	  position: absolute;
-	  left: 0;
-	  top: 0;
-	  width: 100%;
-	  height: 100%;
-	  background: rgba(0, 0, 0, .5);
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, .5);
 	}
+
 	.popup-container {
-	  position: absolute;
-	  left: 50%;
-	  top: 50%;
-	 
-	  width: 80%;
-	  max-width: 600rpx;
-	  border: 2rpx solid #ccc;
-	  border-radius: 10rpx;
-	  box-sizing: bordre-box;
-	  transform: translate(-50%, -50%); 
-	  overflow: hidden;
-	  background: #fff;
+		position: absolute;
+		left: 50%;
+		top: 50%;
+
+		width: 80%;
+		max-width: 600rpx;
+		border: 2rpx solid #ccc;
+		border-radius: 10rpx;
+		box-sizing: bordre-box;
+		transform: translate(-50%, -50%);
+		overflow: hidden;
+		background: #fff;
 	}
+
 	.wx-popup-title {
-	  padding: 20rpx;
-	  text-align: center;
-	  font-size: 28rpx;
-	  border-bottom: 2rpx solid red;
+		padding: 20rpx;
+		text-align: center;
+		font-size: 28rpx;
+		border-bottom: 2rpx solid red;
 	}
-	
-	.wx-popup-subtitle{
-	  text-align:center;
-	  font-size:28rpx;
-	  color:#6798E9;
-	  margin-top:26rpx;
+
+	.wx-popup-subtitle {
+		text-align: center;
+		font-size: 28rpx;
+		color: #6798E9;
+		margin-top: 26rpx;
 	}
+
 	.wx-popup-con {
-	  margin: 60rpx 10rpx;
-	  text-align: center;
-	  font-size:28rpx;
-	  margin-top:20rpx;
+		margin: 60rpx 10rpx;
+		text-align: center;
+		font-size: 28rpx;
+		margin-top: 20rpx;
 	}
+
 	.wx-popup-btn {
-	  display: flex;
-	  justify-content: space-around;
-	  margin-bottom: 40rpx;
+		display: flex;
+		justify-content: space-around;
+		margin-bottom: 40rpx;
 	}
+
 	.wx-popup-btn text {
-	  display:flex;
-	  align-items:center;
-	  justify-content:center;
-	  width:33%;
-	  height:70rpx;
-	  border-radius:88rpx;
-	  background:#6798E9;
-	  color:#fff;
-	  font-size:28rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 33%;
+		height: 70rpx;
+		border-radius: 88rpx;
+		background: #6798E9;
+		color: #fff;
+		font-size: 28rpx;
 	}
+
+	.wx-popup-content {
+		height: 300px;
+		text-align: left;
+		white-space: pre-line;
+	}
+
+	.icon-jump {
+		width: 120rpx;
+		height: 120rpx;
+		position: fixed;
+		right: 40rpx;
+		bottom: 120rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 100px;
+		background: #00FF00;
+		flex-direction: column;
+		font-size: 28rpx;
+	}
+
+	.icon-jump image {
+		width: 60rpx;
+		height: 60rpx;
+	}
+
+	.icon-list {
+		width: 33%;
+		height: 220rpx;
+		text-align: center;
+		float: left;
+	}
+
+	.icon-list image {
+		height: 120rpx;
+		width: 120rpx;
+		margin-top: 50rpx;
+	}
+
+	.icon_box_item {
+		line-height: 80rpx;
+		margin: 10rpx 20rpx 10rpx 20rpx;
+		border-bottom: 1px solid #eee;
+		padding: 0 0 0 30rpx;
+		height: 80rpx;
+		width: 90%;
+		float: left;
+		clear: both;
+	}
+
+	/*==== 图标右上角的数字小图标 ====*/
+	.order_icon_msg {
+		position: relative;
+		width: 60rpx;
+		height: 60rpx;
+		float: left;
+	}
+
+	.order_icon_msg img {
+		width: 60rpx;
+		height: 60rpx;
+	}
+
+	.order_icon_alarm {
+		position: absolute;
+		color: white;
+		font-size: 17rpx;
+		background-color: red;
+		/*height: 24rpx;改前*/
+		min-height: 24rpx;
+		/*改后新增的代码*/
+		min-width: 24rpx;
+		/*改后新增的代码*/
+		line-height: 24rpx;
+		right: 20%;
+		top: -12rpx;
+		text-align: center;
+		-webkit-border-radius: 24rpx;
+		border-radius: 24rpx;
+		padding: 2rpx;
+	}
+	/*======== End =======*/
 	
-	.wx-popup-content{
-	  height: 300px;
-	  text-align: left;
-	  white-space: pre-line;
-	}
-	
-	.icon-jump{
-	  width: 120rpx;
-	  height: 120rpx;
-	  position: fixed;
-	  right: 40rpx;
-	  bottom: 120rpx;
-	  display: flex;
-	  align-items: center;
-	  justify-content: center;
-	  border-radius: 100px;
-	  background: #00FF00;
-	  flex-direction: column;
-	  font-size: 28rpx;
-	}
-	
-	.icon-jump image{
-	  width: 60rpx;
-	  height: 60rpx;
-	}
-	
-	.icon-list{
-	  width: 33%;
-	  height: 220rpx;
-	  text-align: center;
-	  float: left;
-	}
-	.icon-list image{
-	  height: 120rpx;
-	  width: 120rpx;
-	  margin-top: 50rpx;
-	}
-	.icon_box_item{
-	  line-height: 80rpx;
-	  margin: 10rpx 20rpx 10rpx 20rpx;
-	  border-bottom: 1px solid #eee;
-	  padding: 0 0 0 30rpx;
-	  height: 80rpx;
-	  width: 90%;
-	  float: left;
-	  clear: both;
-	
-	
-	}
 </style>
