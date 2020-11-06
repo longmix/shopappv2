@@ -71,7 +71,7 @@
 					<button class="xg_button" style="width:90%;" @tap="call_seller" type="primary">联系客服</button>
 					<!-- #endif -->
 					<!-- #ifdef MP-WEIXIN -->
-					<button class="xg_button" style="width:90%;" @tap="call_seller" type="primary">联系客服</button>
+					<button class="xg_button" style="width:90%;" open-type="contact" type="primary">小程序客服</button>
 					<!-- #endif -->
 					<!-- #ifdef MP-BAIDU -->
 					<button class="xg_button" style="width:90%;" @tap="call_seller" type="primary">联系客服</button>
@@ -156,7 +156,7 @@
 			that.version_number = that.abotapi.globalData.version_number;
 			
 			this.abotapi.set_option_list_str(that, function(that001, option_list) {
-				that001.abotapi.getColor();
+				//that001.abotapi.getColor();
 				
 				console.log('option_list=====>>>>', option_list);
 
@@ -285,17 +285,7 @@
 
 			//拨打客服电话
 			call_seller: function() {
-
 				// #ifdef MP-WEIXIN
-				var userInfo = this.abotapi.get_user_info();
-				if (!userInfo || !userInfo.userid) {
-					var last_url = '/pages/about/about?about=' + this.about_title;
-					this.abotapi.goto_user_login(last_url, 'normal');
-					return;
-				}
-				uni.navigateTo({
-					url: "/pages/msg/chat/chat?type=0&userid=" + this.shop_userid + '&name=' + this.shop_name,
-				})
 				// #endif
 
 				// #ifdef APP-PLUS
@@ -305,8 +295,14 @@
 				// #endif
 				
 				// #ifdef MP-BAIDU
-				uni.makePhoneCall({
-					phoneNumber: this.kefu_telephone,
+				var userInfo = this.abotapi.get_user_info();
+				if (!userInfo || !userInfo.userid) {
+					var last_url = '/pages/about/about?about=' + this.about_title;
+					this.abotapi.goto_user_login(last_url, 'normal');
+					return;
+				}
+				uni.navigateTo({
+					url: "/pages/msg/chat/chat?type=0&userid=" + this.shop_userid + '&name=' + this.shop_name,
 				})
 				// #endif
 				

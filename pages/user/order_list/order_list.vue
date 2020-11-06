@@ -125,7 +125,7 @@
 								<view>订单金额：<view class='fl_r'>￥{{item.all_price}}</view></view>
 								<view>余额支付：<view class='fl_r'>￥{{item.yue_price}}</view></view>
 								<view>赠款支付：<view class='fl_r'>￥{{item.coupon_price}}</view></view>        
-								<view>实际s支付：<view class='fl_r'>￥{{item.pay_price}}</view></view>
+								<view>实际支付：<view class='fl_r'>￥{{item.pay_price}}</view></view>
 								<!-- <view>支付方式：<view class='fl_r'>{{item.payment_name}}</view></view> -->
 							</view>
 						
@@ -402,7 +402,6 @@
 				
 				wxa_order_hide_daishouhuo_refund:'',
 				wxa_order_hide_daishouhuo_refund_after:'',
-				
 			}
 		},
 		
@@ -765,14 +764,16 @@
 							}
 							if (list && list != null && list.length > 5) {
 								var winHeight = that.winHeight;
-								console.log(that.page)
+								console.log('888888888=====',that.page);
 								var Height = winHeight * (winHeight / 370) * (that.page+1);
-								console.log(Height);
+								console.log('height====>>>>',Height);
 								that.Height = Height*3
+								console.log('888888888=====',that.Height);
 							} else  {
 								that.Height = that.winHeight + 370;
 								that.isHideLoadMore = true;
 							} 
+							
 						}
 					},
 					//that.initProductData(data);
@@ -856,7 +857,8 @@
 						}
 						*/
 						var Height = that.winHeight;
-						console.log('that.currentTab====', that.currentTab)
+						console.log('888888ppppp', Height);
+						console.log('that.currentTab====', that.currentTab);
 						console.log('listlist',list);
 						switch(that.currentTab){
 							case 0:
@@ -891,17 +893,18 @@
 								that.page = 1;
 								break;
 						}
-				
-						console.log('orderlistorderlist', that.orderList);
 						if (list && list != null && list.length>5){
 							var winHeight = that.winHeight
 							var Height = winHeight*2*that.page;
 							that.Height = Height
+							console.log('orderlistorderlist', that.Height);
+							
 						} else {
 				
 							that.Height = that.winHeight+370;
 							that.isHideLoadMore = false;
 						}
+						
 					},
 					fail: function () {
 						// fail
@@ -956,7 +959,8 @@
 					success: function( res ) {  
 						console.log('地地道道的多大的',res)
 						that.winWidth = res.windowWidth;  
-						that.winHeight = res.windowHeight;  
+						that.winHeight = res.windowHeight;
+						
 					}    
 				});
 			},
@@ -964,7 +968,7 @@
 			
 			bindChange: function(e) {  
 				var that = this; 
-				var currentTab = e.detail.current
+				var currentTab = e.detail.current;
 				var isStatus = "";
 				
 				switch (currentTab){
@@ -1087,7 +1091,7 @@
 	    background: #fff;  
 	    position: fixed;
 		 /* #ifdef H5 */
-	    top: 88upx; 
+	    /* top: 88upx; */
 		/* #endif */
 	    z-index: 999;
 	    }  
@@ -1269,4 +1273,9 @@
 	.xianmaishang_order_detail{
 		margin-bottom: 30rpx;
 	}
-</style>
+	swiper-item{
+		overflow: auto;
+		-webkit-overflow-scrolling: touch;
+		overflow-y: scroll;
+	}
+	</style>

@@ -503,9 +503,25 @@
 
 			videometa_handle: function(e) {
 				console.log('videometa_handle======>>>>>', e);
-
+				//一次只能播放一个视频
+				var videos = document.getElementsByTagName('video'); 
+				 for (var i = videos.length - 1; i >= 0; i--) {
+				             (function(){
+				                 var p = i;
+				                 videos[p].addEventListener('play',function(){
+				                     pauseAll(p);
+				                 })
+				             })()
+				         }
+				         function pauseAll(index){
+				             for (var j = videos.length - 1; j >= 0; j--) {
+				                 if (j!=index) videos[j].pause();
+				             }
+				         }
+						 
+						 
 				var current_id = e.target.dataset.id;
-				console.log('video_id======>>>>>', current_id);
+				console.log('video_id======>>>>>', videos);
 				
 				
 				var current_index = e.target.dataset.index;
