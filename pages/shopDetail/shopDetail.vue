@@ -213,7 +213,7 @@
 			
 			<image v-if="user_console_setting.show_shang_shop_wxa_qrcode == 1" 
 				:src="shang_shop_wxa_qrcode_url" 
-				style="width:150rpx; height:150rpx; margin: 0 auto;"></image>
+				style="width:250rpx; height:250rpx; margin: 0 auto;"></image>
 			
 		</view>
 		

@@ -195,13 +195,39 @@ export default {
 		// document.getElementsByTagName('head')[0].appendChild(oMeta);
 		
 		// console.log('document888',document);
-		var userInfo;
-	// 1232 1231 133 191
+		
+		
+
 		
 		if(options.title){
 			uni.setNavigationBarTitle({
 				title:options.title
 			})
+		}
+		
+
+		var last_url = '/pages/menuList/menuList';
+		
+		var arr = Object.keys(options);
+		var options_len = arr.length;
+		
+		if (options_len > 0){
+			var params_str = '';
+		
+			for(var key in options){
+				params_str += key+'='+options[key]+'&';
+			}
+			params_str = params_str.substr(0, params_str.length - 1);
+		
+			last_url = last_url+'?'+params_str;
+		}
+		
+		//this.last_url = last_url
+		var userInfo = this.abotapi.get_user_info();
+		
+		if(!userInfo || ! userInfo.userid){
+			this.abotapi.goto_user_login(last_url, 'normal');
+			return;
 		}
 		
 		
@@ -217,9 +243,11 @@ export default {
 		this.is_waimai = is_waimai;
 	
 		console.log('565656', shopId)
+		
 		var that = this;
 	
 		that.shopId = shopId;
+		
 		
 	
 		  // 获取商家详情
@@ -229,9 +257,12 @@ export default {
 		}
 		
 		console.log('787878', shopId)
-		  if (userInfo) {
+		
+		
+		if (userInfo) {
 			post_data.userid = userInfo.userid
-		  }
+		}
+		
 		this.abotapi.abotRequest({	
 			url: this.abotapi.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/get_shang_detail',
 			// url: 'https://yanyubao.tseo.cn/hahading/index.php/openapi/ProductData/get_product_list_all_data',

@@ -105,14 +105,16 @@
 			</view>
 
 			<view class='p_all' style="padding-bottom:0;">
-				<view class="heji_con">
-					<text class="gm_ovh_1h pt10">合计</text>
-					<text class="gm_ovh_1h pt10">¥ {{all_price}}</text>
-				</view>
 				<view class="heji_con" v-if='is_waimai == 1'>
 					<text class="gm_ovh_1h pt10">运费</text>
 					<text class="gm_ovh_1h pt10">¥ {{traffic_price}}</text>
 				</view>
+				
+				<view class="heji_con">
+					<text class="gm_ovh_1h pt10">合计</text>
+					<text class="gm_ovh_1h pt10">¥ {{all_price}}</text>
+				</view>
+				
 				<view class="heji_con">
 					<text class="gm_ovh_1h red pt10">实付</text>
 					<text class="gm_ovh_1h red pt10">¥ {{pay_price}}</text>
@@ -269,7 +271,7 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 			that.last_url = last_url
 			var userInfo = this.abotapi.get_user_info();
 			
-			if(!userInfo && !userInfo.userid){
+			if(!userInfo || !userInfo.userid){
 				that.abotapi.goto_user_login(last_url, 'normal');
 				return;
 			}
@@ -757,7 +759,8 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 				          });
 				          var fail = function (data) {
 							
-				            console.log(data)
+				            console.log('baidu map geocoding fail ===>>>>', data);
+							
 				          };
 				          var success = function (data) {
 							
@@ -767,10 +770,12 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 							thats.makers = wxMarkerData;
 							thats.latitude = wxMarkerData[0].latitude;
 							thats.longitude = wxMarkerData[0].longitude;
-							console.log('shang_detail====',shang_detail)
+							
+							console.log('shang_detail====', shang_detail);
+							
 				            var distance = thats.abotapi.getDisance(shang_detail.latitude, shang_detail.longitude, thats.latitude, thats.longitude);
 				            
-				            console.log('distance====',distance)
+				            console.log('distance====（单位：米）', distance)
 				          
 											  
 							thats.distance = distance
@@ -780,12 +785,13 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 							
 				            //计算配送费
 				            console.log('traffic_price=ffffff11111==>???', thats.waimai_rmb);
+							
 				            if (!thats.waimai_rmb) {
 								console.log('最终配送费2222');
-				              var waimai_rmb = thats.rider_set_data['min_rmb'];
+								var waimai_rmb = thats.rider_set_data['min_rmb'];
 				            } else {
 								console.log('最终配送费333');
-				              var waimai_rmb = Number(thats.waimai_rmb).toFixed(2);
+								var waimai_rmb = Number(thats.waimai_rmb).toFixed(2);
 				            }
 							
 							
@@ -811,24 +817,24 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 							thats.pay_price = pay_price.toFixed(2);
 							thats.pay_price_origin = parseFloat(price);
 							thats.yajin = 0.00;
-								console.log('最终配送费', thats.traffic_price);
-								console.log('最终配送费', traffic_price);
+							console.log('最终配送费', thats.traffic_price);
+							console.log('最终配送费', traffic_price);
 				          }
 							
 							
-				          var address = thats.address.province_name + thats.address.city_name + thats.address.district_name + thats.address.address;
-											
-						console.log('address===',address);
-							
-							
-				          // 发起geocoding检索请求 
-				          BMap.geocoding({
-				            address: address,
-				            fail: fail,
-				            success: success,
-				            iconPath: '../../img/marker_red.png',
-				            iconTapPath: '../../img/marker_red.png'
-				          });
+							var address = thats.address.province_name + thats.address.city_name + thats.address.district_name + thats.address.address;
+												
+							console.log('address===',address);
+								
+								
+							// 发起geocoding检索请求 
+							BMap.geocoding({
+								address: address,
+								fail: fail,
+								success: success,
+								iconPath: '../../img/marker_red.png',
+								iconTapPath: '../../img/marker_red.png'
+							});
 							
 							
 							

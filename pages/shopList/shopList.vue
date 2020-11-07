@@ -75,6 +75,7 @@
 
 		
 		<!-- <view @click="jiazai()">点击加载更多...</view> -->
+		<view :style="{display:show_bottom_tips}" style="text-align: center;color: #a2a2a2;margin-bottom: 40rpx;">已经到底了~</view>
 	</view>
 	<!-- 实体商家结束 -->
 	
@@ -161,6 +162,8 @@
 				wxa_kefu_bg_color:'',
 				search_text:'', //搜索用的文字
 				search_shang_list:[], //搜索查询商家
+				
+				show_bottom_tips:'none', // 隐藏 已经到底了~ 的提示
 			};
 		},
 		
@@ -293,9 +296,10 @@
 			if(this.is_xiala == 0){
 				this.jiazai();
 			}else{
-				uni.showToast({
+				/*uni.showToast({
 					title:'已经到底了~'
-				})
+				})*/
+				this.show_bottom_tips = 'block';
 			}
 			
 		},
@@ -376,9 +380,12 @@
 						}
 						if(res.data.xianmai_shang_list.length < shang_num){
 							that.is_xiala = 1;
-							uni.showToast({
+							/*uni.showToast({
 								title:'已经到底了~'
-							})
+							})*/
+							
+							that.show_bottom_tips = 'block';
+							
 						}
 						var id = 0;
 						
