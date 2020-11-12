@@ -33,17 +33,33 @@
 		                    </view>
 		
 		                    <view v-else>
-		                        <video class="video_list_style" v-for="(item2,index2) in item.img_or_video_list" :key="index2"
-		                        :data-id="item2.imgid" :data-index="item2.index"
-		                        @play='start_and_stop_other_videos' 
-		                        :src="item2.url"  :poster='item2.video_img'
-		                        controls="true"
-		                        @loadedmetadata="videometa_handle"
-		                        :style="{width:videometa_width_height_list[item2.index][0] + 'rpx',height:videometa_width_height_list[item2.index][1] + 'rpx'}"
-								>
+		                        <block v-for="(item2,index2) in item.img_or_video_list" :key="index2">
+									<video v-if="current_playing_videoid == item2.imgid"
+										class="video_list_style"
+										:data-id="item2.imgid" :data-index="item2.index"
+										:id="'myvid_'+item2.imgid"
+										@play888='start_and_stop_other_videos' 
+										@tap888='start_and_stop_other_videos' 
+										:src="item2.url"  
+										:poster='item2.video_img'
+										show-fullscreen-btn
+										autoplay
+										controls
+										@loadedmetadata="videometa_handle"
+										:style="{width:videometa_width_height_list[item2.index][0] + 'rpx',height:videometa_width_height_list[item2.index][1] + 'rpx'}"
+										>
+									
+									</video>
+									<view v-else class="" @tap="start_and_stop_other_videos(item2.imgid)"> <!-- 封面图片层 -->
+										<view class="i_box">
+											<image class="video_img" :src="item2.video_img" mode="widthFix"></image>
+											<view class="video_logo cuIcon-playfill">
+												<image src="https://yanyubao.tseo.cn/Tpl/static/images/video_live/play_white.png"></image>
+											</view>
+										</view>
+									</view>
+								</block>
 								
-								</video>
-		                        
 		                    </view>
 		                    
 		                </view>  <!-- End of 003  -->
@@ -150,6 +166,7 @@
 			disabled:false,
 			tag:'',
 			videometa_width_height_list:'',
+			current_playing_videoid:0
 		},
 		methods:{
 			fanquaDianzan:function(fanquaDianzan){
@@ -296,5 +313,17 @@
 	  width:28rpx;
 	  height:28rpx;
 	  margin-right:10rpx;
+	}
+	
+	.cuIcon-playfill {	    
+		position: relative;
+	    top: -80rpx;
+	    left: 10rpx;
+	    width: 60rpx;
+	    height: 60rpx;
+	}
+	.cuIcon-playfill image {
+		width: 60rpx;
+		height: 60rpx;
 	}
 </style>

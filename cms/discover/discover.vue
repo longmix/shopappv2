@@ -117,9 +117,10 @@
 			:faquan_tag_status="faquan_tag_status" 
 			:disabled="disabled" 
 			:videometa_width_height_list="videometa_width_height_list"
+			:current_playing_videoid = "current_video_id_playing"
 			@fanquaDianzan="fanquaDianzan" 
 			@bigImg="bigImg"
-			@play="start_and_stop_other_videos"
+			@start_and_stop_other_videos="start_and_stop_other_videos"
 			@videometa_handle="videometa_handle" 
 			@change_faquan_status="change_faquan_status"
 			@oneClickSave="oneClickSave" 
@@ -339,6 +340,13 @@
 
 			this.__getFaquanList();
 		},
+		onHide(){
+			console.log('discover.vue被隐藏');
+			
+			//当页面被隐藏了，比如Tab切换，自动停止播放视频
+			this.current_video_id_playing = 0;
+		},
+		
 		onReady() {
 
 		},
@@ -479,7 +487,7 @@
 
 			//轮播图指示器
 			swiperChange(event) {
-				console.log('dddddddaaaaaa', event);
+				console.log('swiperChange====>>>>>>', event);
 				this.current = event.detail.current;
 			},
 			ddddd: function() {
@@ -503,7 +511,9 @@
 
 			videometa_handle: function(e) {
 				console.log('videometa_handle======>>>>>', e);
+				
 				//一次只能播放一个视频
+				/* 该方法只适用于H5，因为uniapp的浏览器框架中没有 document 这个对象，也就没有getElementsByTagName这个方法
 				var videos = document.getElementsByTagName('video'); 
 				 for (var i = videos.length - 1; i >= 0; i--) {
 				             (function(){
@@ -519,7 +529,8 @@
 				             }
 				         }
 						 
-						 
+				*/
+			   
 				var current_id = e.target.dataset.id;
 				console.log('video_id======>>>>>', videos);
 				
@@ -1417,8 +1428,69 @@
 
 			},
 			
+			getRandomColor: function () {
+				const rgb = []
+				for (let i = 0; i < 3; ++i) {
+					let color = Math.floor(Math.random() * 256).toString(16)
+					color = color.length == 1 ? '0' + color : color
+					rgb.push(color)
+				}
+				return '#' + rgb.join('')
+			},
+			/**
+			 * @param {Object} e
+			 * 
+			 * 控制当个页面只播放一个视频
+			 * 参考 https://blog.csdn.net/qq_42690547/article/details/103505890
+			 */
 			start_and_stop_other_videos:function(e){
 				console.log('start_and_stop_other_videos=========>>>>>', e);
+				//console.log('start_and_stop_other_videos=========>>>>>', e.currentTarget.dataset.id);
+				
+				
+				
+				if(this.current_video_id_playing){
+					console.log('start_and_stop_other_videos======有上次播放的视频，ID为===>>>>>', this.current_video_id_playing);
+					
+					
+					var videoContextPrev = uni.createVideoContext('myvid_'+this.current_video_id_playing);
+					
+					videoContextPrev.stop();
+					
+					/* 通过 createSelectorQuery select获取元素，没有走通
+					const query = uni.createSelectorQuery().in(this);
+					query.select('#'+this.current_video_id_playing).boundingClientRect(data => {
+					  console.log("得到布局位置信息" + JSON.stringify(data));
+					  //console.log("节点离页面顶部的距离为" + data.top);
+					}).exec();
+					
+					
+					
+					let theNode = uni.createSelectorQuery().select('#'+this.current_video_id_playing);
+					//console.log('createSelectorQuery theNode ===>>> ', theNode);					
+					theNode.context(function(context){
+						console.log('createSelectorQuery select ===>>> ', context);
+						
+						context.stop();
+					}).exec();*/
+					
+				}
+				
+				var videoContext = uni.createVideoContext('myvid_'+ e );
+				videoContext.play();
+				
+				/* 测试发送弹幕
+				videoContext.sendDanmu({
+					text: "啊啊啊啊啊啊",
+					color: this.getRandomColor()
+				});
+				*/
+			   
+				//this.current_video_id_playing = e.currentTarget.dataset.id;
+				this.current_video_id_playing = e;
+				
+				
+				
 				
 				//马上要播放的视频
 			// 	var current_video_id = e.current.dataset....index;
@@ -1795,4 +1867,6 @@
 	.publist_list_num{
 		display: flex;	
 	}
+	
+	
 </style>
