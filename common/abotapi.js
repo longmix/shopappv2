@@ -1018,28 +1018,57 @@ module.exports = {
 		if (!isNullOrUndefined(option_list.is_index_index_in_tabbar)) {
 		  this.globalData.is_index_index_in_tabbar = option_list.is_index_index_in_tabbar;
 		}
+		if(!option_list.is_index_index_in_tabbar){
+			this.globalData.is_index_index_in_tabbar = 0;
+		}
+		
 		if (!isNullOrUndefined(option_list.is_user_user_in_tabbar)) {
 		  this.globalData.is_user_user_in_tabbar = option_list.is_user_user_in_tabbar;
 		}
+		if(!option_list.is_user_user_in_tabbar){
+			this.globalData.is_user_user_in_tabbar = 0;
+		}
+
 		if (!isNullOrUndefined(option_list.is_shop_cart_in_tabbar)) {
 		  this.globalData.is_shop_cart_in_tabbar = option_list.is_shop_cart_in_tabbar;
+		}
+		if(!option_list.is_shop_cart_in_tabbar){
+			this.globalData.is_shop_cart_in_tabbar = 0;
 		}
 		
 		if (!isNullOrUndefined(option_list.is_category_index_in_tabbar)) {
 		  this.globalData.is_category_category_in_tabbar = option_list.is_category_index_in_tabbar;
 		}
+		if(!option_list.is_category_index_in_tabbar){
+			this.globalData.is_category_index_in_tabbar = 0;
+		}
 		
 		if (!isNullOrUndefined(option_list.is_publish_index_in_tabbar)) {
 		  this.globalData.is_publish_index_in_tabbar = option_list.is_publish_index_in_tabbar;
-		}		
+		}
+		if(!option_list.is_publish_index_in_tabbar){
+			this.globalData.is_publish_index_in_tabbar = 0;
+		}
+		
 		if (!isNullOrUndefined(option_list.is_publish_list_in_tabbar)) {
 		  this.globalData.is_publish_list_in_tabbar = option_list.is_publish_list_in_tabbar;
 		}
+		if(!option_list.is_publish_list_in_tabbar){
+			this.globalData.is_publish_list_in_tabbar = 0;
+		}
+		
 		if (!isNullOrUndefined(option_list.is_member_list_in_tabbar)) {
 		  this.globalData.is_member_list_in_tabbar = option_list.is_member_list_in_tabbar;
 		}
+		if(!option_list.is_member_list_in_tabbar){
+			this.globalData.is_member_list_in_tabbar = 0;
+		}
+		
 		if (!isNullOrUndefined(option_list.is_xianmai_shang_list_in_tabbar)) {
 		  this.globalData.is_xianmai_shang_list_in_tabbar = option_list.is_xianmai_shang_list_in_tabbar;
+		}
+		if(!option_list.is_xianmai_shang_list_in_tabbar){
+			this.globalData.is_xianmai_shang_list_in_tabbar = 0;
 		}
 		
 		// #ifdef MP-WEIXIN
@@ -1314,7 +1343,7 @@ module.exports = {
 			||(url == '/pages/publish/publish_index')||(url == '/pages/publish/publish_list')
 			|| (url == '/pages/member/list') || (url == '/pages/shopList/shopList')) {
 				
-			console.log('this.globalData.is_category_category_in_tabbar====>>>>', this.globalData.is_category_category_in_tabbar);
+			console.log('this.globalData.is_shop_cart_in_tabbar====>>>>', this.globalData.is_shop_cart_in_tabbar);
 			console.log('url=====>>>>>>>'+url);
 				
 			if((url == '/pages/index/index') && (this.globalData.is_index_index_in_tabbar == 1)){
