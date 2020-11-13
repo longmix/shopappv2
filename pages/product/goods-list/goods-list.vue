@@ -1,6 +1,63 @@
 <template>
+	
+	
 	<view>
+		
+		
+		<view class="gonghuashang" style="margin-top: 25rpx;">
+		<view class="gonghuoshang_logo">
+			<image style="width: 200rpx;height: 100rpx;" :src="factory_info_message.factory_logo" mode="widthFix"></image>
+			<view class="gonghuoshang_name">
+				供货商：{{factory_info_message.factory_name}}
+			</view>
+			<view class="gonghuoshang_address">
+				地址：{{factory_info_message.address}}
+			</view>
+		</view>
+			<view class="gonghuoshang_zizhi" >
+				<image v-if="factory_info_message.yingye_zhizhao"
+					:src="factory_info_message.yingye_zhizhao" 
+					@tap="preview_factory_images" 
+					:data-url="factory_info_message.yingye_zhizhao"
+					@load="factory_image_load"
+					data-imgid="yingye_zhizhao"
+					class="factory_image"
+					:style="{width:yingye_zhizhao_width+'px',height:factory_image_height + 'px'}"></image>
+				<image v-if="factory_info_message.other_img_01" 
+					:src="factory_info_message.other_img_01" 
+					@tap="preview_factory_images" 
+					:data-url="factory_info_message.other_img_01"
+					@load="factory_image_load"
+					data-imgid="other_img_01"
+					class="factory_image"
+					:style="{width:other_img_01_width +'px',height:factory_image_height + 'px'}"
+					></image>
+				<image 
+				v-if="factory_info_message.other_img_02" 
+				:src="factory_info_message.other_img_02" 
+				@tap="preview_factory_images" 
+				:data-url="factory_info_message.other_img_02"
+				@load="factory_image_load"
+				data-imgid="other_img_02"
+				class="factory_image"
+				:style="{width:other_img_02_width+'px',height:factory_image_height + 'px'}"
+				></image>
+				<image 
+				v-if="factory_info_message.other_img_03" 
+				:src="factory_info_message.other_img_03"
+				 @tap="preview_factory_images"
+				  :data-url="factory_info_message.other_img_03"
+				  @load="factory_image_load"
+				  data-imgid="other_img_03"
+				  class="factory_image"
+				  :style="{width:other_img_03_width+'px',height:factory_image_height + 'px'}"
+				  ></image>
+			</view>
+		</view>
+		
 		<view class="header" :style="{position:headerPosition,top:headerTop}">
+			
+			
 			<view class="target" v-for="(target,index2) in orderbyList" @tap="select(index2)" :key="index2" :class="[target.selected?'on':'']">
 				{{target.text}}
 				<view v-if="target.orderbyicon" class="icon" :class="target.orderbyicon[target.orderby]"></view>
@@ -39,7 +96,7 @@
 				
 				loadingText:"暂无商品",
 				headerTop:"0px",
-				headerPosition:"fixed",
+				headerPosition:"static",
 				
 				orderbyList:[
 					{text:"最新",selected:true,orderbyicon:false,orderby:0},
@@ -53,6 +110,12 @@
 				product_source_channel:0,
 				product_channel_name:'',	// jingdong / taobao / pinduoduo
 				factoryid:'',//供货商id
+				factory_info_message:[],//供货商信息资质图片等等
+				yingye_zhizhao_width:0,
+				other_img_01_width:0,
+				other_img_02_width:0,
+				other_img_03_width:0,
+				factory_image_height:0
 			};
 		},
 		/**
@@ -126,14 +189,14 @@
 		
 		
 		
-		onPageScroll(e){
+		/* onPageScroll(e){
 			//兼容iOS端下拉时顶部漂移
 			if(e.scrollTop>=0){
 				this.headerPosition = "fixed";
 			}else{
 				this.headerPosition = "absolute";
 			}
-		},
+		}, */
 		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
 		onPullDownRefresh() {
 		    setTimeout(()=>{
@@ -187,7 +250,6 @@
 				uni.showLoading({
 					title: '加载中...',
 				})
-				
 				if(that.product_source_channel == 0){
 					that.abotapi.abotRequest({
 					    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
@@ -205,7 +267,9 @@
 							
 							if(res.data.code == 1){
 								console.log('aaafff===', res);
+								that.factory_info_message = res.data.factory_info_message;
 								
+								console.log('that-----factory',that.factory_info_message);
 								console.log("that.goodsList", res.data.product_list);
 								
 								if(res.data.counter == 0){
@@ -351,7 +415,61 @@
 				
 				that.sorts = that.index2;
 				that.reload();
-			}
+			},
+			//预览图片
+			preview_factory_images:function(e) {
+				console.log('this----picture',e);
+				
+				this.factory_picture_lists = e.currentTarget.dataset.url;
+				var images_list = [];
+				if(this.factory_info_message.yingye_zhizhao){
+					images_list[0] = this.factory_info_message.yingye_zhizhao;
+				}
+				if(this.factory_info_message.other_img_01){
+					images_list[1] =this.factory_info_message.other_img_01;
+				}
+				if(this.factory_info_message.other_img_02){
+					images_list[2] =this.factory_info_message.other_img_02;
+				}
+				if(this.factory_info_message.other_img_03){
+					images_list[3] =this.factory_info_message.other_img_03;
+				}
+				console.log('88888----',images_list);
+				//预览图片
+				uni.previewImage({
+					indicator:"none",
+					current:this.factory_picture_lists,
+					urls: images_list
+				});
+			},
+			//高度固定宽度自适应
+			factory_image_load:function(e){
+				console.log('8887777----',e);
+				var imgid = e.currentTarget.dataset.imgid;
+				
+				//获取图片真实宽度						
+				var imgwidth = e.detail.width;
+				var imgheight = e.detail.height;
+				  //宽高比  
+				var ratio = imgwidth / imgheight;
+				console.log('这里是之后的宽度：',Math.round(ratio*100));
+				console.log('imageLoad id===>>> '+e.target.dataset.imgid +'实际大小：');
+				console.log(imgwidth, imgheight)
+				this.factory_image_height = 150;
+				
+				if(imgid == 'yingye_zhizhao'){
+					this.yingye_zhizhao_width = Math.round(ratio*this.factory_image_height);
+					console.log('yingye_zhizhao_width--',this.yingye_zhizhao_width);
+				}else if(imgid == 'other_img_01'){
+					this.other_img_01_width = Math.round(ratio*this.factory_image_height);
+				}else if(imgid == 'other_img_02'){
+					this.other_img_02_width = Math.round(ratio*this.factory_image_height);
+				}else if(imgid == 'other_img_03'){
+					this.other_img_03_width = Math.round(ratio*this.factory_image_height);
+				}
+				
+			},
+			
 		}
 		
 	}
@@ -368,7 +486,7 @@
 		display: flex;
 		justify-content: space-around;
 		align-items: flex-end;
-		position: fixed;
+		//position: fixed;
 		top: 0;
 		z-index: 10;
 		background-color: #fff;
@@ -410,5 +528,16 @@
 		font-size: 30rpx;
 		padding:30rpx 0;
 	}
-
+.gonghuoshang_logo{
+	padding-left: 10px;
+}
+.gonghuoshang_zizhi{
+	padding-left: 10px;
+	margin-top: 5rpx;
+}
+.gonghuoshang_address{
+	margin-top: 5rpx;
+	color: #bcbcbc;
+	font-size: 11px;
+}
 </style>

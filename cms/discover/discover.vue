@@ -532,7 +532,7 @@
 				*/
 			   
 				var current_id = e.target.dataset.id;
-				console.log('video_id======>>>>>', videos);
+				
 				
 				
 				var current_index = e.target.dataset.index;
@@ -570,7 +570,7 @@
 			
 
 			bigImg: function(e) {
-				console.log(e);
+				console.log('bigimage----',e);
 				var index = e.currentTarget.dataset.index;
 				var index2 = e.currentTarget.dataset.index2;
 				var img_or_video_list = this.faquanList[index].img_or_video_list; //点击的那一组图片列表

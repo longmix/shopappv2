@@ -512,7 +512,7 @@
 							let msg = {
 									text: img_url
 								};
-
+								console.log('ceshi---',img_url);
 								uni.getImageInfo({  
 									src: img_url,  
 									success: (image) => {  
