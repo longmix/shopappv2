@@ -139,6 +139,9 @@
 				yinsi_cfg_yinsizhengce_cms_token:'',
 				yinsi_cfg_yinsizhengce_imgid:'',   
 				yinsi_cfg_shiyongxieyi_imgid:'',
+				
+				//客服按钮点击后的消息类型
+				app_kefu_msg_type:'is_call_mobile',
 			}
 		},
 		onLoad(options) {
@@ -203,6 +206,11 @@
 					//使用协议的cms token
 				  
 				    that001.yinsi_cfg_shiyongxieyi_cms_token = option_list.yinsi_cfg_shiyongxieyi_cms_token;
+				}
+				
+				
+				if(option_list.app_kefu_msg_type){
+					that001.app_kefu_msg_type = option_list.app_kefu_msg_type;
 				}
 				
 			});
@@ -286,32 +294,48 @@
 			//拨打客服电话
 			call_seller: function() {
 				// #ifdef MP-WEIXIN
-				// #endif
-
-				// #ifdef APP-PLUS
-				uni.makePhoneCall({
-					phoneNumber: this.kefu_telephone,
-				})
+				return;
 				// #endif
 				
+				var that = this;
+
 				// #ifdef MP-BAIDU
-				var userInfo = this.abotapi.get_user_info();
-				if (!userInfo || !userInfo.userid) {
-					var last_url = '/pages/about/about?about=' + this.about_title;
-					this.abotapi.goto_user_login(last_url, 'normal');
-					return;
-				}
-				uni.navigateTo({
-					url: "/pages/msg/chat/chat?type=0&userid=" + this.shop_userid + '&name=' + this.shop_name,
+				uni.makePhoneCall({
+					phoneNumber: that.kefu_telephone,
 				})
+				
+				return;
 				// #endif
 				
 				// #ifdef MP-ALIPAY
 				uni.makePhoneCall({
-					phoneNumber: this.kefu_telephone,
+					phoneNumber: that.kefu_telephone,
 				})
+				
+				return;
+				
 				// #endif
-
+				
+				//如果是进入聊天对话框
+				if(this.app_kefu_msg_type == 'is_call_mobile'){
+					
+					uni.makePhoneCall({
+						phoneNumber: that.kefu_telephone,
+					})
+				}
+				else{
+					var userInfo = this.abotapi.get_user_info();
+					
+					if (!userInfo || !userInfo.userid) {
+						var last_url = '/pages/about/about?about=' + this.about_title;
+						this.abotapi.goto_user_login(last_url, 'normal');
+						return;
+					}
+					uni.navigateTo({
+						url: "/pages/msg/chat/chat?type=0&userid=" + this.shop_userid + '&name=' + this.shop_name,
+					})
+					
+				}
 			},
 		},
 

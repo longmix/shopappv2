@@ -2,7 +2,7 @@
 	<view>
 		<view class="content" @touchstart="hideEmoji">
 			<scroll-view class="msg-list" scroll-y="true" :scroll-with-animation="scrollAnimation" :scroll-top="scrollTop" :scroll-into-view="scrollToView">
-				<view class="row" v-for="(row,index) in msgList" :key="index" :id="'msg'+row.id">
+				<view class="row" v-for="(row,index) in my_msgList" :key="index" :id="'msg'+row.id">
 					<!-- 自己发出的消息 -->
 					<view class="my" v-if="row.uid==myuid">
 						<view class="left">
@@ -115,7 +115,7 @@
 				scrollAnimation:false,
 				scrollTop:0,
 				scrollToView:'',
-				msgList:[],
+				my_msgList:[],
 				msgImgList:[],
 				myuid:0,
 				//录音相关参数
@@ -138,7 +138,7 @@
 				//表情定义
 				showEmji:'',
 				friendInfo: '',
-				cache_msglist: Array,
+				cache_msglist: [],
 				taskUserInfo: {
 					userName: '',
 					headImg: ''
@@ -207,7 +207,7 @@
 			
 			
 			
-			that.abotapi.current_chat_gui = this;
+			that.abotapi.current_chat_gui = this;	//赋值句柄，用于接收消息
 			that.abotapi.current_chat_handle = this;
 			that.abotapi.current_chat_page = '/pages/msg/chat/chat';
 			
@@ -266,6 +266,8 @@
 							  for(var i=0; i<lastMsgList.length; i++){
 																	  
 								that.cache_msglist.push(JSON.parse(lastMsgList[i].chat_msg));
+								
+								console.log('向本地缓存的消息记录中追加（http request /openapi/ChatData/chat_history）：', lastMsgList[i].chat_msg);
 											  
 							   }
 																						
@@ -376,7 +378,7 @@
 				
 				
 				
-				this.msgList = list;
+				this.my_msgList = list;
 				// 滚动到底部
 				this.$nextTick(function() {
 					this.scrollTop = 9999;
@@ -560,8 +562,8 @@
 				var userAcountInfo = this.abotapi.get_user_account_info();
 				//实际应用中，此处应该提交长连接，模板仅做本地处理。
 				var nowDate = new Date();
-				// let lastid = this.msgList[this.msgList.length-1].id;
-				let lastid = this.msgList.length > 0 ? this.msgList[this.msgList.length - 1].id : this.msgList.length;
+				// let lastid = this.my_msgList[this.my_msgList.length-1].id;
+				let lastid = this.my_msgList.length > 0 ? this.my_msgList[this.my_msgList.length - 1].id : this.my_msgList.length;
 				
 				
 				lastid++;
@@ -582,7 +584,7 @@
 				this.send_text_to_service(msg, type)
 				// 定时器模拟对方回复,三秒
 				// setTimeout(()=>{
-				// 	lastid = this.msgList[this.msgList.length-1].id;
+				// 	lastid = this.my_msgList[this.my_msgList.length-1].id;
 				// 	lastid++;
 				// 	msg = {id:lastid,uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg",time:nowDate.getHours()+":"+nowDate.getMinutes(),type:type,msg:content};
 				// 	this.screenMsg(msg);
@@ -592,20 +594,20 @@
 			// 处理文字消息
 			addTextMsg(msg){
 				var userInfo = this.abotapi.get_user_info();
-				this.msgList.push(msg);
+				this.my_msgList.push(msg);
 				
 				if(this.chat_type==0){
-					uni.setStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+this.userid, this.msgList);	
-				console.log('test===================0',uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+this.userid))	
+					uni.setStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+this.userid, this.my_msgList);	
+					console.log('test===================0',uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+this.userid))	
 					
 				}else{
-					uni.setStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_groupid_'+this.groupid, this.msgList);	
-				console.log('test===================1',uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_groupid_'+this.userid))
+					uni.setStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_groupid_'+this.groupid, this.my_msgList);	
+					console.log('test===================1',uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_groupid_'+this.userid))
 				}
 			},
 			// 处理语音消息
 			addVoiceMsg(msg){
-				this.msgList.push(msg);
+				this.my_msgList.push(msg);
 			},
 			// 处理图片消息
 			addImgMsg(msg){
@@ -613,15 +615,15 @@
 				console.log('msg=====',msg)
 				msg.msg.content = this.setPicSize(msg.msg.content);
 				this.msgImgList.push(msg.msg.content.text);
-				this.msgList.push(msg);
+				this.my_msgList.push(msg);
 				
 				if(this.chat_type==0){
-					uni.setStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+this.userid, this.msgList);	
-				console.log('test===================0',uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+this.userid))	
+					uni.setStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+this.userid, this.my_msgList);	
+					console.log('test===================0',uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+this.userid))	
 					
 				}else{
-					uni.setStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_groupid_'+this.groupid, this.msgList);	
-				console.log('test===================1',uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_groupid_'+this.userid))
+					uni.setStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_groupid_'+this.groupid, this.my_msgList);	
+					console.log('test===================1',uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_groupid_'+this.userid))
 				}
 			},
 			// 预览图片
@@ -765,49 +767,56 @@
 			},
 			
 			getNewMsg: function(msg){
+				var that = this;	
+				
 				console.log('getNewMsg=====',msg)
-			    var that = this;			
+				console.log('getNewMsg ===>>> that.pageOn==>>',that.pageOn)
+				
+			    		
 				var userInfo = that.abotapi.get_user_info();
-					if(that.pageOn){	
-						
-						// console.log('that.pageOn==',that.pageOn)
-						console.log('00000000')						
-						
-						var is_not_self_msg = true;										
-						
-							if(is_not_self_msg && msg.uid == that.userid){
-								that.screenMsg(msg);
-								console.log('4444444')
-								var data_params = {
-									   action: 'clear_couter_unread',
-								       sellerid: that.abotapi.globalData.default_sellerid,
-								     }
-								
-								if(!that.groupid){
-									data_params.userid01 = that.userid;
-									data_params.userid02 = userInfo.userid;
-									data_params.chat_type = 0;
-								} else {
-									data_params.userid01 = that.groupid;
-									data_params.userid02 = userInfo.userid;
-									data_params.chat_type = 4;
-								}
-								
-								uni.request({
-								     url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ChatData/chat_history',
-								     data:data_params,
-								     header: {
-								       "Content-Type": "application/x-www-form-urlencoded"
-								     },
-								     method: "POST",
-								     success: function (res) {
-								       console.log('ddd', res);
-							
-								     }
-								   })	
-							}						
-						
+				
+				if(!that.pageOn){
+					console.log('getNewMsg ===>>> that.pageOn==>> 界面关闭了，不显示。');
+					
+					return;
+				}
+				
+				var is_not_self_msg = true;										
+				
+				if(is_not_self_msg && msg.uid == that.userid){
+					console.log('getNewMsg ===>>> 是自己的消息，准备显示，并清除服务器上未读消息数量。 msg.uid ==>> '+ msg.uid)
+					
+					that.screenMsg(msg);
+					
+					
+					var data_params = {
+						   action: 'clear_couter_unread',
+						   sellerid: that.abotapi.globalData.default_sellerid,
 					}
+					
+					if(!that.groupid){
+						data_params.userid01 = that.userid;
+						data_params.userid02 = userInfo.userid;
+						data_params.chat_type = 0;
+					} else {
+						data_params.userid01 = that.groupid;
+						data_params.userid02 = userInfo.userid;
+						data_params.chat_type = 4;
+					}
+					
+					uni.request({
+						 url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ChatData/chat_history',
+						 data:data_params,
+						 header: {
+						   "Content-Type": "application/x-www-form-urlencoded"
+						 },
+						 method: "POST",
+						 success: function (res) {
+						   console.log('ddd', res);
+				
+						 }
+					});
+				}
 						
 			},
 			

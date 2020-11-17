@@ -230,7 +230,8 @@
 
 		<!-- 供货商跳转 -->
 		
-		<navigator :url="'./goods-list/goods-list?factoryid='+goods_detail.factoryid" v-if="goods_detail.factory_name">
+		<navigator v-if="goods_detail.factoryid"
+			:url="'./goods-list/goods-list?factoryid='+goods_detail.factoryid">
 			<view class="gonghuoshang_shop">
 				<view style="color:#666;padding: 20rpx 4%;font-size: 28rpx;">
 					本商品由{{goods_detail.factory_name}}发货并提供售后服务
@@ -501,10 +502,13 @@
 				action_type: '',
 				current_spec: '',
 				options_str: '',
-				telephone: '',
+
+				//get_shop_info
 				shop_userid: '',
 				shop_name: '',
 				shop_info: '',
+				shop_telephone:'',
+				
 				recommend_product_list: [],
 				hot_product_list: [],
 				jietijiage_youhui_data: '',
@@ -537,7 +541,10 @@
 				video_url_width: 750,
 				video_url_height: 750,
 				
-				 current_video_playing:0
+				current_video_playing:0,
+				
+				//客服按钮点击后的消息类型
+				app_kefu_msg_type:'is_call_mobile',
 
 			};
 		},
@@ -616,8 +623,15 @@
 					if (res.data.code == 1) {
 						that.goods_detail = res.data.data;
 						console.log('that.goods_detail', that.goods_detail);
+						
+						//处理商品供货商，如果有供货商，则联系供货商的客服
+						if(that.goods_detail.factoryid && that.goods_detail.factory_telephone){
+							that.shop_telephone = that.goods_detail.factory_telephone;
+							that.shop_userid = that.goods_detail.factory_userid;
+						}
+						
+						//处理商品详情
 						that.describe = that.goods_detail.describe;
-
 
 						// #ifdef MP-ALIPAY		
 
@@ -645,10 +659,13 @@
 
 						that.picture_length = that.goods_detail.picture_list ? that.goods_detail.picture_list.length : 0;
 
-
 						if (that.goods_detail.video_url) {
 							that.current_video_url = that.goods_detail.video_url;
 							that.picture_length = that.picture_length + 1;
+						}
+						
+						if(that.picture_length == 0){
+							that.currentSwiper = -1;
 						}
 
 						console.log('88888888888999', that.current_video_url);
@@ -1001,6 +1018,10 @@
 					that.wxa_show_kucun_xiaoliang = cb_params.wxa_show_kucun_xiaoliang;
 
 				}
+				
+				if(cb_params.app_kefu_msg_type){
+					that.app_kefu_msg_type = cb_params.app_kefu_msg_type;
+				}
 
 			},
 
@@ -1008,6 +1029,7 @@
 				this.shop_info = shop_info;
 				this.shop_userid = shop_info.userid;
 				this.shop_name = shop_info.shop_name;
+				this.shop_telephone = shop_info.telephone;
 
 			},
 
@@ -1031,15 +1053,29 @@
 			},
 			// 客服
 			toChat() {
-				var userInfo = this.abotapi.get_user_info();
-				if (!userInfo || !userInfo.userid) {
-					var last_url = '/pages/product/detail?' + this.options_str;
-					this.abotapi.goto_user_login(last_url, 'normal');
-					return;
+				//如果是进入聊天对话框
+				if(this.app_kefu_msg_type == 'is_call_mobile'){
+					var that = this;
+					
+					uni.makePhoneCall({
+						phoneNumber:that.shop_telephone
+					});
 				}
-				uni.navigateTo({
-					url: "/pages/msg/chat/chat?type=0&userid=" + this.shop_userid + '&name=' + this.shop_name,
-				})
+				else{
+					var userInfo = this.abotapi.get_user_info();
+					if (!userInfo || !userInfo.userid) {
+						var last_url = '/pages/product/detail?' + this.options_str;
+						this.abotapi.goto_user_login(last_url, 'normal');
+						return;
+					}
+					uni.navigateTo({
+						url: "/pages/msg/chat/chat?type=0&userid=" + this.shop_userid + '&name=' + this.shop_name,
+					})
+				}
+				
+				
+				
+				
 
 			},
 			// 分享

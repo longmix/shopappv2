@@ -424,6 +424,9 @@
 				share_titles:'',
 				share_summary:'',
 				share_imageUrl:'',
+				
+				//客服按钮点击后的消息类型
+				app_kefu_msg_type:'is_call_mobile',
 			};
 		},
 		
@@ -453,7 +456,13 @@
 			this.current_xianmai_shangid = xianmai_shangid;
 
 
-			this.abotapi.set_option_list_str(that, that.abotapi.getColor());
+			this.abotapi.set_option_list_str(that, function(that001, cb_params){
+				that.abotapi.getColor();
+				
+				if(cb_params.app_kefu_msg_type){
+					that.app_kefu_msg_type = cb_params.app_kefu_msg_type;
+				}
+			});
 			
 			this.get_merchant_basic_data();
 			
@@ -879,15 +888,15 @@
 							var spec = '';
 						}
 
-
-						console.log('pppppppppppppppp', data);
+						console.log("get_shang_detail===>>>>", data);
 						
 						if(!data.yingyeshijian){
 							data.yingyeshijian = that.current_shang_detail.yingyeshijian;
 						}
 						
 						that.current_shang_detail = data;
-						console.log("aaa===>>>>",data);
+						
+						//2020.11.17. 商家的发圈列表（暂无数据返回）
 						that.shang_faquan_list = data.shang_faquan_list;
 						that.spec = spec;
 						
@@ -916,7 +925,9 @@
 							longitude: data.longitude,
 							name: data.name,
 						};
+						
 						console.log('1111shang_huancun',"shang_" + data.xianmai_shangid + "_detail", shang_detail);
+						
 						uni.setStorageSync("shang_" + data.xianmai_shangid + "_detail", shang_detail);
 
 						uni.setStorage({
@@ -942,17 +953,28 @@
 
 			toChat() {
 				var that = this;
-				var userInfo = that.abotapi.get_user_info();
-				if (!userInfo || !userInfo.userid) {
-					var last_url = '/pages/shopDetail/shopDetail?shangid=' + that.current_xianmai_shangid;
-					this.abotapi.goto_user_login(last_url, 'normal');
-					return;
+				
+				//如果是进入聊天对话框
+				if(this.app_kefu_msg_type == 'is_call_mobile'){
+					
+					uni.makePhoneCall({
+						phoneNumber:that.current_shang_detail.telephone
+					});
 				}
-
-
-				uni.navigateTo({
-					url: '/pages/msg/chat/chat?type=0&userid=' + that.current_shang_detail.userid + '&name=' + that.current_shang_detail.name
-				})
+				else{
+					var userInfo = that.abotapi.get_user_info();
+					if (!userInfo || !userInfo.userid) {
+						var last_url = '/pages/shopDetail/shopDetail?shangid=' + that.current_xianmai_shangid;
+						this.abotapi.goto_user_login(last_url, 'normal');
+						return;
+					}
+					
+					
+					uni.navigateTo({
+						url: '/pages/msg/chat/chat?type=0&userid=' + that.current_shang_detail.userid + '&name=' + that.current_shang_detail.name
+					})
+				}
+				
 
 			},
 			
