@@ -10,12 +10,15 @@
 				<view style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:28rpx;">{{current_cityname}}</view>
 			</navigator>
 			<!-- 搜索框 -->
-			<view class="input-box" @click="toSearch()">
+			<view class="input-box" 
+				:style="'border:2rpx solid '+ wxa_shop_nav_bg_color + ';'"
+				@click="toSearch()">
 				<input
 					placeholder="默认关键字"
 					placeholder-style="color:#c0c0c0;"
 					disabled="true"
 					style="background: #f5f5f5;margin-left: 10rpx;"
+					
 				/>
 				<view class="icon search"></view>
 			</view>
@@ -806,6 +809,8 @@ export default {
 			}
 			
 			that.wxa_shop_nav_bg_color  = cb_params.option_list.wxa_shop_nav_bg_color;
+			
+			//console.log('wxa_shop_nav_bg_color=====>>>>>', that.wxa_shop_nav_bg_color);
 				
 			that.wxa_shop_nav_font_color = cb_params.option_list.wxa_shop_nav_font_color;
 			
