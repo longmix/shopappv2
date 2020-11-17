@@ -6,7 +6,9 @@
 			<view class="icon-btn">
 				<view class="icon xiangqian" @tap="back_return"></view>
 			</view>
-			<view class="input-box" @tap="toSearch()">
+			<view class="input-box"
+			 :style="'border:2rpx solid '+ wxa_shop_nav_bg_color + ';'"
+			 @tap="toSearch()">
 				<input placeholder="默认关键字" placeholder-style="color:#c0c0c0;" style="background: #f5f5f5;margin-left: 5rpx;"/>
 				<view class="icon search"></view>
 			</view>
@@ -73,6 +75,8 @@
 				// #ifndef MP
 				showBack:true,
 				// #endif
+				
+				wxa_shop_nav_bg_color:'',
 			}
 		},
 		onPageScroll(e){
@@ -96,15 +100,22 @@
 		methods: {
 			callback_function:function(that, cb_params){
 				console.log('cb_params====',cb_params);
-				var that = this;
+				
+				
+				that.wxa_shop_nav_bg_color = cb_params.wxa_shop_nav_bg_color;
+				
+				
+				//var that = this;
+				
 				//====1、更新界面的颜色
 				that.abotapi.getColor();
+				
 				uni.request({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_cata_level2',
+					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_cata_level2',
 					method:'post',
 					data: {
 					 // 'cataid': 'fXiNUPaWV',
-					  sellerid: this.abotapi.globalData.default_sellerid
+					  sellerid: that.abotapi.globalData.default_sellerid
 					},
 					header: {
 						'Content-Type':  'application/x-www-form-urlencoded'

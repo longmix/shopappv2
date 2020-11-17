@@ -17,7 +17,7 @@
 
 		<view v-if="!is_my_discover_collection && !is_my_discover && !is_my_discover_like" class='c-1'>
 			<image src="../../static/img/search.png"></image>
-			<input placeholder='搜索' @confirm='searchFaquan' v-model="sousuo_text"> </input>
+			<input placeholder='搜索' @confirm='searchFaquan' v-model="sousuo_text" :style="'border:2rpx solid' + wxa_shop_nav_bg_color +';'"> </input>
 		</view>
 
 		

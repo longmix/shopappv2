@@ -5,7 +5,7 @@
 		<!-- 商家搜索 -->
 		<view class="top-input-con">
 
-			<view  class="scroll-txt" >   
+			<view  class="scroll-txt" :style="'border:2rpx solid '+ wxa_shop_nav_bg_color + ';'">   
 				<input type="text" v-model="search_text" placeholder="搜索附近商家" confirm-type="search" style="background: #e6e6e6;" @confirm="search()"/>
 				<icon type="search" size="15" style="margin: 0px 10rpx 0 0;position:absolute;right:30rpx;" @tap="search()"></icon>
 				<!-- <text class="scroll-ads">搜索附近商家</text> -->
@@ -164,6 +164,8 @@
 				search_shang_list:[], //搜索查询商家
 				
 				show_bottom_tips:'none', // 隐藏 已经到底了~ 的提示
+				
+				wxa_shop_nav_bg_color:'',
 			};
 		},
 		
@@ -203,8 +205,11 @@
 			}
 			
 			this.abotapi.set_option_list_str(this, function(that, option_list){
+				console.log('option_list=====>>>>', option_list);
 
-				that.abotapi.getColor();
+				//that.abotapi.getColor();wxa_shop_nav_bg_color
+				
+				that.wxa_shop_nav_bg_color = option_list.wxa_shop_nav_bg_color;
 
 			});
 			
