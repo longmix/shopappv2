@@ -229,11 +229,16 @@
 		</view>
 
 		<!-- 供货商跳转 -->
+		
 		<navigator :url="'./goods-list/goods-list?factoryid='+goods_detail.factoryid" v-if="goods_detail.factory_name">
-			<view style="border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;padding: 20rpx 4%;font-weight: bold;font-size: 28rpx;">
-				商品由 {{goods_detail.factory_name}} 供货商发货 >>
-			</view>
+			<view class="gonghuoshang_shop">
+				<view style="color:#666;padding: 20rpx 4%;font-size: 28rpx;">
+					本商品由{{goods_detail.factory_name}}发货并提供售后服务
+				</view>
+				<image style="width: 40rpx;" src="../../static/img/tabBar/home.png" mode="widthFix"></image>
+				</view>
 		</navigator>
+		
 		<!-- 商品属性 -->
 		<view class="info-box spec" v-if="attribute_list && attribute_list.length>0">
 			<view class="row" @tap="showService">
@@ -2003,9 +2008,9 @@
 		margin-top: var(--status-bar-height);
 		/*  #endif  */
 		width: 92%;
-		padding: 20upx 4%;
+		padding: 10rpx 4%;
 		background-color: #fff;
-		margin-bottom: 20upx;
+		margin-bottom: 10rpx;
 	}
 
 	.goods-info {
@@ -2016,8 +2021,7 @@
 		}
 
 		.title {
-			font-size: 30upx;
-			font-weight: bold;
+			font-size: 30rpx;
 		}
 	}
 
@@ -2673,6 +2677,7 @@
 
 	.re-h {
 		margin: 20upx;
+		font-size: 28rpx;
 	}
 
 	.re-goods {
@@ -2843,5 +2848,11 @@
 	.cuIcon-playfill image {
 		width: 60rpx;
 		height: 60rpx;
+	}
+	.gonghuoshang_shop {
+		display: flex;
+		align-items: center;
+		background-color: #fff;
+		margin-bottom: 5px;
 	}
 </style>

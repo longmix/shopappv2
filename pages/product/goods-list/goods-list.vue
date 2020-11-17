@@ -4,7 +4,8 @@
 	<view>
 		
 		
-		<view class="gonghuashang" style="margin-top: 25rpx;">
+		<view v-if="factory_info_message" 
+			class="gonghuashang" style="margin-top: 25rpx;">
 		<view class="gonghuoshang_logo">
 			<image style="width: 125rpx;height: 125rpx;border-radius: 50%;" :src="factory_info_message.factory_logo" ></image>
 			
@@ -131,7 +132,7 @@
 				product_source_channel:0,
 				product_channel_name:'',	// jingdong / taobao / pinduoduo
 				factoryid:'',//供货商id
-				factory_info_message:[],//供货商信息资质图片等等
+				factory_info_message:null,//供货商信息资质图片等等
 				yingye_zhizhao_width:0,
 				other_img_01_width:0,
 				other_img_02_width:0,
@@ -591,10 +592,10 @@
 	margin-left: 15rpx;
 	font-size: 9px;
 	width: 80rpx;height: 30rpx; border-radius: 4px;
-	background: -webkit-linear-gradient(right, #7fdbfa , #0979c0); /* Safari 5.1 - 6.0 */
-	background: -o-linear-gradient(right, #7fdbfa, #0979c0); /* Opera 11.1 - 12.0 */
-	background: -moz-linear-gradient(right, #7fdbfa, #0979c0); /* Firefox 3.6 - 15 */
-	background: linear-gradient(right, #7fdbfa , #0979c0); /* 标准的语法（必须放在最后） */
+	background: -webkit-linear-gradient(to left, #7fdbfa , #0979c0); /* Safari 5.1 - 6.0 */
+	background: -o-linear-gradient(to left, #7fdbfa, #0979c0); /* Opera 11.1 - 12.0 */
+	background: -moz-linear-gradient(to left, #7fdbfa, #0979c0); /* Firefox 3.6 - 15 */
+	background: linear-gradient(to left, #7fdbfa , #0979c0); /* 标准的语法（必须放在最后） */
 	color: #FFFFFF;
 	//font-weight: 600;
 	align-items: center;
