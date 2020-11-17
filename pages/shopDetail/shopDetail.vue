@@ -456,11 +456,11 @@
 			this.current_xianmai_shangid = xianmai_shangid;
 
 
-			this.abotapi.set_option_list_str(that, function(that001, cb_params){
-				that.abotapi.getColor();
+			this.abotapi.set_option_list_str(this, function(that001, cb_params){
+				that001.abotapi.getColor();
 				
 				if(cb_params.app_kefu_msg_type){
-					that.app_kefu_msg_type = cb_params.app_kefu_msg_type;
+					that001.app_kefu_msg_type = cb_params.app_kefu_msg_type;
 				}
 			});
 			
