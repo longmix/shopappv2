@@ -6,59 +6,80 @@
 		
 		<view class="gonghuashang" style="margin-top: 25rpx;">
 		<view class="gonghuoshang_logo">
-			<image style="width: 200rpx;height: 100rpx;" :src="factory_info_message.factory_logo" mode="widthFix"></image>
-			<view class="gonghuoshang_name">
-				供货商：{{factory_info_message.factory_name}}
-			</view>
-			<view class="gonghuoshang_address">
-				地址：{{factory_info_message.address}}
+			<image style="width: 125rpx;height: 125rpx;border-radius: 50%;" :src="factory_info_message.factory_logo" ></image>
+			
+			<view class="gh-message">
+				<view class="gh-icon">
+					<view class="gonghuoshang_name">
+						{{factory_info_message.factory_name}}
+					</view>
+					<view class="gh-color">
+						供货商
+					</view>
+				</view>
+				
+				<view class="gonghuoshang_address">
+					地址：{{factory_info_message.address}}
+				</view>
 			</view>
 		</view>
 			<view class="gonghuoshang_zizhi" >
-				<image v-if="factory_info_message.yingye_zhizhao"
-					:src="factory_info_message.yingye_zhizhao" 
+				<view class="gh-image-siez">
+					<image v-if="factory_info_message.yingye_zhizhao"
+						
+						:src="factory_info_message.yingye_zhizhao" 
+						@tap="preview_factory_images" 
+						:data-url="factory_info_message.yingye_zhizhao"
+						@load="factory_image_load"
+						data-imgid="yingye_zhizhao"
+						class="factory_image"
+						:style="{width:yingye_zhizhao_width+'px',height:factory_image_height + 'px'}"></image>
+				</view>
+				<view class="gh-image-siez">				
+					<image v-if="factory_info_message.other_img_01"
+						:src="factory_info_message.other_img_01" 
+						@tap="preview_factory_images" 
+						:data-url="factory_info_message.other_img_01"
+						@load="factory_image_load"
+						data-imgid="other_img_01"
+						class="factory_image"
+						:style="{width:other_img_01_width +'px',height:factory_image_height + 'px'}"
+						></image>
+				</view>
+				
+				<view class="gh-image-siez">			
+					<image
+					v-if="factory_info_message.other_img_02" 
+					:src="factory_info_message.other_img_02" 
 					@tap="preview_factory_images" 
-					:data-url="factory_info_message.yingye_zhizhao"
+					:data-url="factory_info_message.other_img_02"
 					@load="factory_image_load"
-					data-imgid="yingye_zhizhao"
+					data-imgid="other_img_02"
 					class="factory_image"
-					:style="{width:yingye_zhizhao_width+'px',height:factory_image_height + 'px'}"></image>
-				<image v-if="factory_info_message.other_img_01" 
-					:src="factory_info_message.other_img_01" 
-					@tap="preview_factory_images" 
-					:data-url="factory_info_message.other_img_01"
-					@load="factory_image_load"
-					data-imgid="other_img_01"
-					class="factory_image"
-					:style="{width:other_img_01_width +'px',height:factory_image_height + 'px'}"
+					:style="{width:other_img_02_width+'px',height:factory_image_height + 'px'}"
 					></image>
-				<image 
-				v-if="factory_info_message.other_img_02" 
-				:src="factory_info_message.other_img_02" 
-				@tap="preview_factory_images" 
-				:data-url="factory_info_message.other_img_02"
-				@load="factory_image_load"
-				data-imgid="other_img_02"
-				class="factory_image"
-				:style="{width:other_img_02_width+'px',height:factory_image_height + 'px'}"
-				></image>
-				<image 
-				v-if="factory_info_message.other_img_03" 
-				:src="factory_info_message.other_img_03"
-				 @tap="preview_factory_images"
-				  :data-url="factory_info_message.other_img_03"
-				  @load="factory_image_load"
-				  data-imgid="other_img_03"
-				  class="factory_image"
-				  :style="{width:other_img_03_width+'px',height:factory_image_height + 'px'}"
-				  ></image>
+				</view>
+				
+				<view class="gh-image-siez">			
+					<image
+					v-if="factory_info_message.other_img_03" 
+					:src="factory_info_message.other_img_03"
+					 @tap="preview_factory_images"
+					  :data-url="factory_info_message.other_img_03"
+					  @load="factory_image_load"
+					  data-imgid="other_img_03"
+					  class="factory_image"
+					  :style="{width:other_img_03_width+'px',height:factory_image_height + 'px'}"
+					  ></image>
+				</view>
+				
 			</view>
 		</view>
 		
 		<view class="header" :style="{position:headerPosition,top:headerTop}">
 			
 			
-			<view class="target" v-for="(target,index2) in orderbyList" @tap="select(index2)" :key="index2" :class="[target.selected?'on':'']">
+			<view class="target" v-for="(target,index2) in orderbyList" @tap="select_paixu(index2)" :key="index2" :class="[target.selected?'on':'']">
 				{{target.text}}
 				<view v-if="target.orderbyicon" class="icon" :class="target.orderbyicon[target.orderby]"></view>
 			</view>
@@ -250,6 +271,11 @@
 				uni.showLoading({
 					title: '加载中...',
 				})
+				
+				let current_page_temp = that.current_page;
+				
+				that.current_page ++;
+				
 				if(that.product_source_channel == 0){
 					that.abotapi.abotRequest({
 					    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
@@ -257,13 +283,14 @@
 					      sellerid: this.abotapi.globalData.default_sellerid,
 					      keyword:'', 
 					      sort: that.sorts,
-					      page: that.current_page,
+					      page: current_page_temp,
 						  cataid:that.cataid,
 						  platform: that.abotapi.globalData.current_platform,
 						  factoryid: this.factoryid,
 					    },
 					    success: function (res) {
 							uni.hideLoading();
+							that.loadingText = '';
 							
 							if(res.data.code == 1){
 								console.log('aaafff===', res);
@@ -288,7 +315,7 @@
 								
 								
 								
-								that.current_page ++;
+								
 								
 							}else if(res.data.code == 0){
 								// uni.showToast({
@@ -389,22 +416,28 @@
 				
 			},
 			//排序类型   sort值选项(5:最新、3:销量、4:价格) 
-			select(index2){
+			select_paixu(index2){
+				
 				if(this.orderbyList[index2].orderbyicon){
 					if(this.orderbyList[index2].selected){
 						this.orderbyList[index2].orderby = this.orderbyList[index2].orderby==0?1:0;
 					}
 					tmpTis+=type
 				}
+				
 				this.orderbyList[index2].selected = true;
+				
 				let len = this.orderbyList.length;
+				
 				for(let i=0;i<len;i++){
 					if(i!=index2){
 						this.orderbyList[i].selected = false;
 					}
 				}
 				var that = this;
+				
 				console.log('index2==>>',index2);
+				
 				if(index2 == 0){
 					that.index2 = 5;
 				}else if(index2 == 1){
@@ -414,6 +447,10 @@
 				}
 				
 				that.sorts = that.index2;
+				
+				that.goodsList = [];
+				that.current_page = 1;
+				
 				that.reload();
 			},
 			//预览图片
@@ -455,7 +492,7 @@
 				console.log('这里是之后的宽度：',Math.round(ratio*100));
 				console.log('imageLoad id===>>> '+e.target.dataset.imgid +'实际大小：');
 				console.log(imgwidth, imgheight)
-				this.factory_image_height = 150;
+				this.factory_image_height = 50;
 				
 				if(imgid == 'yingye_zhizhao'){
 					this.yingye_zhizhao_width = Math.round(ratio*this.factory_image_height);
@@ -530,14 +567,46 @@
 	}
 .gonghuoshang_logo{
 	padding-left: 10px;
+	display: flex;
 }
 .gonghuoshang_zizhi{
 	padding-left: 10px;
-	margin-top: 5rpx;
+	margin-top: 25rpx;
+	display: flex;
 }
 .gonghuoshang_address{
-	margin-top: 5rpx;
-	color: #bcbcbc;
-	font-size: 11px;
+	margin-top: 2px;
+	color: #2f2725;
+	font-size: 15px;
+}
+.gh-message{
+	margin-top: 30rpx;
+	margin-left: 20rpx;
+}
+.gonghuoshang_name{
+	font-size: 18px;
+	font-weight: 600;
+}
+.gh-color{
+	margin-left: 15rpx;
+	font-size: 9px;
+	width: 80rpx;height: 30rpx; border-radius: 4px;
+	background: -webkit-linear-gradient(right, #7fdbfa , #0979c0); /* Safari 5.1 - 6.0 */
+	background: -o-linear-gradient(right, #7fdbfa, #0979c0); /* Opera 11.1 - 12.0 */
+	background: -moz-linear-gradient(right, #7fdbfa, #0979c0); /* Firefox 3.6 - 15 */
+	background: linear-gradient(right, #7fdbfa , #0979c0); /* 标准的语法（必须放在最后） */
+	color: #FFFFFF;
+	//font-weight: 600;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+}
+.gh-icon{
+	align-items: center;
+	display: flex;
+}
+.gh-image-siez{
+	width: 25%;
+	position: relative;
 }
 </style>
