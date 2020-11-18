@@ -230,9 +230,9 @@
 
 		<!-- 供货商跳转 -->
 		
-		<navigator v-if="goods_detail.factoryid"
+		<navigator v-if="goods_detail.factory_name" 
 			:url="'./goods-list/goods-list?factoryid='+goods_detail.factoryid">
-			<view class="gonghuoshang_shop">
+			<view class="gonghuoshang_shop" >
 				<view style="color:#666;padding: 20rpx 4%;font-size: 28rpx;">
 					本商品由{{goods_detail.factory_name}}发货并提供售后服务
 				</view>

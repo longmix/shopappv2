@@ -8,8 +8,8 @@
 					<image mode="widthFix" :src="item.picture"></image>
 					<view class="name">{{item.name}}</view>
 					<view class="kucun-sale" v-if="showKucunSale==1">
-						<view>销量：{{item.sale_volume}}</view>
-						<view>库存：{{item.inventory}}</view>
+						<view style="font-size: 13px;">销量：{{item.sale_volume}}</view>
+						<view view style="font-size: 13px;">库存：{{item.inventory}}</view>
 					</view>
 					<view class="info">
 						<view class="price">￥{{item.price}}</view>
