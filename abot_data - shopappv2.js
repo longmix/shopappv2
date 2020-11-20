@@ -4,10 +4,10 @@ const globalData = {
 		o2owaimai_server_url: 'https://app.tseo.cn/o2owaimai/index.php/',
 		socket_server: 'https://socketio.tseo.cn',
 		
-		version_number:'Ver 1.6.3 Build 150',
-		version_code:150,
+		version_number:'Ver 1.7.1 Build 219',
+		version_code:219,
 		
-		force_sellerid:1,
+		force_sellerid:0,
 	
 		xiaochengxu_appid: 'wxe6565fced2f812da',			//微信小程序的appid
 		xiaochengxu_account: 'gh_a95e5a0852aa',				//微信小程序的账号
@@ -22,8 +22,8 @@ const globalData = {
 		//=======以下配置项在发布版本的时候确定，服务器端配置无效===
 		
 		//平台相关的配置
-		//current_platform : 'app-android',
-		current_platform : 'app-ios',
+		current_platform : 'app-android',
+		//current_platform : 'app-ios',
 		//current_platform : 'mp-weixin',
 		//current_platform : 'mp-baidu',
 		//current_platform : 'mp-alipay',

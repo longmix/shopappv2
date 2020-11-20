@@ -2,8 +2,8 @@
     "name" : "延誉电商",
     "appid" : "__UNI__A79BAA4",
     "description" : "拥抱互联网+，找延誉电商5天搞定！",
-    "versionName" : "1.6.3",
-    "versionCode" : 150,
+    "versionName" : "1.7.1",
+    "versionCode" : 209,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true, //是否启用`自定义组件模式`，为true表示新的`自定义组件模式` ，否则为`template模板模式`   
@@ -155,8 +155,10 @@
                         "retina47" : "unpackage/res/splashscreen/welcome_750x1334.png",
                         "retina40" : "unpackage/res/splashscreen/welcome_640x1136.png",
                         "retina35" : "unpackage/res/splashscreen/welcome_640x960.png"
-                    }
-                }
+                    },
+                    "storyboard" : "D:/延誉电商APP/苹果开发者证书/CustomStoryboard.zip"
+                },
+                "iosStyle" : "storyboard"
             }
         },
         "uniStatistics" : {
