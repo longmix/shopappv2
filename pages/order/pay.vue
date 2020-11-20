@@ -103,6 +103,13 @@
 				</view>
 				<switch class='d-dikou' :checked="isSwitch2" @change="switch1Change($event)" data-type="2" />
 			</view>
+			<view v-if="orderredpackge_list.code == 1" class="a-redpackets">
+				<view class="b-redpackets">
+					<view>订单红包</view>
+				</view>
+				 <img src="http://yanyubao.tseo.cn/Tpl/Home/plugin/yanyubao/images/asd23.png" v-show="picture_show" @click="get_redpackage_while_ordering" disabled="true"/>
+				<view class="c-redpackets" @click="get_redpackage_picture_show">{{redpackge_text_tips}}</view>
+			</view>
 
 			<view class='p_all' style="padding-bottom:0;">
 				<view class="heji_con" v-if='is_waimai == 1'>
@@ -210,7 +217,12 @@
 				
 				btn_bg_color: '#1AAD19',
 				order_type_001:'shopmall',
-				current_userinfo:null
+				current_userinfo:null,
+				picture_show: false,
+				orderredpackge_list:[],
+				redpackge_lingqu_score:0,
+				is_ordering_redpackge_click:false,
+				redpackge_text_tips:''
 			};
 		},
 		
@@ -268,7 +280,7 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 				last_url = last_url+'?'+params_str;
 			}
 			
-			that.last_url = last_url
+			that.last_url = last_url;
 			var userInfo = this.abotapi.get_user_info();
 			
 			if(!userInfo || !userInfo.userid){
@@ -478,27 +490,28 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 			__loadOrderDetail:function(){
 				var that = this;
 				
-				
-				that.abotapi.abotRequest({
-				  url: that.abotapi.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/get_shang_detail',
-				  data: {
-				     sellerid:that.abotapi.get_sellerid(),
-					 xianmai_shangid: that.xianmaishangid,
-				  },
-				  success: function (res) {	
-					console.log('res===----', res.data.data);
-				    if (res.data.code == 1) {
-				      that.shang_detail = res.data.data;
-					  console.log('that.shang_detail===----',that.shang_detail);
-				    } 	
-				  }
-				});
-				
-				
 				if(that.order_type_001 == 'shopmall'){
 					this.__load_order_detail_shopmall();
 				}
 				else if(that.order_type_001 == 'xianmaishang'){
+					
+					that.abotapi.abotRequest({
+					  url: that.abotapi.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/get_shang_detail',
+					  data: {
+					     sellerid:that.abotapi.get_sellerid(),
+						 xianmai_shangid: that.xianmaishangid,
+					  },
+					  success: function (res) {	
+						console.log('res===----', res.data.data);
+					    if (res.data.code == 1) {
+					      that.shang_detail = res.data.data;
+						  console.log('that.shang_detail===----',that.shang_detail);
+					    } 	
+					  }
+					});
+					
+					
+					
 					that.__load_order_detail_xianmaishang();
 				}
 		
@@ -516,7 +529,9 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 				    checkstr: userInfo.checkstr,
 				    userid: userInfo.userid
 				  },
-				  success: function (res) {				   
+				  success: function (res) {		
+					  
+					console.log("this_get_user_info",res);
 				    if (res.data.code == 1) {
 				      that.balance = res.data.data.balance;
 				      that.balance_zengsong = res.data.data.balance_zengsong;
@@ -647,6 +662,38 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 					}
 				});
 				
+				//2020.11.2. 检查是否启用了订单中红包的功能模块
+				
+				
+				var post_data = {
+						sellerid:that.abotapi.get_sellerid(),
+					}
+					
+				if (userInfo) {
+					post_data.userid = userInfo.userid;
+					post_data.checkstr = userInfo.checkstr;
+				}
+					
+					
+				that.abotapi.abotRequest({
+					url: that.abotapi.globalData.yanyubao_server_url + 'openapi/OrderingRedpackageData/get_setting',
+					data: post_data,
+					success: function (res) {
+						that.orderredpackge_list = res.data;
+						
+						that.redpackge_text_tips = res.data.data.tips_text;
+						console.log("ORDER_QUEREN_res===code",that.redpackge_text_tips);
+						
+						
+					},
+					fail: function () {
+						// fail
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+					}
+				});
 				
 			},
 			//加载更详细的外卖订单的信息
@@ -1105,6 +1152,7 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 				
 			},
 			
+			
 
 			//首次点餐
 			order_add_new_option_by_key_value: function (e) {
@@ -1209,7 +1257,7 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 			        if (parseFloat(balance_zengsong) < parseFloat(pay_price_origin)) {
 			
 			          if (that.balance_dikou) {
-			
+						
 			            that.switch1Change(null, 2, false, that)
 			            pay_price = that.pay_price;
 			            balance_zengsong = that.balance_zengsong;
@@ -1386,6 +1434,154 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 			// 		url:'/pages/user/address/address?type=select'
 			// 	})
 			// },
+			
+			//图片弹出
+			get_redpackage_picture_show:function(e){
+				this.picture_show = true;
+				
+				
+				if(this.redpackge_lingqu_score>0){
+					uni.showToast({
+						title: '您已经领取过了！',
+						duration: 2000
+					});
+					this.picture_show = false;
+					
+				}
+			},  
+			
+			//从服务器请求，获得红包随机数。
+			get_redpackage_while_ordering:function(){
+				
+				console.log('this.is_ordering_redpackge_click====>>>>', this.is_ordering_redpackge_click);
+				
+				if(this.is_ordering_redpackge_click){
+					return;
+				}
+				this.is_ordering_redpackge_click = true;
+				console.log('this.is_ordering_redpackge_click===222222=>>>>', this.is_ordering_redpackge_click);
+				
+				
+				
+				
+				var userInfo = this.abotapi.get_user_info();
+				var that = this;
+				
+				var post_data = {
+					sellerid:that.abotapi.get_sellerid(),
+				}
+					
+				if (userInfo) {
+					post_data.userid = userInfo.userid;
+					post_data.checkstr = userInfo.checkstr;
+				}
+				
+				that.abotapi.abotRequest({
+					url: this.abotapi.globalData.yanyubao_server_url + 'openapi/OrderingRedpackageData/get_my_ordering_redpackge_num',
+					data: post_data,
+					success: function (res) {
+						console.log('sssss', res)
+						
+						
+						
+						if(!res || !res.data || !res.data.code || (res.data.code != 1) ){
+							uni.showToast({
+								title: res.data.msg,
+								duration: 2000
+							});
+							setTimeout(function(){
+								that.picture_show = false;
+							},1000)
+							
+							if(res && res.data && res.msg){
+								uni.showModal({
+									title:'',
+									content:''
+								})
+							}
+							
+							return;
+						}
+						if(res.data.code == 1){
+							that.redpackge_lingqu_score = that.redpackge_lingqu_score + 1;
+						}
+						
+						
+						var my_lucky_redpackge_first = res.data.data;
+						console.log('幸运红包金额==>>>', my_lucky_redpackge_first);	
+						
+						
+						
+						var my_lucky_redpackge_first002 = my_lucky_redpackge_first/100; // 分 ===>>> 元
+						
+						console.log('幸运红包金额==>>>'+my_lucky_redpackge_first002+'元');
+						
+						
+						setTimeout(function(){
+							uni.showModal({
+							    title: '提示',
+							    content: '恭喜获得' + my_lucky_redpackge_first002 + '元！',
+							    confirmText: "现在用",
+								cancelText: "下次用",
+							    success: function (res) {
+									
+									console.log('33333333333333333333' );
+									
+									that.is_ordering_redpackge_click = false;
+									
+									
+									var balance_zengsong_num = Number(that.balance_zengsong*100);
+									
+									console.log('赠款金额==>>>'+balance_zengsong_num+'元');
+									that.balance_zengsong = String((balance_zengsong_num + my_lucky_redpackge_first)/100);
+									
+							        if (res.confirm) {
+										//立即用
+							            console.log('用户点击确定');
+										that.picture_show = false;
+										that.switch1Change(null, true, String(my_lucky_redpackge_first002), that);
+										
+							        } 
+									else if (res.cancel) {
+										//稍后用
+							            console.log('用户点击取消');
+										
+										that.picture_show = false;
+										console.log('用户领取红包后赠款==',that.balance_zengsong);
+							        }
+							    }
+							});
+							
+						},1500)
+						
+						
+						
+					},
+					fail: function (e) {
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+						
+						console.log('4444444444444444' );
+						that.is_ordering_redpackge_click = false;
+					},
+					complete:function(e){
+						
+					}
+				});
+				
+				//======================================================
+									
+				//改变赠款的金额
+				
+				
+				//======================================================
+				
+				
+			},
+			
+			
 		}
 	}
 </script>
@@ -1564,11 +1760,55 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 	  margin-left:3%;
 	  margin-top: 30upx;
 	}
-	
+	.a-redpackets{
+		display:flex;
+		padding:0 0 3%;
+		font-size:28upx;
+		justify-content:space-between;
+		border-bottom:1px solid #e5e5e5;
+		margin-bottom:20upx;
+		width:94%;
+		margin-left:3%;
+		margin-top: 30upx;
+	}
+	.a-redpackets img{
+			width: 200px;
+			position: absolute;
+		    top: 0;
+		    left: 0;
+		    right: 0;
+		    bottom: 0;
+		    background: rgba(0,0,0,0.3);
+		    z-index: 4;
+		    margin: auto;
+	}
+	@-moz-keyframes tada{
+	    0%{-moz-transform:scale(1);}
+	    10%,20%{-moz-transform:scale(0.9) rotate(-3deg);}
+	    30%,50%,70%,90%{-moz-transform:scale(1.2) rotate(3deg);}
+	    40%,60%,80%{-moz-transform:scale(1.2) rotate(-3deg);}
+	    100%{-moz-transform:scale(1) rotate(0);}
+	   }
+	  @-webkit-keyframes tada{
+	    0%{-webkit-transform:scale(1);}
+	    10%,20%{-webkit-transform:scale(0.9) rotate(-3deg);}
+	    30%,50%,70%,90%{-webkit-transform:scale(1.2) rotate(3deg);}
+	    40%,60%,80%{-webkit-transform:scale(1.2) rotate(-3deg);}
+	    100%{-webkit-transform:scale(1) rotate(0);}}
+	.a-redpackets img:hover{
+	  -webkit-animation: tada 1s .2s ease both;
+	  -moz-animation: tada 1s .2s ease both;
+	}
+	.b-redpackets{
+		display: flex;
+	}
 	.b-dikou{
 	  display: flex;
 	}
-	
+	.c-redpackets{
+		margin-left:40upx;
+		color: #0497cc;
+	}
 	.c-dikou{
 	  margin-left:40upx;
 	}
