@@ -596,8 +596,8 @@
 	    border: none;
 	    padding: 3px;
 	    position:absolute;
-	    right:25rpx;
-	    top:5rpx;
+	    right:27rpx;
+	    top:4rpx;
 	}
 	.search button::after{
 	    content: none;
