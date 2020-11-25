@@ -39,7 +39,7 @@
 	              <view>{{m2.brief}}</view>              
 	              <!-- <view><i class='like'></i>({{m2.like > 0 ? m2.like : 0}})</view>           -->
 	            </view>
-	            <view class="txt-price">¥ <text>{{m2.price}}</text></view>
+	            <view class="txt-price">¥<text>{{m2.price}}</text><text class="txt-zhekoprice"><span>¥{{m2.price2}}</span></text></view>
 	          </view>
 	            <!-- 飞入图标 -->
 	          
@@ -1304,7 +1304,7 @@ export default {
   font-size: 28rpx;
 }
 .txt-price text{
-  font-size: 36rpx;
+  font-size: 40rpx;
 }
 
 .addCart{
@@ -1755,5 +1755,14 @@ font-size: 24rpx;
 	position: fixed;
 	left: 16%;
 	top: 20%;
+}
+.txt-zhekoprice{
+	text-decoration: line-through;
+	color: #bcbcbc;
+	font-size: 16rpx;
+}
+.txt-zhekoprice span{
+	font-size: 11px;
+	margin-left: 5px;
 }
 </style>

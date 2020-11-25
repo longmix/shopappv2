@@ -1,7 +1,14 @@
 <template>
 	<view>
 		<!--pages/user/dingdan.wxml-->
+		
 		<view class="swiper-tab">
+			<view class="input-box"
+			 :style="'border:2rpx solid '+ wxa_shop_nav_bg_color + ';'"
+			 >
+				<input placeholder="请输入订单号或商品名称" placeholder-style="color:#c0c0c0;" style="background: #f5f5f5;margin-left: 5rpx;" v-model="order_form_postal"/>
+				<view class="icon search" @tap="loadOrderList()"></view>
+			</view>
 			<view class="swiper-tab-list" :class="currentTab==0 ? 'on' : ''" data-current="0" data-otype="0"  @tap="swichNav">全部</view>
 			<view class="swiper-tab-list" :class="currentTab==1 ? 'on' : ''" data-current="1" data-otype="1" @tap="swichNav">待付款</view>
 			<view class="swiper-tab-list" :class="currentTab==2 ? 'on' : ''" data-current="2" data-otype="2" @tap="swichNav">待发货</view> 
@@ -384,6 +391,7 @@
 	export default {
 		data() {
 			return {
+				
 				isHideLoadMore:false,
 				winWidth: 0,  
 				winHeight: 0,  
@@ -402,6 +410,8 @@
 				
 				wxa_order_hide_daishouhuo_refund:'',
 				wxa_order_hide_daishouhuo_refund_after:'',
+				wxa_shop_nav_bg_color:'',
+				order_form_postal:''
 			}
 		},
 		
@@ -449,7 +459,11 @@
 		methods:{
 			callback_set_option: function (that, cb_params) {
 				console.log('wxa_order_hide_daishouhuo_refund',cb_params)
+				
+				that.wxa_shop_nav_bg_color = cb_params.wxa_shop_nav_bg_color;
+				
 				var option_list = cb_params;
+				
 				
 				if (!option_list) {
 					return;
@@ -662,6 +676,8 @@
 					icon: 'loading',
 					duration: 500
 				}) 
+				
+				
 				uni.request({
 					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_index',
 					method: 'post',
@@ -792,16 +808,22 @@
 				console.log('sdfsdfsdfasadf')
 				var that = this;
 				var userInfo = that.abotapi.get_user_info();
+				var post_data = {
+					order_sort: that.isStatus,
+					page:	1,
+					sellerid: that.abotapi.get_sellerid(),
+					checkstr: userInfo.checkstr,
+					userid: userInfo.userid
+				}
+				
+				console.log('888888888',this.order_form_postal);
+				if(this.order_form_postal){
+					post_data.order_form_postal = this.order_form_postal;
+				}
 				uni.request({
 					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_index',
 					method:'post',
-					data: {
-						order_sort: that.isStatus,
-						page:	1,
-						sellerid: that.abotapi.get_sellerid(),
-						checkstr: userInfo.checkstr,
-						userid: userInfo.userid
-					},
+					data: post_data,
 					header: {
 						'Content-Type':  'application/x-www-form-urlencoded'
 					},
@@ -1217,7 +1239,7 @@
 	.c_t60{
 	    clear: both;
 	    height: 1px;
-	    padding-top: 48px;
+	    padding-top: 75px;
 	}
 	.blue{
 	  color: #42b1ff;
@@ -1278,4 +1300,33 @@
 		-webkit-overflow-scrolling: touch;
 		overflow-y: scroll;
 	}
+	.input-box{
+		width: 95%;
+		margin: 0 auto;
+		height: 60upx;
+		background-color: #f5f5f5;
+		border-radius: 30upx;
+		position: relative;
+		display: flex;
+		align-items: center;
+		margin-top: 5px;
+		}
+	.input-box .icon{
+		display: flex;
+		align-items: center;
+		position: absolute;
+		top:0;
+		right: 0;
+		width: 60upx;
+		height: 60upx;
+		font-size: 34upx;
+		color: #c0c0c0;
+		}
+	.input-box input{
+		padding-left: 28upx;
+		height: 28upx;
+		font-size: 28upx;
+		text-align: left;
+		}
+	
 	</style>
