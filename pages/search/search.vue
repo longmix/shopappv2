@@ -1,8 +1,8 @@
 <template>
 	<view>
 		<view class="search df">
-			<input class="df_1" placeholder="请输入你要搜索的内容" :value="searchValue" confirm-type="search" @input="searchValueInput($event)" :focus="focus"  @confirm="doSearch($event)"/><!--  -->
-			<button @tap="doSearch"><image class="searchcion" src="../../static/img/search.png"></image></button>
+			<input class="df_1" placeholder="请输入你要搜索的内容" :value="searchValue" confirm-type="search" :style="'border:2rpx solid' + wxa_shop_nav_bg_color +';'" @input="searchValueInput($event)" :focus="focus"  @confirm="doSearch($event)"/><!--  -->
+			<button @tap="doSearch"><image class="searchcion" src="../../static/img/search.png" style="width: 35rpx;height:35rpx;"></image></button>
 		</view>
 		<view class="cont" v-if="hotKeyShow">
 			<text class="font_14">热门搜索</text>
@@ -92,7 +92,8 @@
 				is_more: true,
 				content:'',
 				showModalStatus:false,
-				wxa_product_list_style:''
+				wxa_product_list_style:'',
+				wxa_shop_nav_bg_color:'',
 			}
 		},
 		
@@ -106,6 +107,12 @@
 				
 				if (option_list.wxa_product_list_style) {
 					that.wxa_product_list_style = option_list.wxa_product_list_style
+				}
+				if (option_list.wxa_shop_nav_bg_color) {
+				
+					that.wxa_shop_nav_bg_color = option_list.wxa_shop_nav_bg_color;
+					that.wxa_shop_nav_font_color = option_list.wxa_shop_nav_font_color;
+				
 				}
 				
 			});
@@ -589,8 +596,8 @@
 	    border: none;
 	    padding: 3px;
 	    position:absolute;
-	    right:20rpx;
-	    top:13rpx;
+	    right:25rpx;
+	    top:5rpx;
 	}
 	.search button::after{
 	    content: none;
