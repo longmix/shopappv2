@@ -808,7 +808,7 @@
 								
 								var msg001 = '支付失败';
 								if(res && res.errMsg){
-									if(res.errMsg.indexOf('cancel') > 0){
+									if(res.errMsg.indexOf('canceled') > 0){
 										msg001 = '支付已经取消';
 									}
 									else{

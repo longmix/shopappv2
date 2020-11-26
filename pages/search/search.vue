@@ -20,13 +20,13 @@
 			<block v-if="wxa_product_list_style == 1">
 				<view class="">
 	    
-					<navigator  class="logo_info navigator" :url="'/pages/product/detail?productid='+item.productid" v-for="(item,index) in shopList" :key="index"  :data-productid="item.productid" style="margin:10px;">
+					<navigator  class="logo_info navigator" :url="'/pages/product/detail?productid='+item.productid" v-for="(item,index) in shopList" :key="index"  :data-productid="item.productid" style="margin:20rpx;">
 						<view class="logo_pic" style="margin-top:18rpx;">
 							<image :src="item.picture" style="width:180rpx;height:180rpx;"></image>
 						</view>
 		
 						<view style="width:70%;float:right;height:220rpx;padding-top: 30rpx;">
-							<view class="titles wenzi" style="text-align: left;font-weight:400;font-size:18px;overflow: hidden;white-space: nowrap;text-overflow:ellipsis;">{{item.name}}</view>
+							<view class="titles wenzi" style="text-align: left;font-weight:400;font-size:36rpx;overflow: hidden;white-space: nowrap;text-overflow:ellipsis;">{{item.name}}</view>
 							<view class="brief">
 								<view style="color:gray;font-size:26rpx;">
 									<!-- {{item.seller_name}} -->
@@ -418,7 +418,7 @@
 	.list-tab {
 	  height: 106rpx;
 	  box-sizing: border-box;
-	  padding: 5px 10px;
+	  padding: 10rpx 20rpx;
 	}
 	.logo_pic{
 	width:26%;
@@ -432,14 +432,14 @@
 	.list-tab ul {
 	  display: flex;
 	  height: 72rpx;
-	  border: 1px solid #b6aaec;
+	  border: 2rpx solid #b6aaec;
 	  border-radius: 12rpx;
 	}
 	
 	.list-tab li {
 	  flex: 1;
 	  display: flex;
-	  font-size: 14px;
+	  font-size: 28rpx;
 	  justify-content: center;
 	  align-items: center;
 	  color: #b6aaec;
@@ -453,13 +453,13 @@
 	/*list-box*/
 	
 	.list-view {
-	  border-top: 1px solid #ccc;
+	  border-top: 2rpx solid #ccc;
 	}
 	
 	.list-box {
 	  display: flex;
-	  padding: 5px 10px;
-	  border-bottom: 1px solid #aaa;
+	  padding: 10rpx 20rpx;
+	  border-bottom: 2rpx solid #aaa;
 	}
 	
 	.list-images image {
@@ -468,7 +468,7 @@
 	}
 	
 	.list-text {
-	  font-size: 14px;
+	  font-size: 28rpx;
 	  color: #666;
 	  flex: 1;
 	  background-size: 60rpx;
@@ -477,11 +477,11 @@
 	.list-text .name {
 	  display: block;
 	  height: 80rpx;
-	  padding: 5px;
+	  padding: 10rpx;
 	}
 	
 	.list-text .txt {
-	  padding: 5px;
+	  padding: 10rpx;
 	  color: #aaa;
 	  display: flex;
 	  flex-direction: row;
@@ -490,7 +490,7 @@
 	}
 	
 	.list-text .price {
-	  font-size: 18px;
+	  font-size: 36rpx;
 	  color: red;
 	}
 	
@@ -569,7 +569,7 @@
 	  width: 450rpx;
 	  line-height: 70rpx;
 	  border-radius:10rpx; 
-	  border: 1px solid #999;
+	  border: 2rpx solid #999;
 	  font-size: 30rpx;
 	  margin-top: 30rpx;
 	}
@@ -578,8 +578,8 @@
 	    padding-right:80rpx;
 	}
 	.searchcion{
-	    width: 24px;
-	    height: 24px;
+	    width: 48rpx;
+	    height: 48rpx;
 	    text-align: center
 	}
 	.search input{
@@ -591,11 +591,11 @@
 	    padding:1% 2.5%;
 	    }
 	.search button{
-	    line-height:30px;
+	    line-height:60rpx;
 	    background: none;
 	    text-align: center;
 	    border: none;
-	    padding: 3px;
+	    padding: 6rpx;
 	    position:absolute;
 	    right:27rpx;
 	    top:4rpx;
@@ -605,7 +605,7 @@
 	}
 	.w100{ 
 	    width: 100%;
-	    padding-bottom: 10px;
+	    padding-bottom: 20rpx;
 	}
 	.w100 button{
 	    text-align: center;

@@ -15,7 +15,7 @@
     "force_sellerid_flag": 1,
     "force_sellerid_value": "fimmUPUPV",
     "shop_name": "哈哈订",
-    "version_number": "1.4.0",
+    "version_number": "Ver 1.7.2 Build 219",
     "navigationBarBackgroundColor_fixed": 1,
     "kefu_telephone": "",
     "kefu_qq": "",
@@ -65,8 +65,8 @@
   },
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#f37404",
-    "navigationBarTitleText": "延誉电商",
+    "navigationBarBackgroundColor": "#073892",
+    "navigationBarTitleText": "哈哈订",
     "navigationBarTextStyle": "white"
   },
   "networkTimeout": {

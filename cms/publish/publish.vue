@@ -27,10 +27,10 @@
 		    <view class='pub-btn' @click="publishIdea" :style="{background:btn_bg_color}">立即发布</view>
 		    <checkbox-group @change="checkBox" class="" v-if="faquan_xieyi_status=='1'">
 			  <label class='pub-xieyi' v-if="faquan_xieyi_show_directly == 1">
-				<checkbox :value="checked"  :checked="checked"/>我已阅读并同意以下协议
+				<checkbox :value="checked_status"  :checked="checked_status"/>我已阅读并同意以下协议
 			  </label>
 		      <label class='pub-xieyi'  v-if="faquan_xieyi_show_directly == 0">
-		        <checkbox :value="checked"  :checked="checked"/>完成立即发布表示同意
+		        <checkbox :value="checked_status"  :checked="checked_status"/>完成立即发布表示同意
 		      </label>
 			  <view v-if="faquan_xieyi_show_directly == 0" @click='readAgreement' style='float:right;color:red;margin-top:24rpx;height: 40rpx;line-height: 40rpx;'>《{{faquan_xieyi_title}}》</view>
 			  
@@ -80,7 +80,7 @@
 				cataValue:'',
 				imgList: [],
 				flag: 1,
-				checked: true,
+				checked_status: 'checked',
 				disable: false,
 				publishtype:'image',
 				faquan_xieyi_status:1,
@@ -313,7 +313,9 @@
 					return;
 				}
 				
-				if ((that.faquan_xieyi_status == 1) && !that.checked) {
+				if ((that.faquan_xieyi_status == 1) && !that.checked_status) {
+					console.log('that.checked_status====>>>', that.checked_status);
+					
 					uni.showToast({
 						title: '请先同意发布许可协议',
 						icon: 'none'
@@ -325,10 +327,14 @@
 				
 				console.log('===>>>>>.',that.abotapi.globalData.xiaochengxu_appid);
 				
+				var userInfo = that.abotapi.get_user_info();
+				
+				
 				var data_params = {
 					sellerid: that.abotapi.globalData.default_sellerid,
 					appid: that.abotapi.globalData.xiaochengxu_appid,
-					userid: userInfo ? userInfo.userid : '',
+					userid: userInfo.userid,
+					checkstr:userInfo.checkstr,
 				
 					text: that.ideaText ? that.ideaText: '',
 				}
@@ -349,10 +355,13 @@
 							that.faquanid = faquanid;
 													
 							if (that.publishtype == "image") {
+								//发布图片
 													
 								that.upLoadImg(0);
 													
 							} else {
+								//发布视频
+								
 								uni.showLoading({
 									title: '正在上传',
 								})
@@ -451,7 +460,7 @@
 				
 			},
 			  
-			    upLoadImg: function (i) {
+			upLoadImg: function (i) {
 			      console.log('i=======', i)
 				  var userInfo = this.abotapi.get_user_info();
 			      var that = this;
@@ -462,27 +471,36 @@
 			        url: that.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/add_faquan_video_or_img',
 			        filePath: that.imgList[i],
 			        header: {
-			          "Content-Type": "multipart/form-data",
+			          /*如果加了这里的代码，在H5中上传图片就无效了
+					  "Content-Type": "multipart/form-data",
 			          'elem': '#up-image',
 			          'accept': 'application/json',
-			          'exts': 'jpg|jpeg|png|gif'
+			          'exts': 'jpg|jpeg|png|gif'*/
 			        },
 			        name: "image",
 			        formData: {
 			          sellerid: that.abotapi.globalData.default_sellerid,
-			          userid: userInfo ? userInfo.userid : '',
+			          
+					  userid: userInfo.userid,
+			          checkstr:userInfo.checkstr,
+					  
 			          faquanid: that.faquanid,
 			          type: 0
 			        },
 			        success: function (res) {
 			          i++;
 			          uni.hideLoading();
+					  
 			          console.log('res===========', res)
+					  
 			          if (i == that.imgList.length) {
+						  
 			            if (res.errMsg == "uploadFile:ok") {
 			              var data = res.data;
+						  
 			              console.log('data===', data)
 			              data = JSON.parse(data);
+						  
 			              if (data.code == 1) {
 							
 							uni.showModal({
@@ -523,7 +541,9 @@
 							that.disable = true;
 			              }
 			            }
-			          } else if (i < that.imgList.length) {
+			          } 
+					  else if (i < that.imgList.length) {
+						//继续上传其他图片
 			            that.upLoadImg(i);
 			          }
 			        },
@@ -541,12 +561,19 @@
 			  
 			    checkBox: function (e) {
 			      
-				  this.tchecked = e.detail.value[0] ? true : false;
+				  this.checked_status = e.detail.value[0] ? "checked" : "";
 			    },
 			  
 			    selectAgree: function (e) {
 				  this.flag = 1;
-				  this.checked = !this.checked;
+				  
+				  if(this.checked_status == 'checked'){
+					  this.checked_status = '';
+				  }
+				  else{
+					  this.checked_status = 'checked';
+				  }
+				  //this.checked_status = !this.checked_status;
 			    },
 			  
 			  
