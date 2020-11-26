@@ -1617,7 +1617,7 @@
 	}
 
 	.c-1 input {
-		border-radius: 100rpx;
+		border-radius: 20rpx;
 		border: 2rpx solid #ccc;
 		font-size: 28rpx;
 		height: 70rpx;

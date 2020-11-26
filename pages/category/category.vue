@@ -371,7 +371,7 @@
 			width: 100%;
 			height: 60upx;
 			background-color: #f5f5f5;
-			border-radius: 30upx;
+			border-radius: 20rpx;
 			position: relative;
 			display: flex;
 			align-items: center;

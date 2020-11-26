@@ -1,15 +1,15 @@
 {	
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
-		"navigationBarTitleText" : "通版商城V2",
-		"navigationBarBackgroundColor" : "#2d96ff",
-		"backgroundColor" : "#2d96ff",
-		"backgroundColorTop":"#2d96ff",
+		"navigationBarTitleText" : "志购",
+		"navigationBarBackgroundColor" : "#3D9140",
+		"backgroundColor" : "#ffffff",
+		"backgroundColorTop":"#ffffff",
 		"backgroundColorBottom":"#ffffff"
 	},
 	"tabBar": {
 		"color": "#333333",
-		"selectedColor": "#f06c7a",
+		"selectedColor": "#d81e06",
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
 		"list": [{
@@ -22,14 +22,20 @@
 				"pagePath": "pages/category/category",
 				"iconPath": "static/img/tabBar/category.png",
 				"selectedIconPath": "static/img/tabBar/category-on.png",
-				"text": "商品"
+				"text": "分类"
 			},
 			{
 				"pagePath": "pages/shopList/shopList",
-				"iconPath": "static/img/tabBar/cart.png",
-				"selectedIconPath": "static/img/tabBar/cart-on.png",
+				"iconPath": "static/img/tabBar/shang.png",
+				"selectedIconPath": "static/img/tabBar/shang-on.png",
 				"text": "商家"
 			},
+			{
+				"pagePath": "cms/discover/discover",
+				"iconPath": "static/img/tabBar/imglist.png",
+				"selectedIconPath": "static/img/tabBar/imglist-on.png",
+				"text": "随拍"
+			},					
 			{
 				"pagePath": "pages/user/user",
 				"iconPath": "static/img/tabBar/user.png",
@@ -38,6 +44,8 @@
 			}
 		]
 	},
+
+
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{	//主页
 			"path": "pages/index/index",

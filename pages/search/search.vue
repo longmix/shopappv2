@@ -93,6 +93,7 @@
 				content:'',
 				showModalStatus:false,
 				wxa_product_list_style:'',
+				
 				wxa_shop_nav_bg_color:'',
 			}
 		},
@@ -583,7 +584,7 @@
 	}
 	.search input{
 	    width: 90%;
-	    border-radius: 30rpx;
+	    border-radius: 20rpx;
 	    background: #fff;
 	    border: none;
 	    font-size: 25rpx;
