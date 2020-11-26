@@ -806,9 +806,20 @@
 							fail: function(res) {
 								console.log('uni.requestPayment====>>>>>fail====>>>>', res);
 								
+								var msg001 = '支付失败';
+								if(res && res.errMsg){
+									if(res.errMsg.indexOf('cancel') > 0){
+										msg001 = '支付已经取消';
+									}
+									else{
+										msg001 += '，';
+										msg001 += res.errMsg;
+									}
+								}
+								
 								uni.showModal({
-									title: '支付失败',
-									content: ''+JSON.stringify(res),
+									title: '提示',
+									content: msg001,
 									showCancel:false,
 								})
 								
