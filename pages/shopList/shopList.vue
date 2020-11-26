@@ -1016,7 +1016,7 @@
 		justify-content: center;
 		display: flex;
 		align-items: center;
-		border-radius: 20rpx;
+		border-radius: 10rpx;
 		height: 50rpx;
 		width: 100%;
 

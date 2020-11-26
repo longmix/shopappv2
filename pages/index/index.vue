@@ -1908,7 +1908,7 @@ page{position: relative;background-color: #fff;}
 		width: 100%;
 		height: 60upx;
 		background-color: #f5f5f5;
-		border-radius: 20rpx;
+		border-radius: 10rpx;
 		position: relative;
 		display: flex;
 		align-items: center;

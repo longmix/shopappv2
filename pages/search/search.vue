@@ -584,7 +584,7 @@
 	}
 	.search input{
 	    width: 90%;
-	    border-radius: 20rpx;
+	    border-radius: 10rpx;
 	    background: #fff;
 	    border: none;
 	    font-size: 25rpx;
