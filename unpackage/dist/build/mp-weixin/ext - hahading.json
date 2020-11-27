@@ -1,0 +1,82 @@
+{
+  "extEnable": true,
+  "extAppid": "wx4b5776869b963bd4",
+  "directCommit": true,
+  "ext": {
+    "name": "wechat",
+    "attr": {
+      "host": "open.weixin.qq.com",
+      "users": [
+        "user_1",
+        "user_2"
+      ]
+    },
+    "xiaochengxu_appid": "wx4b5776869b963bd4",
+    "force_sellerid_flag": 1,
+    "force_sellerid_value": "fimmUPUPV",
+    "shop_name": "哈哈订",
+    "version_number": "Ver 1.7.2 Build 219",
+    "navigationBarBackgroundColor_fixed": 1,
+    "kefu_telephone": "",
+    "kefu_qq": "",
+    "kefu_website": "",
+    "kefu_gongzhonghao": "",
+    "default_copyright_text": "上海哈哈订信息科技有限公司 @ 版权所有"
+  },
+  "extPages": {
+    "pages/publish/publish_list": {
+      "navigationBarTitleText": "分类信息"
+    },
+    "pages/user/user": {
+      "navigationBarTitleText": "个人中心"
+    }
+  },
+  "tabBar": {
+    "color": "#333333",
+    "selectedColor": "#d81e06",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "static/img/tabBar/home.png",
+        "selectedIconPath": "static/img/tabBar/home-on.png",
+        "text": "首页"
+      },      
+      {
+        "pagePath": "pages/shopList/shopList",
+        "iconPath": "static/img/tabBar/category.png",
+        "selectedIconPath": "static/img/tabBar/category-on.png",
+        "text": "附近"
+      },
+      {
+        "pagePath": "cms/discover/discover",
+        "iconPath": "static/img/tabBar/imglist.png",
+        "selectedIconPath": "static/img/tabBar/imglist-on.png",
+        "text": "随拍"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "iconPath": "static/img/tabBar/user.png",
+        "selectedIconPath": "static/img/tabBar/user-on.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#073892",
+    "navigationBarTitleText": "哈哈订",
+    "navigationBarTextStyle": "white"
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "downloadFile": 10000
+  },
+  "navigateToMiniProgramAppIdList": [
+    "wx00d1e2843c3b3f77",
+    "wx5ade221daf329103",
+    "wx424d6888ee0403e9",
+    "wxa36bafa53080cac8"
+  ]
+}
