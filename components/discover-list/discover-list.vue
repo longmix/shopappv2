@@ -51,8 +51,13 @@
 									
 									</video>
 									<view v-else class="" @tap="start_and_stop_other_videos(item2.imgid)"> <!-- 封面图片层 -->
-										<view class="i_box">
-											<image class="video_img" :src="item2.video_img" mode="widthFix"></image>
+										<view class="i_box"
+										:style="{width:videometa_width_height_list[item2.index][0] + 'rpx',height:videometa_width_height_list[item2.index][1] + 'rpx'}">
+											<image class="video_img" 
+											:src="item2.video_img" 
+											:style="{width:videometa_width_height_list[item2.index][0] + 'rpx',height:videometa_width_height_list[item2.index][1] + 'rpx'}"
+											mode="widthFix"
+											></image>
 											<view class="video_logo cuIcon-playfill">
 												<image src="https://yanyubao.tseo.cn/Tpl/static/images/video_live/play_white.png"></image>
 											</view>
