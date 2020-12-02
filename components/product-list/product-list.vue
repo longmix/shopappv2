@@ -86,13 +86,14 @@
 				}
 				.name{
 					width: 92%;
-					margin: 10upx 4%;
+					margin: 10rpx 4%;
 					display: -webkit-box;
 					-webkit-box-orient: vertical;
 					-webkit-line-clamp: 2;
 					text-align: justify;
 					overflow: hidden;
-					font-size: 30upx;
+					font-size: 30rpx;
+					height: 80rpx;
 				}
 				.info{
 					display: flex;

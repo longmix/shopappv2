@@ -85,7 +85,8 @@
 							
 					</view>						
 					<view class="row">
-						<button class="baocun"  form-type="submit">
+						<button class="baocun" form-type="submit"
+							:style="{backgroundColor:wxa_shop_nav_bg_color}">
 							保存地址
 						</button>
 					
@@ -139,7 +140,9 @@
 				address:'',
 				moren: '',
 				cityPickerValue: [0, 0, 1],
-				themeColor: '#007AFF',
+				//themeColor: '#007AFF',
+				
+				wxa_shop_nav_bg_color:'#07c160', 
 			};
 		},
 		onLoad:function(options) {
@@ -148,7 +151,12 @@
 			var that = this;
 			console.log('44444',options)
 			var userInfo = this.abotapi.get_user_info();
-			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
+			
+			this.abotapi.set_option_list_str(that, function(that002, option_list){
+				that.wxa_shop_nav_bg_color  = option_list.wxa_shop_nav_bg_color;
+				
+			});
+			
 			//获取传递过来的参数
 			
 			this.addressid = options.addressId;

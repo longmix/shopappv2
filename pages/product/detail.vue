@@ -2714,11 +2714,13 @@
 	.re-h {
 		margin: 20upx;
 		font-size: 28rpx;
+		color:#666;
 	}
 
 	.re-goods {
 		float: left;
 		width: 33%;
+		margin-bottom: 30rpx;
 	}
 
 	.re-goods image {
@@ -2739,8 +2741,9 @@
 
 	.re-price {
 		font-size: 28upx;
-		text-align: center;
+		text-align: left;
 		color: #f47925;
+		margin-left: 35upx;
 	}
 
 	.warm {

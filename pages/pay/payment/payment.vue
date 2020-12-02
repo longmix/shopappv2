@@ -79,11 +79,13 @@
 			</view>
 			<view class='vw1'>
 				<text>余额支付：</text>
-				<view class='view2'>-{{balance_dikou}}</view>
+				<view class='view2' v-if="balance_dikou != 0">-{{balance_dikou}}</view>
+				<view class='view2' v-if="balance_dikou == 0">0</view>
 			</view>
 			<view class='vw1'>
 				<text>赠款支付：</text>
-				<view class='view2'>-{{balance_zengsong_dikou}}</view>
+				<view class='view2' v-if="balance_zengsong_dikou != 0">-{{balance_zengsong_dikou}}</view>
+				<view class='view2' v-if="balance_zengsong_dikou == 0">0</view>
 			</view>
 			<view class='vw1'>
 				<text>应付金额：</text>

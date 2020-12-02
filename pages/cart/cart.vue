@@ -31,8 +31,10 @@
 							<image :src="item.picture"></image>
 						</view>
 						<view class="info">
-							<view class="title">{{item.name}}</view>
-							<!-- <view class="spec">{{item.spec}}</view> -->
+							<view class="title" v-if="item.status == 1">{{item.name}}</view>
+							<view class="title" v-if="item.status != 1"><del>{{item.name}}</del></view>
+							
+							<view class="spec" v-if="item.status != 1">商品已下架</view>
 							<view class="price-number">
 								<view class="price">￥{{item.price}}</view>
 								<view class="number">
@@ -63,7 +65,9 @@
 			<!-- <view class="delBtn" @tap="deleteList" v-if="selectedList.length>0">删除</view> -->
 			<view class="settlement">
 				<view class="sum">合计:<view class="money">￥{{sumPrice}}</view></view>
-				<view class="btn" @tap="toConfirmation(selectedList)">结算({{selectedList.length}})</view>
+				<view class="btn" 
+					:style="{backgroundColor:wxa_shop_nav_bg_color}"
+					@tap="toConfirmation(selectedList)">结算({{selectedList.length}})</view>
 			</view>
 		</view>
 	</view>
@@ -89,7 +93,9 @@
 				//控制滑动效果
 				theIndex:null,
 				oldIndex:null,
-				isStop:false
+				isStop:false,
+				
+				wxa_shop_nav_bg_color:'#f06c7a', 
 			}
 		},
 		onPageScroll(e){
@@ -106,7 +112,11 @@
 		},
 		onLoad() {
 			var that = this;
-			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
+			this.abotapi.set_option_list_str(that, function(that002, option_list){
+				that.wxa_shop_nav_bg_color  = option_list.wxa_shop_nav_bg_color;
+				
+			});
+			
 			that.get_shop_list();
 			
 			//兼容H5下结算条位置
@@ -612,7 +622,7 @@
 		}
 	.place{
 		background-color: #ffffff;
-		height: 100upx;
+		height: 50upx;
 		/*  #ifdef  APP-PLUS  */
 		margin-top: var(--status-bar-height);
 		/*  #endif  */
