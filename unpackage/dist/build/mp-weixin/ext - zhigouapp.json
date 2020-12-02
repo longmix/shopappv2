@@ -17,6 +17,8 @@
     "shop_name": "志购",
     "version_number": "Ver 1.7.1 Build 209",
     "navigationBarBackgroundColor_fixed": 1,
+    "navigationBar_font_color":"#ffffff",
+    "navigationBar_bg_color":"#3D9140",
     "kefu_telephone": "",
     "kefu_qq": "",
     "kefu_website": "",

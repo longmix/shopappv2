@@ -66,7 +66,15 @@
 					this.abotapi.globalData.navigationBarBackgroundColor_fixed = extConfig.navigationBarBackgroundColor_fixed;
 					console.log('extConfig.navigationBarBackgroundColor_fixed===>>>', extConfig.navigationBarBackgroundColor_fixed);
 					
-					this.abotapi.globalData.navigationBarBackgroundColor = extConfig.navigationBarBackgroundColor;
+					if(extConfig.navigationBar_font_color){
+						this.abotapi.globalData.navigationBar_font_color = extConfig.navigationBar_font_color;
+					}
+					
+					if(extConfig.navigationBar_bg_color){
+						this.abotapi.globalData.navigationBar_bg_color = extConfig.navigationBar_bg_color;
+					}
+					
+					
 				}
 
 

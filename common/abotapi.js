@@ -540,7 +540,6 @@ module.exports = {
 					
 					//如果是固定了导航条颜色
 					if (that002.globalData.navigationBarBackgroundColor_fixed == 1){
-						console.log('保存商城选项数据=========>>>>>固定导航栏背景和文字颜色');
 						
 						if(that002.globalData.navigationBar_font_color && that002.globalData.navigationBar_bg_color){
 							option_data.option_list.wxa_shop_nav_font_color = that002.globalData.navigationBar_font_color;
@@ -550,7 +549,7 @@ module.exports = {
 							console.log('保存商城选项数据=========>>>>>但是没有设置这两项，所以导航栏之外无效。');
 						}
 						
-						
+						console.log('保存商城选项数据=========>>>>>固定导航栏背景和文字颜色', option_data);
 					}
 				
 					//保存到本地
