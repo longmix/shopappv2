@@ -800,6 +800,15 @@ export default {
 				return;
 			}
 			
+			if(cb_params.option_list.shutdown_website_status == 1){
+				//跳转到网站关闭的提示页面
+				console.log("跳转到网站关闭的提示页面");
+				uni.reLaunch({
+					url:'/pages/shutdown_website/shutdown_website'
+				})
+				return;
+			}
+			
 			if(cb_params.option_list.wxa_shop_new_name){
 				uni.setNavigationBarTitle({
 					title:cb_params.option_list.wxa_shop_new_name
