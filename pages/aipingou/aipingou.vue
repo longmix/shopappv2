@@ -1,4 +1,12 @@
 <template>
+<!-- 
+
+1、去拼团的跳转：  /pages/product/detail?productid=12345&cuxiao_huodong=aipingou
+2、去开团的跳转：  /pages/order/pay?productid=12345&cuxiao_huodong=aipingou
+3、去参加某个团：  /pages/order/pay?productid=12345&cuxiao_huodong=aipingou&tuansn=abcdefg123456
+    tuansn为团编号
+
+-->
 	<view>
 		<!--cms/discover/discover.wxml-->
 		

@@ -236,6 +236,9 @@
 		 * 
 		 * 主要参数如下：
 		 * 
+
+productid 两种情况：（1）直接一个数组，productid；（2）不是直接的数值，而是一个数组。
+
 continue_to_pay 选填，如果有值且为1，则使用缓存的options参数。
 total 合计支付的金额
 order_type_001
@@ -251,7 +254,8 @@ waimai_list_ + xianmaishangid 读取外卖购物车缓存
 cart_list_ + xianmaishangid 读取堂食购物车缓存
 
 //2020.12.3. 爱拼团的参数
-
+cuxiao_huodong == aipingou
+tuansn = 参团的编号，如果没有，则代表新开团
 
 		
 		 * 
