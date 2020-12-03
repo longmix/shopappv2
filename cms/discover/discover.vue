@@ -121,7 +121,7 @@
 			@fanquaDianzan="fanquaDianzan" 
 			@bigImg="bigImg"
 			@start_and_stop_other_videos="start_and_stop_other_videos"
-			@videometa_handle="videometa_handle" 
+			@videometa_handle888="videometa_handle" 
 			@change_faquan_status="change_faquan_status"
 			@oneClickSave="oneClickSave" 
 			@fanquanCollect="fanquanCollect" 
@@ -511,6 +511,8 @@
 
 			videometa_handle: function(e) {
 				console.log('videometa_handle======>>>>>', e);
+				
+				return;
 				
 				//一次只能播放一个视频
 				/* 该方法只适用于H5，因为uniapp的浏览器框架中没有 document 这个对象，也就没有getElementsByTagName这个方法

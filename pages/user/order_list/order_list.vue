@@ -6,7 +6,7 @@
 			<view class="input-box"
 			 :style="'border:2rpx solid '+ wxa_shop_nav_bg_color + ';'"
 			 >
-				<input placeholder="请输入订单号或商品名称" placeholder-style="color:#c0c0c0;" style="background: #f5f5f5;margin-left: 5rpx;" v-model="order_form_postal"/>
+				<input placeholder="请输入订单号" placeholder-style="color:#c0c0c0;" style="background: #f5f5f5;margin-left: 5rpx;" v-model="order_list_filter_keywords"/>
 				<view class="icon search" @tap="loadOrderList()"></view>
 			</view>
 			<view class="swiper-tab-list" :class="currentTab==0 ? 'on' : ''" data-current="0" data-otype="0"  @tap="swichNav">全部</view>
@@ -411,7 +411,7 @@
 				wxa_order_hide_daishouhuo_refund:'',
 				wxa_order_hide_daishouhuo_refund_after:'',
 				wxa_shop_nav_bg_color:'',
-				order_form_postal:''
+				order_list_filter_keywords:''
 			}
 		},
 		
@@ -816,9 +816,9 @@
 					userid: userInfo.userid
 				}
 				
-				console.log('888888888',this.order_form_postal);
-				if(this.order_form_postal){
-					post_data.order_form_postal = this.order_form_postal;
+				console.log('888888888',this.order_list_filter_keywords);
+				if(this.order_list_filter_keywords){
+					post_data.order_list_filter_keywords = this.order_list_filter_keywords;
 				}
 				uni.request({
 					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_index',
@@ -1305,7 +1305,7 @@
 		margin: 0 auto;
 		height: 60upx;
 		background-color: #f5f5f5;
-		border-radius: 30upx;
+		border-radius: 10upx;
 		position: relative;
 		display: flex;
 		align-items: center;
