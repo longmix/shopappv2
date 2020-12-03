@@ -222,7 +222,11 @@
 				orderredpackge_list:[],
 				redpackge_lingqu_score:0,
 				is_ordering_redpackge_click:false,
-				redpackge_text_tips:''
+				redpackge_text_tips:'',
+				
+				//2020.12.3. 爱拼团的参数
+				__cuxiaohuodong:null,
+				__order_option_new_list:'',	//可能追加的订单的选项
 			};
 		},
 		
@@ -233,32 +237,28 @@
 		 * 主要参数如下：
 		 * 
 continue_to_pay 选填，如果有值且为1，则使用缓存的options参数。
-
 total 合计支付的金额
-
 order_type_001
-	
-	
 	shopmall （默认，可以不传）
 		action 默认不传，支持action=directbuy
 		productid 商品ID
-	
 	xianmaishang 实体商家的订单
 		xianmaishangid 商家的ID
-		is_waimai 是否外卖订单，默认不传，支持 1 代表是外卖订单
-		
-	
-ucid 优惠券
-	
+		is_waimai 是否外卖订单，默认不传，支持 1 代表是外卖订单		
+ucid 优惠券	
 price_type 保留参数
-
-
 waimai_list_ + xianmaishangid 读取外卖购物车缓存
 cart_list_ + xianmaishangid 读取堂食购物车缓存
+
+//2020.12.3. 爱拼团的参数
+
+
 		
 		 * 
 		 */
 		onLoad(options) {
+			this.abotapi.set_option_list_str(this, this.callback_function);
+			
 			var that = this;
 			
 			console.log('order/pay 参数：', options);
@@ -360,6 +360,33 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 			}
 			
 			
+			//2020.12.3. 爱拼团的参数
+			if(options.cuxiao_huodong && (options.cuxiao_huodong == 'aipingou')){
+				that.__cuxiaohuodong = options.cuxiao_huodong;
+				
+				that.__order_option_new_list = [];
+				
+				//增加一个选项：标志位，代表这个订单需要调用爱拼购的规则
+				that.__order_option_new_list.push(
+					{ "key": "aipingou_tuan_flag", "value": '1' },);
+				
+				if(options.tuansn){
+					//增加一个选项：代表要参加这个团
+					that.__order_option_new_list.push(
+						{ "key": "aipingou_tuan_tuansn", "value": '1' },);
+				}					
+							
+									
+									
+				var tuansn = options.tuansn;
+				
+				
+			}
+			//=============== End =================
+			
+			
+			
+			
 			that.productid = options.productid;
 			that.amount = options.amount;
 			that.action = options.action;
@@ -377,7 +404,7 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 			}
 			
 
-			this.abotapi.set_option_list_str(this, this.callback_function);
+			
 			
 		},
 		onShow() {
@@ -1107,8 +1134,17 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 							that.orderno = res.data.orderno;
 							
 							if(that.order_type_001 == 'shopmall'){
+								var url_to_payment = '/pages/pay/payment/payment?orderId=' + that.orderid + '&balance_zengsong_dikou=' + that.balance_zengsong_dikou + '&balance_dikou=' + that.balance_dikou + '&traffic_price=' + that.traffic_price;
+								
+								if(that.__cuxiaohuodong && (that.__cuxiao_huodong == 'aipingou')){
+									//写爱拼购活动的选项
+									that.__cuxiao_aipingou_add_order_option(url_to_payment);
+									
+									return;
+								}								
+								
 								uni.redirectTo({
-									url: '/pages/pay/payment/payment?orderId=' + that.orderid + '&balance_zengsong_dikou=' + that.balance_zengsong_dikou + '&balance_dikou=' + that.balance_dikou + '&traffic_price=' + that.traffic_price,
+									url: url_to_payment,
 								})
 							}
 							else if(that.order_type_001 == 'xianmaishang'){
@@ -1580,6 +1616,34 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 				
 				
 			},
+			//2020.12.3. 爱拼团
+			__cuxiao_aipingou_add_order_option:function(url_to_payment){
+				var order_add_new_option_by_key_value_str = encodeURIComponent(JSON.stringify(this.__order_option_new_list));
+							
+				that.abotapi.abotRequest({
+				  url: that.abotapi.globalData.yanyubao_server_url + 'Yanyubao/ShopApp/order_add_new_option_by_key_value',
+				  data: {
+				    sellerid: that.abotapi.get_sellerid(),
+				    orderid: that.orderid,
+				    order_option_key_and_value_str: order_add_new_option_by_key_value_str
+				  },
+				  success: function (res) {
+					
+					uni.redirectTo({
+						url:url_to_payment,
+					})  
+					 
+					  
+				  },
+				  fail: function (res) {
+				    that.setData({
+				      btnDisabled: false,
+				    });
+				  }
+				});
+				
+				
+			}
 			
 			
 		}

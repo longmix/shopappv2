@@ -343,6 +343,14 @@
 				</view>
 			</view>
 		</view>
+		
+		<!-- 2020.12.3. 爱拼团活动对应的 已经开出 且 没有成团 的 团列表 -->
+		<view v-if="is_aipingou_tuan_list">
+			
+		</view>
+		
+		<!-- ==================End========================== -->
+		
 
 		<!-- 评价 -->
 		<!-- <view class="info-box comments" id="comments">
@@ -545,10 +553,19 @@
 				
 				//客服按钮点击后的消息类型
 				app_kefu_msg_type:'is_call_mobile',
+				
+				//2020.12.3. 爱拼团
+				is_aipingou_tuan_list:false
 
 			};
 		},
-		onLoad(option) {
+		/**
+		 * 参数：
+		 * userid  推荐者ID
+		 * productid 商品ID
+		 * cuxiao_huodong 是否来自促销活动，对应的值为具体的活动名称
+		 */
+		onLoad(options) {
 			this.abotapi.set_option_list_str(this, this.callback_set_option_list_str);
 			this.abotapi.get_shop_info_from_server(this.callback_func_for_shop_info);
 
@@ -556,11 +573,11 @@
 
 			var that = this;
 
-			var options_str = '';
+			var options_str = '';	//记录网址带的参数
 
 			//如果当前访问者没有登录或者注册，那么分析转发过来的链接是否带有推荐者信息
 			var userInfo = that.abotapi.get_user_info();
-			if (option.userid) {
+			if (options.userid) {
 
 				if ((!userInfo) || (!userInfo.userid)) {
 					that.abotapi.set_current_parentid(options.userid);
@@ -568,17 +585,28 @@
 			}
 
 
-			if (option.productid) {
-				that.productid = option.productid;
+			if (options.productid) {
+				that.productid = options.productid;
 
-				options_str += 'productid=' + option.productid + '&';
+				options_str += 'productid=' + options.productid + '&';
 			}
 
 
-			if (option.price_type) {
-				that.price_type = option.price_type;
+			//不知道这个参数有什么用处
+			if (options.price_type) {
+				that.price_type = options.price_type;
 
-				options_str += 'price_type=' + option.price_type + '&';
+				options_str += 'price_type=' + options.price_type + '&';
+			}
+			
+			//2020.12.3. 爱拼团
+			if(options.cuxiao_huodong && (options.cuxiao_huodong == 'aipingou')){
+				options_str += 'cuxiao_huodong=' + options.cuxiao_huodong + '&';
+				
+				that.is_aipingou_tuan_list = true;
+				
+				//获取正在等待开团的团列表
+				that.__get_aipingou_tuan_list(options.productid);
 			}
 
 			options_str = options_str.substr(0, options_str.length - 1);
@@ -589,10 +617,10 @@
 
 
 			//渠道商品 2020.8.21.
-			if (!this.abotapi.isNullOrUndefined(option.product_source_channel)) {
-				this.product_source_channel = option.product_source_channel;
+			if (!this.abotapi.isNullOrUndefined(options.product_source_channel)) {
+				this.product_source_channel = options.product_source_channel;
 
-				this.product_channel_name = option.product_channel_name;
+				this.product_channel_name = options.product_channel_name;
 
 				this.icon_btn_gouwuche_text = '购买';
 			}
@@ -789,7 +817,7 @@
 			this.showBack = false;
 			// #endif
 			//option为object类型，会序列化上个页面传递的参数
-			console.log(option.cid); //打印出上个页面传递的参数。
+			console.log(options.cid); //打印出上个页面传递的参数。
 
 
 
@@ -1771,6 +1799,17 @@
 				else{
 					this.current_video_playing = 1;
 				}
+			},
+			//2020.12.3. 爱拼团
+			__get_aipingou_tuan_list:function(productid){
+				//请求团列表
+				
+				
+				
+				
+				
+				
+				
 			}
 		},
 

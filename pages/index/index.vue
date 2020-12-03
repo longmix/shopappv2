@@ -205,7 +205,7 @@
 		<!-- 隐私协议的弹层 begin-->
 		<view class="zhezhao" v-if="know==true"></view>
 		<view class="kcrzxy" v-if="know==true">
-		    <view class="kcrzxyhd" :style="{background:wxa_shop_nav_bg_color + ';font-size:26upx;'}">服务协议和私政策</view>
+		    <view class="kcrzxyhd" :style="{backgroundColor:wxa_shop_nav_bg_color}">服务协议和私政策</view>
 		    <scroll-view scrollY class="kcrzxybd" style="height: 600rpx;">
 		        <view style="width: 100%;overflow: hidden;" auto-height='true'>
 					<view style="float: left;">请你务必审慎阅读、充分理解“服务协议”和“隐私政策”的各条款，包括但不限于、内容分享等服务，我们需要收集你的设备信息、操作日志等个人信息。你可以在“设置”中查看、变更、删除个人信息并系统应用管理中删除此应用。你可以阅读</view>
@@ -217,7 +217,7 @@
 		    </scroll-view>
 			<view style="display: flex;justify-content: center;">
 				<view @click="tongyi_yinsi_cfg" data-index='2' class="queren" style="font-size:26upx;background: #ccc;" >不同意</view>
-				<view @click="tongyi_yinsi_cfg" data-index='1' class="queren" :style="{background:wxa_shop_nav_bg_color + ';font-size:26upx;'}">同意</view>
+				<view @click="tongyi_yinsi_cfg" data-index='1' class="queren" :style="{backgroundColor:wxa_shop_nav_bg_color}">同意</view>
 				
 			</view>
 		</view>
@@ -2338,7 +2338,7 @@ page{position: relative;background-color: #fff;}
 	
 	.kcrzxyhd {
 	text-align: center;
-	font-size: 30rpx;
+	font-size: 26rpx;
 	background: #f44444;
 	height: 70rpx;
 	line-height: 70rpx;
@@ -2357,7 +2357,7 @@ page{position: relative;background-color: #fff;}
 	.queren {
 	height: 70rpx;
 	width: 30%;
-	font-size: 30rpx;
+	font-size: 26rpx;
 	line-height: 70rpx;
 	text-align: center;
 	color: white;

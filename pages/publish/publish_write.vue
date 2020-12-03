@@ -6,7 +6,7 @@
 			    <image style="width: 100%;" v-if="form_logourl"
 					:src="form_logourl" mode="widthFix"></image>
 			    <view v-if="form_intro" 
-					style="margin: 20rpx;font-size: 28rpx;color: #555;">{{form_intro}}</view>
+					style="margin: 20rpx;font-size: 28rpx;color: #555;word-break: break-word;">{{form_intro}}</view>
 
 			    <view class="wxParse"> 
 			        <scroll-view  scroll-y='true'>
@@ -116,7 +116,12 @@
 						
 						<view class="input-flex" style="overflow: auto;border-bottom: #DDDDDD 1upx solid;padding:17px 20px 10px" v-if="item.inputtype== 'date' || item.inputtype== 'text' && item.fieldname != 'imgimg_title'">
 							<view class="input-flex-label w60" style="float: left;">{{item.displayname}}<label class="FH" v-if="item.require == 1">*</label></view>
-							<input :type='item.inputtype'  :name="item.fieldname" style="float: left;width: 70%;" placeholder="点此输入" value="" v-if="item.inputtype== 'text'"/>
+							<input :type='item.inputtype'  
+								:name="item.fieldname" 
+								style="float: left;width: 70%;" 
+								placeholder="点此输入" 
+								value="" 
+								v-if="item.inputtype== 'text'"/>
 							 <picker mode="date" :value="date" :start="startDate" style="margin-left: 55%;margin-top: 6upx;" :type='item.inputtype' :end="endDate" @change="bindDateChange"  :data-fieldname='item.fieldname' v-if="item.inputtype== 'date'">
 								<view class="uni-input">{{date}}</view>
 							</picker>
@@ -147,7 +152,11 @@
 				<view class="kcrzxy" v-if="know==true">
 				    <view class="kcrzxyhd" :style="{background:wxa_shop_nav_bg_color + ';font-size:26upx;'}">内容规范</view>
 				    <scroll-view scrollY class="kcrzxybd" style="height: 600rpx;">
-				        <textarea :value="publish_write_fabu_xuzhi" style="width: 100%;" auto-height='true' maxlength="-1"></textarea>
+				        <textarea :value="publish_write_fabu_xuzhi" 
+							disabled="disabled"
+							style="width: 100%;" 
+							auto-height='true' 
+							maxlength="-1"></textarea>
 				    </scroll-view>
 				    <view @click="knows" class="queren" :style="{background:wxa_shop_nav_bg_color + ';font-size:26upx;'}">确定</view>
 				</view>
@@ -454,7 +463,8 @@
 									that.abotapi.call_h5browser_or_other_goto_url('/pages/index/index')
 									
 								}
-							})
+							});
+							
 							/*
 							uni.showToast({
 								 title: res.data.msg,
@@ -491,8 +501,13 @@
 							console.log('登录超时');
 							return;
 						}else{
-							uni.showToast({
-								title:res.data.msg,
+							uni.showModal({
+								title:'提交失败',
+								content: res.data.msg,
+								showCancel:false,
+								success: function (res01) {
+									
+								}
 							})
 						}
 										
