@@ -129,7 +129,7 @@
 					
 					
 					<!-- <upimg-box></upimg-box> -->
-					<view style="display: flex;font-size: 24rpx;color: #999;align-items: center;margin-top: 60rpx;margin-bottom: 16rpx;padding-left: 34rpx;"> 
+					<view class="fabu_xuzhi_block"> 
 					
 						<checkbox-group name='fabu_xuzhi' style="zoom:70%;margin-right: 8rpx;">
 								<checkbox value="1">
@@ -138,7 +138,8 @@
 						</checkbox-group>
 						<view>我已阅读并同意<text @click="knows" style="color: #007AFF;">《内容规范》</text></view>
 					</view>
-					<button formType="submit" :style="{backgroundColor:wxa_shop_nav_bg_color + ';font-size: 32upx'}" class="btn-row-submit">{{submit_text}}</button>
+					<button formType="submit" class="btn-row-submit"
+						:style="{backgroundColor:wxa_shop_nav_bg_color}">{{submit_text}}</button>
 				</form>
 				
 				<!-- 发布须知的弹层 -->
@@ -258,10 +259,12 @@
 			
 			this.abotapi.set_option_list_str(that, function(that002, shop_option_data){
 				console.log('shop_option_data',shop_option_data);
-				that002.abotapi.getColor();
+				
 				
 				that002.publish_write_fabu_xuzhi = shop_option_data.publish_write_fabu_xuzhi;
 				that002.wxa_shop_nav_bg_color = shop_option_data.wxa_shop_nav_bg_color;
+				
+				console.log('======>>>>>that002.wxa_shop_nav_bg_color ====>>>'+that002.wxa_shop_nav_bg_color);
 				
 			});
 			
@@ -269,7 +272,8 @@
 			
 			//判断登录（如果不是 2 万能表单，其他情况都要求用户登录后才能进入填写表单）
 			var userInfo = that.abotapi.get_user_info();		
-			if((this.form_type != 2) && (!userInfo || !userInfo.userid)){
+			if(( (this.form_type != 2) || ((this.form_type == 2) && options.mustlogin && (options.mustlogin == 1) ) ) 
+				&& (!userInfo || !userInfo.userid)){
 				
 				
 				//var last_url = '/pages/publish/publish_write?classid='+this.formid+'&name='+this.catename+'&submit_url='+this.submit_url+'&form_type='+this.form_type;
@@ -332,7 +336,7 @@
 				return `${year}-${month}-${day}`;
 			},			
 			
-			
+			//提交表单数据
 			formSubmit:function(e){
 				
 				if(e.detail.value.fabu_xuzhi[0] != 1){
@@ -403,6 +407,12 @@
 						formid:that.formid,
 						openid:this.abotapi.get_current_openid(),
 					}
+					
+					var userInfo = that.abotapi.get_user_info();
+					if(userInfo){
+						post_data.userid = userInfo.userid;
+					}
+					
 					for(var key in e.detail.value){
 						
 						post_data[key] = e.detail.value[key];
@@ -425,6 +435,8 @@
 				
 				if(that.submit_url){
 					submit_url = that.submit_url;
+					//因为数据要外送第三方，所以将checkstr设置成假的
+					post_data.checkstr = 'mock_checkstr';
 				}
 				
 				that.abotapi.abotRequest({
@@ -433,19 +445,32 @@
 					success: function(res) {
 						if(res.data.code == 1){
 							
+							uni.showModal({
+								title:'提交成功',
+								content: res.data.msg,
+								showCancel:false,
+								success: function (res01) {
+									
+									that.abotapi.call_h5browser_or_other_goto_url('/pages/index/index')
+									
+								}
+							})
+							/*
 							uni.showToast({
 								 title: res.data.msg,
 							});
 							
 							setTimeout(function(){
 								
-								/*uni.reLaunch({
-									url:"../publish/publish_list"
-								});*/
+								//uni.reLaunch({
+								//	url:"../publish/publish_list"
+								//});
+								
 								that.abotapi.call_h5browser_or_other_goto_url('/pages/index/index')
 								
-							},1000);
-						}else if(res.data.code == -1){
+							},1000);*/
+						}
+						else if(res.data.code == -1){
 							
 							uni.showModal({
 								title:'登录超时',
@@ -806,6 +831,16 @@
 		color: red;
 	}
 	
+	.fabu_xuzhi_block{
+		display: flex;
+		font-size: 24rpx;
+		color: #666;
+		align-items: center;
+		margin-top: 40rpx;
+		margin-bottom: 40rpx;
+		padding-left: 34rpx;
+	}
+	
 	.btn-row-submit{
 		width: 90%;
 		margin-left: 5%;
@@ -816,14 +851,15 @@
 		line-height: 80rpx;
 		background-color: #07c160;
 		color: #fff;
+		font-size: 32rpx
 
 	}
 	.input-flex-label{
-	    width: 23%;
+	    width: 26%;
 	    line-height: 43rpx;
 	    font-size: 32rpx;
 	}
-	.bk{
+	.bk888888{
 		color: #333;
 		margin-left: 77%;
 		line-height: 43rpx;

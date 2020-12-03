@@ -2,8 +2,8 @@
     "name" : "哈哈订",
     "appid" : "__UNI__5B54B05",
     "description" : "哈哈订APP",
-    "versionName" : "1.7.3",
-    "versionCode" : 215,
+    "versionName" : "1.7.4",
+    "versionCode" : 219,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true, //是否启用`自定义组件模式`，为true表示新的`自定义组件模式` ，否则为`template模板模式`   
