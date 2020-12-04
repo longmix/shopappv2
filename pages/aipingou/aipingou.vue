@@ -38,7 +38,7 @@
 								<br />
 								<button class="qupingou1">去拼购</button>
 								<br />
-								<button class="qupingou2">我的拼购</button>
+								<button class="qupingou2">去开团</button>
 							</td>
 			                <td>
 								
@@ -143,7 +143,8 @@
 			__get_rule_list: function(){
 				console.log('000000');
 				
-			}
+			},
+			
 		},
 		
 	}
