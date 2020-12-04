@@ -8,10 +8,12 @@
 		                    <view class="list-type">
 		                      <view class="list-zan-a" v-if="is_my_discover != 1">
 		
-		                        <image class='list-zan' :data-faquanid='item.faquanid' :data-index='idx' @tap="fanquaDianzan" :src="faquanList[idx].has_like == 0 ? '../../static/img/help/dianzan_grey.png' : '../../static/img/help/dianzan_red.png'"></image>
+		                        <image class='list-zan' :data-faquanid='item.faquanid' :data-index='idx' @tap="fanquaDianzan" 
+									:src="faquanList[idx].has_like == 0 ? '../../static/img/help/dianzan_grey.png' : '../../static/img/help/dianzan_red.png'"></image>
 		                        <view style="color:#707070;">{{item.like_num}}</view>
 		
-		                        <image @tap="fanquanCollect" :data-faquanid='item.faquanid' :data-index='idx' class='list-zan' :src="faquanList[idx].has_collect == 0 ? '../../static/img/help/star_off.png' : '../../static/img/help/star_on.png'"></image>
+		                        <image @tap="fanquanCollect" :data-faquanid='item.faquanid' :data-index='idx' class='list-zan' 
+									:src="faquanList[idx].has_collect == 0 ? '../../static/img/help/star_off.png' : '../../static/img/help/star_on.png'"></image>
 		                        <view style="color:#707070;">{{item.collect_num}}</view>
 		
 		                      </view>
@@ -29,7 +31,8 @@
 		                    <text class="list-des" @tap="copyText" :data-text="item.text" :data-id="item.faquanid">{{item.text}}</text>
 		
 		                    <view v-if="item.type == 0">  
-		                         <image v-for="(item2,index2) in item.img_or_video_list" :key="index2" lazy-load="true"  @tap='bigImg' mode="aspectFill" :data-index="idx" :data-index2="index2"  class="list-image"  :src="item2.url"  :data-id="item.faquanid"></image>                        
+		                         <image v-for="(item2,index2) in item.img_or_video_list" :key="index2" lazy-load="true"  @tap='bigImg' mode="aspectFill" 
+									:data-index="idx" :data-index2="index2"  class="list-image"  :src="item2.url"  :data-id="item.faquanid"></image>                        
 		                    </view>
 		
 		                    <view v-else>
@@ -70,6 +73,12 @@
 		                </view>  <!-- End of 003  -->
 		                
 		                <view class="pb-time">{{item.createtime}}</view>
+						<view style="display:block; float:right;height: 60px;margin-top: 30rpx">
+							<image class='list-zan' style="float:left;" 
+								:data-faquanid='item.faquanid' :data-index='idx' @tap="fanquaJubao"
+								src="../../static/img/help/jubao.png"></image>
+							<view style="color:#707070;float: left;">举报</view>
+						</view>
 		
 		
 		                <block v-if="is_my_discover_collection || is_my_discover">
@@ -176,6 +185,9 @@
 		methods:{
 			fanquaDianzan:function(fanquaDianzan){
 				this.$emit('fanquaDianzan',fanquaDianzan);
+			},
+			fanquaJubao:function(fanquaJubao){
+				this.$emit('fanquaJubao', fanquaJubao);
 			},
 			copyText:function(copyText){
 				this.$emit('copyText',copyText);
@@ -330,5 +342,12 @@
 	.cuIcon-playfill image {
 		width: 60rpx;
 		height: 60rpx;
+	}
+	
+	.pb-time{
+		height: 60rpx;
+		line-height: 60rpx;
+		margin:20rpx 0;
+		float:left;
 	}
 </style>

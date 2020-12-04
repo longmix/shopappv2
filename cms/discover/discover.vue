@@ -118,7 +118,8 @@
 			:disabled="disabled" 
 			:videometa_width_height_list="videometa_width_height_list"
 			:current_playing_videoid = "current_video_id_playing"
-			@fanquaDianzan="fanquaDianzan" 
+			@fanquaDianzan="fanquaDianzan"
+			@fanquaJubao="fanquaJubao"
 			@bigImg="bigImg"
 			@start_and_stop_other_videos="start_and_stop_other_videos"
 			@videometa_handle888="videometa_handle" 
@@ -1303,7 +1304,49 @@
 							duration: 2000
 						});
 					},
-				})
+				});
+			},
+			//发圈举报
+			fanquaJubao:function(e){
+				console.log('e=======', e)
+				var that = this;
+				var faquanid = e.target.dataset.faquanid;
+				var index = e.target.dataset.index;
+				
+				var userInfo = this.abotapi.get_user_info();
+				
+				that.abotapi.abotRequest({
+					url: this.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/faquan_jubao',
+					method: 'post',
+					data: {
+						sellerid: this.abotapi.get_sellerid(),
+						userid: userInfo ? userInfo.userid : '',
+						faquanid: faquanid,
+					},
+					header: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					},
+					success: function(res) {
+						
+						var msg = '您的举报请求我们已经收到，并将尽快处理！';
+						if(res.data.msg){
+							msg = res.data.msg;
+						}
+						
+						uni.showModal({
+							title:'感谢反馈',
+							content:msg,
+							showCancel:false
+						})
+				
+					},
+					fail: function(e) {
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+					},
+				});
 			},
 
 			//一键保存
