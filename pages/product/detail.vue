@@ -344,8 +344,28 @@
 			</view>
 		</view>
 		
-		<!-- 2020.12.3. 爱拼团活动对应的 已经开出 且 没有成团 的 团列表 -->
-		<view v-if="is_aipingou_tuan_list">
+		<!-- 2020.12.3. 爱拼团活动对应的 已经开出 且 没有成团 的 团列表 v-if="is_aipingou_tuan_list"-->
+		<view class="is_aipingou_tuan_list" >
+			
+			<!-- aipingou_tuan_list-->
+			<view class="aipin_tuan">
+				<image src="../../static/img/VIP.png" mode="widthFix"></image>
+				<button type="button">参团</button>
+			</view>
+			<view class="aipin_tuan">
+				<image src="../../static/img/VIP.png" mode="widthFix"></image>
+				<button type="button">参团</button>
+			</view>
+			<view class="aipin_tuan">
+				<image src="../../static/img/VIP.png" mode="widthFix"></image>
+				<button type="button">参团</button>
+			</view>
+			<view class="aipin_tuan">
+				<image src="../../static/img/VIP.png" mode="widthFix"></image>
+				<button type="button">参团</button>
+			</view>
+			
+			
 			
 		</view>
 		
@@ -555,7 +575,8 @@
 				app_kefu_msg_type:'is_call_mobile',
 				
 				//2020.12.3. 爱拼团
-				is_aipingou_tuan_list:false
+				is_aipingou_tuan_list:false,
+				aipingou_tuan_list:null,
 
 			};
 		},
@@ -569,7 +590,7 @@
 			this.abotapi.set_option_list_str(this, this.callback_set_option_list_str);
 			this.abotapi.get_shop_info_from_server(this.callback_func_for_shop_info);
 
-			console.log('/pages/product/detail=====', option);
+			console.log('/pages/product/detail=====', options);
 
 			var that = this;
 
@@ -829,6 +850,7 @@
 		},
 		onShow() {
 			this.getCartList();
+			this.__get_aipingou_tuan_list();
 		},
 		onHide(){
 			this.current_video_playing = 0;
@@ -1801,13 +1823,28 @@
 				}
 			},
 			//2020.12.3. 爱拼团
-			__get_aipingou_tuan_list:function(productid){
+			__get_aipingou_tuan_list:function(){
 				//请求团列表
-				
-				
-				
-				
-				
+				// this.aipingou_tuan_list
+					var that =this;
+					var userInfo = this.abotapi.get_user_info();
+						
+					var post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/AipingouData/get_tuan_list';
+					
+					that.abotapi.abotRequest({
+						url: post_url,
+						data: {
+							sellerid: that.abotapi.get_sellerid(),
+						},
+						success: function(res) {
+						 
+						
+						},
+						fail: function(e) {
+						
+						
+							},
+						});	
 				
 				
 			}
@@ -2932,5 +2969,16 @@
 		align-items: center;
 		background-color: #fff;
 		margin-bottom: 5px;
+	}
+	.is_aipingou_tuan_list{
+		display: flex;
+		
+	}
+	.is_aipingou_tuan_list .aipin_tuan{
+		text-align: center;
+		width:25%;
+	}
+	.aipin_tuan image{
+		width: 50%;
 	}
 </style>

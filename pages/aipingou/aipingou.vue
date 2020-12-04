@@ -36,9 +36,9 @@
 			                <td class="product_name">
 								<h1>{{item.product_name}}</h1>
 								<br />
-								<button class="qupingou1">去拼购</button>
+								<button class="qupingou1" >去拼购</button>
 								<br />
-								<button class="qupingou2">去开团</button>
+								<button class="qupingou2" @tap="aipingou_open_tuan(item.productid)">去开团</button>
 							</td>
 			                <td>
 								
@@ -113,7 +113,7 @@
 			//获取拼团宣传图片和标题
 			__get_setting_list: function() {
 				var that = this;
-				var post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/AipingouData/get_seting';
+				var post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/AipingouData/get_seting';
 
 
 				that.abotapi.abotRequest({
@@ -124,7 +124,6 @@
 
 					success: function(res) {
 
-						var settingList = res.data.data;
 						that.aipingou_xuanchuan_image = res.data.aipingou_seting;
 						
 
@@ -144,7 +143,7 @@
 			},
 			__get_rule_list: function(){
 				var that = this;
-				var post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/AipingouData/get_rule_list';
+				var post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/AipingouData/get_rule_list';
 				
 				that.abotapi.abotRequest({
 					url: post_url,
@@ -166,7 +165,39 @@
 					
 						},
 					});	
-			},	
+			},
+				
+			//去开团
+			aipingou_open_tuan:function(productid){
+				var that =this;
+				var userInfo = this.abotapi.get_user_info();
+				
+				//console.log('88888aaaaaaaaa',userInfo,userInfo.userid);
+				//判断是否登录
+				
+				if (!userInfo || !userInfo.userid) {
+					uni.showToast({
+						title: '请先登录',
+						icon: 'none',
+						duration: 1000,
+					});
+				
+					var last_url = '/pages/order/pay?productid='+ productid +'&cuxiao_huodong=aipingou';
+					
+					this.abotapi.goto_user_login(last_url, 'normal');
+					return;
+				}
+				
+				uni.redirectTo({
+					url:'/pages/order/pay?productid='+ productid +'&cuxiao_huodong=aipingou',
+				});
+				
+			},
+			//去拼购
+			aipingou_buy_together:function(){
+				var that = this;
+				
+			}
 		},
 		
 	}

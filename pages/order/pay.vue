@@ -225,8 +225,8 @@
 				redpackge_text_tips:'',
 				
 				//2020.12.3. 爱拼团的参数
-				__cuxiaohuodong:null,
-				__order_option_new_list:'',	//可能追加的订单的选项
+				cuxiaohuodong:null,
+				order_option_new_list:'',	//可能追加的订单的选项
 			};
 		},
 		
@@ -365,17 +365,17 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			
 			//2020.12.3. 爱拼团的参数
 			if(options.cuxiao_huodong && (options.cuxiao_huodong == 'aipingou')){
-				that.__cuxiaohuodong = options.cuxiao_huodong;
+				that.cuxiaohuodong = options.cuxiao_huodong;
 				
-				that.__order_option_new_list = [];
+				that.order_option_new_list = [];
 				
 				//增加一个选项：标志位，代表这个订单需要调用爱拼购的规则
-				that.__order_option_new_list.push(
+				that.order_option_new_list.push(
 					{ "key": "aipingou_tuan_flag", "value": '1' },);
 				
 				if(options.tuansn){
 					//增加一个选项：代表要参加这个团
-					that.__order_option_new_list.push(
+					that.order_option_new_list.push(
 						{ "key": "aipingou_tuan_tuansn", "value": '1' },);
 				}					
 							
@@ -595,7 +595,7 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			},
 			__load_order_detail_shopmall:function(){
 				var that = this;
-				//<!---之前是---that.current_userinfo---->
+				
 				var userInfo = that.current_userinfo;
 				console.log('这是userid====',userInfo);
 				
@@ -722,7 +722,7 @@ tuansn = 参团的编号，如果没有，则代表新开团
 					success: function (res) {
 						
 						
-						if(res.data.code == 0){
+						if(res.data.code != 1){
 							return;
 						}
 						
@@ -1156,7 +1156,7 @@ tuansn = 参团的编号，如果没有，则代表新开团
 							if(that.order_type_001 == 'shopmall'){
 								var url_to_payment = '/pages/pay/payment/payment?orderId=' + that.orderid + '&balance_zengsong_dikou=' + that.balance_zengsong_dikou + '&balance_dikou=' + that.balance_dikou + '&traffic_price=' + that.traffic_price;
 								
-								if(that.__cuxiaohuodong && (that.__cuxiao_huodong == 'aipingou')){
+								if(that.cuxiaohuodong && (that.__cuxiao_huodong == 'aipingou')){
 									//写爱拼购活动的选项
 									that.__cuxiao_aipingou_add_order_option(url_to_payment);
 									
@@ -1638,7 +1638,7 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			},
 			//2020.12.3. 爱拼团
 			// __cuxiao_aipingou_add_order_option:function(url_to_payment){
-			// 	var order_add_new_option_by_key_value_str = encodeURIComponent(JSON.stringify(this.__order_option_new_list));
+			// 	var order_add_new_option_by_key_value_str = encodeURIComponent(JSON.stringify(this.order_option_new_list));
 							
 			// 	that.abotapi.abotRequest({
 			// 	  url: that.abotapi.globalData.yanyubao_server_url + 'Yanyubao/ShopApp/order_add_new_option_by_key_value',
