@@ -261,7 +261,6 @@ tuansn = 参团的编号，如果没有，则代表新开团
 		 * 
 		 */
 		onLoad(options) {
-			this.abotapi.set_option_list_str(this, this.callback_function);
 			
 			var that = this;
 			
@@ -301,7 +300,7 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			}
 			
 			that.current_userinfo = userInfo;
-			
+			console.log('565656565',userInfo);
 			uni.showLoading({
 				title: '加载中...',
 			})
@@ -407,7 +406,9 @@ tuansn = 参团的编号，如果没有，则代表新开团
 				uni.removeStorageSync('paysuccess_url');
 			}
 			
-
+			
+			//必须放在最后，否则读取不到userinfo信息！！！！！
+			this.abotapi.set_option_list_str(this, this.callback_function);
 			
 			
 		},
@@ -594,8 +595,16 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			},
 			__load_order_detail_shopmall:function(){
 				var that = this;
-				
+				//<!---之前是---that.current_userinfo---->
 				var userInfo = that.current_userinfo;
+				console.log('这是userid====',userInfo);
+				
+				if(!userInfo){
+					uni.showToast({
+						title:'登录信息异常'
+					})
+					return;
+				}
 				
 				var data_params = {};
 				
@@ -618,6 +627,7 @@ tuansn = 参团的编号，如果没有，则代表新开团
 						sellerid: that.abotapi.get_sellerid(),
 					}
 				}
+				
 				
 				
 				if (that.ucid){
@@ -710,6 +720,12 @@ tuansn = 参团的编号，如果没有，则代表新开团
 					url: that.abotapi.globalData.yanyubao_server_url + 'openapi/OrderingRedpackageData/get_setting',
 					data: post_data,
 					success: function (res) {
+						
+						
+						if(res.data.code == 0){
+							return;
+						}
+						
 						that.orderredpackge_list = res.data;
 						
 						that.redpackge_text_tips = res.data.data.tips_text;
@@ -1533,12 +1549,12 @@ tuansn = 参团的编号，如果没有，则代表新开团
 								that.picture_show = false;
 							},1000)
 							
-							if(res && res.data && res.msg){
-								uni.showModal({
-									title:'',
-									content:''
-								})
-							}
+							// if(res && res.data && res.msg){
+							// 	uni.showModal({
+							// 		title:'',
+							// 		content:''
+							// 	})
+							// }
 							
 							return;
 						}
@@ -1621,33 +1637,33 @@ tuansn = 参团的编号，如果没有，则代表新开团
 				
 			},
 			//2020.12.3. 爱拼团
-			__cuxiao_aipingou_add_order_option:function(url_to_payment){
-				var order_add_new_option_by_key_value_str = encodeURIComponent(JSON.stringify(this.__order_option_new_list));
+			// __cuxiao_aipingou_add_order_option:function(url_to_payment){
+			// 	var order_add_new_option_by_key_value_str = encodeURIComponent(JSON.stringify(this.__order_option_new_list));
 							
-				that.abotapi.abotRequest({
-				  url: that.abotapi.globalData.yanyubao_server_url + 'Yanyubao/ShopApp/order_add_new_option_by_key_value',
-				  data: {
-				    sellerid: that.abotapi.get_sellerid(),
-				    orderid: that.orderid,
-				    order_option_key_and_value_str: order_add_new_option_by_key_value_str
-				  },
-				  success: function (res) {
+			// 	that.abotapi.abotRequest({
+			// 	  url: that.abotapi.globalData.yanyubao_server_url + 'Yanyubao/ShopApp/order_add_new_option_by_key_value',
+			// 	  data: {
+			// 	    sellerid: that.abotapi.get_sellerid(),
+			// 	    orderid: that.orderid,
+			// 	    order_option_key_and_value_str: order_add_new_option_by_key_value_str
+			// 	  },
+			// 	  success: function (res) {
 					
-					uni.redirectTo({
-						url:url_to_payment,
-					})  
+			// 		uni.redirectTo({
+			// 			url:url_to_payment,
+			// 		})  
 					 
 					  
-				  },
-				  fail: function (res) {
-				    that.setData({
-				      btnDisabled: false,
-				    });
-				  }
-				});
+			// 	  },
+			// 	  fail: function (res) {
+			// 	    that.setData({
+			// 	      btnDisabled: false,
+			// 	    });
+			// 	  }
+			// 	});
 				
 				
-			}
+			// }
 			
 			
 		}
