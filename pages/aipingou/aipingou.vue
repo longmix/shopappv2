@@ -26,15 +26,15 @@
 
 		<!--爱拼购活动-->
 		<view class="aipingou">
-			<div class="list_con">
-			          <div class="l_top">
+			<view class="list_con">
+			          <view class="aipingou_list" v-for=" (item,idx) in ruleList" :key="idx">
 			            <table class="list_table">
 			              <tr>
-			                <td class="tf32red">
-								<image class="tf32red1"  :src="aipingou_xuanchuan_image"></image>
+			                <td class="aipingou_product_image">
+								<image class="product_image"  :src="item.product_image"></image>
 							</td>
-			                <td class="tf32r">
-								<h1>活动标题(商品名称)</h1>
+			                <td class="product_name">
+								<h1>{{item.product_name}}</h1>
 								<br />
 								<button class="qupingou1">去拼购</button>
 								<br />
@@ -46,8 +46,8 @@
 			              </tr>
 			              
 			            </table>
-			          </div>
-			</div>
+			          </view>
+			</view>
 
 		</view>
 		<view class="footer">
@@ -63,7 +63,9 @@
 		data() {
 			return {
 				aipingou_xuanchuan_image:'',
-				aipingou_xuanchuan_wenan:','
+				aipingou_xuanchuan_wenan:'',
+				aipingou_huodong_title:'',
+				ruleList:'',
 
 
 			}
@@ -83,10 +85,10 @@
 		   
 		      //if (!sellerid && typeof (sellerid) != "undefined" && sellerid != 0){
 		     
-		      this.abotapi.globalData.sellerid = sellerid
-		      this.abotapi.set_sellerid(sellerid);
+		     // this.abotapi.globalData.sellerid = sellerid
+		      //this.abotapi.set_sellerid(sellerid);
 		      
-		      console.log('当前sellerid:' + sellerid + "，来自请求");
+		     // console.log('当前sellerid:' + sellerid + "，来自请求");
 		   
 		      this.abotapi.set_shop_option_data(this, this.callback_function_shop_option_data);
 			
@@ -125,9 +127,11 @@
 						var settingList = res.data.data;
 						that.aipingou_xuanchuan_image = res.data.aipingou_seting.xuanchuan_tupian;
 						that.aipingou_xuanchuan_wenan = res.data.aipingou_seting.xuanchuan_wenan;
+						that.aipingou_huodong_title = res.data.aipingou_seting.huodong_title
+						
 
 						console.log('aaaaaaaaaa', res.data.aipingou_seting.xuanchuan_tupian);
-						console.log('8888====11>>', that.aipingou_list);
+						//console.log('8888====11>>', that.aipingou_list);
  
 
 					},
@@ -141,10 +145,30 @@
 
 			},
 			__get_rule_list: function(){
-				console.log('000000');
+				var that = this;
+				var post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/AipingouData/get_rule_list';
 				
-			},
+				that.abotapi.abotRequest({
+					url: post_url,
+					data: {
+						sellerid: that.abotapi.get_sellerid(),
+					},
+					success: function(res) {
+					
+						that.ruleList = res.data.rule_list;
+				
 			
+						console.log('aaaaaaaaaa', res.data.rule_list);
+						console.log('8888====11>>', that.ruleList);
+					 
+					
+					},
+					fail: function(e) {
+					
+					
+						},
+					});	
+			},	
 		},
 		
 	}
@@ -179,6 +203,8 @@
 		border: 1rpx #fffffb solid;
 		border-radius: 20rpx;
 	}
+	
+	
 
 
 	.aipingou {
@@ -191,21 +217,26 @@
 		background-color: #fffffb;
 		border-radius: 20rpx;
 	}
+	
+	.aipingou_list{
+		background-color: #fffffb;
+		margin-top: 20rpx;
+		border-radius: 20rpx;
+	}
 
-
-	.tf32red{
+	.aipingou_product_image{
 		width: 50%;
 		height: 300rpx;
 		text-align: center;
 		border: 1rpx #fffffb solid;
 		justify-content: center;
 	}
-	.tf32red1{
+	.product_image{
 		width: 100%;
 		height:300rpx;
 		border-radius: 10rpx;
 	}
-	.tf32r{
+	.product_name{
 		width: 50%;
 		height: 300rpx;
 		border: 1rpx #fffffb solid;
@@ -214,13 +245,11 @@
 
 	.qupingou1 {
 		font-size: 18rpx;
-		background-color: #145b7d;
 	}
 
 	.qupingou2 {
 
 		font-size: 18rpx;
-		background-color: #145b7d;
 	}
 	.footer{
 		width: 100%;
