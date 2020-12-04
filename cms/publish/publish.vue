@@ -285,7 +285,20 @@
 			},
 			  
 			  
-			  
+			__goto_homepage:function()  {
+				if(this.page_not_in_tabbar){
+					uni.navigateTo({
+						url: '/cms/discover/discover?display_type=my',
+					})
+				}
+				else{
+					console.log('准备switchtab跳转到===>>>/cms/discover/discover');
+					
+					uni.switchTab({
+						url: '/cms/discover/discover',
+					})
+				}
+			},
 			  
 			  
 			publishIdea: function (e) {
@@ -297,6 +310,7 @@
 					return;
 				}
 				
+				/*
 				if (that.imgList.length == 0 && that.publishtype == "image") {
 					uni.showToast({
 					  title: '没有添加图片',
@@ -311,7 +325,7 @@
 						icon: 'none'
 					})
 					return;
-				}
+				}*/
 				
 				if ((that.faquan_xieyi_status == 1) && !that.checked_status) {
 					console.log('that.checked_status====>>>', that.checked_status);
@@ -356,11 +370,37 @@
 													
 							if (that.publishtype == "image") {
 								//发布图片
-													
+								
+								if(that.imgList.length == 0){
+									uni.showModal({
+										title: '提示',
+										content:res.data.msg,
+										showCancel:false,
+										success: function (e) {
+											that.__goto_homepage();
+										}
+									});
+									
+									return;
+								}
+												
 								that.upLoadImg(0);
 													
-							} else {
+							} 
+							else if(that.publishtype == "video") {
 								//发布视频
+								if(!that.video){
+									uni.showModal({
+										title: '提示',
+										content:res.data.msg,
+										showCancel:false,
+										success: function (e) {
+											that.__goto_homepage();
+										}
+									});
+									
+									return;
+								}
 								
 								uni.showLoading({
 									title: '正在上传',
@@ -378,6 +418,7 @@
 									formData: {
 										sellerid:that.abotapi.globalData.default_sellerid,
 										userid: userInfo ? userInfo.userid : '',
+										checkstr: userInfo ? userInfo.checkstr : '',
 										faquanid: faquanid,
 										type: 1
 									},
@@ -396,7 +437,7 @@
 											if (data.code == 1) {
 												
 												uni.showModal({
-													title: '上传成功',
+													title: '视频上传成功',
 													showCancel:false,
 													success: function (e) {
 														if (e.confirm) {
@@ -409,27 +450,21 @@
 															}
 															console.log('e=======123')
 															
-															if(that.page_not_in_tabbar){
-																uni.navigateTo({
-																	url: '/cms/discover/discover?display_type=my',
-																})
-															}
-															else{
-																console.log('准备switchtab跳转到===>>>/cms/discover/discover');
-																
-																uni.switchTab({
-																	url: '/cms/discover/discover',
-																})
-															}
+															that.__goto_homepage();
 															
 														}
 													}
 												})
 												
 											} else {
-												uni.showToast({
+												/*uni.showToast({
 													title: '上传失败',
-												})
+												})*/
+												
+												uni.showModal({
+													title: '视频上传失败',
+													showCancel:false,
+												});
 
 												that.disable = false;
 											}
@@ -517,16 +552,7 @@
 										  that.order_finish();
 										}
 										
-										if(that.page_not_in_tabbar){
-											uni.navigateTo({
-												url: '/cms/discover/discover?display_type=my',
-											})
-										}
-										else{
-											uni.switchTab({
-												url: '/cms/discover/discover',
-											})
-										}
+										that.__goto_homepage();
 									}
 								}
 							})

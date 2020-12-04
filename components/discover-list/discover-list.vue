@@ -73,13 +73,14 @@
 		                </view>  <!-- End of 003  -->
 		                
 		                <view class="pb-time">{{item.createtime}}</view>
+						
 						<view style="display:block; float:right;height: 60px;margin-top: 30rpx">
 							<image class='list-zan' style="float:left;" 
 								:data-faquanid='item.faquanid' :data-index='idx' @tap="fanquaJubao"
 								src="../../static/img/help/jubao.png"></image>
 							<view style="color:#707070;float: left;">举报</view>
 						</view>
-		
+						
 		
 		                <block v-if="is_my_discover_collection || is_my_discover">
 		                  <view class="" style="margin-left: 0;height: 40rpx;line-height: 40rpx;font-size: 26rpx;text-align: left;color:#666;">
@@ -225,8 +226,8 @@
 	  margin-top: 50rpx;
 	  padding:0 5%; 
 	  font-size:32rpx;
-	  border-bottom:20rpx solid #eee;
-	  padding-bottom:20rpx;
+	  border-bottom:16rpx solid #eee;
+	  padding-bottom:2rpx;
 	}
 	.list-con{
 	    border-bottom: 2rpx solid #eee;
@@ -265,6 +266,7 @@
 	.list-zan-a{
 	  display: flex;
 	  align-items:center;
+	  margin-right: 20rpx;
 	}
 	.list-zan{
 	  width: 34rpx;
