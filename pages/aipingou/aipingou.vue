@@ -13,14 +13,14 @@
 
 		<!--宣传图片start-->
 		<view class="aipingou_image">
-			<image class="tupian" :src="aipingou_xuanchuan_image"></image>
+			<image class="tupian" :src="aipingou_xuanchuan_image.xuanchuan_tupian"></image>
 
 		</view>
 		<!--宣传图片end-->
 
 		<!--宣传文案-->
 		<view class="wenan">
-			<view class="content">{{aipingou_xuanchuan_wenan}}</view>
+			<view class="content">{{aipingou_xuanchuan_image.xuanchuan_wenan}}</view>
 		</view>
 		<!--宣传文案end-->
 
@@ -63,8 +63,6 @@
 		data() {
 			return {
 				aipingou_xuanchuan_image:'',
-				aipingou_xuanchuan_wenan:'',
-				aipingou_huodong_title:'',
 				ruleList:'',
 
 
@@ -111,6 +109,8 @@
 			
 		},
 		methods: {
+			
+			//获取拼团宣传图片和标题
 			__get_setting_list: function() {
 				var that = this;
 				var post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/AipingouData/get_seting';
@@ -125,9 +125,7 @@
 					success: function(res) {
 
 						var settingList = res.data.data;
-						that.aipingou_xuanchuan_image = res.data.aipingou_seting.xuanchuan_tupian;
-						that.aipingou_xuanchuan_wenan = res.data.aipingou_seting.xuanchuan_wenan;
-						that.aipingou_huodong_title = res.data.aipingou_seting.huodong_title
+						that.aipingou_xuanchuan_image = res.data.aipingou_seting;
 						
 
 						console.log('aaaaaaaaaa', res.data.aipingou_seting.xuanchuan_tupian);
