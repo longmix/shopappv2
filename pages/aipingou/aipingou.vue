@@ -59,9 +59,9 @@
 									去开团
 								</view>
 							
-								<button class="qupingou1" >去拼购</button>
+								<button>去拼购</button>
 								<br />
-								<button class="qupingou2" @tap="aipingou_open_tuan(item.productid)">去开团</button>
+								<button @tap="aipingou_open_tuan(item.productid)">去开团</button>
 							</td>
 			                <td>
 								
