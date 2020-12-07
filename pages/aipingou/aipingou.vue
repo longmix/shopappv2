@@ -43,20 +43,19 @@
 			                <td class="aipingou_product_image">
 								<image class="product_image"  :src="item.product_image"></image>
 							</td>
-			                <td class="product_name">
-								<h1>{{item.product_name}}</h1>
+			                <td>
+								<view class="product_name">{{item.product_name}}</view>
 								<br />
 								<view style="display: flex;">
 
-									<view style="font-size: 16rpx;margin-left:30px;"  @tap="aipingou_buy_together(item.productid)">
+									<view style="font-size: 16rpx;margin-left:20px;"  @tap="aipingou_buy_together(item.productid)">
 										<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_pintuan.png" ></image>
-										<view style="margin-left: -15rpx;">去拼购</view>
-									</view>
-									
+										<view>去拼购</view>
+									</view>	
 
-									<view style="font-size: 16rpx;margin-left: 50px;" @tap="aipingou_open_tuan(item.productid)">
+									<view style="font-size: 16rpx;margin-left: 40px;" @tap="aipingou_open_tuan(item.productid)">
 										<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_kaituan.png"></image>
-										<view style="margin-left: -15rpx;">去开团</view>
+										<view>去开团</view>
 									</view>
 								</view>	
 							</td>  
@@ -308,14 +307,13 @@
 	}
 
 	.aipingou_product_image{
-		width: 55%;
-		height: 300rpx;
-		text-align: center;
-		justify-content: center;
+		width: 56%;
+		height: 350rpx;
+
 	}
 	.product_image{
 		width: 100%;
-		height:300rpx;
+		height:100%;
 		border-radius: 10rpx;
 	}
 	.product_name{
