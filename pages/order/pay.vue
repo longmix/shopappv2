@@ -225,7 +225,7 @@
 				redpackge_text_tips:'',
 				
 				//2020.12.3. 爱拼团的参数
-				cuxiaohuodong:null,
+				cuxiao_huodong:null,
 				order_option_new_list:'',	//可能追加的订单的选项
 			};
 		},
@@ -367,7 +367,7 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			
 			//2020.12.3. 爱拼团的参数
 			if(options.cuxiao_huodong && (options.cuxiao_huodong == 'aipingou')){
-				that.cuxiaohuodong = options.cuxiao_huodong;
+				that.cuxiao_huodong = options.cuxiao_huodong;
 				
 				that.order_option_new_list = [];
 				
@@ -383,7 +383,7 @@ tuansn = 参团的编号，如果没有，则代表新开团
 							
 									
 									
-				var tuansn = options.tuansn;
+				console.log('爱拼购订单，准备增加标记记录', that.order_option_new_list);
 				
 				
 			}
@@ -1158,7 +1158,7 @@ tuansn = 参团的编号，如果没有，则代表新开团
 							if(that.order_type_001 == 'shopmall'){
 								var url_to_payment = '/pages/pay/payment/payment?orderId=' + that.orderid + '&balance_zengsong_dikou=' + that.balance_zengsong_dikou + '&balance_dikou=' + that.balance_dikou + '&traffic_price=' + that.traffic_price;
 								
-								if(that.cuxiaohuodong && (that.__cuxiao_huodong == 'aipingou')){
+								if(that.cuxiao_huodong && (that.cuxiao_huodong == 'aipingou')){
 									//写爱拼购活动的选项
 									that.__cuxiao_aipingou_add_order_option(url_to_payment);
 									
@@ -1639,33 +1639,40 @@ tuansn = 参团的编号，如果没有，则代表新开团
 				
 			},
 			//2020.12.3. 爱拼团
-			// __cuxiao_aipingou_add_order_option:function(url_to_payment){
-			// 	var order_add_new_option_by_key_value_str = encodeURIComponent(JSON.stringify(this.order_option_new_list));
+			__cuxiao_aipingou_add_order_option:function(url_to_payment){
+				var that = this;
+				
+				var order_add_new_option_by_key_value_str = encodeURIComponent(JSON.stringify(this.order_option_new_list));
 							
-			// 	that.abotapi.abotRequest({
-			// 	  url: that.abotapi.globalData.yanyubao_server_url + 'Yanyubao/ShopApp/order_add_new_option_by_key_value',
-			// 	  data: {
-			// 	    sellerid: that.abotapi.get_sellerid(),
-			// 	    orderid: that.orderid,
-			// 	    order_option_key_and_value_str: order_add_new_option_by_key_value_str
-			// 	  },
-			// 	  success: function (res) {
+				var userInfo = that.abotapi.get_user_info();
+							
+							
+				that.abotapi.abotRequest({
+				  url: that.abotapi.globalData.yanyubao_server_url + 'Yanyubao/ShopApp/order_add_new_option_by_key_value',
+				  data: {
+					  userid: userInfo.userid,
+					  checkstr: userInfo.checkstr,
+				    sellerid: that.abotapi.get_sellerid(),
+				    orderid: that.orderid,
+				    order_option_key_and_value_str: order_add_new_option_by_key_value_str
+				  },
+				  success: function (res) {
 					
-			// 		uni.redirectTo({
-			// 			url:url_to_payment,
-			// 		})  
+					uni.redirectTo({
+						url:url_to_payment,
+					})  
 					 
 					  
-			// 	  },
-			// 	  fail: function (res) {
-			// 	    that.setData({
-			// 	      btnDisabled: false,
-			// 	    });
-			// 	  }
-			// 	});
+				  },
+				  fail: function (res) {
+				    that.setData({
+				      btnDisabled: false,
+				    });
+				  }
+				});
 				
 				
-			// }
+			}
 			
 			
 		}

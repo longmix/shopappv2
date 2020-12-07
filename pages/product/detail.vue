@@ -344,29 +344,25 @@
 			</view>
 		</view>
 		
-		<!-- 2020.12.3. 爱拼团活动对应的 已经开出 且 没有成团 的 团列表 v-if="is_aipingou_tuan_list"-->
-		<view class="is_aipingou_tuan_list" >
-			
+		<!-- 2020.12.3. 爱拼团活动对应的 已经开出 且 没有成团 的 团列表  推荐商品-->
+		<view class="is_aipingou_tuan_list" v-if="is_aipingou_tuan_list">
 			<!-- aipingou_tuan_list-->
-			<view class="aipin_tuan">
-				<image src="../../static/img/VIP.png" mode="widthFix"></image>
-				<button type="button">参团</button>
-			</view>
-			<view class="aipin_tuan">
-				<image src="../../static/img/VIP.png" mode="widthFix"></image>
-				<button type="button">参团</button>
-			</view>
-			<view class="aipin_tuan">
-				<image src="../../static/img/VIP.png" mode="widthFix"></image>
-				<button type="button">参团</button>
-			</view>
-			<view class="aipin_tuan">
-				<image src="../../static/img/VIP.png" mode="widthFix"></image>
-				<button type="button">参团</button>
-			</view>
-			
-			
-			
+				<view class="aipin_tuan">
+					<image src="../../static/img/VIP.png" mode="widthFix"></image>
+					<button type="button">参团</button>
+				</view>
+				<view class="aipin_tuan">
+					<image src="../../static/img/VIP.png" mode="widthFix"></image>
+					<button type="button">参团</button>
+				</view>
+				<view class="aipin_tuan">
+					<image src="../../static/img/VIP.png" mode="widthFix"></image>
+					<button type="button">参团</button>
+				</view>
+				<view class="aipin_tuan">
+					<image src="../../static/img/VIP.png" mode="widthFix"></image>
+					<button type="button">参团</button>
+				</view>
 		</view>
 		
 		<!-- ==================End========================== -->
@@ -850,7 +846,7 @@
 		},
 		onShow() {
 			this.getCartList();
-			this.__get_aipingou_tuan_list();
+			
 		},
 		onHide(){
 			this.current_video_playing = 0;

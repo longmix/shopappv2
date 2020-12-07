@@ -81,9 +81,6 @@
 			}
 		},
 		onLoad(options) {
-			
-			this.__get_rule_list();
-			this.__get_setting_list();
 
 			//请求服务器,刷新卡券信息
 			console.log('网页参数如下:');
