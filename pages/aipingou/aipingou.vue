@@ -23,10 +23,20 @@
 			<view class="content">{{aipingou_xuanchuan_image.xuanchuan_wenan}}</view>
 		</view>
 		<!--宣传文案end-->
+		
+		<!---我的拼购-->
+		<view class="my_aipingou">
+			我的拼购
+		</view>
 
 		<!--爱拼购活动-->
+		
 		<view class="aipingou">
+			<view class="aipingou_title">
+				<h1>{{aipingou_xuanchuan_image.huodong_title}}</h1>
+			</view>
 			<view class="list_con">
+				
 			          <view class="aipingou_list" v-for=" (item,idx) in ruleList" :key="idx">
 			            <table class="list_table">
 			              <tr>
@@ -36,6 +46,19 @@
 			                <td class="product_name">
 								<h1>{{item.product_name}}</h1>
 								<br />
+								
+								<view style="font-size: 16rpx;margin-top: -15rpx;">
+									<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_pintuan.png" ></image>
+									<br />
+									去拼购
+								</view>
+
+								<view style="font-size: 16rpx;margin-top: 15rpx;">
+									<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_kaituan.png"></image>
+									<br>
+									去开团
+								</view>
+							
 								<button class="qupingou1" >去拼购</button>
 								<br />
 								<button class="qupingou2" @tap="aipingou_open_tuan(item.productid)">去开团</button>
@@ -44,16 +67,12 @@
 								
 							</td>
 			              </tr>
-			              
 			            </table>
 			          </view>
 			</view>
-
-		</view>
-		<view class="footer">
-			
-		</view>
-    </view>
+		</view>	
+   
+	</view>
 	
 
 </template>
@@ -124,6 +143,7 @@
 
 					success: function(res) {
 
+						//获取拼团宣传图片
 						that.aipingou_xuanchuan_image = res.data.aipingou_seting;
 						
 
@@ -141,6 +161,7 @@
 
 
 			},
+			//获取拼团活动列表
 			__get_rule_list: function(){
 				var that = this;
 				var post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/AipingouData/get_rule_list';
@@ -210,7 +231,6 @@
 
 	.aipingou_image {
 		width: 100%;
-		background-color: #fffffb;
 		font-size: 15px;
 		display: flex;
 		justify-content: center;
@@ -219,8 +239,7 @@
 
 	.tupian {
 		width: 100%;
-		border: 1rpx #fffffb solid;
-		border-radius: 10rpx;
+	
 
 	}
 
@@ -229,10 +248,14 @@
 		margin-top: 30upx;
 		display: flex;
 		background-color: #fffffb;
-		border: 1rpx #fffffb solid;
-		border-radius: 20rpx;
+		border-radius: 10rpx;
 	}
-	
+	.my_aipingou{
+		width: 100%;
+		background-color: #fffffb;
+		border-radius: 10rpx;
+		margin-top: 30upx;
+	}
 	
 
 
@@ -242,8 +265,8 @@
 		margin-top: 20upx;
 		text-align: center;
 		justify-content: center;
-		border: 1rpx #fffffb solid;
-		background-color: #fffffb;
+		border:0px;
+		background-color: #fffef9;
 		border-radius: 20rpx;
 	}
 	
@@ -257,7 +280,6 @@
 		width: 50%;
 		height: 300rpx;
 		text-align: center;
-		border: 1rpx #fffffb solid;
 		justify-content: center;
 	}
 	.product_image{
@@ -268,21 +290,20 @@
 	.product_name{
 		width: 50%;
 		height: 300rpx;
-		border: 1rpx #fffffb solid;
 	
 	}
 
-	.qupingou1 {
-		font-size: 18rpx;
-	}
-
-	.qupingou2 {
-
-		font-size: 18rpx;
-	}
-	.footer{
+	.aipingou_title{
 		width: 100%;
-		border: 1rpx #fffffb solid;
-		background-color: #9d9087;
+		height: 80rpx;
+		line-height: 80rpx;
+		text-align: center;
+		color: #fffffb;
+		border-radius: 5rpx;
+		background-color:#145b7d;
+	}
+	.tubiao{
+		width: 60rpx;
+		height: 60rpx;
 	}
 </style>
