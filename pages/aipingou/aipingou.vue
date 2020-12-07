@@ -26,7 +26,7 @@
 		
 		<!---我的拼购-->
 		<view class="my_aipingou">
-			我的拼购
+			<button class="">我的拼购</button>
 		</view>
 
 		<!--爱拼购活动-->
@@ -271,7 +271,7 @@
 	.aipingou {
 		width: 100%;
 		height: 310rpx;
-		margin-top: 20upx;
+		margin-top: 30upx;
 		text-align: center;
 		justify-content: center;
 		border:0px;
