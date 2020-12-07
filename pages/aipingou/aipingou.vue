@@ -13,14 +13,14 @@
 
 		<!--宣传图片start-->
 		<view class="aipingou_image">
-			<image class="tupian" :src="aipingou_xuanchuan_image.xuanchuan_tupian"></image>
+			<image class="tupian" :src="aipingou_setting.xuanchuan_tupian"></image>
 
 		</view>
 		<!--宣传图片end-->
 
 		<!--宣传文案-->
 		<view class="wenan">
-			<view class="wenan_content">{{aipingou_xuanchuan_image.xuanchuan_wenan}}</view>
+			<view class="wenan_content">{{aipingou_setting.xuanchuan_wenan}}</view>
 		</view>
 		<!--宣传文案end-->
 		
@@ -33,7 +33,7 @@
 		
 		<view class="aipingou">
 			<view class="aipingou_title">
-				<h1>{{aipingou_xuanchuan_image.huodong_title}}</h1>
+				<h1>{{aipingou_setting.huodong_title}}</h1>
 			</view>
 			<view class="list_con">
 				
@@ -46,7 +46,6 @@
 			                <td class="product_name">
 								<h1>{{item.product_name}}</h1>
 								<br />
-								
 								<view style="display: flex;">
 									<view style="font-size: 16rpx; margin-left: 60rpx;">
 										<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_pintuan.png" ></image>
@@ -78,23 +77,27 @@
 	export default {
 		data() {
 			return {
-				aipingou_xuanchuan_image:'',
+				aipingou_setting:'',
 				ruleList:'',
 
 
 			}
 		},
 		onLoad(options) {
-			this.abotapi.set_shop_option_data(this, this.callback_function_shop_option_data);
+			
+			this.__get_rule_list();
+			this.__get_setting_list();
+
+			//请求服务器,刷新卡券信息
+			console.log('网页参数如下:');
+			
+			this.abotapi.set_shop_option_data(this, function(that002, option_data){
+				
+				
+			});
+			
 		   
-		      //uni.setNavigationBarTitle({
-		      // title: this.abotapi.globalData.shop_name
-		      //})
 		      
-		      var that = this
-		   
-		      //请求服务器,刷新卡券信息
-		      console.log('网页参数如下:');
 		    
 		   
 		      //if (!sellerid && typeof (sellerid) != "undefined" && sellerid != 0){
@@ -104,7 +107,7 @@
 		      
 		     // console.log('当前sellerid:' + sellerid + "，来自请求");
 		   
-		      this.abotapi.set_shop_option_data(this, this.callback_function_shop_option_data);
+		     
 			
 		},
 		onPullDownRefresh: function() {
@@ -116,13 +119,11 @@
 		    uni.hideToast();
 		   }, 1000);
 		   
-		  },
+		},
 
 		onShow() {
-			
-			this.__get_rule_list();
-			this.__get_setting_list();
-			
+			//this.__get_rule_list();
+			//this.__get_setting_list();
 		},
 		methods: {
 			
@@ -141,11 +142,15 @@
 					success: function(res) {
 
 						//获取拼团宣传图片
-						that.aipingou_xuanchuan_image = res.data.aipingou_seting;
+						that.aipingou_setting = res.data.aipingou_seting;
 						
 
 						console.log('aaaaaaaaaa', res.data.aipingou_seting.xuanchuan_tupian);
 						//console.log('8888====11>>', that.aipingou_list);
+						
+						uni.setNavigationBarTitle({
+						 title: res.data.aipingou_seting.huodong_title
+						})
  
 
 					},
