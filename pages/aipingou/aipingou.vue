@@ -26,7 +26,7 @@
 		
 		<!---我的拼购-->
 		<view class="my_aipingou">
-			<button class="">我的拼购</button>
+			<button>我的拼购</button>
 		</view>
 
 		<!--爱拼购活动-->
@@ -47,21 +47,18 @@
 								<h1>{{item.product_name}}</h1>
 								<br />
 								<view style="display: flex;">
-									<view style="font-size: 16rpx; margin-left: 60rpx;">
+									<view style="font-size: 16rpx; margin-left: 70rpx;">
 										<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_pintuan.png" ></image>
 										<view style="margin-left: -15rpx;">去拼购</view>
 									</view>
 									
-									<view style="font-size: 16rpx; margin-left: 90rpx;">
+									<view style="font-size: 16rpx; margin-left: 100rpx;">
 										<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_kaituan.png"
 										@tap="aipingou_open_tuan(item.productid)"></image>
 										<view style="margin-left: -15rpx;">去开团</view>
 									</view>
-									
 								</view>	
-							</td>
-			                <td>	
-							</td>
+							</td>  
 			              </tr>
 			            </table>
 			          </view>
@@ -110,7 +107,8 @@
 		     
 			
 		},
-		onPullDownRefresh: function() {
+		
+	     function() {
 		   var that = this;
    
 		   setTimeout(function() {
@@ -286,7 +284,7 @@
 	}
 
 	.aipingou_product_image{
-		width: 50%;
+		width: 53%;
 		height: 300rpx;
 		text-align: center;
 		justify-content: center;
@@ -297,8 +295,6 @@
 		border-radius: 10rpx;
 	}
 	.product_name{
-		width: 50%;
-		height: 300rpx;
 		text-align: left;
 	
 	}
