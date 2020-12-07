@@ -47,14 +47,15 @@
 								<h1>{{item.product_name}}</h1>
 								<br />
 								<view style="display: flex;">
-									<view style="font-size: 16rpx; margin-left: 70rpx;">
+
+									<view style="font-size: 16rpx;" @tap="aipingou_buy_together(item.productid)">
 										<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_pintuan.png" ></image>
 										<view style="margin-left: -15rpx;">去拼购</view>
 									</view>
 									
-									<view style="font-size: 16rpx; margin-left: 100rpx;">
-										<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_kaituan.png"
-										@tap="aipingou_open_tuan(item.productid)"></image>
+
+									<view style="font-size: 16rpx;margin-left: 50px;" @tap="aipingou_open_tuan(item.productid)">
+										<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_kaituan.png"></image>
 										<view style="margin-left: -15rpx;">去开团</view>
 									</view>
 								</view>	
@@ -89,12 +90,17 @@
 			console.log('网页参数如下:');
 			
 			this.abotapi.set_shop_option_data(this, function(that002, option_data){
-				
+				that002.__get_rule_list();
+				that002.__get_setting_list();
+				 
+				uni.setNavigationBarTitle({
+					title: '爱拼购',
+				})
 				
 			});
-			
+
 		   
-		      
+
 		    
 		   
 		      //if (!sellerid && typeof (sellerid) != "undefined" && sellerid != 0){
@@ -113,15 +119,15 @@
    
 		   setTimeout(function() {
 		    uni.stopPullDownRefresh();
-			this.__get_rule_list();
+			that.__get_rule_list();
 		    uni.hideToast();
 		   }, 1000);
 		   
 		},
 
 		onShow() {
-			//this.__get_rule_list();
-			//this.__get_setting_list();
+
+			
 		},
 		methods: {
 			
@@ -204,8 +210,6 @@
 						icon: 'none',
 						duration: 1000,
 					});
-				
-					
 					
 					this.abotapi.goto_user_login(last_url, 'normal');
 					return;
@@ -217,8 +221,28 @@
 				
 			},
 			//去拼购
-			aipingou_buy_together:function(){
-				var that = this;
+			aipingou_buy_together:function(productid){
+				var that =this;
+				var userInfo = this.abotapi.get_user_info();
+				
+				//console.log('88888aaaaaaaaa',userInfo,userInfo.userid);
+				//判断是否登录
+				var last_url = '/pages/product/detail?productid='+ productid +'&amount=1&cuxiao_huodong=aipingou';
+				
+				if (!userInfo || !userInfo.userid) {
+					uni.showToast({
+						title: '请先登录',
+						icon: 'none',
+						duration: 1000,
+					});
+					
+					this.abotapi.goto_user_login(last_url, 'normal');
+					return;
+				}
+				
+				uni.redirectTo({
+					url:last_url,
+				});
 				
 			}
 		},
