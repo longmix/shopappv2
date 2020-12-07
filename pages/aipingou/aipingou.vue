@@ -47,21 +47,20 @@
 								<h1>{{item.product_name}}</h1>
 								<br />
 								
-								<view style="font-size: 16rpx;margin-top: -15rpx;">
-									<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_pintuan.png" ></image>
-									<br />
-									去拼购
+								<view style="display: flex;">
+									<view style="font-size: 16rpx;">
+										<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_pintuan.png" ></image>
+										<view>去拼购</view>
+									</view>
+									
+									<view style="font-size: 16rpx;margin-left: 50px;">
+										<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_kaituan.png"
+										@tap="aipingou_open_tuan(item.productid)"></image>
+										<view>去开团</view>
+									</view>
+									
 								</view>
-
-								<view style="font-size: 16rpx;margin-top: 15rpx;">
-									<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_kaituan.png"></image>
-									<br>
-									去开团
-								</view>
-							
-								<button>去拼购</button>
-								<br />
-								<button @tap="aipingou_open_tuan(item.productid)">去开团</button>
+								
 							</td>
 			                <td>
 								
@@ -196,6 +195,8 @@
 				//console.log('88888aaaaaaaaa',userInfo,userInfo.userid);
 				//判断是否登录
 				
+				var last_url = '/pages/order/pay?action=direct_buy&productid='+ productid +'&amount=1&cuxiao_huodong=aipingou';
+				
 				if (!userInfo || !userInfo.userid) {
 					uni.showToast({
 						title: '请先登录',
@@ -203,14 +204,14 @@
 						duration: 1000,
 					});
 				
-					var last_url = '/pages/order/pay?productid='+ productid +'&cuxiao_huodong=aipingou';
+					
 					
 					this.abotapi.goto_user_login(last_url, 'normal');
 					return;
 				}
 				
 				uni.redirectTo({
-					url:'/pages/order/pay?productid='+ productid +'&cuxiao_huodong=aipingou',
+					url:last_url,
 				});
 				
 			},
