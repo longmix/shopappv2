@@ -20,7 +20,7 @@
 
 		<!--宣传文案-->
 		<view class="wenan">
-			<view class="content">{{aipingou_xuanchuan_image.xuanchuan_wenan}}</view>
+			<view class="wenan_content">{{aipingou_xuanchuan_image.xuanchuan_wenan}}</view>
 		</view>
 		<!--宣传文案end-->
 		
@@ -48,22 +48,20 @@
 								<br />
 								
 								<view style="display: flex;">
-									<view style="font-size: 16rpx;">
+									<view style="font-size: 16rpx; margin-left: 60rpx;">
 										<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_pintuan.png" ></image>
-										<view>去拼购</view>
+										<view style="margin-left: -15rpx;">去拼购</view>
 									</view>
 									
-									<view style="font-size: 16rpx;margin-left: 50px;">
+									<view style="font-size: 16rpx; margin-left: 90rpx;">
 										<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_kaituan.png"
 										@tap="aipingou_open_tuan(item.productid)"></image>
-										<view>去开团</view>
+										<view style="margin-left: -15rpx;">去开团</view>
 									</view>
 									
-								</view>
-								
+								</view>	
 							</td>
-			                <td>
-								
+			                <td>	
 							</td>
 			              </tr>
 			            </table>
@@ -131,7 +129,7 @@
 			//获取拼团宣传图片和标题
 			__get_setting_list: function() {
 				var that = this;
-				var post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/AipingouData/get_seting';
+				var post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/AipingouData/get_seting';
 
 
 				that.abotapi.abotRequest({
@@ -163,7 +161,7 @@
 			//获取拼团活动列表
 			__get_rule_list: function(){
 				var that = this;
-				var post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/AipingouData/get_rule_list';
+				var post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/AipingouData/get_rule_list';
 				
 				that.abotapi.abotRequest({
 					url: post_url,
@@ -251,6 +249,11 @@
 		background-color: #fffffb;
 		border-radius: 10rpx;
 	}
+	.wenan_content{
+		width: 100%;
+		margin: 30rpx 30rpx;
+	}
+	
 	.my_aipingou{
 		width: 100%;
 		background-color: #fffffb;
@@ -291,6 +294,7 @@
 	.product_name{
 		width: 50%;
 		height: 300rpx;
+		text-align: left;
 	
 	}
 
@@ -298,7 +302,6 @@
 		width: 100%;
 		height: 80rpx;
 		line-height: 80rpx;
-		text-align: center;
 		color: #fffffb;
 		border-radius: 5rpx;
 		background-color:#145b7d;

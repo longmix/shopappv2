@@ -603,7 +603,7 @@
             "path" : "pages/aipingou/aipingou",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "一元抢购",
                 "enablePullDownRefresh": true
             }
             
