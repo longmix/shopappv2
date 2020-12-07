@@ -26,7 +26,7 @@
 		
 		<!---我的拼购-->
 		<view class="my_aipingou">
-			<button>我的拼购</button>
+			<button @click="toMypingou()">我的拼购</button>
 		</view>
 
 		<!--爱拼购活动-->
@@ -76,6 +76,7 @@
 			return {
 				aipingou_setting:'',
 				ruleList:'',
+				
 
 
 			}
@@ -88,6 +89,8 @@
 			this.abotapi.set_shop_option_data(this, function(that002, option_data){
 				that002.__get_rule_list();
 				that002.__get_setting_list();
+				
+			
 				 
 				uni.setNavigationBarTitle({
 					title: '爱拼购',
@@ -126,6 +129,14 @@
 			
 		},
 		methods: {
+			//跳转到“我的拼购”页面
+			toMypingou() {
+			
+				uni.navigateTo({
+					url: '/pages/aipingou/mypingou'
+				})
+				this.isfirst = false;
+			},
 			
 			//获取拼团宣传图片和标题
 			__get_setting_list: function() {

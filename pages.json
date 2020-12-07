@@ -607,7 +607,16 @@
                 "enablePullDownRefresh": true
             }
             
-        }
+        },
+		{
+		    "path" : "pages/aipingou/mypingou",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "我的拼购",
+		        "enablePullDownRefresh": true
+		    }
+		    
+		}
         ,{
             "path" : "pages/shutdown_website/shutdown_website",
             "style" :                                                                                    
