@@ -190,7 +190,7 @@
 				wxa_order_hide_coupon:'',
 				wxa_order_hide_balance_zengsong:'',
 				wxa_order_hide_balance:'',
-				action:'',
+				action:'direct_buy',
 				ucid:'',
 				isSwitch1:false,
 				isSwitch2:false,
@@ -241,10 +241,12 @@ productid 两种情况：（1）直接一个数组，productid；（2）不是�
 
 continue_to_pay 选填，如果有值且为1，则使用缓存的options参数。
 total 合计支付的金额
+
 order_type_001
 	shopmall （默认，可以不传）
-		action 默认不传，支持action=directbuy
+		action 默认不传，支持action=direct_buy
 		productid 商品ID
+		
 	xianmaishang 实体商家的订单
 		xianmaishangid 商家的ID
 		is_waimai 是否外卖订单，默认不传，支持 1 代表是外卖订单		
