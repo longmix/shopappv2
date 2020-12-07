@@ -48,7 +48,7 @@
 								<br />
 								<view style="display: flex;">
 
-									<view style="font-size: 16rpx;" @tap="aipingou_buy_together(item.productid)">
+									<view style="font-size: 16rpx;margin-left:30px;"  @tap="aipingou_buy_together(item.productid)">
 										<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_pintuan.png" ></image>
 										<view style="margin-left: -15rpx;">去拼购</view>
 									</view>
@@ -308,7 +308,7 @@
 	}
 
 	.aipingou_product_image{
-		width: 53%;
+		width: 55%;
 		height: 300rpx;
 		text-align: center;
 		justify-content: center;
