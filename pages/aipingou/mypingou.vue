@@ -46,10 +46,11 @@
 		 :AlertClass="AlertClassKaijiang"
 		 :AlertPosition="AlertPositionKaijiang">
 		    <view class="zhongjiang_list">
-				<ul>
-					<li>将军</li>
-					
-				</ul>
+				<table>
+					<tr>
+						<td><h1></h1></td>
+					</tr>
+				</table>
 			</view>
 		</openAlert>
 		
@@ -58,14 +59,16 @@
 		:AlertClass="AlertClassZhongjiang" 
 		:AlertPosition="AlertPositionZhongjiang"
 		>
-		    <view class="zhongjiang_list">
-				<ul>
-					<li>将军</li>
-					<li>豆豆</li>
-					<li>豆豆</li>
-					
-				</ul>
-			</view>
+		<view class="zhongjiang_list" v-for="(item,idx) in current_zhongjiang_list" :key="idx">
+		    <table>
+				<tr>
+					<td>序号</td>
+					<td></td>
+					<td>名称</td>
+					<td>抽奖编码</td>
+				</tr>
+			</table>
+		</view>
 		</openAlert>
 		
 	</view>
@@ -91,7 +94,7 @@
 				
 				AlertClassZhongjiang: 0,
 				AlertPositionZhongjiang: '',
-				closeBtn:true,
+	
 				current_kaijiang_list:[],
 				current_zhongjiang_list:[],
 				
@@ -212,11 +215,7 @@
 			    });
 			},
 			open_zhongjiang_detail(Class, Position, tuansn) {
-				for(var i = 0;i<this.tuan_list.length;i++){
-					if(itemmmm.tuansn == tuansn){
-						this.current_zhongjiang_list = itemmmm.kaijiangxxxxxx;
-					}
-				}
+			
 				
 			    this.$nextTick(function() {
 					
@@ -249,7 +248,16 @@
 					success: function(res) {
 						
 					that.tuan_list = res.data.my_tuan_list;
-					console.log('这是团组===',that.tuan_list);
+					
+					that.current_zhongjiang_list = res.data.my_tuan_list;
+					
+					for(var i = 0;i<that.tuan_list.length;i++){
+						
+						that.current_zhongjiang_list = that.tuan_list[i].zhongjiang_list;
+						
+						console.log('999999',that.current_zhongjiang_list);
+					}
+					
 					},
 					fail: function(e) {
 			
@@ -305,7 +313,6 @@
 	font-size: 1rpx;
 }
 .zhongjiang_list{
-	width: 250px;
 	background-color: #18DBA6;
 	color: #FFFFFF;
 }
