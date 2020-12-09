@@ -83,7 +83,7 @@
                 "payment" : {
                     "weixin" : {
                         "appid" : "wx6939a00416c5d3aa",
-                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/hahading/"
+                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/tiantianhui/"
                     },
                     "alipay" : {}
                 },
@@ -95,13 +95,13 @@
                     "weixin" : {
                         "appid" : "wx6939a00416c5d3aa",
                         "appsecret" : "aaaaaaaaaaaaaaaaaaaaaaa",
-                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/hahading/"
+                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/tiantianhui/"
                     }
                 },
                 "share" : {
                     "weixin" : {
                         "appid" : "wx6939a00416c5d3aa",
-                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/hahading/"
+                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/tiantianhui/"
                     }
                 },
                 "push" : {}
@@ -140,9 +140,9 @@
             },
             "splashscreen" : {
                 "android" : {
-                    "hdpi" : "unpackage/res/splashscreen_hahading/splashscreen_480x762.png",
-                    "xhdpi" : "unpackage/res/splashscreen_hahading/splashscreen_720x1242.png",
-                    "xxhdpi" : "unpackage/res/splashscreen_hahading/splashscreen_1080x1882.png"
+                    "hdpi" : "unpackage/res/splashscreen_tiantianhui/splashscreen_480x762.png",
+                    "xhdpi" : "unpackage/res/splashscreen_tiantianhui/splashscreen_720x1242.png",
+                    "xxhdpi" : "unpackage/res/splashscreen_tiantianhui/splashscreen_1080x1882.png"
                 },
                 "ios" : {
                     "iphone" : {
@@ -154,7 +154,7 @@
                         "retina40" : "unpackage/res/splashscreen/welcome_640x1136.png",
                         "retina35" : "unpackage/res/splashscreen/welcome_640x960.png"
                     },
-                    "storyboard" : "E:/dev/yanyubao/vue/apple dev - hahading/CustomStoryboard.zip"
+                    "storyboard" : "unpackage/res/apple dev - tiantianhui/CustomStoryboard.zip"
                 },
                 "iosStyle" : "storyboard",
                 "androidStyle" : "default"
