@@ -12,6 +12,63 @@
 
 <script>
 /*
+	使用说明见：  https://ext.dcloud.net.cn/plugin?id=1208
+	
+	使用方式
+	在 main.js 中引用组件
+	
+	import openAlert from '@/components/open-alert/open-alert';
+	Vue.component('openAlert', openAlert);
+	
+	在 template 中使用组件
+	
+	<view class="open-view" @tap="open(0, 'center')">淡入</view>
+	<openAlert ref="openAlert" :AlertClass="AlertClass" :AlertPosition="AlertPosition">
+	    <view>自定义内容</view>
+	</openAlert>
+	
+	export default {
+	    data() {
+	        return {
+	            AlertClass: 0,
+	            AlertPosition: '',
+	        };
+	    },
+	    methods: {
+	        open(Class, Position) {
+	            this.$nextTick(function() {
+	                this.AlertClass = Class;
+	                this.AlertPosition = Position;
+	                this.$nextTick(function() {
+	                    this.$refs.openAlert.Show();
+	                });
+	            });
+	        }
+	    }
+	};
+	
+	
+	
+	属性说明
+	属性名 	类型 	默认值 	说明
+	AlertPosition 	String 	center 	自定义内容显示位置(top, center, bottom)
+	AlertClass 	Number 	0 	动画类型 (17种动画类型 任意选择)
+	IsBgShow 	Boolean 	true 	是否显示背景
+	BgColor 	String 	rgba(0, 0, 0, 0.2) 	自定义背景颜色(rgba格式)
+	closeBtn 	Boolean 	false 	关闭按钮
+	shadeClose 	Boolean 	true 	是否点击遮罩关闭
+	time 	Number 	0 	自动关闭所需毫秒 (不能小于1000毫秒)
+	isOutAnim 	Boolean 	true 	是否显示关闭动画
+	CustomPosition 	Object 	{} 	自定义位置 (上,下,左,右 距离)
+	
+	方法说明
+	通过 ref 获取组件调用方法
+	方法称名 	说明
+	Show 	打开弹出层
+	Close 	关闭弹出层
+	
+*/	
+/*
 	0 淡入
 	1  淡入-从上
 	2  淡入-从右
