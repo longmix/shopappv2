@@ -29,9 +29,9 @@
 							<view style="display: flex;">
 							
 						    <button style="width: 200rpx; height:60rpx; font-size: 5rpx;"
-								@tap="open_kaijiang_detail(0, 'center','true', item.tongji_key)">开奖详情</button>
+								@tap="open_kaijiang_detail(0, 'center', item.tongji_key)">开奖详情</button>
 							<button style="width: 200rpx; height:60rpx; font-size: 5rpx;"
-								@tap="open_zhongjiang_detail(0, 'center', item.tongji_key)">中奖记录</button>
+								@tap="open_zhongjiang_detail(0, 'center')">中奖记录</button>
 						    </view>
 						</td>
 						
@@ -41,7 +41,7 @@
 			 
 			</view>
 		</view>
-		<!-- 开奖详情 -->
+		<!-- 中奖记录 -->
 		<openAlert ref="openAlert"
 		 :AlertClass="AlertClassKaijiang"
 		 :AlertPosition="AlertPositionKaijiang">
@@ -52,7 +52,8 @@
 				</ul>
 			</view>
 		</openAlert>
-		<!-- 中奖记录 -->
+		
+		<!-- 开奖详情 -->
 		<openAlert ref="openAlert" 
 		:AlertClass="AlertClassZhongjiang" 
 		:AlertPosition="AlertPositionZhongjiang"
@@ -90,7 +91,7 @@
 				
 				AlertClassZhongjiang: 0,
 				AlertPositionZhongjiang: '',
-				
+				closeBtn:true,
 				current_kaijiang_list:[],
 				current_zhongjiang_list:[],
 				
@@ -194,7 +195,8 @@
 				for(var i = 0;i<this.tuan_list.length;i++){
 					//console.log(this.tuan_list[i]['tongji_key']);
 					if(this.tuan_list[i]['tongji_key'] == tuansn){
-						this.current_kaijiang_list = this.tuan_list[i]['userid'];
+						
+						console.log('找到了！',this.current_kaijiang_list);
 					}
 				}
 				
@@ -302,10 +304,9 @@
 	line-height: 37rpx;
 	font-size: 1rpx;
 }
-/* .zhongjiang_list{
-	background-color: #07C160;
-	width:250px;
-	font-size: 19px;
-} */
-
+.zhongjiang_list{
+	width: 250px;
+	background-color: #18DBA6;
+	color: #FFFFFF;
+}
 </style>
