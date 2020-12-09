@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view>
-			<view class="mypingou" v-for=" (item,idx) in tuan_list" :key="idx">
+			<view class="mypingou1" v-for=" (item,idx) in tuan_list" :key="idx">
 				<table class="mypingou_list" >
 					<tr>
 						<td>订单编号：{{item.tongji_key}}</td><button class="button2">复制</button>
@@ -19,7 +19,10 @@
 						<td>抽奖编号：{{item.choujiangma}}</td>
 					</tr>
 					<tr>
-						<td>中奖状态：</td>
+						<td>中奖状态：<image src="" style="width: 40rpx;height: 40rpx;margin-bottom: -10rpx;"></image>
+						             <image src="" style="width: 40rpx;height: 40rpx;margin-bottom: -10rpx;"></image>
+						
+						</td>
 					</tr>
 					<tr>
 						<td>
@@ -36,16 +39,24 @@
 			 
 			</view>
 		</view>
+		
 	</view>
+	
+	 
+			 
 </template>
 
 <script>
+	import mypingou from '../../pages/aipingou/mypingou.vue';
+	
 	export default {
+		components:{
+			mypingou
+		},
 		data() {
 			return {
-				
-				
-				tuan_list:'',
+				page:1,				
+				tuan_list:[],
 				
 			}
 		},
@@ -58,58 +69,79 @@
 			this.abotapi.set_shop_option_data(this, function(that002, option_data){
 				that002.get_pingou_list();
 				
+				
 			
 				
 			});
+		
+			
+	    },
+			
+		
+		onShow() {
+		
 		},
+		
+		
+		//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
+		onReachBottom() {
+			var that = this;
+			
+			console.log('ccccccccccc')
+			
+				that.get_pingou_list();
+				
+			},
+			
+			
+	
 		methods: {
-			
-			//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
-						onReachBottom() {
-							
-							if(this.is_xiala == 0){
-								this.jiazai();
-							}else{
-								/*uni.showToast({
-									title:'已经到底了~'
-								})*/
-								this.show_bottom_tips = 'block';
-							}
-							
-						},
-			
-			
-			
 
-			
-			
 			//获取拼购团列表
 			get_pingou_list: function(){
 				var that = this;
+				
+				
+				
 				var post_url = that.abotapi.globalData.yanyubao_server_url + '/openapi/AipingouData/get_my_pintuan_list';
 				var userInfo = that.abotapi.get_user_info();
-			
-			
+
 				that.abotapi.abotRequest({
 					url: post_url,
 					data: {
 						userid: userInfo.userid,
 						checkstr: userInfo.checkstr,
 						sellerid: that.abotapi.get_sellerid(),
+						page: that.page,
 					},
 			
 					success: function(res) {
-			
+						
+					var tuan_list = res.data.my_tuan_list;
+					
 					that.tuan_list = res.data.my_tuan_list;
+					
+					
+					if (res.data.code == 1) {
 						
-			
-						console.log('aaaaaaaaaa', res.data);
-						//console.log('8888====11>>', that.aipingou_list);
+						that.tuan_list = that.tuan_list.concat(tuan_list);
+						that.page = that.page + 1;
 						
 						
+	
+					} 
+					
+					else {
+						that.isShowBottomLine = 1;
 
+							uni.showToast({
+							  /*title: '到底了!',
+							  icon: 'none',
+							  duration: 2000,*/
+							})
+						}
 					},
-			
+		
 					fail: function(e) {
 			
 			
@@ -117,6 +149,13 @@
 				});
 
 			},
+			
+			// jiazai:function(){
+			// 	var that = this;
+			// 	var page = this.page;
+			// 	this.page = page+1;
+			// 	that.get_pingou_list();
+			// },
 		
 		
 			}
@@ -130,7 +169,7 @@
 	td{
 		font-size: 15rpx;
 	}
-.mypingou{
+.mypingou1{
 	    display: flex;
 	    width: 100%;
 		background-color: #fffffb;
