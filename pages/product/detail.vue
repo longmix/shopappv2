@@ -237,8 +237,32 @@
 					本商品由{{goods_detail.factory_name}}发货并提供售后服务
 				</view>
 				<image style="width: 40rpx;" src="../../static/img/tabBar/home.png" mode="widthFix"></image>
-				</view>
+			</view>
 		</navigator>
+		
+		<!-- 2020.12.3. 爱拼团活动对应的 已经开出 且 没有成团 的 团列表  推荐商品-->
+		<view class="is_aipingou_tuan_list" v-if="is_aipingou_tuan_list">
+			<block v-if="aipin_tuan_list">
+				<view style="margin-left: 25rpx;">{{aipin_tuan_list.length}}个团正在进行，可直接参与</view>
+				<view class="aipin_tuan" v-for="(item,index) in aipin_tuan_list" :key="index">
+						<view class="tuan_info_name">
+							<img :src="item.headimgurl" mode="widthFix">
+							<view class="tuan_leder_name">{{item.nickname}}</view>
+						</view>
+						<view class="let_go_pingtuan" 
+						:style="{'background-color': wxa_shop_nav_bg_color}">去拼团</view>
+						<view class="tuan_time_number">
+							<view class="tuan_number">{{grounp_count}}人成团还差<span style="color: red;">{{grounp_count - item.tuanyuan_counter}}人</span></view>
+							<view class="tuan_time_over">剩余24:58:51:8</view>
+						</view>
+				</view>
+			</block>
+			<block v-if="!aipin_tuan_list">
+				<view style="margin-left: 25rpx;">没有开团xxxxxxxxx</view>
+			</block>
+		</view>
+		
+		<!-- ==================End========================== -->
 		
 		<!-- 商品属性 -->
 		<view class="info-box spec" v-if="attribute_list && attribute_list.length>0">
@@ -344,30 +368,6 @@
 			</view>
 		</view>
 		
-		<!-- 2020.12.3. 爱拼团活动对应的 已经开出 且 没有成团 的 团列表  推荐商品-->
-		<view class="is_aipingou_tuan_list" v-if="is_aipingou_tuan_list">
-			<!-- aipingou_tuan_list-->
-				<view class="aipin_tuan">
-					<image src="../../static/img/VIP.png" mode="widthFix"></image>
-					<button type="button">参团</button>
-				</view>
-				<view class="aipin_tuan">
-					<image src="../../static/img/VIP.png" mode="widthFix"></image>
-					<button type="button">参团</button>
-				</view>
-				<view class="aipin_tuan">
-					<image src="../../static/img/VIP.png" mode="widthFix"></image>
-					<button type="button">参团</button>
-				</view>
-				<view class="aipin_tuan">
-					<image src="../../static/img/VIP.png" mode="widthFix"></image>
-					<button type="button">参团</button>
-				</view>
-		</view>
-		
-		<!-- ==================End========================== -->
-		
-
 		<!-- 评价 -->
 		<!-- <view class="info-box comments" id="comments">
 			<view class="row">
@@ -573,7 +573,10 @@
 				//2020.12.3. 爱拼团
 				is_aipingou_tuan_list:false,
 				aipingou_tuan_list:null,
-
+				aipin_tuan_list:[],//团列表
+				grounp_count:'',//组团人数
+				wxa_shop_nav_bg_color:'',
+				
 			};
 		},
 		/**
@@ -623,7 +626,7 @@
 				that.is_aipingou_tuan_list = true;
 				
 				//获取正在等待开团的团列表
-				that.__get_aipingou_tuan_list(options.productid);
+				that.__get_aipingou_tuan_list(options.productid, options.rulesn);
 			}
 
 			options_str = options_str.substr(0, options_str.length - 1);
@@ -713,7 +716,7 @@
 							that.currentSwiper = -1;
 						}
 
-						console.log('88888888888999', that.current_video_url);
+						//console.log('88888888888999', that.current_video_url);
 
 						that.attribute_list = that.goods_detail.attribute_list;
 
@@ -846,7 +849,7 @@
 		},
 		onShow() {
 			this.getCartList();
-			
+			//this.__get_tuan_list();
 		},
 		onHide(){
 			this.current_video_playing = 0;
@@ -1051,8 +1054,14 @@
 			},
 
 			callback_set_option_list_str: function(that, cb_params) {
+				
+				var that = this;
+				
 				that.abotapi.getColor();
-
+				
+				console.log('wxa_order_hide_daishouhuo_refund',cb_params);
+				that.wxa_shop_nav_bg_color = cb_params.wxa_shop_nav_bg_color;
+				
 				if (!cb_params) {
 					return;
 				}
@@ -1819,22 +1828,24 @@
 				}
 			},
 			//2020.12.3. 爱拼团
-			__get_aipingou_tuan_list:function(){
+			__get_aipingou_tuan_list:function(productid, rulesn){
 				//请求团列表
 				// this.aipingou_tuan_list
 					var that =this;
 					var userInfo = this.abotapi.get_user_info();
-						
+					
 					var post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/AipingouData/get_tuan_list';
 					
 					that.abotapi.abotRequest({
 						url: post_url,
 						data: {
 							sellerid: that.abotapi.get_sellerid(),
+							productid:productid,
+							rulesn:rulesn
 						},
 						success: function(res) {
-						 
-						
+							that.aipin_tuan_list = res.data.Aipingou_tuan_list;
+							that.grounp_count = res.data.group_count;
 						},
 						fail: function(e) {
 						
@@ -1843,7 +1854,36 @@
 						});	
 				
 				
-			}
+			},
+			
+			// __get_tuan_list: function(){
+			//     var that = this;
+			//     var post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/AipingouData/get_my_pintuan_list';
+			//     var userInfo = that.abotapi.get_user_info();
+			    
+			//     that.abotapi.abotRequest({
+			//      url: post_url,
+			//      data: {
+			//       userid: userInfo.userid,
+			//       checkstr: userInfo.checkstr,
+			//       sellerid: that.abotapi.get_sellerid(),
+			//      },
+			//      success: function(res) {
+			     
+			//       that.ruleList = res.data.rule_list;
+			    
+			   
+			//       console.log('aaaaaaaaaa', res.data.rule_list);
+			//       console.log('8888====11>>', that.ruleList);
+			      
+			     
+			//      },
+			//      fail: function(e) {
+			     
+			     
+			//       },
+			//      }); 
+			//    },
 		},
 
 		filters: {
@@ -2967,14 +3007,45 @@
 		margin-bottom: 5px;
 	}
 	.is_aipingou_tuan_list{
-		display: flex;
+		
 		
 	}
 	.is_aipingou_tuan_list .aipin_tuan{
-		text-align: center;
-		width:25%;
+		margin-top: 10px;
+		height: 90rpx;
 	}
-	.aipin_tuan image{
-		width: 50%;
+	.tuan_info_name{
+		float: left;
+		line-height: 26px;
+		
+	}
+	.tuan_info_name img{
+		width: 80rpx;
+		border-radius:50%;
+		overflow:hidden;
+	}
+	.tuan_time_number{
+		float: right;
+	}
+	.let_go_pingtuan{
+		float: right;
+		width: 80px;
+		font-size: 16px;
+		height: 40px;
+		text-align: center;
+		line-height: 40px;
+		border: 1px solid #000000;
+		border-radius: 10rpx;
+		margin-left: 30rpx;
+		margin-right: 20rpx;
+		color:#FFFFFF;
+	}
+	.tuan_leder_name{
+		float: right;
+		line-height: 80rpx;
+		margin-left: 10rpx;
+	}
+	.tuan_time_over{
+		color: #666666;
 	}
 </style>

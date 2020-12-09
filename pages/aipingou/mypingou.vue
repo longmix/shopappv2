@@ -28,8 +28,10 @@
 						<td>
 							<view style="display: flex;">
 							
-						    <button style="width: 200rpx; height:60rpx; font-size: 5rpx;">开奖详情</button>
-							<button style="width: 200rpx; height:60rpx; font-size: 5rpx;">中奖记录</button>
+						    <button style="width: 200rpx; height:60rpx; font-size: 5rpx;"
+								@tap="open_kaijiang_detail(0, 'center','true', item.tongji_key)">开奖详情</button>
+							<button style="width: 200rpx; height:60rpx; font-size: 5rpx;"
+								@tap="open_zhongjiang_detail(0, 'center', item.tongji_key)">中奖记录</button>
 						    </view>
 						</td>
 						
@@ -39,6 +41,31 @@
 			 
 			</view>
 		</view>
+		<!-- 开奖详情 -->
+		<openAlert ref="openAlert"
+		 :AlertClass="AlertClassKaijiang"
+		 :AlertPosition="AlertPositionKaijiang">
+		    <view class="zhongjiang_list">
+				<ul>
+					<li>将军</li>
+					
+				</ul>
+			</view>
+		</openAlert>
+		<!-- 中奖记录 -->
+		<openAlert ref="openAlert" 
+		:AlertClass="AlertClassZhongjiang" 
+		:AlertPosition="AlertPositionZhongjiang"
+		>
+		    <view class="zhongjiang_list">
+				<ul>
+					<li>将军</li>
+					<li>豆豆</li>
+					<li>豆豆</li>
+					
+				</ul>
+			</view>
+		</openAlert>
 		
 	</view>
 	
@@ -55,8 +82,17 @@
 		},
 		data() {
 			return {
-				page:1,				
+				current_page:1,				
 				tuan_list:[],
+				
+				AlertClassKaijiang: 0,
+				AlertPositionKaijiang: '',
+				
+				AlertClassZhongjiang: 0,
+				AlertPositionZhongjiang: '',
+				
+				current_kaijiang_list:[],
+				current_zhongjiang_list:[],
 				
 			}
 		},
@@ -86,39 +122,109 @@
 		onPullDownRefresh() {
 			var that = this;
 			
-			console.log('onPullDownRefresh=====>>>>>');
-			
-			this.page = 1;
-			this.isShowBottomLine = 0;
-			this.tuan_list = [];
-			
-			
-			
-			
-			this.get_pingou_list();
+			that.isShowBottomLine = 0;
+			that.tuan_list = [];
 			
 			console.log('下拉刷新==============')
 			//停止当前页面的下拉刷新
-			
-			uni.stopPullDownRefresh();
-			
-			
-			},
+			that.get_pingou_list();
+			setTimeout(function() {
+				uni.stopPullDownRefresh();
+			}, 1000);
+		},
 			
 		
 		//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
 		onReachBottom() {
 			var that = this;
-			
 			console.log('ccccccccccc')
 			
-				that.get_pingou_list();
+			if(this.is_OK){
+				/*uni.showToast({
+					title: '已经到底了~',
+					duration: 2000
+				});*/
 				
-			},
+				return;
+			}
+			var post_url = that.abotapi.globalData.yanyubao_server_url + '/openapi/AipingouData/get_my_pintuan_list';
+			var userInfo = that.abotapi.get_user_info();
+			
+			that.abotapi.abotRequest({
+				url: post_url,
+				data: {
+					userid: userInfo.userid,
+					checkstr: userInfo.checkstr,
+					sellerid: that.abotapi.get_sellerid(),
+					page: that.current_page,
+				},
+						
+				success: function(res) {
+					
+				if(res.data.code == 1){
+					that.is_OK = false;
+					that.tuan_list = that.tuan_list.concat(res.data.my_tuan_list);
+					console.log('超过一页',that.current_product_list)
+					uni.stopPullDownRefresh();//得到数据后停止下拉刷新
+				}else if(res.data.code == 0){
+					that.is_OK = true;
+					uni.showToast({
+						title: '已经到底了~',
+						duration: 2000
+					});
+					return;
+				}
+				
+				},
+					
+				fail: function(e) {
+						
+						
+				},
+			});
+				
+		},
 			
 			
 	
 		methods: {
+			open_kaijiang_detail(Class, Position, tuansn) {
+				console.log('8989========',tuansn);
+				
+				for(var i = 0;i<this.tuan_list.length;i++){
+					//console.log(this.tuan_list[i]['tongji_key']);
+					if(this.tuan_list[i]['tongji_key'] == tuansn){
+						this.current_kaijiang_list = this.tuan_list[i]['userid'];
+					}
+				}
+				
+				
+			    this.$nextTick(function() {
+					
+					
+			        this.AlertClassKaijiang = Class;
+			        this.AlertPositionKaijiang = Position;
+			        this.$nextTick(function() {
+			            this.$refs.openAlert.Show();
+			        });
+			    });
+			},
+			open_zhongjiang_detail(Class, Position, tuansn) {
+				for(var i = 0;i<this.tuan_list.length;i++){
+					if(itemmmm.tuansn == tuansn){
+						this.current_zhongjiang_list = itemmmm.kaijiangxxxxxx;
+					}
+				}
+				
+			    this.$nextTick(function() {
+					
+			        this.AlertClassZhongjiang = Class;
+			        this.AlertPositionZhongjiang = Position;
+			        this.$nextTick(function() {
+			            this.$refs.openAlert.Show();
+			        });
+			    });
+			},
 
 			//获取拼购团列表
 			get_pingou_list: function(){
@@ -135,36 +241,14 @@
 						userid: userInfo.userid,
 						checkstr: userInfo.checkstr,
 						sellerid: that.abotapi.get_sellerid(),
-						page: that.page,
+						page: that.current_page,
 					},
 			
 					success: function(res) {
 						
-					var tuan_list = res.data.my_tuan_list;
-					
 					that.tuan_list = res.data.my_tuan_list;
-					
-					
-					if (res.data.code == 1) {
-						
-						that.tuan_list = that.tuan_list.concat(tuan_list);
-						that.page = that.page + 1;
-						
-						
-	
-					} 
-					
-					else {
-						that.isShowBottomLine = 1;
-
-							uni.showToast({
-							  /*title: '到底了!',
-							  icon: 'none',
-							  duration: 2000,*/
-							})
-						}
+					console.log('这是团组===',that.tuan_list);
 					},
-		
 					fail: function(e) {
 			
 			
@@ -218,5 +302,10 @@
 	line-height: 37rpx;
 	font-size: 1rpx;
 }
+/* .zhongjiang_list{
+	background-color: #07C160;
+	width:250px;
+	font-size: 19px;
+} */
 
 </style>

@@ -2,7 +2,7 @@
 	<view>
 <!-- 
 
-1、去拼团的跳转：  /pages/product/detail?productid=12345&cuxiao_huodong=aipingou
+1、去拼团的跳转：  /pages/product/detail?productid=12345&cuxiao_huodong=aipingou&rulesn=abcdefgdgdfgfd13234
 2、去开团的跳转：  /pages/order/pay?productid=12345&cuxiao_huodong=aipingou
 3、去参加某个团：  /pages/order/pay?productid=12345&cuxiao_huodong=aipingou&tuansn=abcdefg123456
     tuansn为团编号
@@ -48,7 +48,7 @@
 								<br />
 								<view style="display: flex;">
 
-									<view style="font-size: 16rpx;margin-left:20px;"  @tap="aipingou_buy_together(item.productid)">
+									<view style="font-size: 16rpx;margin-left:20px;"  @tap="aipingou_buy_together(item.productid,item.rulesn)">
 										<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_pintuan.png" ></image>
 										<view>去拼购</view>
 									</view>	
@@ -148,8 +148,9 @@
 			console.log('下拉刷新==============')
 			//停止当前页面的下拉刷新
 			
-			uni.stopPullDownRefresh();
-			
+			setTimeout(function() {
+				uni.stopPullDownRefresh();
+			}, 1000);
 			
 			},
 		
@@ -181,7 +182,7 @@
 						that.aipingou_setting = res.data.aipingou_seting;
 						
 
-						console.log('aaaaaaaaaa', res.data.aipingou_seting.xuanchuan_tupian);
+						//console.log('aaaaaaaaaa', res.data.aipingou_seting.xuanchuan_tupian);
 						//console.log('8888====11>>', that.aipingou_list);
 						
 						uni.setNavigationBarTitle({
@@ -225,7 +226,7 @@
 						},
 					});	
 			},
-				
+			
 			//去开团
 			aipingou_open_tuan:function(productid){
 				var that =this;
@@ -253,13 +254,13 @@
 				
 			},
 			//去拼购
-			aipingou_buy_together:function(productid){
+			aipingou_buy_together:function(productid,rulesn){
 				var that =this;
 				var userInfo = this.abotapi.get_user_info();
 				
 				//console.log('88888aaaaaaaaa',userInfo,userInfo.userid);
 				//判断是否登录
-				var last_url = '/pages/product/detail?productid='+ productid +'&amount=1&cuxiao_huodong=aipingou';
+				var last_url = '/pages/product/detail?productid='+ productid +'&amount=1&cuxiao_huodong=aipingou&rulesn='+ rulesn;
 				
 				if (!userInfo || !userInfo.userid) {
 					uni.showToast({
