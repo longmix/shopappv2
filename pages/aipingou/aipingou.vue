@@ -76,6 +76,8 @@
 			return {
 				aipingou_setting:'',
 				ruleList:'',
+				current_page:1,
+				
 				
 
 
@@ -134,16 +136,15 @@
 		onPullDownRefresh() {
 			var that = this;
 		
-			this.page = 1;
 			this.isShowBottomLine = 0;
 			this.aipingou_setting = [];
 			this.ruleList = [];
 			
 			
-			
-			
 			this.__get_setting_list();
 			this.__get_rule_list();
+			
+			
 			
 			console.log('下拉刷新==============')
 			//停止当前页面的下拉刷新
@@ -153,6 +154,10 @@
 			}, 1000);
 			
 			},
+			
+			
+			
+			
 		
 		methods: {
 			//跳转到“我的拼购”页面
@@ -209,14 +214,14 @@
 					url: post_url,
 					data: {
 						sellerid: that.abotapi.get_sellerid(),
+						
 					},
 					success: function(res) {
 					
 						that.ruleList = res.data.rule_list;
-				
 			
-						console.log('aaaaaaaaaa', res.data.rule_list);
-						console.log('8888====11>>', that.ruleList);
+						//console.log('aaaaaaaaaa', res.data.rule_list);
+						//console.log('8888====11>>', that.ruleList);
 					 
 					
 					},
