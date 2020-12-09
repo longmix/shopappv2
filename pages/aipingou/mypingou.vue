@@ -82,6 +82,29 @@
 		
 		},
 		
+		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
+		onPullDownRefresh() {
+			var that = this;
+			
+			console.log('onPullDownRefresh=====>>>>>');
+			
+			this.page = 1;
+			this.isShowBottomLine = 0;
+			this.tuan_list = [];
+			
+			
+			
+			
+			this.get_pingou_list();
+			
+			console.log('下拉刷新==============')
+			//停止当前页面的下拉刷新
+			
+			uni.stopPullDownRefresh();
+			
+			
+			},
+			
 		
 		//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
 		onReachBottom() {
