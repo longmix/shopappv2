@@ -39,11 +39,14 @@
 					<view class="font_14 mt5">
 						{{item.name}}  <block v-if="item.option_name">{{item.option_name}}</block>
 					</view>
+					<view class="font_14 mt5">
+						<span style="color:#E3170D;font-weight: bold;margin-right: 10rpx;">¥{{item.price}}</span>  x  {{item.amount}}
+					</view>
 				</view>
 			</view>
 
 			<view>
-				<view class="danji_shulian">
+				<!-- <view class="danji_shulian">
 					<text class="gm_ovh_1h pt10">单价</text>
 					<text class="gm_ovh_1h pt10">¥{{item.price}}</text>
 				</view>
@@ -51,7 +54,7 @@
 				<view class="danji_shulian">
 					<text class="gm_ovh_1h pt10">数量</text>
 					<text class="gm_ovh_1h pt10">x {{item.amount}}</text>
-				</view>
+				</view>-->
 
 				<view class="danji_shulian" v-if="item.product_take_score">
 					<text class="gm_ovh_1h pt10">积分变动</text>
@@ -86,6 +89,12 @@
 
 
 		<view class="w100">
+			<view class="a-dikou" :hidden="wxa_order_hide_balance_zengsong==1">
+				<view class="b-dikou">
+					<view>优惠券</view>
+				</view>
+				<view class="c-dikou">无可用优惠</view>
+			</view>
 
 			<view class="a-dikou" :hidden="wxa_order_hide_balance_zengsong==1">
 				<view class="b-dikou">
