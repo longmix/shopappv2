@@ -24,10 +24,8 @@
 		</view>
 		<!--宣传文案end-->
 		
-		<!---我的拼购-->
-		<view class="my_aipingou">
-			<button @click="toMypingou()">我的拼购</button>
-		</view>
+	
+		
 
 		<!--爱拼购活动-->
 		
@@ -63,7 +61,12 @@
 			            </table>
 			          </view>
 			</view>
-		</view>	
+		</view>
+			
+			<!---我的拼购-->
+		<view class="home-p" @click="toMypingou()">
+			<image src="https://yanyubao.tseo.cn/Tpl/static/img/mydepingou.png" style="width: 70upx;height: 70upx;"></image>
+		</view>
    
 	</view>
 	
@@ -76,7 +79,6 @@
 			return {
 				aipingou_setting:'',
 				ruleList:'',
-				current_page:1,
 				
 				
 
@@ -144,7 +146,7 @@
 			this.__get_setting_list();
 			this.__get_rule_list();
 			
-			
+
 			
 			console.log('下拉刷新==============')
 			//停止当前页面的下拉刷新
@@ -160,6 +162,9 @@
 			
 		
 		methods: {
+			
+			
+			
 			//跳转到“我的拼购”页面
 			toMypingou() {
 			
@@ -319,12 +324,6 @@
 		margin: 30rpx 30rpx;
 	}
 	
-	.my_aipingou{
-		width: 100%;
-		background-color: #fffffb;
-		border-radius: 10rpx;
-		margin-top: 30upx;
-	}
 	
 
 
@@ -372,4 +371,20 @@
 		width: 60rpx;
 		height: 60rpx;
 	}
+	.home-p{
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: space-around;
+		position: fixed;
+		width: 80upx;
+		height: 80upx;
+		background-color: #d1c7b7;
+		z-index: 100;
+		right: 40upx;
+		border-radius: 50%;
+		bottom: 120upx;
+	}
 </style>
+
+								
