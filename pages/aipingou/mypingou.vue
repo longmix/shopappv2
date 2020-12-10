@@ -45,18 +45,23 @@
 		<openAlert ref="openAlertKaijiang"
 		 :AlertClass="AlertClassKaijiang"
 		 :AlertPosition="AlertPositionKaijiang">
-		<view class="kaijiang_list">
-					<view>
-						<view v-for="(detail,ids) in kaijiang_list" :key="ids">
-							<table>
-								<tr>
-									<td>{{detail.ids}}</td>
-									<td>{{detail.choujiangma}}</td>
-									<td>{{detail.join_time_updata}}</td>
-								</tr>
-							</table>
-						</view>
-					</view>
+		<view>
+			<view>
+				<view v-for="(detail,ids) in kaijiang_list" :key="ids">
+					<table class="kaijiang_list">
+						<tr>
+							<th>序号</th>
+							<th>抽奖编码</th>
+							<th>参与时间</th>
+						</tr>
+						<tr>
+							<td>{{detail.ids}}</td>
+							<td>{{detail.choujiangma}}</td>
+							<td>{{detail.join_time_updata}}</td>
+						</tr>
+					</table>
+				</view>
+			</view>
 		 </view>
 		</openAlert>
 		
@@ -65,13 +70,19 @@
 		:AlertClass="AlertClassZhongjiang" 
 		:AlertPosition="AlertPositionZhongjiang"
 		>
-		<view class="zhongjiang_list">
+		<view>
 			<view>
 				<view v-if="zhongjiang_list != 0">
-				<view v-for="(items,ida) in zhongjiang_list" :key="ida">
-					<table>
+				<view id="zhong" v-for="(items,ida) in zhongjiang_list" :key="ida">
+					<table class="zhongjiang_list">
 						<tr>
-							<td>{{items}}</td>
+							<th>序号</th>
+							<th>头像</th>
+							<th>昵称</th>
+							<th>抽奖编码</th>
+						</tr>
+						<tr>
+							<td>{{items.ida}}</td>
 							<td><image :src="items.headimgurl" style="width: 70rpx; height: 70rpx; border-radius: 50%;"></image></td>
 							<td>{{items.nickname}}</td>
 							<td>{{items.choujiangma}}</td>
@@ -80,7 +91,7 @@
 				</view>
 				</view>
 				<view v-else>
-					<view>未中奖</view>
+					<view class="zhongjiang_list">未中奖</view>
 				</view>
 			</view>
 		</view>
@@ -355,6 +366,7 @@
 
 }
 
+
 .button1{
 	width: 60rpx;
 	height: 30epx;
@@ -367,13 +379,15 @@
 	font-size: 1rpx;
 }
 .zhongjiang_list{
-	display: flex;
 	width: 600rpx;
-	
+	text-align: center;
 	background-color: #fffffb;
 }
+
+
 .kaijiang_list{
-	background-color: #fffffb;
 	width: 600rpx;
+	text-align: center;
+	background-color: #fffffb;
 }
 </style>
