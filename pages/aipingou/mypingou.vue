@@ -4,7 +4,7 @@
 			<view class="mypingou1" v-for=" (item,idx) in tuan_list" :key="idx">
 				<table class="mypingou_list" >
 					<tr>
-						<td>订单编号：{{item.tongji_key}}</td><button class="button2">复制</button>
+						<td>订单编号：</td><button class="button2">复制</button>
 					</tr>
 					<tr>
 						<td>参与时间：{{item.join_time}}</td>
@@ -19,19 +19,18 @@
 						<td>抽奖编号：{{item.choujiangma}}</td>
 					</tr>
 					<tr>
-						<td>中奖状态：<image src="" style="width: 40rpx;height: 40rpx;margin-bottom: -10rpx;"></image>
-						             <image src="" style="width: 40rpx;height: 40rpx;margin-bottom: -10rpx;"></image>
-						
-						</td>
+						<td v-if="item.zhongjiang_status = 0">中奖状态：{{item.zhongjiang_status_str}}</td>
+						<td v-else-if="item.zhongjiang_status = 2">中奖状态：{{item.zhongjiang_status_str}}</td>
+						<td v-else>中奖状态：未中奖</td>
 					</tr>
 					<tr>
 						<td>
 							<view style="display: flex;">
 							
 						    <button style="width: 200rpx; height:60rpx; font-size: 5rpx;"
-								@tap="open_kaijiang_detail(0, 'center', item.tongji_key)">开奖详情</button>
+								@tap="open_kaijiang_detail(0, 'center',item.tongji_key)">开奖详情</button>
 							<button style="width: 200rpx; height:60rpx; font-size: 5rpx;"
-								@tap="open_zhongjiang_detail(0, 'center')">中奖记录</button>
+								@tap="open_zhongjiang_detail(0, 'center',item.tongji_key)">中奖记录</button>
 						    </view>
 						</td>
 						
@@ -42,32 +41,48 @@
 			</view>
 		</view>
 		<!-- 中奖记录 -->
-		<openAlert ref="openAlert"
+	
+		<openAlert ref="openAlertKaijiang"
 		 :AlertClass="AlertClassKaijiang"
 		 :AlertPosition="AlertPositionKaijiang">
-		    <view class="zhongjiang_list">
-				<table>
-					<tr>
-						<td><h1></h1></td>
-					</tr>
-				</table>
-			</view>
+		<view class="kaijiang_list">
+					<view>
+						<view v-for="(detail,ids) in kaijiang_list" :key="ids">
+							<table>
+								<tr>
+									<td>{{detail.ids}}</td>
+									<td>{{detail.choujiangma}}</td>
+									<td>{{detail.join_time_updata}}</td>
+								</tr>
+							</table>
+						</view>
+					</view>
+		 </view>
 		</openAlert>
 		
 		<!-- 开奖详情 -->
-		<openAlert ref="openAlert" 
+		<openAlert ref="openAlertZhongjiang" 
 		:AlertClass="AlertClassZhongjiang" 
 		:AlertPosition="AlertPositionZhongjiang"
 		>
-		<view class="zhongjiang_list" v-for="(item,idx) in current_zhongjiang_list" :key="idx">
-		    <table>
-				<tr>
-					<td>序号</td>
-					<td></td>
-					<td>名称</td>
-					<td>抽奖编码</td>
-				</tr>
-			</table>
+		<view class="zhongjiang_list">
+			<view>
+				<view v-if="zhongjiang_list != 0">
+				<view v-for="(items,ida) in zhongjiang_list" :key="ida">
+					<table>
+						<tr>
+							<td>{{items}}</td>
+							<td><image :src="items.headimgurl" style="width: 70rpx; height: 70rpx; border-radius: 50%;"></image></td>
+							<td>{{items.nickname}}</td>
+							<td>{{items.choujiangma}}</td>
+						</tr>
+					</table>
+				</view>
+				</view>
+				<view v-else>
+					<view>未中奖</view>
+				</view>
+			</view>
 		</view>
 		</openAlert>
 		
@@ -88,6 +103,9 @@
 			return {
 				current_page:1,				
 				tuan_list:[],
+				zhongjiang_list:[],
+				kaijiang_list:[],
+			
 				
 				AlertClassKaijiang: 0,
 				AlertPositionKaijiang: '',
@@ -193,28 +211,59 @@
 	
 		methods: {
 			open_kaijiang_detail(Class, Position, tuansn) {
-				console.log('8989========',tuansn);
+				console.log('aaaaaaaaaaaaaaaaaaa');
+				var that = this;
 				
-				for(var i = 0;i<this.tuan_list.length;i++){
-					//console.log(this.tuan_list[i]['tongji_key']);
-					if(this.tuan_list[i]['tongji_key'] == tuansn){
+				console.log(that.tuan_list);
+				
+				for(var j = 0;j<that.tuan_list.length;j++){
+					
+					if(tuansn == that.tuan_list[j].tongji_key){
+						console.log(that.tuan_list[j]);
 						
-						console.log('找到了！',this.current_kaijiang_list);
+						that.kaijiang_list = that.tuan_list[j].tuanyuan_list;
+						
+						console.log('qqqqqqqqqqqqqq',that.zhongjiang_list);
+						
+						break;
+						
 					}
+					
 				}
 				
-				
 			    this.$nextTick(function() {
-					
-					
+			
 			        this.AlertClassKaijiang = Class;
 			        this.AlertPositionKaijiang = Position;
 			        this.$nextTick(function() {
-			            this.$refs.openAlert.Show();
+			            this.$refs.openAlertKaijiang.Show();
 			        });
 			    });
 			},
+			
 			open_zhongjiang_detail(Class, Position, tuansn) {
+				console.log('8989========',tuansn);
+				var that = this;
+				
+				console.log(that.tuan_list);
+				
+				for(var i = 0;i<that.tuan_list.length;i++){
+					
+					if(tuansn == that.tuan_list[i].tongji_key){
+						console.log(that.tuan_list[i]);
+						
+						that.zhongjiang_list = that.tuan_list[i].zhongjiang_list;
+						
+						console.log(that.zhongjiang_list);
+						
+						break;
+						
+						console.log('898sss9=ffff=======',hash);
+						
+					}
+					
+				}
+				
 			
 				
 			    this.$nextTick(function() {
@@ -222,7 +271,7 @@
 			        this.AlertClassZhongjiang = Class;
 			        this.AlertPositionZhongjiang = Position;
 			        this.$nextTick(function() {
-			            this.$refs.openAlert.Show();
+			            this.$refs.openAlertZhongjiang.Show();
 			        });
 			    });
 			},
@@ -249,14 +298,20 @@
 						
 					that.tuan_list = res.data.my_tuan_list;
 					
-					that.current_zhongjiang_list = res.data.my_tuan_list;
+					// for(var i = 0;i<that.tuan_list.length;i++){
+						
+					// 	that.current_zhongjiang_list = that.tuan_list[i].zhongjiang_list;
+						
+					// 	console.log('1111111==========',that.current_zhongjiang_list);
+					// }
 					
-					for(var i = 0;i<that.tuan_list.length;i++){
+					
+					// for(var j = 0;j<that.tuan_list.length;j++){
 						
-						that.current_zhongjiang_list = that.tuan_list[i].zhongjiang_list;
+					// 	that.current_kajiang_list = that.tuan_list[j].tuanyuan_list;
 						
-						console.log('999999',that.current_zhongjiang_list);
-					}
+					// 	console.log('222222==========',that.current_kajiang_list);
+					// }
 					
 					},
 					fail: function(e) {
@@ -298,9 +353,8 @@
 	     width: 100%;
 		 margin-left: 20rpx;
 
-		 
-	
 }
+
 .button1{
 	width: 60rpx;
 	height: 30epx;
@@ -313,7 +367,13 @@
 	font-size: 1rpx;
 }
 .zhongjiang_list{
-	background-color: #18DBA6;
-	color: #FFFFFF;
+	display: flex;
+	width: 600rpx;
+	
+	background-color: #fffffb;
+}
+.kaijiang_list{
+	background-color: #fffffb;
+	width: 600rpx;
 }
 </style>

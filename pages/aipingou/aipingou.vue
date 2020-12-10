@@ -65,7 +65,7 @@
 			
 			<!---我的拼购-->
 		<view class="home-p" @click="toMypingou()">
-			<image src="https://yanyubao.tseo.cn/Tpl/static/img/mydepingou.png" style="width: 70upx;height: 70upx;"></image>
+			<image src="../../static/img/mydepingou.png" style="width: 70upx;height: 70upx;"></image>
 		</view>
    
 	</view>
@@ -376,10 +376,10 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: space-around;
-		position: fixed;
 		width: 80upx;
 		height: 80upx;
-		background-color: #d1c7b7;
+		background-color: #d9d6c3;
+		position: fixed;
 		z-index: 100;
 		right: 40upx;
 		border-radius: 50%;
