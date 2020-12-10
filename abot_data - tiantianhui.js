@@ -16,7 +16,7 @@ const globalData = {
 		//通版商城
 		default_shopname: '天天汇',
 		default_sellerid: 'fiSyPaWee',
-		default_copyright_text:'浙江暖意贸易有限公司 @ 版权所有',
+		default_copyright_text:'浙江暖意商贸有限公司 @ 版权所有',
 		
 		
 		//=======以下配置项在发布版本的时候确定，服务器端配置无效===

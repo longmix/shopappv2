@@ -11,10 +11,10 @@
         "user_2"
       ]
     },
-    "xiaochengxu_appid": "wx4b5776869b963bd4",
+    "xiaochengxu_appid": "wx47cf36b7d0a0f792",
     "force_sellerid_flag": 1,
-    "force_sellerid_value": "fimmUPUPV",
-    "shop_name": "哈哈订",
+    "force_sellerid_value": "fiSyPaWee",
+    "shop_name": "天天汇",
     "version_number": "Ver 1.7.4 Build 219",
     "navigationBarBackgroundColor_fixed": 1,
     "navigationBar_font_color":"#ffffff",
@@ -23,7 +23,7 @@
     "kefu_qq": "",
     "kefu_website": "",
     "kefu_gongzhonghao": "",
-    "default_copyright_text": "上海哈哈订信息科技有限公司 @ 版权所有"
+    "default_copyright_text": "浙江暖意商贸有限公司 @ 版权所有"
   },
   "extPages": {
     "pages/publish/publish_list": {
