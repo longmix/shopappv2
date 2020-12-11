@@ -93,14 +93,18 @@
 				<view class="b-dikou">
 					<view>优惠券</view>
 				</view>
-				<view class="c-dikou">无可用优惠</view>
-				<!--  v-if="youhui_list == null" <openAlert ref="openAlertKaijiang"
-				 :AlertClass="AlertClassKaijiang"
-				 :AlertPosition="AlertPositionKaijiang">
-				 <view>
-					 
-				 </view>
-				 </openAlert> -->
+				<view class="c-dikou"  @tap="open_zhongjiang_detail(8, 'bottom')">
+					<span v-if="!coupon_list">无可用优惠</span>
+					<span v-if="coupon_list">
+						<span v-if="youhui_diko_price > 0" style="font-size:25rpx;">
+						已抵扣<span class="c-dikou_amount">{{youhui_diko_price}}</span>元
+						</span>
+						<span v-else>
+						可用{{coupon_list.length}}张
+						</span>
+					</span>
+					
+				</view>
 			</view>
 
 			<view class="a-dikou" :hidden="wxa_order_hide_balance_zengsong==1">
@@ -159,6 +163,28 @@
 			</view>
 		
 		</view>
+		
+		<openAlert ref="openAlertZhongjiang"
+			:AlertClass="AlertClassZhongjiang"
+			:AlertPosition="AlertPositionZhongjiang">
+			
+			<view class="youhuiquan_list"> 
+			
+				<view class="stamp stamp04" v-for=" (item,idx) in coupon_list" :key="idx" >
+					<view class="par"><p>{{item.coupon_item.name}}</p><sub class="sign">￥</sub><span>{{item.price}}</span><sub></sub>
+					<p>订单满{{item.price2}}元</p></view>
+					
+					<view class="copy">{{item.youhui_memo_str}}<p>{{item.youhui_start_time}} ~ {{item.youhui_end_time}}</p>
+					<a @tap="youhui_now(item.price,item.ucid)">立即使用</a></view>
+					<!-- <i></i> -->
+				</view>
+								 
+			</view>
+		
+		</openAlert>
+		
+		
+		
 	</view>
 </template>
 
@@ -209,7 +235,7 @@
 				wxa_order_hide_balance_zengsong:'',
 				wxa_order_hide_balance:'',
 				action:'direct_buy',
-				ucid:'',
+
 				isSwitch1:false,
 				isSwitch2:false,
 				balance_zengsong:'',
@@ -217,7 +243,7 @@
 				all_price:'',
 				traffic_price:'',
 				pay_price:'',
-				
+				util:'',
 				// recinfo:{id:1,name:"大黑哥",head:"大",tel:"18816881688",address:{region:{"label":"广东省-深圳市-福田区","value":[18,2,1],"cityCode":"440304"},detailed:'深南大道1111号无名摩登大厦6楼A2'},isDefault:true}
 				order_address_detail: {
 					name:'',
@@ -246,7 +272,16 @@
 				cuxiao_huodong:null,
 				order_option_new_list:'',	//可能追加的订单的选项
 				
+				//2020.12.11
+				AlertClassZhongjiang: 0,
+				AlertPositionZhongjiang: '',
 				
+				//2020.12.11. 优惠券列表
+				coupon_list:null,
+				
+				//优惠券抵扣金额
+				youhui_diko_price:0,
+				current_ucid:0
 			};
 		},
 		
@@ -283,6 +318,7 @@ tuansn = 参团的编号，如果没有，则代表新开团
 		 * 
 		 */
 		onLoad(options) {
+			
 			var that = this;
 			
 			console.log('order/pay 参数：', options);
@@ -371,7 +407,7 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			
 			
 			if (options.ucid) {
-				that.ucid = options.ucid
+				that.current_ucid = options.ucid
 				
 				//options = JSON.parse(uni.getStorageSync("cache_options"));
 				
@@ -651,8 +687,8 @@ tuansn = 参团的编号，如果没有，则代表新开团
 				
 				
 				
-				if (that.ucid){
-					data_params.ucid = that.ucid
+				if (that.current_ucid){
+					data_params.ucid = that.current_ucid
 				}
 						
 								  
@@ -667,8 +703,29 @@ tuansn = 参团的编号，如果没有，则代表新开团
 						if (code == 1) {
 							
 							var order_address_detail = res.data.address;
-						
-							console.log('order_address_detail==>',order_address_detail);
+							
+							//判断是否有优惠券列表，再把优惠券时间从时间戳形式转化为时间正常形式，把优惠价格和抵扣价格保留两位小数把分化成元。
+							if(res.data.coupon_list){
+								that.coupon_list = res.data.coupon_list
+								
+								for(var i=0; i<that.coupon_list.length; i++){
+									that.coupon_list[i].youhui_start_time = util.formatTime(new Date(that.coupon_list[i].expiretime01 * 1000));
+									that.coupon_list[i].youhui_end_time = util.formatTime(new Date(that.coupon_list[i].expiretime02 * 1000));
+									
+									that.coupon_list[i].price = util.sprintf("%6.2f", that.coupon_list[i].coupon_item.price/100);
+									that.coupon_list[i].price2 = util.sprintf("%6.2f", that.coupon_list[i].coupon_item.price2/100);
+									
+									if(that.coupon_list[i].coupon_item.productid && (that.coupon_list[i].coupon_item.productid != 0)){
+										that.coupon_list[i].youhui_memo_str = '限定商品可以使用';
+									}
+									else{
+										that.coupon_list[i].youhui_memo_str = '所有商品均可使用';
+									}
+									
+								}
+								//console.log('order_address_detail==>',coupon_list);
+							}
+							
 						
 							if (!order_address_detail) {
 								that.addemt = 1
@@ -683,7 +740,8 @@ tuansn = 参团的编号，如果没有，则代表新开团
 							that.all_price = res.data.all_price;
 							that.pay_price = res.data.pay_price;
 							that.pay_price_origin = res.data.pay_price;
-						  
+							
+							
 						
 							that.order_address_detail = order_address_detail;
 							that.productData = res.data.orderlist;
@@ -702,9 +760,9 @@ tuansn = 参团的编号，如果没有，则代表新开团
 												
 							
 							
-							if (res.data.user_coupon_item){
-								that.user_coupon_item = res.data.user_coupon_item
-							}
+							//if (res.data.user_coupon_item){
+							//	that.user_coupon_item = res.data.user_coupon_item
+							//}
 						}
 						else if(code == 2) {
 							uni.showToast({
@@ -1128,9 +1186,9 @@ tuansn = 参团的编号，如果没有，则代表新开团
 						data_orderAdd.all_product_take_score = that.all_product_take_score
 					}
 								
-					if(that.ucid){
-						data_orderAdd.ucid = that.user_coupon_item.ucid;
-						data_orderAdd.coupon_price = that.user_coupon_item.price;
+					if(that.current_ucid){
+						data_orderAdd.ucid = that.current_ucid;
+						//data_orderAdd.coupon_price = that.user_coupon_item.price;
 					}
 				}
 				else if(that.order_type_001 == 'xianmaishang'){
@@ -1159,9 +1217,9 @@ tuansn = 参团的编号，如果没有，则代表新开团
 					};
 										
 										
-					if(that.ucid){
-					  data_orderAdd.ucid = that.data.user_coupon_item.ucid;
-					  data_orderAdd.coupon_price = that.data.user_coupon_item.price;
+					if(that.current_ucid){
+					  data_orderAdd.ucid = that.data.current_ucid;
+					  //data_orderAdd.coupon_price = that.data.user_coupon_item.price;
 					}
 										
 					
@@ -1700,8 +1758,32 @@ tuansn = 参团的编号，如果没有，则代表新开团
 				});
 				
 				
+			},
+			//优惠券板块2020.12.11
+			open_zhongjiang_detail(Class, Position) {
+				if(!this.coupon_list){
+					return;
+				}
+				
+			    this.$nextTick(function() {
+					
+			        this.AlertClassZhongjiang = Class;
+			        this.AlertPositionZhongjiang = Position;
+			        this.$nextTick(function() {
+			            this.$refs.openAlertZhongjiang.Show();
+			        });
+			    });
+			},
+			//点击优惠券立即使用
+			youhui_now(price, ucid){
+				var that =this;
+				//console.log('999999999999sssss',price);
+				that.current_ucid = ucid;
+				//that.youhui_diko_price = util.sprintf("%6.2f", price/100);
+				that.youhui_diko_price = price;
+				
+				
 			}
-			
 			
 		}
 	}
@@ -1978,6 +2060,110 @@ tuansn = 参团的编号，如果没有，则代表新开团
 		width:16px;
 		height: 18px;
 	}
+	//2020.12.11 优惠券css
 
-
+	.demo {
+		width:410px;
+		margin:0 auto;
+	}
+	.stamp * {
+		padding: 0;
+		margin: 0;
+		list-style:none;
+		font-family:"Microsoft YaHei", 'Source Code Pro', Menlo, Consolas, Monaco, monospace;
+	}
+	.stamp {
+		height: 240rpx;
+		padding: 0 10px;
+		position: relative;
+		overflow: hidden;
+		margin-top: 10rpx;
+	}
+	.stamp:before {
+		content: '';
+		position: absolute;
+		top:0;
+		bottom:0;
+		left:20rpx;
+		right:20rpx;
+		z-index: -1;
+	}
+	.stamp i {
+		position: absolute;
+		left: 20%;
+		top: 90rpx;
+		height: 380rpx;
+		width: 800rpx;
+		background-color: rgba(255, 255, 255, .15);
+		transform: rotate(-30deg);
+	}
+	.stamp .par {
+		float: left;
+		padding: 10rpx 30rpx;
+		width: 280rpx;
+		border-right:2px dashed rgba(255, 255, 255, .3);
+		text-align: left;
+	}
+	.stamp .par p {
+		color:#fff;
+		font-size: 24rpx;
+		line-height: 42rpx;
+	}
+	.stamp .par span {
+		font-size: 40rpx;
+		color:#fff;
+		margin-right: 10rpx;
+		line-height: 120rpx;
+	}
+	.stamp .par .sign {
+		font-size: 40rpx;
+	}
+	.stamp .par sub {
+		position: relative;
+		top:-5px;
+		color:rgba(255, 255, 255, .8);
+	}
+	.stamp .copy {
+		display: inline-block;
+		padding:21px 14px;
+		width:100px;
+		vertical-align: text-bottom;
+		font-size: 30px;
+		color:rgb(255,255,255);
+		text-align: center;
+		line-height: initial;
+	}
+	.stamp .copy p {
+		font-size: 16px;
+		margin-top: 15px;
+	}
+	.stamp04 {
+		width: 640rpx;
+		background: radial-gradient(rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0) 4px, #50ADD3 4px);
+		background-size: 12px 8px;
+		background-position: -5px 10px;
+	}
+	.stamp04:before {
+		background-color:#50ADD3;
+		left: 5px;
+		right: 5px;
+	}
+	.stamp04 .copy {
+		padding: 11px 8px 4px 25px;
+		font-size: 25rpx;
+	}
+	.stamp04 .copy p {
+		font-size: 24rpx;
+		margin-top: 5px;
+		margin-bottom: 8px;
+	}
+	.stamp04 .copy a {
+		background-color:#fff;
+		color:#333;
+		font-size: 14px;
+		text-decoration:none;
+		padding:5px 10px;
+		border-radius:3px;
+		display: block;
+	}
 </style>

@@ -258,7 +258,7 @@
 				</view>
 			</block>
 			<block v-if="!aipin_tuan_list">
-				<view style="margin-left: 25rpx;">没有开团xxxxxxxxx</view>
+				<view style="margin-left: 25rpx; color: #666;text-align: center;">一个团都没有哦~</view>
 			</block>
 		</view>
 		
@@ -1598,7 +1598,7 @@
 
 
 				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + 'index.php/Yanyubao/ShopAppWxa/product_detail_youhui',
+					url: that.abotapi.globalData.yanyubao_server_url + 'Yanyubao/ShopAppWxa/product_detail_youhui',
 					method: 'post',
 					data: {
 						productid: that.productid,
