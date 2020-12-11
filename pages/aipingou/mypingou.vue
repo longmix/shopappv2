@@ -2,6 +2,7 @@
 	<view>
 		<view>
 			<view class="mypingou1" v-for=" (item,idx) in tuan_list" :key="idx">
+				
 				<table class="mypingou_list" >
 					<tr>
 						<td>订单编号：</td><button class="button2">复制</button>
@@ -37,7 +38,6 @@
 					</tr>
 	
 				</table>
-			 
 			</view>
 		</view>
 		<!-- 中奖记录 -->
@@ -47,18 +47,22 @@
 		 :AlertPosition="AlertPositionKaijiang">
 		<view>
 			<view>
-				<view v-for="(detail,ids) in kaijiang_list" :key="ids">
-					<table class="kaijiang_list">
-						<tr>
-							<th>序号</th>
-							<th>抽奖编码</th>
-							<th>参与时间</th>
-						</tr>
-						<tr>
+				<view>
+					<table class="tanchuang_list">
+						<thead>
+						      <tr>
+						        <th>序号</th>
+						        <th>抽奖编码</th>
+						        <th>参与时间</th>
+						      </tr>
+						</thead>
+					<tbody>
+						<tr  v-for="(detail,ids) in kaijiang_list" :key="ids">
 							<td>{{detail.ids}}</td>
 							<td>{{detail.choujiangma}}</td>
 							<td>{{detail.join_time_updata}}</td>
 						</tr>
+					</tbody>
 					</table>
 				</view>
 			</view>
@@ -73,20 +77,24 @@
 		<view>
 			<view>
 				<view v-if="zhongjiang_list != 0">
-				<view id="zhong" v-for="(items,ida) in zhongjiang_list" :key="ida">
-					<table class="zhongjiang_list">
+				<view id="zhong">
+					<table class="tanchuang_list">
+					<thead>
 						<tr>
 							<th>序号</th>
 							<th>头像</th>
 							<th>昵称</th>
 							<th>抽奖编码</th>
 						</tr>
-						<tr>
+					</thead>
+					<tbody>
+						<tr v-for="(items,ida) in zhongjiang_list" :key="ida">
 							<td>{{items.ida}}</td>
 							<td><image :src="items.headimgurl" style="width: 70rpx; height: 70rpx; border-radius: 50%;"></image></td>
 							<td>{{items.nickname}}</td>
 							<td>{{items.choujiangma}}</td>
 						</tr>
+					</tbody>
 					</table>
 				</view>
 				</view>
@@ -378,16 +386,18 @@
 	line-height: 37rpx;
 	font-size: 1rpx;
 }
-.zhongjiang_list{
+.tanchuang_list{
 	width: 600rpx;
 	text-align: center;
 	background-color: #fffffb;
+	border:1px solid #ccc;
+}
+.tanchuang_list td th{
+	border:1px solid #ccc;
+	    border: blue;
+	    border-width: 1px;
+	    border-style: dotted;
 }
 
 
-.kaijiang_list{
-	width: 600rpx;
-	text-align: center;
-	background-color: #fffffb;
-}
 </style>
