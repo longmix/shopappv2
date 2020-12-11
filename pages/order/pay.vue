@@ -1239,7 +1239,13 @@ tuansn = 参团的编号，如果没有，则代表新开团
 							that.orderno = res.data.orderno;
 							
 							if(that.order_type_001 == 'shopmall'){
-								var url_to_payment = '/pages/pay/payment/payment?orderId=' + that.orderid + '&balance_zengsong_dikou=' + that.balance_zengsong_dikou + '&balance_dikou=' + that.balance_dikou + '&traffic_price=' + that.traffic_price;
+								var url_to_payment = '/pages/pay/payment/payment?orderId=' + that.orderid;
+								url_to_payment += '&balance_zengsong_dikou=' + that.balance_zengsong_dikou;
+								url_to_payment += '&balance_dikou=' + that.balance_dikou;
+								url_to_payment += '&traffic_price=' + that.traffic_price;
+								url_to_payment += '&user_coupon_dikou=' + that.youhui_diko_price;
+								
+								console.log('准备跳转到支付页面：' + url_to_payment);
 								
 								if(that.cuxiao_huodong && (that.cuxiao_huodong == 'aipingou')){
 									//写爱拼购活动的选项
