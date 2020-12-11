@@ -94,12 +94,19 @@
 					<view>优惠券</view>
 				</view>
 				<view class="c-dikou">无可用优惠</view>
+				<!--  v-if="youhui_list == null" <openAlert ref="openAlertKaijiang"
+				 :AlertClass="AlertClassKaijiang"
+				 :AlertPosition="AlertPositionKaijiang">
+				 <view>
+					 
+				 </view>
+				 </openAlert> -->
 			</view>
 
 			<view class="a-dikou" :hidden="wxa_order_hide_balance_zengsong==1">
 				<view class="b-dikou">
 					<view>赠款抵扣</view>
-					<view class="c-dikou">剩余 ￥ {{balance_zengsong}}</view>
+					<view class="c-dikou">使用￥<span class="c-dikou_amount">{{balance_zengsong_dikou}}</span> 剩余￥{{balance_zengsong}}</view>
 				</view>
 				<switch class='d-dikou' :checked="isSwitch1" @change="switch1Change($event)" data-type="1" />
 			</view>
@@ -108,7 +115,7 @@
 			<view class="a-dikou" :hidden="wxa_order_hide_balance==1">
 				<view class="b-dikou">
 					<view>余额抵扣</view>
-					<view class="c-dikou">剩余 ￥ {{balance}}</view>
+					<view class="c-dikou">使用￥<span class="c-dikou_amount">{{balance_dikou}}</span> 剩余￥{{balance}}</view>
 				</view>
 				<switch class='d-dikou' :checked="isSwitch2" @change="switch1Change($event)" data-type="2" />
 			</view>
@@ -193,8 +200,10 @@
 				orderId:{},
 				amount:'',
 				cartId:'321',
+				
 				balance_zengsong_dikou: 0,
 				balance_dikou: 0,
+				
 				wxa_order_queren_hide_address:0,
 				wxa_order_hide_coupon:'',
 				wxa_order_hide_balance_zengsong:'',
@@ -236,6 +245,8 @@
 				//2020.12.3. 爱拼团的参数
 				cuxiao_huodong:null,
 				order_option_new_list:'',	//可能追加的订单的选项
+				
+				
 			};
 		},
 		
@@ -684,8 +695,14 @@ tuansn = 参团的编号，如果没有，则代表新开团
 							that.traffic_price = res.data.traffic_price;
 							that.all_product_take_score = res.data.all_product_take_score;
 							that.balance = res.data.balance;
+							
+							console.log('wwwwwwwwwwwwwww',that.balance);
+							
 							that.balance_zengsong = res.data.balance_zengsong;
-						
+							
+												
+							
+							
 							if (res.data.user_coupon_item){
 								that.user_coupon_item = res.data.user_coupon_item
 							}
@@ -1329,6 +1346,8 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			            pay_price = that.pay_price;
 			            balance_zengsong = that.balance_zengsong;
 			            balance = that.balance;
+						
+						
 			            balance_zengsong_dikou = that.balance_zengsong_dikou;
 			            balance_dikou = that.balance_dikou;
 			
@@ -1379,7 +1398,8 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			       
 			      }
 			
-			    } else if (type == 2) {
+			    } 
+				else if (type == 2) {
 					that.isSwitch2 = value;
 			      if (value) {
 					  
@@ -1913,6 +1933,14 @@ tuansn = 参团的编号，如果没有，则代表新开团
 	}
 	.c-dikou{
 	  margin-left:40upx;
+	  font-size:25rpx;
+	  color:#666;
+	}
+	.c-dikou_amount{
+		color:#E3170D;
+		font-weight: bold;
+		font-size: 30rpx;
+		margin-right: 10rpx;
 	}
 	.d-dikou{
 	  zoom: .7
