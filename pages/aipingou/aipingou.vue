@@ -65,7 +65,7 @@
 			
 			<!---我的拼购-->
 		<view class="home-p" @click="toMypingou()">
-			<image src="../../static/img/mydepingou.png" style="width: 70upx;height: 70upx;"></image>
+			<image src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_canyu.png" style="width: 70upx;height: 70upx;"></image>
 		</view>
    
 	</view>
