@@ -217,7 +217,7 @@
 				all_price:'',
 				traffic_price:'',
 				pay_price:'',
-				util:'',
+				
 				// recinfo:{id:1,name:"大黑哥",head:"大",tel:"18816881688",address:{region:{"label":"广东省-深圳市-福田区","value":[18,2,1],"cityCode":"440304"},detailed:'深南大道1111号无名摩登大厦6楼A2'},isDefault:true}
 				order_address_detail: {
 					name:'',
@@ -283,7 +283,6 @@ tuansn = 参团的编号，如果没有，则代表新开团
 		 * 
 		 */
 		onLoad(options) {
-			
 			var that = this;
 			
 			console.log('order/pay 参数：', options);

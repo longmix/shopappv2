@@ -165,7 +165,7 @@ module.exports = {
 		2)));
 		return dis * 6378137;
 	},
-	
+	//将两个对象合并
     json_add:function(a,b){
  
         if(a==undefined || a.length==0) return b;

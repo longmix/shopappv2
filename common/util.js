@@ -1,3 +1,36 @@
+
+
+module.exports = {
+  formatTime: formatTime,
+  formatTime2: formatTime2,
+  sprintf: sprintf,
+  bezier: bezier,
+  formatNumber: formatNumber,
+  checkStringEmpty : checkStringEmpty,
+  str_repeat: str_repeat
+}
+
+
+/**
+ * @param {Object} date
+ * 
+ * 调用方法：
+ * 
+ * 导入：
+ * var util = require('../../common/util.js');
+ * 
+ * 在需要的地方：  1607674428 为服务器上时间戳，精确到秒。
+ * var date = util.formatTime(new Date(1607674428*1000));
+ * var time = util.formatTime2(new Date(1607674428*1000));
+ * 
+ * 输出分别为：
+ * 2020-12-11
+ * 16:13
+ * 
+ * 如何 new Date 不传入参数，那么会自动使用当前的时间戳，精确到毫秒。
+ * 
+ */
+
 function formatTime(date) {
   var year = date.getFullYear()
   var month = date.getMonth() + 1
@@ -24,13 +57,6 @@ function formatNumber(n) {
   return n[1] ? n : '0' + n
 }
 
-module.exports = {
-  formatTime: formatTime,
-  formatTime2: formatTime2,
-  sprintf: sprintf,
-  bezier: bezier
-}
-
 function checkStringEmpty(data){
   if(null == data || "" == data){
     return false;
@@ -43,6 +69,16 @@ function str_repeat(i, m) {
   return o.join('');
 }
 
+/**
+ * 格式化字符串，举例：
+ * 将 “1001分” 换成 “10.01元”
+ * var aa = 1001;
+ * console.log(util.sprintf('%6.2f', aa/100));
+ * 输出：
+ * 10.01
+ * 
+ * 
+ */
 function sprintf() {
   var i = 0, a, f = arguments[i++], o = [], m, p, c, x, s = '';
   while (f) {
