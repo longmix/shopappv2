@@ -20,8 +20,8 @@
 						<td>抽奖编号：{{item.choujiangma}}</td>
 					</tr>
 					<tr>
-						<td v-if="item.zhongjiang_status = 0">中奖状态：{{item.zhongjiang_status_str}}</td>
-						<td v-else-if="item.zhongjiang_status = 2">中奖状态：{{item.zhongjiang_status_str}}</td>
+						<td v-if="item.zhongjiang_status == 0">中奖状态：{{item.zhongjiang_status_str}}</td>
+						<td v-else-if="item.zhongjiang_status == 2">中奖状态：{{item.zhongjiang_status_str}}</td>
 						<td v-else>中奖状态：未中奖</td>
 					</tr>
 					<tr>
@@ -40,6 +40,7 @@
 				</table>
 			</view>
 		</view>
+		
 		<!-- 中奖记录 -->
 	
 		<openAlert ref="openAlertKaijiang"

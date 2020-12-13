@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<!-- 参考 https://www.h5w3.com/9701.html -->
+<!-- 参考 https://www.jianshu.com/p/69a445cf847d -->
+<!-- 参考 https://blog.csdn.net/hedeqiang9436/article/details/106498737 -->
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>uni-app-web-view</title>
+</head>
+<body>
+<div class="btn-list">
+    <button class="btn" type="button" data-action="navigateTo">navigateTo</button>
+    <button class="btn" type="button" data-action="redirectTo">redirectTo</button>
+    <button class="btn" type="button" data-action="navigateBack">navigateBack</button>
+    <button class="btn" type="button" data-action="reLaunch">reLaunch</button>
+    <button class="btn btn-red" type="button" data-action="switchTab">switchTab</button>
+    <button class="btn btn-yellow" type="button" data-action="postMessage">postMessage</button>
+    <button class="btn btn-yellow" type="button" data-action="getEnv">getEnv</button>
+</div>
+<!-- 微信 JS-SDK 如果不需要兼容小程序，则无需引用此 JS 文件 -->
+<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<!-- uni 的 SDK -->
+<script type="text/javascript" src="https://js.cdn.aliyun.dcloud.net.cn/dev/uni-app/uni.webview.0.1.52.js"></script>
+<script type="text/javascript">
+    document.addEventListener('UniAppJSBridgeReady', function() {
+        document.querySelector('.btn-list').addEventListener('click', function(evt) {
+            var target = evt.target;
+            if (target.tagName === 'BUTTON') {
+                var action = target.getAttribute('data-action');
+                switch (action) {
+                    case 'switchTab':
+                        uni.switchTab({
+                            url: '/pages/index/index'
+                        });
+                        break;
+                    case 'navigateBack':
+                        uni.navigateBack({
+                            delta: 1
+                        });
+                        break;
+                    case 'postMessage':
+                        uni.postMessage({
+                            data: {
+                                action: getQuery('data'),
+                            }
+                        });
+                        break;
+                    case 'getEnv':
+                        uni.getEnv(function(res) {
+                            alert('当前环境：' + JSON.stringify(res));
+                        });
+                        break;
+                    default:
+                        uni[action]({
+                            url: '/pages/editImg/editImg'
+                        });
+                        break;
+                }
+            }
+        });
+    });
+ 
+console.log(getQuery('data'));  //获取 uni-app 传来的值
+ 
+function getQuery(name) {
+    // 正则：[找寻'&' + 'url参数名字' = '值' + '&']（'&'可以不存在）
+    let reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+    let r = window.location.search.substr(1).match(reg);
+    if(r != null) {
+        // 对参数值进行解码
+        return unescape(r[2]);
+    }
+    return null;
+}
+</script>
+</body>
+</html>
+
+<!--
+对应的vue中代码如下
+
+<template>
+    <view>
+        <web-view :webview-styles="webviewStyles" :src="url" @message="handleMessage"></web-view>
+    </view>
+</template>
+ 
+<script>
+    export default {
+        data() {
+            return {
+                webviewStyles: {
+                    progress: {
+                        color: '#FF3333'
+                    }
+                },
+                //url: 'https://domain?data=' + '我是向H5发送的数据'
+				url: 'hybrid/html/local.html'
+ 
+            }
+        },
+        onLoad(options) {
+            if (options && options.url) {
+                this.url = options.url;
+            }
+        },
+        methods: {
+			handleMessage(evt) {  
+				console.log('接收到的消息：' + JSON.stringify(evt.detail.data));  
+			}  
+        }
+    }
+</script>
+ 
+ 
+ 
+ -->
+
