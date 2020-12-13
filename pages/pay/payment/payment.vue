@@ -1,62 +1,3 @@
-<!-- <template>
-	<view>
-		<view class="block">
-			<view class="content">
-				<view class="orderinfo">
-					<view class="row">
-						<view class="nominal">订单名称:</view><view class="text">{{orderName}}</view>
-					</view>
-					<view class="row">
-						<view class="nominal">订单金额:</view><view class="text">{{amount}}元</view>
-					</view>
-				</view>
-			</view>
-		</view>
-		<view class="block">
-			<view class="title">
-				选择支付方式
-			</view>
-			<view class="content">
-				<view class="pay-list">
-					<view class="row" @tap="paytype='alipay'">
-							<view class="left">
-								<image src="/static/img/alipay.png"></image>
-							</view>
-							<view class="center">
-								支付宝支付
-							</view>
-							<view class="right">
-								<radio :checked="paytype=='alipay'" color="#f06c7a" />
-							</view>
-					</view>
-					<view class="row" @tap="paytype='wxpay'">
-							<view class="left">
-								<image src="/static/img/wxpay.png"></image>
-							</view>
-							<view class="center">
-								微信支付
-							</view>
-							<view class="right">
-								<radio :checked="paytype=='wxpay'" color="#f06c7a" />
-							</view>
-					</view>
-				</view>
-			</view>
-		</view>
-		<view class="pay">
-			<view class="btn" @tap="doDeposit">立即支付</view>
-			<view class="tis">
-				点击立即支付，即代表您同意<view class="terms">
-					《条款协议》
-				</view>
-			</view>
-		</view>
-	</view>
-</template>
-
- -->
-
-
 <template>
 	<view>
 		<view class='view1'>
@@ -76,6 +17,10 @@
 			<view class='vw1'>
 				<text>订单合计：</text>
 				<view class='view2'>{{orderData.order_total_price}}</view>
+			</view>
+			<view class='vw1' v-if="user_coupon_dikou > 0">
+				<text>优惠券抵扣：</text>
+				<view class='view2'>-{{user_coupon_dikou}}</view>
 			</view>
 			<view class='vw1'>
 				<text>余额支付：</text>
@@ -219,62 +164,6 @@
 	</view>
 </template>
 
-
-
-
-
-<script>
-	// export default {
-	// 	data() {
-	// 		return {
-	// 			amount:0,
-	// 			orderName:'',
-	// 			paytype:'alipay',//支付类型
-	// 			orderData:''
-	// 		};
-	// 	},
-	// 	onLoad(e) {
-	// 		console.log("e",e);
-	// 		return;
-	// 		this.amount = parseFloat(e.amount).toFixed(2);
-	// 		this.abotapi.set_option_list_str(null, this.abotapi.getColor());
-	// 		uni.getStorage({
-	// 			key:'paymentOrder',
-	// 			success: (e) => {
-	// 				if(e.data.length>1){
-	// 					this.orderName = '多商品合并支付'
-	// 				}else{
-	// 					this.orderName = e.data[0].name;
-	// 				}
-	// 				uni.removeStorage({
-	// 					key:'paymentOrder'
-	// 				})
-	// 			}
-	// 		})
-	// 	},
-	// 	methods:{
-	// 		doDeposit(){
-	// 			//模板模拟支付，实际应用请调起微信/支付宝
-	// 			uni.showLoading({
-	// 				title:'支付中...'
-	// 			});
-	// 			setTimeout(()=>{
-	// 				uni.hideLoading();
-	// 				uni.showToast({
-	// 					title:'支付成功'
-	// 				});
-	// 				setTimeout(()=>{
-	// 					uni.redirectTo({
-	// 						url:'../../pay/success/success?amount='+this.amount
-	// 					});
-	// 				},300);
-	// 			},700)
-	// 		}
-	// 	}
-	// }
-</script>
-
-
 <script>
 	var util = require('../../../common/util.js');
 	export default {
@@ -304,7 +193,10 @@
 				orderId: '',
 				key: '',
 				
-				btn_bg_color: '#1AAD19'
+				btn_bg_color: '#1AAD19',
+				
+				//2020.12.14.
+				user_coupon_dikou:0,	//优惠券抵扣的金额
 			}
 		},
 		onShow: function() {
@@ -325,9 +217,12 @@
 			// 再通过setData更改Page()里面的data，动态更新页面的数据
 			that.date = date
 			that.time = time
+			
 			showView: (options.showView == "true" ? true : false)
+			
 			that.orderId = options.orderId;
 			that.traffic_price = options.traffic_price ? options.traffic_price : 0;
+			
 			if (options.balance_zengsong_dikou) {
 				that.balance_zengsong_dikou = options.balance_zengsong_dikou
 			} else {
@@ -340,7 +235,14 @@
 			} else {
 				that.balance_dikou = util.sprintf("%6.2f", 0);
 			}
-
+			
+			if(options.user_coupon_dikou){
+				that.user_coupon_dikou = options.user_coupon_dikou;
+				
+				console.log('that.user_coupon_dikou====>>>>>', that.user_coupon_dikou);
+			}
+			
+			//是否是充值订单
 			if (options.recharge) {
 				that.recharge = options.recharge;
 			}
@@ -349,6 +251,7 @@
 			if (huikuan_info) {
 				that.adds = huikuan_info
 			}
+			
 			that.loadOrderDetail();
 			
 			that.abotapi.abotRequest({
@@ -491,15 +394,20 @@
 							that.orderData = res.data.orderinfo;
 
 							that.pay_price = parseFloat(that.orderData.order_total_price);
+							
+							// 1、优惠券已经绑定了（如果有优惠券），所以优先扣优惠券的
+							if(that.user_coupon_dikou > 0){
+								that.pay_price = that.pay_price - that.user_coupon_dikou;
+							}
 
-
+							// 2、优先使用赠款抵扣
 							if (that.balance_zengsong_dikou < that.pay_price) {
 								that.pay_price = that.pay_price - that.balance_zengsong_dikou;
 							} else {
 								that.pay_price = 0
 							}
 
-
+							// 3、其次使用余额抵扣
 							if (that.balance_dikou < that.pay_price) {
 								that.pay_price = that.pay_price - that.balance_dikou;
 							} else {
@@ -598,6 +506,7 @@
 					checkstr: userInfo.checkstr,
 					sellerid: that.abotapi.get_sellerid(),
 					money: that.pay_price,
+					user_coupon_dikou:that.user_coupon_dikou,
 					yue_amount: that.balance_dikou,
 					zengkuan_amount: that.balance_zengsong_dikou,
 					// offlinepayid: that.payList.offlinepayid,

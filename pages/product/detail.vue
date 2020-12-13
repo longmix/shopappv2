@@ -156,8 +156,12 @@
 						<view class="mingcheng">
 							<view>{{goods_detail.name}}</view>
 							<view style="font-size:29rpx;color:red">¥ {{goods_detail.price}}</view>
-							<view style="font-size:26rpx;color:color:#333;" v-if="wxa_show_kucun_xiaoliang==1">销量：{{goods_detail.sale_volume}}</view>
-							<view style="font-size:26rpx;color:#ccc" v-if="wxa_show_kucun_xiaoliang==1">库存：{{goods_detail.inventory}}</view>
+							<view>
+								<span style="font-size:26rpx;color:#333; margin-right:10rpx;" 
+									v-if="wxa_show_kucun_xiaoliang==1">库存：{{goods_detail.inventory}}</span>
+								<span style="font-size:26rpx;color:color:#444;" 
+									v-if="wxa_show_kucun_xiaoliang==1">已售：{{goods_detail.sale_volume}}</span>
+							</view>
 						</view>
 					</view>
 

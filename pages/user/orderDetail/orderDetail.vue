@@ -49,7 +49,8 @@
 				申请退款
 				</view>
 				
-				<navigator v-if="orderData.status_str=='待付款'" :url="'../../pay/payment/payment?orderId=' + orderData.orderid + '&balance_zengsong_dikou=' + orderData.coupon_price + '&balance_dikou=' + orderData.yue_price" class="font_12 fl_r mr_5 btn_min mg_l">立即支付</navigator>
+				<navigator v-if="orderData.status_str=='待付款'" 
+					:url="'../../pay/payment/payment?orderId=' + orderData.orderid + '&balance_zengsong_dikou=' + orderData.coupon_price + '&balance_dikou=' + orderData.yue_price" class="font_12 fl_r mr_5 btn_min mg_l">立即支付</navigator>
 				
 				
 				<view class="font_12 btn_min fl_r mr_5 mg_l" @tap="refundOrder" v-if="wxa_order_hide_daishouhuo_refund_after == 0 && orderData.status_str=='待收货'" :data-order-id="orderData.orderid">申请退款</view>
@@ -102,6 +103,9 @@
 	      </view>
 	      <view class="bordert font_14">
 	          <view>订单金额<view class='fl_r'>￥{{orderData.order_total_price}}</view></view>
+			  
+			  <view v-if="orderData.user_coupon_dikou">优惠券抵扣<view class='fl_r'>￥{{orderData.user_coupon_dikou}}</view></view>
+			  
 	          <view>余额支付<view class='fl_r'>￥{{orderData.yue_price}}</view></view>
 	          <view>赠款支付<view class='fl_r'>￥{{orderData.coupon_price}}</view></view>   
 	      </view>

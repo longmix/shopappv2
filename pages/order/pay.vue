@@ -93,7 +93,7 @@
 				<view class="b-dikou">
 					<view>优惠券</view>
 				</view>
-				<view class="c-dikou"  @tap="open_zhongjiang_detail(8, 'bottom')">
+				<view class="c-dikou"  @tap="open_user_cooupon_list(8, 'bottom')">
 					<span v-if="!coupon_list">无可用优惠</span>
 					<span v-if="coupon_list">
 						<span v-if="youhui_diko_price > 0" style="font-size:25rpx;">
@@ -168,17 +168,24 @@
 			:AlertClass="AlertClassZhongjiang"
 			:AlertPosition="AlertPositionZhongjiang">
 			
-			<view class="youhuiquan_list"> 
+			<view class="open_alert_abot_basic">
 			
-				<view class="stamp stamp04" v-for=" (item,idx) in coupon_list" :key="idx" >
-					<view class="par"><p>{{item.coupon_item.name}}</p><sub class="sign">￥</sub><span>{{item.price}}</span><sub></sub>
-					<p>订单满{{item.price2}}元</p></view>
-					
-					<view class="copy">{{item.youhui_memo_str}}<p>{{item.youhui_start_time}} ~ {{item.youhui_end_time}}</p>
-					<a @tap="youhui_now(item.price,item.ucid)">立即使用</a></view>
-					<!-- <i></i> -->
+				<view class="youhuiquan_title"> 
+					<view @tap="user_coupon_dikou_not_use()">不使用优惠券</view>
 				</view>
-								 
+				<view class="youhuiquan_list"> 
+				
+					<view class="stamp stamp04" v-for=" (item,idx) in coupon_list" :key="idx" >
+						<view class="par"><p>{{item.coupon_item.name}}</p><sub class="sign">￥</sub><span>{{item.price}}</span><sub></sub>
+						<p>订单满{{item.price2}}元</p></view>
+						
+						<view class="copy">{{item.youhui_memo_str}}<p>{{item.youhui_start_time}} ~ {{item.youhui_end_time}}</p>
+						<a @tap="user_coupon_dikou_handle(item.price, item.ucid)">立即使用</a></view>
+						<!-- <i></i> -->
+					</view>
+									 
+				</view>
+			
 			</view>
 		
 		</openAlert>
@@ -272,7 +279,8 @@
 				cuxiao_huodong:null,
 				order_option_new_list:'',	//可能追加的订单的选项
 				
-				//2020.12.11
+				//======= 2020.12.11  优惠券相关 Begin ===========
+				//优惠券相关的弹层
 				AlertClassZhongjiang: 0,
 				AlertPositionZhongjiang: '',
 				
@@ -281,7 +289,9 @@
 				
 				//优惠券抵扣金额
 				youhui_diko_price:0,
-				current_ucid:0
+				current_ucid:0,
+				//================= End =======================
+				
 			};
 		},
 		
@@ -318,6 +328,9 @@ tuansn = 参团的编号，如果没有，则代表新开团
 		 * 
 		 */
 		onLoad(options) {
+			//var aaa = 1001;
+			//console.log('aaa==>>'+util.sprintf("%0.2f", aaa/100));
+			//console.log('aaa==>>'+util.sprintf("%0.2f", aaa/100));
 			
 			var that = this;
 			
@@ -712,8 +725,13 @@ tuansn = 参团的编号，如果没有，则代表新开团
 									that.coupon_list[i].youhui_start_time = util.formatTime(new Date(that.coupon_list[i].expiretime01 * 1000));
 									that.coupon_list[i].youhui_end_time = util.formatTime(new Date(that.coupon_list[i].expiretime02 * 1000));
 									
-									that.coupon_list[i].price = util.sprintf("%6.2f", that.coupon_list[i].coupon_item.price/100);
-									that.coupon_list[i].price2 = util.sprintf("%6.2f", that.coupon_list[i].coupon_item.price2/100);
+									//满 100.00
+									that.coupon_list[i].price2 = util.sprintf("%0.2f", that.coupon_list[i].coupon_item.price2/100);									
+									//减 10.00
+									that.coupon_list[i].price = util.sprintf("%0.2f", that.coupon_list[i].coupon_item.price/100);
+									//实际抵扣 10.00
+									that.coupon_list[i].dikou_amount = util.sprintf("%0.2f", that.coupon_list[i].dikou_amount/100);
+									
 									
 									if(that.coupon_list[i].coupon_item.productid && (that.coupon_list[i].coupon_item.productid != 0)){
 										that.coupon_list[i].youhui_memo_str = '限定商品可以使用';
@@ -1381,7 +1399,7 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			},
 			//钱包抵扣
 			switch1Change: function (e, type = null, value = null, that = null) {
-			    console.log('eeeeee', e, type, value)
+			    console.log('准备使用赠款或现金抵扣：', e, type, value)
 			
 			    if (type == null && value == null) {
 			       type = e.currentTarget.dataset.type
@@ -1416,16 +1434,16 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			
 			
 			            
-			              that.balance_zengsong = util.sprintf("%6.2f", 0);
-			              that.pay_price = util.sprintf("%6.2f", parseFloat(pay_price) - parseFloat(balance_zengsong));
-			              that.balance_zengsong_dikou = util.sprintf("%6.2f", parseFloat(balance_zengsong));
+			              that.balance_zengsong = util.sprintf("%0.2f", 0);
+			              that.pay_price = util.sprintf("%0.2f", parseFloat(pay_price) - parseFloat(balance_zengsong));
+			              that.balance_zengsong_dikou = util.sprintf("%0.2f", parseFloat(balance_zengsong));
 			              that.isSwitch2 = false;
 			            
 			          } else {
 			            
-			              that.balance_zengsong = util.sprintf("%6.2f", 0);
-			              that.pay_price = util.sprintf("%6.2f", parseFloat(pay_price) - parseFloat(balance_zengsong));
-			              that.balance_zengsong_dikou = util.sprintf("%6.2f", parseFloat(balance_zengsong));
+			              that.balance_zengsong = util.sprintf("%0.2f", 0);
+			              that.pay_price = util.sprintf("%0.2f", parseFloat(pay_price) - parseFloat(balance_zengsong));
+			              that.balance_zengsong_dikou = util.sprintf("%0.2f", parseFloat(balance_zengsong));
 			            
 			          }
 			
@@ -1444,9 +1462,9 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			          }
 			
 			          
-			            that.balance_zengsong = util.sprintf("%6.2f", parseFloat(balance_zengsong) - parseFloat(pay_price));
-						that.pay_price = util.sprintf("%6.2f", 0);
-			            that.balance_zengsong_dikou = util.sprintf("%6.2f", parseFloat(pay_price));
+			            that.balance_zengsong = util.sprintf("%0.2f", parseFloat(balance_zengsong) - parseFloat(pay_price));
+						that.pay_price = util.sprintf("%0.2f", 0);
+			            that.balance_zengsong_dikou = util.sprintf("%0.2f", parseFloat(pay_price));
 			            that.isSwitch2 = false;
 			          
 			
@@ -1454,10 +1472,10 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			      } else {
 			
 			        
-			          that.balance_zengsong = util.sprintf("%6.2f", parseFloat(balance_zengsong) + parseFloat(balance_zengsong_dikou));
-			          that.pay_price = util.sprintf("%6.2f", parseFloat(pay_price) + parseFloat(balance_zengsong_dikou));
-			          that.balance_dikou = util.sprintf("%6.2f", 0);
-			          that.balance_zengsong_dikou = util.sprintf("%6.2f", 0);
+			          that.balance_zengsong = util.sprintf("%0.2f", parseFloat(balance_zengsong) + parseFloat(balance_zengsong_dikou));
+			          that.pay_price = util.sprintf("%0.2f", parseFloat(pay_price) + parseFloat(balance_zengsong_dikou));
+			          that.balance_dikou = util.sprintf("%0.2f", 0);
+			          that.balance_zengsong_dikou = util.sprintf("%0.2f", 0);
 			       
 			      }
 			
@@ -1480,16 +1498,16 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			            balance_dikou = that.balance_dikou;
 			
 			
-						that.balance = util.sprintf("%6.2f", 0);
-						that.pay_price = util.sprintf("%6.2f", parseFloat(pay_price) - parseFloat(balance));
-						that.balance_dikou = util.sprintf("%6.2f", parseFloat(balance));
+						that.balance = util.sprintf("%0.2f", 0);
+						that.pay_price = util.sprintf("%0.2f", parseFloat(pay_price) - parseFloat(balance));
+						that.balance_dikou = util.sprintf("%0.2f", parseFloat(balance));
 						that.isSwitch1 = false;
 			            
 			          } else {
 			           
-			              that.balance = util.sprintf("%6.2f", 0);
-			              that.pay_price = util.sprintf("%6.2f", parseFloat(pay_price) - parseFloat(balance));
-			              that.balance_dikou = util.sprintf("%6.2f", parseFloat(balance));
+			              that.balance = util.sprintf("%0.2f", 0);
+			              that.pay_price = util.sprintf("%0.2f", parseFloat(pay_price) - parseFloat(balance));
+			              that.balance_dikou = util.sprintf("%0.2f", parseFloat(balance));
 			            
 			          }
 			
@@ -1507,18 +1525,18 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			            balance_dikou = that.balance_dikou;
 			          }
 			          
-						that.balance = util.sprintf("%6.2f", parseFloat(balance) - parseFloat(pay_price));
-						that.pay_price = util.sprintf("%6.2f", 0);
-						that.balance_dikou = util.sprintf("%6.2f", parseFloat(pay_price));
+						that.balance = util.sprintf("%0.2f", parseFloat(balance) - parseFloat(pay_price));
+						that.pay_price = util.sprintf("%0.2f", 0);
+						that.balance_dikou = util.sprintf("%0.2f", parseFloat(pay_price));
 						that.isSwitch1 = false;
 			
 			        }
 			      } else {
 						        
-			          that.balance = util.sprintf("%6.2f", parseFloat(balance) + parseFloat(balance_dikou));
-			          that.pay_price = util.sprintf("%6.2f", parseFloat(pay_price) + parseFloat(balance_dikou));
-			          that.balance_zengsong_dikou = util.sprintf("%6.2f", 0);
-			          that.balance_dikou = util.sprintf("%6.2f", 0);			        
+			          that.balance = util.sprintf("%0.2f", parseFloat(balance) + parseFloat(balance_dikou));
+			          that.pay_price = util.sprintf("%0.2f", parseFloat(pay_price) + parseFloat(balance_dikou));
+			          that.balance_zengsong_dikou = util.sprintf("%0.2f", 0);
+			          that.balance_dikou = util.sprintf("%0.2f", 0);			        
 			      }
 			
 			    }
@@ -1765,8 +1783,8 @@ tuansn = 参团的编号，如果没有，则代表新开团
 				
 				
 			},
-			//优惠券板块2020.12.11
-			open_zhongjiang_detail(Class, Position) {
+			//2020.12.11 优惠券板块，显示用户的可用优惠券列表
+			open_user_cooupon_list(Class, Position) {
 				if(!this.coupon_list){
 					return;
 				}
@@ -1781,14 +1799,45 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			    });
 			},
 			//点击优惠券立即使用
-			youhui_now(price, ucid){
-				var that =this;
-				//console.log('999999999999sssss',price);
+			user_coupon_dikou_handle(price, ucid){
+				var that = this;
+				
+				console.log('准备使用优惠券：', price);
+				console.log('准备使用优惠券：', ucid);
+				
+				//如果之前选过优惠券，先恢复之前的价格
+				if(that.youhui_diko_price > 0){
+					that.pay_price = that.pay_price + that.youhui_diko_price;
+				}
+				
+				
 				that.current_ucid = ucid;
-				//that.youhui_diko_price = util.sprintf("%6.2f", price/100);
+				
+				//that.youhui_diko_price = util.sprintf("%0.2f", price/100);
+				
 				that.youhui_diko_price = price;
 				
+				//将优惠券抵扣的金额从要支付的金额中减去，为后面的赠款和余额抵扣做准备
+				that.pay_price = that.pay_price - that.youhui_diko_price;
 				
+				//关闭弹层
+				this.$refs.openAlertZhongjiang.Close();
+				
+				
+			},
+			//选择不使用优惠券
+			user_coupon_dikou_not_use:function(e){
+				console.log('用户选择不使用优惠券');
+				
+				var that = this;
+				
+				that.pay_price = that.pay_price + that.youhui_diko_price;
+				
+				that.youhui_diko_price = 0;
+				that.current_ucid = 0;
+				
+				//关闭弹层
+				this.$refs.openAlertZhongjiang.Close();
 			}
 			
 		}
@@ -2066,7 +2115,25 @@ tuansn = 参团的编号，如果没有，则代表新开团
 		width:16px;
 		height: 18px;
 	}
-	//2020.12.11 优惠券css
+	
+	
+	//======= 2020.12.11 优惠券css Begin ========
+	.open_alert_abot_basic{
+		margin: 20rpx;
+		padding: 20rpx;
+		border:1px dotted #666;
+		border-radius: 10rpx;
+		
+	}
+	.youhuiquan_title {
+		height: 60rpx;
+		line-height: 60rpx;
+		padding-right: 40rpx;
+		background-color: #50ADD3;
+		color: #fff;
+		text-align: right;
+		border-radius: 5rpx;
+	}
 
 	.demo {
 		width:410px;
@@ -2172,4 +2239,8 @@ tuansn = 参团的编号，如果没有，则代表新开团
 		border-radius:3px;
 		display: block;
 	}
+	//============== End ==============
+	
+	
+	
 </style>
