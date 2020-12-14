@@ -313,7 +313,6 @@
 						userid: userInfo.userid,
 						checkstr: userInfo.checkstr,
 						sellerid: that.abotapi.get_sellerid(),
-						page: that.current_page,
 					},
 			
 					success: function(res) {

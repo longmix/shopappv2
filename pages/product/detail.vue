@@ -258,7 +258,7 @@
 							@tap="go_detail_pintuan(item.tuansn)">去拼团</view>
 						<view class="tuan_time_number">
 							<view class="tuan_number">{{grounp_count}}人成团还差<span style="color: red;">{{grounp_count - item.tuanyuan_counter}}人</span></view>
-							<view class="tuan_time_over">剩余24:58:51:8</view>
+							<view class="tuan_time_over" style="display:none;">剩余{{item.timespan_str}}</view>
 						</view>
 				</view>
 			</block>
@@ -615,6 +615,7 @@
 		 * cuxiao_huodong 是否来自促销活动，对应的值为具体的活动名称
 		 */
 		onLoad(options) {
+			
 			this.abotapi.set_option_list_str(this, this.callback_set_option_list_str);
 			this.abotapi.get_shop_info_from_server(this.callback_func_for_shop_info);
 
@@ -663,6 +664,7 @@
 				
 				//获取正在等待开团的团列表
 				that.__get_aipingou_tuan_list(options.productid, options.rulesn);
+				
 			}
 
 			options_str = options_str.substr(0, options_str.length - 1);
@@ -890,10 +892,7 @@
 
 
 			//获取客服电话
-
-
-
-
+			
 		},
 		onShow() {
 			this.getCartList();
@@ -991,21 +990,6 @@
 		},
 
 		methods: {
-			
-			open_kaijiang_detail(Class, Position, tuansn) {
-				console.log('aaaaaaaaaaaaaaaaaaa');
-				var that = this;	
-				
-			    this.$nextTick(function() {
-			
-			        this.AlertClassKaijiang = Class;
-			        this.AlertPositionKaijiang = Position;
-			        this.$nextTick(function() {
-			            this.$refs.openAlertKaijiang.Show();
-			        });
-			    });
-			},
-
 			changeSpec1: function(e) {
 				var that = this
 				var spec1 = e.currentTarget.dataset.spec1;
@@ -1913,6 +1897,7 @@
 					this.current_video_playing = 1;
 				}
 			},
+			
 			//2020.12.3. 爱拼团
 			__get_aipingou_tuan_list:function(productid, rulesn){
 				//请求团列表
@@ -1932,7 +1917,20 @@
 						success: function(res) {
 							that.aipin_tuan_list = res.data.Aipingou_tuan_list;
 							
+							console.log('that.aipin_tuan_list====>>>>', that.aipin_tuan_list);
+							
+							//团员人数
 							that.grounp_count = res.data.group_count;
+							
+							//开始倒计时
+							for(var i=0; i<that.aipin_tuan_list.length; i++){
+								
+								that.aipin_tuan_list[i].timespan = parseInt(that.aipin_tuan_list[i].over_time)*1000;
+								that.aipin_tuan_list[i].timespan_str = 'aaaaaaaaaaa';
+								
+								that.__aipingou_timer_countdown(i, that);
+							}
+							
 						},
 						fail: function(e) {
 						
@@ -1990,35 +1988,50 @@
 				});
 				
 				
-			}
-			// __get_tuan_list: function(){
-			//     var that = this;
-			//     var post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/AipingouData/get_my_pintuan_list';
-			//     var userInfo = that.abotapi.get_user_info();
-			    
-			//     that.abotapi.abotRequest({
-			//      url: post_url,
-			//      data: {
-			//       userid: userInfo.userid,
-			//       checkstr: userInfo.checkstr,
-			//       sellerid: that.abotapi.get_sellerid(),
-			//      },
-			//      success: function(res) {
-			     
-			//       that.ruleList = res.data.rule_list;
-			    
-			   
-			//       console.log('aaaaaaaaaa', res.data.rule_list);
-			//       console.log('8888====11>>', that.ruleList);
-			      
-			     
-			//      },
-			//      fail: function(e) {
-			     
-			     
-			//       },
-			//      }); 
-			//    },
+			},
+			__aipingou_timer_countdown(i, that) {
+			    //const that = this;
+				
+				console.log('__aipingou_timer_countdown==>>i==>>', i);
+				console.log('__aipingou_timer_countdown==>>i==>>', that.aipin_tuan_list[i]);
+					
+			    setTimeout(() => {
+					
+					if(that.aipin_tuan_list[i].timespan == 0) {
+					  // 计时结束，清除缓存
+					  that.aipin_tuan_list[i].timespan = parseInt(that.aipin_tuan_list[i].over_time)*1000;
+					  
+					} 
+					else{
+						that.aipin_tuan_list[i].timespan --;
+						that.aipin_tuan_list[i].timespan --;
+						that.aipin_tuan_list[i].timespan --;
+						
+						var hr = parseInt(that.aipin_tuan_list[i].timespan / 60 / 60 % 24);
+						var min = parseInt(that.aipin_tuan_list[i].timespan / 60 % 60);
+						var sec = parseInt(that.aipin_tuan_list[i].timespan % 60);
+						var msec = parseInt(that.aipin_tuan_list[i].timespan % 1000);
+									
+						hr = hr > 9 ? hr : '0' + hr;
+						min = min > 9 ? min : '0' + min;
+						sec = sec > 9 ? sec : '0' + sec;
+						//that.toLiveBtn = `${day}天${hr}时${min}分${sec}秒${msec}`;
+						//that.aipin_tuan_list[i].timespan_str = `${hr}:${min}:${sec}.${msec}`;
+						that.aipin_tuan_list[i].timespan_str = hr+':'+min+':'+sec+':'+ msec;
+						
+						console.log('__aipingou_timer_countdown==>> '+i+' ==>> ', that.aipin_tuan_list[i].timespan_str);
+						
+					}
+					
+					
+					
+					that.__aipingou_timer_countdown(i, that);
+					
+			    }, 1);
+			},
+			
+			
+			
 		},
 
 		filters: {
@@ -3161,7 +3174,7 @@
 	.tuan_info_name{
 		float: left;
 		line-height: 26px;
-		
+		margin-left: 15rpx;
 	}
 	.tuan_info_name img{
 		width: 80rpx;
@@ -3178,7 +3191,6 @@
 		height: 40px;
 		text-align: center;
 		line-height: 40px;
-		border: 1px solid #000000;
 		border-radius: 10rpx;
 		margin-left: 30rpx;
 		margin-right: 20rpx;

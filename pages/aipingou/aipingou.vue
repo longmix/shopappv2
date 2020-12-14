@@ -26,7 +26,8 @@
 		<!--爱拼购活动-->
 		
 		<view class="aipingou">
-			<view class="aipingou_title">
+			<view class="aipingou_title"
+				:style="{backgroundColor:btn_bg_color}">
 				<h1>{{aipingou_setting.huodong_title}}</h1>
 			</view>
 			<view class="list_con"  v-if="aipingou_setting.show_type == 0">
@@ -56,8 +57,8 @@
 				 <!-- 一行一个大图版：活动图片在上方，活动名称和功能按钮在下方。  @tap="aipingou_open_tuan(item.productid)" -->
 			    <view class="aipingou_list" v-for=" (item,idx) in ruleList" :key="idx">
 					<view class="list_table">
-						<view style="width: 100%;">
-							<image class="image_da" :src="item.product_image"></image>
+						<view>
+							<image class="image_da" :src="item.product_image" mode="widthFix"></image>
 						</view>	
 						<view class="product_name">{{item.product_name}}</view>
 					</view>
@@ -88,9 +89,25 @@
 		<openAlert ref="openAlertKaijiang"
 		 :AlertClass="AlertClassKaijiang"
 		 :AlertPosition="AlertPositionKaijiang">
-		 <view style="background-color: #FFFFFF;padding: 10px;border-radius: 5px;width: 400rpx;">
-			<view class="input_1"><input style="text-indent: 20rpx; height: 50rpx; border: 1px solid #000000; border-radius: 5px;margin-bottom: 40rpx;" type="number" name="count_aipingou" placeholder="请填写购买数量" :value="counter_value"  @input="searchValueInput($event)"></view>
-			<view class="input_2"><input disabled="disabled" style="border-radius: 5px;border: 1px solid #000000;width: 200rpx;height: 60rpx; margin: 0 auto;text-align: center;background-color: red;color: #FFFFFF;" class="submit_1" type="button" value="确定" @tap="go_to_aipingou()"></view>
+		 <view style="background-color: #FFFFFF;padding: 60rpx;border-radius: 10rpx;width: 400rpx;border: 1rpx solid #666;">
+			<view style="display: flex;text-align: center;">
+				<view class="sub">
+				 	<view class="icon jian" data-alpha-beta="0" @click="changeNum($event)"></view>
+				 </view>
+				 
+					<view class="input" @tap.stop="discard">
+						<input type="number" v-model="product_amount" />
+					</view>
+					
+				<view class="add">
+					<view class="icon jia" data-alpha-beta="1" @click="changeNum($event)"></view>
+				</view>
+			</view>
+			
+			<view class="input_2"><input disabled="disabled" 
+				style="border-radius: 10rpx;border: 1rpx solid #000000;width: 200rpx;height: 60rpx; margin: 0 auto;text-align: center;background-color: red;color: #FFFFFF;" 
+				:style="{backgroundColor:btn_bg_color}"
+				class="submit_1" type="button" value="去开团" @tap="go_to_aipingou()"></view>
 		 </view>
 		</openAlert>	
 		
@@ -101,6 +118,8 @@
 	export default {
 		data() {
 			return {
+				btn_bg_color:'red',
+				
 				aipingou_setting:[],
 				ruleList:'',
 				
@@ -108,7 +127,7 @@
 				//2020.12.14
 				AlertClassKaijiang: 0,
 				AlertPositionKaijiang: '',
-				counter_value:'',
+				product_amount:1,
 				productid:''
 			}
 		},
@@ -118,14 +137,18 @@
 			console.log('网页参数如下:');
 			
 			this.abotapi.set_shop_option_data(this, function(that002, option_data){
+				that002.btn_bg_color = that002.abotapi.getColor();
+				
+				uni.setNavigationBarTitle({
+					title: '爱拼购',
+				})
+				
 				that002.__get_rule_list();
 				that002.__get_setting_list();
 				
 			
 				 
-				uni.setNavigationBarTitle({
-					title: '爱拼购',
-				})
+				
 				
 			});
 
@@ -329,7 +352,7 @@
 				//console.log('88888aaaaaaaaa',userInfo,userInfo.userid);
 				//判断是否登录
 				
-				var last_url = '/pages/order/pay?action=direct_buy&productid='+ that.productid +'&amount='+ that.counter_value +'&cuxiao_huodong=aipingou';
+				var last_url = '/pages/order/pay?action=direct_buy&productid='+ that.productid +'&amount='+ that.product_amount +'&cuxiao_huodong=aipingou';
 				
 				if (!userInfo || !userInfo.userid) {
 					uni.showToast({
@@ -371,7 +394,22 @@
 					url:last_url,
 				});
 				
-			}
+			},
+			
+			//修改数量
+			changeNum: function(e) {
+				console.log("数量发生变化_e", e);
+				var that = this;
+				if (e.target.dataset.alphaBeta == 0) {
+					if (that.product_amount <= 1) {
+						that.product_amount = 1
+					} else {
+						that.product_amount = parseInt(that.product_amount) - 1;
+					};
+				} else {
+					that.product_amount = parseInt(that.product_amount) + 1;
+				};
+			},
 		},
 		
 	}
@@ -481,6 +519,9 @@
 		right: 40upx;
 		border-radius: 50%;
 		bottom: 120upx;
+	}
+	.input input{
+		font-size: 32rpx;
 	}
 </style>
 
