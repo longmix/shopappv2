@@ -47,7 +47,7 @@
 										<view>去拼购</view>
 									</view>	
 
-									<view style="font-size: 16rpx;margin-left: 40px;" @tap="aipingou_open_tuan(item.productid)">
+									<view style="font-size: 16rpx;margin-left: 40px;" @tap="go_to_qukaituan(0, 'center',item.productid)">
 										<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_kaituan.png"></image>
 										<view>去开团</view>
 									</view>
@@ -59,7 +59,7 @@
 			</view>
 			
 			<view class="list_con" v-else>
-				 <!-- 一行一个大图版：活动图片在上方，活动名称和功能按钮在下方。 -->
+				 <!-- 一行一个大图版：活动图片在上方，活动名称和功能按钮在下方。  @tap="aipingou_open_tuan(item.productid)" -->
 			    <view class="aipingou_list" v-for=" (item,idx) in ruleList" :key="idx">
 					<view class="list_table">
 						<view style="width: 100%;">
@@ -89,6 +89,17 @@
 		<view class="home-p" @click="toMypingou()" v-if="aipingou_setting.show_mypintuan_icon == 1">
 			<image src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_canyu.png" style="width: 70upx;height: 70upx;"></image>
 		</view>
+		
+		<!-- 2020.12.14 -->
+		<openAlert ref="openAlertKaijiang"
+		 :AlertClass="AlertClassKaijiang"
+		 :AlertPosition="AlertPositionKaijiang">
+		 <view style="background-color: #FFFFFF;padding: 10px;border-radius: 5px;">
+			<view class="input_1"><input style="border: 1px solid #000000; border-radius: 5px;margin-bottom: 5px;" type="number" name="count_aipingou" placeholder="请填写购买数量" :value="counter_value"  @input="searchValueInput($event)"></view>
+			<view class="input_2"><input disabled="disabled" style="border-radius: 5px;border: 1px solid #000000;width: 50px;margin: 0 auto;text-align: center;background-color: #02BF02;color: #FFFFFF;" class="submit_1" type="button" value="确定" @tap="go_to_aipingou()"></view>
+		 </view>
+		</openAlert>	
+		
 	</view>
 </template>
 
@@ -98,7 +109,13 @@
 			return {
 				aipingou_setting:[],
 				ruleList:'',
-
+				
+				
+				//2020.12.14
+				AlertClassKaijiang: 0,
+				AlertPositionKaijiang: '',
+				counter_value:'',
+				productid:''
 			}
 		},
 		onLoad(options) {
@@ -179,7 +196,25 @@
 		
 		methods: {
 			
+			searchValueInput:function(e){
+				console.log('aaaaaaaaaaaaaaaaaaa',e);
+				var that = this;
+				that.counter_value = e.detail.value
+				//var key = that.counter_value;		
+			},
+			go_to_qukaituan(Class, Position, productid) {
+				var that = this;	
+				that.productid = productid;
+				//console.log('aaaaaaaaaaaaaaaaaaa',that.counter_value);
+			    this.$nextTick(function() {
 			
+			        this.AlertClassKaijiang = Class;
+			        this.AlertPositionKaijiang = Position;
+			        this.$nextTick(function() {
+			            this.$refs.openAlertKaijiang.Show();
+			        });
+			    });
+			},
 			
 			//跳转到“我的拼购”页面
 			toMypingou() {
@@ -293,14 +328,14 @@
 			// },
 			
 			//去开团
-			aipingou_open_tuan:function(productid){
+			go_to_aipingou:function(){
 				var that =this;
 				var userInfo = this.abotapi.get_user_info();
 				
 				//console.log('88888aaaaaaaaa',userInfo,userInfo.userid);
 				//判断是否登录
 				
-				var last_url = '/pages/order/pay?action=direct_buy&productid='+ productid +'&amount=1&cuxiao_huodong=aipingou';
+				var last_url = '/pages/order/pay?action=direct_buy&productid='+ that.productid +'&amount='+ that.counter_value +'&cuxiao_huodong=aipingou';
 				
 				if (!userInfo || !userInfo.userid) {
 					uni.showToast({
