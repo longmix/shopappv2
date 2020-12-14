@@ -446,7 +446,7 @@ tuansn = 参团的编号，如果没有，则代表新开团
 				if(options.tuansn){
 					//增加一个选项：代表要参加这个团
 					that.order_option_new_list.push(
-						{ "key": "aipingou_tuan_tuansn", "value": '1' },);
+						{ "key": "aipingou_tuan_tuansn", "value": options.tuansn },);
 				}					
 							
 									
