@@ -38,14 +38,14 @@
 			                <view style="width: 50%;">
 								<view class="product_name">{{item.product_name}}</view>
 								<view style="display: flex;width: 100%;margin-top: 50rpx;">
-									<view style="font-size: 16rpx;width: 50%;"  @tap="aipingou_buy_together(item.productid,item.rulesn)">
+									<view style="font-size: 32rpx;width: 50%;"  @tap="aipingou_buy_together(item.productid,item.rulesn)">
 										<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_pintuan2.png" ></image>
-										<view>去拼购</view>
+										<view style="font-size: 32rpx;">去拼购</view>
 									</view>	
 
-									<view style="font-size: 16rpx;width: 50%;" @tap="go_to_qukaituan(0, 'center',item.productid)">
+									<view style="font-size: 32rpx;width: 50%;" @tap="go_to_qukaituan(0, 'center',item.productid)">
 										<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_kaituan2.png"></image>
-										<view>去开团</view>
+										<view style="font-size: 32rpx;">去开团</view>
 									</view>
 								</view>	
 							</view>  
@@ -63,14 +63,14 @@
 					</view>
 					<view class="tubiao_anniu">
 					
-						<view style="font-size: 16rpx;width: 50%;"  @tap="aipingou_buy_together(item.productid,item.rulesn)">
+						<view style="font-size: 32rpx;width: 50%;"  @tap="aipingou_buy_together(item.productid,item.rulesn)">
 							<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_pintuan2.png" ></image>
-							<view>去拼购</view>
+							<view style="font-size: 32rpx;">去拼购</view>
 						</view>	
 					
-						<view style="font-size: 16rpx;width: 50%;" @tap="aipingou_open_tuan(item.productid)">
+						<view style="font-size: 32rpx;width: 50%;" @tap="aipingou_open_tuan(item.productid)">
 							<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_kaituan2.png"></image>
-							<view>去开团</view>
+							<view style="font-size: 32rpx;">去开团</view>
 						</view>
 					</view>
 				
@@ -468,8 +468,8 @@
 		background-color: red;
 	}
 	.tubiao{
-		width: 60rpx;
-		height: 60rpx;
+		width: 80rpx;
+		height: 80rpx;
 	}
 	.home-p{
 		display: flex;
