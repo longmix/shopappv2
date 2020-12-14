@@ -255,7 +255,8 @@
 						</view>
 						<view class="let_go_pingtuan" 
 						:style="{'background-color': wxa_shop_nav_bg_color}"
-						@tap="go_detail_pintuan(item.productid,item.tuansn)">去拼团</view>
+						
+						@tap="go_detail_pintuan(item.tuansn)">去拼团</view>
 						<view class="tuan_time_number">
 							<view class="tuan_number">{{grounp_count}}人成团还差<span style="color: red;">{{grounp_count - item.tuanyuan_counter}}人</span></view>
 							<view class="tuan_time_over">剩余24:58:51:8</view>
@@ -435,8 +436,15 @@
 
 		<view class="copyright_info">{{default_copyright_text}}</view>
 
-
-
+		<!-- 2020.12.14 -->
+		<!-- <openAlert ref="openAlertKaijiang"
+		 :AlertClass="AlertClassKaijiang"
+		 :AlertPosition="AlertPositionKaijiang">
+		 <view style="background-color: #FFFFFF;padding: 10px;border-radius: 5px;">
+			<view class="input_1"><input style="border: 1px solid #000000; border-radius: 5px;" type="number" name="count_aipingou" placeholder="请填写购买数量"></view>
+			<view class="input_2"><input disabled="disabled" style="border-radius: 5px;margin-top: 10px;border: 1px solid #000000;width: 50px;margin: 0 auto;text-align: center;background-color: #02BF02;color: #FFFFFF;" class="submit_1" type="button" value="确定" @tap="go_to_aipingou()"></view>
+		 </view>
+		</openAlert> -->	
 	</view>
 </template>
 
@@ -582,6 +590,9 @@
 				grounp_count:'',//组团人数
 				wxa_shop_nav_bg_color:'',
 				
+				//2020.12.14
+				AlertClassKaijiang: 0,
+				AlertPositionKaijiang: '',
 			};
 		},
 		/**
@@ -944,6 +955,20 @@
 		},
 
 		methods: {
+			
+			open_kaijiang_detail(Class, Position, tuansn) {
+				console.log('aaaaaaaaaaaaaaaaaaa');
+				var that = this;	
+				
+			    this.$nextTick(function() {
+			
+			        this.AlertClassKaijiang = Class;
+			        this.AlertPositionKaijiang = Position;
+			        this.$nextTick(function() {
+			            this.$refs.openAlertKaijiang.Show();
+			        });
+			    });
+			},
 
 			changeSpec1: function(e) {
 				var that = this
@@ -1861,7 +1886,7 @@
 				
 				
 			},
-			go_detail_pintuan:function(productid,tuansn){
+			go_detail_pintuan:function(tuansn){
 				
 				var that =this;
 				var userInfo = this.abotapi.get_user_info();
