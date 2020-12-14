@@ -72,18 +72,18 @@
 					<view class="icon kefu"></view>
 					<view class="text">客服</view>
 				</view>
-				<view class="box" @tap="keep_to_collect" v-if="product_source_channel == 0">
+				<view class="box" @tap="keep_to_collect" v-if="bottom_show_favorite_icon == 1">
 					<view class="icon" :class="[isKeep?'shoucangsel':'shoucang']"></view>
 					<view class="text">{{isKeep?'已':''}}收藏</view>
 				</view>
-				<view class="box" @tap="toCart" v-if="product_source_channel == 0">
+				<view class="box" @tap="toCart" v-if="bottom_show_goto_cart_icon == 0">
 					<view class="icon cart"></view>
 					<view class="text">{{icon_btn_gouwuche_text}}</view>
 					<view class="amount" v-if="cart_amount > 0">{{cart_amount}}</view>
 				</view>
 
 			</view>
-			<view class="btn" v-if="product_source_channel == 0">
+			<view class="btn" v-if="bottom_show_add_to_cart_and_buy_now == 1">
 				<!-- 加入购物车  立即购买 -->
 				<view :class="[goods_detail.inventory == 0? 'joinCart-null':'joinCart']" data-type="addcart" data-status="2" @tap="goods_detail.inventory == 0?'':setModalStatus($event)">{{btn_gouwuche_text}}</view>
 				<view :class="[goods_detail.inventory == 0? 'buy-null':'buy']" data-status="1" @tap="goods_detail.inventory == 0? '':setModalStatus($event)">立即购买</view>
@@ -171,7 +171,7 @@
 							<view class="icon jian" data-alpha-beta="0" @click="changeNum($event)"></view>
 						</view>
 						<view class="input" @tap.stop="discard">
-							<input type="number" v-model="amount" />
+							<input type="number" v-model="product_amount" />
 						</view>
 						<view class="add">
 							<view class="icon jia" data-alpha-beta="1" @click="changeNum($event)"></view>
@@ -181,7 +181,7 @@
 
 				</view>
 				<view class="btn">
-					<view class="button" :data-status="status" @tap="addShopCart($event)">{{buys}}</view>
+					<view class="button" :data-status="go_to_buy_url_type" @tap="addShopCart($event)">{{buys}}</view>
 				</view>
 			</view>
 
@@ -254,9 +254,8 @@
 							<view class="tuan_leder_name">{{item.nickname}}</view>
 						</view>
 						<view class="let_go_pingtuan" 
-						:style="{'background-color': wxa_shop_nav_bg_color}"
-						
-						@tap="go_detail_pintuan(item.tuansn)">去拼团</view>
+							:style="{'background-color': wxa_shop_nav_bg_color}"
+							@tap="go_detail_pintuan(item.tuansn)">去拼团</view>
 						<view class="tuan_time_number">
 							<view class="tuan_number">{{grounp_count}}人成团还差<span style="color: red;">{{grounp_count - item.tuanyuan_counter}}人</span></view>
 							<view class="tuan_time_over">剩余24:58:51:8</view>
@@ -264,7 +263,12 @@
 				</view>
 			</block>
 			<block v-if="!aipin_tuan_list">
-				<view style="margin-left: 25rpx; color: #666;text-align: center;">一个团都没有哦~</view>
+				<view style="margin-left: 25rpx; color: #666;text-align: center;">一个团都没有哦~
+				</view>
+				<view class="let_go_pingtuan"
+					:style="{'background-color': wxa_shop_nav_bg_color}"
+					@tap="go_detail_pintuan('')">去拼团</view>
+				
 			</block>
 		</view>
 		
@@ -533,10 +537,14 @@
 				attr_list: [],
 				attribute_list: [],
 				picture_length: 0,
-				amount: 1,
+				product_amount: 1,
+				
 				buys: '立即购买',
-				status: '',
-				action_type: '',
+				go_to_buy_url_type: 0,
+				go_to_buy_new_url:'',	//如果 go_to_buy_url_type == 3，则这里有值
+				
+				
+				action_type: '',	//控制 立即购买 还是 加入购物车
 				current_spec: '',
 				options_str: '',
 
@@ -567,6 +575,11 @@
 				share_href: '',
 				share_summary: '',
 				share_titles: '',
+				
+				//控制底部功能按钮的隐藏和显示
+				bottom_show_favorite_icon:1,
+				bottom_show_goto_cart_icon:1,
+				bottom_show_add_to_cart_and_buy_now:1,
 
 				//商品的来源渠道，默认0为SaaS云平台的商品，1为淘宝客等推广联盟的商品
 				product_source_channel: 0,
@@ -641,6 +654,13 @@
 				
 				that.is_aipingou_tuan_list = true;
 				
+				//隐藏底部的收藏按钮和购物车按钮
+				that.bottom_show_favorite_icon = 0;
+				that.bottom_show_goto_cart_icon = 0;
+				that.bottom_show_add_to_cart_and_buy_now = 0;
+				
+				console.log('that.bottom_show_favorite_icon ===>>> ', that.bottom_show_favorite_icon);
+				
 				//获取正在等待开团的团列表
 				that.__get_aipingou_tuan_list(options.productid, options.rulesn);
 			}
@@ -674,6 +694,11 @@
 				detail_url = this.abotapi.globalData.yanyubao_server_url +
 					'index.php/openapi/UnionPromotionData/get_product_detail';
 				detail_data.union_name = this.product_channel_name;
+				
+				this.bottom_show_favorite_icon = 0;
+				this.bottom_show_goto_cart_icon = 0;
+				this.bottom_show_add_to_cart_and_buy_now = 0;
+				
 			}
 
 
@@ -761,10 +786,9 @@
 							that.option_list_arr = option_list_arr;
 							that.spec1 = option_list_arr[0];
 							that.spec2 = option_list_arr[1];
-
+							
+							console.log('option_list_arr', option_list_arr);
 						}
-
-						console.log('option_list_arr', option_list_arr)
 
 						if (attr_list) {
 							var attr_key_arr = []
@@ -1312,7 +1336,9 @@
 
 
 			setModalStatus: function(e) {
+				//显示弹出层
 				this.showSpec();
+				
 				var that = this;
 				var action_type = '';
 				if (e.currentTarget.dataset.type) {
@@ -1321,19 +1347,19 @@
 
 				if (e.currentTarget.dataset.status == 1) {
 					this.buys = '立即购买';
-					this.status = '1';
+					this.go_to_buy_url_type = '1';
 					this.action_type = action_type;
 
 				} else {
 					this.buys = '加入购物车';
-					this.status = '2';
+					this.go_to_buy_url_type = '2';
 					this.action_type = action_type;
 				}
 
 				//2020.8.23. 推广联盟
 				if (this.product_source_channel == 1) {
 					this.buys = '立即购买';
-					this.status = '1';
+					this.go_to_buy_url_type = '1';
 					this.action_type = action_type;
 				}
 			},
@@ -1344,7 +1370,9 @@
 
 
 				var that = this;
+				
 				var userInfo = this.abotapi.get_user_info();
+				
 				if (!userInfo || !userInfo.userid) {
 
 					var last_url = '/pages/product/detail?' + that.options_str;
@@ -1360,20 +1388,21 @@
 
 				if (e.currentTarget.dataset.status == 1) {
 
-					var new_url = '/pages/order/pay?amount=' + that.amount + "&productid=" + that.goods_detail.productid +
+					var new_url = '/pages/order/pay?amount=' + that.product_amount + "&productid=" + that.goods_detail.productid +
 						"&action=direct_buy";
 
 					uni.navigateTo({
 						url: new_url,
 					})
 
-				} else if (e.currentTarget.dataset.status == 2) {
+				} 
+				else if (e.currentTarget.dataset.status == 2) {
 					//加入购物车
 					this.abotapi.abotRequest({
 						url: this.abotapi.globalData.yanyubao_server_url + '/Yanyubao/ShopApp/cart_add',
 						method: 'post',
 						data: {
-							amount: that.amount,
+							amount: that.product_amount,
 							checkstr: userInfo.checkstr,
 							productid: that.goods_detail.productid,
 							sellerid: this.abotapi.get_sellerid(),
@@ -1398,6 +1427,21 @@
 							});
 						},
 					});
+				}
+				else if(e.currentTarget.dataset.status == 3){
+					//既不是立即购买，也不是加入购物车，而是跳转到指定的路径
+					
+					var new_url = that.go_to_buy_new_url;
+					
+					if(!that.product_amount){
+						that.product_amount = 1;
+					}
+					
+					new_url += '&amount=' + that.product_amount;
+					
+					uni.navigateTo({
+						url: new_url,
+					})
 				}
 			},
 
@@ -1446,13 +1490,13 @@
 				console.log("数量发生变化_e", e);
 				var that = this;
 				if (e.target.dataset.alphaBeta == 0) {
-					if (that.amount <= 1) {
-						that.amount = 1
+					if (that.product_amount <= 1) {
+						that.product_amount = 1
 					} else {
-						that.amount = parseInt(that.amount) - 1;
+						that.product_amount = parseInt(that.product_amount) - 1;
 					};
 				} else {
-					that.amount = parseInt(that.amount) + 1;
+					that.product_amount = parseInt(that.product_amount) + 1;
 				};
 			},
 			//跳转锚点
@@ -1889,6 +1933,28 @@
 			go_detail_pintuan:function(tuansn){
 				
 				var that =this;
+				
+				this.showSpec();
+				
+				this.buys = '现在去开团';
+				
+				this.go_to_buy_url_type = 3;
+				
+				//this.go_to_buy_new_url = '/pages/order/pay?productid='+ that.productid +'&amount=1&action=direct_buy&cuxiao_huodong=aipingou';
+				this.go_to_buy_new_url = '/pages/order/pay?productid='+ that.productid +'&action=direct_buy&cuxiao_huodong=aipingou';
+				if(tuansn){
+					this.go_to_buy_new_url += '&tuansn='+tuansn;
+					
+					this.buys = '参与这个团';
+				}
+				
+				this.action_type = '';
+				
+				
+				
+				return;
+				
+				
 				var userInfo = this.abotapi.get_user_info();
 				
 				console.log('88888aaaaaaaaa',productid);

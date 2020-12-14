@@ -1,6 +1,6 @@
 {
   "extEnable": true,
-  "extAppid": "wx4b5776869b963bd4",
+  "extAppid": "wx47cf36b7d0a0f792",
   "directCommit": true,
   "ext": {
     "name": "wechat",
@@ -18,7 +18,7 @@
     "version_number": "Ver 1.7.4 Build 219",
     "navigationBarBackgroundColor_fixed": 1,
     "navigationBar_font_color":"#ffffff",
-    "navigationBar_bg_color":"#073892",
+    "navigationBar_bg_color":"#E3170D",
     "kefu_telephone": "",
     "kefu_qq": "",
     "kefu_website": "",
@@ -46,16 +46,16 @@
         "text": "首页"
       },      
       {
-        "pagePath": "pages/shopList/shopList",
-        "iconPath": "static/img/tabBar/category.png",
-        "selectedIconPath": "static/img/tabBar/category-on.png",
-        "text": "附近"
+        "pagePath": "pages/aipingou/aipingou",
+        "iconPath": "static/img/tabBar/cart.png",
+        "selectedIconPath": "static/img/tabBar/cart-on.png",
+        "text": "拼购"
       },
       {
-        "pagePath": "cms/discover/discover",
-        "iconPath": "static/img/tabBar/imglist.png",
-        "selectedIconPath": "static/img/tabBar/imglist-on.png",
-        "text": "随拍"
+        "pagePath": "pages/category/category",
+        "iconPath": "static/img/tabBar/category.png",
+        "selectedIconPath": "static/img/tabBar/category-on.png",
+        "text": "分类"
       },
       {
         "pagePath": "pages/user/user",
@@ -67,8 +67,8 @@
   },
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#073892",
-    "navigationBarTitleText": "哈哈订",
+    "navigationBarBackgroundColor": "#E3170D",
+    "navigationBarTitleText": "天天汇",
     "navigationBarTextStyle": "white"
   },
   "networkTimeout": {

@@ -94,7 +94,7 @@
 					<view>优惠券</view>
 				</view>
 				<view class="c-dikou"  @tap="open_user_cooupon_list(8, 'bottom')">
-					<span v-if="!coupon_list">无可用优惠</span>
+					<span v-if="!coupon_list">无可用券</span>
 					<span v-if="coupon_list">
 						<span v-if="youhui_diko_price > 0" style="font-size:25rpx;">
 						已抵扣<span class="c-dikou_amount">{{youhui_diko_price}}</span>元
