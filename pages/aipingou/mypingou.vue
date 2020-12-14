@@ -396,8 +396,8 @@
 .tanchuang_list td th{
 	border:1px solid #ccc;
 	    border: blue;
-	    border-width: 1px;
-	    border-style: dotted;
+    border-width: 1px;
+    border-style: dotted;
 }
 
 

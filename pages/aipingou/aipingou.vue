@@ -14,7 +14,6 @@
 		<!--宣传图片start-->
 		<view class="aipingou_image">
 			<image class="tupian" :src="aipingou_setting.xuanchuan_tupian"></image>
-
 		</view>
 		<!--宣传图片end-->
 
@@ -23,9 +22,6 @@
 			<view class="wenan_content">{{aipingou_setting.xuanchuan_wenan}}</view>
 		</view>
 		<!--宣传文案end-->
-		
-	
-		
 
 		<!--爱拼购活动-->
 		
@@ -34,7 +30,7 @@
 				<h1>{{aipingou_setting.huodong_title}}</h1>
 			</view>
 			<view class="list_con">
-				
+				<!-- 一行一个小图版：活动图片在左侧，活动名称和功能按钮在右侧。 -->
 			          <view class="aipingou_list" v-for=" (item,idx) in ruleList" :key="idx">
 			            <table class="list_table">
 			              <tr>
@@ -61,16 +57,38 @@
 			            </table>
 			          </view>
 			</view>
+			
+			<view class="list_con">
+				 <!-- 一行一个大图版：活动图片在上方，活动名称和功能按钮在下方。 -->
+			    <view class="aipingou_list" v-for=" (item,idx) in ruleList" :key="idx">
+					<view class="list_table">
+						<view style="width: 100%;">
+							<image class="image_da" :src="item.product_image"></image>
+						</view>	
+						<view class="product_name">{{item.product_name}}</view>
+					</view>
+					<view class="tubiao_anniu">
+					
+						<view style="font-size: 16rpx;margin-left:50px;"  @tap="aipingou_buy_together(item.productid,item.rulesn)">
+							<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_pintuan.png" ></image>
+							<view>去拼购</view>
+						</view>	
+					
+						<view style="font-size: 16rpx;margin-left: 180px;" @tap="aipingou_open_tuan(item.productid)">
+							<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_kaituan.png"></image>
+							<view>去开团</view>
+						</view>
+					</view>
+				
+			    </view>
+			</view>
 		</view>
 			
-			<!---我的拼购-->
+			<!---我的拼购悬浮图标-->
 		<view class="home-p" @click="toMypingou()">
 			<image src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_canyu.png" style="width: 70upx;height: 70upx;"></image>
 		</view>
-   
 	</view>
-	
-
 </template>
 
 <script>
@@ -79,9 +97,6 @@
 			return {
 				aipingou_setting:'',
 				ruleList:'',
-				
-				
-
 
 			}
 		},
@@ -237,6 +252,43 @@
 					});	
 			},
 			
+			//获取页面格式
+			__get_setting_list: function() {
+				var that = this;
+				var post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/AipingouData/get_seting';
+			
+			
+				that.abotapi.abotRequest({
+					url: post_url,
+					data: {
+						sellerid: that.abotapi.get_sellerid(),
+					},
+			
+					success: function(res) {
+			
+						//获取拼团宣传图片
+						that.aipingou_setting = res.data.aipingou_seting;
+						
+			
+						//console.log('aaaaaaaaaa', res.data.aipingou_seting.xuanchuan_tupian);
+						//console.log('8888====11>>', that.aipingou_list);
+						
+						uni.setNavigationBarTitle({
+						 title: res.data.aipingou_seting.huodong_title
+						})
+			 
+			
+					},
+			
+					fail: function(e) {
+			
+			
+					},
+				});
+			
+			
+			},
+			
 			//去开团
 			aipingou_open_tuan:function(productid){
 				var that =this;
@@ -354,9 +406,22 @@
 		height:100%;
 		border-radius: 10rpx;
 	}
+	.tubiao_anniu{
+		display: flex;
+		margin-top: 20rpx;
+	}
+	.aipingou_product_image1{
+		width: 100%;
+		height: 350rpx;
+	}
 	.product_name{
 		text-align: left;
 	
+	}
+	.image_da{
+		width: 98%;
+		margin-top: 5rpx;
+		border-radius:20rpx;
 	}
 
 	.aipingou_title{
@@ -376,9 +441,6 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: space-around;
-		width: 80upx;
-		height: 80upx;
-		background-color: #d9d6c3;
 		position: fixed;
 		z-index: 100;
 		right: 40upx;
