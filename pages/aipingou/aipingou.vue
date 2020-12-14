@@ -32,29 +32,23 @@
 			<view class="list_con"  v-if="aipingou_setting.show_type == 0">
 				<!-- 一行一个小图版：活动图片在左侧，活动名称和功能按钮在右侧。 -->
 			          <view class="aipingou_list" v-for=" (item,idx) in ruleList" :key="idx">
-			            <table class="list_table">
-			              <tr>
-			                <td class="aipingou_product_image">
-								<image class="product_image"  :src="item.product_image"></image>
-							</td>
-			                <td>
+			                <view class="aipingou_product_image">
+								<image class="product_image"  :src="item.product_image" mode="widthFix" ></image>
+							</view>
+			                <view style="width: 50%;">
 								<view class="product_name">{{item.product_name}}</view>
-								<br />
-								<view style="display: flex;">
-
-									<view style="font-size: 16rpx;margin-left:20px;"  @tap="aipingou_buy_together(item.productid,item.rulesn)">
+								<view style="display: flex;width: 100%;margin-top: 50rpx;">
+									<view style="font-size: 16rpx;width: 50%;"  @tap="aipingou_buy_together(item.productid,item.rulesn)">
 										<image class="tubiao" src="../../static/img/yijianpingou.png" ></image>
 										<view>去拼购</view>
 									</view>	
 
-									<view style="font-size: 16rpx;margin-left: 40px;" @tap="go_to_qukaituan(0, 'center',item.productid)">
+									<view style="font-size: 16rpx;width: 50%;" @tap="go_to_qukaituan(0, 'center',item.productid)">
 										<image class="tubiao" src="../../static/img/yijianlaituan.png"></image>
 										<view>去开团</view>
 									</view>
 								</view>	
-							</td>  
-			              </tr>
-			            </table>
+							</view>  
 			          </view>
 			</view>
 			
@@ -69,12 +63,12 @@
 					</view>
 					<view class="tubiao_anniu">
 					
-						<view style="font-size: 16rpx;margin-left:50px;"  @tap="aipingou_buy_together(item.productid,item.rulesn)">
+						<view style="font-size: 16rpx;width: 50%;"  @tap="aipingou_buy_together(item.productid,item.rulesn)">
 							<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_pintuan.png" ></image>
 							<view>去拼购</view>
 						</view>	
 					
-						<view style="font-size: 16rpx;margin-left: 180px;" @tap="aipingou_open_tuan(item.productid)">
+						<view style="font-size: 16rpx;width: 50%;" @tap="aipingou_open_tuan(item.productid)">
 							<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_kaituan.png"></image>
 							<view>去开团</view>
 						</view>
@@ -432,21 +426,20 @@
 		background-color: #fffffb;
 		margin-top: 20rpx;
 		border-radius: 20rpx;
+		display: flex;
 	}
 
 	.aipingou_product_image{
-		width: 56%;
-		height: 350rpx;
-
+		width: 50%;
 	}
 	.product_image{
 		width: 100%;
-		height:100%;
 		border-radius: 10rpx;
 	}
 	.tubiao_anniu{
 		display: flex;
 		margin-top: 20rpx;
+		width: 100%;
 	}
 	.aipingou_product_image1{
 		width: 100%;
@@ -454,7 +447,8 @@
 	}
 	.product_name{
 		text-align: left;
-	
+		margin-left: 20rpx;
+		margin-top: 20rpx;
 	}
 	.image_da{
 		width: 98%;
