@@ -291,14 +291,14 @@
 		<view v-if="isExistSpec" class="guige">
 
 			<!-- 规格开始 -->
-			<view class="specs" v-if="attr_list">商品选项</view>
-			<view class="specs-a" style='display:flex;'>
+			<view class="specs" v-if="attr_list">商品选项 </view>
+			<view class="specs-a">
 				<view :class="[option_list_arr[0] == item ? 'specs-e' : 'specs-d']" v-for="(item, index) in attr_key_arr" :key="index"
 				 :data-spec1="item" @click='changeSpec1($event)'>
 					{{item}}
 				</view>
 			</view>
-			<view class="specs-a" style="display:flex;" v-if="attr_list_arr[spec1] != null">
+			<view class="specs-a" v-if="attr_list_arr[spec1] != null">
 				<view :class="[option_list_arr[1] == item2 ? 'specs-e' : 'specs-d']" v-for="(item2, index) in attr_list_arr[spec1]"
 				 :key="index" :data-spec2="item2" @click="changeSpec2($event)">
 					{{item2}}
@@ -711,7 +711,8 @@
 
 					if (res.data.code == 1) {
 						that.goods_detail = res.data.data;
-						console.log('that.goods_detail', that.goods_detail);
+						
+						console.log('that.goods_detail===>>>', that.goods_detail);
 						
 						//处理商品供货商，如果有供货商，则联系供货商的客服
 						if(that.goods_detail.factoryid && that.goods_detail.factory_telephone){
@@ -762,7 +763,10 @@
 						that.attribute_list = that.goods_detail.attribute_list;
 
 						// app分享
-						that.share_imageUrl = that.goods_detail.picture_list[0]['picture'];
+						if(that.picture_length > 0){
+							that.share_imageUrl = that.goods_detail.picture_list[0]['picture'];
+						}
+						
 						that.share_href = that.goods_detail['url'];
 						that.share_summary = that.goods_detail['brief'];
 						that.share_titles = that.goods_detail['name'];
@@ -777,15 +781,19 @@
 							that.isExistSpec = true;
 						}
 
-						console.log('attr_list', that.goods_detail);
+						console.log('attr_list===>>>', that.goods_detail.attr_list);
 
 						if (that.goods_detail.option_name) {
 							var option_list_arr = that.goods_detail.option_name.split(' ');
 
 
 							that.option_list_arr = option_list_arr;
+							
 							that.spec1 = option_list_arr[0];
-							that.spec2 = option_list_arr[1];
+							
+							if(option_list_arr.length > 1){
+								that.spec2 = option_list_arr[1];
+							}
 							
 							console.log('option_list_arr', option_list_arr);
 						}
@@ -898,6 +906,10 @@
 			this.calcAnchor(); //计算锚点高度，页面数据是ajax加载时，请把此行放在数据渲染完成事件中执行以保证高度计算正确
 		},
 		onPageScroll(e) {
+			if(!e){
+				return;
+			}
+			
 			//锚点切换
 			this.selectAnchor = e.scrollTop >= this.anchorlist[2].top ? 2 : e.scrollTop >= this.anchorlist[1].top ? 1 : 0;
 			//导航栏渐变
@@ -1583,7 +1595,7 @@
 
 			//调用接口
 			get_yanyubao_goods_recommend: function(list_type = '') {
-				console.log('goods=====>>');
+				console.log('get_yanyubao_goods_recommend=====>>');
 
 				var that = this;
 
@@ -2866,10 +2878,13 @@
 	}
 
 	.guige {
-		border-bottom: 1px solid #bfbfbf;
-		padding-bottom: 10px;
-		margin-bottom: 10upx;
+		border-bottom: 1rpx solid #bfbfbf;
+		padding: 20rpx 0;
+		margin-bottom: 10rpx;
 		background-color: #fff;
+		
+		float: left;
+		width: 100%;
 	}
 
 	.specs {
@@ -2879,8 +2894,10 @@
 
 	.specs-a {
 		padding: 2% 5% 0 5%;
-
 		margin-top: 20rpx;
+		display:block;
+		float: left;
+		width: 100%;
 	}
 
 	.specs-b {
@@ -2906,20 +2923,24 @@
 	.specs-d {
 		border: 1px solid #e5e5e5;
 		color: #444;
-		margin-right: 20rpx;
+		margin: 10rpx;
 		font-size: 28rpx;
 		padding: 6rpx 14rpx;
 		border-radius: 5px;
+		float: left;
+		display: block;
 	}
 
 	.specs-e {
-		border: 1px solid #dd2727;
+		border: 1rpx solid #dd2727;
 		background-color: #dd2727;
 		color: #fff;
-		margin-right: 20rpx;
+		margin: 10rpx;
 		font-size: 28rpx;
 		padding: 6rpx 14rpx;
-		border-radius: 5px;
+		border-radius: 10rpx;
+		float: left;
+		display: block;
 	}
 
 	.text_center {
