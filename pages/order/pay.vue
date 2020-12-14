@@ -1419,7 +1419,8 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			    if (type == 1) {
 					that.isSwitch1 = value;
 			      if (value) {
-			        if (parseFloat(balance_zengsong) < parseFloat(pay_price_origin)) {
+					//如果使用赠款金额
+					if (parseFloat(balance_zengsong) < parseFloat(pay_price_origin)) {
 			
 			          if (that.balance_dikou) {
 						
@@ -1469,7 +1470,14 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			          
 			
 			        }
-			      } else {
+			      } 
+				  else {
+					//如果不使用赠款金额
+					//console.log('11111111111111111111');
+					//console.log('11111111111111111111', pay_price);
+					//console.log('11111111111111111111', balance_zengsong_dikou);
+					//console.log('11111111111111111111', balance_zengsong);
+					//console.log('11111111111111111111', that.youhui_diko_price);
 			
 			        
 			          that.balance_zengsong = util.sprintf("%0.2f", parseFloat(balance_zengsong) + parseFloat(balance_zengsong_dikou));
@@ -1482,62 +1490,66 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			    } 
 				else if (type == 2) {
 					that.isSwitch2 = value;
-			      if (value) {
+					
+					if (value) {
+						//如果使用现金，开关打开
 					  
 					  
 					  
-			        if (parseFloat(balance) < parseFloat(pay_price_origin)) {
-			     
-			          if (that.balance_zengsong_dikou) {
-			
-			            that.switch1Change(null, 1, false, that)
-			            pay_price = that.pay_price;
-			            balance_zengsong = that.balance_zengsong;
-			            balance = that.balance;
-			            balance_zengsong_dikou = that.balance_zengsong_dikou;
-			            balance_dikou = that.balance_dikou;
-			
-			
-						that.balance = util.sprintf("%0.2f", 0);
-						that.pay_price = util.sprintf("%0.2f", parseFloat(pay_price) - parseFloat(balance));
-						that.balance_dikou = util.sprintf("%0.2f", parseFloat(balance));
-						that.isSwitch1 = false;
-			            
-			          } else {
-			           
-			              that.balance = util.sprintf("%0.2f", 0);
-			              that.pay_price = util.sprintf("%0.2f", parseFloat(pay_price) - parseFloat(balance));
-			              that.balance_dikou = util.sprintf("%0.2f", parseFloat(balance));
-			            
-			          }
-			
-			
-			
-			        } else {
-			
-			          if (that.balance_zengsong_dikou) {
-			
-			            that.switch1Change(null, 1, false, that)
-			            pay_price = that.pay_price;
-			            balance_zengsong = that.balance_zengsong;
-			            balance = that.balance;
-			            balance_zengsong_dikou = that.balance_zengsong_dikou;
-			            balance_dikou = that.balance_dikou;
-			          }
-			          
-						that.balance = util.sprintf("%0.2f", parseFloat(balance) - parseFloat(pay_price));
-						that.pay_price = util.sprintf("%0.2f", 0);
-						that.balance_dikou = util.sprintf("%0.2f", parseFloat(pay_price));
-						that.isSwitch1 = false;
-			
-			        }
-			      } else {
-						        
-			          that.balance = util.sprintf("%0.2f", parseFloat(balance) + parseFloat(balance_dikou));
-			          that.pay_price = util.sprintf("%0.2f", parseFloat(pay_price) + parseFloat(balance_dikou));
-			          that.balance_zengsong_dikou = util.sprintf("%0.2f", 0);
-			          that.balance_dikou = util.sprintf("%0.2f", 0);			        
-			      }
+						if (parseFloat(balance) < parseFloat(pay_price_origin)) {
+					 
+						  if (that.balance_zengsong_dikou) {
+				
+							that.switch1Change(null, 1, false, that)
+							pay_price = that.pay_price;
+							balance_zengsong = that.balance_zengsong;
+							balance = that.balance;
+							balance_zengsong_dikou = that.balance_zengsong_dikou;
+							balance_dikou = that.balance_dikou;
+				
+				
+							that.balance = util.sprintf("%0.2f", 0);
+							that.pay_price = util.sprintf("%0.2f", parseFloat(pay_price) - parseFloat(balance));
+							that.balance_dikou = util.sprintf("%0.2f", parseFloat(balance));
+							that.isSwitch1 = false;
+							
+						  } else {
+						   
+							  that.balance = util.sprintf("%0.2f", 0);
+							  that.pay_price = util.sprintf("%0.2f", parseFloat(pay_price) - parseFloat(balance));
+							  that.balance_dikou = util.sprintf("%0.2f", parseFloat(balance));
+							
+						  }
+				
+				
+				
+						} else {
+				
+						  if (that.balance_zengsong_dikou) {
+				
+							that.switch1Change(null, 1, false, that)
+							pay_price = that.pay_price;
+							balance_zengsong = that.balance_zengsong;
+							balance = that.balance;
+							balance_zengsong_dikou = that.balance_zengsong_dikou;
+							balance_dikou = that.balance_dikou;
+						  }
+						  
+							that.balance = util.sprintf("%0.2f", parseFloat(balance) - parseFloat(pay_price));
+							that.pay_price = util.sprintf("%0.2f", 0);
+							that.balance_dikou = util.sprintf("%0.2f", parseFloat(pay_price));
+							that.isSwitch1 = false;
+				
+						}
+					} 
+					else {
+						//如果不使用现金余额，开关关闭
+									
+						  that.balance = util.sprintf("%0.2f", parseFloat(balance) + parseFloat(balance_dikou));
+						  that.pay_price = util.sprintf("%0.2f", parseFloat(pay_price) + parseFloat(balance_dikou));
+						  that.balance_zengsong_dikou = util.sprintf("%0.2f", 0);
+						  that.balance_dikou = util.sprintf("%0.2f", 0);			        
+					}
 			
 			    }
 				
@@ -1817,8 +1829,18 @@ tuansn = 参团的编号，如果没有，则代表新开团
 				
 				that.youhui_diko_price = price;
 				
+				
+				
 				//将优惠券抵扣的金额从要支付的金额中减去，为后面的赠款和余额抵扣做准备
 				that.pay_price = that.pay_price - that.youhui_diko_price;
+				
+				//如果抵扣的金额比要支付的金额还要大，则最多抵扣要支付的金额
+				/*if(that.youhui_diko_price > that.pay_price){
+					that.youhui_diko_price = that.pay_price;
+				}*/
+				if(parseFloat(that.pay_price) < 0){
+					that.pay_price = 0;
+				}
 				
 				//关闭弹层
 				this.$refs.openAlertZhongjiang.Close();
@@ -1831,7 +1853,10 @@ tuansn = 参团的编号，如果没有，则代表新开团
 				
 				var that = this;
 				
-				that.pay_price = that.pay_price + that.youhui_diko_price;
+				console.log('parseFloat(that.pay_price) ====>>>> ', parseFloat(that.pay_price))
+				console.log('that.youhui_diko_price ====>>>> ', that.youhui_diko_price)
+				
+				that.pay_price = parseFloat(that.pay_price) + parseFloat(that.youhui_diko_price);
 				
 				that.youhui_diko_price = 0;
 				that.current_ucid = 0;
