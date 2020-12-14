@@ -88,9 +88,9 @@
 		<openAlert ref="openAlertKaijiang"
 		 :AlertClass="AlertClassKaijiang"
 		 :AlertPosition="AlertPositionKaijiang">
-		 <view style="background-color: #FFFFFF;padding: 10px;border-radius: 5px;">
-			<view class="input_1"><input style="border: 1px solid #000000; border-radius: 5px;margin-bottom: 5px;" type="number" name="count_aipingou" placeholder="请填写购买数量" :value="counter_value"  @input="searchValueInput($event)"></view>
-			<view class="input_2"><input disabled="disabled" style="border-radius: 5px;border: 1px solid #000000;width: 50px;margin: 0 auto;text-align: center;background-color: #02BF02;color: #FFFFFF;" class="submit_1" type="button" value="确定" @tap="go_to_aipingou()"></view>
+		 <view style="background-color: #FFFFFF;padding: 10px;border-radius: 5px;width: 400rpx;">
+			<view class="input_1"><input style="text-indent: 20rpx; height: 50rpx; border: 1px solid #000000; border-radius: 5px;margin-bottom: 40rpx;" type="number" name="count_aipingou" placeholder="请填写购买数量" :value="counter_value"  @input="searchValueInput($event)"></view>
+			<view class="input_2"><input disabled="disabled" style="border-radius: 5px;border: 1px solid #000000;width: 200rpx;height: 60rpx; margin: 0 auto;text-align: center;background-color: red;color: #FFFFFF;" class="submit_1" type="button" value="确定" @tap="go_to_aipingou()"></view>
 		 </view>
 		</openAlert>	
 		
@@ -463,6 +463,9 @@
 		color: #fffffb;
 		border-radius: 5rpx;
 		background-color:#145b7d;
+	}
+	.aipingou_title h1{
+		background-color: red;
 	}
 	.tubiao{
 		width: 60rpx;
