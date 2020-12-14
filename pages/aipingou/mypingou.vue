@@ -5,7 +5,7 @@
 				
 				<table class="mypingou_list" >
 					<tr>
-						<td>订单编号：</td><button class="button2">复制</button>
+						<td>订单编号：{{item.orderno}}</td><button class="button2">复制</button>
 					</tr>
 					<tr>
 						<td>参与时间：{{item.join_time}}</td>
@@ -28,7 +28,7 @@
 						<td>
 							<view style="display: flex;">
 							
-						    <button style="width: 200rpx; height:60rpx; font-size: 5rpx;"
+						    <button style="width: 200rpx; height:60rpx; font-size: 5rpx;" v-if="aipingou_setting.mypintuan_show_tuanyuan_list == 1"
 								@tap="open_kaijiang_detail(0, 'center',item.tongji_key)">开奖详情</button>
 							<button style="width: 200rpx; height:60rpx; font-size: 5rpx;"
 								@tap="open_zhongjiang_detail(0, 'center',item.tongji_key)">中奖记录</button>
@@ -59,7 +59,7 @@
 						</thead>
 					<tbody>
 						<tr  v-for="(detail,ids) in kaijiang_list" :key="ids">
-							<td>{{detail.ids}}</td>
+							<td>{{ids + 1}}</td>
 							<td>{{detail.choujiangma}}</td>
 							<td>{{detail.join_time_updata}}</td>
 						</tr>
@@ -90,7 +90,7 @@
 					</thead>
 					<tbody>
 						<tr v-for="(items,ida) in zhongjiang_list" :key="ida">
-							<td>{{items.ida}}</td>
+							<td>{{ida + 1}}</td>
 							<td><image :src="items.headimgurl" style="width: 70rpx; height: 70rpx; border-radius: 50%;"></image></td>
 							<td>{{items.nickname}}</td>
 							<td>{{items.choujiangma}}</td>
@@ -100,7 +100,7 @@
 				</view>
 				</view>
 				<view v-else>
-					<view class="zhongjiang_list">未中奖</view>
+					<view class="zhongjiang_list">没有开奖</view>
 				</view>
 			</view>
 		</view>
@@ -135,6 +135,7 @@
 	
 				current_kaijiang_list:[],
 				current_zhongjiang_list:[],
+				aipingou_setting:[],
 				
 			}
 		},
@@ -146,7 +147,7 @@
 			
 			this.abotapi.set_shop_option_data(this, function(that002, option_data){
 				that002.get_pingou_list();
-				
+				that002.__get_setting_list();
 				
 			
 				
@@ -202,11 +203,12 @@
 				},
 						
 				success: function(res) {
-					
+				console.log('8888s8ssss',res.data.my_tuan_list);
 				if(res.data.code == 1){
 					that.is_OK = false;
 					that.tuan_list = that.tuan_list.concat(res.data.my_tuan_list);
-					console.log('超过一页',that.current_product_list)
+					that.current_page = that.current_page + 1;
+					console.log('超过一页',that.tuan_list);
 					uni.stopPullDownRefresh();//得到数据后停止下拉刷新
 				}else if(res.data.code == 0){
 					that.is_OK = true;
@@ -318,21 +320,6 @@
 						
 					that.tuan_list = res.data.my_tuan_list;
 					
-					// for(var i = 0;i<that.tuan_list.length;i++){
-						
-					// 	that.current_zhongjiang_list = that.tuan_list[i].zhongjiang_list;
-						
-					// 	console.log('1111111==========',that.current_zhongjiang_list);
-					// }
-					
-					
-					// for(var j = 0;j<that.tuan_list.length;j++){
-						
-					// 	that.current_kajiang_list = that.tuan_list[j].tuanyuan_list;
-						
-					// 	console.log('222222==========',that.current_kajiang_list);
-					// }
-					
 					},
 					fail: function(e) {
 			
@@ -341,7 +328,41 @@
 				});
 
 			},
+			__get_setting_list: function() {
+				var that = this;
+				var post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/AipingouData/get_seting';
 			
+			
+				that.abotapi.abotRequest({
+					url: post_url,
+					data: {
+						sellerid: that.abotapi.get_sellerid(),
+					},
+			
+					success: function(res) {
+			
+						//获取拼团宣传图片
+						that.aipingou_setting = res.data.aipingou_seting;
+						
+			
+						//console.log('aaaaaaaaaa', res.data.aipingou_seting.xuanchuan_tupian);
+						console.log('8888====11>>', res);
+						
+						uni.setNavigationBarTitle({
+						 title: res.data.aipingou_seting.huodong_title
+						})
+			 
+			
+					},
+			
+					fail: function(e) {
+			
+			
+					},
+				});
+			
+			
+			},
 			// jiazai:function(){
 			// 	var that = this;
 			// 	var page = this.page;
@@ -392,6 +413,7 @@
 	text-align: center;
 	background-color: #fffffb;
 	border:1px solid #ccc;
+	padding: 20rpx;
 }
 .tanchuang_list td th{
 	border:1px solid #ccc;
@@ -399,6 +421,9 @@
     border-width: 1px;
     border-style: dotted;
 }
-
+.zhongjiang_list{
+	padding: 20rpx;
+	background-color: #FFFFFF;
+}
 
 </style>

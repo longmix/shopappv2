@@ -29,7 +29,7 @@
 			<view class="aipingou_title">
 				<h1>{{aipingou_setting.huodong_title}}</h1>
 			</view>
-			<view class="list_con">
+			<view class="list_con"  v-if="aipingou_setting.show_type == 0">
 				<!-- 一行一个小图版：活动图片在左侧，活动名称和功能按钮在右侧。 -->
 			          <view class="aipingou_list" v-for=" (item,idx) in ruleList" :key="idx">
 			            <table class="list_table">
@@ -58,7 +58,7 @@
 			          </view>
 			</view>
 			
-			<view class="list_con">
+			<view class="list_con" v-else>
 				 <!-- 一行一个大图版：活动图片在上方，活动名称和功能按钮在下方。 -->
 			    <view class="aipingou_list" v-for=" (item,idx) in ruleList" :key="idx">
 					<view class="list_table">
@@ -82,10 +82,11 @@
 				
 			    </view>
 			</view>
+			
 		</view>
 			
 			<!---我的拼购悬浮图标-->
-		<view class="home-p" @click="toMypingou()">
+		<view class="home-p" @click="toMypingou()" v-if="aipingou_setting.show_mypintuan_icon == 1">
 			<image src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_canyu.png" style="width: 70upx;height: 70upx;"></image>
 		</view>
 	</view>
@@ -95,7 +96,7 @@
 	export default {
 		data() {
 			return {
-				aipingou_setting:'',
+				aipingou_setting:[],
 				ruleList:'',
 
 			}
@@ -202,18 +203,20 @@
 					},
 
 					success: function(res) {
-
+						console.log('111111',res.data.code);
 						//获取拼团宣传图片
-						that.aipingou_setting = res.data.aipingou_seting;
-						
-
-						//console.log('aaaaaaaaaa', res.data.aipingou_seting.xuanchuan_tupian);
-						//console.log('8888====11>>', that.aipingou_list);
-						
-						uni.setNavigationBarTitle({
-						 title: res.data.aipingou_seting.huodong_title
-						})
- 
+						if(res.data.code == 1){
+							that.aipingou_setting = res.data.aipingou_seting;
+							
+							
+							//console.log('aaaaaaaaaa', res.data.aipingou_seting.xuanchuan_tupian);
+							console.log('8888====11>>', res);
+							
+							uni.setNavigationBarTitle({
+							 title: res.data.aipingou_seting.huodong_title
+							})
+							 
+						}
 
 					},
 
@@ -253,41 +256,41 @@
 			},
 			
 			//获取页面格式
-			__get_setting_list: function() {
-				var that = this;
-				var post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/AipingouData/get_seting';
+			// __get_setting_list: function() {
+			// 	var that = this;
+			// 	var post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/AipingouData/get_seting';
 			
 			
-				that.abotapi.abotRequest({
-					url: post_url,
-					data: {
-						sellerid: that.abotapi.get_sellerid(),
-					},
+			// 	that.abotapi.abotRequest({
+			// 		url: post_url,
+			// 		data: {
+			// 			sellerid: that.abotapi.get_sellerid(),
+			// 		},
 			
-					success: function(res) {
+			// 		success: function(res) {
 			
-						//获取拼团宣传图片
-						that.aipingou_setting = res.data.aipingou_seting;
+			// 			//获取拼团宣传图片
+			// 			that.aipingou_setting = res.data.aipingou_seting;
 						
 			
-						//console.log('aaaaaaaaaa', res.data.aipingou_seting.xuanchuan_tupian);
-						//console.log('8888====11>>', that.aipingou_list);
+			// 			//console.log('aaaaaaaaaa', res.data.aipingou_seting.xuanchuan_tupian);
+			// 			//console.log('8888====11>>', that.aipingou_list);
 						
-						uni.setNavigationBarTitle({
-						 title: res.data.aipingou_seting.huodong_title
-						})
+			// 			uni.setNavigationBarTitle({
+			// 			 title: res.data.aipingou_seting.huodong_title
+			// 			})
 			 
 			
-					},
+			// 		},
 			
-					fail: function(e) {
-			
-			
-					},
-				});
+			// 		fail: function(e) {
 			
 			
-			},
+			// 		},
+			// 	});
+			
+			
+			// },
 			
 			//去开团
 			aipingou_open_tuan:function(productid){

@@ -103,7 +103,7 @@ export default {
 		// 是否显示背景
 		IsBgShow: {
 			type: Boolean,
-			default: true
+			default: false
 		},
 		// 自定义背景颜色
 		BgColor: {
@@ -113,7 +113,7 @@ export default {
 		// 关闭按钮
 		closeBtn: {
 			type: Boolean,
-			default: false
+			default: true
 		},
 		// 是否点击遮罩关闭
 		shadeClose: {

@@ -254,7 +254,8 @@
 							<view class="tuan_leder_name">{{item.nickname}}</view>
 						</view>
 						<view class="let_go_pingtuan" 
-						:style="{'background-color': wxa_shop_nav_bg_color}">去拼团</view>
+						:style="{'background-color': wxa_shop_nav_bg_color}"
+						@tap="go_detail_pintuan(item.productid,item.tuansn)">去拼团</view>
 						<view class="tuan_time_number">
 							<view class="tuan_number">{{grounp_count}}人成团还差<span style="color: red;">{{grounp_count - item.tuanyuan_counter}}人</span></view>
 							<view class="tuan_time_over">剩余24:58:51:8</view>
@@ -650,7 +651,7 @@
 			}
 
 			//请求的网址
-			var detail_url = this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_detail';
+			var detail_url = this.abotapi.globalData.yanyubao_server_url + '/Yanyubao/ShopAppWxa/product_detail';
 			//请求的参数
 			var detail_data = {
 				sellerid: that.abotapi.globalData.default_sellerid,
@@ -806,7 +807,7 @@
 
 			if (userInfo && userInfo.userid) {
 				this.abotapi.abotRequest({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_favorite',
+					url: this.abotapi.globalData.yanyubao_server_url + '/Yanyubao/ShopAppWxa/product_favorite',
 					data: {
 						productid: this.productid,
 						userid: userInfo.userid,
@@ -996,7 +997,7 @@
 				}
 
 				this.abotapi.abotRequest({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_detail',
+					url: this.abotapi.globalData.yanyubao_server_url + '/Yanyubao/ShopAppWxa/product_detail',
 					method: 'post',
 					data: {
 						productid: productid,
@@ -1189,7 +1190,7 @@
 				var that = this;
 
 				this.abotapi.abotRequest({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=cart_list',
+					url: this.abotapi.globalData.yanyubao_server_url + '/Yanyubao/ShopAppWxa/cart_list',
 					data: {
 						userid: userInfo.userid,
 						checkstr: userInfo.checkstr,
@@ -1248,7 +1249,7 @@
 				}
 
 				this.abotapi.abotRequest({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=favorite',
+					url: this.abotapi.globalData.yanyubao_server_url + '/Yanyubao/ShopAppWxa/favorite',
 					data: {
 						userid: userInfo.userid,
 						checkstr: userInfo.checkstr,
@@ -1344,7 +1345,7 @@
 				} else if (e.currentTarget.dataset.status == 2) {
 					//加入购物车
 					this.abotapi.abotRequest({
-						url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=cart_add',
+						url: this.abotapi.globalData.yanyubao_server_url + '/Yanyubao/ShopApp/cart_add',
 						method: 'post',
 						data: {
 							amount: that.amount,
@@ -1531,7 +1532,7 @@
 
 
 				this.abotapi.abotRequest({
-					url: this.abotapi.globalData.yanyubao_server_url + 'Yanyubao/ShopApp/product_list',
+					url: this.abotapi.globalData.yanyubao_server_url + '/Yanyubao/ShopApp/product_list',
 					method: 'post',
 					data: post_data,
 					success(res) {
@@ -1602,7 +1603,7 @@
 
 
 				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + 'Yanyubao/ShopAppWxa/product_detail_youhui',
+					url: that.abotapi.globalData.yanyubao_server_url + '/Yanyubao/ShopAppWxa/product_detail_youhui',
 					method: 'post',
 					data: {
 						productid: that.productid,
@@ -1838,7 +1839,7 @@
 					var that =this;
 					var userInfo = this.abotapi.get_user_info();
 					
-					var post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/AipingouData/get_tuan_list';
+					var post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/AipingouData/get_tuan_list';
 					
 					that.abotapi.abotRequest({
 						url: post_url,
@@ -1849,6 +1850,7 @@
 						},
 						success: function(res) {
 							that.aipin_tuan_list = res.data.Aipingou_tuan_list;
+							
 							that.grounp_count = res.data.group_count;
 						},
 						fail: function(e) {
@@ -1859,7 +1861,33 @@
 				
 				
 			},
-			
+			go_detail_pintuan:function(productid,tuansn){
+				
+				var that =this;
+				var userInfo = this.abotapi.get_user_info();
+				
+				console.log('88888aaaaaaaaa',productid);
+				//判断是否登录/pages/order/pay?productid=12345&cuxiao_huodong=aipingou&tuansn=abcdefg123456
+				var last_url = '/pages/order/pay?productid='+ that.productid +'&amount=1&action=direct_buy&cuxiao_huodong=aipingou&tuansn='+ tuansn;
+				
+				if (!userInfo || !userInfo.userid) {
+					uni.showToast({
+						title: '请先登录',
+						icon: 'none',
+						duration: 1000,
+					});
+					
+					this.abotapi.goto_user_login(last_url, 'normal');
+					return;
+				}
+				
+				var that = this;
+				uni.redirectTo({
+					url:last_url,
+				});
+				
+				
+			}
 			// __get_tuan_list: function(){
 			//     var that = this;
 			//     var post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/AipingouData/get_my_pintuan_list';
