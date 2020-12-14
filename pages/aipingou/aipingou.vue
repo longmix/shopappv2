@@ -43,12 +43,12 @@
 								<view style="display: flex;">
 
 									<view style="font-size: 16rpx;margin-left:20px;"  @tap="aipingou_buy_together(item.productid,item.rulesn)">
-										<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_pintuan.png" ></image>
+										<image class="tubiao" src="../../static/img/yijianpingou.png" ></image>
 										<view>去拼购</view>
 									</view>	
 
 									<view style="font-size: 16rpx;margin-left: 40px;" @tap="go_to_qukaituan(0, 'center',item.productid)">
-										<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_kaituan.png"></image>
+										<image class="tubiao" src="../../static/img/yijianlaituan.png"></image>
 										<view>去开团</view>
 									</view>
 								</view>	
