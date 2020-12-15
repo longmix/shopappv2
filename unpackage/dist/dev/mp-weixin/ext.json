@@ -1,6 +1,6 @@
 {
   "extEnable": true,
-  "extAppid": "wx35111d4e91dd83fa",
+  "extAppid": "wx47cf36b7d0a0f792",
   "directCommit": true,
   "ext": {
     "name": "wechat",
@@ -11,17 +11,19 @@
         "user_2"
       ]
     },
-    "xiaochengxu_appid": "wx35111d4e91dd83fa",
+    "xiaochengxu_appid": "wx47cf36b7d0a0f792",
     "force_sellerid_flag": 1,
-    "force_sellerid_value": "fSSmPaega",
-    "shop_name": "志购",
-    "version_number": "Ver 1.6.7 Build 163",
+    "force_sellerid_value": "fiSyPaWee",
+    "shop_name": "天天汇",
+    "version_number": "Ver 1.7.4 Build 219",
     "navigationBarBackgroundColor_fixed": 1,
+    "navigationBar_font_color":"#ffffff",
+    "navigationBar_bg_color":"#E3170D",
     "kefu_telephone": "",
     "kefu_qq": "",
     "kefu_website": "",
     "kefu_gongzhonghao": "",
-    "default_copyright_text": "上海田震电子商务有限公司 @ 版权所有"
+    "default_copyright_text": "浙江暖意商贸有限公司 @ 版权所有"
   },
   "extPages": {
     "pages/publish/publish_list": {
@@ -44,18 +46,17 @@
         "text": "首页"
       },      
       {
+        "pagePath": "pages/aipingou/aipingou",
+        "iconPath": "static/img/tabBar/cart.png",
+        "selectedIconPath": "static/img/tabBar/cart-on.png",
+        "text": "拼购"
+      },
+      {
         "pagePath": "pages/category/category",
         "iconPath": "static/img/tabBar/category.png",
         "selectedIconPath": "static/img/tabBar/category-on.png",
         "text": "分类"
       },
-      {
-        "pagePath": "pages/shopList/shopList",
-        "iconPath": "static/img/tabBar/shang.png",
-        "selectedIconPath": "static/img/tabBar/shang-on.png",
-        "text": "商家"
-      },
-     
       {
         "pagePath": "pages/user/user",
         "iconPath": "static/img/tabBar/user.png",
@@ -66,8 +67,8 @@
   },
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#3D9140",
-    "navigationBarTitleText": "志购",
+    "navigationBarBackgroundColor": "#E3170D",
+    "navigationBarTitleText": "天天汇",
     "navigationBarTextStyle": "white"
   },
   "networkTimeout": {
