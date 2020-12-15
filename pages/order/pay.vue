@@ -176,7 +176,7 @@
 				<view class="youhuiquan_list"> 
 				
 					<view class="stamp stamp04" v-for=" (item,idx) in coupon_list" :key="idx" >
-						<view class="par"><p>{{item.coupon_item.name}}</p><sub class="sign">￥</sub><span>{{item.price}}</span><sub></sub>
+						<view class="par"><p>{{item.coupon_item.name}}</p><span class="sign">￥</span><span>{{item.price}}</span><sub></sub>
 						<p>订单满{{item.price2}}元</p></view>
 						
 						<view class="copy">{{item.youhui_memo_str}}<p>{{item.youhui_start_time}} ~ {{item.youhui_end_time}}</p>
@@ -1852,6 +1852,9 @@ tuansn = 参团的编号，如果没有，则代表新开团
 				console.log('用户选择不使用优惠券');
 				
 				var that = this;
+				
+				//this.switch1Change(null, 1, false, this);
+				//this.switch1Change(null, 2, false, this);
 				
 				console.log('parseFloat(that.pay_price) ====>>>> ', parseFloat(that.pay_price))
 				console.log('that.youhui_diko_price ====>>>> ', that.youhui_diko_price)

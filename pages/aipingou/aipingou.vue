@@ -436,10 +436,10 @@
 
 	.wenan {
 		width: 100%;
-		margin-top: 30upx;
+		margin-top: 0rpx;
 		display: flex;
 		background-color: #fffffb;
-		border-radius: 10rpx;
+		border-radius: 0rpx;
 	}
 	.wenan_content{
 		width: 100%;
@@ -452,10 +452,10 @@
 	.aipingou {
 		width: 100%;
 		height: 310rpx;
-		margin-top: 30upx;
+		margin-top: 0rpx;
 		text-align: center;
 		justify-content: center;
-		border:0px;
+		border:0rpx;
 		background-color: #fffef9;
 		border-radius: 20rpx;
 	}
