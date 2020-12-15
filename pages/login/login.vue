@@ -39,7 +39,10 @@
 					
 					class="btn-row-submit"
 					:style="{background:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" 
-					style="width: 84%;background: #2E85D8;margin: auto;">登陆</button>
+					style="width: 84%;background: #2E85D8;margin: auto;">登陆/注册</button>
+				<div class="flex mgb-20">
+					<div class="cl-black pointer flex-1">新手机号码首次登录即注册</div>
+				</div>
 				<div class="flex mgb-20">
 					<navigator class="cl-black pointer flex-1" open-type="navigate" url="/pages/login/login_by_password">手机不在身边？账号密码登录</navigator>
 				</div>
