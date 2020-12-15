@@ -2,7 +2,7 @@
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText" : "天天汇",
-		"navigationBarBackgroundColor" : "#073892",
+		"navigationBarBackgroundColor" : "#E3170D",
 		"backgroundColor" : "#ffffff",
 		"backgroundColorTop":"#ffffff",
 		"backgroundColorBottom":"#ffffff"

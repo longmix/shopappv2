@@ -246,7 +246,7 @@
 		
 		<!-- 2020.12.3. 爱拼团活动对应的 已经开出 且 没有成团 的 团列表  推荐商品-->
 		<view class="is_aipingou_tuan_list" v-if="is_aipingou_tuan_list">
-			<block v-if="aipin_tuan_list">
+			<block v-if="aipin_tuan_list && (aipin_tuan_list.length > 0)">
 				<view style="margin-left: 25rpx;">{{aipin_tuan_list.length}}个团正在进行，可直接参与</view>
 				<view class="aipin_tuan" v-for="(item,index) in aipin_tuan_list" :key="index">
 						<view class="tuan_info_name">
@@ -262,7 +262,7 @@
 						</view>
 				</view>
 			</block>
-			<block v-if="!aipin_tuan_list">
+			<block v-else>
 				<view style="margin-left: 25rpx; color: #666;text-align: center;">一个团都没有哦~
 				</view>
 				<view class="let_go_pingtuan"
@@ -1915,12 +1915,16 @@
 							rulesn:rulesn
 						},
 						success: function(res) {
-							that.aipin_tuan_list = res.data.Aipingou_tuan_list;
+							that.aipin_tuan_list = res.data.aipingou_tuan_list;
 							
 							console.log('that.aipin_tuan_list====>>>>', that.aipin_tuan_list);
 							
 							//团员人数
 							that.grounp_count = res.data.group_count;
+							
+							if(that.aipin_tuan_list && (that.aipin_tuan_list.length > 0)){
+								
+							}
 							
 							//开始倒计时
 							for(var i=0; i<that.aipin_tuan_list.length; i++){
@@ -1994,8 +1998,10 @@
 				
 				console.log('__aipingou_timer_countdown==>>i==>>', i);
 				console.log('__aipingou_timer_countdown==>>i==>>', that.aipin_tuan_list[i]);
-					
+				
+				/*
 			    setTimeout(() => {
+					return;
 					
 					if(that.aipin_tuan_list[i].timespan == 0) {
 					  // 计时结束，清除缓存
@@ -2027,7 +2033,7 @@
 					
 					that.__aipingou_timer_countdown(i, that);
 					
-			    }, 1);
+			    }, 1);*/
 			},
 			
 			
@@ -3181,16 +3187,18 @@
 		border-radius:50%;
 		overflow:hidden;
 	}
+	
+	
 	.tuan_time_number{
 		float: right;
 	}
 	.let_go_pingtuan{
 		float: right;
-		width: 80px;
-		font-size: 16px;
-		height: 40px;
+		width: 160rpx;
+		font-size: 32rpx;
+		height: 80rpx;
 		text-align: center;
-		line-height: 40px;
+		line-height: 80rpx;
 		border-radius: 10rpx;
 		margin-left: 30rpx;
 		margin-right: 20rpx;
@@ -3200,7 +3208,15 @@
 		float: right;
 		line-height: 80rpx;
 		margin-left: 10rpx;
+		font-size:25rpx;
+		color:#666;
 	}
+	
+	.tuan_number {
+		font-size:25rpx;
+		color:#666;
+	}
+	
 	.tuan_time_over{
 		color: #666666;
 	}

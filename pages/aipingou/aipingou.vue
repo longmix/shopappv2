@@ -13,7 +13,7 @@
 
 		<!--宣传图片start-->
 		<view class="aipingou_image">
-			<image class="tupian" :src="aipingou_setting.xuanchuan_tupian"></image>
+			<image class="tupian" :src="aipingou_setting.xuanchuan_tupian" mode="widthFix"></image>
 		</view>
 		<!--宣传图片end-->
 
@@ -25,14 +25,14 @@
 
 		<!--爱拼购活动-->
 		
-		<view class="aipingou" v-if="ruleList && (ruleList.length > 0)">
+		<view class="aipingou_list" v-if="ruleList && (ruleList.length > 0)">
 			<view class="aipingou_title"
 				:style="{backgroundColor:btn_bg_color}">
 				<h1>{{aipingou_setting.huodong_title}}</h1>
 			</view>
 			<view class="list_con"  v-if="aipingou_setting.show_type == 0">
 				<!-- 一行一个小图版：活动图片在左侧，活动名称和功能按钮在右侧。 -->
-			          <view class="aipingou_list" v-for=" (item,idx) in ruleList" :key="idx">
+			          <view class="aipingou_item" v-for=" (item,idx) in ruleList" :key="idx">
 			                <view class="aipingou_product_image">
 								<image class="product_image"  :src="item.product_image" mode="widthFix" ></image>
 							</view>
@@ -365,7 +365,7 @@
 					return;
 				}
 				
-				uni.redirectTo({
+				uni.navigateTo({
 					url:last_url,
 				});
 				
@@ -390,7 +390,7 @@
 					return;
 				}
 				
-				uni.redirectTo({
+				uni.navigateTo({
 					url:last_url,
 				});
 				
@@ -449,7 +449,7 @@
 	
 
 
-	.aipingou {
+	.aipingou_list {
 		width: 100%;
 		height: 310rpx;
 		margin-top: 0rpx;
@@ -458,9 +458,10 @@
 		border:0rpx;
 		background-color: #fffef9;
 		border-radius: 20rpx;
+		margin-bottom: 100rpx;
 	}
 	
-	.aipingou_list{
+	.aipingou_item{
 		background-color: #fffffb;
 		margin-top: 20rpx;
 		border-radius: 20rpx;
