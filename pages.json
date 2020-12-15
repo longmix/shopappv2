@@ -612,6 +612,7 @@
 		    "path" : "pages/aipingou/mypingou",
 		    "style" :                                                                                    
 		    {
+				"onReachBottomDistance":5,
 		        "navigationBarTitleText": "我的拼购",
 		        "enablePullDownRefresh": true
 		    }
@@ -623,6 +624,15 @@
             {
                 "navigationBarTitleText": "",
                 "enablePullDownRefresh": true
+            }
+            
+        }
+        ,{
+            "path" : "cms/library/library",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
             }
             
         }
