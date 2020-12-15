@@ -28,9 +28,9 @@
 						<td>
 							<view style="display: flex;">
 							
-						    <button style="width: 200rpx; height:60rpx; font-size: 5rpx;" v-if="aipingou_setting.mypintuan_show_tuanyuan_list == 1"
+						    <button style="width: 200rpx; height:60rpx;" v-if="aipingou_setting.mypintuan_show_tuanyuan_list == 1"
 								@tap="open_kaijiang_detail(0, 'center',item.tongji_key)">开奖详情</button>
-							<button style="width: 200rpx; height:60rpx; font-size: 5rpx;"
+							<button style="width: 200rpx; height:60rpx;"
 								@tap="open_zhongjiang_detail(0, 'center',item.tongji_key)">中奖记录</button>
 						    </view>
 						</td>
@@ -379,7 +379,7 @@
 		background: #d3d7d4;
 	}
 	td{
-		font-size: 15rpx;
+
 	}
 .mypingou1{
 	    display: flex;
@@ -402,7 +402,7 @@
 }
 .button2{
 	height: 40rpx;
-	letter-spacing:-3upx;
+	letter-spacing:-3rpx;
 
 	line-height: 37rpx;
 	font-size: 1rpx;
@@ -411,13 +411,13 @@
 	width: 600rpx;
 	text-align: center;
 	background-color: #fffffb;
-	border:1px solid #ccc;
+	border:1rpx solid #ccc;
 	padding: 20rpx;
 }
 .tanchuang_list td th{
-	border:1px solid #ccc;
+	border:1rpx solid #ccc;
 	    border: blue;
-    border-width: 1px;
+    border-width: 1rpx;
     border-style: dotted;
 }
 .zhongjiang_list{

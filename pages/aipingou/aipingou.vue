@@ -25,7 +25,7 @@
 
 		<!--爱拼购活动-->
 		
-		<view class="aipingou">
+		<view class="aipingou" v-if="ruleList && (ruleList.length > 0)">
 			<view class="aipingou_title"
 				:style="{backgroundColor:btn_bg_color}">
 				<h1>{{aipingou_setting.huodong_title}}</h1>
@@ -82,7 +82,7 @@
 			
 			<!---我的拼购悬浮图标-->
 		<view class="home-p" @click="toMypingou()" v-if="aipingou_setting.show_mypintuan_icon == 1">
-			<image src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_canyu.png" style="width: 70upx;height: 70upx;"></image>
+			<image :src="aipingou_setting.anniu_tupian" style="width: 100rpx;" mode="widthFix"></image>
 		</view>
 		
 		<!-- 2020.12.14 -->

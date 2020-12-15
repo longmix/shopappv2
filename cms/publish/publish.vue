@@ -363,125 +363,128 @@
 					url: that.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/add_faquan_text',
 					data: data_params,
 					success: function (res) {
-						if (res.data.code == 1) {
-							var faquanid = res.data.faquanid
-								
-							that.faquanid = faquanid;
-													
-							if (that.publishtype == "image") {
-								//发布图片
-								
-								if(that.imgList.length == 0){
-									uni.showModal({
-										title: '提示',
-										content:res.data.msg,
-										showCancel:false,
-										success: function (e) {
-											that.__goto_homepage();
-										}
-									});
-									
-									return;
-								}
-												
-								that.upLoadImg(0);
-													
-							} 
-							else if(that.publishtype == "video") {
-								//发布视频
-								if(!that.video){
-									uni.showModal({
-										title: '提示',
-										content:res.data.msg,
-										showCancel:false,
-										success: function (e) {
-											that.__goto_homepage();
-										}
-									});
-									
-									return;
-								}
-								
-								uni.showLoading({
-									title: '正在上传',
-								})
-													
-								uni.uploadFile({
-									url: that.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/add_faquan_video_or_img',
-									filePath: that.video,
-									header: {
-										"Content-Type": "multipart/form-data",
-										'elem': '#up-image',
-										'accept': 'application/json',
-									},
-									name: "uploadvideo",
-									formData: {
-										sellerid:that.abotapi.globalData.default_sellerid,
-										userid: userInfo ? userInfo.userid : '',
-										checkstr: userInfo ? userInfo.checkstr : '',
-										faquanid: faquanid,
-										type: 1
-									},
-									success: function (res) {
-										uni.hideLoading();
-										console.log('res===========', res)
-										if (res.errMsg == "uploadFile:ok") {
-											var data = res.data;
-											
-											console.log('上传结果01====>>>>', data);
-											
-											data = JSON.parse(data);
-											
-											console.log('上传结果02====>>>>', data);
-											
-											if (data.code == 1) {
-												
-												uni.showModal({
-													title: '视频上传成功',
-													showCancel:false,
-													success: function (e) {
-														if (e.confirm) {
-															//确定
-															console.log('e=======456', e)
-															
-															that.ideaText = '';
-															if (that.orderid){
-																that.order_finish();
-															}
-															console.log('e=======123')
-															
-															that.__goto_homepage();
-															
-														}
-													}
-												})
-												
-											} else {
-												/*uni.showToast({
-													title: '上传失败',
-												})*/
-												
-												uni.showModal({
-													title: '视频上传失败',
-													showCancel:false,
-												});
-
-												that.disable = false;
-											}
-										}
-									},
-									fail: function (res) {
-										that.disable = false;
-									},
-
-								})
-													
-							}
-						} else {
+						if (res.data.code != 1) {
 							uni.showToast({
 								title: '提交失败，请重新发布',
 								icon: 'none'
 							})
+							
+							return;
+						}
+							
+						
+						var faquanid = res.data.faquanid
+							
+						that.faquanid = faquanid;
+												
+						if (that.publishtype == "image") {
+							//发布图片
+							
+							if(that.imgList.length == 0){
+								uni.showModal({
+									title: '提示',
+									content:res.data.msg,
+									showCancel:false,
+									success: function (e) {
+										that.__goto_homepage();
+									}
+								});
+								
+								return;
+							}
+											
+							that.upLoadImg(0);
+												
+						} 
+						else if(that.publishtype == "video") {
+							//发布视频
+							if(!that.video){
+								uni.showModal({
+									title: '提示',
+									content:res.data.msg,
+									showCancel:false,
+									success: function (e) {
+										that.__goto_homepage();
+									}
+								});
+								
+								return;
+							}
+							
+							uni.showLoading({
+								title: '正在上传',
+							})
+												
+							uni.uploadFile({
+								url: that.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/add_faquan_video_or_img',
+								filePath: that.video,
+								header: {
+									"Content-Type": "multipart/form-data",
+									'elem': '#up-image',
+									'accept': 'application/json',
+								},
+								name: "uploadvideo",
+								formData: {
+									sellerid:that.abotapi.globalData.default_sellerid,
+									userid: userInfo ? userInfo.userid : '',
+									checkstr: userInfo ? userInfo.checkstr : '',
+									faquanid: faquanid,
+									type: 1
+								},
+								success: function (res) {
+									uni.hideLoading();
+									console.log('res===========', res)
+									if (res.errMsg == "uploadFile:ok") {
+										var data = res.data;
+										
+										console.log('上传结果01====>>>>', data);
+										
+										data = JSON.parse(data);
+										
+										console.log('上传结果02====>>>>', data);
+										
+										if (data.code == 1) {
+											
+											uni.showModal({
+												title: '视频上传成功',
+												showCancel:false,
+												success: function (e) {
+													if (e.confirm) {
+														//确定
+														console.log('e=======456', e)
+														
+														that.ideaText = '';
+														if (that.orderid){
+															that.order_finish();
+														}
+														console.log('e=======123')
+														
+														that.__goto_homepage();
+														
+													}
+												}
+											})
+											
+										} else {
+											/*uni.showToast({
+												title: '上传失败',
+											})*/
+											
+											uni.showModal({
+												title: '视频上传失败',
+												showCancel:false,
+											});
+						
+											that.disable = false;
+										}
+									}
+								},
+								fail: function (res) {
+									that.disable = false;
+								},
+						
+							})
+												
 						}
 						
 					},
