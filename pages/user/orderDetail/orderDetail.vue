@@ -348,6 +348,7 @@
 				
 				//复制剪切板
 				Clipboard_text:function(text){
+					
 					uni.setClipboardData({
 					    data: text,
 					    success: function () {

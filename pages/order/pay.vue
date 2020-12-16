@@ -820,7 +820,7 @@ tuansn = 参团的编号，如果没有，则代表新开团
 					
 					
 				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + 'openapi/OrderingRedpackageData/get_setting',
+					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/OrderingRedpackageData/get_setting',
 					data: post_data,
 					success: function (res) {
 						
@@ -1332,6 +1332,7 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			    }
 			    
 			    
+				
 			    var order_add_new_option_by_key_value = [];
 			
 			    if(that.is_waimai == 1){
@@ -1358,7 +1359,7 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			
 			    that.abotapi.abotRequest({
 			
-			      url: that.abotapi.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/order_add_new_option_by_key_value',
+			      url: that.abotapi.globalData.yanyubao_server_url + '/openapi/XianmaiShangData/order_add_new_option_by_key_value',
 			
 			      data: {
 			        sellerid: that.abotapi.get_sellerid(),
@@ -1770,7 +1771,7 @@ tuansn = 参团的编号，如果没有，则代表新开团
 							
 							
 				that.abotapi.abotRequest({
-				  url: that.abotapi.globalData.yanyubao_server_url + 'Yanyubao/ShopApp/order_add_new_option_by_key_value',
+				  url: that.abotapi.globalData.yanyubao_server_url + '/Yanyubao/ShopApp/order_add_new_option_by_key_value',
 				  data: {
 					  userid: userInfo.userid,
 					  checkstr: userInfo.checkstr,

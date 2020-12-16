@@ -1081,7 +1081,7 @@ export default {
 			}
 			else{
 				this.abotapi.abotRequest({
-				    url: this.abotapi.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/get_shang_all_jingwei',
+				    url: this.abotapi.globalData.yanyubao_server_url + '/openapi/XianmaiShangData/get_shang_all_jingwei',
 				    method: 'post',
 				    data: {
 						sellerid:this.abotapi.globalData.default_sellerid,
@@ -1375,6 +1375,9 @@ export default {
 			    method: 'post',
 			    data: post_data,
 			    success: function (res) {
+					if(!res.data){
+						return;
+					}
 					
 					if(res.data.code == 1){
 						that.is_OK = false;

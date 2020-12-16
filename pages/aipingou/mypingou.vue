@@ -5,7 +5,9 @@
 
 				<table class="mypingou_list">
 					<tr>
-						<td>订单编号：{{item.orderno}}<text style="float: right;font-size: 30rpx;">复制</text></td>
+						<td>订单编号：{{item.orderno}}<text style="float: right;font-size: 30rpx;"
+						@click="Clipboard_text(item.orderno)"
+						class="my_pingou_list">复制</text></td>
 					</tr>
 					<tr>
 						<td>参与时间：{{item.join_time}}</td>
@@ -348,12 +350,7 @@
 
 
 			},
-			// jiazai:function(){
-			// 	var that = this;
-			// 	var page = this.page;
-			// 	this.page = page+1;
-			// 	that.get_pingou_list();
-			// },
+			Clipboard_text:function(text){			console.log('8888888ssssaa',text);			uni.setClipboardData({				data: text,				success() {					uni.showToast({						title: '复制成功！'					})				}			});		}
 
 
 		}
@@ -421,5 +418,14 @@
 	.zhongjiang_list {
 		padding: 20rpx;
 		background-color: #FFFFFF;
+	}
+	.my_pingou_list{
+		float: right;
+		font-size: 24rpx;
+		border-radius: 2rpx;
+		border: 1px solid #666;
+		color: #666;
+		padding: 0rpx 6rpx;
+		margin-right: 10rpx;
 	}
 </style>

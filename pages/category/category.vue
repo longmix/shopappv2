@@ -130,6 +130,10 @@
 							console.log("categoryList", that.categoryList);
 							// var typeTree = that.categoryList[0].sub_cata;
 							
+							if(!that.categoryList){
+								return;
+							}
+							
 							var Goods_cataid = that.categoryList[0].cataid;
 							
 							

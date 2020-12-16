@@ -41,12 +41,13 @@
 								<view style="display: flex;width: 100%;margin-top: 50rpx;">
 									<view style=";width: 50%;"  @tap="aipingou_buy_together(item.productid,item.rulesn)">
 										<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_pintuan2.png" ></image>
-										<view style="font-size:30rpx;">去拼购</view>
+										<view class="pingou_font">去拼购</view>
 									</view>	
 
 									<view style="width: 50%;" @tap="go_to_qukaituan(0, 'center',item.productid)">
 										<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_kaituan2.png"></image>
-										<view style="font-size:30rpx;">去开团</view>
+										<view class="pingou_font">去开团</view>
+
 									</view>
 								</view>	
 							</view>  
@@ -66,12 +67,12 @@
 					
 						<view style="width: 50%;"  @tap="aipingou_buy_together(item.productid,item.rulesn)">
 							<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_pintuan2.png" ></image>
-							<view style="font-size: 30rpx;">去拼购</view>
+							<view class="pingou_font">去拼购</view>
 						</view>	
 					
 						<view style="width: 50%;" @tap="aipingou_open_tuan(item.productid)">
 							<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_kaituan2.png"></image>
-							<view style="font-size: 30rpx;">去开团</view>
+							<view class="pingou_font">去开团</view>
 						</view>
 					</view>
 				
@@ -235,7 +236,20 @@
 			
 			//跳转到“我的拼购”页面
 			toMypingou() {
-			
+				var userInfo = this.abotapi.get_user_info();
+				console.log('88888wwww',userInfo);
+				var last_url = '/pages/aipingou/mypingou'
+				if (!userInfo || !userInfo.userid) {
+					uni.showToast({
+						title: '请先登录',
+						icon: 'none',
+						duration: 1000,
+					});
+					
+					this.abotapi.goto_user_login(last_url, 'normal');
+					return;
+				}
+				
 				uni.navigateTo({
 					url: '/pages/aipingou/mypingou'
 				})
@@ -452,6 +466,7 @@
 		width: 100%;
 		font-size: 30rpx;
 		margin: 30rpx 30rpx;
+		font-size: 25rpx;
 	}
 	
 	
@@ -483,20 +498,19 @@
 	.product_image{
 		width: 100%;
 		border-radius: 10rpx;
+		padding: 10rpx;
 	}
 	.tubiao_anniu{
 		display: flex;
 		margin-top: 20rpx;
 		width: 100%;
 	}
-	.aipingou_product_image1{
-		width: 100%;
-		height: 350rpx;
-	}
 	.product_name{
 		text-align: left;
 		margin-left: 20rpx;
 		margin-top: 20rpx;
+		font-size: 25rpx;
+		font-weight: bold;
 	}
 	.image_da{
 		width: 98%;
@@ -514,6 +528,7 @@
 	}
 	.aipingou_title h1{
 		background-color: red;
+		font-size: 30rpx;
 	}
 	.tubiao{
 		width: 80rpx;
@@ -533,6 +548,10 @@
 	.input input{
 		font-size: 32rpx;
 	}
+	.pingou_font{
+		font-size: 25rpx;
+		color: #666;
+	}	
 </style>
 
 								

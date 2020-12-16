@@ -3030,7 +3030,7 @@
 		position: absolute;
 		z-index: 99;
 		position: fixed;
-		bottom: 95upx;
+		bottom: 120upx;
 		width: 100%;
 		font-size: 35upx;
 
