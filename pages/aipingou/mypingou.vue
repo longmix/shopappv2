@@ -80,9 +80,10 @@
 							<view style="font-weight: bold;margin-left: 100rpx;">昵称</view>
 							<view style="font-weight: bold;margin-left: 110rpx;">抽奖编码</view>
 					    </view>
-						<view v-for="(items,ida) in zhongjiang_list" :key="ida" style="display: flex;margin-top: 10rpx;border-top: 1rpx solid #d3d7d4;font-size: 30rpx;">
-							<view style="margin-left: 20rpx;">{{ida + 1}}</view>
-							<view style="margin-left: 75rpx;"><image :src="items.headimgurl" style="width: 70rpx; height: 70rpx; border-radius: 50%;"></image></view>
+						<view v-for="(items,ida) in zhongjiang_list" :key="ida" 
+						style="display: flex;margin-top: 10rpx;border-top: 1rpx solid #d3d7d4;font-size: 30rpx; align-items: center; justify-content: center;text-align: center；">
+							<view>{{ida + 1}}</view>
+							<view style="margin-left: 68rpx;"><image :src="items.headimgurl" style="width: 70rpx; height: 70rpx; border-radius: 50%;"></image></view>
 							<view style="margin-left: 40rpx;">{{items.nickname}}</view>
 							<view style="margin-left: 50rpx;">{{items.choujiangma}}</view>
 					    </view>
