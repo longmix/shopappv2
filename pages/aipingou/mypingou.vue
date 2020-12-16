@@ -368,9 +368,7 @@
 	page{
 		background: #d3d7d4;
 	}
-	td{
-
-	}
+	
 .mypingou1{
 	    display: flex;
 	    width: 100%;
