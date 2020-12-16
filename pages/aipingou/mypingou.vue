@@ -171,10 +171,10 @@
 			console.log('ccccccccccc')
 
 			if (this.is_OK) {
-				/*uni.showToast({
+				uni.showToast({
 					title: '已经到底了~',
 					duration: 2000
-				});*/
+				});
 
 				return;
 			}
@@ -192,13 +192,13 @@
 
 				success: function(res) {
 					console.log('8888s8ssss', res.data.my_tuan_list);
-					if (res.data.code == 1) {
+					if (res.data.my_tuan_list) {
 						that.is_OK = false;
 						that.tuan_list = that.tuan_list.concat(res.data.my_tuan_list);
 						that.current_page = that.current_page + 1;
 						console.log('超过一页', that.tuan_list);
 						uni.stopPullDownRefresh(); //得到数据后停止下拉刷新
-					} else if (res.data.code == 0) {
+					} else if (res.data.my_tuan_list == null) {
 						that.is_OK = true;
 						uni.showToast({
 							title: '已经到底了~',
@@ -350,7 +350,8 @@
 
 
 			},
-			Clipboard_text:function(text){			console.log('8888888ssssaa',text);			uni.setClipboardData({				data: text,				success() {					uni.showToast({						title: '复制成功！'					})				}			});		}
+			Clipboard_text:function(text){
+					console.log('8888888ssssaa',text);			uni.setClipboardData({				data: text,				success() {					uni.showToast({						title: '复制成功！'					})				}			});		}
 
 
 		}
