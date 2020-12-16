@@ -5,7 +5,7 @@
 				
 				<table class="mypingou_list" >
 					<tr>
-						<td>订单编号：{{item.orderno}}</td><button class="button2">复制</button>
+						<td>订单编号：{{item.orderno}}<text style="float: right;">复制</text></td>
 					</tr>
 					<tr>
 						<td>参与时间：{{item.join_time}}</td>
@@ -28,10 +28,9 @@
 						<td>
 							<view style="display: flex;">
 							
-						    <button style="width: 200rpx; height:60rpx;" v-if="aipingou_setting.mypintuan_show_tuanyuan_list == 1"
+						    <button class="mypingou_button" v-if="aipingou_setting.mypintuan_show_tuanyuan_list == 1"
 								@tap="open_kaijiang_detail(0, 'center',item.tongji_key)">开奖详情</button>
-							<button style="width: 200rpx; height:60rpx;"
-								@tap="open_zhongjiang_detail(0, 'center',item.tongji_key)">中奖记录</button>
+							<button class="mypingou_button" @tap="open_zhongjiang_detail(0, 'center',item.tongji_key)">中奖记录</button>
 						    </view>
 						</td>
 						
@@ -47,26 +46,22 @@
 		 :AlertClass="AlertClassKaijiang"
 		 :AlertPosition="AlertPositionKaijiang">
 		<view>
-			<view>
-				<view>
-					<table class="tanchuang_list">
-						<thead>
-						      <tr>
-						        <th>序号</th>
-						        <th>抽奖编码</th>
-						        <th>参与时间</th>
-						      </tr>
-						</thead>
-					<tbody>
-						<tr  v-for="(detail,ids) in kaijiang_list" :key="ids">
-							<td>{{ids + 1}}</td>
-							<td>{{detail.choujiangma}}</td>
-							<td>{{detail.join_time_updata}}</td>
-						</tr>
-					</tbody>
-					</table>
-				</view>
+		
+			<view class="tanchuang_list">
+				<view style="display: flex;">
+						<view style="font-weight: bold;margin-left: 40rpx;font-size: 25rpx;">NO</view>
+						<view class="liebiao">抽奖编码</view>
+						<view style="font-weight: bold;margin-left: 100rpx;">参与时间</view>
+
+			    </view>
+			<view style="display: flex;margin-top: 10rpx; border-top: 1rpx solid #d3d7d4;" v-for="(detail,ids) in kaijiang_list" :key="ids">
+					<view style="margin-left:50rpx;">{{ids + 1}}</view>
+					<view style="margin-left:120rpx;">{{detail.choujiangma}}</view>
+					<view style="margin-left:80rpx;">{{detail.join_time_updata}}</view>
 			</view>
+					
+			</view>	
+			
 		 </view>
 		</openAlert>
 		
@@ -76,32 +71,26 @@
 		:AlertPosition="AlertPositionZhongjiang"
 		>
 		<view>
-			<view>
-				<view v-if="zhongjiang_list != 0">
+			<view v-if="zhongjiang_list != 0">
 				<view id="zhong">
-					<table class="tanchuang_list">
-					<thead>
-						<tr>
-							<th>序号</th>
-							<th>头像</th>
-							<th>昵称</th>
-							<th>抽奖编码</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr v-for="(items,ida) in zhongjiang_list" :key="ida">
-							<td>{{ida + 1}}</td>
-							<td><image :src="items.headimgurl" style="width: 70rpx; height: 70rpx; border-radius: 50%;"></image></td>
-							<td>{{items.nickname}}</td>
-							<td>{{items.choujiangma}}</td>
-						</tr>
-					</tbody>
-					</table>
-				</view>
-				</view>
-				<view v-else>
-					<view class="zhongjiang_list">没有开奖</view>
-				</view>
+					<view class="tanchuang_list">
+						<view style="display: flex;">
+						    <view class="liebiao">NO</view>
+							<view class="liebiao">头像</view>
+							<view class="liebiao">昵称</view>
+							<view style="font-weight: bold;margin-left: 100rpx;">抽奖编码</view>
+					    </view>
+						<view v-for="(items,ida) in zhongjiang_list" :key="ida" style="display: flex;margin-top: 10rpx;border-top: 1rpx solid #d3d7d4;font-size: 30rpx;">
+							<view style="margin-left: 80rpx;">{{ida + 1}}</view>
+							<view style="margin-left: 80rpx;"><image :src="items.headimgurl" style="width: 70rpx; height: 70rpx; border-radius: 50%;"></image></view>
+							<view style="margin-left: 20rpx;">{{items.nickname}}</view>
+							<view style="margin-left: 67rpx;">{{items.choujiangma}}</view>
+					    </view>
+					</view>
+				</view>	
+			</view>
+			<view v-else>
+				<view class="zhongjiang_list">没有开奖</view>
 			</view>
 		</view>
 		</openAlert>
@@ -384,6 +373,7 @@
 .mypingou1{
 	    display: flex;
 	    width: 100%;
+		font-size: 30rpx;
 		background-color: #fffffb;
 		margin-top: 20rpx;
 		border-radius: 10rpx;
@@ -391,24 +381,30 @@
 
 .mypingou_list{
 	     width: 100%;
+		 font-size: 30rpx;
 		 margin-left: 20rpx;
 
 }
-
-
-.button1{
-	width: 60rpx;
-	height: 30epx;
+.liebiao{
+	text-align: center;
+	font-weight: bold;
+	margin-left: 60rpx;;
 }
-.button2{
-	height: 40rpx;
-	letter-spacing:-3rpx;
+.liebiao_content{
+	text-align: center;
+	margin-left: 60rpx;;
+}
 
-	line-height: 37rpx;
-	font-size: 1rpx;
+
+.mypingou_button{
+	width: 180rpx;
+	height:58rpx; 
+	font-size: 25rpx;
+	margin-bottom: 10rpx;
 }
 .tanchuang_list{
 	width: 600rpx;
+	font-size: 30rpx;
 	text-align: center;
 	background-color: #fffffb;
 	border:1rpx solid #ccc;
@@ -416,7 +412,7 @@
 }
 .tanchuang_list td th{
 	border:1rpx solid #ccc;
-	    border: blue;
+	border: blue;
     border-width: 1rpx;
     border-style: dotted;
 }
