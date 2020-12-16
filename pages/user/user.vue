@@ -93,7 +93,7 @@
 						<view class="text">余额</view>
 					</view>
 
-					<view class="box" v-if="wxa_show_zengkuan_in_usercenter == 1" @tap="goto_user_function('/pages/user/log?current_balance_type=balance_zengsong')">
+					<view class="box" v-if="wxa_show_zengkuan_in_usercenter == 1" @tap="goto_user_function('/pages/user/log?type=zengkuan')">
 						<view class="num">{{fenxiao_info && fenxiao_info.balance_zengsong_yuan ? fenxiao_info.balance_zengsong_yuan : '0.00'}}</view>
 						<view class="text">赠款</view>
 					</view>

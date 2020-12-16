@@ -87,7 +87,8 @@
 				uni.setNavigationBarTitle({
 					title:'赠款明细'
 				})
-			}
+			}			
+			
 			console.log('option.userid002',option.userid002);
 			if(option.userid002){
 				this.userid002 = option.userid002;
@@ -119,9 +120,13 @@
 		},
 		methods: {
 			account_balance: function() {
+				
+				console.log('this.current_balance_type====>>>>', this.current_balance_type);
+				
 				var that = this;
-				var balance = this.current_balance_type;
+				var balance_type = this.current_balance_type;
 				var userInfo = this.abotapi.get_user_info();
+				
 				this.abotapi.abotRequest({
 					url: this.abotapi.globalData.yanyubao_server_url + 'openapi/UserData/user_balance_list',
 					method: 'post',
@@ -129,7 +134,7 @@
 						sellerid: that.abotapi.globalData.default_sellerid,
 						checkstr: userInfo.checkstr,
 						userid: userInfo.userid,
-						balance_type_ext: balance,
+						balance_type_ext: balance_type,
 						page_size: that.page_size,
 						tag:that.tag,
 						userid002:that.userid002
@@ -174,6 +179,7 @@
 				var that = this;
 				var balance = this.current_balance_type;
 				var userInfo = this.abotapi.get_user_info();
+				
 				this.abotapi.abotRequest({
 					url: this.abotapi.globalData.yanyubao_server_url + 'openapi/UserData/user_balance_tag_list',
 					method: 'post',
