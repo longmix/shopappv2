@@ -80,7 +80,7 @@
 			
 		</view>
 			
-			<!---我的拼购悬浮图标-->
+		<!---我的拼购悬浮图标-->
 		<view class="home-p" @click="toMypingou()" v-if="aipingou_setting.show_mypintuan_icon == 1">
 			<image :src="aipingou_setting.anniu_tupian" style="width: 100rpx;" mode="widthFix"></image>
 		</view>
@@ -364,6 +364,12 @@
 					this.abotapi.goto_user_login(last_url, 'normal');
 					return;
 				}
+				
+				//隐藏刚才的弹窗
+				this.AlertClassKaijiang = 0;
+				this.AlertPositionKaijiang = '';
+				this.$refs.openAlertKaijiang.Close();
+				    
 				
 				uni.navigateTo({
 					url:last_url,

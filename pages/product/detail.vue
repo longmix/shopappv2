@@ -259,6 +259,7 @@
 						<view class="tuan_time_number">
 							<view class="tuan_number">{{grounp_count}}人成团还差<span style="color: red;">{{grounp_count - item.tuanyuan_counter}}人</span></view>
 							<view class="tuan_time_over" style="display:none;">剩余{{item.timespan_str}}</view>
+							<view class="tuan_time_over" style="">No.{{item.tongjiid}}</view>
 						</view>
 				</view>
 			</block>
@@ -1918,6 +1919,7 @@
 							that.aipin_tuan_list = res.data.aipingou_tuan_list;
 							
 							console.log('that.aipin_tuan_list====>>>>', that.aipin_tuan_list);
+							console.log('that.aipin_tuan_list====>>>>', that.aipin_tuan_list.length);
 							
 							//团员人数
 							that.grounp_count = res.data.group_count;
@@ -3218,6 +3220,7 @@
 	}
 	
 	.tuan_time_over{
+		font-size:25rpx;
 		color: #666666;
 	}
 </style>
