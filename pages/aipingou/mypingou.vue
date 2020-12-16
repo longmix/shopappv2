@@ -5,7 +5,7 @@
 				
 				<table class="mypingou_list" >
 					<tr>
-						<td>订单编号：{{item.orderno}}<text style="float: right;">复制</text></td>
+						<td>订单编号：{{item.orderno}}<text style="float: right;font-size: 30rpx;">复制</text></td>
 					</tr>
 					<tr>
 						<td>参与时间：{{item.join_time}}</td>
@@ -51,13 +51,13 @@
 				<view style="display: flex;">
 						<view style="font-weight: bold;margin-left: 40rpx;font-size: 25rpx;">NO</view>
 						<view class="liebiao">抽奖编码</view>
-						<view style="font-weight: bold;margin-left: 100rpx;">参与时间</view>
+						<view style="font-weight: bold;margin-left: 120rpx;">参与时间</view>
 
 			    </view>
 			<view style="display: flex;margin-top: 10rpx; border-top: 1rpx solid #d3d7d4;" v-for="(detail,ids) in kaijiang_list" :key="ids">
 					<view style="margin-left:50rpx;">{{ids + 1}}</view>
-					<view style="margin-left:120rpx;">{{detail.choujiangma}}</view>
-					<view style="margin-left:80rpx;">{{detail.join_time_updata}}</view>
+					<view style="margin-left:70rpx;">{{detail.choujiangma}}</view>
+					<view style="margin-left:40rpx;">{{detail.join_time_updata}}</view>
 			</view>
 					
 			</view>	
@@ -75,16 +75,16 @@
 				<view id="zhong">
 					<view class="tanchuang_list">
 						<view style="display: flex;">
-						    <view class="liebiao">NO</view>
+						    <view style="font-weight: bold;margin-left: 10rpx;">NO</view>
 							<view class="liebiao">头像</view>
-							<view class="liebiao">昵称</view>
-							<view style="font-weight: bold;margin-left: 100rpx;">抽奖编码</view>
+							<view style="font-weight: bold;margin-left: 100rpx;">昵称</view>
+							<view style="font-weight: bold;margin-left: 110rpx;">抽奖编码</view>
 					    </view>
 						<view v-for="(items,ida) in zhongjiang_list" :key="ida" style="display: flex;margin-top: 10rpx;border-top: 1rpx solid #d3d7d4;font-size: 30rpx;">
-							<view style="margin-left: 80rpx;">{{ida + 1}}</view>
-							<view style="margin-left: 80rpx;"><image :src="items.headimgurl" style="width: 70rpx; height: 70rpx; border-radius: 50%;"></image></view>
-							<view style="margin-left: 20rpx;">{{items.nickname}}</view>
-							<view style="margin-left: 67rpx;">{{items.choujiangma}}</view>
+							<view style="margin-left: 20rpx;">{{ida + 1}}</view>
+							<view style="margin-left: 75rpx;"><image :src="items.headimgurl" style="width: 70rpx; height: 70rpx; border-radius: 50%;"></image></view>
+							<view style="margin-left: 40rpx;">{{items.nickname}}</view>
+							<view style="margin-left: 50rpx;">{{items.choujiangma}}</view>
 					    </view>
 					</view>
 				</view>	
