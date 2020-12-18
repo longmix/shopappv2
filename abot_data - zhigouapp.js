@@ -22,8 +22,8 @@ const globalData = {
 		//=======以下配置项在发布版本的时候确定，服务器端配置无效===
 		
 		//平台相关的配置
-		current_platform : 'app-android',
-		//current_platform : 'app-ios',
+		//current_platform : 'app-android',
+		current_platform : 'app-ios',
 		//current_platform : 'mp-weixin',
 		//current_platform : 'mp-baidu',
 		//current_platform : 'mp-alipay',
