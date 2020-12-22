@@ -525,7 +525,8 @@ module.exports = {
 				method: 'post',
 				data: {
 					sellerid: that002.globalData.default_sellerid,
-					platform: that002.globalData.current_platform
+					platform: that002.globalData.current_platform,
+					version_code: that002.globalData.version_code,	//2020.12.22.
 				},
 				header: {
 					'Content-Type': 'application/x-www-form-urlencoded'

@@ -1046,6 +1046,49 @@ export default {
 				publish_list_api.get_publish_list(that,that.get_api_publish_list);
 			}
 			
+			//2020.12.22. 检查版本更新
+			// #ifdef APP-PLUS		
+				
+			var is_check_new_version = false;
+			var new_version_check_time = uni.getStorageSync("new_version_check_time");
+			var currentTime = (new Date()).getTime();//获取当前时间
+			if(currentTime - new_version_check_time > 24*60*60*1000){
+				is_check_new_version = true;
+			}
+			
+			
+			if(is_check_new_version && cb_params.option_list.is_there_new_version && (cb_params.option_list.is_there_new_version == 1)){
+				uni.setStorageSync("new_version_check_time", currentTime);
+				
+				uni.showModal({
+					title: "发现新版本",
+					content: "确认下载更新",
+					success: (res) => {
+						if (res.confirm == true) {//当用户确定更新，执行更新
+							if(that.abotapi.globalData.current_platform == 'app-android'){
+								that.__doUpdataAppApk(cb_params.option_list.new_version_apk_download_url);
+							}
+							else if(that.abotapi.globalData.current_platform == 'app-ios'){
+								//打开苹果手机的app store
+								plus.runtime.openURL(cb_params.option_list.new_version_ios_app_store_url);
+							}
+						
+						
+							
+						}
+					}
+				});
+				
+				/*plus.runtime.getProperty(plus.runtime.appid, function(inf) {
+					if(inf.version != result.data.data.versions){
+						
+					}
+				});*/
+			}
+			// #endif
+			
+			
+			
 		},
 		
 		get_api_publish_list:function(that,publishData){
@@ -1840,6 +1883,41 @@ export default {
 					showCancel:false,
 				})
 			}
+		},
+		__doUpdataAppApk:function(apk_download_url){
+			uni.showLoading({
+				title: '更新中……'
+			});
+			
+			uni.downloadFile({//执行下载
+				url: apk_download_url, //下载地址
+				success: downloadResult => {//下载成功
+				
+					uni.hideLoading();
+					
+					if (downloadResult.statusCode == 200) {
+						uni.showModal({
+							title: '',
+							content: '更新成功，确定现在重启吗？',
+							confirmText: '重启',
+							confirmColor: '#EE8F57',
+							success: function(res) {
+								if (res.confirm == true) {
+									plus.runtime.install(//安装
+										downloadResult.tempFilePath, {
+											force: true
+										},
+										function(res) {
+											utils.showToast('更新成功，重启中');
+											plus.runtime.restart();
+										}
+									);
+								}
+							}
+						});
+					}
+				}
+			});
 		},
 		
 	}
