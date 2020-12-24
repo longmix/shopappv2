@@ -132,7 +132,12 @@
 		onShow: function() {
 			console.log('App Show')
 			
+			if(this.abotapi.globalData.share_kouling_status != 1){
+				return;
+			}
+			
 			var that = this;
+			
 			
 			// #ifndef H5
 			uni.getClipboardData({

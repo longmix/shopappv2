@@ -552,6 +552,12 @@ module.exports = {
 						
 						console.log('保存商城选项数据=========>>>>>固定导航栏背景和文字颜色', option_data);
 					}
+					
+					//2020.12.24. 剪切板功能
+					if(option_data && option_data.option_list && (option_data.option_list.share_kouling_status == 1)){
+						that002.globalData.share_kouling_status = 1;
+						console.log('此项目启用了剪切板功能！！！！！');
+					}
 				
 					//保存到本地
 					var shop_option_data = JSON.stringify(option_data);
