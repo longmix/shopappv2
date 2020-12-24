@@ -130,7 +130,8 @@
 			// #endif
 		},
 		onShow: function() {
-			console.log('App Show')
+			console.log('App Show#############################')
+			console.log('this.abotapi.globalData.share_kouling_status', this.abotapi.globalData.share_kouling_status)
 			
 			if(this.abotapi.globalData.share_kouling_status != 1){
 				return;

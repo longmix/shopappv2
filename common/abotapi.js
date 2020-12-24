@@ -558,6 +558,10 @@ module.exports = {
 						that002.globalData.share_kouling_status = 1;
 						console.log('此项目启用了剪切板功能！！！！！');
 					}
+					else{
+						that002.globalData.share_kouling_status = 0;
+						console.log('此项目禁用了剪切板功能！！！！！');
+					}
 				
 					//保存到本地
 					var shop_option_data = JSON.stringify(option_data);
