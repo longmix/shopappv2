@@ -299,7 +299,9 @@
 					{{item}}
 				</view>
 			</view>
-			<view class="specs-a" v-if="attr_list_arr[spec1] != null">
+			<view class="specs-a" 
+				v-if="attr_list_arr[spec1] != null" 
+				style="border-top: 1rpx solid #e5e5e5;padding-top: 20rpx;">
 				<view :class="[option_list_arr[1] == item2 ? 'specs-e' : 'specs-d']" v-for="(item2, index) in attr_list_arr[spec1]"
 				 :key="index" :data-spec2="item2" @click="changeSpec2($event)">
 					{{item2}}
@@ -1003,10 +1005,15 @@
 				that.spec1 = spec1;
 				that.option_list_arr = option_list_arr;
 
-
+				//如果是一维数组的规则
 				if (option_list_arr.length == 1) {
 					this.current_spec = spec1;
 					this.changeSpec2(null);
+				}
+				//如果是二维数组的风格，例如： 颜色 + 尺码
+				else if (option_list_arr.length == 2) {
+					//this.current_spec
+					that.option_list_arr[1] = '';
 				}
 
 			},
@@ -1033,6 +1040,9 @@
 
 				this.spec2 = spec2;
 				this.option_list_arr = option_list_arr;
+				
+				
+				var productid = 0;
 
 
 
@@ -2914,11 +2924,9 @@
 	}
 
 	.specs-a {
-		padding: 2% 5% 0 5%;
-		margin-top: 20rpx;
+		margin: 2% 4% 2% 4%;
 		display:block;
 		float: left;
-		width: 100%;
 	}
 
 	.specs-b {
