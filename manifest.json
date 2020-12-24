@@ -1,9 +1,9 @@
 {
-    "name" : "延誉电商",
-    "appid" : "__UNI__A79BAA4",
-    "description" : "",
-    "versionName" : "1.6.1",
-    "versionCode" : 135,
+    "name" : "天天汇",
+    "appid" : "__UNI__5B54B05",
+    "description" : "天天汇APP",
+    "versionName" : "1.7.4",
+    "versionCode" : 219,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true, //是否启用`自定义组件模式`，为true表示新的`自定义组件模式` ，否则为`template模板模式`   
@@ -20,12 +20,12 @@
         "modules" : {
             "Share" : {},
             "OAuth" : {},
-            "Payment" : {},
             "LivePusher" : {},
             "Bluetooth" : {},
             "VideoPlayer" : {},
             "Maps" : {},
             "Speech" : {},
+            "Payment" : {},
             "Push" : {}
         },
         /* 模块配置 */
@@ -76,15 +76,16 @@
             "sdkConfigs" : {
                 "maps" : {
                     "amap" : {
-                        "appkey_ios" : "93094a28bc895a74cd1690bf390ba6ea",
-                        "appkey_android" : "647d08ffaa523902a2503fa958e5afa7"
+                        "appkey_ios" : "615c807e0417fc7daf4b5d9016cbfd2b",
+                        "appkey_android" : "25fd4b4244738832a1397ddbb78eb9eb"
                     }
                 },
                 "payment" : {
                     "weixin" : {
-                        "appid" : "wx029e1ddb38b4c630",
-                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/yyds/"
-                    }
+                        "appid" : "wx6939a00416c5d3aa",
+                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/tiantianhui/"
+                    },
+                    "alipay" : {}
                 },
                 "ad" : {},
                 "speech" : {
@@ -92,17 +93,18 @@
                 },
                 "oauth" : {
                     "weixin" : {
-                        "appid" : "wx029e1ddb38b4c630",
+                        "appid" : "wx6939a00416c5d3aa",
                         "appsecret" : "aaaaaaaaaaaaaaaaaaaaaaa",
-                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/yyds/"
+                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/tiantianhui/"
                     }
                 },
                 "share" : {
                     "weixin" : {
-                        "appid" : "wx029e1ddb38b4c630",
-                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/yyds/"
+                        "appid" : "wx6939a00416c5d3aa",
+                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/tiantianhui/"
                     }
-                }
+                },
+                "push" : {}
             },
             "icons" : {
                 "android" : {
@@ -138,9 +140,9 @@
             },
             "splashscreen" : {
                 "android" : {
-                    "hdpi" : "unpackage/res/splashscreen/welandroid_480x762.png",
-                    "xhdpi" : "unpackage/res/splashscreen/welandroid_720x1242.png",
-                    "xxhdpi" : "unpackage/res/splashscreen/welandroid_1080x1882.png"
+                    "hdpi" : "unpackage/res/splashscreen_tiantianhui/splashscreen_480x762.png",
+                    "xhdpi" : "unpackage/res/splashscreen_tiantianhui/splashscreen_720x1242.png",
+                    "xxhdpi" : "unpackage/res/splashscreen_tiantianhui/splashscreen_1080x1882.png"
                 },
                 "ios" : {
                     "iphone" : {
@@ -151,8 +153,11 @@
                         "retina47" : "unpackage/res/splashscreen/welcome_750x1334.png",
                         "retina40" : "unpackage/res/splashscreen/welcome_640x1136.png",
                         "retina35" : "unpackage/res/splashscreen/welcome_640x960.png"
-                    }
-                }
+                    },
+                    "storyboard" : "unpackage/res/apple dev - tiantianhui/CustomStoryboard.zip"
+                },
+                "iosStyle" : "storyboard",
+                "androidStyle" : "default"
             }
         },
         "uniStatistics" : {

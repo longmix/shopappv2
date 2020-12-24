@@ -102,10 +102,29 @@
 			</view>
 			<!-- 营业时间 地址结束 -->
 
-
-
 		</view>
 		<!-- 功能按钮-->
+		
+			<view v-if="vip_card_list">
+				<view style="text-align: center;">会员卡列表</view>
+				<view class="vip_card_list" v-for="(item,index) in vip_card_list" :key='index'>
+				<view style="width: 75%;display: flex;">
+					<img src="../../static/img/success.png" alt="" class="vip_logo">
+					<view class="vip_card_name">{{item.card_name}}</view>
+				</view>
+				<view v-if="item.huiyuan_status == 1" class="banka_btn" style="margin-top: 20rpx;">
+					<navigator>
+						<view class="banka_ft">查看卡片</view>
+					</navigator>
+				</view>
+				<view v-else class="banka_btn" style="margin-top: 20rpx;">
+					<navigator>
+						<view class="banka_ft">我要领卡</view>
+					</navigator>
+				</view>
+				</view>
+			</view>
+
 
 		<view>
 			<!-- 按钮1 -->
@@ -427,6 +446,9 @@
 				
 				//客服按钮点击后的消息类型
 				app_kefu_msg_type:'is_call_mobile',
+				
+				//会员卡列表
+				vip_card_list:[],
 			};
 		},
 		
@@ -775,12 +797,11 @@
 				var that = this;
 				
 				
-				// 获取商家详情
+				// 获取本地商家自己设置的一些选项，包括是否显示外卖 堂吃按钮等。
 				var post_data = {
 					sellerid: this.abotapi.globalData.default_sellerid,
 					xianmai_shangid: this.current_xianmai_shangid,
 				}
-				
 				
 				this.abotapi.abotRequest({
 					url: this.abotapi.globalData.o2owaimai_server_url + 'openapi/PublicData/get_merchant_basic_data',
@@ -854,10 +875,16 @@
 
 
 
-				// 获取商家详情
+				// 获取商家详情，包括字号/门头照/Logo，地址，营业时间等
 				var post_data = {
 					sellerid: this.abotapi.globalData.default_sellerid,
 					xianmai_shangid: this.current_xianmai_shangid,
+				}
+				
+				var userInfo = that.abotapi.get_user_info();
+				if(userInfo && userInfo.userid){
+					post_data.userid = userInfo.userid;
+					post_data.checkstr = userInfo.checkstr;
 				}
 
 
@@ -876,6 +903,9 @@
 						
 						
 						var data = res.data.data;
+						
+						that.vip_card_list = res.data.vip_card_list;
+						
 						
 						if(!data){
 							return;
@@ -2052,5 +2082,32 @@
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		overflow: hidden;
+	}
+	.banka_ft{
+		border: 1px solid;
+		padding: 4px;
+		border-radius: 5px;
+		margin-right: 4px;background-color: #4b99d2;
+		color: #ffffff;
+	}
+	.vip_card_name{
+		font-size: 17px;
+		line-height:100rpx;
+		margin-left: 20rpx;
+	}
+	.vip_logo{
+		width: 80rpx;
+		margin-left: 10rpx;
+		height: 80rpx;
+		padding-top: 10rpx;
+		padding-bottom: 10rpx;
+	}
+	.vip_card_list{
+		display: flex;
+		width: 90%;
+		border: 1px solid #666;
+		margin: 0 auto;
+		margin-top: 5rpx;
+		border-radius: 5px;
 	}
 </style>

@@ -198,6 +198,8 @@
 					}
 				}
 				this.sx_shang_list = xz_shang_list;
+				
+				console.log('777888sss',xz_shang_list);
 			}
 			
 			if(options.cataid){
@@ -345,7 +347,7 @@
 				
 				
 				console.log(that.sx_shang_list.length);
-				console.log('77777788883333', shang_list);
+				console.log('77777788883333', that.sx_shang_list);
 				
 				var page = this.page;
 				var shang_num = this.shang_num;
@@ -355,7 +357,7 @@
 				console.log('star',star);
 				console.log('end',end);
 				var threeArr = shang_list.slice(star, end); //返回特定的数组
-				
+				console.log('888888888888',threeArr);
 				console.log(threeArr);
 				var shangid_str = '';
 				for(var i = 0;i <  threeArr.length;i++){
