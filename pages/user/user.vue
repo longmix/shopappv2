@@ -163,7 +163,7 @@
 					<view style='float: left;'>
 						<image style="width:70rpx;height:70rpx;margin-right:40rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/aboutus.png"></image>
 					</view>
-					<view style="float:left;">{{about}}</view>
+					<view style="float:left;"><text style="color:#333;font-size:35rpx;">{{about}}</text></view>
 				</navigator>
 
 			</view>
