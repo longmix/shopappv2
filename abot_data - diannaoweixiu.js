@@ -10,8 +10,8 @@ const globalData = {
 		force_sellerid:1,
 	
 		xiaochengxu_appid: 'wx3b96d83a469ad710',			//微信小程序的appid
-		xiaochengxu_account: 'gh_a95e5a0852aa',				//微信小程序的账号
-		weixin_open_platform_appid: 'wx029e1ddb38b4c630',	//微信开放平台中登记的APP对应的appid（务必与manifest中的配置一致）
+		xiaochengxu_account: 'gh_76248f4dc988',				//微信小程序的账号
+		weixin_open_platform_appid: 'wx029e1ddb38b4c630--',	//微信开放平台中登记的APP对应的appid（务必与manifest中的配置一致）
 		
 		//通版商城
 		default_shopname: '陆家嘴电脑维修',
@@ -24,9 +24,9 @@ const globalData = {
 		//平台相关的配置
 		//current_platform : 'app-android',
 		//current_platform : 'app-ios',
-		//current_platform : 'mp-weixin',
+		current_platform : 'mp-weixin',
 		//current_platform : 'mp-baidu',
-		current_platform : 'mp-alipay',
+		//current_platform : 'mp-alipay',
 		//current_platform : 'h5',
 		
 		//固定导航栏的背景色，如果为0，则使用服务器端的配置

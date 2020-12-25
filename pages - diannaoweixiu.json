@@ -7,8 +7,6 @@
 		"backgroundColorTop":"#ffffff",
 		"backgroundColorBottom":"#ffffff"
 	},
-	"tabBar": {
-		
-	},
+
 	"pages": []
 }
