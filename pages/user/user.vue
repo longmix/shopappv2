@@ -165,8 +165,24 @@
 					</view>
 					<view style="float:left;"><text style="color:#333;font-size:35rpx;">{{about}}</text></view>
 				</navigator>
+				
+				
 
 			</view>
+			
+			
+			
+			<view class="icon_box_item" @tap="goto_user_test_icon()" style="display:none;">
+				<view style='float: left;'>
+					<image style="width:70rpx;height:70rpx;margin-right:40rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/aboutus.png"></image>
+				</view>
+				<view style="float:left;"><text style="color:#333;font-size:35rpx;">测试图标</text></view>
+				<view style="clear:both;"></view>
+			</view>
+			
+			
+			
+			
 		</view>
 
 		<!-- 		<navigator url="/pages/live/live-pusher">主播控制台</navigator> -->
@@ -639,10 +655,15 @@
 				this.explainFlag = 1;
 			},
 			toPageIndex: function(e) {
-				uni.switchTab({
-					url: '/pages/index/index',
-				})
+				
+				this.abotapi.call_h5browser_or_other_goto_url('/pages/index/index');
+				
 			},
+			goto_user_test_icon:function(e){ 
+				uni.navigateTo({
+					url:'/pages/h5browser/h5browser?url=/hybrid/html/ecardh5/index.html'
+				})
+			}
 			
 				
 		}

@@ -1,0 +1,202 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title></title>
+<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<link href="css/style.css" rel="stylesheet" type="text/css">
+<script src="js/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" language="javascript"> 
+$(document).ready(function () { 
+
+
+$("#qiandao").click(function () { 
+var btn = $(this);
+var submitData = {
+};
+$.post('/index.php?g=Wap&m=Card&a=addSign&token=wxkqkk1473062713&wecha_id=cardid&cardid=', submitData,
+function(data) {
+	alert(data.success)
+if (data.success == true) {
+$("#qiandao").html("今天你已经签到了!");
+ alert(data.msg);
+ setTimeout('dourl(12)',2000);
+return
+} 
+},
+"json");
+
+}); 
+}); 
+
+</script>
+<style type="text/css">
+.window {
+width:240px;
+position:absolute;
+display:none;
+margin:-50px auto 0 -120px;
+padding:2px;
+top:0;
+left:50%;
+border-radius:0.6em;
+-webkit-border-radius:0.6em;
+-moz-border-radius:0.6em;
+background-color: rgba(255, 0, 0, 0.5);
+-webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+-moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+-o-box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+font:14px/1.5 Microsoft YaHei,Helvitica,Verdana,Arial,san-serif;
+z-index:10;
+bottom: auto;
+}
+.window .content {
+overflow:auto;
+padding:10px;
+    color: #222222;
+    text-shadow: 0 1px 0 #FFFFFF;
+border-radius: 0 0 0.6em 0.6em;
+-webkit-border-radius: 0 0 0.6em 0.6em;
+-moz-border-radius: 0 0 0.6em 0.6em;
+}
+.window #txt {
+min-height:30px;font-size:20px; line-height:22px; color:#FFF; text-align:center;
+}
+</style>
+</head>
+<body id="cardintegral" class="mode_webapp">
+<div class="qiandaobanner"><a href="javascript:history.go(-1);"><img src="images/qiandao.jpg" ></a> </div>
+<div class="cardexplain">
+<a class="receive"  id="qiandao"><span class="red">点击这里签到赚积分</span><span style=" display:none"></span></a>
+</div>
+<div class="jifen-box">
+<ul class="zongjifen">
+<li><a href="/index.php?g=Wap&m=Card&a=expense&token=wxkqkk1473062713&wecha_id=cardid&cardid=">
+<div class="fengexian">
+<p>消费记录</p>
+<span>元</span></div>
+</a></li>
+<li><a href="/index.php?g=Wap&m=Card&a=signscore&token=wxkqkk1473062713&wecha_id=cardid&cardid=">
+<div class="fengexian">
+<p>剩余积分</p>
+<span>0分</span></div>
+</a></li>
+<li><a href="/index.php?g=Wap&m=Card&a=signscore&token=wxkqkk1473062713&wecha_id=cardid&cardid=">
+<p>签到积分</p>
+<span>分</span></a></li>
+</ul>
+<div class="clr"></div>
+</div>
+
+<div class="jifen-box header_highlight">
+<div class="tab month_sel"> <span class="title">查看每月签到及积分详情
+<p>点击这里选择其他月份</p>
+</span> </div>
+<select onChange="dourl2(this.value)" class="month">
+<option  value="1">1月</option>
+<option value="2">2月</option>
+<option value="3">3月</option>
+<option value="4">4月</option>
+<option value="5">5月</option>
+<option value="6">6月</option>
+<option value="7">7月</option>
+<option value="8">8月</option>
+<option value="9">9月</option>
+<option value="10">10月</option>
+<option value="11">11月</option>
+<option value="12">12月</option>
+</select>
+<div class="accordion_child">
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="integral_table">
+<thead>
+<tr>
+<th>日期</th>
+<th>签到情况</th>
+<th>积分</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="window" id="windowcenter" style="margin-top:50px;">
+<div class="content">
+ <div id="txt"></div>
+</div>
+
+</div>
+</div>
+
+<script>
+function dourl(m){
+location.href= locatino.href;
+}
+function dourl2(m){
+location.href= '/index.php?g=Wap&m=Card&a=signscore&token=wxkqkk1473062713&wecha_id=cardid&cardid=&month='+m;
+}
+</script>
+
+<script type="text/javascript"> 
+
+function alert(title){ 
+$("#windowcenter").slideToggle("slow"); 
+$("#txt").html(title);
+setTimeout('$("#windowcenter").slideUp(500)',2000);
+} 
+
+</script>
+<!-- 隐藏
+<div style="height:40px;"></div>
+<div class="footermenu">
+    <ul>
+    	<li>
+            <a  href="/index.php?g=Wap&m=Card&a=index&token=wxkqkk1473062713&wecha_id=cardid">
+           <img src="/tpl/Wap/default/common/card/images/home.png">
+            <p>会员卡</p>
+            </a>
+        </li>
+        <li>
+            <a  href="/index.php?g=Wap&m=Card&a=card&token=wxkqkk1473062713&cardid=&wecha_id=cardid">
+           <img src="/tpl/Wap/default/common/card/images/c.png">
+            <p>此卡首页</p>
+            </a>
+        </li>
+        <li>
+            <a  href="/index.php?g=Wap&m=Card&a=previlege&token=wxkqkk1473062713&wecha_id=cardid&cardid=">
+           <img src="/tpl/Wap/default/common/card/images/prev.png">
+            <p>特权</p>
+            </a>
+        </li>
+        <li>
+            <a  href="/index.php?g=Wap&m=Card&a=coupon&token=wxkqkk1473062713&wecha_id=cardid&cardid=">
+           <img src="/tpl/Wap/default/common/card/images/coupon.png">
+            <p>优惠券</p>
+            </a>
+        </li>
+        <li>
+            <a  href="/index.php?g=Wap&m=Card&a=integral&token=wxkqkk1473062713&wecha_id=cardid&cardid=">
+           <img src="/tpl/Wap/default/common/card/images/intergral.png">
+            <p>兑换</p>
+            </a>
+        </li>
+      
+    </ul>
+</div>
+ -->
+<script type="text/javascript">
+window.shareData = {  
+            "moduleName":"Card",
+            "moduleID":"0",
+            "imgUrl": "", 
+            "sendFriendLink": "http://canyin.weiduke.com/index.php/Wap/Card/index/token/wxkqkk1473062713.shtml",
+            "tTitle": "会员卡",
+            "tContent": ""
+};
+</script>
+</body>
+</html>

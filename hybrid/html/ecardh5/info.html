@@ -1,0 +1,155 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>个人资料</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<link href="css/fans.css" rel="stylesheet" type="text/css"> 
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/abot.js"></script>
+<script type="text/javascript" src="js/layer/layer.js"></script>
+
+</head>
+<body id="fans" >
+<div class="tops">
+   <a href="index.html"><span class="back_tb"></span></a>
+   <span class="tops_title">个人资料</span>
+</div>
+<div class="cardexplain">
+ <div class="tuxiang" style="width:100%;">
+ 	<div class="tuxiang_box" style="width:90px; height:90px;padding-top: 20px; margin:0px auto 0 auto; border-radius: 50%;">
+ 	    <img src=" " onClick="document.form.imgupload.click()" style="width:90px; height:90px; margin:0 auto; display:none; border-radius: 50%;" id="img_head"/>
+ 	    <form name="form" id="formImg" action="aaa" method="post" target="hidden_frame" enctype="multipart/form-data" > 
+ 	       <input type="file" value="" name="imgupload" id="imgupload"  onchange="uploadImg()" style="display:none;" />
+ 	       <input type="hidden" id="userid" name="userid" />	
+ 	    </form>
+ 	     <iframe style="display:none;" name='hidden_frame' id="hidden_frame"></iframe>
+ 	</div>
+ </div>
+<ul>
+<li class="infos" style="border-bottom:1px solid #C6C6C6;clear: both; width: 100%;height: 40px;padding:3px 0;">
+ <div class="titles">昵称</div>
+ <a  href="nicheng.html">
+	 <div id="nickname" class="showbox"></div>
+	 <span class="jiantou"></span>
+ </a>
+</li>
+<li class="infos" style="border-bottom:1px solid #C6C6C6;clear: both; width: 100%;height: 40px;padding:3px 0;">
+ <div class="titles">账号</div>
+ <a  href="account.html">
+	 <div id="account" class="showbox"></div>
+	 <span class="jiantou"></span>
+ </a>
+</li>
+<li class="infos" style="border-bottom:1px solid #C6C6C6;clear: both; width: 100%;height: 40px;padding:3px 0;">
+ <div class="titles">手机</div>
+ <a  href="mobile.html">
+	 <div id="mobile" class="showbox"></div>
+	 <span class="jiantou"></span>
+ </a>
+</li>
+<!-- <li class="infos" style="border-bottom:1px solid #C6C6C6;clear: both; width: 100%;height: 40px;padding:3px 0;">
+ <div class="titles1">二维码</div>
+ <a  href="#">
+	 <div id="erweima" class="showbox"><img src="images/txx.png" width="30" height="30" style="float:right; margin-top:5px;"></div>
+	 <span class="jiantou"></span>
+ </a>
+</li> -->
+<li class="infos" style="border-bottom:1px solid #C6C6C6;clear: both; width: 100%;height: 40px;padding:3px 0;">
+ <div class="titles">生日</div>
+ <a  href="birthday.html">
+	 <div id="birthday" class="showbox"></div>
+	 <span class="jiantou"></span>
+ </a>
+</li>
+<li class="infos" style="border-bottom:1px solid #C6C6C6;clear: both; width: 100%;height: 40px;padding:3px 0;">
+ <div class="titles">性别</div>
+ <a  href="sex.html">
+	 <div id="sex" class="showbox"></div>
+	 <span class="jiantou"></span>
+ </a>
+</li>
+<li class="infos" style="border-bottom:1px solid #C6C6C6;clear: both; width: 100%;height: 40px;padding:3px 0;">
+ <div class="titles">地区</div>
+ <a  href="diqu.html">
+	 <div id="diqu" class="showbox"></div>
+	 <span class="jiantou"></span>
+ </a>
+</li>
+<li class="infos" style="border-bottom:1px solid #C6C6C6;clear: both; width: 100%;height: 40px;">
+ <div class="titles">个性签名</div>
+ <a  href="qianming.html">
+	 <div id="signature" class="showbox" style="text-align:right;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"></div>
+	 <span class="jiantou"></span>
+ </a>
+</li>
+</ul>
+<div class="footReturn" style="margin-top:50px;">
+<a id="button" class="submit" >退出登录</a>
+</div>
+<style type="text/css">
+.footermenu {
+position: fixed;
+bottom: 0;
+left: 0;
+right: 0;
+z-index: 900;
+-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.footermenu{
+	color:#666;
+	font-size:12px;
+	text-align:right;
+	margin-right: 15px;
+}
+.footermenu a{
+	text-decoration:none;
+	color:#666;
+}
+
+.footermenu a img{
+	width:30px; height:30px;
+}
+</style>
+<div style="width:100%;height:10px;"></div>
+<div class="footermenu" style="font-style:italic">
+Produced by 上海延誉<a href="http://www.abot.cn"><img src="images/logo-yanyu-2016.gif"></a>
+</div>
+
+<script  type="text/javascript"  src="controller/info.js"></script>
+<script  type="text/javascript"  src="controller/uploadIMG.js"></script>
+<script type="text/javascript">
+    $("#img_head").css("src","images/pho.png");
+    $("#img_head").css("display","block"); 
+    
+    
+  //判断是否微信浏览器
+    $(function() {
+    	
+    	if (isWeiXin()) {
+    		$('#button').html('解除绑定');
+    	}
+    });
+
+    function isWeiXin() {
+    	var ua = window.navigator.userAgent.toLowerCase();
+    	if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }    
+    
+    
+    
+</script>
+</body>
+</html>
+
+
+
+
+

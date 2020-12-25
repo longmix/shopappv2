@@ -1,0 +1,211 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>延誉宝商户认证</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<link href="css/style.css" rel="stylesheet" type="text/css">
+<link href="css/fans.css" rel="stylesheet" type="text/css"> 
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/abot.js"></script>
+<script type="text/javascript" src="js/layer/layer.js"></script>
+
+
+</head>
+<body id="fans" style="background: #fff;" >
+<div class="tops">
+   <a href="index.html"><span class="back_tb"></span></a>
+   <span class="tops_title">商户认证</span>
+</div>
+<div class="cardexplain">
+   <div class="shanghu_renzheng">
+     <ul>
+		<li class="infos" style="border-bottom:1px solid #C6C6C6;clear: both; width: 100%;height: 40px;padding:3px 0;">
+		 <div class="tit_bt">登录账号</div>
+	     <input type="text" id="user_mobile" class="shurukuang" placeholder="" value="" readonly="readonly" style="background-color: #eeee;"> 
+		</li>
+		<li class="infos" style="border-bottom:1px solid #C6C6C6;clear: both; width: 100%;height: 40px;padding:3px 0;">
+		 <div class="tit_bt">公司名称</div>
+	     <input type="text" id="company_name" class="shurukuang" placeholder="没有公司请填商户字号"> 
+		</li>
+		<li class="infos" style="border-bottom:1px solid #C6C6C6;clear: both; width: 100%;height: 40px;padding:3px 0;">
+		 <select  class="selectkuang" id="province">
+		 <option value="-1">请选择省份</option>
+		 </select>  
+		</li>
+		<li class="infos" style="border-bottom:1px solid #C6C6C6;clear: both; width: 100%;height: 40px;padding:3px 0;">
+		 <select  class="selectkuang" id="city">
+		  <option value="-1">请选择城市</option>
+		 </select>  
+		</li>
+		<li class="infos" style="border-bottom:1px solid #C6C6C6;clear: both; width: 100%;height: 40px;padding:3px 0;">
+		 <select  class="selectkuang" id="district">
+		  <option value="-1">请选择县市区</option>
+		 </select>   
+		</li>
+		<li class="infos" style="border-bottom:1px solid #C6C6C6;clear: both; width: 100%;height: 40px;padding:3px 0;">
+		 <div class="tit_bt">商户地址</div>
+	     <input type="text" id="address" class="shurukuang" placeholder="请填写您的经营地址"> 
+		</li>
+		<li class="infos" style="border-bottom:1px solid #C6C6C6;clear: both; width: 100%;height: 40px;padding:3px 0;">
+		 <div class="tit_bt">联系电话</div>
+	     <input type="tel" id="company_mobile" class="shurukuang" placeholder="请填写联系电话或手机号码"> 
+		</li>
+		<li class="infos" style="border-bottom:1px solid #C6C6C6;clear: both; width: 100%;padding:3px 0 0px 0;">
+		 <div class="tit_tp">营业执照<span>( 如果没有营业执照请手持身份证拍照 )</span></div>
+		 <div style="max-width: 96%;margin: 0 auto;">
+			<img src="images/a.png" onclick="document.form1.company_yingyezhizhao.click()" id="img_yyzz" style="max-width:100%;display: block;"/>
+ 	    <form name="form1" id="formImg_yyzz" action="bbb" method="post" target="hidden_frame1" enctype="multipart/form-data" > 
+ 	       <input type="file" value="" name="company_yingyezhizhao" id="company_yingyezhizhao"  onchange="uploadImg_yyzz()" style="display:none;" /> 
+ 	        <input type="hidden"  name="type" value="yyzz" />
+ 	        <input type="hidden" id="image_yyzz" value="">	
+ 	    </form>
+ 	     <iframe style="display:none;" name='hidden_frame1' id="hidden_frame1"></iframe>
+		  </div>
+		</li>
+		<li class="infos" style="border-bottom:1px solid #C6C6C6;clear: both; width: 100%;height: 40px;padding:3px 0;">
+		 <div class="tit_bt">法人姓名</div>
+	     <input type="text" id="company_faren" class="shurukuang" placeholder="请填写法人姓名"> 
+		</li>
+		<li class="infos" style="border-bottom:1px solid #C6C6C6;clear: both; width: 100%;height: 40px;padding:3px 0;">
+		 <div class="tit_bt">法人身份证号码</div>
+	     <input type="text" id="company_farenid" class="shurukuang" placeholder="请填写正确的身份证号码"> 
+		</li>
+		<li class="infos" style="border-bottom:1px solid #C6C6C6;clear: both; width: 100%;padding:3px 0 0px 0;">
+		 <div class="tit_tp">法人身份证照片<span>( 请扫描或拍照身份证 )</span></div>
+		 <div style="max-width: 96%;margin: 0 auto;">
+		 <img src="images/a.png" onclick="document.form.company_qita01.click()" id="img_sfz" style="max-width:100%;display: block;"/>
+ 	    <form name="form" id="formImg_sfz" action="aaa" method="post" target="hidden_frame" enctype="multipart/form-data" > 
+ 	       <input type="file" value="" name="company_qita01" id="company_qita01"  onchange="uploadImg()" style="display:none;" />
+ 	       <input type="hidden"  name="type" value="sfz" />
+ 	       <input type="hidden" id="image_sfz" value="">	
+ 	     </form>
+ 	     <iframe style="display:none;" name='hidden_frame' id="hidden_frame"></iframe>
+		  </div>
+		</li>
+	  </ul>
+	 
+   </div>
+    <div class="footReturn" style="margin-top:30px;">
+        <a id="botton" class="submit">保存</a>
+      </div>
+</div>
+
+<div class="footermenu" style="font-style:italic">
+Produced by 上海延誉<a href="http://www.abot.cn"><img src="images/logo-yanyu-2016.gif"></a>
+</div>
+<script  type="text/javascript"  src="controller/yanyubao_shanghu_renzheng.js"></script>
+<script  type="text/javascript"  src="controller/uploadIMG_shanghu_renzheng.js"></script>
+<script type="text/javascript">
+ 
+</script>
+<script type="text/javascript">
+var GET = $.urlGet();
+var sellerid = GET['sellerid'];
+if(!sellerid){
+	sellerid = get_current_sellerid();
+}
+
+//判断是否微信浏览器
+$(function() {
+	
+	if (isWeiXin()) {
+		//alert(333333);
+		
+		//检查是否要从服务器获取openid
+		
+		
+		
+		//get_openid_from_server();
+
+		
+		
+		
+		//检查本地是否有openid
+		//var openid = check_openid_cache();
+	}
+	else{
+		//  如何关注微信公众号
+		//location.href="";
+		//alert('请在微信公众号中打开！');location.href='index.html';
+	}
+});
+
+function isWeiXin() {
+	var ua = window.navigator.userAgent.toLowerCase();
+	if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function get_openid_from_server() {
+	var GET = $.urlGet();
+	var weixin_openid_token = GET['weixin_openid_token'];
+	
+	
+	//alert(window.location.href);alert("get from url, openid token:"+weixin_openid_token);
+	
+	if (weixin_openid_token) {
+		//alert('ready to get weixin_get_openid');
+
+		//同步ajax请求
+		$.ajax({
+			url : http_server + "/index.php?g=Yanyubao&m=Gongzhong&a=weixin_get_openid",
+			type:"POST",
+			dataType : "json",
+			data : {
+				"weixin_openid_token" : weixin_openid_token
+			},
+			success : function(res) {
+				//alert(res);
+				//alert('get openid:'+res.openid);alert('get userid:'+res.userid);
+				
+				localStorage.setItem("o_weixin_openid", res.openid);
+				if(res.userid == 0){
+					location.href = "weixin_bind.html";
+					return;
+				}
+				else{
+					set_login_info(res.userid, res.checkstr)
+					
+					location.href = "index.html";
+					return;
+				}
+				
+			}
+		});
+		
+
+	}
+	else{
+		check_openid_cache();
+	}
+}
+
+function check_openid_cache() {
+	var o_weixin_openid = localStorage.getItem("o_weixin_openid");
+	//alert('openid local:'+o_weixin_openid);
+	if (!o_weixin_openid) {
+
+		location.href = http_server + "/index.php?g=Yanyubao&m=Gongzhong&a=weixin_oauthor";
+		return;
+	}
+
+	return o_weixin_openid;
+}
+
+
+</script>
+
+
+</body>
+</html>
+
+
+
+
+

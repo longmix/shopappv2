@@ -1,0 +1,504 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title></title>
+<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<link rel="shortcut icon" href="https://yanyubao.tseo.cn/favicon.ico">
+<link rel="apple-touch-icon" sizes="114x114" href=""  id="apple_icon"/>
+<meta name="apple-mobile-web-app-title" content="" id="apple-title">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-startup-image" href="images/into_640x853.png">
+<meta name="format-detection" content="telephone=no">
+<link href="css/style.css" rel="stylesheet" type="text/css">
+<link href="css/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+<script src="js/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/layer/layer.js"></script>
+<script src="js/jq_scroll.js" type="text/javascript"></script>
+<script src="js/abot.js" type="text/javascript"></script>
+
+<style>
+	.toutiao{
+		width:100%;		
+	    height: 50px;
+	    background:#fff;
+	    border-radius: 5px;
+	   /* border-top-left-radius: 5px;
+	    border-top-right-radius: 5px;*/
+	    overflow: hidden;
+	    border:1px solid #C6C6C6;
+	    margin-bottom:10px; 
+	}
+	.toutiao_left{
+		width:35px;
+		height:35px;
+		float:left;
+		margin: 10px 5px 0 10px;
+	}
+	.toutiao_left img{
+		width:100%;
+		float:left;
+	}
+	
+	.toutiao_right{
+		width:85%;
+		height:50px;
+		background-color:#fff;
+		float:right;
+		overflow:hidden;
+	}
+	.toutiao_right ul li{
+		margin-left:5px;
+		width: 100%;
+		height: 50px;
+		line-height: 50px;
+		font-size: 15px;
+		overflow: hidden;
+        text-overflow:ellipsis;
+         white-space: nowrap;
+		display: block;
+	}
+
+	
+</style>
+</head>
+<body id="card" class="mode_webapp"><div id="overlay"></div>
+<div class="cardcenter">
+<div class="card">
+	<img src=""   class="cardbg"  style="display:none;" />
+	<img src="" id="cardlogo" class="logo" style="display:none;">
+	<h1 id="card_name" class="card_name"></h1>
+	<p class="miaoshu" id="miaoshu"></p>
+<strong class="pdo verify" ><span id="cdnb"><em id="kaohao_em">会员卡号</em><p id="kahao"></p></span></strong> 
+</div>
+</div>
+
+
+<div class="cardexplain" >
+<div class="jifen-box">
+<ul class="zongjifen">
+<li><a>
+<div class="fengexian">
+<p>会员等级</p>
+<span id="level_name"></span></div>
+</a></li>
+ 
+ <li><a href="money_mingxi.html">
+<div class="fengexian">
+<p>卡内余额</p>
+<span id="balance"></span></div>
+</a></li>
+
+<li><a href="jifenjilu.html">
+<div class="fengexian">
+<p>可用积分</p>
+<span id="member_score"></span></div>
+</a></li>
+
+<li><a href="myyouhuiquan.html">
+<div class="">
+<p>优惠券</p>
+<span id="youhui_count"></span></div>
+</a></li>
+</ul>
+<div class="clr"></div>
+</div>
+
+
+
+
+<div class="toutiao">
+	<div class="toutiao_left">
+		<a href=""><img src="images/1111.png" /></a>
+	</div>
+	<div class="toutiao_right">
+		<ul>
+			
+		</ul>
+	</div>
+</div>
+
+<div style="clear: both;"></div>
+
+
+<div id="shang_plugin_block">
+<!-- 
+<ul class="round"  id="shang_plugin"  >
+<li><a href="shang_plugin.html?pluginid=yanyubao_shanghu_renzheng&login_require=1"><span>延誉宝商户认证</span></a></li>
+<li><a href="yanyubao_shanghu_renzheng.html?sellerid="><span>延誉宝商户认证</span></a></li>
+</ul> -->
+</div>
+
+<div id="img_list" style="width:100%;margin-bottom: 10px; ">
+</div>
+
+
+
+<ul class="round" id="notice">
+<li><a href="pay_consumed.html"><span>付款和申请积分<em id="pay_consumed" style="background: #FFA500;">&nbsp;</em></span></a></li>
+<li><a href="money_mingxi.html"><span>余额明细<em id="money_mingxi"></em></span></a></li>
+<li><a href="jifen_shop.html"><span>积分商城</span></a></li>
+<li><a href="jifenjilu.html"><span>积分记录<em id="score_cord"></em></span></a></li>
+<li><a href="myyouhuiquan.html"><span>我的优惠券<em  id="my_youhui"></em></span></a></li>          	
+<!-- 
+<li><a href="/index.php?g=Wap&m=Card&a=integral&token=wxkqkk1473062713&wecha_id=oH9ymt8iRgeO_s4bmcbqPKrB6D48&cardid=8"><span>积分换礼品<em class="error">0</em></span></a></li>
+ -->
+<li><a href="getyouhuiquan.html"><span>领优惠券<em id="get_youhui"></em></span></a></li>
+<!-- <li><a href="hongbao.html"><span>我的红包<em class="error">0</em></span></a></li> -->
+</ul>
+
+<ul class="round"  id="powerandgift"  >
+<li><a href="about.html"><span>关于我们</span></a></li>
+
+</ul>
+<ul class="round">
+<!-- <li><a href="qiandao.html"><span>签到赚积分<em class="error">签到赚积分</em><em class="ok">今日已签到</em></span></a></li> -->
+<li><a href="info.html"><span>个人资料</span></a></li>
+<li><a href="mycard.html"><span>会员卡列表</span></a></li>
+<!-- <li><a href="address.html"><span>方圆5公里</span></a></li> -->
+</ul>
+
+
+
+<!--
+<ul class="round" >
+<li><a href="about.html"><span>关于延誉宝</span></a></li>
+</ul>
+-->
+
+
+<div style="width:100%;margin: 0 auto;border-radius: 5px;">
+  <li style="width:100%;height:30px;margin: 0 auto;position: relative;">
+      <i class="Hui-iconfont" style="font-size: 22px;position:absolute;top:0px; left:0px;color: #444;">&#xe6c7;</i>
+      <span style="position:absolute;color:#444;top:3px;left:30px;font-size: 14px;" id="shang_telephone"></span>
+      <!-- <i class="Hui-iconfont" style="font-size: 22px;position:absolute;top:8px; right:0px;color: #666;">&#xe6d7;</i> -->
+  </li>
+  <li style="width:100%;height:30px;margin: 0 auto;position: relative;">
+      <i class="Hui-iconfont" style="font-size: 22px;position:absolute;top:0px; left:0px;color: #444;">&#xe6c9;</i>
+      <span style="position:absolute;color:#444;top:3px;left:30px;width: 80%;font-size: 14px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;" id="shang_address"></span>
+     <!--  <i class="Hui-iconfont" style="font-size: 22px;position:absolute;top:8px; right:0px;color: #666;">&#xe6d7;</i> -->
+  </li>
+</div>
+</div>
+
+
+
+
+
+
+<div class="box-shadow">
+	<div class="xiaofei">
+	  <a href="pay_consumed.html"><img src="images/fk.png" /></a>
+	</div>
+</div>
+<!-- <div class="footermenu" style="font-style:italic">
+Produced by 上海延誉<a href="http://www.abot.cn"><img src="http://www.abot.cn/wp-content/themes/abotcn/images/logo-yanyu-2016.gif"></a>
+</div> -->
+<!-- <script src="https://cms.weiduke.com/index.php?g=Home&m=Yanyubao&a=get_yingxiao_latest_img&sellerid=qunfa158&format=js" type="text/javascript"></script> -->
+<script type="text/javascript">
+var GET = $.urlGet();
+var sellerid = GET['sellerid'];
+if(!sellerid){
+	sellerid = get_current_sellerid();
+}
+if(!sellerid){
+	sellerid = 'pQNNmSkaq';
+}
+var weiduke_news_list_url = 'https://cms.weiduke.com/index.php?g=Home&m=Yanyubao&a=get_yingxiao_latest_img&sellerid='+sellerid+'&format=js';
+document.write('<scr'+'ipt src="'+weiduke_news_list_url+ '"></scr'+'ipt>');
+
+$(function() {
+	console.log(shanghu_toutiao_latest);
+
+	var toutiao_info = JSON.parse(shanghu_toutiao_latest);
+	//alert(shanghu_toutiao_latest);
+	//localStorage.removeItem("o_weixin_openid");
+	//get_openid_from_server();
+	
+	/* ==============商户头条开始============== */
+	$(".toutiao_left a").attr('href',shanghu_toutiao_url);
+	
+	
+	if(toutiao_info && toutiao_info[0]){
+		 $.each(toutiao_info,function(key,value){
+   
+           $(".toutiao_right ul").append('<li><a href="'+value.url+'">'+value.title+'</a></li>');
+         });
+	}	
+	
+	$(".toutiao_right").Scroll({line:1,speed:1200,timer:2500,up:"but_up",down:"but_down"});
+	/* ==============商户头条结束============== */
+});
+
+//判断是否微信浏览器
+$(function() {
+	
+	if (isWeiXin()) {
+		//alert('333333');
+		//检查是否要从服务器获取openid
+		get_openid_from_server();
+
+		//检查本地是否有openid
+		//var openid = check_openid_cache();
+		
+		
+
+	}
+});
+
+function isWeiXin() {
+	var ua = window.navigator.userAgent.toLowerCase();
+	if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function get_openid_from_server() {
+	var GET = $.urlGet();
+	var weixin_openid_token = GET['weixin_openid_token'];
+	
+	//alert(window.location.href);alert("get from url, openid token:"+weixin_openid_token);
+	
+	if (weixin_openid_token) {
+		//alert('ready to get weixin_get_openid');
+
+		//同步ajax请求
+		$.ajax({
+			url : http_server + "/index.php?g=Yanyubao&m=Gongzhong&a=weixin_get_openid",
+			type:"POST",
+			dataType : "json",
+			data : {
+				"weixin_openid_token" : weixin_openid_token
+			},
+			success : function(res) {
+				//alert(res);
+				//alert('get openid:'+res.openid);alert('get userid:'+res.userid);
+				
+				localStorage.setItem("o_weixin_openid", res.openid);
+				if(res.userid == 0){
+					//location.href = "weixin_bind.html";
+					//return;
+				}
+				else{
+					set_login_info(res.userid, res.checkstr)
+					
+					location.href = "index.html";
+					return;
+				}
+				
+			}
+		});
+		
+
+	}
+	else{
+		check_openid_cache();
+	}
+}
+
+function check_openid_cache() {
+	var o_weixin_openid = localStorage.getItem("o_weixin_openid");
+	
+	//alert('openid local:'+o_weixin_openid);
+	//alert(encodeURIComponent(document.location.href));
+	
+	if (o_weixin_openid == false) {
+	//alert('11111');
+		location.href = http_server + "/index.php?g=Yanyubao&m=Gongzhong&a=weixin_oauthor&returl="+encodeURIComponent(document.location.href);
+		return;
+	}
+	//alert('222222');
+
+	return o_weixin_openid;
+}
+
+</script>
+
+
+<script type="text/javascript" src="controller/index.js"></script>
+
+
+<script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js" type="text/javascript"></script>
+
+<script language="javascript">
+window.share001 = {
+		"title" : "获取微信钱包和支付宝的收款二维码",
+		"text" : "如何获取微信钱包和支付宝的收款二维码？要免费的！",
+		"url" : "http://cms.weiduke.com/index.php/Wap/Index/content/id/1304/classid/658/token/eblkvm1492166970/wecha_id/odSjJjtfDABPRnuGyjlmi8k_GlQo.shtml",
+		"pic" : "http://cms.weiduke.com/uploads/e/eblkvm1492166970/8/c/5/9/thumb_59f0056e5c4e8.jpg"
+};
+window.signPackage = {
+		"appId" : "",
+		"timestamp" : "",
+		"nonceStr" : "",
+		"signature" : ""
+};
+
+$(function(){
+	
+	var GET = $.urlGet();
+	//alert(JSON.stringify(GET));
+	
+ 	var sellerid = get_current_sellerid();
+    //var login_info = get_login_info();
+	
+	var url = http_server + "/index.php?g=Yanyubao&m=Gongzhong&a=weixin_share";
+	
+	$.ajax({
+		url:url,
+		type:"POST",
+		dataType:"json",
+		data:{
+			"userid":'',
+            "checkstr":'',
+            "sellerid":sellerid,
+            "productid":'88888888'
+			},
+		success:function(res){
+			console.log(res);
+			
+			 if(res.code == 1){
+			 //alert(JSON.stringify(res.signPackage));
+
+				window.signPackage.appId = res.signPackage.appId;
+				window.signPackage.timestamp = res.signPackage.timestamp;
+				window.signPackage.nonceStr = res.signPackage.nonceStr;
+				window.signPackage.signature = res.signPackage.signature;
+				
+				window.share001.title = res.share001.title;
+				window.share001.desc = res.share001.desc;
+				window.share001.link = res.share001.link;
+				window.share001.imgUrl = res.share001.imgUrl;
+				
+				console.log(window.signPackage.appId);
+				console.log(window.share001);
+
+				/*
+        appId: 'wx84e25fd5d38d37c3', 
+        timestamp: 1513572147, 
+        nonceStr: 'VhTbwLRPqeAdAOYk', 
+        signature: '6b18605a1f447e5aaaf31f1b51e73e9c35770a88',
+*/
+
+wx.config({
+        debug: false, /* 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。*/
+        appId: window.signPackage.appId, /* 必填，公众号的唯一标识*/
+        timestamp: window.signPackage.timestamp+'', /* 必填，生成签名的时间戳*/
+        nonceStr: window.signPackage.nonceStr, /* 必填，生成签名的随机串*/
+        signature: window.signPackage.signature,/* 必填，签名，见附录1*/
+        jsApiList: [
+        'checkJsApi',
+        'onMenuShareTimeline',
+        'onMenuShareAppMessage',
+        'onMenuShareQQ',
+        'onMenuShareWeibo',
+        'hideMenuItems',
+        'showMenuItems',
+        'hideAllNonBaseMenuItem',
+        'showAllNonBaseMenuItem',
+        'translateVoice',
+        'startRecord',
+        'stopRecord',
+        'onRecordEnd',
+        'playVoice',
+        'pauseVoice',
+        'stopVoice',
+        'uploadVoice',
+        'downloadVoice',
+        'chooseImage',
+        'previewImage',
+        'uploadImage',
+        'downloadImage',
+        'getNetworkType',
+        'openLocation',
+        'getLocation',
+        'hideOptionMenu',
+        'showOptionMenu',
+        'closeWindow',
+        'scanQRCode',
+        'chooseWXPay',
+        'openProductSpecificView',
+        'addCard',
+        'chooseCard',
+        'openCard'
+      ] /* 必填，需要使用的JS接口列表，所有JS接口列表见附录2*/
+	});
+				
+				if (typeof WeixinJSBridge == "undefined"){
+				    if( document.addEventListener ){
+				        document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+				    }else if (document.attachEvent){
+				        document.attachEvent('WeixinJSBridgeReady', onBridgeReady); 
+				        document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+				    }
+				}else{
+				    onBridgeReady();
+				}
+								
+			} 
+			
+		}
+	});
+	
+	
+
+})
+
+function onBridgeReady(){
+console.log(window.signPackage);
+
+	WeixinJSBridge.call('showOptionMenu');
+}
+
+
+
+wx.ready(function(){
+	//分享到朋友圈
+	wx.onMenuShareTimeline({
+		title: window.share001.title, // 分享标题
+		link: window.share001.link,
+		imgUrl: window.share001.imgUrl, // 分享图标
+		success: function () { 
+			alert('分享成功！');			
+			//window.location.href="{pigcms:$shareTimelineUrl}";
+		},
+		cancel: function () {
+			// 用户取消分享后执行的回调函数
+			alert('很遗憾您取消了本次分享！');
+		}
+	});
+	//分享给朋友
+	wx.onMenuShareAppMessage({
+		title: window.share001.title, // 分享标题
+		desc: window.share001.desc, // 分享描述
+		link: window.share001.link, // 分享链接
+		imgUrl: window.share001.imgUrl, // 分享图标
+		type: '', // 分享类型,music、video或link，不填默认为link
+		dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+		success: function () {
+			alert('操作成功~！');	
+		},
+		cancel: function () { 
+			// 用户取消分享后执行的回调函数
+			alert('很遗憾您取消了本次操作！');
+		}
+	});
+    // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+});
+
+
+wx.error(function(res){
+	console.log(res);
+	alert(JSON.stringify(res));
+
+    // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+
+});
+
+</script>
+
+
+</body>
+</html>

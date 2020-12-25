@@ -1,0 +1,50 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>性别</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<link href="css/fans1.css" rel="stylesheet" type="text/css"> 
+<script type="text/javascript" src="js/jquery.min.js"></script> 
+<script type="text/javascript" src="js/abot.js"></script>
+<script type="text/javascript" src="js/layer/layer.js"></script>
+
+</head>
+<body id="fans" >
+<div class="header">
+	<a href="info.html"><div class="header_left"></div></a>
+	<div class="header_title">性别</div>
+</div>
+<div class="cardexplain">
+<style>
+.por{width:65px;height:65px;margin: 0px auto;}
+.por img{
+	width:60px;height:60px;cursor:pointer;
+	border-radius:50%;}
+.por img.selected{border:2px solid #f60};
+</style>
+
+<!-- <li class="infos" style="margin-top:20px;">
+ <div class="sex">性别</div>
+ <select class="ui-choose" id="uc_02" style="float:right;">
+	                        <option 
+	                        value="男">男</option>
+	                        <option value="女">女</option>
+	                        
+</select>
+</li> -->
+<li class="infos" style="border:1px solid #C6C6C6;clear: both; width: 100%;height: 35px;padding:3px 0;background: #fff;margin-top:20px;border-radius: 3px;">
+		 <select  class="selectkuang" id="uc_02">
+		 <option value="0">请选择性别</option>
+		  <option value="男">男</option>
+	      <option value="女">女</option>
+		 </select>  
+		</li>
+<div class="clear" style="clear: both;"></div>
+<div class="footReturn">
+<a id="button"  class="submit" >提交信息</a>
+<script type="text/javascript" src="controller/sex.js"></script>
+</body>
+</html>

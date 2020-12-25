@@ -1,0 +1,68 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>生日</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<link href="css/fans1.css" rel="stylesheet" type="text/css"> 
+<link href="css/mobiscroll.css" rel="stylesheet" />
+<link href="css/mobiscroll_date.css" rel="stylesheet" />
+<script type="text/javascript" src="js/jquery.min.js"></script> 
+<script src="js/mobiscroll_date.js" charset="gb2312"></script> 
+<script src="js/mobiscroll.js"></script> 
+<script type="text/javascript" src="js/layer/layer.js"></script>
+<script type="text/javascript" src="js/abot.js"></script>
+
+</head>
+<body id="fans" >
+<div class="header">
+	<a href="info.html"><div class="header_left"></div></a>
+	<div class="header_title">生日</div>
+</div>
+<div class="cardexplain">
+<style>
+.por{width:65px;height:65px;margin: 0px auto;}
+.por img{
+	width:60px;height:60px;cursor:pointer;
+	border-radius:50%;}
+.por img.selected{border:2px solid #f60};
+</style>
+
+<li class="infos" style="border-bottom:1px solid #C6C6C6;">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="kuang">
+<tr>
+<td><input  name="USER_AGE" id="USER_AGE" readonly class="input  px"   value=""  type="text"  placeholder="请输入生日信息"/>
+     <div id="dtBox"></div>
+</td>
+</tr>
+</table>
+</li>
+<a id="button"  class="submit" >提交信息</a>
+<script type="text/javascript">
+$(function () {
+	var currYear = (new Date()).getFullYear();	
+	var opt={};
+	opt.date = {preset : 'date'};
+	opt.datetime = {preset : 'datetime'};
+	opt.time = {preset : 'time'};
+	opt.default = {
+		theme: 'android-ics light', //皮肤样式
+		display: 'modal', //显示方式 
+		mode: 'scroller', //日期选择模式
+		dateFormat: 'yyyy-mm-dd',
+		lang: 'zh',
+		showNow: true,
+		nowText: "今天",
+		startYear: currYear - 50, //开始年份
+		endYear: currYear + 10 //结束年份
+	};
+
+	$("#USER_AGE").mobiscroll($.extend(opt['date'], opt['default']));
+
+});
+</script>
+<script type="text/javascript" src="controller/birthday.js"></script>
+</body>
+</html>

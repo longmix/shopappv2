@@ -1437,7 +1437,9 @@ module.exports = {
    
 			}
    
-		} else if ((url.indexOf('http://') == 0)||(url.indexOf('https://') == 0)) {
+		} else if ((url.indexOf('http://') == 0)
+			||(url.indexOf('https://') == 0)
+			||(url.indexOf('/hybrid/html/') == 0)) {
 			console.log('abotapi.js call_h5browser_or_other_goto_url ==>> 准备跳转网址：'+url);
 			
 			

@@ -1,0 +1,47 @@
+body, article, section, h1, h2, hgroup, p, a, ul, li, em, div, small, span, footer, canvas, figure, figcaption, input {
+    margin: 0;
+    padding: 0;
+}
+a {
+	color:#666;
+    cursor: pointer;
+    text-decoration: none;
+}
+ul,li{
+    list-style-type: none;
+}
+.boxx{
+  width: 80%;
+  margin: 55% auto;
+}
+.text_info{
+  font-size: 16px;
+  text-align: center;
+  color: #666;
+  font-weight: bolder;
+  margin-top:10px; 
+  margin-bottom:2px; 
+}
+.text_info1{
+  font-size: 14px;
+  text-align: center;
+  color: #666;
+}
+.button{
+  width: 150px;
+  height: 30px;
+  line-height: 30px;
+  display: block;
+  margin:20px auto;
+  text-align: center;
+  font-size: 16px;
+  letter-spacing:2px;
+  background: #fff;
+  border:1px solid #f60;
+  color:#f60;
+  border-radius: 5px;
+  }
+  .card_type{
+    margin-left:20px;
+    color: #f60;  
+  }

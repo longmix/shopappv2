@@ -1,0 +1,15 @@
+<script src="js/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+	localStorage.removeItem("o_weixin_openid");
+	
+	var o_weixin_openid = localStorage.getItem("o_weixin_openid");	
+	alert('openid local:'+o_weixin_openid);
+
+	del_login_info();
+	alert('del_login_info');
+});
+
+
+</script>
+

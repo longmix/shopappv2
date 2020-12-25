@@ -1,0 +1,395 @@
+<html ng-app="detail">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>商品详情</title>
+<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<link href="css/style.css" rel="stylesheet" type="text/css">
+<link href="css/fans.css" rel="stylesheet" type="text/css">
+<link href="css/quan.css" rel="stylesheet" type="text/css">
+<script src="js/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/layer/layer.js"></script>
+
+<link href="css/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="js/abot.js"></script>
+
+
+
+ <link href="css/ionic.css" rel="stylesheet">
+ <script src="js/ionic.bundle.min.js"></script>
+  <script type="text/javascript" src="controller/product_detail.js"></script> 
+
+</head>
+<style type="text/css">
+ .titTab{
+ 	width: 100%;
+ 	height:45px;
+    border-bottom: 1px solid #f2f2f2;
+    border-top: 1px solid #f2f2f2;
+  /*  background: #e6e6e6;*/
+ }
+  .titTab li{
+  	width: 50%;
+  	height: 45px;
+  	line-height:45px;
+  	text-align: center;
+  	font-size: 16px;
+  	float: left;
+  	box-sizing: border-box;
+
+  }
+  .titInfo{
+  	width: 100%;
+  }
+  .li_actived{
+  	color: #f00;
+ 	border-bottom:2px solid #f00;
+  }
+  .li_xiang{
+  	width: 100%;
+  	height: 40px;
+  	border-bottom: 1px solid #f3f3f3;
+  }
+  .li_xiang_left{
+  	width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp:1;
+  -webkit-box-orient: vertical;
+  	color: #666;
+  	font-size: 14px;
+  	height: 40px;
+  	line-height: 40px;
+  	text-indent: 8px;
+  }
+  .bottom_cao_li{
+  	height: 50px;
+  	float: left;
+  	width: 15%;
+  }
+  .bottom_cao_li_btn{
+  	width:35%;
+  	height: 50px;
+  	line-height: 50px;
+  	float: left;
+  	color: #fff;
+  	text-align: center;
+  	font-size: 16px;
+  }
+  .xiangqing img{
+    display: block;
+    margin:0 auto;
+    max-width: 100%;
+  }
+</style>
+<body style="background: #fff;" ng-controller="detailCtl">
+<div class="tops">
+   <a ng-click="back_list()"><span class="back_tb"></span></a>
+   <span class="tops_title">商品详情</span>
+</div>
+<ion-content style="margin-top:50px;">
+
+        <ion-slide-box  style="width: 100%;" does-continue ="true" auto-play="true" slide-interval ="4000" on-slide-changed="slideBanner($index)" id="banner_img">
+            <ion-slide class="text-center" ng-repeat="img  in   product_detail.pictures">
+              <img  src="{{img.picture}}" style="width: 100%;height:100%;display: block;">
+            </ion-slide>
+                      
+        </ion-slide-box>
+
+
+<!--  <div class="main_visual  banner_img">
+	 <div class="flicking_con">
+		<span></span>
+		<span></span>
+		<span></span>
+	</div>
+	<div class="main_image">
+		<ul>
+			<li><img src="images/1.jpg" style="width: 100%;display: block;" class="banner_img"></li>
+			<li><img src="images/2.jpg" style="width: 100%;display: block;" class="banner_img"></li>
+			<li><img src="images/3.jpg" style="width: 100%;display: block;" class="banner_img"></li>
+		</ul>
+		<a href="javascript:;" id="btn_prev" style="display: none;"></a>
+		<a href="javascript:;" id="btn_next" style="display: none;"></a>
+	</div> 
+</div> -->
+
+<div style="width: 100%;padding:5px 0 10px 0;position: relative;">
+  <div style="width:85%;margin: 0 0 0 2%;">
+    <p style="font-size: 16px;color: #000; overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp:2;-webkit-box-orient: vertical;">{{product_detail.name}}</p>
+    <p style="font-size: 16px;color: #f00;margin: 5px 0 0 0;">{{product_detail.price}}积分</p>
+  </div>
+  <img src="images/fen.png" style="width:35px;height: 36px;position: absolute;top:15px;right:15px;z-index: 777;">
+
+</div>
+
+
+
+
+
+<div style="width: 100%;padding-top: 20px;">
+   <div class="titTabs"> 
+	   <ul class="titTab"> 
+	    <li>图文详情</li> 
+	    <li>产品参数</li> 
+	   </ul> 
+   </div>
+</div>
+
+ <div class="titInfo"> 
+
+
+  <li style="width: 100%;" class="xiangqing" ng-bind-html="product_detail.describe">
+    
+  </li>
+
+
+   <li style="width: 100%;">
+      <div class="li_xiang"><input type="hidden" id="productid" ng-model="productid" />
+        <div class="li_xiang_left">产品名称：<span style="color: #333;">{{product_detail.name}}</span></div>
+      </div>
+     <!--  <div class="li_xiang">
+          <div class="li_xiang_left">产品单位：<span style="color: #333;">双</span></div>
+      </div> -->
+      <div class="li_xiang">
+          <div class="li_xiang_left">分类：<span style="color: #333;">积分商品</span></div>
+      </div>
+      
+   </li>
+ </div>
+
+<div style="width: 100%;height: 50px;"></div>
+</ion-content>
+
+<div style="width: 100%;height: 50px;background:#fff;position: fixed;bottom: 0;z-index: 9999;">
+
+  <ul>
+	    <li class="bottom_cao_li" ng-click="back_list()">
+	       <div style="width: 50px;height: 40px;margin: 5px auto;">
+               <i class="Hui-iconfont" style="font-size: 22px;position: relative;left: 14px;color: #555;">&#xe6c0;</i>
+               <p style="width:50px;height:15px;font-size: 10px;text-align: center;color: #444;">商品列表</p>
+	       </div>
+	    </li>
+	    <li class="bottom_cao_li"  ng-click="favorite()">
+	       <div style="width: 50px;height: 40px;margin: 5px auto;" ng-if="icon1">
+              <i class="Hui-iconfont" style="font-size: 22px;position: relative;left: 14px;color: #f00;">&#xe630;</i>
+              <p style="width: 50px;height:15px;font-size: 10px;text-align: center; color: #f00;">取消收藏</p>
+	       </div>
+
+         <div style="width: 50px;height: 40px;margin: 5px auto;" ng-if="icon2">
+              <i class="Hui-iconfont" style="font-size: 22px;position: relative;left: 14px;color: #333;">&#xe69e;</i>
+              <p style="width: 50px;height:15px;font-size: 10px;text-align: center;color: #333;">加入收藏</p>
+         </div>
+	    </li>
+	    <li class="bottom_cao_li_btn" style="background: #ff8855;" id="button">分享给朋友</li>
+      <li class="bottom_cao_li_btn" style="background: #dd2727;" ng-click="product_exchange(product_detail.price)">立即兑换</li>
+        
+  </ul>
+  
+</div>
+
+
+
+<script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js" type="text/javascript"></script>
+
+<script language="javascript">
+window.share001 = {
+		"title" : "获取微信钱包和支付宝的收款二维码",
+		"text" : "如何获取微信钱包和支付宝的收款二维码？要免费的！",
+		"url" : "http://cms.weiduke.com/index.php/Wap/Index/content/id/1304/classid/658/token/eblkvm1492166970/wecha_id/odSjJjtfDABPRnuGyjlmi8k_GlQo.shtml",
+		"pic" : "http://cms.weiduke.com/uploads/e/eblkvm1492166970/8/c/5/9/thumb_59f0056e5c4e8.jpg"
+};
+window.signPackage = {
+		"appId" : "",
+		"timestamp" : "",
+		"nonceStr" : "",
+		"signature" : ""
+};
+
+$(function(){
+	
+	var GET = $.urlGet();
+	//alert(JSON.stringify(GET));
+
+	var productid = GET['pid'];
+	
+ 	var sellerid = get_current_sellerid();
+    var login_info = get_login_info();
+	
+	var url = http_server + "/index.php?g=Yanyubao&m=Gongzhong&a=weixin_share";
+	
+	$.ajax({
+		url:url,
+		type:"POST",
+		dataType:"json",
+		data:{
+			"userid":login_info.userid,
+            "checkstr":login_info.checkstr,
+            "sellerid":sellerid,
+            "productid":productid
+			},
+		success:function(res){
+			console.log(res);
+			
+			 if(res.code == 1){
+			 //alert(JSON.stringify(res.signPackage));
+
+				window.signPackage.appId = res.signPackage.appId;
+				window.signPackage.timestamp = res.signPackage.timestamp;
+				window.signPackage.nonceStr = res.signPackage.nonceStr;
+				window.signPackage.signature = res.signPackage.signature;
+				
+				window.share001.title = res.share001.title;
+				window.share001.desc = res.share001.desc;
+				window.share001.link = res.share001.link;
+				window.share001.imgUrl = res.share001.imgUrl;
+				
+				console.log(window.signPackage.appId);
+				console.log(window.share001);
+
+				/*
+        appId: 'wx84e25fd5d38d37c3', 
+        timestamp: 1513572147, 
+        nonceStr: 'VhTbwLRPqeAdAOYk', 
+        signature: '6b18605a1f447e5aaaf31f1b51e73e9c35770a88',
+*/
+
+wx.config({
+        debug: false, /* 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。*/
+        appId: window.signPackage.appId, /* 必填，公众号的唯一标识*/
+        timestamp: window.signPackage.timestamp+'', /* 必填，生成签名的时间戳*/
+        nonceStr: window.signPackage.nonceStr, /* 必填，生成签名的随机串*/
+        signature: window.signPackage.signature,/* 必填，签名，见附录1*/
+        jsApiList: [
+        'checkJsApi',
+        'onMenuShareTimeline',
+        'onMenuShareAppMessage',
+        'onMenuShareQQ',
+        'onMenuShareWeibo',
+        'hideMenuItems',
+        'showMenuItems',
+        'hideAllNonBaseMenuItem',
+        'showAllNonBaseMenuItem',
+        'translateVoice',
+        'startRecord',
+        'stopRecord',
+        'onRecordEnd',
+        'playVoice',
+        'pauseVoice',
+        'stopVoice',
+        'uploadVoice',
+        'downloadVoice',
+        'chooseImage',
+        'previewImage',
+        'uploadImage',
+        'downloadImage',
+        'getNetworkType',
+        'openLocation',
+        'getLocation',
+        'hideOptionMenu',
+        'showOptionMenu',
+        'closeWindow',
+        'scanQRCode',
+        'chooseWXPay',
+        'openProductSpecificView',
+        'addCard',
+        'chooseCard',
+        'openCard'
+      ] /* 必填，需要使用的JS接口列表，所有JS接口列表见附录2*/
+	});
+				
+				if (typeof WeixinJSBridge == "undefined"){
+				    if( document.addEventListener ){
+				        document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+				    }else if (document.attachEvent){
+				        document.attachEvent('WeixinJSBridgeReady', onBridgeReady); 
+				        document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+				    }
+				}else{
+				    onBridgeReady();
+				}
+								
+			} 
+			
+		}
+	});
+	
+	
+
+})
+
+function onBridgeReady(){
+console.log(window.signPackage);
+
+	WeixinJSBridge.call('showOptionMenu');
+}
+
+
+
+wx.ready(function(){
+	//分享到朋友圈
+	wx.onMenuShareTimeline({
+		title: window.share001.title, // 分享标题
+		link: window.share001.link,
+		imgUrl: window.share001.imgUrl, // 分享图标
+		success: function () { 
+			alert('分享成功！');			
+			//window.location.href="{pigcms:$shareTimelineUrl}";
+		},
+		cancel: function () {
+			// 用户取消分享后执行的回调函数
+			alert('很遗憾您取消了本次分享！');
+		}
+	});
+	//分享给朋友
+	wx.onMenuShareAppMessage({
+		title: window.share001.title, // 分享标题
+		desc: window.share001.desc, // 分享描述
+		link: window.share001.link, // 分享链接
+		imgUrl: window.share001.imgUrl, // 分享图标
+		type: '', // 分享类型,music、video或link，不填默认为link
+		dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+		success: function () {
+			alert('操作成功~！');	
+		},
+		cancel: function () { 
+			// 用户取消分享后执行的回调函数
+			alert('很遗憾您取消了本次操作！');
+		}
+	});
+    // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+});
+
+
+wx.error(function(res){
+	console.log(res);
+	alert(JSON.stringify(res));
+
+    // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+
+});
+
+</script>
+
+
+ <script type="text/javascript">
+    $(document).ready(function(e) {
+    	
+    	  $(".titTab li").eq(0).addClass("li_actived");
+    	   $(".titInfo li").eq(0).show();
+    	   $(".titInfo li").eq(1).hide()
+
+        $(".titTab li").click(function(){
+          $(".titTab li").eq($(this).index()).addClass("li_actived").siblings().removeClass("li_actived");
+          $(".titInfo li").hide().eq($(this).index()).show();
+        });
+    });
+  </script>
+
+  
+</body>
+</html>

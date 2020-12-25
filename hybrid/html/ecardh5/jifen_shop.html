@@ -1,0 +1,80 @@
+<html  ng-app="ionicApp">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>积分商城</title>
+<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<link href="css/style.css" rel="stylesheet" type="text/css">
+<link href="css/fans.css" rel="stylesheet" type="text/css">
+<link href="css/quan.css" rel="stylesheet" type="text/css">
+
+<link href="css/ionic.css" rel="stylesheet" type="text/css">
+<script src="js/ionic.bundle.min.js"></script>
+
+<script type="text/javascript" src="js/abot.js"></script>
+
+<script>
+ 
+</script>
+<style type="text/css">
+.xiangqing img{
+max-width:100%;
+}
+</style>
+
+</head>
+<body   ng-controller="AppCtrl">
+<div class="tops">
+   <a onclick="get_back()"><span class="back_tb"></span></a>
+   <span class="tops_title">积分商城</span>
+</div>
+
+  <ion-content style="margin-top:50px;">
+                     
+					 <div>
+					 <li style="width: 100%;" class="xiangqing" ng-bind-html="shop_setting_describe">
+					 </li>
+					 </div>
+					 <div style="width:100%;background: #fff; padding:5px 0 0 0;" ng-repeat="product in product_list" ng-click="detail(product.productid)">
+                    
+	                    <div style="width: 80px;height: 80px; float: left;">
+	                      <img src="{{product.picture}}" alt="图片加载失败"  style="width:80px; height: 80px; display: block;">
+	                    </div> 
+	                	 <div style="width: 100%; height: 80px;box-sizing:border-box; padding:0 8px 0  90px;border-bottom: 1px solid #e6e6e6;">
+		                     <p style="font-size:14px;color:#222;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp:2;-webkit-box-orient: vertical;">{{product.name}}</p>
+                       
+		                     <p style="font-size:14px;color:#EF473A;margin-top: 10px; ">{{product.price}} 积分</p>
+		                     
+                       
+	                    </div>
+	             
+	                    <div style="clear: both;"></div>
+	        
+                   </div>
+
+          <div  ng-if="xiala">
+
+            <p class="text-center" style="width: 100%;height: 40px;line-height:40px;font-size: 14px;color: #999; margin:0 auto;text-align: center;">{{tishi}}</p>
+            <ion-infinite-scroll ng-if="!noMorePage" immediate-check="false" on-infinite="loadMore()" distance="1%"   spinner="ios"></ion-infinite-scroll>
+        </div>
+   </ion-content>     
+
+                    
+
+<script type="text/javascript">
+
+  function get_back(){
+  		window.location.href="index.html";
+  }
+
+
+</script>
+
+
+
+
+<script type="text/javascript" src="controller/jifen_shop.js"></script>
+</body>
+</html>

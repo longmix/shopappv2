@@ -136,9 +136,8 @@
 			
 				uni.clearStorageSync();
 				
-				uni.switchTab({
-					url: '../../index/index'
-				})
+				this.abotapi.call_h5browser_or_other_goto_url('/pages/index/index');
+				
 				
 			},
 			

@@ -1,0 +1,60 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>绑定手机</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<link href="css/fans1.css" rel="stylesheet" type="text/css"> 
+
+<script type="text/javascript" src="js/jquery.min.js"></script> 
+<script type="text/javascript" src="js/layer/layer.js"></script>
+<script type="text/javascript" src="js/abot.js"></script> 
+</head>
+<body id="fans" >
+
+<div class="header">
+	<div class="header_title">绑定手机</div>
+</div>
+<div class="cardexplain">
+<style>
+.por{width:65px;height:65px;margin: 0px auto;}
+.por img{
+	width:60px;height:60px;cursor:pointer;
+	border-radius:50%;}
+.por img.selected{border:2px solid #f60};
+</style>
+
+<li class="infos" style="border-bottom:1px solid #C6C6C6;">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="kuang">
+<tr>
+<td><input name="mobile"  class="px"  id="mobile" value=""  type="tel" placeholder="请输入手机号"/>
+</td>
+</tr>
+</table>
+</li>
+<li class="infos" style="border-bottom:1px solid #C6C6C6;">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="kuang">
+<tr>
+<td><input  name="tpyzm"  class="px" id="tpyzm" value=""  type="tel" placeholder="请输入算术题答案" style="width:68%" />
+<input  id="tokenstr" value=""  type="hidden" />
+<div class="tupian"><img src="" width="100%" height="35" id="verify" onclick="get_verify()"></div>
+
+</td>
+</tr>
+</table>
+</li>
+<li class="infos" style="border-bottom:1px solid #C6C6C6;">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="kuang">
+<tr>
+<td><input   name="yzm"  class="px" id="yzm" value=""  type="tel" placeholder="请输入手机验证码" style="width:68%"/>
+<button class="yanzhengma" id="getyzm" value="60"><p id="wenzi">获取验证码<p></button>
+</td>
+</tr>
+</table>
+</li>
+<a id="button"  class="submit" >开始绑定</a>
+<script type="text/javascript" src="controller/weixin_bind.js"></script>
+</body>
+</html>

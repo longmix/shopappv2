@@ -1,0 +1,130 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>二维码</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<link href="css/fans1.css" rel="stylesheet" type="text/css"> 
+
+<script type="text/javascript" src="js/jquery.min.js"></script> 
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="js/jquery.js">\x3C/script>')</script>
+<script src="js/jquery.artDialog.js?skin=default"></script>
+<script src="js/iframeTools.js"></script>
+<script src="js/upyun.js?2013"></script>
+
+<style>
+#second_show{width:20px;background:#fff;float:left;display:block;}
+
+.footFix{width:100%;text-align:center;position:fixed;left:0;bottom:0;z-index:99;}
+#footReturn a, #footReturn2 a {
+	display: block;
+	line-height: 41px;
+	color: #fff;
+	text-shadow: 1px 1px #282828;
+	font-size: 14px;
+	font-weight: bold;
+}
+#footReturn, #footReturn2 {
+	z-index: 89;
+	display: inline-block;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: middle;
+	cursor: pointer;
+	width: 100%;
+	outline: 0 none;
+	overflow: visible;
+	Unknown property name.-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	padding: 0;
+	height: 41px;
+	opacity: .95;
+	border-top: 1px solid #181818;
+	box-shadow: inset 0 1px 2px #b6b6b6;
+	background-color: #515151;
+	Invalid property value.background-image: -ms-linear-gradient(top,#838383,#202020);
+	background-image: -webkit-linear-gradient(top,#838383,#202020);
+	Invalid property value.background-image: -moz-linear-gradient(top,#838383,#202020);
+	Invalid property value.background-image: -o-linear-gradient(top,#838383,#202020);
+	background-image: -webkit-gradient(linear,0% 0,0% 100%,from(#838383),to(#202020));
+	Invalid property value.filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#838383',endColorstr='#202020');
+	Unknown property name.-ms-filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#838383',endColorstr='#202020');
+}
+</style>
+</head>
+<body id="fans" >
+<div class="header">
+	<a href="info.html"><div class="header_left"></div></a>
+	<div class="header_title">二维码</div>
+</div>
+<div class="cardexplain">
+<!-- <ul class="round">
+<li style="line-height: 35px; font-size:16px;">
+Listening，您好！
+</li>
+</ul> -->
+<!-- <ul class="round">
+<li> -->
+<style>
+.por{width:65px;height:65px;margin: 0px auto;}
+.por img{
+	width:60px;height:60px;cursor:pointer;
+	border-radius:50%;}
+.por img.selected{border:2px solid #f60};
+</style>
+
+<li class="infos" style="border-bottom:1px solid #C6C6C6;">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="kuang">
+<tr>
+<td><input    name="mobile"  class="px" id="mobile" value=""  type="text" placeholder="请输入账号"/>
+<!-- <input name="openid"  type="hidden" class="px" id="openid" value="oH9ymt8iRgeO_s4bmcbqPKrB6D48">
+ --></td>
+</tr>
+</table>
+</li>
+
+<div class="footReturn">
+<a id="showcard"  class="submit" >提交信息</a>
+<div class="window" id="windowcenter" >
+<div id="title" class="wtitle"><span class="close" id="alertclose"></span></div>
+<div class="content">
+<div id="txt"></div>
+</div>
+</div>
+</div>
+<div style="height:60px;" id="msg">&nbsp;</div>
+
+</div>
+
+<style type="text/css">
+.footermenu {
+position: fixed;
+bottom: 0;
+left: 0;
+right: 0;
+z-index: 900;
+-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.footermenu{
+	color:#666;
+	font-size:12px;
+	text-align:right;
+	margin-right: 15px;
+}
+.footermenu a{
+	text-decoration:none;
+	color:#666;
+}
+
+.footermenu a img{
+	width:30px; height:30px;
+}
+</style>
+<div class="footermenu" style="font-style:italic">
+Produced by 上海延誉<a href="http://www.abot.cn"><img src="images/logo-yanyu-2016.gif"></a>
+</div>
+</body>
+</html>
