@@ -2,6 +2,8 @@
 //封装为一个方法
 const isNullOrUndefined = obj=>obj===null || obj === undefined  || obj === '';
 
+const is_obj_0_or_1= (obj) => {if(obj == 0) return 0; else if(obj == 1) return 1; return -1;}
+
 const abotRequest = (params) => {
   uni.request({
     url: params.url,
@@ -527,6 +529,7 @@ module.exports = {
 					sellerid: that002.globalData.default_sellerid,
 					platform: that002.globalData.current_platform,
 					version_code: that002.globalData.version_code,	//2020.12.22.
+					weixin_open_platform_appid:that002.globalData.weixin_open_platform_appid,	//2020.12.28. 
 				},
 				header: {
 					'Content-Type': 'application/x-www-form-urlencoded'
@@ -1006,78 +1009,82 @@ module.exports = {
 		  console.log('this.globalData.default_copyright_text ==>> ', this.globalData.default_copyright_text);
 		}
 		
-		this.globalData.is_index_index_in_tabbar = 1;
-		this.globalData.is_user_user_in_tabbar = 1;
+		//首页
+		this.globalData.is_index_index_in_tabbar = is_obj_0_or_1(this.globalData.is_index_index_in_tabbar);
+		//会员中心
+		this.globalData.is_user_user_in_tabbar = is_obj_0_or_1(this.globalData.is_user_user_in_tabbar);
 		
 		//购物车在底部导航栏（如果购物车在底部导航栏，请务必选择此项，避免向购物车跳转失败）
-		this.globalData.is_shop_cart_in_tabbar = 1;
+		this.globalData.is_shop_cart_in_tabbar = is_obj_0_or_1(this.globalData.is_shop_cart_in_tabbar);
 		
 		//商品分类是否在底部导航
-		this.globalData.is_category_category_in_tabbar = 1;
+		this.globalData.is_category_category_in_tabbar = is_obj_0_or_1(this.globalData.is_category_category_in_tabbar);
 		
 		//判断发布的栏目在底部导航  1就是在底部导航
-		this.globalData.is_publish_index_in_tabbar = 0;
+		this.globalData.is_publish_index_in_tabbar = is_obj_0_or_1(this.globalData.is_publish_index_in_tabbar);
 		//判断文章列表在底部导航   1就是在底部导航
-		this.globalData.is_publish_list_in_tabbar = 1;
+		this.globalData.is_publish_list_in_tabbar = is_obj_0_or_1(this.globalData.is_publish_list_in_tabbar);
 		
 		//2020.10.27.
-		this.globalData.is_member_list_in_tabbar = 1;
-		this.globalData.is_xianmai_shang_list_in_tabbar = 1;
+		//会员列表（在壹道助残这个小程序中用到）
+		this.globalData.is_member_list_in_tabbar = is_obj_0_or_1(this.globalData.is_member_list_in_tabbar);
+		//实体商家列表（附近商家列表）
+		this.globalData.is_xianmai_shang_list_in_tabbar = is_obj_0_or_1(this.globalData.is_xianmai_shang_list_in_tabbar);
 		
 		
-		if (!isNullOrUndefined(option_list.is_index_index_in_tabbar)) {
+		if ((this.globalData.is_index_index_in_tabbar == -1) && !isNullOrUndefined(option_list.is_index_index_in_tabbar)) {
 		  this.globalData.is_index_index_in_tabbar = option_list.is_index_index_in_tabbar;
 		}
-		if(!option_list.is_index_index_in_tabbar){
+		if(!this.globalData.is_index_index_in_tabbar){
 			this.globalData.is_index_index_in_tabbar = 0;
 		}
 		
-		if (!isNullOrUndefined(option_list.is_user_user_in_tabbar)) {
+		if ((this.globalData.is_user_user_in_tabbar == -1) && !isNullOrUndefined(option_list.is_user_user_in_tabbar)) {
 		  this.globalData.is_user_user_in_tabbar = option_list.is_user_user_in_tabbar;
 		}
-		if(!option_list.is_user_user_in_tabbar){
+		if(!this.globalData.is_user_user_in_tabbar){
 			this.globalData.is_user_user_in_tabbar = 0;
 		}
 
-		if (!isNullOrUndefined(option_list.is_shop_cart_in_tabbar)) {
+		if ((this.globalData.is_shop_cart_in_tabbar == -1) && !isNullOrUndefined(option_list.is_shop_cart_in_tabbar)) {
 		  this.globalData.is_shop_cart_in_tabbar = option_list.is_shop_cart_in_tabbar;
 		}
-		if(!option_list.is_shop_cart_in_tabbar){
+		if(!this.globalData.is_shop_cart_in_tabbar){
 			this.globalData.is_shop_cart_in_tabbar = 0;
 		}
 		
-		if (!isNullOrUndefined(option_list.is_category_index_in_tabbar)) {
+		if ((this.globalData.is_category_index_in_tabbar == -1) && !isNullOrUndefined(option_list.is_category_index_in_tabbar)) {
 		  this.globalData.is_category_category_in_tabbar = option_list.is_category_index_in_tabbar;
 		}
-		if(!option_list.is_category_index_in_tabbar){
+		if(!this.globalData.is_category_index_in_tabbar){
 			this.globalData.is_category_index_in_tabbar = 0;
 		}
 		
-		if (!isNullOrUndefined(option_list.is_publish_index_in_tabbar)) {
+		if ((this.globalData.is_publish_index_in_tabbar == -1) && !isNullOrUndefined(option_list.is_publish_index_in_tabbar)) {
 		  this.globalData.is_publish_index_in_tabbar = option_list.is_publish_index_in_tabbar;
 		}
-		if(!option_list.is_publish_index_in_tabbar){
+		if(!this.globalData.is_publish_index_in_tabbar){
 			this.globalData.is_publish_index_in_tabbar = 0;
 		}
 		
-		if (!isNullOrUndefined(option_list.is_publish_list_in_tabbar)) {
+		if ((this.globalData.is_publish_list_in_tabbar == -1) && !isNullOrUndefined(option_list.is_publish_list_in_tabbar)) {
 		  this.globalData.is_publish_list_in_tabbar = option_list.is_publish_list_in_tabbar;
 		}
-		if(!option_list.is_publish_list_in_tabbar){
+		if(!this.globalData.is_publish_list_in_tabbar){
 			this.globalData.is_publish_list_in_tabbar = 0;
 		}
 		
-		if (!isNullOrUndefined(option_list.is_member_list_in_tabbar)) {
+		if ((this.globalData.is_member_list_in_tabbar == -1) && !isNullOrUndefined(option_list.is_member_list_in_tabbar)) {
 		  this.globalData.is_member_list_in_tabbar = option_list.is_member_list_in_tabbar;
 		}
-		if(!option_list.is_member_list_in_tabbar){
+		if(!this.globalData.is_member_list_in_tabbar){
 			this.globalData.is_member_list_in_tabbar = 0;
 		}
 		
-		if (!isNullOrUndefined(option_list.is_xianmai_shang_list_in_tabbar)) {
+		if ((this.globalData.is_xianmai_shang_list_in_tabbar == -1) && !isNullOrUndefined(option_list.is_xianmai_shang_list_in_tabbar)) {
 		  this.globalData.is_xianmai_shang_list_in_tabbar = option_list.is_xianmai_shang_list_in_tabbar;
 		}
-		if(!option_list.is_xianmai_shang_list_in_tabbar){
+		if(!this.globalData.is_xianmai_shang_list_in_tabbar){
 			this.globalData.is_xianmai_shang_list_in_tabbar = 0;
 		}
 		

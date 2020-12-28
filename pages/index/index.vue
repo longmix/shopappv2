@@ -1056,7 +1056,14 @@ export default {
 			if(currentTime - new_version_check_time > 24*60*60*1000){
 				is_check_new_version = true;
 			}
+			else{
+				console.log('最近24小时已经检查过版本更新了');
+				
+				//is_check_new_version = true;
+			}
 			
+			console.log('最近24小时', is_check_new_version);
+			console.log('最近24小时', cb_params.option_list.is_there_new_version);
 			
 			if(is_check_new_version && cb_params.option_list.is_there_new_version && (cb_params.option_list.is_there_new_version == 1)){
 				uni.setStorageSync("new_version_check_time", currentTime);
@@ -1899,9 +1906,10 @@ export default {
 					if (downloadResult.statusCode == 200) {
 						uni.showModal({
 							title: '',
-							content: '更新成功，确定现在重启吗？',
-							confirmText: '重启',
+							content: '更新成功，现在重启安装吗？',
+							confirmText: '立即重启',
 							confirmColor: '#EE8F57',
+							cancelText:'下次再说',
 							success: function(res) {
 								if (res.confirm == true) {
 									plus.runtime.install(//安装

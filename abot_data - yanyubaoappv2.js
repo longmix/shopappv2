@@ -9,12 +9,12 @@ const globalData = {
 		
 		force_sellerid:0,
 	
-		xiaochengxu_appid: 'wxe6565fced2f812da',			//微信小程序的appid
+		xiaochengxu_appid: 'wxe6565fced2f812da',			//微信小程序的appid  （还是继续使用延誉电商这个小程序，不是延誉宝这个！！！）
 		xiaochengxu_account: 'gh_a95e5a0852aa',				//微信小程序的账号
-		weixin_open_platform_appid: 'wx029e1ddb38b4c630',	//微信开放平台中登记的APP对应的appid（务必与manifest中的配置一致）
+		weixin_open_platform_appid: 'wx5403058c22c21d35',	//微信开放平台中登记的APP对应的appid（务必与manifest中的配置一致）
 		
 		//通版商城
-		default_shopname: '延誉电商',
+		default_shopname: '延誉宝V2',
 		default_sellerid: 'pQNNmSkaq',
 		default_copyright_text:'延誉宝 @ 版权所有',
 		
@@ -34,7 +34,7 @@ const globalData = {
 		//并确保与 navigationBarTextStyle / navigationBarBackgroundColor   保持一致
 		navigationBarBackgroundColor_fixed:1,
 		navigationBar_font_color:'#ffffff',
-		navigationBar_bg_color:'#f37404',
+		navigationBar_bg_color:'#269ad7',
 		//======================End=======================
 		
 		//======以下选项可以在服务器端修改，这里是默认值=====
@@ -47,6 +47,9 @@ const globalData = {
 		//！！！！如果不清楚，发布版本的时候务必不要设置
 		is_index_index_in_tabbar : 1,
 		is_user_user_in_tabbar : 1,
+		is_publish_list_in_tabbar:1,
+		is_xianmai_shang_list_in_tabbar:1,
+		
 		
 		
 		
