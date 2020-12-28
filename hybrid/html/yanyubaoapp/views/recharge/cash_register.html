@@ -1,0 +1,58 @@
+<ion-view id="view" view-title="消费收银" style="background: #f2f2f2;">
+    <ion-content>
+    <div class="pay_box">
+      <div style="width: 100%;height: 15px;"></div>
+       <div class="pay_logo">
+          <img src="{{headimgurl}}" class="pic100" />
+       </div><br />
+       <div class="pay_name" style="margin-left:10px">{{nickname}}（{{mobile}}）</div>
+       <div class="je_box">
+          <div class="je_bt">消费金额</div>
+          <div class="money" style="height:50px;">
+            <div class="je_bz">{{chongzhi_str2}}</div>
+            <div style="width:30%;height:30px; float:right;font-size:22px;margin:8px 0 0 6px;text-align: center;">{{chongzhi_str3}}</div>
+            <div class="je_number" style="width:50%;margin-right: 5px;">
+            <input type="tel" style="font-size:30px;padding-top:0px;" ng-model="input.balance" ng-keyup="check_length()" autofocus />
+            </div>
+            
+           
+          </div>
+       </div>
+     
+      <button class="button button-block button-calm" style="width: 90%;margin: 20px auto;" ng-click="pay_consumed_from_shang()">余额支付</button>
+		<li class="zhujie" >
+         {{mobile}}的可用余额：{{chongzhi_str2}}{{balance_yuan}}
+          <span class="color-demo calm-bg calm-border"></span>
+        </li>
+    </div> 
+    </ion-content>
+     <script id="templates/modal.html" type="text/ng-template">
+      <ion-modal-view style="background: #ddd;">
+        <ion-header-bar class="bar bar-header bar-calm">
+          <h1 class="title">减值</h1>
+          <button class="button button-clear" ng-click="modal.hide()">取消</button>
+        </ion-header-bar>
+        <ion-content class="padding">
+            <div class="pay_box">
+      <div style="width: 100%;height: 15px;"></div>
+       <div class="pay_logo">
+          <img src="{{headimgurl}}" style="width:100px;height:100px;border-radius:50%;"/>
+       </div><br />
+       <div class="pay_name" style="margin-left:10px;">{{nickname}}</div>
+       <div class="je_box">
+          <div class="je_bt">减值{{chongzhi_str1}}</div>
+          <div class="money" style="height:50px;">
+            <div class="je_bz">{{chongzhi_str2}}</div>
+            <div style="width:30%;height:30px; float:right;font-size:22px;margin:10px 0 0 4px;text-align: center;">{{chongzhi_str3}}</div>
+            <div class="je_number" style="width:50%;margin-right:5px;">
+            <input type="tel" style="font-size:30px;padding-top:0px;" ng-model="input.balance1" ng-keyup="change_bg()" autofocus/>
+            </div>
+          </div>
+       </div>
+     
+     <button class="button button-block button-calm" style="width: 90%;margin: 20px auto;" ng-click="reduce_balance()">减值</button>
+    </div> 
+        </ion-content>
+      </ion-modal-view>
+    </script>
+</ion-view>

@@ -1,0 +1,39 @@
+<ion-view view-title="发货" id="view">
+    <ion-content>
+   
+      <div style="width: 94%;margin:30px auto;">
+        <div class="item item-input">
+          <div class="input-label">
+                 快递单号
+          </div>
+             <input type="tel" ng-model="input.delivery_no" placeholder="请填写快递单号"  style="text-align: right;">
+        </div>
+
+        <div class="item item-input">
+          <div class="input-label">
+                 物流公司
+          </div>
+             <input type="text" ng-model="input.delivery_company" placeholder="请填写物流公司"  style="text-align: right;">
+        </div>
+      
+       <div class="item item-input">
+          <div class="input-label">
+                 发货时间
+          </div>
+             <input  type="datetime-local" id="delivery_time" ng-model="input.delivery_time" placeholder="请填写发货时间"  style="text-align: right;">
+        </div>
+
+       </div>   
+
+        <div class="card" style="margin:3%;">
+            <div class="item item-divider">
+                备注
+            </div>
+            <textarea cols="30" rows="7" class="coupons_text" style="border:none;overflow-y:scroll;overflow-x:visible; -webkit-overflow-scrolling: touch;line-height:normal;" placeholder="请填写发货备注"   ng-model="input.saler_memo"></textarea>
+        </div>
+
+           <ion-item class="item-borderless" style="width: 94%; margin: 0 auto; padding: 0;">
+            <button class="button button-block button-calm" style="margin-top:20px;" ng-click="fahuo()">发货</button>
+            </ion-item>
+           </ion-content>
+</ion-view>

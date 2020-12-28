@@ -1,0 +1,37 @@
+<ion-view view-title="会员积分明细" style="background: #f2f2f2;">
+    <ion-content>
+    	<ion-refresher pulling-text="下拉刷新" on-refresh="user_scorelist()"></ion-refresher>
+        <div style="width: 100%;" class="calm-bg">
+            <div style="padding:10px 10px;">
+             <div class="huiyuan_logo">
+             <img src="{{userinfo.headimgurl}}">
+             </div>
+              <p style="color:#fff; opacity: 0.8; font-size: 16px;margin: 5px 0 0 10px;">{{userinfo.account}}</p>
+              <h3 style="color:#fff; font-size:30px; letter-spacing: 3px; margin: 5px 0;">{{userinfo.score}}积分</h3>
+            </div>
+        </div>
+        <div class="list">
+          <li class="item item-icon-left">
+          <i class="icon item-note  ion-ios-compose-outline"></i>
+           <span style="float: left;">7日合计</span>
+            <span style="float: right; opacity: 0.7;">{{xiaofei.week_xiaofei_total}}积分</span>
+          </li>
+          <li class="item item-icon-left">
+          <i class="icon  item-note  ion-ios-compose-outline"></i>
+           <span style="float: left;">30日合计</span>
+            <span style="float: right; opacity: 0.7;">{{xiaofei.month_xiaofei_total}}积分</span>
+          </li>
+        </div>
+         <div class="list">
+         	  <p style="text-align:center;">{{tishi}}</p>
+              <li class="item" ng-repeat="list in scorelist">
+                <span style="float: left;">{{list.score}}积分</span>
+                <span style="float: right; font-size: 12px;">{{list.createtime}}</span>
+                <div class="clear"></div>
+                <p>{{list.score_msg}}</p>
+              </li>
+              
+             
+        </div>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,39 @@
+<ion-view view-title="卡券统计" id="view">
+    <ion-content>
+        <div ng-repeat="list in youhui_list">
+            <div class="wenzi" style="border-radius: 0;padding:0  15px; ">
+                <div class="row" style="margin-top:10px; ">
+                    <span class="col-center"  style="width:75%; font-size:16px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;">{{list.coupon_name}}</span>
+                    <span class="assertive" style="margin-left:10px;">{{list.coupon_type}}</span>
+                </div>
+                <div class="row">
+                    <div class="dark col col-80" style="padding:5px 0;">活动时间：{{list.date_begin}} ~ {{list.date_end}}</div>
+                    <div class="col col-20" ng-click="get_user_list(list.youhuiid)" style="padding:5px 0;text-align: center;">{{list.coupon_shu}}</div>
+                </div>
+                <div class="row">
+                    <p class="dark" style="font-size:12px;width:98%;white-space: normal;">{{list.coupon_content}}</p>
+                </div>
+
+              
+            </div>
+            <div class="toutiao_btn">
+            <ul style="border-top:1px solid #b8b8b8;">
+             <li class="dark" ui-sref="coupons_send({action:'edit',youhuiid:list.youhuiid})"><i class="icon ion-ios-compose-outline"></i> 修改</li>
+             <li  class="dark" ng-click="youhui_del(list.youhuiid)"><i class="icon ion-ios-trash-outline"></i> 删除</li>
+             <!-- <li class="dark"  ui-sref="coupons_send"><i class="icon ion-ios-upload-outline"></i> 发放</li> -->
+             <li class="dark" ng-click="get_user_list(list.youhuiid)"><i class="icon ion-ios-upload-outline"></i>发放明细</li>
+            </ul>
+          </div>
+            <div class="decorate" style="height:6px;width:100%;background:#e5e5e5;"></div>
+        </div>
+        
+      <div ng-if="xiala">
+        <div style="text-align:center; margin-top:10px;"><span>{{tishi}}</span></div>
+        <ion-infinite-scroll ng-if="!noMorePage" immediate-check="false" on-infinite="loadMore()" distance="1%" ></ion-infinite-scroll>
+     </div>
+        <div style="width: 100%;height: 50px;"></div>
+    </ion-content>
+    <div class="bar bar-footer bar-calm" ui-sref="coupons_send">
+       <div class="title">发优惠券</div>
+    </div>
+</ion-view>

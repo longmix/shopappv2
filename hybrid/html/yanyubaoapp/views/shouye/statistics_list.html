@@ -1,0 +1,42 @@
+<ion-view view-title="卡券发放明细" id="view">
+    <ion-content class="content" >
+        <div class="row" style="border-bottom: 10px solid #e5e5e5; height: 80px;">
+            <h4 class="col">卡券名称：{{coupon_name}}</h4>
+          <!--   <h4 class="col">状态：<a href="">可用</a><span>/</span><a href="">不可用</a></h4> -->
+        </div>
+      <!--   <div class="list" >
+            <li class="item item-avatar"  ng-repeat="list in youhui_user_list">
+                <img src="images/photo.png">
+                <div class="row">
+                    <h2 class="col">会员号：1111{{list.account}}</h2>
+                    <h2 class="col">姓名：666{{list.nickname}}</h2>
+                    <time class="col">5555{{list.createtime}}</time>
+                    <h2 class="col">升水{{list.status}}</h2>
+                </div>
+            </li>
+
+        </div> -->
+
+    <div class="list">
+
+        <li class="item"  ng-repeat="list in youhui_user_list">
+         <!--  <div class="touxiang_logo">
+            <img src="{{list.member_headimg}}">
+          </div> -->
+          <div class="info_huiyuan">
+     
+            <p>会员号：{{list.account}}</p>
+            <p>昵称：{{list.nickname}}</p>
+            <p>时间：{{list.createtime}}</p>
+            <p>状态：{{list.status}}</p>
+          </div>
+          <!--  <div style="float: right;">
+              <p>{{list.createtime}}</p>
+                  <div style="margin-top:33px;" ng-if="list.status == '0'">
+                      <span class="calm-bg btn_span" ng-click="showPopup(list)">操作</span>
+                   </div>
+           </div> -->
+        </li>
+     </div>
+    </ion-content>
+</ion-view>

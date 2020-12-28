@@ -1,0 +1,51 @@
+<ion-view  view-title="积分商城管理" style="background: #f2f2f2;">
+   <ion-nav-buttons side="right">  
+    <i class="button button-outline button-clear" ui-sref="add_score_product({'caozuo':'add'})" nav-direction="forward" style="color: #fff;"> 添加商品</i>  
+   </ion-nav-buttons>
+    <ion-content>
+     
+          <div class="yizhuanfa_info" style="margin-bottom: 5px;" ng-repeat="list  in  product_lists">
+          <div class="yizhuanfa_box">
+               <div class="zhuanfa_img">
+                  <img src="{{list.picture}}" style="width: 100%;height: 100%;">
+               </div>
+               <div class="zhuanfa_text">
+                 <p style="color: #666;font-size: 14px;">
+                 {{list.name}}
+                 </p>
+                 <p style="color: #f00;">{{list.price}} 积分</p>
+               </div>
+               <div style="clear: both;"></div>
+        
+           </div>
+             <div class="product_add">
+                <ul>
+                   <li ng-click="caozuo(list.productid,list.status,$index)"><i  ng-class="{'icon  ion-ios-browsers-outline':list.upload,
+                   'icon ion-ios-download-outline':list.download,'icon ion-ios-close-outline':list.shenhe}"  style="font-size: 18px;position: relative;top:1px;"></i>
+                     {{list.operate_str}}
+                   </li>
+ <!-- ng-class="{'icon ion-ios-download-outline': list.check, 'icon ion-ios-upload-outline': !list.check ,'icon ion-ios-close-outline': list.shenhe}" -->
+                   
+                  <li style="border-left: 1px solid #e6e6e6;" ui-sref="add_score_product({'caozuo':'update','productid':list.productid})"  nav-direction="forward"><i class="icon ion-ios-compose-outline" style="font-size: 18px;position: relative;top:1px;"></i>
+                  编辑
+                  </li>
+             
+            </ul>
+           </div>
+          </div>
+
+
+
+
+
+
+
+   <div ng-if="xiala">
+  <div style="text-align:center; margin-top:15px;color: #999;"><span>{{tishi}}</span></div>
+  <ion-infinite-scroll ng-if="!noMorePage" immediate-check="false" on-infinite="loadMore()" distance="1%" ></ion-infinite-scroll>
+</div>
+    </ion-content>
+    <!--  <div class="bar bar-footer bar-balanced" ui-sref="add_product">
+      <div class="title">发布新商品</div>
+    </div> -->
+</ion-view>

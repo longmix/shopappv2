@@ -1,0 +1,19 @@
+<ion-view id="view" view-title="{{qrcode_name}}">
+       <!--<ion-header-bar class="bar bar-royal">
+           <ion-nav-back-button class="light"></ion-nav-back-button>
+           <h2 class="title"> 设置</h2>
+       </ion-header-bar>-->
+<ion-content>
+
+       <img src="{{img}}" id="imageFile" alt="" class="tabs-icon-top" style="display: block;margin: 20px auto; max-width: 80%;">
+    
+    <div class="row">
+       <p class="calm" ng-click="choosePicMenu()" style="width: 100%;height: 50px;line-height: 50px; text-align: center;margin-bottom: 2px;">{{upload_text}}</p>
+    </div>
+    
+    <div class="row" ui-sref="help({action:'shoukuanerweima'})">
+       <p class="calm" style="width: 100%;height: 50px;line-height: 50px; text-align: center;margin-bottom: 2px;">如何获取收款二维码?</p>
+    </div>
+     
+</ion-content>
+</ion-view>

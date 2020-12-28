@@ -1,0 +1,49 @@
+<ion-view>
+<ion-header-bar class="bar bar-subheader">
+    <div class="buttons">
+        <button class="button button-icon icon ion-ios-plus-outline" ng-click="shanghu_img_add()">
+        </button> 
+        
+        <button class="button button-icon icon ion-ios-minus-outline"
+                ng-click="data.showDelete = !data.showDelete; data.showReorder = false">
+        </button>
+    </div>
+    <h1 class="title" style="font-size: 16px;color: #666;font-weight: 500;">商户图片</h1>
+    <div class="buttons">
+        
+        <button class="button  button-clear button-dark" ng-click="data.showDelete = false; data.showReorder = !data.showReorder">
+                排序
+        </button>
+    </div>
+</ion-header-bar>
+    <ion-content class="content">
+        <!-- The list directive is great, but be sure to also checkout the collection repeat directive when scrolling through large lists -->
+        <ion-list show-delete="data.showDelete" show-reorder="data.showReorder" >
+
+            <ion-item ng-repeat="item in items" item="item"  class="item-remove-animate">
+                <ion-delete-button class="ion-minus-circled"
+                                   ng-click="onItemDelete(item)">
+                </ion-delete-button>
+                <ion-reorder-button class="ion-navicon" on-reorder="moveItem(item, $fromIndex, $toIndex)"></ion-reorder-button>
+                <img ng-src="{{item.url}}" style="width:95%;margin: 0 auto;display: block;">
+               
+            </ion-item> 
+            
+            <!-- <ion-item item="item"  ng-click="" class="item-remove-animate">
+                <ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(item.levelid)"></ion-delete-button>
+                
+            </ion-item>
+            
+            <ion-item item="item"  ng-click="" class="item-remove-animate">
+                <ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(item.levelid)"></ion-delete-button>
+                <img ng-src="images/huiyuan.jpg" class="pic100">
+            </ion-item> -->
+
+        </ion-list>
+
+    </ion-content>
+
+
+</ion-view>
+
+

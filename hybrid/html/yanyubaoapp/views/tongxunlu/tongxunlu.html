@@ -1,0 +1,19 @@
+<ion-view view-title="通讯录添加" id="view">
+     <div class="bar bar-subheader">
+      <button class="button button-clear" ng-model="selectAll" ng-click="all(selectAll)" style="color:#666; font-size: 14px; margin-left: 8px;">全选</button>
+      <h2 class="title">选择添加会员</h2>
+      <button class="button button-clear pull-right" style="color:#666; font-size: 14px; margin-right: 8px;"  ng-click="phone_book_send()">发送</button>
+    </div>
+     <ion-content style="margin-top: 42px;">
+
+        <div class="list">
+
+          <ion-checkbox class="checkbox-calm" ng-repeat="item in items" ng-model='item.selected' ng-disabled='item.allow'>
+              {{ item.name }} 
+              <span ng-if="item.allow" style="display:block;float:right">已是会员</span> 
+          </ion-checkbox>
+
+        </div>
+
+      </ion-content>
+</ion-view>

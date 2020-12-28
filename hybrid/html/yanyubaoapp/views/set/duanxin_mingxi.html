@@ -1,0 +1,23 @@
+<ion-view id="view" view-title="明细列表" style="background: #f2f2f2;">
+    <ion-content>
+      <ul class="list">
+       <li class="item" style="padding:10px 15px;" ng-repeat="item in items">
+           <div style="float: left;">
+             <h3>会员：{{item.name}}</h3>
+           </div>
+           <div style="float:right;">
+             <h3 style="text-align: right;">{{item.time}}<h3>
+           </div>
+           <div style="clear: both;"></div>
+           <div style="width: 100%; margin-top: 10px;">
+            <p style="line-height: 26px;white-space:normal;">{{item.content}}</p>
+           </div>
+         </li>
+        
+      </ul>
+
+    </div>
+    <div style="text-align:center; margin-top:10px;"><span>{{tishi}}</span></div>
+    <ion-infinite-scroll ng-if="!noMorePage" immediate-check="false" on-infinite="loadMore()" distance="1%" ></ion-infinite-scroll>
+    </ion-content>
+</ion-view>

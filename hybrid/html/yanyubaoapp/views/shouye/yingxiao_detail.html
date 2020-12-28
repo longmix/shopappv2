@@ -1,0 +1,90 @@
+<ion-view id="view" view-title="营销学院 | 延誉宝" style="background: #f2f2f2;">
+    <ion-content>
+ <div class="list card" ng-if="isList">
+		<div class="item" style="margin: 0;padding:8px 0;">
+          <h2 style="text-align: center;white-space: normal; padding: 0px 10px; font-weight: bolder; ">{{detail.title}}</h2>
+        </div>
+
+        <div class="item item-body">
+          <img class="full-image" style="width:100%" ng-src="{{detail.pic}}" ng-if="showpic == 1">
+          <span ng-bind-html="detail.info" class="yingxiao_info"></span>
+        </div>
+         <div class="row">
+			  <div ng-click="sharePhoto_to_qq('qq')" class="col col-20" style="margin-top: 5px;">
+			   <img src="images/qqhyfx.png" style="width: 40px; height: 40px; display: block;   margin: 0 auto;">
+			  </div>
+
+			  <div ng-click="sharePhoto_to_qq('qq_zone')" class="col col-20" style="margin-top: 5px;">
+			   <img src="images/qqkjfx.png" style="width: 40px; height: 40px; display: block; margin: 0 auto;">
+			  </div>
+
+			  <div ng-click="sharePhoto_to_wechat('friend')" class="col col-20" style="margin-top: 5px;"> 
+			   <img src="images/wxhyfx.png" style="width: 40px; height: 40px; display: block;  margin: 0 auto;">
+			  </div>
+			  <div ng-click="sharePhoto_to_wechat('timeline')" class="col col-20" style="margin-top: 5px;">
+			   <img src="images/wxpyqfx.png" style="width: 40px; height: 40px; display: block;  margin: 0 auto;">
+			  </div>
+			  <div ng-click="sharePhoto_to_weibo()" class="col col-20" style="margin-top: 5px;"> 
+			   <img src="images/wbfx.png" style="width: 40px; height: 40px; display: block; margin: 0 auto;">
+			  </div>
+		  </div>  
+
+       <!--  <div class="item tabs tabs-secondary" style="background:red;">
+        
+          <li class="tab-item" ng-click="sharePhoto_to_wechat('friend')" style="margin:10px 0; background:#f60;">
+            <img src="images/wxhyfx.png" style="width: 40px; height: 40px;">
+          </li>
+          
+          <li class="tab-item"  ng-click="sharePhoto_to_wechat('timeline')" >
+            <img src="images/wxpyqfx.png" style="width: 40px; height: 40px;">
+          </li>
+          
+          <li class="tab-item" ng-click="sharePhoto_to_qq('qq')" >
+            <img src="images/qqhyfx.png" style="width: 40px; height: 40px;">
+          </li>
+          
+          <li class="tab-item" ng-click="sharePhoto_to_qq('qq_zone')" >
+            <img src="images/qqkjfx.png" style="width: 40px; height: 40px; ">
+          </li>
+          
+          <li class="tab-item" ng-click="sharePhoto_to_weibo()" >
+            <img src="images/wbfx.png" style="width: 40px; height: 40px;">
+          </li>
+            
+         </div>
+ -->
+</div>
+ <div class="list card" ng-if="!isList">
+		<div class="item" style="margin: 0;padding:8px 0;">
+          <h2 style="text-align: center;white-space: normal; padding: 0px 10px; font-weight: bolder; ">{{title}}</h2>
+        </div>
+
+        <div class="item item-body">
+          <img class="full-image" style="width:100%" ng-src="{{image}}"  ng-if="showpic == 1">
+          <span ng-bind-html="detail" class="yingxiao_info"></span>
+        </div>
+         <div class="row">
+			  <div ng-click="sharePhoto_to_qq('qq')" class="col col-20" style="margin-top: 5px;">
+			   <img src="images/qqhyfx.png" style="width: 40px; height: 40px; display: block;   margin: 0 auto;">
+			  </div>
+
+			  <div ng-click="sharePhoto_to_qq('qq_zone')" class="col col-20" style="margin-top: 5px;">
+			   <img src="images/qqkjfx.png" style="width: 40px; height: 40px; display: block; margin: 0 auto;">
+			  </div>
+
+			  <div ng-click="sharePhoto_to_wechat('friend')" class="col col-20" style="margin-top: 5px;"> 
+			   <img src="images/wxhyfx.png" style="width: 40px; height: 40px; display: block;  margin: 0 auto;">
+			  </div>
+			  <div ng-click="sharePhoto_to_wechat('timeline')" class="col col-20" style="margin-top: 5px;">
+			   <img src="images/wxpyqfx.png" style="width: 40px; height: 40px; display: block;  margin: 0 auto;">
+			  </div>
+			  <div ng-click="sharePhoto_to_weibo()" class="col col-20" style="margin-top: 5px;"> 
+			   <img src="images/wbfx.png" style="width: 40px; height: 40px; display: block; margin: 0 auto;">
+			  </div>
+		  </div>  
+
+</div>
+
+ 
+    </ion-content>
+</ion-view>

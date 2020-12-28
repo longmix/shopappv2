@@ -1,0 +1,74 @@
+<ion-view id="view" view-title="营销学院 | 延誉宝" >
+    <ion-content>
+      <!-- <div class=""> -->
+			<!-- <ion-slide-box  style="width: 100%;" does-continue ="true" auto-play="true" slide-interval ="4000"  > -->
+				<!-- <ion-slide style="width: 100%;" ng-repeat="banner in  banner_list" > -->
+					<!-- <img  ng-src="{{banner}}" style=" display: block;"> -->
+				<!-- </ion-slide> -->
+			   
+
+			<!-- </ion-slide-box> -->
+			
+	  <!-- </div> -->
+	  
+	  <ion-slide-box  does-continue ="true" auto-play="true" show-pager ="true" slide-interval ="4000" on-slide-changed="slideBanner($index)" >
+            <ion-slide style="width: 100%;" ng-repeat="banner in  banner_list" >
+				<div class="box">
+				
+					<img  ng-src="{{banner}}" style="width: 100%;height:100%; ">
+				</div>
+            </ion-slide>
+           
+
+        </ion-slide-box>
+		
+      <div class="row">
+			<div class="col">
+				<div style="width: 100%;height:100%;" ui-sref="yingxiao_list({'type':'yunyingtuiguang', 'name':'运营推广'})">
+					<img src="images/yunyingtuiguang.jpg" alt="图片加载失败" style="width: 100%;height:100%;display: block;" />
+				</div>
+			</div>
+			<div class="col">
+				
+					<div style="width: 100%;" ui-sref="yingxiao_list({'type':'fangan', 'name':'解决方案'})">
+						<img src="images/jiejuefangan.jpg" alt="图片加载失败" style="width: 100%;height: 100%;display: block; " />
+					</div>
+					<div style="width: 100%;" ui-sref="yingxiao_list({'type':'anli', 'name':'客户案例'})">
+						<img src="images/kehuanli.jpg" alt="图片加载失败" style="width: 100%;height: 100%;display: block;" />
+					</div>
+					
+				
+				
+			</div>
+	  </div>
+  
+	  <div class="row">
+		  <div class="col" ui-sref="yingxiao_list({'type':'canpin', 'name':'产品展示'})">
+			<button style="border: none;box-shadow: 0px 2px 5px #bfbfbf;">
+		  <img src="images/yingxiao_canpin.png" alt="图片加载失败" style="width: 70px;display: block;float: left;" />
+			</button>
+		  </div>
+		  <div class="col" ui-sref="yingxiao_list({'type':'help', 'name':'帮助'})">
+		  <button style="border: none;box-shadow: 0px 2px 5px #bfbfbf;">
+		  <img src="images/yingxiao_help.png" alt="图片加载失败" style="width: 70px;display: block;float: left;" />
+		  </button>
+		  </div>
+		  <div class="col" ui-sref="yingxiao_list({'type':'news', 'name':'新闻动态'})">
+		  <button style="border: none;box-shadow: 0px 2px 5px #bfbfbf;">
+		  <img src="images/yingxiao_news.png" alt="图片加载失败" style="width: 70px;display: block;float: left;" /></button></div>
+		  <div class="col" ui-sref="yingxiao_list({'type':'yanyubao', 'name':'延誉宝'})">
+		  <button style="border: none;box-shadow: 0px 2px 5px #bfbfbf;">
+		  <img src="images/yingxiao_yanyubao.png" alt="图片加载失败" style="width: 70px;display: block;float: left;" /></button></div>
+	
+	 </div>
+
+      <div class="list">
+        <li class="item item-thumbnail-left" ui-sref="yingxiao_detail({'imgid':list.id,'type':'wpAPI'})"  ng-repeat="list in latestList">
+              <img ng-src="{{list.post_thumbnail_image}}" style="width:100%;height:60%; margin-top:10px;border-radius: 1px;">
+              <h2 style="margin-top:10px;">{{list.title.rendered}}</h2>
+              <p style="white-space: normal; max-height: 40px;">{{list.previous_post_title}}</p>
+        </li>
+      </div>
+	  
+    </ion-content>
+</ion-view>

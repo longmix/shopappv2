@@ -1,0 +1,71 @@
+<ion-view>
+<ion-header-bar class="bar bar-subheader">
+    <div class="buttons">
+        <button class="button button-icon icon ion-ios-minus-outline"
+                ng-click="data.showDelete = !data.showDelete; data.showReorder = false"></button>
+    </div>
+    <h1 class="title" style="font-size: 16px;color: #666;font-weight: 500;">会员等级</h1>
+    <div class="buttons">
+        <button class="button button-icon icon ion-ios-plus-outline" ng-click="openModal()">
+        </button>
+    </div>
+</ion-header-bar>
+
+    <ion-content class="content">
+        <!-- The list directive is great, but be sure to also checkout the collection repeat directive when scrolling through large lists -->
+        <ion-list  show-delete="data.showDelete" show-reorder="data.showReorder">
+
+            <ion-item ng-repeat="item in items" item="item"  ng-click="modalshow(item.levelid)" class="item-remove-animate">
+                 <span style="display:block;float:left;width: 50%;text-align: left;text-indent: 10px;">{{item.level_name}}</span>
+                <ion-delete-button class="ion-minus-circled"
+                                   ng-click="onItemDelete(item)">
+                </ion-delete-button>
+                <span style="display:block;float:left;width: 50%;text-align: right;padding-right:10px;">{{item.score_from}} - {{item.score_to}}</span>
+                <!--<ion-option-button class="button-assertive"
+                                   ng-click="edit(item)">
+                    Edit
+                </ion-option-button>
+                <ion-option-button class="button-calm"
+                                   ng-click="share(item)">
+                    Share
+                </ion-option-button>-->
+<!--
+                <ion-reorder-button class="ion-plus-circled" on-reorder="moveItem(item, $fromIndex, $toIndex)"></ion-reorder-button>
+-->
+            </ion-item>
+
+        </ion-list>
+
+    </ion-content>
+
+
+
+
+    <script id="templates/modal.html" type="text/ng-template">
+        <ion-modal-view>
+            <ion-header-bar class="bar bar-header bar-calm">
+                <h1 class="title">增加会员等级</h1>
+                <button class="button button-clear button-primary" ng-click="closeModal()">取消</button>
+            </ion-header-bar>
+            <ion-content class="padding">
+                <div class="list">
+                    <label class="item item-input">
+                        <span class="input-label">会员等级</span>
+                        <input  ng-model="input.level_name" type="text"  placeholder="建议不超过5个汉字">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">开始积分</span>
+                        <input ng-model="input.score_from" type="tel" placeholder="请输入0-9之间的数字">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">结束积分</span>
+                        <input ng-model="input.score_to" type="tel" placeholder="请输入0-9之间的数字">
+                    </label>
+                    <button class="button button-block button-calm" ng-click="createContact(levelid)" style="margin-top:30px;">确定</button>
+                </div>
+            </ion-content>
+        </ion-modal-view>
+    </script>
+</ion-view>
+
+

@@ -1,0 +1,45 @@
+<ion-view id="view" view-title="修改手机号码">
+       <ion-content class="content" style="margin-top:10px; ">
+        <div class="item" style="border:0; padding: 5px;">
+        <ion-list class="list">
+            <ion-item class="item  item-borderless" style="padding: 0  8px;">
+                <ion-input  class="item-input login_item-input">
+                    <input type="tel" placeholder="请输入11位手机号" required ng-minlength="11" ng-maxlength="11" name="mobile" id="mobile" ng-model="input.mobile">
+                </ion-input>
+            </ion-item>
+
+            <ion-item class="item  item-borderless" style="padding: 0  8px;">
+                <ion-input  class="item-input login_item-input">
+                    <input type="tel" placeholder="请输入11位新手机号" required ng-minlength="11" ng-maxlength="11"  ng-model="input.new_mobile">
+                </ion-input>
+            </ion-item>
+
+
+            <ion-item class="item  item-borderless" style="padding: 0  8px;" >
+                <ion-input  class="item-input login_item-input">
+                       
+                    <input type="tel" placeholder="请输入图形验证码" class="text-left" name="verifycode" id="verifycode"  ng-model="input.verifycode">
+                    <input type="hidden" name="tokenstr" id="tokenstr"  ng-model="input.tokenstr"/>
+                      <span   style="padding:0px; ">
+                            <img src="{{verify}}"  ng-click="get_verify()" style="width: 120px;height: 50px; margin:5px 0 0 8px; ">
+                      </span>
+                </ion-input>
+
+            </ion-item>
+            <ion-item class="item item-borderless" style="padding: 0  8px;">
+                <ion-input  class="item-input login_item-input">
+                    <input type="tel" placeholder="请输入手机验证码" ng-model="input.verifycode_sms">
+                    <button class="button  button-calm"  ng-click="getTestCode()"  ng-disabled="canClick" style="width: 120px;height: 50px; margin:5px 0 0 8px; ">{{description}}</button>
+                </ion-input>
+            </ion-item>
+			     <ion-item class="item item-borderless" style="padding: 15px  8px;">
+					   <button class="button button-full button-calm" ng-click="set_user_mobile()" style="border-radius: 5px;">确定</button>
+            </ion-item>
+         
+            
+
+        </ion-list>
+
+      </div>
+    </ion-content>
+</ion-view>

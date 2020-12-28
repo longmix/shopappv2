@@ -1,0 +1,41 @@
+<ion-view view-title="商户收款明细" style="background: #f2f2f2;">
+    <ion-content>
+    	<ion-refresher pulling-text="下拉刷新" on-refresh="get_shoukuan()"></ion-refresher>
+        <div style="width: 100%;" class="calm-bg">
+            <div style="padding:10px 10px;">
+             <div class="huiyuan_logo">
+             <img src="{{userinfo.headimgurl}}">
+             </div>
+              <p style="color:#fff; opacity: 0.8; font-size: 16px;margin: 5px 0 0 5px;">{{userinfo.nickname}}</p>
+              <h3 style="color:#fff; font-size: 36px; letter-spacing: 3px; margin: 5px 0;">总计{{userinfo.balance}}</h3>
+            </div>
+        </div>
+        <div class="list">
+          <li class="item item-icon-left">
+          <i class="icon item-note  ion-ios-compose-outline"></i>
+           <span style="float: left;">7日收款合计</span>
+            <span style="float: right; opacity: 0.7;">{{shoukuan.week_shoukuan_total}}</span>
+          </li>
+          <li class="item item-icon-left">
+          <i class="icon  item-note  ion-ios-compose-outline"></i>
+           <span style="float: left;">30日收款合计</span>
+            <span style="float: right; opacity: 0.7;">{{shoukuan.month_shoukuan_total}}</span>
+          </li>
+        </div>
+         <div class="list">
+         	   <p style="text-align:center;">{{tishi}}</p>
+              <li class="item" ng-repeat="list in shoukuan.log_list">
+                <span style="float: left;">{{list.balance}}</span>
+                <span style="float: right; font-size: 12px;">{{list.createtime}}</span>
+                <div class="clear"></div>
+                <p>{{list.balance_msg}}</p>
+              </li>
+         </div>
+         
+        
+         	
+             
+       
+        
+    </ion-content>
+</ion-view>

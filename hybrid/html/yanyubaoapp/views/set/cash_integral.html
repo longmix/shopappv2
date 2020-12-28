@@ -1,0 +1,101 @@
+
+<ion-view id="view" view-title="现金与积分">
+    <ion-content class="content">
+         <div class="content">
+
+      <ul class="list">
+
+        <li class="item">
+          <span style="margin-left: 3px;">现金显示方式</span>
+           <div class="row">
+            <label style="font-size:16px;"><input  type="radio"  ng-model="input.balance_type" value="0"/>&nbsp;人民币，格式为￥1234.56</label> 
+           </div>
+
+           <div class="row" style="margin: 5px 0;">
+             <label style="font-size:16px;"><input  type="radio"  ng-model="input.balance_type" value="1"/>&nbsp;次卡，格式为1234次 </label> 
+           </div>         
+             </div>
+        </li>
+        <div ng-switch="input.balance_type">
+     <!-- 111111111-->
+        <div>
+	        <li class="item">
+	          <span style="margin:100px 0 0 3px">消费送积分</span>
+	             <div class="row" style="margin-top: 5px;">
+	               <div class="col-33">
+	               <span style="float: left;width: 35%;line-height:30px;">消费 </span>
+	               <input type="tel" ng-model="input.balance1" style="border:1px solid #ddd;width:65%;border-radius: 5px;height: 30px;padding-left:5px;resize:none;outline:0;-webkit-appearance:none;white-space:pre-wrap;word-wrap:break-word;background:#fff;" ng-checked="true" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+	               </div>
+	               <div class="col-10">
+		               	<span style="width:100%;line-height:35px;margin-left: 8px;"> 
+			               	<span ng-switch-when="0">元</span>
+			               	<span ng-switch-when="1">次</span>
+	               		</span>
+	               	</div>
+	               <div class="col-20"><span style="width:100%;line-height:35px;display: block; text-align: center;">=</span></div>
+	               <div class="col-33">
+	               <input type="tel" ng-model="input.score1" style="border:1px solid #ddd;width:65%;border-radius: 5px;height: 30px; padding-left:5px;float: left;resize:none;outline:0;-webkit-appearance:none;white-space:pre-wrap;word-wrap:break-word;background:#fff;"  onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+	                <span style="float:right;width: 35%;line-height:30px;text-indent:8px;">积分</span>
+	               </div>
+	        </li>
+	        <li class="item">
+	          <span style="margin:100px 0 0 3px">积分换现金</span>
+	             <div class="row" style="margin-top: 5px;">
+	               <div class="col-33">
+		               <input type="tel" ng-model="input.score2" style="border:1px solid #ddd;width:65%;border-radius: 5px;height: 30px;padding-left:5px;float: left;resize:none;outline:0;-webkit-appearance:none;white-space:pre-wrap;word-wrap:break-word;background:#fff;"  onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+		               <span style="width:35%;line-height:30px;float:right;text-indent:8px;">积分</span>
+	               </div>
+	               <div class="col-20"><span style="width:100%;line-height:30px;display: block; text-align: center;">=</span></div>
+	               <div class="col-33">
+		               	<input type="tel" ng-model="input.balance2"  style="border:1px solid #ddd;width:65%;border-radius: 5px;height: 30px; padding-left:5px;float: left;resize:none;outline:0;-webkit-appearance:none;white-space:pre-wrap;word-wrap:break-word;background:#fff;"  onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+		                <span style="float:right;width: 35%;line-height:30px;text-indent:8px;">
+	                		<span ng-switch-when="0">元</span>
+			               	<span ng-switch-when="1">次</span>	
+		                </span>
+	               </div>
+	        </li>
+        </div>
+
+
+        <!-- 2222222-->
+        <!-- <div ng-switch-when="number_card">
+           <li class="item">
+          <span style="margin:100px 0 0 3px">消费送积分</span>
+             <div class="row" style="margin-top: 5px;">
+               <div class="col-33">
+               <span style="float: left;width: 35%;line-height:30px;">消费 </span>
+               <input type="tel" ng-model="input.score" style="border:1px solid #ddd;width:65%;border-radius: 5px;height: 30px;padding-left:5px;" ng-checked="true" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+               </div>
+               <div class="col-10"><span style="width:100%;line-height:35px;margin-left: 8px;">次</span></div>
+               <div class="col-20"><span style="width:100%;line-height:35px;display: block; text-align: center;">=</span></div>
+               <div class="col-33">
+               <input type="tel" ng-model="input.balance" style="border:1px solid #ddd;width:65%;border-radius: 5px;height: 30px; padding-left:5px;float: left;"  onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+                <span style="float:right;width: 35%;line-height:30px;text-indent:8px;">积分</span>
+               </div>
+        </li>
+        <li class="item">
+          <span style="margin:100px 0 0 3px">积分换现金</span>
+             <div class="row" style="margin-top: 5px;">
+               <div class="col-33">
+               <input type="tel" ng-model="input.score" style="border:1px solid #ddd;width:65%;border-radius: 5px;height: 30px;padding-left:5px;float: left;"  onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+               <span style="width:35%;line-height:30px;float:right;text-indent:8px;">积分</span>
+               </div>
+               <div class="col-20"><span style="width:100%;line-height:30px;display: block; text-align: center;">=</span></div>
+               <div class="col-33">
+               <input type="tel" ng-model="input.balance" style="border:1px solid #ddd;width:65%;border-radius: 5px;height: 30px; padding-left:5px;float: left;"  onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+                <span style="float:right;width: 35%;line-height:30px;text-indent:8px;">次</span>
+               </div>
+        </li> 
+        </div> -->
+
+    </div>
+      </ul>
+  
+    </div>
+      <ion-item class="item-borderless full" style="margin-top:30px;">
+            <button class="button button-block button-calm" ng-click="set_supplier_card()">保存</button>
+        </ion-item>
+    </ion-content>
+</ion-view>
+
+

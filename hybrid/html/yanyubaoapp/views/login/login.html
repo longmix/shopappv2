@@ -1,0 +1,116 @@
+<ion-view view-title="登录" hide-back-button="true" id="view">
+
+    <ion-content class="content">
+
+        <ion-list class="list">
+            <div class="row" style="margin-top: 50px;">
+            <div class="col col-60 col-offset-20" style="padding: 0;">
+                <img src="images/applogo.png" alt="" class="" style="width:188px;height:60px;">
+            </div>
+        </div>
+            <ion-item class="item item-borderless full" style="margin-top: 10px;">
+                <ion-input  class="item-input login_item-input" >
+                   <!-- <i class="icon icon ion-iphone" style="font-size: 25px;color: #777;"></i>-->
+                    <input type="tel" placeholder="请输入11位手机号" required ng-minlength="11" ng-maxlength="11" name="mobile" id="mobile" ng-model="input.mobile" style="font-size: 16px;">
+                </ion-input>
+
+                    <ion-input  class="item-input login_item-input">
+                       <!-- <i class="icon icon ion-images" style="font-size: 25px;color: #777;"></i>-->
+                        <span style="padding:0px;width:100px">
+                            <img src="{{verify}}" class="button" ng-click="get_verify()" style="width:100px;padding:0px;border-radius: 0px;">
+                        </span>
+                        <input type="tel" placeholder="请输入算术题答案" name="verifycode" id="verifycode"  ng-model="input.verifycode" style="font-size: 16px;margin-left:10px;margin-top:2px;">
+                        <input type="hidden" name="tokenstr" id="tokenstr"  ng-model="input.tokenstr" />
+                    </ion-input>
+
+
+                    <ion-input  class="item-input login_item-input">
+                       <!-- <i class="icon ion-ios-eye-outline" style="font-size: 25px;color: #777;"></i>-->
+                     <!--<span class="input-label">鎵嬫満璇佺爜</span>-->
+                        <input type="tel" placeholder="请输入手机验证码" ng-model="input.verifycode_sms" style="font-size:16px;width:160px;margin-right:10px;">
+                        <button class="button button-small button-calm login_btn" style="padding:10px;" ng-click="getTestCode()"  ng-disabled="canClick">{{description}}</button>
+<!--
+                        <button class="button button-small button-royal login_btn" style="padding:10px;font-size: " ng-click="getTestCode()"  ng-disabled="canClick">{{description}}</button>
+-->
+                    </ion-input>
+            </ion-item>
+            <ion-item class="item-borderless full full-teshu">
+               <!--  <p>收不到短信？试试语音验证码</p> -->
+            </ion-item>
+            <ion-item class="item-borderless full">
+                <button class="button button-full button-calm" ng-click="shangLogin()">登录</button>
+<!--
+                <button class="button button-full button-royal" ng-click="shangLogin()">登录</button>
+-->
+                </ion-item>
+            <ion-item class="item item-borderless full">
+
+                <lable style="text-decoration: none;">
+                    <input type="checkbox" checked="" class="text-left" >
+                    <span style="font-size: 14px;color: #666;">点击登录，即表示阅读并同意<span  ui-sref="help({action:'fuwuxieyi'})" class="calm">《用户服务协议》</span></span>
+                </lable>
+
+
+
+            </ion-item>
+        </ion-list>
+
+    </ion-content>
+   <!--  <ion-footer-bar align-title="left" style="margin-bottom:10px ">
+
+        <div class="buttons" style="margin: 0 auto;">
+          <button ng-click="modal.show()" class="button button-clear  button-dark" id="btn" style="min-width:200px; font-size: 14px;">使用第三方登录</button>
+        </div>
+    </ion-footer-bar> -->
+    <!-- 第三方登录 -->
+    
+    <!-- 
+     <script id="templates/modal.html" type="text/ng-template">
+      <ion-modal-view>
+       
+        <ion-content>
+           <ion-header-bar  class="bar-calm">
+                 <h1 class="title">第三方登录</h1>
+                 <div class="buttons" style="margin-right: 6px; ">
+                  <button class="button  button-clear" ng-click="modal.hide()">取消</button>
+                 </div>
+              </div>
+           </ion-header-bar>
+           <div class="row" style="padding-top: 150px;">
+                <div class="col col-80 col-offset-10 tab-item">
+                    <img src="images/tours.png"  class="tabs-icon-top" style="width:280px;height:80px;">
+                </div>
+            </div>
+            <div style="width:90%; margin:80% auto; "> 
+              <ul class="dsfbox">
+                <li> 
+                 <div class="dsf">
+                      <div class="dsftop">
+                        <img src="images/weixintb.png" width="100%" height="100%">
+                      </div>
+                      <h4 style="text-align: center; font-size: 15px; margin: 5px 0;">微信</h4>
+                  </div>
+                </li>
+                <li>
+                   <div class="dsf">
+                         <div class="dsftop">
+                           <img src="images/qq.png" width="100%" height="100%">
+                         </div>
+                         <h4 style="text-align: center; font-size: 15px; margin: 5px 0;">QQ</h4>
+                   </div>
+                </li>
+                <li> 
+                 <div class="dsf">
+                       <div class="dsftop">
+                           <img src="images/weibo.png" width="100%" height="100%">
+                       </div>
+                       <h4 style="text-align: center; font-size: 15px; margin: 5px 0;">微博</h4>
+                  </div>
+                </li>
+              </ul>
+            </div>
+        </ion-content>
+      </ion-modal-view>
+    </script>
+     -->
+</ion-view>

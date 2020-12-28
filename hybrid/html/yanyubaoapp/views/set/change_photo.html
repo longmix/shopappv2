@@ -1,0 +1,29 @@
+
+<ion-view view-title="更换头像" id="view">
+
+    <ion-content>
+    <!-- <script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script> -->
+       <div style="padding-bottom:30px;">
+            <div style="width: 100%;border: 0px dotted #cecece;">
+				 <div class="row calm" style="padding: 0;">
+                  <span class="color-demo" style="width:60%;display: block;margin:0 auto; text-align:center;letter-spacing: 1px;padding:5px 0;">
+                  <br /><br />点击下面的图片可以更换头像<br /><br /></span>
+                </div>
+
+				 <a ng-click="choosePicMenu()">
+			        <img ng-src="{{img}}" style="max-width: 60%;display: block;margin:0 auto;">
+			    </a>
+                <div class="row calm" style="padding: 0;">
+                  <span class="color-demo" style="width:60%;display: block;margin:0 auto; text-align:center;letter-spacing: 1px;padding:5px 0;">
+                  <br />选择完头像记得按保存按钮哦</span>
+                </div>
+            </div>
+
+        
+    </div>
+        <ion-item class="item-borderless full">
+            <button  class="button button-block button-calm" ng-click="uoload_img()">保存</button>
+
+        </ion-item>
+    </ion-content>
+</ion-view>

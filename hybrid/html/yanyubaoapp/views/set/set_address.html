@@ -1,0 +1,43 @@
+<ion-view view-title="商户地址">
+    <ion-content class="padding">
+                <div class="list">
+
+                    <div class="item" style="padding:5px 0;">
+                    		<div class="row" style="margin:10px;">请选择地址：</div>
+                        <div class="row">
+                            <!-- <div class="col col-15">
+                              <span style="line-height: 30px;">选择地址</span>
+                            </div> -->
+                            <div class="col col-33">
+                                <select class="item item-input item-select" style="font-size: 16px; width:100%;height: 100%;padding: 5px;" ng-model="data.currentProvinceId"  
+			                            ng-options="pp.region_id as pp.region_name for pp in allProvinces"  
+			                            ng-change="switchProvince(data.currentProvinceId)">  
+			                    </select>
+                            </div>
+                            <div class="col col-33">
+                                <select class="item item-input item-select" style="font-size: 16px;width:100%; height: 100%;padding: 5px;" ng-options="cc.region_id as cc.region_name for cc in cities"  
+			                            ng-model="data.currentCityId" ng-change="switchCity(data.currentCityId)">  
+			                    </select> 
+                            </div>
+                            <div class="col col-33">
+                                <select class="item item-input item-select" style="font-size: 16px;width:100%; height: 100%;padding: 5px;" ng-options="aa.region_id as aa.region_name for aa in areas"  
+			                            ng-model="data.currentAreaId" ng-change="switchArea(data.currentAreaId)">  
+			                    </select> 
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+			            <div class="item">
+			              	  详细地址：
+			            </div>
+			            <textarea cols="30" rows="5" class="coupons_text" style="border:none;overflow: hidden;overflow-y: scroll;" placeholder="请填写详细地址"   ng-model="input.address"></textarea>
+        			   </div>
+        		       <div class="item" style="padding:5px 0; border:0;">
+                     
+                            <button class="button button-block button-calm"  ng-click="set_shanghu_address()" style="border-radius: 3px;">确定</button>
+                       </div>
+                </div>
+          
+    </ion-content>
+</ion-view>

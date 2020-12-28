@@ -1,0 +1,111 @@
+<ion-view view-title="发优惠券" id="view">
+    <ion-content id="discount">
+      <div class="item item-input item-select">
+                <div class="input-label">
+                 优惠券模板
+                </div>
+                <select style="" ng-model="moban" ng-change="change_moban(moban)">
+                  <option value="-1">选择模板</option>
+                   <option ng-repeat="item in input.moban" value="{{item.templateid}}">{{item.templatename}}</option>
+                </select>
+        </div>
+
+        <div class="item item-input">
+          <div class="input-label">
+                 优惠券名称
+          </div>
+             <input type="text" ng-model="input.coupon" placeholder="请输入优惠券名称"  style="text-align: right;">
+        </div>
+
+         
+         <div class="item item-input item-floating-label" style="padding-bottom:10px;">
+             <span class="input-label has-input" style="padding-bottom: 5px; ">优惠券类型</span>
+
+             <div style="margin-left: -5px;">
+              <ion-radio class="ion-radio  radio-text"  ng-repeat="item in clientSideList"
+
+                           ng-value="item.value"
+                           ng-model="data.clientSide"
+                           ng-change="change_allow()"
+
+                           style="width: 30%;margin:5px 5px; float: left;">
+
+                    {{ item.text }}
+             </ion-radio> 
+             </div>
+        </div>
+      
+
+           <div class="row" style="width: 92%;margin:10px auto 0 auto;">
+             <div class="col col-25" style="margin: 0 ; padding: 0;">
+               <h2 style="height: 30px;line-height: 30px;" class="send-text">售卖积分</h2>
+             </div>
+              <div class="col col-20" style="margin: 0 ; padding: 0;">
+               <input type="tel"  ng-disabled="allow" placeholder="请输入扣除积分"  style="border:1px solid #ddd;width:100%;border-radius: 5px;padding:0 5px;resize:none;outline:0;-webkit-appearance:none;white-space:pre-wrap;word-wrap:break-word;background:#fff;"  ng-model="input.score" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+             </div>
+        </div>
+        <div class="row" style="width: 92%;margin:0 auto;">
+             <div class="col col-25" style="margin: 0 ; padding: 0;">
+               <h2 style="height: 30px;line-height: 30px;" class="send-text">卡券数量</h2>
+             </div>
+              <div class="col col-20" style="margin: 0 ; padding: 0;">
+               <input type="tel" style="border:1px solid #ddd;width:100%;border-radius: 5px;padding:0 5px;resize:none;outline:0;-webkit-appearance:none;white-space:pre-wrap;word-wrap:break-word;background:#fff;"  ng-model="input.coupon_nums" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+              </div>
+              <div class="col col-50" style="margin: 0 ; padding: 0;">
+                  <h2 style="height: 30px;line-height:45px;margin-left:8px;font-size: 11px;color: #666;" >（0表示无限制）</h2>
+              </div>
+        </div>
+
+        <div class="row" style="width: 92%;margin:0 auto;">
+             <div class="col col-25" style="margin: 0 ; padding: 0;">
+               <h2 style="height: 30px;line-height: 30px;" class="send-text">有效天数</h2>
+             </div>
+              <div class="col col-20" style="margin: 0 ; padding: 0;">
+                <input type="tel"  ng-model="input.coupon_days" style="border:1px solid #ddd;width:100%;border-radius: 5px;padding:0 5px;resize:none;outline:0;-webkit-appearance:none;white-space:pre-wrap;word-wrap:break-word;background:#fff;" >
+              </div>
+              <div class="col col-50" style="margin: 0 ; padding: 0;">
+                  <h2 style="height: 30px;line-height:45px;margin-left:8px;font-size: 11px;color: #666;" >（从领券当天开始）</h2>
+              </div>
+        </div>
+         
+         <div class="row" style="width: 92%;margin: 0 auto;">
+             <div class="col col-25" style="margin: 0 ; padding: 0;">
+               <h2 style="height: 30px;line-height: 30px;" class="send-text">活动开始</h2>
+             </div>
+              <div class="col col-50" style="margin: 0 ; padding: 0;">
+
+                 <input type="datetime-local" id="coupon_begin" style="border:1px solid #ddd;width:122%;line-height:30px;border-radius: 5px;padding:7px 0 0 5px"  ng-model="input.coupon_begin" >
+
+             </div>
+         </div>
+
+          <div class="row" style="width: 92%;margin: 0 auto;">
+             <div class="col col-25" style="margin: 0 ; padding: 0;">
+               <h2 style="height: 30px;line-height: 30px;" class="send-text">活动结束</h2>
+             </div>
+              <div class="col col-50" style="margin: 0 ; padding: 0;">
+
+                 <input type="datetime-local" id="coupon_end" style="border:1px solid #ddd;width:122%; line-height:30px;border-radius: 5px;padding:7px 0 0 5px"  ng-model="input.coupon_end" >
+
+             </div>
+        </div>
+
+        <div class="card" style="margin:3%;">
+            <h2 class="item item-divider send-text">
+                优惠内容
+            </h2>
+            <textarea cols="30" rows="7" class="coupons_text" style="border:none;overflow-y:scroll;overflow-x:visible; -webkit-overflow-scrolling: touch;line-height:normal;" placeholder="请填写优惠内容"   ng-model="input.coupon_neirong"></textarea>
+        </div>
+
+        <div class="card" style="margin:3%;">
+            <div class="item item-divider">
+                使用说明
+            </div>
+            <textarea cols="30" rows="7" class="coupons_text" style="border:none;overflow-y:scroll;overflow-x:visible; -webkit-overflow-scrolling: touch;line-height:normal;" placeholder="请填写使用说明"   ng-model="input.coupon_shiyong"></textarea>
+        </div>
+
+           <ion-item class="item-borderless" style="width: 94%; margin: 0 auto; padding: 0;">
+            <button class="button button-block button-calm" style="margin-top:20px;" id="btn" ng-click="coupon_fafang()">发放</button>
+            </ion-item>
+           </ion-content>
+</ion-view>

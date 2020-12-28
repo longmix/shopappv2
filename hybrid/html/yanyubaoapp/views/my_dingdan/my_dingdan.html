@@ -1,0 +1,58 @@
+<ion-view  view-title="我的店铺订单" style="background: #f2f2f2;">
+    <ion-content>
+     <div ng-repeat="list in order_lists" style="border-top:1px solid #e5e5e5;border-bottom:1px solid #e5e5e5;padding:10px 0;margin-bottom:5px;background: #fff; " >
+            <div class="wait_li_top"  style="font-size: 14px;">
+                <i class="icon ion-ios-paper-outline" style="font-size:20px;position: absolute;left:1px;top:3px;"></i>
+                <span style="font-size: 14px;position: absolute;left:18px;top:3px;">订单号：{{list.orderno}}</span>
+                <i class="icon" style="font-size:14px;color: red;position: absolute;right:0px;top:3px;">{{list.status_str}}</i>
+            </div>
+      
+             
+          
+                <div class="wait_good_box">
+                  <li ng-repeat="product in list.orderProduct" class="wait_good_list">
+                          <div class="wait_good_left">
+                              <img src="{{product.productInfo.pictures[0].picture}}" style="width:80px;height:80px;">
+                          </div>
+                          <div class="wait_good_right">
+                               <span style="white-space: normal;display: block; font-size: 14px;">{{product.product_name}}</span>
+                            <span style="color: #666;font-size: 12px;">单价：￥{{product.price}}</span>
+                            <span style="color: #666;font-size: 12px;margin-left: 30px;">数量：{{product.amount}}</span>
+                            </div>
+                            <div class="clear"></div>
+                  </li>
+                </div>
+                 
+
+               <div class="wait_good_info" style="width: 96%;margin:10px auto 0 auto;position: relative;">
+                  
+                     <span style="white-space: normal;font-size:14px;color: #666;display: block; font-size: 14px;">下单时间：{{list.createtime}}</span>
+                      <span style="white-space: normal;font-size:14px;color: #666;display: block; font-size: 14px;">更新时间：{{list.updatetime}}</span>
+                      <span style="white-space: normal;font-size:14px;color: #666;display: block; font-size: 14px;">共计{{list.total_num}}件商品,金额￥{{list.order_total_price}}</span>
+                      <span style="white-space: normal;font-size:14px;color: #666;display: block; font-size: 14px;">
+                      收入：{{list.price_seller_income}}</span>
+                      <span style="white-space: normal;font-size:14px;color: #666;display: block; font-size: 14px;">收货人：{{list.realname}}</span>
+                      <span style="white-space: normal;font-size:14px;color: #666;display: block; font-size: 14px;">电话：{{list.mobile}}</span>
+                      <span style="white-space: normal;font-size:14px;color: #666;display: block; font-size: 14px;">地址：{{list.address}}</span>
+                      <span style="white-space: normal;font-size:14px;color: #666;display: block; font-size: 14px;" 
+                      ng-if="list.delivery_no">快递单号：{{list.delivery_no}}</span>
+                      <span style="white-space: normal;font-size:14px;color: #666;display: block; font-size: 14px;" 
+                      ng-if="list.delivery_company">
+                      快递公司：{{list.delivery_company}}</span>
+                      <span style="white-space: normal;font-size:14px;color: #666;display: block; font-size: 14px;" 
+                      ng-if="list.delivery_time">
+                      发货时间：{{list.delivery_time}}</span>
+
+
+                    <div  ng-if="list.status == 1 || list.status == 2" ui-sref="fahuo({'orderid':list.orderid})"  style="width:70px;height:35px;text-align: center;line-height:35px;color:#fff;font-size: 14px; border-radius:20px;border-width: 1px;border-style: solid; position: absolute;right: 10px;top:10px;" class="calm-bg">发货</div>
+                        
+             </div>
+          
+        </div>
+
+  <div ng-if="xiala">
+        <div style="text-align:center; margin-top:5px;color: #999;"><span>{{tishi}}</span></div>
+    		<ion-infinite-scroll ng-if="!noMorePage" immediate-check="false" on-infinite="loadMore()" distance="1%" ></ion-infinite-scroll>
+  </div>
+    </ion-content>
+</ion-view>

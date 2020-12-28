@@ -1,0 +1,673 @@
+<ion-view id="view" hide-back-button="true" view-title="延誉宝">
+    <ion-content class="content">
+        <ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()" ng-if="shangla"></ion-refresher>
+    <!--     <ion-list class="list list-item">
+            <div class="item item-thumbnail-left  calm-bg" style="border-radius:0px;margin: -2px;padding: 0; border: 0px;">
+                <img src="{{input.head_logo}}" alt="" class="tabs-icon-top" style="width:60px;height:60px;border-radius: 50%;position: absolute;top:20px;" >
+                <h2 style="font-size:22px;margin:28px 0 0 0;color: #fff;" class="text-left" ng-cloak>{{input.name}}</h2>
+                 <p style="font-size:16px;color: #fff;" class="text-left" ng-cloak>{{input.telephone}}</p>
+                <i class="text-right" style="position: absolute;right:10px;top:40%;color: #fff; font-size: 16px;">设置</i>
+            </div>
+        </ion-list> -->
+        <div class="home_top calm-bg"  ui-sref="set">
+            <div class="home_img">
+                 <img src="{{input.head_logo}}" alt=""  style="width:55px;height:55px;border-radius: 50%;display: block;margin-left:20px;" >
+            </div>
+             <div class="home_info">
+                   <h2 style="font-size:20px;color: #fff;margin-top:15px; " class="text-left" ng-cloak>{{input.name}}</h2>
+                   <p style="width:35px;height:35px;line-height: 35px;text-align: center; font-size:14px;color: #fff;position: absolute;top:5px;right:10px;border-radius: 50%;"><i class="icon  ion-ios-gear-outline" style="font-size:30px;"></i></p>
+            </div>
+        </div>
+
+        <ion-item class="calm-bg" style="padding:0px;border-radius: 0px;border:0px;">
+            <ul class="row text-center">
+                <li class="col" ui-sref="member">
+                    <h2 style="font-size:20px;color: #fff;font-weight: bolder;" ng-cloak>{{input.user_num}}</h2>
+                    <h2 class="shouye-text">会员数</h2>
+                </li>
+                
+                <li class="col" ui-sref="shoukuan_log" style="border-left:1px solid rgba(255,255,255,.7);">
+                    <h2 style="font-size:20px;color: #fff;font-weight: bolder;text-align: center;" ng-cloak>{{input.balcance_log_count}}</h2>
+                     <h2 class="shouye-text">新收款</h2>
+                </li>
+                
+               
+            </ul>
+        </ion-item> 
+              
+        
+        
+        <div class="news_box">
+          <div class="news_logo">
+            <img src="images/laba.png" class="laba_pic">
+          </div>
+          <div class="shouRight">
+                 <ul class="slideTopbox" slide-scroll style="top:0px;">
+                  	<li ng-repeat="list in common_app_toutiao" ng-click="toutiao_jump(list)">
+                  		<span>{{list.msg}}</span>
+                  	</li>
+                 </ul>
+          </div>
+        </div>
+       
+          <!--查看微信,支付宝收款二维码入口-->
+        <!-- <div class="zhifu_box" ui-sref="qrcode_list_shoukuan">
+                 <img src="images/erweima_shoukuan.png" class="shoukuan_pic">
+        </div> -->
+       
+
+         <div style="width: 100%;height: 8px;background: #f3f3f3;"></div>
+      
+
+         <!-- 滚动图片 -->
+		 <!-- <ion-slide-box class="item item-content item-borderless bg-auto"  show-pager="true" auto-play="true" slide-interval="3000" -->
+                   <!-- active-slide="myActiveSlide" does-continue="true" style="margin: 0;padding:0;"> -->
+		  <!-- <ion-slide class="text-center" ng-repeat="banner_item in common_app_img_gundong"> -->
+			<!-- <img  src="{{banner_item.img}}" style="max-width: 100%;" ng-click="toutiao_jump(banner_item)"> -->
+		  <!-- </ion-slide> -->
+		 <!-- </ion-slide-box> -->
+	  
+	  
+			
+			<ion-slide-box  does-continue ="true" auto-play="true" show-pager ="true" slide-interval ="4000" on-slide-changed="slideBanner($index)" >
+				<ion-slide style="width: 100%;" ng-repeat="banner in  common_app_img_gundong" >
+					
+						<img  ng-src="{{banner.img}}" ng-click="toutiao_jump(banner)"  style="width: 100%;height:100%; ">
+				
+				</ion-slide>
+			</ion-slide-box>
+			
+		<ion-item class="item" style="padding: 0;border:none;margin:0 0 0 0;">
+			<div class="row">
+				<div class="col" style="text-align: center;" ui-sref="yingxiao_list({'type':'news', 'name':'新闻动态'})">
+					<button class="button button-small icon-left ion-ios-world-outline button-calm">新闻动态</button>
+				</div>
+				<div class="col" style="text-align: center;" ui-sref="yingxiao_list({'type':'fangan', 'name':'解决方案'})">
+					<button class="button button-small icon-left ion-ios-lightbulb-outline button-calm">解决方案</button>
+				</div>
+				<div class="col" style="text-align: center;" ui-sref="yingxiao_list({'type':'canpin', 'name':'产品展示'})">
+					<button class="button button-small icon-left icon ion-cube button-calm">产品展示</button>
+				</div>
+				<div class="col" style="text-align: center;" ui-sref="yingxiao_list({'type':'anli', 'name':'客户案例'})">
+					<button class="button button-small icon-left ion-trophy button-calm">客户案例</button>
+				</div>
+			
+				
+			</div>
+		</ion-item>
+
+
+         <ion-item class="item" style="padding: 0;border:none;margin:15px 0 0 0;">
+			
+			
+            <div style="width:94%;height:20px; margin: 0 auto;">
+               <div style="width:5px;height: 20px;float: left;background:#FF5722;"></div>
+               <div style="width:100px;height: 20px;margin-left:8px; line-height: 20px;font-size:20px;float: left; color: #333;font-weight: bold;">会员</div>
+            </div>
+            <ul style="margin: 5px  0;">
+                <li class="row text-center">
+                    <div class="col" ng-click="yemian_tiaozhuan('member')"  style="margin: 0;padding: 0;">
+                        <div style="width: 100%;">
+                            <img src="images/listfile.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;" />
+                        </div>
+                         <h2 class="send-text">会员列表</h2>
+                    </div>
+              
+                 <div class="col text-center" ng-click="yemian_tiaozhuan('xiu')"   style="margin: 0;padding: 0;">
+                     <div style="width: 100%;">
+                         <img src="images/code.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;"/>   
+                     </div>
+                      <h2 class="send-text">会员扫码</h2>
+                 </div>
+                 
+                 
+                     <div class="col text-center" ng-click="yemian_tiaozhuan('add')"  style="margin: 0;padding: 0;">
+                        <div style="width: 100%;">
+                            <img src="images/hydj.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;"/>
+                        </div>
+                          <h2 class="send-text">会员等级</h2>
+                    </div>
+
+
+                         <div class="col text-center" ng-click="yemian_tiaozhuan('change_photo')"   style="margin: 0;padding: 0;">
+                        <div style="width: 100%;">
+                            <img src="images/sculpture.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;"/>
+                        </div>
+                         <h2 class="send-text">会员卡头像</h2>
+                        </div>
+                  
+                </li>
+
+            </ul>
+
+              <ul style="margin:5px 0;">
+                <li class="row text-center">
+                    <div class="col"  ng-click="yemian_tiaozhuan('set_up5')"  style="margin: 0;padding: 0;">
+                        <div style="width: 100%;">
+                            <img src="images/hykmc.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;" />
+                        </div>
+                         <h2 class="send-text">会员卡设置</h2>
+                    </div>
+              
+                 <div class="col text-center" ng-click="yulan_tioazhuan('huiyuanka','system_browser')" style="margin: 0;padding: 0;">
+                     <div style="width: 100%;">
+                         <img src="images/ylhyk.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;"/>   
+                     </div>
+                      <h2 class="send-text">预览会员卡</h2>
+                 </div>
+                 
+                 
+                     <div class="col text-center"  style="margin: 0;padding: 0;">
+                       
+                    </div>
+
+
+                         <div class="col text-center" tyle="margin: 0;padding: 0;">
+                       
+                        </div>
+                  
+                </li>
+
+            </ul>
+        </ion-item>
+
+<div style="width: 100%;height: 8px;background: #f3f3f3;"></div>
+
+       <ion-item class="item" style="padding: 0;border:none;margin:15px 0 0 0;">
+            <div style="width:94%;height:20px; margin: 0 auto;">
+               <div style="width:5px;height: 20px;float: left;background: #29AB91;"></div>
+               <div style="width:100px;height: 20px;margin-left:8px; line-height: 20px;font-size:20px;float: left; color: #333;font-weight: bold;">积分</div>
+            </div>
+            <ul style="margin: 5px  0;">
+                <li class="row text-center">
+                    <div class="col" ng-click="yemian_tiaozhuan('supplier_score_require')"  style="margin: 0;padding: 0;">
+                        <div style="width: 100%;">
+                            <img src="images/jfsq.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;" />
+                        </div>
+                         <h2 class="send-text">积分申请</h2>
+                    </div>
+              
+                 <div class="col text-center"   ng-click="yemian_tiaozhuan('score_product')"   style="margin: 0;padding: 0;">
+                     <div style="width: 100%;">
+                         <img src="images/product.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;"/>   
+                     </div>
+                      <h2 class="send-text">商品管理</h2>
+                 </div>
+                 
+                 
+                     <div class="col text-center" ng-click="yemian_tiaozhuan('score_order')"   style="margin: 0;padding: 0;">
+                        <div style="width: 100%;">
+                            <img src="images/statistics.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;"/>
+                        </div>
+                          <h2 class="send-text">商城订单</h2>
+                    </div>
+
+
+                         <div class="col text-center" ng-click="yulan_tioazhuan('jifenshangcheng','system_browser')"  style="margin: 0;padding: 0;">
+                        <div style="width: 100%;">
+                            <img src="images/jfsc.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;"/>
+                        </div>
+                         <h2 class="send-text">预览商城</h2>
+                        </div>
+                  
+                </li>
+
+            </ul>
+
+             
+        </ion-item>
+        <div style="width: 100%;height: 8px;background: #f3f3f3;"></div>
+
+       <ion-item class="item" style="padding: 0;border:none;margin:15px 0 0 0;">
+            <div style="width:94%;height:20px; margin: 0 auto;">
+               <div style="width:5px;height: 20px;float: left;background:#F0AC49;"></div>
+               <div style="width:100px;height: 20px;margin-left:8px; line-height: 20px;font-size:20px;float: left; color: #333;font-weight: bold;">促销</div>
+            </div>
+            <ul style="margin: 5px  0;">
+                <li class="row text-center">
+                    <div class="col" ng-click="yemian_tiaozhuan('toutiao_list')"  style="margin: 0;padding: 0;">
+                        <div style="width: 100%;">
+                            <img src="images/shtt.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;" />
+                        </div>
+                         <h2 class="send-text">商户头条</h2>
+                    </div>
+              
+                 <div class="col text-center" ng-click="yemian_tiaozhuan('toutiao_detail')"  style="margin: 0;padding: 0;">
+                     <div style="width: 100%;">
+                         <img src="images/fbtt.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;"/>   
+                     </div>
+                      <h2 class="send-text">发布头条</h2>
+                 </div>
+                 
+                 
+                     <div class="col text-center" ng-click="yulan_tioazhuan('shanghutoutiao','system_browser')"   style="margin: 0;padding: 0;">
+                        <div style="width: 100%;">
+                            <img src="images/yltt.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;"/>
+                        </div>
+                          <h2 class="send-text">预览头条</h2>
+                    </div>
+
+
+                         <div class="col text-center" ng-click="yulan_tioazhuan('cms_controller')"  style="margin: 0;padding: 0;">
+                        <div style="width: 100%;">
+                            <img src="images/cmskzt.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;"/>
+                        </div>
+                         <h2 class="send-text">CMS控制台</h2>
+                        </div>
+                  
+                </li>
+
+            </ul>
+
+              <ul style="margin: 5px  0;">
+                <li class="row text-center">
+                    <div class="col"  ng-click="yemian_tiaozhuan('shanghu_imgs')"  style="margin: 0;padding: 0;">
+                        <div style="width: 100%;">
+                            <img src="images/wdfc.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;" />
+                        </div>
+                         <h2 class="send-text">我的风采</h2>
+                    </div>
+              
+                 <div class="col text-center" ng-click="yemian_tiaozhuan('set_address')"   style="margin: 0;padding: 0;">
+                     <div style="width: 100%;">
+                         <img src="images/wddz.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;"/>   
+                     </div>
+                      <h2 class="send-text">我的地址</h2>
+                 </div>
+                 
+                 
+                     <div class="col text-center"  ng-click="yemian_tiaozhuan('set_up3')"  style="margin: 0;padding: 0;">
+                        <div style="width: 100%;">
+                            <img src="images/wddh.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;"/>
+                        </div>
+                          <h2 class="send-text">我的电话</h2>
+                    </div>
+
+
+                     <div class="col text-center"    style="margin: 0;padding: 0;">
+
+                       
+                      
+                    </div>
+                  
+                </li>
+
+            </ul>
+        </ion-item>
+
+        <div style="width: 100%;height: 8px;background: #f3f3f3;"></div>
+
+
+      <ion-item class="item" style="padding: 0;border:none;margin:15px 0 0 0;">
+            <div style="width:94%;height:20px; margin: 0 auto;">
+               <div style="width:5px;height: 20px;float: left;background:#64B371;"></div>
+               <div style="width:100px;height: 20px;margin-left:8px; line-height: 20px;font-size:20px;float: left; color: #333;font-weight: bold;">电商</div>
+            </div>
+            <ul style="margin: 5px  0;">
+                <li class="row text-center">
+                    <div class="col"   ng-click="yemian_tiaozhuan('product_list')"  style="margin: 0;padding: 0;">
+                        <div style="width: 100%;">
+                            <img src="images/splb.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;" />
+                        </div>
+                         <h2 class="send-text">商品列表</h2>
+                    </div>
+              
+                 <div class="col text-center" ng-click="yemian_tiaozhuan('dingdan')"  style="margin: 0;padding: 0;">
+                     <div style="width: 100%;">
+                         <img src="images/ddzx.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;"/>   
+                     </div>
+                      <h2 class="send-text">订单中心</h2>
+                 </div>
+                 
+                 
+                     <div class="col text-center" ng-click="yemian_tiaozhuan('my_kucun')" style="margin: 0;padding: 0;">
+                        <div style="width: 100%;">
+                            <img src="images/wdkc.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;"/>
+                        </div>
+                          <h2 class="send-text">我的库存</h2>
+                    </div>
+
+
+                         <div class="col text-center"   ng-click="yemian_tiaozhuan('my_zhangmu')"  style="margin: 0;padding: 0;">
+                        <div style="width: 100%;">
+                            <img src="images/wdzm.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;"/>
+                        </div>
+                         <h2 class="send-text">我的账目</h2>
+                        </div>
+                  
+                </li>
+
+            </ul>
+
+              <ul style="margin: 5px  0;">
+                <li class="row text-center">
+                    <div class="col" ui-sref="set_password({mobile:input.mobile})"  style="margin: 0;padding: 0;">
+                        <div style="width: 100%;">
+                            <img src="images/dpgl.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;" />
+                        </div>
+                         <h2 class="send-text">店铺管理</h2>
+                    </div>
+              
+                 <div class="col text-center"  ng-click="yulan_tioazhuan('mobile_shop','system_browser')"  style="margin: 0;padding: 0;">
+                     <div style="width: 100%;">
+                         <img src="images/ydsc.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;"/>   
+                     </div>
+                      <h2 class="send-text">预览商城</h2>
+                 </div>
+                 
+                 
+                 <div class="col text-center" ui-sref="qrcode_list_shoukuan" style="margin: 0;padding: 0;">
+
+                     <div style="width: 100%;">
+                        <img src="images/saoerweima.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;"/>
+                    </div>
+                     <h2 class="send-text">免费收款码</h2>
+                
+                </div>
+
+
+                         <div class="col text-center"   style="margin: 0;padding: 0;">
+                       
+                        </div>
+                  
+                </li>
+
+            </ul>
+        </ion-item>
+
+       <div style="width: 100%;height: 8px;background: #f3f3f3;"></div>
+
+
+       <ion-item class="item" style="padding: 0;border:none;margin:15px 0 0 0;">
+            <div style="width:94%;height:20px; margin: 0 auto;">
+               <div style="width:5px;height: 20px;float: left;background:#AE639D;"></div>
+               <div style="width:100px;height: 20px;margin-left:8px; line-height: 20px;font-size:20px;float: left; color: #333;font-weight: bold;">优惠</div>
+            </div>
+            <ul style="margin: 5px  0;">
+                <li class="row text-center">
+                    <div class="col"  ng-click="yemian_tiaozhuan('statistics')"   style="margin: 0;padding: 0;">
+                        <div style="width: 100%;">
+                            <img src="images/youhui.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;" />
+                        </div>
+                         <h2 class="send-text">优惠券列表</h2>
+                    </div>
+              
+                 <div class="col text-center" ng-click="yemian_tiaozhuan('coupons_send')"  style="margin: 0;padding: 0;">
+                     <div style="width: 100%;">
+                         <img src="images/fayouhui.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;"/>   
+                     </div>
+                      <h2 class="send-text">发优惠券</h2>
+                 </div>
+                 
+                 
+                     <div class="col text-center"  ng-click="yemian_tiaozhuan('gift')" style="margin: 0;padding: 0;">
+                        <div style="width: 100%;">
+                            <img src="images/xiaoyouhui.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;"/>
+                        </div>
+                          <h2 class="send-text">销优惠券</h2>
+                    </div>
+
+
+                         <div class="col text-center"  ng-click="yemian_tiaozhuan('data_summary')" style="margin: 0;padding: 0;">
+                        <div style="width: 100%;">
+                            <img src="images/shuju.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;"/>
+                        </div>
+                         <h2 class="send-text">数据汇总</h2>
+                        </div>
+                  
+                </li>
+
+            </ul>
+
+             
+        </ion-item>
+        
+        
+        
+ 
+
+ <div style="width: 100%;height: 8px;background: #f3f3f3;"></div>
+
+      <ion-item class="item" style="padding: 0;border:none;margin:15px 0 0 0;">
+            <div style="width:94%;height:20px; margin: 0 auto;">
+               <div style="width:5px;height: 20px;float: left;background:#D9544F;"></div>
+               <div style="width:100px;height: 20px;margin-left:8px; line-height: 20px;font-size:20px;float: left; color: #333;font-weight: bold;">延誉宝</div>
+            </div>
+            <ul style="margin: 5px  0;">
+                <li class="row text-center">
+                    <div class="col"  ui-sref="yingxiao_index" style="margin: 0;padding: 0;">
+                        <div style="width: 100%;">
+                            <img src="images/yxxy.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;" />
+                        </div>
+                         <h2 class="send-text">营销学院</h2>
+                    </div>
+              
+                 <div class="col text-center" ng-click="server()" style="margin: 0;padding: 0;">
+                     <div style="width: 100%;">
+                         <img src="images/fwsc.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;"/>   
+                     </div>
+                      <h2 class="send-text">服务市场</h2>
+                 </div>
+                 
+                 
+                     <div class="col text-center" ui-sref="yijianfankui" style="margin: 0;padding: 0;">
+                        <div style="width: 100%;">
+                            <img src="images/yjfk.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;"/>
+                        </div>
+                          <h2 class="send-text">意见反馈</h2>
+                    </div>
+
+
+                         <div class="col text-center" ng-click="callmobile()"   style="margin: 0;padding: 0;">
+                        <div style="width: 100%;">
+                            <img src="images/kefu.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;"/>
+                        </div>
+                         <h2 class="send-text">呼叫客服</h2>
+                        </div>
+                  
+                </li>
+
+            </ul>
+
+              <ul style="margin: 5px  0;">
+                <li class="row text-center">
+                    <div class="col"  ui-sref="set" style="margin: 0;padding: 0;">
+                        <div style="width: 100%;">
+                            <img src="images/yhsz.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;" />
+                        </div>
+                         <h2 class="send-text">设置APP</h2>
+                    </div>
+              
+                 <div class="col text-center" ui-sref="set_up7" style="margin: 0;padding: 0;">
+                     <div style="width: 100%;">
+                         <img src="images/gyapp.png" alt="图片加载失败" style="width: 45px;height: 45px;display: block;margin: 0 auto;"/>   
+                     </div>
+                      <h2 class="send-text">关于APP</h2>
+                 </div>
+                 
+                 
+                     <div class="col text-center" ui-sref="set_up3" style="margin: 0;padding: 0;">
+                    
+                    </div>
+
+
+                         <div class="col text-center"   style="margin: 0;padding: 0;">
+                       
+                        </div>
+                  
+                </li>
+
+            </ul>
+        </ion-item>
+
+
+   <!-- 平铺图片 -->
+   <div style="width: 100%;">
+          <div style="width: 100%;" ng-repeat="img_list in common_app_img_list" ng-click="toutiao_jump(img_list)">
+           <img src="{{img_list.img}}" ng-click="toutiao_jump(img_list)" style="display:block;width: 100%;">
+          </div>
+   </div>
+
+
+
+
+
+
+      <!-- 备用 -->
+        <!-- <ion-item class="item" style="padding: 0;border:none;margin:15px 0 0 0;">
+           
+            <ul style="margin: 10px 0 0 0;">
+                <li class="row text-center">
+                    <div class="col"  ui-sref="member" style="margin: 0;padding: 0;">
+                        <div class="pic2 shouye_bg">
+                            <img src="images/listfile.png" alt="图片加载失败" style="width: 45px;height: 45px;margin: 15px 0 0 4px;" />
+                        </div>
+                         <h2 class="send-text">会员列表</h2>
+                    </div>
+              
+                 <div class="col text-center" ui-sref="xiu" style="margin: 0;padding: 0;">
+                     <div class="pic3 shouye_bg">
+                         <img src="images/code.png" alt="图片加载失败" style="width: 40px;height: 40px;margin: 12px 0 0 4px;"/>   
+                     </div>
+                      <h2 class="send-text">会员卡二维码</h2>
+                 </div>
+                 
+                 
+                     <div class="col text-center" ui-sref="supplier_score_require" style="margin: 0;padding: 0;">
+                        <div class="pic5 shouye_bg">
+                            <img src="images/jfsq.png" alt="图片加载失败" style="width: 40px;height: 40px;margin: 12px 0 0 1px;"/>
+                        </div>
+                          <h2 class="send-text">积分申请</h2>
+                    </div>
+
+
+                         <div class="col text-center" ui-sref="product"  style="margin: 0;padding: 0;">
+                        <div class="pic7 shouye_bg">
+                            <img src="images/jfsc.png" alt="图片加载失败" style="width: 40px;height: 40px;margin: 10px 0 0 2px;"/>
+                        </div>
+                         <h2 class="send-text">积分商城</h2>
+                        </div>
+                  
+                </li>
+
+            </ul>
+        </ion-item>
+
+        <ion-item class="item" style="padding: 0;border:none;margin: 0px 0 0 0;">
+            <ul>
+                <li class="row text-center">
+                    <div class="col"  ui-sref="statistics" style="margin: 0;padding: 0;">
+                        <div class="pic1 shouye_bg">
+                            <img src="images/discount.png" alt="图片加载失败" style="width: 40px;height: 40px;margin: 15px 0 0 3px;" />
+                        </div>
+                         <h2 class="send-text">发优惠券</h2>
+                    </div>
+              
+                 <div class="col text-center" ui-sref="gift" style="margin: 0;padding: 0;">
+                     <div class="pic4 shouye_bg">
+                         <img src="images/gift.png" alt="图片加载失败" style="width: 40px;height: 40px;margin: 14px 0 0 2px;"/>   
+                     </div>
+                      <h2 class="send-text">销优惠券</h2>
+                 </div>
+                 
+                 
+                     <div class="col text-center" ui-sref="score_order" style="margin: 0;padding: 0;">
+                        <div class="pic9 shouye_bg">
+                            <img src="images/statistics.png" alt="图片加载失败" style="width: 40px;height: 40px;margin: 12px 0 0 2px;"/>
+                        </div>
+                          <h2 class="send-text">积分订单</h2>
+                    </div>
+
+                        <div class="col text-center" ui-sref="data_summary" style="margin: 0;padding: 0;">
+                        <div class="pic6 shouye_bg">
+                            <img src="images/data.png" alt="图片加载失败" style="width: 40px;height: 40px;margin: 10px 0 0 4px;"/>
+                        </div>
+                         <h2 class="send-text">数据汇总</h2>
+                    </div>
+                  
+                </li>
+
+            </ul>
+        </ion-item>
+
+         <ion-item class="item" style="padding: 0;border:none;margin: 0px 0 0 0;">
+            <ul>
+                <li class="row text-center">
+                    <div class="col"  ui-sref="yingxiao_list" style="margin: 0;padding: 0;">
+                        <div class="pic7 shouye_bg">
+                            <img src="images/yx.png" alt="图片加载失败" style="width: 40px;height: 40px;margin: 15px 0 0 3px;" />
+                        </div>
+                         <h2 class="send-text">营销学院</h2>
+                    </div>
+              
+                 <div class="col text-center" ui-sref="toutiao_list" style="margin: 0;padding: 0;">
+                     <div class="pic2 shouye_bg">
+                         <img src="images/shtt.png" alt="图片加载失败" style="width: 40px;height: 40px;margin: 13px 0 0 2px;"/>   
+                     </div>
+                      <h2 class="send-text">商户头条</h2>
+                 </div>
+                 
+                 
+                     <div class="col text-center" ui-sref="set_password({mobile:input.mobile})" style="margin: 0;padding: 0;">
+                        <div class="pic6 shouye_bg">
+                            <img src="images/mima.png" alt="图片加载失败" style="width: 40px;height: 40px;margin: 12px 0 0 2px;"/>
+                        </div>
+                          <h2 class="send-text">店铺管理</h2>
+                    </div>
+
+                        <div class="col text-center" ui-sref="server" style="margin: 0;padding: 0;">
+                        <div class="pic9 shouye_bg">
+                            <img src="images/love.png" alt="图片加载失败" style="width: 40px;height: 40px;margin: 10px 0 0 4px;"/>
+                        </div>
+                         <h2 class="send-text">服务市场</h2>
+                    </div>
+                  
+                </li>
+
+            </ul>
+        </ion-item>
+         
+         <ion-item class="item" style="padding: 0;border:none;margin: 0px 0 0 0;">
+            <ul>
+                <li class="row text-center">
+                    <div class="col"  ui-sref="set_up7" style="margin: 0;padding: 0;">
+                        <div class="pic5 shouye_bg">
+                            <img src="images/gyapp.png" alt="图片加载失败" style="width: 40px;height: 40px;margin: 11px 0 0 0px;" />
+                        </div>
+                         <h2 class="send-text">关于APP</h2>
+                    </div>
+              
+                 <div class="col text-center" ui-sref="yijianfankui" style="margin: 0;padding: 0;">
+                     <div class="pic11 shouye_bg">
+                         <img src="images/flower.png" alt="图片加载失败" style="width: 40px;height: 40px;margin: 13px 0 0 2px;"/>   
+                     </div>
+                      <h2 class="send-text">意见反馈</h2>
+                 </div>
+                 
+                 
+                     <div class="col text-center" ng-click="callmobile()" style="margin: 0;padding: 0;">
+                        <div class="pic1 shouye_bg">
+                            <img src="images/kefu.png" alt="图片加载失败" style="width: 40px;height: 40px;margin: 12px 0 0 2px;"/>
+                        </div>
+                          <h2 class="send-text">呼叫客服</h2>
+                    </div>
+
+                        <div class="col text-center" ui-sref="help({action:'shezhimima'})" style="margin: 0;padding: 0;">
+                        <div class="pic3 shouye_bg">
+                            <img src="images/gengduo.png" alt="图片加载失败" style="width:35px;height: 35px;margin: 13px 0 0 1px;"/>
+                        </div>
+                         <h2 class="send-text">更多</h2>
+                    </div>
+                  
+                </li>
+
+            </ul>
+        </ion-item> -->
+       
+        
+     
+    </ion-content>
+      <div class="callmobile" ng-click="callmobile()">
+        <i class="icon ion-ios-telephone" style="font-size:30px;display:block; transform: rotate(260deg);margin:6px 10px 0 10px; color: #ccc;"></i>
+      </div>
+</ion-view>

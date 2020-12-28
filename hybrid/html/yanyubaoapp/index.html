@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
+    <meta name="format-detection" content="telephone=no">
+    <title></title>
+
+    <!--<script src="lib/js/ionic.bundle.min.js"></script>-->
+    
+    <script>
+	    var agent = navigator.userAgent.toLowerCase() ;
+	    if(agent.indexOf("yanyu") > 0){
+	       document.write("<script src=\"cordova.js\">"+"</scr"+"ipt>"); 
+	    }
+	    
+	    //第一次启动时,生成一串随机字符存入缓存,登入时带上
+	    var chars = ['0','1','2','3','4','5','6','7','8','9',
+	    			'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+	    			'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'
+	    			];
+
+	    function generateMixed(n) {
+	         var res = "";
+	         for(var i = 0; i < n ; i ++) {
+	             var id = Math.ceil(Math.random()*35);
+	             res += chars[id];
+	         }
+	         return res;
+	    }
+
+	    var str = localStorage.getItem("yanyubao_rand_str");
+	    if(!str){
+	    	str = generateMixed(20);
+	    	localStorage.setItem("yanyubao_rand_str", str);
+	    }
+	    console.log('yanyubao_rand_str:'+str);
+    </script> 
+    <script src="lib/js/ionic.bundle.js"></script>
+    <script src="lib/js/angular/angular-sanitize.js"></script>
+    <script src="lib/js/angular/angular.min.js"></script>
+    <script src="lib/js/angular/angular-animate.js"></script>
+    <script src="js/abot.js"></script>
+    <script src="js/app.js"></script>
+    <script src="lib/timepicer/timePicker.js"></script>
+    <script src="lib/js/highcharts.js"></script>
+    <script src="lib/js/highcharts-ng.min.js"></script>
+
+    <!-- <link href="lib/timepicer/timePicker.css" rel="stylesheet"> -->    
+    <link rel="stylesheet" href="css/styless.css">
+    <link rel="stylesheet" href="lib/css/ionic.css"  id="global-css">
+    <link rel="stylesheet" href="css/style.css">
+    <link href="lib/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css"/>
+	<style type="text/css">
+		body {
+			padding-top: constant(safe-area-inset-top);   //为导航栏+状态栏的高度 88px            
+			padding-left: constant(safe-area-inset-left);   //如果未竖屏时为0                
+			padding-right: constant(safe-area-inset-right); //如果未竖屏时为0                
+			padding-bottom: constant(safe-area-inset-bottom);//为底下圆弧的高度 34px       
+		}
+	</style>
+</head>
+<body class="main_body"  ng-controller="modalCtrl">
+<script type="text/javascript">
+//alert(cordova.platformId);
+//console.log("当前平台："+cordova.platformId);
+
+document.addEventListener("deviceready", onDeviceReady, false);  
+
+function onDeviceReady() {  
+	//navigator.splashscreen.hide();
+	if (cordova.platformId == 'android') {
+		//StatusBar.backgroundColorByHexString("#333");
+		//双击返回退出
+		document.addEventListener("backbutton", onBackKeyDown, false);
+	}
+	                       
+}
+function onBackKeyDown() {  
+    //Toast.showShort('再点击一次退出!');  
+    document.removeEventListener("backbutton", onBackKeyDown, false); // 注销返回键  
+    document.addEventListener("backbutton", exitApp, false);//绑定退出事件  
+    // 3秒后重新注册  
+    var intervalID = window.setInterval(function() {  
+        window.clearInterval(intervalID);  
+        document.removeEventListener("backbutton", exitApp, false); // 注销返回键  
+        document.addEventListener("backbutton", onBackKeyDown, false); // 返回键  
+    }, 600);  
+}  
+function exitApp(){  
+    navigator.app.exitApp();  
+}  
+
+</script>
+<!--显示正在加载页面 -->
+<style type="text/css">
+    #loading {	width:100%; margin:0 auto; padding-top:100px;height: 500px;}
+    .circle {	background-color: rgba(0,0,0,0);	border:5px solid rgba(0,183,229,0.9);
+        opacity:.9;	border-right:5px solid rgba(0,0,0,0);	border-left:5px solid rgba(0,0,0,0);	border-radius:50px;	box-shadow: 0 0 35px #2187e7;	width:50px;	height:50px;	margin:0 auto;	animation:spinPulse 1s infinite ease-in-out;	-ms-animation:spinPulse 1s infinite ease-in-out;	-moz-animation:spinPulse 1s infinite ease-in-out;	-webkit-animation:spinPulse 1s infinite linear;}
+    .circle1 {	background-color: rgba(0,0,0,0);	border:5px solid rgba(0,183,229,0.9);	opacity:.9;	border-left:5px solid rgba(0,0,0,0);	border-right:5px solid rgba(0,0,0,0);	border-radius:50px;	box-shadow: 0 0 15px #2187e7; 	width:30px;	height:30px;	margin:0 auto;	position:relative;	top:-50px;	animation:spinoffPulse 1s infinite linear;	-ms-animation:spinoffPulse 1s infinite linear;	-moz-animation:spinoffPulse 1s infinite linear;	-webkit-animation:spinoffPulse 1s infinite linear;}@keyframes spinPulse {	0% { transform:rotate(160deg); opacity:0; box-shadow:0 0 1px #2187e7;}	50% { transform:rotate(145deg); opacity:1; }	100% { transform:rotate(-320deg); opacity:0; }}@keyframes spinoffPulse {	0% { transform:rotate(0deg); }	100% { transform:rotate(360deg);  }}@-moz-keyframes spinPulse {	0% { -moz-transform:rotate(160deg); opacity:0; box-shadow:0 0 1px #2187e7;}	50% { -moz-transform:rotate(145deg); opacity:1; }	100% { -moz-transform:rotate(-320deg); opacity:0; }}@-moz-keyframes spinoffPulse {	0% { -moz-transform:rotate(0deg); }	100% { -moz-transform:rotate(360deg);  }}@-webkit-keyframes spinPulse {	0% { -webkit-transform:rotate(160deg); opacity:0; box-shadow:0 0 1px #2187e7; }	50% { -webkit-transform:rotate(145deg); opacity:1;}	100% { -webkit-transform:rotate(-320deg); opacity:0; }}@-webkit-keyframes spinoffPulse {	0% { -webkit-transform:rotate(0deg); }	100% { -webkit-transform:rotate(360deg); }}
+</style>
+<div ng-show='loading'> <div class="circle"></div><div class="circle1"></div> </div>
+<!--显示正在加载页面 End -->
+            <ion-nav-bar class="bar-calm">
+               <ion-nav-back-button class="light">
+                    {{''}}
+                </ion-nav-back-button>
+            <!--     <ion-nav-title class="title" style="padding-top:-15px;">延誉宝</ion-nav-title> -->
+                <ion-nav-buttons side="right">
+                    <button class="button button-icon ion-home"  ui-sref="shouye" nav-direction="forward"></button>
+                </ion-nav-buttons>
+            </ion-nav-bar>
+            <ion-nav-view>
+
+            </ion-nav-view>
+
+<!--隐藏加载页面 -->
+            <script>
+                main_body = function($scope){
+                    $scope.loading =!$scope.loading;
+                }
+            </script>
+<!--隐藏加载页面 End -->
+
+<script src="views/login/login.js"></script>
+<script src="views/shouye/shouye.js"></script>
+<script src="views/set/set.js"></script>
+<script src="views/tour/tour.js"></script>
+<script src="views/qrcode_img/qrcode_img.js"></script>
+<script src="views/tongxunlu/tongxunlu.js"></script>
+<script src="views/mobile_add/mobile_add.js"></script>
+<script src="views/supplier_score_require/supplier_score_require.js"></script>
+<script src="views/recharge/recharge.js"></script>
+<script src="views/money_mingxi/money_mingxi.js"></script>
+<script src="views/member_detail/member_detail.js"></script>
+<script src="views/score_mingxi/score_mingxi.js"></script>
+<script src="views/set_password/set_password.js"></script>
+<script src="views/import_manual/import_manual.js"></script>
+<script src="views/qrcode_shoukuan/qrcode_info_shoukuan.js"></script>
+<script src="views/score_product/score_product.js"></script>
+<script src="views/add_score_product/add_score_product.js"></script>
+<script src="views/score_order/score_order.js"></script>
+<script src="views/product_list/product_list.js"></script>
+<script src="views/add_product/add_product.js"></script>
+<script src="views/my_dingdan/my_dingdan.js"></script>
+<script src="views/my_kucun/my_kucun.js"></script>
+<script src="views/fahuo/fahuo.js"></script>
+<script src="views/my_zhangmu/my_zhangmu.js"></script>
+
+
+</body>
+</html>
