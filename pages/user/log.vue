@@ -19,6 +19,8 @@
 				 @click="getItem(index,item)">{{item}}</button>
 			</view>
 
+
+
 			<view>
 				<view class="balance_lists" v-for="(item,index) in log_list" :key="index">
 					<view class="dabox_li">
@@ -38,12 +40,8 @@
 				<view class="bottom_tip" v-if="bottom_tip==1">没有更多数据~</view>
 			</view>
 			
-
-
-
-
-
-
+			
+			
 		</view>
 
 	</view>
@@ -75,7 +73,12 @@
 					contentnomore: "没有更多数据了"
 				},
 				
-				userid002:0
+				// 2020.12.29. 指定读取某个用户的余额明细，如果大于0，
+				//则服务器接口读取这个userid对应的余额明细，而忽略当前的userid，当前的userid和checkstr只是用于判断权限使用
+				userid002:0,
+				
+				//2020.12.29. 超级会员卡的时候使用
+				super_vip_card_kazhu_userid:0,
 			}
 
 		},
@@ -87,7 +90,15 @@
 				uni.setNavigationBarTitle({
 					title:'赠款明细'
 				})
-			}			
+			}
+			else if(option.type && (option.type == 'super_vip_card_balance')){
+				this.current_balance_type = 'super_vip_card_balance';
+				this.super_vip_card_kazhu_userid = option.super_vip_card_kazhu_userid;
+				
+				uni.setNavigationBarTitle({
+					title:'会员余额明细列表'
+				})
+			}
 			
 			console.log('option.userid002',option.userid002);
 			if(option.userid002){
@@ -123,22 +134,38 @@
 				
 				console.log('this.current_balance_type====>>>>', this.current_balance_type);
 				
+				
+				
+				
+				
 				var that = this;
 				var balance_type = this.current_balance_type;
 				var userInfo = this.abotapi.get_user_info();
 				
-				this.abotapi.abotRequest({
-					url: this.abotapi.globalData.yanyubao_server_url + 'openapi/UserData/user_balance_list',
-					method: 'post',
-					data: {
+				var post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/UserData/user_balance_list';
+				
+				var post_data = {
 						sellerid: that.abotapi.globalData.default_sellerid,
 						checkstr: userInfo.checkstr,
 						userid: userInfo.userid,
-						balance_type_ext: balance_type,
 						page_size: that.page_size,
-						tag:that.tag,
-						userid002:that.userid002
-					},
+					};
+					
+				if(that.current_balance_type == 'super_vip_card_balance'){
+					post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/SuperVipCardData/get_huiyuan_balacne_list';
+					
+					post_data.kazhu_userid = that.super_vip_card_kazhu_userid;
+				}
+				else {
+					post_data.balance_type_ext = balance_type;
+					post_data.tag = that.tag;
+					post_data.userid002 = that.userid002;
+				}
+				
+				this.abotapi.abotRequest({
+					url: post_url,
+					method: 'post',
+					data: post_data,
 					success(res) {
 						console.log('aaaabbbb', res);
 						
@@ -148,19 +175,33 @@
 							return;
 						}
 						
+						
+						
 						var data = res.data.data;
 						that.balance_total = data.balance_total;
-						that.tixian_url = data.tixian_url;
+						
+						
+						var log_list = data.log_list;
+						
+						
+						if(that.current_balance_type == 'balance'){ 
+							that.tixian_url = data.tixian_url;
+						}
+						
 						// var balance_total = that.balance_total;
 						console.log('aaaaaaaaasssssabbbb', that.balance_total);
-						var log_list = data.log_list;
+						
+						
 						console.log('log_list', log_list);
+						
 						var loglist = that.log_list;
 						console.log('aaaaaaass', loglist);
+						
 						for (var i = 0; i < log_list.length; i++) {
 							loglist.push(log_list[i]);
 							console.log('aaaaa===ssss>>>', log_list[i])
 						}
+						
 						that.log_list = loglist;
 						console.log('aaaaa===>>>', that.log_list)
 						

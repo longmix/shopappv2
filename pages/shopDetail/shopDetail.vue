@@ -112,15 +112,15 @@
 					<img src="../../static/img/success.png" alt="" class="vip_logo">
 					<view class="vip_card_name">{{item.card_name}}</view>
 				</view>
-				<view v-if="item.huiyuan_status == 1" class="banka_btn" style="margin-top: 20rpx;">
-					<navigator>
+				<view v-if="item.huiyuan_status == 1" class="banka_btn" style="margin-top: 20rpx;" @tap="go_detail_huiyuan(item.userid)">
+					<view>
 						<view class="banka_ft">查看卡片</view>
-					</navigator>
+					</view>
 				</view>
-				<view v-else class="banka_btn" style="margin-top: 20rpx;">
-					<navigator>
+				<view v-else class="banka_btn" style="margin-top: 20rpx;"  @tap="become_huiyuan(item.userid)">
+					<view>
 						<view class="banka_ft">我要领卡</view>
-					</navigator>
+					</view>
 				</view>
 				</view>
 			</view>
@@ -906,6 +906,7 @@
 						
 						that.vip_card_list = res.data.vip_card_list;
 						
+						console.log('8888888888888',that.vip_card_list);
 						
 						if(!data){
 							return;
@@ -1223,9 +1224,80 @@
 			    },
 			  })
 			},
-						
 			
+			//成为会员
+			become_huiyuan:function(kazhu_userid){
+				
+				var that = this;
+				var userInfo = this.abotapi.get_user_info();
+				
+				
+				if (!userInfo || !userInfo.userid) {
+					uni.showModal({
+						title: '请先登录',
+						success: function(res) {
+							if (res.cancel) {
+								return;
+							} else if (res.confirm) {
+				
+								var last_url = '/pages/shopDetail/shopDetail?shangid=' + that.current_xianmai_shangid;
+								that.abotapi.goto_user_login(last_url, 'normal');
+								return;
+							}
+				
+						}
+					})
+					return;
+				}
+				
+				
+				that.abotapi.abotRequest({
+				  url: this.abotapi.globalData.yanyubao_server_url + 'openapi/SuperVipCardData/add_user_card_huiyuan_item',
+				  method: 'post',
+				  data: {
+				    sellerid: this.abotapi.get_sellerid(),
+				    userid:userInfo ? userInfo.userid : '',
+				    kazhu_userid: kazhu_userid,
+					checkstr: userInfo.checkstr,
+				  },  
+				  header: {
+				    'Content-Type': 'application/x-www-form-urlencoded'
+				  },
+				  success: function (res) {
+					  
+					  if(res.data.code == 1){
+						  uni.showToast({
+						    title: '领取成功！',
+						    duration: 2000
+						  });
+						  //刷新界面，以获取最新的领卡状态。
+						  that.get_shang_detail();
+						  
+						  
+					  }
+				  },
+				  fail: function (e) {
+					   uni.showToast({
+					     title: '网络异常！',
+					     duration: 2000
+					   });
+				   }
+				 });
+				
+				
+			},
 			
+			//查看会员详情
+			go_detail_huiyuan:function(kazhu_userid){
+				
+				console.log('11111111111',kazhu_userid);
+				
+				
+				uni.navigateTo({
+					url: '/pages/myecard/myecard?kazhu_userid=' + kazhu_userid + '&ecard_data_type=' + 'super_vip_card'
+				});
+			}
+					
 			
 		}
 	};

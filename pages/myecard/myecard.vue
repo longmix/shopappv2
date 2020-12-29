@@ -1,7 +1,7 @@
 <template style="padding: 0upx;margin: 0upx; display:block;">
 	<view :style="[{'background-image':'url('+ bg_img.page_bg_img_body +')' }]" >
 		
-		<view >			
+		<view v-if=" ecard_data_type == 'ecard'">
 				<image class="head_c" :src="head_img"></image>
 			
 			<view :style="[{'background-image':'url('+ current_user_card_data.card_bg_img +')' }]" class="c">
@@ -17,8 +17,26 @@
 				</view>
 			</view>
 		</view>
+		
+		<view v-else-if="ecard_data_type == 'super_vip_card'">
+				<image class="head_c" :src="head_img"></image>
+			
+			<view style="background-color: #9DC45F;" class="c">
+				<view class="a">
+					<image :src="huiyuan_detail_info.headimgurl" style="width: 100upx;height: 100upx;border-radius: 50%;overflow: hidden;"></image>
+					<view style="margin-left:30rpx;line-height: 50rpx;">
+						<view>{{huiyuan_detail_info.huiyuan_name}}</view>
+						<view>{{huiyuan_detail_info.mobile}}</view>
+					</view>
+				</view>
+				<view style="text-align: right;padding-right: 57px;color: #000000;margin-top:165upx;padding-right: 170upx;">
+					<b>{{huiyuan_detail_info.huiyuan_info.cardno}}</b>
+				</view>
+			</view>
+		</view>
 
-		<view style="text-align: center;margin-top:100rpx;background-color: #FFFFFF;margin-bottom: 10rpx;">
+		<view v-if="ecard_data_type == 'ecard'"
+			style="text-align: center;margin-top:100rpx;background-color: #FFFFFF;margin-bottom: 10rpx;">
 			<view class="mid-tips" style="border-right: 1rpx solid #c5c5c5;">
 				<view class="mid-level">会员等级</view>
 				<view style="font-size: 30rpx;font-weight: bold;">{{current_user_card_data.level_name}}</view>
@@ -40,6 +58,26 @@
 			</view>
 
 		</view>
+		<view v-else-if="ecard_data_type == 'super_vip_card'">
+			<view class="super_vip_balance">
+				<view class="balacne_detail_count">
+					<view class="ddddd">卡内余额：</view>
+					<view style="">{{huiyuan_detail_info.huiyuan_info.balance}}</view>
+				</view>
+				<view class="go_balance_detail"  @tap="check_balance_log()">
+						查看明细
+				</view>
+				
+			</view>
+		</view>
+		
+		<!-- <view v-else-if="ecard_data_type == 'super_vip_card43534535'">
+			
+		</view>
+		<view v-else>
+			
+		</view> -->
+		
 
 
 
@@ -215,6 +253,10 @@
 				head_img:'',
 				bg_img:'',
 				
+				ecard_data_type:'ecard',	//2020.12.28. 会员卡的类型
+				super_vip_card_data: {},
+				huiyuan_detail_info:{},
+				
 			}
 		},
 		onLoad(options) {
@@ -289,10 +331,35 @@
 			this.abotapi.set_sellerid(sellerid);
 			
 			console.log('当前sellerid:' + sellerid + "，来自请求");
-
-
-
-
+			
+			//判断是否登录
+			var last_url = 'redirectTo /pages/myecard/myecard';
+			
+			var userInfo = this.abotapi.get_user_info();
+			if (!userInfo) {
+			  this.abotapi.goto_user_login(last_url);
+						
+			  return;
+			}
+			
+			
+			//2020.12.28. 
+			if(options.ecard_data_type){
+				this.ecard_data_type = options.ecard_data_type;
+				
+				if(options.ecard_data_type == 'super_vip_card'){
+					this.super_vip_card_data.kazhu_userid = options.kazhu_userid;
+					
+					
+					//console.log('pwwwwwwwwwwww',this.super_vip_card_data.kazhu_userid);
+				}
+				else{
+					//如果是其他类似超级会员卡的类型（不是 ecard）
+				}
+			}
+			
+			
+			
 
 			this.abotapi.set_shop_option_data(this, this.callback_function_shop_option_data);
 
@@ -373,135 +440,18 @@
 				//=====更新商户头条=================
 				that.initArticleList();
 				//========End====================
-
-
-				
-
-
-
-
-				
-				
-				var last_url = 'redirectTo /pages/myecard/myecard';
-				
-				var userInfo = this.abotapi.get_user_info();
-				if (!userInfo) {
-				  this.abotapi.goto_user_login(last_url);
-							
-				  return;
+				console.log('888889999===',that.ecard_data_type);
+				if(that.ecard_data_type == 'ecard'){
+					that.get_user_card_and_ecard_option();
+				}
+				else if(that.ecard_data_type == 'super_vip_card'){
+					that.get_super_vip_card_data();
 				}
 				
-				console.log("准备获取userid[" + userInfo.userid + "]的商户[" + this.abotapi.globalData.sellerid +"]会员卡信息");
 				
-				//console.log('that.abotapi.get_sellerid() ===>>>> ', that.abotapi.get_sellerid());
 				
-				uni.showLoading({
-					title: '数据加载中……',
-				});
-                
 				
-				var url = that.abotapi.globalData.yanyubao_server_url + '/index.php?g=Yanyubao&m=Xiaochengxu&a=get_user_card';
-				var data = {
-					sellerid: that.abotapi.get_sellerid(),
-					checkstr: userInfo.checkstr,
-					//uwid: userInfo.uwid,
-					userid: userInfo.userid,
-					//data_unia_str: encodeURI(JSON.stringify(app.globalData.userInfo))  //用于更新服务器端用户的头像和昵称
-				};
-
-				var cbSuccess = function(res) {
-					uni.hideLoading();
-
-					console.log('8888888888888888', res);
-
-					if (res.data.code == -1) {
-						uni.showModal({
-							title:'失败',
-							content:'请求数据失败！',
-						});
-						
-						return;
-					}
-					
-					
-					console.log(22222222222222222222);
-					console.log('2222222222222222222233333',res.data);
-					
-					that.current_user_card_data = res.data.data;
-					
-					if (that.current_user_card_data.shang_plugin_list) {
-					
-					
-						that.plugin_list = 'plugin_list';
-						that.plugin_data_list = that.current_user_card_data.shang_plugin_list;
-					
-					}
-					
-					uni.setNavigationBarTitle({
-						title: that.current_user_card_data.shang_name //页面标题为服务器返回数据
-					})
-					
-					uni.setStorage({
-						key: "supplierInfo",
-						data: that.current_user_card_data
-					})
-					
-					that.abotapi.globalData.userInfo.usersn = that.current_user_card_data.usersn;
-					
-					console.log('获取会员卡信息成功：');
-					console.log(that.abotapi.globalData.userInfo);
-					
-					
-					
-
-				};
-				var cbError = function(res) {
-					uni.hideLoading();
-				};
-				this.abotapi.httpPost(url, data, cbSuccess, cbError);
-				//===========End============
-
-
-				this.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + 'Yanyubao/Xiaochengxu/get_ecard_option_list',
-					method: 'POST', //请求方式
-					data: {
-						sellerid : that.abotapi.get_sellerid()
-						//sellerid: 'pQNNmSkaq'
-					},
-					success(res) {
-						console.log("aaaaaaa==============>>>>>", res)
-						 
-						 that.list_first = res.data.data.ecard_shopappv2_nav_icon_list;
-						 that.list_two = res.data.data.ecard_shopappv2_function_list;
-						 that.head_img = res.data.data.page_bg_img_head;
-						 that.bg_img = res.data.data;
-			
-						 
-						 console.log("gggggggg==============>>>>>", res.data.data.page_bg_img_head);
-						 
-						if(res.data.code == 1){
-							console.log("aaaaaaa==222222222222============>>>>>", res.data.code)
-
-							that.ecard_option_list = res.data.data;
-							
-							
-							if (!that.ecard_option_list.ecard_shop_nav_bg_color) {
-								that.ecard_option_list.ecard_shop_nav_bg_color = '#2d96ff';
-							}
-							if (!that.ecard_option_list.ecard_shop_nav_font_color) {
-								that.ecard_option_list.ecard_shop_nav_font_color = '#ffffff';
-							}
-							
-							
-						}
-						
-					},
-					fail(error) {
-						console.log("bbbbbbbbbbbb", error)
-					}
-				});
-				
+				var userInfo = this.abotapi.get_user_info();
 				
 				
 				that.abotapi.abotRequest({
@@ -670,6 +620,172 @@
 
 				})
 			},
+			
+			get_user_card_and_ecard_option:function(){
+				var userInfo = this.abotapi.get_user_info();
+				
+				var that = this;
+				
+				
+				console.log("准备获取userid[" + userInfo.userid + "]的商户[" + this.abotapi.globalData.sellerid +"]会员卡信息");
+				
+				//console.log('that.abotapi.get_sellerid() ===>>>> ', that.abotapi.get_sellerid());
+				
+				uni.showLoading({
+					title: '数据加载中……',
+				});
+				
+				
+				var url = that.abotapi.globalData.yanyubao_server_url + '/index.php?g=Yanyubao&m=Xiaochengxu&a=get_user_card';
+				var data = {
+					sellerid: that.abotapi.get_sellerid(),
+					checkstr: userInfo.checkstr,
+					//uwid: userInfo.uwid,
+					userid: userInfo.userid,
+					//data_unia_str: encodeURI(JSON.stringify(app.globalData.userInfo))  //用于更新服务器端用户的头像和昵称
+				};
+				
+				var cbSuccess = function(res) {
+					uni.hideLoading();
+				
+					console.log('8888888888888888', res);
+				
+					if (res.data.code == -1) {
+						uni.showModal({
+							title:'失败',
+							content:'请求数据失败！',
+						});
+						
+						return;
+					}
+					
+					
+					console.log(22222222222222222222);
+					console.log('2222222222222222222233333',res.data);
+					
+					that.current_user_card_data = res.data.data;
+					
+					if (that.current_user_card_data.shang_plugin_list) {
+					
+					
+						that.plugin_list = 'plugin_list';
+						that.plugin_data_list = that.current_user_card_data.shang_plugin_list;
+					
+					}
+					
+					uni.setNavigationBarTitle({
+						title: that.current_user_card_data.shang_name //页面标题为服务器返回数据
+					})
+					
+					uni.setStorage({
+						key: "supplierInfo",
+						data: that.current_user_card_data
+					})
+					
+					that.abotapi.globalData.userInfo.usersn = that.current_user_card_data.usersn;
+					
+					console.log('获取会员卡信息成功：');
+					console.log(that.abotapi.globalData.userInfo);
+					
+					
+					
+				
+				};
+				var cbError = function(res) {
+					uni.hideLoading();
+				};
+				this.abotapi.httpPost(url, data, cbSuccess, cbError);
+				//===========End============
+				
+				
+				this.abotapi.abotRequest({
+					url: that.abotapi.globalData.yanyubao_server_url + 'Yanyubao/Xiaochengxu/get_ecard_option_list',
+					method: 'POST', //请求方式
+					data: {
+						sellerid : that.abotapi.get_sellerid()
+						//sellerid: 'pQNNmSkaq'
+					},
+					success(res) {
+						console.log("aaaaaaa==============>>>>>", res)
+						 
+						 that.list_first = res.data.data.ecard_shopappv2_nav_icon_list;
+						 that.list_two = res.data.data.ecard_shopappv2_function_list;
+						 that.head_img = res.data.data.page_bg_img_head;
+						 that.bg_img = res.data.data;
+							
+						 
+						 console.log("gggggggg==============>>>>>", res.data.data.page_bg_img_head);
+						 
+						if(res.data.code == 1){
+							console.log("aaaaaaa==222222222222============>>>>>", res.data.code)
+				
+							that.ecard_option_list = res.data.data;
+							
+							
+							if (!that.ecard_option_list.ecard_shop_nav_bg_color) {
+								that.ecard_option_list.ecard_shop_nav_bg_color = '#2d96ff';
+							}
+							if (!that.ecard_option_list.ecard_shop_nav_font_color) {
+								that.ecard_option_list.ecard_shop_nav_font_color = '#ffffff';
+							}
+							
+							
+						}
+						
+					},
+					fail(error) {
+						console.log("bbbbbbbbbbbb", error)
+					}
+				});
+				
+			},
+			get_super_vip_card_data:function(){
+				//2020.12.28. 获取超级会员卡的数据，并渲染会员卡信息
+				var userInfo = this.abotapi.get_user_info();
+				
+				var that = this;
+				
+				var kazhu_userid = that.super_vip_card_data.kazhu_userid;
+				
+				console.log('pppppppppppp',kazhu_userid);
+				that.abotapi.abotRequest({
+				  url: this.abotapi.globalData.yanyubao_server_url + 'openapi/SuperVipCardData/get_huiyuan_detail',
+				  method: 'post',
+				  data: {
+				    sellerid: this.abotapi.get_sellerid(),
+				    userid:userInfo ? userInfo.userid : '',
+				    kazhu_userid: kazhu_userid,
+					checkstr: userInfo.checkstr,
+				  },  
+				  header: {
+				    'Content-Type': 'application/x-www-form-urlencoded'
+				  },
+				  success: function (res) {
+					  
+					  that.huiyuan_detail_info = res.data.huiyuan_detail;
+					  console.log('超级会员卡的信息===',that.huiyuan_detail_info);
+					  
+				  },
+				  fail: function (e) {
+					   uni.showToast({
+					     title: '网络异常！',
+					     duration: 2000
+					   });
+				   }
+				 });
+			
+			},
+			
+			//跳转到超级会员卡余额详情界面
+			check_balance_log:function(){
+				var that = this;
+				
+				uni.navigateTo({
+					url: '../user/log?super_vip_card_kazhu_userid=' + that.super_vip_card_data.kazhu_userid+ '&type=' + 'super_vip_card_balance'
+				
+				})
+				
+			}
 
 		},
 
@@ -844,6 +960,26 @@
 	.mobile_msg{
 		margin-top: 10rpx;
 	}
+	.super_vip_balance{
+		display: flex;   
+		margin-top: 15px;
+		border-bottom: 1px solid #c6c6c6;
+		padding-bottom: 15px;
+	}
+	.balacne_detail_count{
+		display: flex;
+		line-height: 30px;
+		margin-left: 25px;
+	}
+	.go_balance_detail{
+		display: inline-block;
+		line-height: 25px;
+		border: 1px solid;
+		border-radius: 7px;
+		padding: 2px;
+		margin-left: 120px;
+	}
+	
 </style>
 
 
