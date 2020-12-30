@@ -132,15 +132,18 @@
 			</view>
 
 			<view class='p_all' style="padding-bottom:0;">
-				<view class="heji_con" v-if='is_waimai == 1'>
-					<text class="gm_ovh_1h pt10">运费</text>
-					<text class="gm_ovh_1h pt10">¥ {{traffic_price}}</text>
-				</view>
-				
 				<view class="heji_con">
 					<text class="gm_ovh_1h pt10">合计</text>
 					<text class="gm_ovh_1h pt10">¥ {{all_price}}</text>
 				</view>
+				
+				
+				<!-- <view class="heji_con" v-if='is_waimai == 1'> -->
+				<view class="heji_con">
+					<text class="gm_ovh_1h pt10">运费</text>
+					<text class="gm_ovh_1h pt10">¥ {{traffic_price}}</text>
+				</view>
+				
 				
 				<view class="heji_con">
 					<text class="gm_ovh_1h red pt10">实付</text>
@@ -299,6 +302,10 @@
 		 * 预览订单、创建订单，准备支付
 		 * @param {Object} options
 		 * 
+		 * 举例：
+		 * 爱拼购：  /pages/order/pay?productid=12345&cuxiao_huodong=aipingou
+		 * 多人拼团： /pages/order/pay?productid=12345&cuxiao_huodong=duorenpintuan
+		 * 
 		 * 主要参数如下：
 		 * 
 
@@ -455,6 +462,10 @@ tuansn = 参团的编号，如果没有，则代表新开团
 				
 				
 			}
+			else if(options.cuxiao_huodong && (options.cuxiao_huodong == 'duorenpintuan')){
+				//多人拼团
+				that.cuxiao_huodong = options.cuxiao_huodong;
+			}
 			//=============== End =================
 			
 			
@@ -462,7 +473,11 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			
 			that.productid = options.productid;
 			that.amount = options.amount;
-			that.action = options.action;
+			
+			if(options.action){
+				that.action = options.action;
+			}
+			
 			
 			
 			if (options.paysuccess_url && (typeof(options.paysuccess_url) == 'string') ){
@@ -678,6 +693,8 @@ tuansn = 参团的编号，如果没有，则代表新开团
 				
 				var data_params = {};
 				
+				console.log('购买方式====>>>', that.action);
+				
 				if (that.action == "direct_buy") {
 							
 					data_params = {
@@ -702,6 +719,10 @@ tuansn = 参团的编号，如果没有，则代表新开团
 				
 				if (that.current_ucid){
 					data_params.ucid = that.current_ucid
+				}
+				
+				if(that.cuxiao_huodong){
+					data_params.cuxiao_type = that.cuxiao_huodong;
 				}
 						
 								  
@@ -1207,6 +1228,11 @@ tuansn = 参团的编号，如果没有，则代表新开团
 					if(that.current_ucid){
 						data_orderAdd.ucid = that.current_ucid;
 						//data_orderAdd.coupon_price = that.user_coupon_item.price;
+					}
+					
+					//2020.12.30. 增加促销活动这个参数
+					if(that.cuxiao_huodong){
+						data_orderAdd.cuxiao_type = that.cuxiao_huodong;
 					}
 				}
 				else if(that.order_type_001 == 'xianmaishang'){

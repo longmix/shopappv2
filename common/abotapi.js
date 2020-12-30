@@ -1252,8 +1252,8 @@ module.exports = {
 	
 			//调用H5browser打开网页
     call_h5browser_or_other_goto_url: function (url, var_list=null, ret_page='') {
-		console.log('call_h5browser_or_other_goto_url : url && var_list :'+url);
-		console.log(var_list);
+		console.log('call_h5browser_or_other_goto_url : url :'+ url);
+		console.log('call_h5browser_or_other_goto_url : var_list :', var_list);
    
 		if (url.indexOf("%ensellerid%") != -1) {
 			url = url.replace('%ensellerid%', this.get_sellerid());
@@ -1324,7 +1324,7 @@ module.exports = {
    
 		//判断各种跳转条件
 		if (url.indexOf('switchTab') == 0) {
-			console.log('qqqe12345678906541321121212');
+			
 			var arr = url.split(" ");
 			if (arr.length >= 2) {
 				var new_url = arr[1];
@@ -1360,8 +1360,8 @@ module.exports = {
 			||(url == '/pages/publish/publish_index')||(url == '/pages/publish/publish_list')
 			|| (url == '/pages/member/list') || (url == '/pages/shopList/shopList')) {
 				
-			console.log('this.globalData.is_shop_cart_in_tabbar====>>>>', this.globalData.is_shop_cart_in_tabbar);
-			console.log('url=====>>>>>>>'+url);
+			
+			console.log('spec url=====>>>>>>>'+url);
 				
 			if((url == '/pages/index/index') && (this.globalData.is_index_index_in_tabbar == 1)){
 				uni.switchTab({
@@ -1379,6 +1379,8 @@ module.exports = {
 				})
 			}
 			else if((url == '/pages/user/user') && (this.globalData.is_user_user_in_tabbar == 1)){
+				console.log('is_user_user_in_tabbar====>>>>', this.globalData.is_user_user_in_tabbar);
+				
 				uni.switchTab({
 					url: url,
 				})

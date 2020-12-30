@@ -397,8 +397,8 @@
 				winHeight: 0,  
 				Height:'',
 				// tab切换  
-				currentTab: 0,  
-				isStatus:1,//0全部,1待付款，2待发货，6待收货 7已完成
+				currentTab: 1,  
+				isStatus:0,//0全部,1待付款，2待发货，6待收货 7已完成
 				page:1,
 				refundpage:0,
 				orderList:[],
@@ -426,6 +426,8 @@
 		  
 		},
 		onLoad: function(options) {
+			console.log('user/order_list/order_list===>>>>options===>>>', options);
+			
 			var that = this;
 			
 			var userInfo =  that.abotapi.get_user_info();
@@ -436,24 +438,41 @@
 				return;
 			}
 			
-			console.log('options',options);
 			that.abotapi.set_option_list_str(this, this.callback_set_option);
-			that.abotapi.set_option_list_str(this, this.abotapi.getColor());
+			//that.abotapi.set_option_list_str(this, this.abotapi.getColor());
 			
 		  
+			
+			
+			if(options.currentTab){
+				this.currentTab = parseInt(options.currentTab);
+			}
+			
+			
+			if(options.otype){
+				this.isStatus = options.otype
+			}			
+			console.log('this.isStatus', this.isStatus);
+			
+			//加载订单列表
+			this.loadOrderList();
+			
+			
 			this.initSystemInfo();
-			this.currentTab = parseInt(options.currentTab),
-			this.isStatus = options.otype
-			console.log('this.isStatus',this.isStatus);
-			if (options.currentTab) {
-				this.loadOrderList();
-			}  
+			
+			
 		}, 
 		onShow: function () {
 			var that = this;
 			var userInfo = that.abotapi.get_user_info();
 			// var userAcountInfo = this.abotapi.get_user_account_info();
 			// this.loadOrderList();
+		},
+		//重写返回按钮的处理事件
+		onBackPress:function(event){
+			console.log('触发返回事件：', event);
+			
+			this.abotapi.call_h5browser_or_other_goto_url('/pages/user/user');
 		},
 		
 		methods:{
@@ -805,7 +824,8 @@
 			
 			
 			loadOrderList: function(){
-				console.log('sdfsdfsdfasadf')
+				console.log('loadOrderList!!!!!!!')
+				
 				var that = this;
 				var userInfo = that.abotapi.get_user_info();
 				var post_data = {
@@ -817,6 +837,7 @@
 				}
 				
 				console.log('888888888',this.order_list_filter_keywords);
+				
 				if(this.order_list_filter_keywords){
 					post_data.order_list_filter_keywords = this.order_list_filter_keywords;
 				}
@@ -879,9 +900,11 @@
 						}
 						*/
 						var Height = that.winHeight;
+						
 						console.log('888888ppppp', Height);
 						console.log('that.currentTab====', that.currentTab);
 						console.log('listlist',list);
+						
 						switch(that.currentTab){
 							case 0:
 								console.log('ddddddd')

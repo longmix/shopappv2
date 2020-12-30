@@ -340,15 +340,49 @@
 
 		<!-- 促销活动 -->
 		<view class="block_ladder">
+			<block v-for="(youhui_item, youhuiid) in product_youhui_list" :key="youhuiid">
+				
+				<view class="drpt_0">
+					<view class="yhmc">{{youhui_item.youhui_name}}</view>
+					<block v-if="youhui_item.youhui_type == 'jietijiage'">
+						<!-- 阶梯价格 -->
+						<view class="drpt_1" v-for="(item, index) in youhui_item.youhui_data" :key="index">
+							<view class="yh_1">{{item.min}}件-{{item.max}}件 <text class="yh_1_1">{{item.price/100}}元</text> </view>
+						</view>
+					</block>
+					<block v-else-if="youhui_item.youhui_type == 'huiyuanzhekou'">
+						<!-- 会员折扣价 -->
+						<view class="drpt_1" v-for="(item, index) in youhui_item.youhui_data" :key="index">
+							<view class="yh_1">{{item.level_name}} <text class="yh_1_1">￥{{item.level_price}}</text> </view>
+						</view>
+					</block>
+					<block v-else>
+						<!-- 多人拼团  分享砍价 限时秒杀 等其他优惠活动 -->
+						<view class="drpt_2">
+							<view class="yh_1" v-if="youhui_item.youhui_url"
+								@tap='youhui_huodong_handle'
+								:data-youhuitype='youhui_item.youhui_type'
+								:data-youhuiurl='youhui_item.youhui_url'>{{youhui_item.youhui_msg}}
+							</view>
+							<view v-else>
+								{{youhui_item.youhui_msg}}
+							</view>
+						</view>
+					</block>
+					
+					
+				</view>
+			</block>
+			
+			<!--
 			<view class="drpt_0" :style="{display:jietijiage==1?'block':'none'}">
 				<view class="yhmc">阶梯价格</view>
 				<view class="drpt_1" v-for="(item, index) in jietijiage_youhui_data" :key="index">
 					<view class="yh_1">{{item.min}}件-{{item.max}}件 <text class="yh_1_1">{{item.price/100}}元</text> </view>
 				</view>
 			</view>
-			<!-- 会员折扣价 -->
 			<view class="drpt_0" :style="{display:huiyuanzhekou==1?'block':'none'}">
-				<view class="yhmc">{{huiyuanzhekou_youhui_name}}</view>
+				<view class="yhmc">会员折扣价 {{huiyuanzhekou_youhui_name}}</view>
 				<view class="drpt_1" v-for="(item, index) in huiyuanzhekou_youhui_data" :key="index">
 					<view class="yh_1">{{item.level_name}} <text class="yh_1_1">￥{{item.level_price}}</text> </view>
 				</view>
@@ -357,8 +391,8 @@
 			<view class="drpt_0" :style="{display:duorenpintuan==1?'block':'none'}">
 				<view class="yhmc">多人拼团</view>
 				<view class="drpt_2">
-					<view class="yh_1">商品可多人拼团
-						<text @tap='cataChat' id='pintuan'>查看更多>></text>
+					<view class="yh_1">{{duorenpintuan_tips}}
+						<text @tap='youhui_huodong_handle' id='duorenpintuan'>查看更多>></text>
 					</view>
 				</view>
 			</view>
@@ -367,7 +401,7 @@
 				<view class="yhmc">分享砍价</view>
 				<view class="drpt_2">
 					<view class="yh_1">商品可分享砍价
-						<text @tap='cataChat' id='kanjia'>查看更多>></text>
+						<text @tap='youhui_huodong_handle' id='sharekanjia'>查看更多>></text>
 					</view>
 				</view>
 			</view>
@@ -375,10 +409,11 @@
 				<view class="yhmc">限时秒杀</view>
 				<view class="drpt_2">
 					<view class="yh_1">商品可限时秒杀
-						<text @tap='cataChat' id='miaosha'>查看更多>></text>
+						<text @tap='youhui_huodong_handle' id='xianshimiaosha'>查看更多>></text>
 					</view>
 				</view>
 			</view>
+			-->
 		</view>
 		
 		<!-- 评价 -->
@@ -557,19 +592,30 @@
 				shop_info: '',
 				shop_telephone:'',
 				
+				//热销与推荐
 				recommend_product_list: [],
 				hot_product_list: [],
+				
+				//各种促销活动
+				product_youhui_list:[],
+				/*
 				jietijiage_youhui_data: '',
 				jietijiage: '',
 				huiyuanzhekou_youhui_data: '',
 				huiyuanzhekou_youhui_name: '',
 				huiyuanzhekou: '',
-				pintuan_url: '',
+				
+				pintuan_url: '',				
 				duorenpintuan: '',
+				duorenpintuan_tips:'',
+				
 				kanjia_url: '',
 				sharekanjia: '',
 				miaosha_url: '',
 				xianshimiaosha: '',
+				*/
+			   
+				//显示库存和销量
 				wxa_show_kucun_xiaoliang: '',
 				cart_amount: 0,
 				default_copyright_text: '',
@@ -1684,7 +1730,7 @@
 					data: {
 						productid: that.productid,
 						//'productid': '2039',
-						sellerid: that.abotapi.get_sellerid()
+						sellerid: that.abotapi.get_sellerid(),
 					},
 					header: {
 						'Content-Type': 'application/x-www-form-urlencoded'
@@ -1692,7 +1738,13 @@
 					success: function(res) {
 						//--init data 
 						var code = res.data.code;
+						
 						if (code >= 0) {
+							that.product_youhui_list = res.data.data;
+							
+							console.log('优惠活动列表===>>>>', that.product_youhui_list);
+							
+							/*							
 							var xiangqing = res.data.data;
 							var cataArr = [];
 							for (var i = 0; i < xiangqing.length; i++) {
@@ -1713,8 +1765,6 @@
 
 							}
 
-
-
 							if (cataArr.indexOf("duorenpintuan") > -1) {
 								var cata_key = cataArr.indexOf("duorenpintuan");
 								console.log(cata_key);
@@ -1731,7 +1781,11 @@
 								var cata_key = cataArr.indexOf("xianshimiaosha");
 								that.miaosha_url = xiangqing[cata_key].url;
 								that.xianshimiaosha = 1;
-							}
+							}*/
+							
+							
+							
+							
 						} else {
 							uni.showToast({
 								title: res.data.msg,
@@ -1748,8 +1802,8 @@
 				});
 			},
 
-			cataChat: function(e) {
-				console.log(e);
+			youhui_huodong_handle: function(e) {
+				console.log('youhui_huodong_handle===>>>', e);
 				console.log(e.currentTarget.id);
 
 				var that = this;
@@ -1768,40 +1822,29 @@
 
 					return;
 				}
-				var cata_id = e.currentTarget.id;
-
-				var join_flag = '?';
-				if (cata_id == "pintuan") {
-					if (that.pintuan_url.indexOf("?") != -1) {
-						join_flag = '&';
-					}
-					var url = that.pintuan_url + join_flag + 'click_type=Wxa'
-					//var url = 'https://yanyubao.tseo.cn/Home/DuorenPintuan/jiantuan_list/productid/3969.html?click_type=Wxa'
-
-					console.log(url);
-					uni.navigateTo({
-						url: '../h5browser/h5browser?url=' + encodeURIComponent(url)
-					});
-				} else if (cata_id == "kanjia") {
-					if (that.kanjia_url.indexOf("?") != -1) {
-						join_flag = '&';
-					}
-					var url = that.kanjia_url + join_flag + 'click_type=Wxa'
-					console.log(url);
-					uni.navigateTo({
-						url: '../h5browser/h5browser?url=' + encodeURIComponent(url)
-					});
-				} else if (cata_id == "miaosha") {
-					if (that.miaosha_url.indexOf("?") != -1) {
-						join_flag = '&';
-					}
-					var url = that.miaosha_url + join_flag + 'click_type=Wxa'
-					console.log(url);
-					uni.navigateTo({
-						url: '../h5browser/h5browser?url=' + encodeURIComponent(url)
-					});
+				
+				var cuxiao_huodong_id = e.currentTarget.dataset.youhuitype;
+				var youhui_url = e.currentTarget.dataset.youhuiurl;
+				
+				if(!youhui_url){
+					uni.showToast({
+						title:'无效活动链接'
+					})
+					
+					return;
 				}
-
+				
+				var join_flag = '?';
+				if (youhui_url.indexOf("?") != -1) {
+					join_flag = '&';
+				}
+				
+				youhui_url = youhui_url  + join_flag + 'click_type=shopappv2';
+				
+				console.log('准备跳转至优惠活动详情页===>>>>'+ youhui_url);
+				uni.navigateTo({
+					url: '../h5browser/h5browser?url=' + encodeURIComponent(youhui_url)
+				});
 			},
 
 			//h5点击分享触发
@@ -3064,7 +3107,7 @@
 			width: 98%;
 			border-bottom: 1rpx solid #eee;
 			/*box-shadow: 0rpx 2rpx 2rpx #888888;*/
-			display: none;
+			display: block;
 			outline: 0 none;
 			padding: 0;
 			overflow: hidden;
@@ -3099,7 +3142,7 @@
 		}
 
 		.drpt_2 {
-			width: 60%;
+			width: 70%;
 			height: auto;
 			padding-top: 30rpx;
 			padding-bottom: 30rpx;

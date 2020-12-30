@@ -273,6 +273,8 @@
 		},
 
 		onLoad() {
+			console.log('user/user===>>>onLoad()');
+			
 			var that = this;
 
 			uni.setNavigationBarTitle({
