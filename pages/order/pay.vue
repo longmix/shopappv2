@@ -183,7 +183,7 @@
 						<p>订单满{{item.price2}}元</p></view>
 						
 						<view class="copy">{{item.youhui_memo_str}}<p>{{item.youhui_start_time}} ~ {{item.youhui_end_time}}</p>
-						<a @tap="user_coupon_dikou_handle(item.price, item.ucid)">立即使用</a></view>
+						<a @tap="user_coupon_dikou_handle(item.dikou_amount, item.ucid)">立即使用</a></view>
 						<!-- <i></i> -->
 					</view>
 									 
@@ -747,11 +747,20 @@ tuansn = 参团的编号，如果没有，则代表新开团
 									that.coupon_list[i].youhui_end_time = util.formatTime(new Date(that.coupon_list[i].expiretime02 * 1000));
 									
 									//满 100.00
-									that.coupon_list[i].price2 = util.sprintf("%0.2f", that.coupon_list[i].coupon_item.price2/100);									
+									that.coupon_list[i].price2 = util.sprintf("%0.2f", that.coupon_list[i].coupon_item.price2/100);	
+																	
 									//减 10.00
-									that.coupon_list[i].price = util.sprintf("%0.2f", that.coupon_list[i].coupon_item.price/100);
+									if(that.coupon_list[i].coupon_item.coupon_dikou_type == 0){
+										//金额抵减
+										that.coupon_list[i].price = util.sprintf("%0.2f", that.coupon_list[i].coupon_item.price/100);
+									}
+									else if(that.coupon_list[i].coupon_item.coupon_dikou_type == 1){
+										//折扣抵减
+										that.coupon_list[i].price = '' + that.coupon_list[i].coupon_item.price + '%';
+									}
+									
 									//实际抵扣 10.00
-									that.coupon_list[i].dikou_amount = util.sprintf("%0.2f", that.coupon_list[i].dikou_amount/100);
+									that.coupon_list[i].dikou_amount = util.sprintf("%0.2f", that.coupon_list[i].coupon_item.dikou_amount/100);
 									
 									
 									if(that.coupon_list[i].coupon_item.productid && (that.coupon_list[i].coupon_item.productid != 0)){
