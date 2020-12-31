@@ -123,7 +123,7 @@
 				
 				aipingou_setting:[],
 				ruleList:'',
-				page: 0,
+				page: 1,
 				
 				
 				//2020.12.14
