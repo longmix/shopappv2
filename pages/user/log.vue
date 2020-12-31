@@ -3,11 +3,12 @@
 
 		<view class="headcolor">
 			<view class="jifeng_box">
-				<view style="margin-left: 20rpx;float: left;">余额</view>
+				<view style="margin-left: 20rpx;float: left;">{{text_balance_str}}</view>
 				<view class="edit">	￥{{balance_total}}</view>
 				<block v-if="userid002 == 0">
-				<button type="text" v-if="current_balance_type == 'balance'" class="tixian" @click="tixian(40)" :style="{backgroundColor:btn_color}"
-				>提现</button>
+					<button type="text" 
+						v-if="current_balance_type == 'balance'" class="tixian" @click="tixian(40)" :style="{backgroundColor:btn_color}"
+					>提现</button>
 				</block>
 				
 			</view>
@@ -54,6 +55,10 @@
 	export default {
 		data() {
 			return {
+				text_balance_str:'余额',
+				text_balance_zengsong_str:'赠款',
+				text_score_str:'积分',
+				
 				bottom_tip:'0',
 				current_balance_type:'balance',
 				page_size: 1,
@@ -84,31 +89,65 @@
 		},
 
 		onLoad(option) {
+			uni.setNavigationBarTitle({
+				title:this.text_balance_str + '明细'
+			})
+			
 			if(option.type && (option.type == 'zengkuan')){
 				this.current_balance_type = 'balance_zengsong';
 				
 				uni.setNavigationBarTitle({
-					title:'赠款明细'
+					title:this.text_balance_zengsong_str + '明细'
 				})
 			}
 			else if(option.type && (option.type == 'super_vip_card_balance')){
 				this.current_balance_type = 'super_vip_card_balance';
+				
 				this.super_vip_card_kazhu_userid = option.super_vip_card_kazhu_userid;
 				
 				uni.setNavigationBarTitle({
-					title:'会员余额明细列表'
+					title:'会员余额明细 - 超级会员卡'
 				})
 			}
 			
 			console.log('option.userid002',option.userid002);
+			
 			if(option.userid002){
 				this.userid002 = option.userid002;
 			}
 			
-			this.abotapi.set_option_list_str(this, function(that, option_list){
-				that.abotapi.getColor();
-				that.btn_color = that.abotapi.getColor();
-				console.log('getColor===sss==', that.btn_color)
+			this.abotapi.set_option_list_str(this, function(that001, option_list){
+				
+				
+				that001.btn_color = that001.abotapi.getColor();
+				console.log('getColor===sss==', that001.btn_color)
+				
+				if(option_list.text_balance_str){
+					that001.text_balance_str = option_list.text_balance_str;
+					
+					if(that001.current_balance_type == 'balance'){
+						uni.setNavigationBarTitle({
+							title:that001.text_balance_str + '明细'
+						})
+					}
+					
+					
+				}
+				
+				if(option_list.text_balance_zengsong_str){
+					that001.text_balance_zengsong_str = option_list.text_balance_zengsong_str;
+					
+					if(that001.current_balance_type == 'balance_zengsong'){
+						uni.setNavigationBarTitle({
+							title:that001.text_balance_zengsong_str + '明细'
+						})
+					}
+					
+				}
+				if(option_list.text_score_str){
+					that001.text_score_str = option_list.text_score_str;
+				}
+				
 				
 			});
 			

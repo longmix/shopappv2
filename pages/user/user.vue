@@ -85,21 +85,21 @@
 
 				</view>
 			</view>
-			<!-- 余额 -->
+			<!-- 余额 / 赠款 / 积分 -->
 			<view class="balance-info">
 				<view class="left">
 					<view class="box" @tap="goto_user_function('/pages/user/log')">
 						<view class="num">{{fenxiao_info && fenxiao_info.balance_yuan ? fenxiao_info.balance_yuan : '0.00'}}</view>
-						<view class="text">余额</view>
+						<view class="text">{{text_balance_str}}</view>
 					</view>
 
 					<view class="box" v-if="wxa_show_zengkuan_in_usercenter == 1" @tap="goto_user_function('/pages/user/log?type=zengkuan')">
 						<view class="num">{{fenxiao_info && fenxiao_info.balance_zengsong_yuan ? fenxiao_info.balance_zengsong_yuan : '0.00'}}</view>
-						<view class="text">赠款</view>
+						<view class="text">{{text_balance_zengsong_str}}</view>
 					</view>
 					<view class="box" @tap="goto_user_function('/pages/user/logscore')">
 						<view class="num">{{fenxiao_info && fenxiao_info.score ? fenxiao_info.score : '0'}}</view>
-						<view class="text">积分</view>
+						<view class="text">{{text_score_str}}</view>
 					</view>
 				</view>
 
@@ -208,6 +208,10 @@
 	export default {
 		data() {
 			return {
+				text_balance_str:'余额',
+				text_balance_zengsong_str:'赠款',
+				text_score_str:'积分',
+				
 				isfirst: true,
 				headerPosition: "fixed",
 				headerTop: null,
@@ -308,10 +312,21 @@
 			that.abotapi.set_option_list_str(that,
 				function(that001, option_list) {
 					//that001.abotapi.getColor();
-					console.log('option_list', option_list);
+					console.log('option_list(/pages/user/user)', option_list);
 					that001.wxa_shop_nav_bg_color = option_list.wxa_shop_nav_bg_color;
 
 					that001.wxa_shop_nav_font_color = option_list.wxa_shop_nav_font_color;
+					
+					if(option_list.text_balance_str){
+						that001.text_balance_str = option_list.text_balance_str;
+					}
+					if(option_list.text_balance_zengsong_str){
+						that001.text_balance_zengsong_str = option_list.text_balance_zengsong_str;
+					}
+					if(option_list.text_score_str){
+						that001.text_score_str = option_list.text_score_str;
+					}
+					
 
 					that.user_center_function_list_icon_type = option_list.user_center_function_list_icon_type;
 					if (option_list.user_center_function_list_icon_type == -1) {

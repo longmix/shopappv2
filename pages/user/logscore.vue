@@ -3,7 +3,7 @@
 		
 		<view class="headcolor">
 			<view class="jifeng_box">
-				<view style="margin-left: 20rpx;">余额</view>
+				<view style="margin-left: 20rpx;">{{text_score_str}}</view>
 				<view class="edit">{{score_data.score_total}}</view>
 			</view>
 			
@@ -44,6 +44,8 @@
 	export default {
 		data(){
 			return{
+				text_score_str:'积分',
+				
 				bottom_tip:'0',
 				page_size:1,
 				balance:'',
@@ -59,8 +61,19 @@
 				this.userid002 = option.userid002;
 			}
 			
-			this.abotapi.set_option_list_str(this, function(that, option_list){
-				that.abotapi.getColor();
+			this.abotapi.set_option_list_str(this, function(that001, option_list){
+				
+				//that001.abotapi.getColor();
+				
+				if(option_list.text_score_str){
+					that001.text_score_str = option_list.text_score_str;
+					
+					uni.setNavigationBarTitle({
+						title:'我的' + that001.text_score_str
+					})
+				}
+				
+				
 			});
 			
 			this.account_balance();
