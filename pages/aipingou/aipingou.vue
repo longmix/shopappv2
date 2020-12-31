@@ -123,6 +123,7 @@
 				
 				aipingou_setting:[],
 				ruleList:'',
+				page: 0,
 				
 				
 				//2020.12.14
@@ -208,7 +209,55 @@
 			
 			},
 			
-			
+		//上拉加载
+		onReachBottom() {
+			var that = this;
+			console.log('ccccccccccc')
+		
+			if (this.is_OK) {
+				uni.showToast({
+					title: '已经到底了~',
+					duration: 2000
+				});
+		
+				return;
+			}
+			var post_url = that.abotapi.globalData.yanyubao_server_url + '/openapi/AipingouData/get_rule_list';
+			var userInfo = that.abotapi.get_user_info();
+		
+			that.abotapi.abotRequest({
+				url: post_url,
+				data: {
+					sellerid: that.abotapi.get_sellerid(),
+					page: that.page,
+				},
+		
+				success: function(res) {
+					console.log('8888s8ssss', res.data.rule_list);
+					if (res.data.rule_list) {
+						that.is_OK = false;
+						that.ruleList = that.ruleList.concat(res.data.rule_list);
+						that.page = that.page + 1;
+						console.log('超过一页', that.rule_list);
+						uni.stopPullDownRefresh(); //得到数据后停止下拉刷新
+					} else if (res.data.rule_list == null) {
+						that.is_OK = true;
+						uni.showToast({
+							title: '已经到底了~',
+							duration: 2000
+						});
+						return;
+					}
+		
+				},
+		
+				fail: function(e) {
+		
+		
+				},
+			});
+		
+		},	
 			
 			
 		
@@ -275,6 +324,9 @@
 							that.aipingou_setting = res.data.aipingou_seting;
 							
 							
+							
+							
+							
 							//console.log('aaaaaaaaaa', res.data.aipingou_seting.xuanchuan_tupian);
 							console.log('8888====11>>', res);
 							
@@ -297,17 +349,23 @@
 			//获取拼团活动列表
 			__get_rule_list: function(){
 				var that = this;
+				
 				var post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/AipingouData/get_rule_list';
 				
 				that.abotapi.abotRequest({
 					url: post_url,
 					data: {
 						sellerid: that.abotapi.get_sellerid(),
+						pages: that.page,
 						
 					},
 					success: function(res) {
 					
 						that.ruleList = res.data.rule_list;
+						
+						
+						
+						
 			
 						//console.log('aaaaaaaaaa', res.data.rule_list);
 						//console.log('8888====11>>', that.ruleList);

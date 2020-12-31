@@ -389,7 +389,7 @@
 	.liebiao_content {
 		text-align: center;
 		margin-left: 60rpx;
-		;
+		
 	}
 
 
