@@ -52,7 +52,7 @@
         "text": "拼购"
       },
       {
-        "pagePath": "pages/category/category",
+        "pagePath": "pages/category/index2",
         "iconPath": "static/img/tabBar/category.png",
         "selectedIconPath": "static/img/tabBar/category-on.png",
         "text": "分类"
