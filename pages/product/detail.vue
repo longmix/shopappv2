@@ -462,7 +462,7 @@
 
 
 		<view class="description">
-			<view class="title">———— ※ 商品详情 ※ ————</view>
+			<view class="title">———— ※ 详情介绍 ※ ————</view>
 			<view class="content">
 				<!-- #ifdef MP-ALIPAY -->
 				<rich-text :nodes="describe"></rich-text>
@@ -1720,6 +1720,10 @@
 				});
 			},
 			loadCataXiangqing: function() {
+				if(this.is_aipingou_tuan_list){
+					return;
+				}
+				
 				var that = this;
 
 
@@ -1731,6 +1735,8 @@
 						productid: that.productid,
 						//'productid': '2039',
 						sellerid: that.abotapi.get_sellerid(),
+						platform:that.abotapi.globalData.current_platform,
+						yybsoftid: 'shopappv2',
 					},
 					header: {
 						'Content-Type': 'application/x-www-form-urlencoded'
@@ -1834,17 +1840,22 @@
 					return;
 				}
 				
+				/*
 				var join_flag = '?';
 				if (youhui_url.indexOf("?") != -1) {
 					join_flag = '&';
 				}
 				
 				youhui_url = youhui_url  + join_flag + 'click_type=shopappv2';
-				
+				*/
+			   
 				console.log('准备跳转至优惠活动详情页===>>>>'+ youhui_url);
+				
+				that.abotapi.call_h5browser_or_other_goto_url(youhui_url)
+				/*
 				uni.navigateTo({
 					url: '../h5browser/h5browser?url=' + encodeURIComponent(youhui_url)
-				});
+				});*/
 			},
 
 			//h5点击分享触发
