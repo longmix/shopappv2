@@ -250,7 +250,7 @@
 				isSwitch2:false,
 				balance_zengsong:'',
 				balance:'',
-				all_price:'',
+				all_price:0,
 				traffic_price:'',
 				pay_price:'',
 				util:'',
@@ -312,7 +312,7 @@
 productid 两种情况：（1）直接一个数组，productid；（2）不是直接的数值，而是一个数组。
 
 continue_to_pay 选填，如果有值且为1，则使用缓存的options参数。
-total 合计支付的金额
+total 选填，合计支付的金额，如果有，以这个价格为准，单位：元
 
 order_type_001
 	shopmall （默认，可以不传）
@@ -446,7 +446,7 @@ tuansn = 参团的编号，如果没有，则代表新开团
 				
 				that.order_option_new_list = [];
 				
-				//增加一个选项：标志位，代表这个订单需要调用爱拼购的规则
+				//增加一个选项：标志位，代表这个订单需要调用爱拼购的规则，准备在订单order_add成功之后，插入到order option中
 				that.order_option_new_list.push(
 					{ "key": "aipingou_tuan_flag", "value": '1' },);
 				
@@ -454,11 +454,19 @@ tuansn = 参团的编号，如果没有，则代表新开团
 					//增加一个选项：代表要参加这个团
 					that.order_option_new_list.push(
 						{ "key": "aipingou_tuan_tuansn", "value": options.tuansn },);
-				}					
-							
-									
-									
+				}
+								
 				console.log('爱拼购订单，准备增加标记记录', that.order_option_new_list);
+				
+				//2021.1.1. 指定商品价格
+				if(options.total){
+					that.all_price = options.total;		
+					console.log('爱拼购订单，指定价格', that.all_price);
+				}
+				
+									
+									
+				
 				
 				
 			}
@@ -715,6 +723,10 @@ tuansn = 参团的编号，如果没有，则代表新开团
 					}
 				}
 				
+				//如果指定了商品的价格
+				if(that.all_price > 0){
+					data_params.all_price = that.all_price
+				}
 				
 				
 				if (that.current_ucid){

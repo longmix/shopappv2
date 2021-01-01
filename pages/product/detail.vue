@@ -246,18 +246,18 @@
 		
 		<!-- 2020.12.3. 爱拼团活动对应的 已经开出 且 没有成团 的 团列表  推荐商品-->
 		<view class="is_aipingou_tuan_list" v-if="is_aipingou_tuan_list">
-			<block v-if="aipin_tuan_list && (aipin_tuan_list.length > 0)">
-				<view style="margin-left: 25rpx;">{{aipin_tuan_list.length}}个团正在进行，可直接参与</view>
-				<view class="aipin_tuan" v-for="(item,index) in aipin_tuan_list" :key="index">
+			<block v-if="aipingou_current_tuan_list && (aipingou_current_tuan_list.length > 0)">
+				<view style="margin-left: 25rpx;">{{aipingou_current_tuan_list.length}}个团正在进行，可直接参与</view>
+				<view class="aipin_tuan" v-for="(item,index) in aipingou_current_tuan_list" :key="index">
 						<view class="tuan_info_name">
 							<img :src="item.headimgurl" mode="widthFix">
 							<view class="tuan_leder_name">{{item.nickname}}</view>
 						</view>
 						<view class="let_go_pingtuan" 
 							:style="{'background-color': wxa_shop_nav_bg_color}"
-							@tap="go_detail_pintuan(item.tuansn)">去拼团</view>
+							@tap="go_detail_aipingou(item.tuansn)">去拼团</view>
 						<view class="tuan_time_number">
-							<view class="tuan_number">{{grounp_count}}人成团还差<span style="color: red;">{{grounp_count - item.tuanyuan_counter}}人</span></view>
+							<view class="tuan_number">{{aipingou_grounp_count}}人成团还差<span style="color: red;">{{aipingou_grounp_count - item.tuanyuan_counter}}人</span></view>
 							<view class="tuan_time_over" style="display:none;">剩余{{item.timespan_str}}</view>
 							<view class="tuan_time_over" style="">No.{{item.tongjiid}}</view>
 						</view>
@@ -268,7 +268,7 @@
 				</view>
 				<view class="let_go_pingtuan"
 					:style="{'background-color': wxa_shop_nav_bg_color}"
-					@tap="go_detail_pintuan('')">去拼团</view>
+					@tap="go_detail_aipingou('')">去开团</view>
 				
 			</block>
 		</view>
@@ -493,7 +493,8 @@
 <script>
 	// var app = getApp();
 	// var abotapi = require("../../common/abotapi.js");
-	var productid;
+	//var productid;
+	
 	import abotshare from '../../components/abot_share_api/abot_share_api.vue';
 	import abotsharejs from '../../common/abot_share_api.js';
 	//import abot_share_vue from '../../components/product-list/product-list.vue';
@@ -510,6 +511,8 @@
 		},
 		data() {
 			return {
+				productid:0,
+				
 				//控制渐变标题栏的参数
 				beforeHeaderzIndex: 11, //层级
 				afterHeaderzIndex: 10, //层级
@@ -647,9 +650,12 @@
 				
 				//2020.12.3. 爱拼团
 				is_aipingou_tuan_list:false,
-				aipingou_tuan_list:null,
-				aipin_tuan_list:[],//团列表
-				grounp_count:'',//组团人数
+				aipingou_current_rulesn:'',
+				aipingou_current_tuan_list:[],//团列表
+				aipingou_grounp_count:'',//组团人数
+				aipingou_current_price:0,	//拼团活动的参与价格，不一定等于商品的价格
+				
+				
 				wxa_shop_nav_bg_color:'',
 				
 				//2020.12.14
@@ -711,8 +717,7 @@
 				
 				console.log('that.bottom_show_favorite_icon ===>>> ', that.bottom_show_favorite_icon);
 				
-				//获取正在等待开团的团列表
-				that.__get_aipingou_tuan_list(options.productid, options.rulesn);
+				that.aipingou_current_rulesn = options.rulesn;
 				
 			}
 
@@ -882,6 +887,14 @@
 
 
 						}
+						
+						
+						//2021.1.1. 爱拼购：必须在加载商品详情之后再加载，这样才能修改显示的价格
+						if(that.is_aipingou_tuan_list){
+							//获取正在等待开团的团列表
+							that.__get_aipingou_tuan_list(that.productid, that.aipingou_current_rulesn);
+						}
+						
 
 					}
 				},
@@ -1980,26 +1993,35 @@
 							rulesn:rulesn
 						},
 						success: function(res) {
-							that.aipin_tuan_list = res.data.aipingou_tuan_list;
-							
-							console.log('that.aipin_tuan_list====>>>>', that.aipin_tuan_list);
-							console.log('that.aipin_tuan_list====>>>>', that.aipin_tuan_list.length);
-							
-							//团员人数
-							that.grounp_count = res.data.group_count;
-							
-							if(that.aipin_tuan_list && (that.aipin_tuan_list.length > 0)){
+							if(res.data.aipingou_price){
+								that.aipingou_current_price = res.data.aipingou_price;
 								
+								that.goods_detail.price = that.aipingou_current_price+'(参与拼购活动)';
 							}
 							
-							//开始倒计时
-							for(var i=0; i<that.aipin_tuan_list.length; i++){
+							if(res.data.code == 1){
+								that.aipingou_current_tuan_list = res.data.aipingou_tuan_list;
 								
-								that.aipin_tuan_list[i].timespan = parseInt(that.aipin_tuan_list[i].over_time)*1000;
-								that.aipin_tuan_list[i].timespan_str = 'aaaaaaaaaaa';
+								console.log('that.aipingou_current_tuan_list====>>>>', that.aipingou_current_tuan_list);
+								console.log('that.aipingou_current_tuan_list====>>>>', that.aipingou_current_tuan_list.length);
 								
-								that.__aipingou_timer_countdown(i, that);
+								//团员人数
+								that.aipingou_grounp_count = res.data.group_count;
+								
+								if(that.aipingou_current_tuan_list && (that.aipingou_current_tuan_list.length > 0)){
+									
+								}
+								
+								//开始倒计时
+								for(var i=0; i<that.aipingou_current_tuan_list.length; i++){
+									
+									that.aipingou_current_tuan_list[i].timespan = parseInt(that.aipingou_current_tuan_list[i].over_time)*1000;
+									that.aipingou_current_tuan_list[i].timespan_str = 'aaaaaaaaaaa';
+									
+									that.__aipingou_timer_countdown(i, that);
+								}
 							}
+							
 							
 						},
 						fail: function(e) {
@@ -2010,7 +2032,7 @@
 				
 				
 			},
-			go_detail_pintuan:function(tuansn){
+			go_detail_aipingou:function(tuansn){
 				
 				var that =this;
 				
@@ -2018,10 +2040,12 @@
 				
 				this.buys = '现在去开团';
 				
-				this.go_to_buy_url_type = 3;
+				this.go_to_buy_url_type = 3;	//指定下单购买的网址，即 go_to_buy_new_url 有值
 				
 				//this.go_to_buy_new_url = '/pages/order/pay?productid='+ that.productid +'&amount=1&action=direct_buy&cuxiao_huodong=aipingou';
-				this.go_to_buy_new_url = '/pages/order/pay?productid='+ that.productid +'&action=direct_buy&cuxiao_huodong=aipingou';
+				this.go_to_buy_new_url = '/pages/order/pay?productid='+ that.productid;
+				this.go_to_buy_new_url += '&total=' + that.aipingou_current_price;
+				this.go_to_buy_new_url += '&action=direct_buy&cuxiao_huodong=aipingou';
 				if(tuansn){
 					this.go_to_buy_new_url += '&tuansn='+tuansn;
 					
@@ -2052,6 +2076,8 @@
 					return;
 				}
 				
+				console.log('去开团或去参团：'+last_url);
+				
 				var that = this;
 				uni.redirectTo({
 					url:last_url,
@@ -2063,35 +2089,35 @@
 			    //const that = this;
 				
 				console.log('__aipingou_timer_countdown==>>i==>>', i);
-				console.log('__aipingou_timer_countdown==>>i==>>', that.aipin_tuan_list[i]);
+				console.log('__aipingou_timer_countdown==>>i==>>', that.aipingou_current_tuan_list[i]);
 				
 				/*
 			    setTimeout(() => {
 					return;
 					
-					if(that.aipin_tuan_list[i].timespan == 0) {
+					if(that.aipingou_current_tuan_list[i].timespan == 0) {
 					  // 计时结束，清除缓存
-					  that.aipin_tuan_list[i].timespan = parseInt(that.aipin_tuan_list[i].over_time)*1000;
+					  that.aipingou_current_tuan_list[i].timespan = parseInt(that.aipingou_current_tuan_list[i].over_time)*1000;
 					  
 					} 
 					else{
-						that.aipin_tuan_list[i].timespan --;
-						that.aipin_tuan_list[i].timespan --;
-						that.aipin_tuan_list[i].timespan --;
+						that.aipingou_current_tuan_list[i].timespan --;
+						that.aipingou_current_tuan_list[i].timespan --;
+						that.aipingou_current_tuan_list[i].timespan --;
 						
-						var hr = parseInt(that.aipin_tuan_list[i].timespan / 60 / 60 % 24);
-						var min = parseInt(that.aipin_tuan_list[i].timespan / 60 % 60);
-						var sec = parseInt(that.aipin_tuan_list[i].timespan % 60);
-						var msec = parseInt(that.aipin_tuan_list[i].timespan % 1000);
+						var hr = parseInt(that.aipingou_current_tuan_list[i].timespan / 60 / 60 % 24);
+						var min = parseInt(that.aipingou_current_tuan_list[i].timespan / 60 % 60);
+						var sec = parseInt(that.aipingou_current_tuan_list[i].timespan % 60);
+						var msec = parseInt(that.aipingou_current_tuan_list[i].timespan % 1000);
 									
 						hr = hr > 9 ? hr : '0' + hr;
 						min = min > 9 ? min : '0' + min;
 						sec = sec > 9 ? sec : '0' + sec;
 						//that.toLiveBtn = `${day}天${hr}时${min}分${sec}秒${msec}`;
-						//that.aipin_tuan_list[i].timespan_str = `${hr}:${min}:${sec}.${msec}`;
-						that.aipin_tuan_list[i].timespan_str = hr+':'+min+':'+sec+':'+ msec;
+						//that.aipingou_current_tuan_list[i].timespan_str = `${hr}:${min}:${sec}.${msec}`;
+						that.aipingou_current_tuan_list[i].timespan_str = hr+':'+min+':'+sec+':'+ msec;
 						
-						console.log('__aipingou_timer_countdown==>> '+i+' ==>> ', that.aipin_tuan_list[i].timespan_str);
+						console.log('__aipingou_timer_countdown==>> '+i+' ==>> ', that.aipingou_current_tuan_list[i].timespan_str);
 						
 					}
 					

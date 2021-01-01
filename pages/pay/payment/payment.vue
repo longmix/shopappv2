@@ -807,16 +807,18 @@
 				if (this.recharge == 1) {
 					console.log('2222222');
 					
-					this.abotapi.call_h5browser_or_other_goto_url('/pages/user/user');
+					
 				} 
 				else {
 					console.log('333333333333');
 					
-					uni.navigateTo({
+					/*uni.navigateTo({
 						//url: '../user/dingdan?currentTab=0&otype=',
 						url: '/pages/user/order_list/order_list?currentTab=0&otype=',
-					});
+					});*/
 				}
+				
+				this.abotapi.call_h5browser_or_other_goto_url('/pages/user/user');
 				
 			}
 		}

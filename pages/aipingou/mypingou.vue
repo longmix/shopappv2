@@ -5,9 +5,11 @@
 
 				<table class="mypingou_list">
 					<tr>
-						<td>订单编号：{{item.orderno}}<text style="float: right;font-size: 30rpx;"
-						@click="Clipboard_text(item.orderno)"
-						class="my_pingou_list">复制</text></td>
+						<td>订单编号：{{item.orderno}}
+							<text
+								@click="Clipboard_text(item.orderno)"
+								class="copy_my_orderno">复制</text>
+						</td>
 					</tr>
 					<tr>
 						<td>参与时间：{{item.join_time}}</td>
@@ -420,13 +422,13 @@
 		padding: 20rpx;
 		background-color: #FFFFFF;
 	}
-	.my_pingou_list{
+	.copy_my_orderno{
 		float: right;
-		font-size: 24rpx;
+		font-size: 30rpx;
 		border-radius: 2rpx;
 		border: 1px solid #666;
 		color: #666;
 		padding: 0rpx 6rpx;
-		margin-right: 10rpx;
+		margin-right: 20rpx;
 	}
 </style>

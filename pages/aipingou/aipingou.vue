@@ -3,8 +3,8 @@
 <!-- 
 
 1、去拼团的跳转：  /pages/product/detail?productid=12345&cuxiao_huodong=aipingou&rulesn=abcdefgdgdfgfd13234
-2、去开团的跳转：  /pages/order/pay?productid=12345&cuxiao_huodong=aipingou
-3、去参加某个团：  /pages/order/pay?productid=12345&cuxiao_huodong=aipingou&tuansn=abcdefg123456
+2、去开团的跳转：  /pages/order/pay?productid=12345&total=12.34&cuxiao_huodong=aipingou
+3、去参加某个团：  /pages/order/pay?productid=12345&total=12.34&cuxiao_huodong=aipingou&tuansn=abcdefg123456
     tuansn为团编号
 
 -->
@@ -44,7 +44,7 @@
 										<view class="pingou_font">去拼购</view>
 									</view>	
 
-									<view style="width: 50%;" @tap="go_to_qukaituan(0, 'center',item.productid)">
+									<view style="width: 50%;" @tap="go_to_qukaituan(0, 'center',item.productid, item.aipingou_price)">
 										<image class="tubiao" src="https://yanyubao.tseo.cn/Tpl/static/images/aipingou_kaituan2.png"></image>
 										<view class="pingou_font">去开团</view>
 
@@ -130,7 +130,8 @@
 				AlertClassKaijiang: 0,
 				AlertPositionKaijiang: '',
 				product_amount:1,
-				productid:''
+				current_productid:0,
+				aipingou_price:0
 			}
 		},
 		onLoad(options) {
@@ -269,9 +270,12 @@
 				that.counter_value = e.detail.value
 				//var key = that.counter_value;		
 			},
-			go_to_qukaituan(Class, Position, productid) {
-				var that = this;	
-				that.productid = productid;
+			go_to_qukaituan(Class, Position, productid, aipingou_price) {
+				var that = this;
+					
+				that.current_productid = productid;
+				that.aipingou_price = aipingou_price;
+				
 				//console.log('aaaaaaaaaaaaaaaaaaa',that.counter_value);
 			    this.$nextTick(function() {
 			
@@ -424,7 +428,9 @@
 				//console.log('88888aaaaaaaaa',userInfo,userInfo.userid);
 				//判断是否登录
 				
-				var last_url = '/pages/order/pay?action=direct_buy&productid='+ that.productid +'&amount='+ that.product_amount +'&cuxiao_huodong=aipingou';
+				var last_url = '/pages/order/pay?action=direct_buy&productid='+ that.current_productid;				
+				last_url += '&total=' + that.aipingou_price;
+				last_url += '&amount='+ that.product_amount +'&cuxiao_huodong=aipingou';
 				
 				if (!userInfo || !userInfo.userid) {
 					uni.showToast({
