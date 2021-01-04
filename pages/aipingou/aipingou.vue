@@ -429,7 +429,7 @@
 				//判断是否登录
 				
 				var last_url = '/pages/order/pay?action=direct_buy&productid='+ that.current_productid;				
-				last_url += '&total=' + that.aipingou_price;
+				last_url += '&single_price=' + that.aipingou_price;
 				last_url += '&amount='+ that.product_amount +'&cuxiao_huodong=aipingou';
 				
 				if (!userInfo || !userInfo.userid) {

@@ -234,7 +234,7 @@
 				addemt:0,//为0 的时候显示请去添加地址   1的时候显示的是已经设置过的地址
 				vou:[],
 				orderId:{},
-				amount:'',
+				amount:1,
 				cartId:'321',
 				
 				balance_zengsong_dikou: 0,
@@ -251,6 +251,7 @@
 				balance_zengsong:'',
 				balance:'',
 				all_price:0,
+				single_price:0,	//指定商品的单价
 				traffic_price:'',
 				pay_price:'',
 				util:'',
@@ -311,8 +312,11 @@
 
 productid 两种情况：（1）直接一个数组，productid；（2）不是直接的数值，而是一个数组。
 
+amount  选填，购买的数量
+
 continue_to_pay 选填，如果有值且为1，则使用缓存的options参数。
-total 选填，合计支付的金额，如果有，以这个价格为准，单位：元
+total/all_price 选填，合计支付的金额，如果有，以这个价格为准，单位：元
+single_price 选填，商品的单价。如果指定单价，务必设置参数amount
 
 order_type_001
 	shopmall （默认，可以不传）
@@ -377,11 +381,18 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			}
 			
 			that.current_userinfo = userInfo;
-			console.log('565656565',userInfo);
+			
+			console.log('订单确认页面：用户登录信息：',userInfo);
+			
 			uni.showLoading({
 				title: '加载中...',
 			})
 			
+			that.productid = options.productid;
+			
+			if(options.amount){
+				that.amount = options.amount;
+			}
 			
 			if(options.order_type_001){
 				that.order_type_001 = options.order_type_001;
@@ -412,11 +423,22 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			
 			//必带的参数		
 			if(options.total) {			
-				that.all_price = options.total;
-				that.pay_price = options.total,
-				that.pay_price_origin = options.total,
-				that.address_total = options.total
+				that.all_price = options.total;				
 			}
+			if(options.all_price) {
+				that.all_price = options.all_price;				
+			}
+			
+			
+			//如果指定了单价
+			if(options.single_price) {
+				that.single_price = options.single_price;
+				that.all_price =that.single_price * options.amount;
+			}
+			
+			that.pay_price = that.all_price;
+			that.pay_price_origin = that.all_price;
+			that.address_total = that.all_price;
 			
 			console.log('that.all_price', that.all_price)
 					
@@ -458,11 +480,11 @@ tuansn = 参团的编号，如果没有，则代表新开团
 								
 				console.log('爱拼购订单，准备增加标记记录', that.order_option_new_list);
 				
-				//2021.1.1. 指定商品价格
-				if(options.total){
-					that.all_price = options.total;		
-					console.log('爱拼购订单，指定价格', that.all_price);
-				}
+				//2021.1.1. 指定商品价格，已经在 Line 418 “if(options.total) {”做了判断。
+				///if(options.total){
+				//	that.all_price = options.total;		
+				//	console.log('爱拼购订单，指定价格', that.all_price);
+				//}
 				
 									
 									
@@ -479,8 +501,7 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			
 			
 			
-			that.productid = options.productid;
-			that.amount = options.amount;
+			
 			
 			if(options.action){
 				that.action = options.action;
@@ -726,6 +747,10 @@ tuansn = 参团的编号，如果没有，则代表新开团
 				//如果指定了商品的价格
 				if(that.all_price > 0){
 					data_params.all_price = that.all_price
+				}
+				
+				if(that.single_price > 0){
+					data_params.single_price = that.single_price
 				}
 				
 				

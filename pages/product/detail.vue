@@ -2044,8 +2044,10 @@
 				
 				//this.go_to_buy_new_url = '/pages/order/pay?productid='+ that.productid +'&amount=1&action=direct_buy&cuxiao_huodong=aipingou';
 				this.go_to_buy_new_url = '/pages/order/pay?productid='+ that.productid;
-				this.go_to_buy_new_url += '&total=' + that.aipingou_current_price;
+				this.go_to_buy_new_url += '&single_price=' + that.aipingou_current_price;
+				//this.go_to_buy_new_url += '&amount=' + that.product_amount;
 				this.go_to_buy_new_url += '&action=direct_buy&cuxiao_huodong=aipingou';
+				
 				if(tuansn){
 					this.go_to_buy_new_url += '&tuansn='+tuansn;
 					
@@ -2063,7 +2065,7 @@
 				
 				console.log('88888aaaaaaaaa',productid);
 				//判断是否登录/pages/order/pay?productid=12345&cuxiao_huodong=aipingou&tuansn=abcdefg123456
-				var last_url = '/pages/order/pay?productid='+ that.productid +'&amount=1&action=direct_buy&cuxiao_huodong=aipingou&tuansn='+ tuansn;
+				var last_url = '/pages/order/pay?productid='+ that.productid +'&amount='+that.product_amount+'&action=direct_buy&cuxiao_huodong=aipingou&tuansn='+ tuansn;
 				
 				if (!userInfo || !userInfo.userid) {
 					uni.showToast({
