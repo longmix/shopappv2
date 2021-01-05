@@ -175,6 +175,7 @@
 		<!-- 功能按钮结束-->
 	<discoverList 
 	:faquanList="current_faquanList"
+	:videometa_width_height_list="current_videometa_width_height_list"
 	@fanquaDianzan="fanquaDianzan"
 	@fanquanCollect="fanquanCollect"
 	@click_share_btn="click_share_btn"
@@ -432,6 +433,7 @@
 				
 				//商家评论相关
 				current_faquanList: [],
+				current_videometa_width_height_list:[],
 				
 				shop_product_btn_show: 0,
 				waimai_product_btn_show:0,
@@ -1054,6 +1056,54 @@
 			 
 					  that.current_faquanList = faquanList;
 					  that.page = that.page + 1;
+					  
+					  
+					  //====== 初始化视频的大小
+					  console.log('准备初始化视频大小');
+					  
+					  for (var ii = 0; ii < that.current_faquanList.length; ii++) {
+					  	if (that.current_faquanList[ii]['type'] == 1) {
+					  		for (var jj = 0; jj < that.current_faquanList[ii]['img_or_video_list'].length; jj++) {
+					  			var imgwidth = that.current_faquanList[ii]['img_or_video_list'][jj]['width'];
+					  			var imgheight = that.current_faquanList[ii]['img_or_video_list'][jj]['height'];
+					  
+					  
+					  			//宽高比
+					  			var ratio = imgwidth / imgheight;
+					  
+					  			console.log(imgwidth, imgheight)
+					  
+					  			//var current_view_width = this.data.current_view_width;
+					  
+					  			// rpx（responsive pixel）: 可以根据屏幕宽度进行自适应。规定屏幕宽为750rpx。
+					  			// 如在 iPhone6 上，屏幕宽度为375px，共有750个物理像素，则750rpx = 375px = 750物理像素，1rpx = 0.5px = 1物理像素。
+					  			var current_view_width = 750;
+					  
+					  			current_view_width = current_view_width * 0.9 ;
+					  
+					  			//计算的高度值  
+					  			var current_view_height = current_view_width / ratio;
+					  
+					  
+					  			//读取已经设置的宽高列表
+					  			var videometa_width_height_list = that.current_videometa_width_height_list;
+					  			var current_index = videometa_width_height_list.length;
+					  
+					  			console.log('准备初始化视频大小 current_index ===>>>', current_index);
+					  
+					  			videometa_width_height_list[current_index] = [current_view_width, current_view_height];
+					  
+					  			//console.log('videometa_width_height_list====>>>>', videometa_width_height_list);
+					  
+					  			that.current_videometa_width_height_list = videometa_width_height_list;
+					  
+					  		}
+					  
+					  	}
+					  
+					  }
+					  
+					  //====== End ================
 					
 				  }
 				},

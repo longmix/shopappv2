@@ -1,6 +1,8 @@
 <template>
 	<view>
-		<view class="list-box clearfix" v-for=" (item,idx) in faquanList" :key="idx">
+		<view class="list-box clearfix" 
+			v-if="faquanList != ''"
+			v-for=" (item,idx) in faquanList" :key="idx">
 		        <view class='list-con'> <!-- 001 -->
 		            <image class="list-avatar" :src="item.headlogo" ></image> 
 		            <view class="list-item">  <!-- 002 -->
