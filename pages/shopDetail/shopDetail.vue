@@ -109,7 +109,7 @@
 				<view style="text-align: center;">会员卡列表</view>
 				<view class="vip_card_list" v-for="(item,index) in vip_card_list" :key='index'>
 				<view style="width: 75%;display: flex;">
-					<img src="../../static/img/success.png" alt="" class="vip_logo">
+					<img :src="item.card_touxiang" alt="" class="vip_logo">
 					<view class="vip_card_name">{{item.card_name}}</view>
 				</view>
 				<view v-if="item.huiyuan_status == 1" class="banka_btn" style="margin-top: 20rpx;" @tap="go_detail_huiyuan(item.userid)">

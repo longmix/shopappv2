@@ -2,7 +2,7 @@
 	<view :style="[{'background-image':'url('+ bg_img.page_bg_img_body +')' }]" >
 		
 		<view v-if=" ecard_data_type == 'ecard'">
-				<image class="head_c" :src="head_img"></image>
+			<image class="head_c" :src="head_img"></image>
 			
 			<view :style="[{'background-image':'url('+ current_user_card_data.card_bg_img +')' }]" class="c">
 				<view class="a">
@@ -19,18 +19,18 @@
 		</view>
 		
 		<view v-else-if="ecard_data_type == 'super_vip_card'">
-				<image class="head_c" :src="head_img"></image>
+			<image class="head_c" :src="head_img"></image>
 			
-			<view style="background-color: #9DC45F;" class="c">
+			<view :style="[{'background-image':'url('+ huiyuan_detail_info.huiyuan_detail_setting.card_bg_img +')' }]" class="c">
 				<view class="a">
-					<image :src="huiyuan_detail_info.headimgurl" style="width: 100upx;height: 100upx;border-radius: 50%;overflow: hidden;"></image>
+					<image :src="huiyuan_detail_info.huiyuan_detail_setting.card_touxiang" style="width: 100upx;height: 100upx;border-radius: 50%;overflow: hidden;"></image>
 					<view style="margin-left:30rpx;line-height: 50rpx;">
-						<view>{{huiyuan_detail_info.huiyuan_name}}</view>
-						<view>{{huiyuan_detail_info.mobile}}</view>
+						<view>{{huiyuan_detail_info.huiyuan_detail_setting.card_name}}</view>
+						<view>{{huiyuan_detail_info.huiyuan_info.cardno}}</view>
 					</view>
 				</view>
 				<view style="text-align: right;padding-right: 57px;color: #000000;margin-top:165upx;padding-right: 170upx;">
-					<b>{{huiyuan_detail_info.huiyuan_info.cardno}}</b>
+					<b>{{huiyuan_detail_info.mobile}}</b>
 				</view>
 			</view>
 		</view>
