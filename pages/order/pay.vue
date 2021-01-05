@@ -2281,13 +2281,13 @@ tuansn = 参团的编号，如果没有，则代表新开团
 	.stamp .par p {
 		color:#fff;
 		font-size: 24rpx;
-		line-height: 42rpx;
+		//line-height: 42rpx;
 	}
 	.stamp .par span {
 		font-size: 40rpx;
 		color:#fff;
 		margin-right: 10rpx;
-		line-height: 120rpx;
+		line-height: 95rpx;
 	}
 	.stamp .par .sign {
 		font-size: 40rpx;
@@ -2312,7 +2312,7 @@ tuansn = 参团的编号，如果没有，则代表新开团
 		margin-top: 15px;
 	}
 	.stamp04 {
-		width: 640rpx;
+		width: 680rpx;
 		background: radial-gradient(rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0) 4px, #50ADD3 4px);
 		background-size: 12px 8px;
 		background-position: -5px 10px;

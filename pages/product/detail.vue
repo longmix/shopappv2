@@ -343,7 +343,10 @@
 			<block v-for="(youhui_item, youhuiid) in product_youhui_list" :key="youhuiid">
 				
 				<view class="drpt_0">
-					<view class="yhmc">{{youhui_item.youhui_name}}</view>
+					<view class="yhmc"
+					@tap='youhui_huodong_handle'
+					:data-youhuitype='youhui_item.youhui_type'
+					:data-youhuiurl='youhui_item.youhui_url'>{{youhui_item.youhui_name}}</view>
 					<block v-if="youhui_item.youhui_type == 'jietijiage'">
 						<!-- 阶梯价格 -->
 						<view class="drpt_1" v-for="(item, index) in youhui_item.youhui_data" :key="index">
@@ -360,9 +363,7 @@
 						<!-- 多人拼团  分享砍价 限时秒杀 等其他优惠活动 -->
 						<view class="drpt_2">
 							<view class="yh_1" v-if="youhui_item.youhui_url"
-								@tap='youhui_huodong_handle'
-								:data-youhuitype='youhui_item.youhui_type'
-								:data-youhuiurl='youhui_item.youhui_url'>{{youhui_item.youhui_msg}}
+								>{{youhui_item.youhui_msg}}
 							</view>
 							<view v-else>
 								{{youhui_item.youhui_msg}}
