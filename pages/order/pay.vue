@@ -252,7 +252,7 @@
 				balance:'',
 				all_price:0,
 				single_price:0,	//指定商品的单价
-				traffic_price:'',
+				traffic_price:12,
 				pay_price:'',
 				util:'',
 				// recinfo:{id:1,name:"大黑哥",head:"大",tel:"18816881688",address:{region:{"label":"广东省-深圳市-福田区","value":[18,2,1],"cityCode":"440304"},detailed:'深南大道1111号无名摩登大厦6楼A2'},isDefault:true}
@@ -264,7 +264,11 @@
 					district_name:'',
 					address:'',
 				},
+				
+				//外卖相关的参数
 				is_waimai: 0,
+				waimai_buyer_longitude:'121.491127',	//经度
+				waimai_buyer_latitude:'121.491127',	//纬度
 				xianmaishangid: '',
 				current_shang_item:{'name':''},
 				cartlist: [],
@@ -1021,19 +1025,25 @@ tuansn = 参团的编号，如果没有，则代表新开团
 				          var BMap = new bmap.BMapWX({
 				            ak: thats.abotapi.globalData.baidu_map_ak
 				          });
-				          var fail = function (data) {
+						  
+				          var baidu_map_fail = function (data) {
 							
 				            console.log('baidu map geocoding fail ===>>>>', data);
 							
 				          };
-				          var success = function (data) {
+				          var baidu_map_success = function (data) {
 							
 							console.log('data==',data);
 				            wxMarkerData = data.wxMarkerData;
 											  
 							thats.makers = wxMarkerData;
+							
+							//收货地址的经纬度坐标
 							thats.latitude = wxMarkerData[0].latitude;
 							thats.longitude = wxMarkerData[0].longitude;
+							
+							thats.waimai_buyer_longitude = wxMarkerData[0].longitude;
+							thats.waimai_buyer_latitude = wxMarkerData[0].latitude;
 							
 							console.log('shang_detail====', shang_detail);
 							
@@ -1086,7 +1096,7 @@ tuansn = 参团的编号，如果没有，则代表新开团
 				          }
 							
 							
-							var address = thats.address.province_name + thats.address.city_name + thats.address.district_name + thats.address.address;
+						  var address = thats.address.province_name + thats.address.city_name + thats.address.district_name + thats.address.address;
 												
 							console.log('address===',address);
 								
@@ -1094,8 +1104,8 @@ tuansn = 参团的编号，如果没有，则代表新开团
 							// 发起geocoding检索请求 
 							BMap.geocoding({
 								address: address,
-								fail: fail,
-								success: success,
+								fail: baidu_map_fail,
+								success: baidu_map_success,
 								iconPath: '../../img/marker_red.png',
 								iconTapPath: '../../img/marker_red.png'
 							});
@@ -1408,12 +1418,19 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			    var order_add_new_option_by_key_value = [];
 			
 			    if(that.is_waimai == 1){
-			      order_add_new_option_by_key_value.push(
-					{ "key": "hahading_order_product_list", "value": cartlist }, 
-					{ "key": "hahading_order_xianmai_shangid", "value": that.xianmaishangid },  
-					{ "key": "xianmai_order_type", "value": that.is_waimai }, 
-					{ "key": "xianmai_waimai_peisong_price", "value": that.waimai_rmb });
-			    }else {
+					if(!that.waimai_rmb && (that.waimai_rmb != 0)){
+						that.waimai_rmb = 12;
+					}
+					
+					order_add_new_option_by_key_value.push(
+						{ "key": "hahading_order_product_list", "value": cartlist }, 
+						{ "key": "hahading_order_xianmai_shangid", "value": that.xianmaishangid },  
+						{ "key": "xianmai_order_type", "value": that.is_waimai }, 
+						{ "key": "waimai_buyer_latitude", "value": that.waimai_buyer_latitude }, 
+						{ "key": "waimai_buyer_longitude", "value": that.waimai_buyer_longitude }, 
+						{ "key": "xianmai_waimai_peisong_price", "value": that.waimai_rmb });
+			    }
+				else {
 			      order_add_new_option_by_key_value.push(
 					{ "key": "hahading_order_product_list", "value": cartlist }, 
 					{ "key": "hahading_order_xianmai_shangid", "value": that.xianmaishangid }, 

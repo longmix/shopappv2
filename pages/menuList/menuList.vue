@@ -173,7 +173,7 @@ export default {
 			select_specs: '',
 			shopId: '',
 			is_waimai: 1,
-			shoplist: '',
+			shoplist: {icon_image:'', name:''},
 			menu_list: '',
 			selectOrder: '',
 			cartlist: {},
@@ -185,7 +185,6 @@ export default {
 			busPos:{},
 			animationData:'',
 			wxa_shop_nav_bg_color:'',
-			icon_image:'',
 		};
 	},
 	onLoad(options) {
@@ -264,76 +263,77 @@ export default {
 			post_data.checkstr = userInfo.checkstr,
 			post_data.userid = userInfo.userid
 		}
+		
 		// http://192.168.0.205/hahading/server/index.php/openapi/ProductData/get_product_list_all_data
-				//获取商家点餐分类信息
-				this.abotapi.abotRequest({
-				  url: this.abotapi.globalData.o2owaimai_server_url + 'openapi/ProductData/get_product_list_all_data',
-				  data: {
-					xianmai_shangid: that.shopId,
-					is_waimai: is_waimai,
-					sellerid:this.abotapi.globalData.default_sellerid,
-				  },
-				  header: {
-					"Content-Type": "application/x-www-form-urlencoded"
-				  },
-				  method: "POST",
-				  success: function (res) {
+		//获取商家点餐分类信息
+		this.abotapi.abotRequest({
+		  url: this.abotapi.globalData.o2owaimai_server_url + 'openapi/ProductData/get_product_list_all_data',
+		  data: {
+			xianmai_shangid: that.shopId,
+			is_waimai: is_waimai,
+			sellerid:this.abotapi.globalData.default_sellerid,
+		  },
+		  header: {
+			"Content-Type": "application/x-www-form-urlencoded"
+		  },
+		  method: "POST",
+		  success: function (res) {
+	
+			console.log('fffsssssfeefefsf', res);
+	
 			
-					console.log('fffsssssfeefefsf', res);
+			var data = res.data.data;
 			
-					
-					var data = res.data.data;
-					
-					console.log('888888',data.menu);
-					
-					
-					
-					if(res.data.code == 1){
-						if (data.menu == '') {
-							uni.showModal({
-								title: '提示',
-								content: '暂时没有商品，请等待...',
-								success(res) {
-								  if (res.confirm) {
-									// uni.navigateTo({
-									//   url: '/pages/shops/shop_detail' + '?id=' + shopId,
-									// })
-									uni.navigateBack({
-									  delta: 1
-									})
-								  } else if (res.cancel) {
-									uni.navigateBack({
-									  delta: 1
-									})
-								  }
-								}
+			console.log('888888',data.menu);
+			
+			
+			
+			if(res.data.code == 1){
+				if (data.menu == '') {
+					uni.showModal({
+						title: '提示',
+						content: '暂时没有商品，请等待...',
+						success(res) {
+						  if (res.confirm) {
+							// uni.navigateTo({
+							//   url: '/pages/shops/shop_detail' + '?id=' + shopId,
+							// })
+							uni.navigateBack({
+							  delta: 1
 							})
-							return;
-						}
-						
-						var menu_list = data.menu;
-						for(var i=0; i<menu_list.length; i++){
-						  for (var j = 0; j < menu_list[i]['menu'].length; j++){       
-							for(var m=0;m<menu_list[i]['menu'][j].spec_list.length; m++){
-							  menu_list[i]['menu'][j].spec_list[m] = menu_list[i]['menu'][j].spec_list[m].split(':');
-							  menu_list[i]['menu'][j].spec_list[m][1] = menu_list[i]['menu'][j].spec_list[m][1].split('|');
-							}
+						  } else if (res.cancel) {
+							uni.navigateBack({
+							  delta: 1
+							})
 						  }
 						}
-						console.log('menu_list===', menu_list)
-						
-						
-						
-						var selectOrder = data.menu[0] ? data.menu[0].id : 0;
-						that.menu_list = menu_list;
-						that.selectOrder = selectOrder;
+					})
+					return;
+				}
+				
+				var menu_list = data.menu;
+				for(var i=0; i<menu_list.length; i++){
+				  for (var j = 0; j < menu_list[i]['menu'].length; j++){       
+					for(var m=0;m<menu_list[i]['menu'][j].spec_list.length; m++){
+					  menu_list[i]['menu'][j].spec_list[m] = menu_list[i]['menu'][j].spec_list[m].split(':');
+					  menu_list[i]['menu'][j].spec_list[m][1] = menu_list[i]['menu'][j].spec_list[m][1].split('|');
 					}
-			
-				  },
-				  fail: function (e) {
-			
-				  },
-				});
+				  }
+				}
+				console.log('menu_list===', menu_list)
+				
+				
+				
+				var selectOrder = data.menu[0] ? data.menu[0].id : 0;
+				that.menu_list = menu_list;
+				that.selectOrder = selectOrder;
+			}
+	
+		  },
+		  fail: function (e) {
+	
+		  },
+		});
 				
 				
 		this.abotapi.abotRequest({	
@@ -345,18 +345,25 @@ export default {
 			},
 			method: "POST",
 			success: function (res) {
-			  var data = res.data.data;    
-				 
-				 that.shoplist = data;
-				 console.log('that.shoplist',res);
-	
-			  uni.setStorage({
-				key: 'shoplist',
-				data: that.shoplist,
-				success: function (res) {
-				  console.log('异步保存成功')
+				if(res.data.code != 1){
+					uni.showToast({
+						title:'请求商家数据失败'
+					})
+					return;
 				}
-			  })
+				
+				var data = res.data.data;    
+				 
+				that.shoplist = data;
+				console.log('that.shoplist',res);
+	
+				uni.setStorage({
+					key: 'shoplist',
+					data: that.shoplist,
+					success: function (res) {
+						console.log('异步保存成功')
+					}
+				})
 	
 			},
 			fail: function (e) {
