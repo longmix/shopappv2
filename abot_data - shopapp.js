@@ -44,8 +44,8 @@ const globalData = {
 		//底部导航的设置，如果没有设置，或者设置为 -1 ，则默认使用服务器端的设置。
 		//这里的设置需要与pages.json的tabbar同步。
 		//！！！！如果不清楚，发布版本的时候务必不要设置
-		is_index_index_in_tabbar : 1,
-		is_user_user_in_tabbar : 1,
+		is_index_index_in_tabbar : -1,
+		is_user_user_in_tabbar : -1,
 		
 		baidu_map_ak: 'OTsGerqQhowGSFOWG8c6p86R',
 		userInfo: {},

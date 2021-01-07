@@ -1031,6 +1031,8 @@ module.exports = {
 		//实体商家列表（附近商家列表）
 		this.globalData.is_xianmai_shang_list_in_tabbar = is_obj_0_or_1(this.globalData.is_xianmai_shang_list_in_tabbar);
 		
+		console.log('this.globalData.is_index_index_in_tabbar===>>>'+this.globalData.is_index_index_in_tabbar);
+		console.log('option_list.is_index_index_in_tabbar===>>>'+option_list.is_index_index_in_tabbar);
 		
 		if ((this.globalData.is_index_index_in_tabbar == -1) && !isNullOrUndefined(option_list.is_index_index_in_tabbar)) {
 		  this.globalData.is_index_index_in_tabbar = option_list.is_index_index_in_tabbar;
@@ -1271,7 +1273,7 @@ module.exports = {
 			var userInfo = this.get_user_info();
 			if(!userInfo){
 				
-				this.goto_user_login('/pages/index/index', 'switchTab');
+				this.goto_user_login('/pages/index/index');
 				
 				return;
 			}
@@ -1364,6 +1366,8 @@ module.exports = {
 			console.log('spec url=====>>>>>>>'+url);
 				
 			if((url == '/pages/index/index') && (this.globalData.is_index_index_in_tabbar == 1)){
+				console.log('is_index_index_in_tabbar====>>>>', this.globalData.is_index_index_in_tabbar);
+				
 				uni.switchTab({
 					url: url,
 				})
