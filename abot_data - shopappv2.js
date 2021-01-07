@@ -18,7 +18,6 @@ const globalData = {
 		default_sellerid: 'pQNNmSkaq',
 		default_copyright_text:'延誉宝 @ 版权所有',
 		
-		
 		//=======以下配置项在发布版本的时候确定，服务器端配置无效===
 		
 		//平台相关的配置
@@ -47,9 +46,6 @@ const globalData = {
 		//！！！！如果不清楚，发布版本的时候务必不要设置
 		is_index_index_in_tabbar : 1,
 		is_user_user_in_tabbar : 1,
-		
-		
-		
 		
 		baidu_map_ak: 'OTsGerqQhowGSFOWG8c6p86R',
 		userInfo: {},

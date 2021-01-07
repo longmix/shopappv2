@@ -280,6 +280,7 @@
 			//q = 'https%3A%2F%2Fyanyubao.tseo.cn%2Funia%2F%3Fsellerid%3DpXzizSkVa';
 
 			//console.log(typeof(q));
+			//针对微信小程序
 			if (typeof(q) != 'undefined') {
 				console.log('获取到带参二维码参数q：' + q);
 				q = decodeURIComponent(q);
@@ -292,6 +293,27 @@
 
 				console.log('从q参数得到的sellerid：' + sellerid);
 
+			}			
+			else if (options && options.scene) {
+				// 最大32个可见字符，只支持数字，大小写英文以及部分特殊字符：!#$&'()*+,/:;=?@-._~
+				// https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/qr-code/wxacode.getUnlimited.html
+				// 格式为： card_type.sellersn_value.kazhu_userid
+				var scene_value = decodeURIComponent(options.scene);
+				
+				console.log('来自无限制小程序码的会员卡入口：' + scene_value);
+				
+				var url_data = scene_value.split('.');
+				console.log(url_data);
+				
+				if (url_data.length >= 3) {
+					this.ecard_data_type = url_data[0];
+					sellerid = url_data[1];
+					this.super_vip_card_data.kazhu_userid = url_data[2];
+					
+					console.log('数据类型：'+url_data[0]+' sellerid：'+url_data[1]+' 卡主ID：'+url_data[2]);
+				}
+			  	
+				
 			}
 
 			console.log('sellerid 01：' + sellerid);

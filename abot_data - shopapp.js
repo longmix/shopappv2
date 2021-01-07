@@ -4,8 +4,8 @@ const globalData = {
 		o2owaimai_server_url: 'https://app.tseo.cn/o2owaimai/index.php/',
 		socket_server: 'https://socketio.tseo.cn',
 		
-		version_number:'Ver 1.7.1 Build 219',
-		version_code:219,
+		version_number:'Ver 1.8.0 Build 361',
+		version_code:361,
 		
 		force_sellerid:0,
 		
@@ -23,10 +23,10 @@ const globalData = {
 		//平台相关的配置
 		//current_platform : 'app-android',
 		//current_platform : 'app-ios',
-		//current_platform : 'mp-weixin',
+		current_platform : 'mp-weixin',
 		//current_platform : 'mp-baidu',
 		//current_platform : 'mp-alipay',
-		current_platform : 'h5',
+		//current_platform : 'h5',
 		
 		//固定导航栏的背景色，如果为0，则使用服务器端的配置
 		//如果固定导航栏颜色，请填写navigationBar_font_color和navigationBar_bg_color
@@ -41,8 +41,11 @@ const globalData = {
 		default_shang_list_count_in_front_page:0,
 		default_publish_list_count_in_front_page:0,
 		
-		
-		
+		//底部导航的设置，如果没有设置，或者设置为 -1 ，则默认使用服务器端的设置。
+		//这里的设置需要与pages.json的tabbar同步。
+		//！！！！如果不清楚，发布版本的时候务必不要设置
+		is_index_index_in_tabbar : 1,
+		is_user_user_in_tabbar : 1,
 		
 		baidu_map_ak: 'OTsGerqQhowGSFOWG8c6p86R',
 		userInfo: {},
