@@ -789,7 +789,7 @@
 	  margin-top:26rpx;
 	}
 	.wx-popup-con {
-	  margin: 60rpx 10rpx;
+	  margin: 80rpx 30rpx;
 	  text-align: center;
 	  font-size:28rpx;
 	  margin-top:20rpx;

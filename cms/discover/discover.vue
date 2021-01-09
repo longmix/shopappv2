@@ -1272,6 +1272,7 @@
 						sellerid: this.abotapi.get_sellerid(),
 						userid: userInfo ? userInfo.userid : '',
 						faquanid: faquanid,
+						checkstr:userInfo.checkstr,
 					},
 					header: {
 						'Content-Type': 'application/x-www-form-urlencoded'

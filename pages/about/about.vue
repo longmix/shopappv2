@@ -408,7 +408,8 @@
 		width: 50%;
 		height: 90rpx;
 		line-height: 90rpx;
-		font-size: 32rpx;
+		font-size: 26rpx;
+		opacity: 0.7;
 		text-indent: 16rpx;
 		float: left;
 		color: #2a2a2a;
@@ -416,8 +417,8 @@
 
 	.li_info {
 		width: 50%;
-		height: 70rpx;
-		line-height: 70rpx;
+		height: 90rpx;
+		line-height: 90rpx;
 		font-size: 32rpx;
 		float: right;
 		color: #2a2a2a;

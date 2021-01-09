@@ -186,9 +186,6 @@
 			current_playing_videoid:0
 		},
 		methods:{
-			fanquaDianzan:function(fanquaDianzan){
-				this.$emit('fanquaDianzan',fanquaDianzan);
-			},
 			fanquaJubao:function(fanquaJubao){
 				this.$emit('fanquaJubao', fanquaJubao);
 			},
@@ -209,6 +206,9 @@
 			},
 			oneClickSave:function(e){
 				this.$emit('oneClickSave',e);
+			},
+			fanquaDianzan:function(e){
+				this.$emit('fanquaDianzan',e);
 			},
 			fanquanCollect:function(e){
 				this.$emit('fanquanCollect',e);

@@ -1047,7 +1047,7 @@ tuansn = 参团的编号，如果没有，则代表新开团
 							
 							console.log('shang_detail====', shang_detail);
 							
-				            var distance = thats.abotapi.getDisance(shang_detail.latitude, shang_detail.longitude, thats.latitude, thats.longitude);
+				            var distance = thats.abotapi.getDistance(shang_detail.latitude, shang_detail.longitude, thats.latitude, thats.longitude);
 				            
 				            console.log('distance====（单位：米）', distance)
 				          

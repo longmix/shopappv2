@@ -3,7 +3,7 @@
 		<view :style="{backgroundColor:wxa_shop_nav_bg_color,fontColor:wxa_shop_nav_font_color}">
 			<view class="xuanchuan_img" v-if="option_list && option_list.xuanchuan_img"
 				style="background-color: #fff;">
-				<image :src="option_list.xuanchuan_img" style="width: 100%;"></image>
+				<image :src="option_list.xuanchuan_img" style="width: 100%;" ></image>
 			</view>
 			
 			<view class="myblock" v-if="!option_list || (option_list.hide_qrcode_img != 1)">
@@ -26,7 +26,7 @@
 			</view>
 			
 			<view class="xuanchuan_img" v-if="option_list && option_list.xuanchuan_02_img">
-				<image :src="option_list.xuanchuan_02_img" style="width: 100%;"></image>
+				<image :src="option_list.xuanchuan_02_img" style="width: 100%;" mode="widthFix"></image>
 			</view>
 			
 			<view class="logo">
@@ -224,7 +224,8 @@
 .QR{
 	width: 60vw;
 	height: 60vw;
-	margin: -40vw auto 0 auto;
+	margin: 0 auto;
+	margin-top: 20upx;
 	background-color: #fff;
 	display: flex;
 	justify-content: center;
@@ -237,6 +238,7 @@
 .title{
 	width: 100%;
 	margin-top: 50upx;
+	margin-bottom: 20upx;
 	display: flex;
 	justify-content: center;
 	font-size: 36upx;
