@@ -154,7 +154,7 @@ module.exports = {
 	    return d * Math.PI / 180;
 	},
 	 
-	getDisance: function (lat1, lng1, lat2, lng2) {
+	getDistance: function (lat1, lng1, lat2, lng2) {
 		
 		var dis = 0;
 		var radLat1 = this.toRad(lat1);

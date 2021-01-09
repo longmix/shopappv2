@@ -581,7 +581,7 @@
 				for (var index in arr) {
 					if (!isNaN(index)) {
 					  
-						dis = that.abotapi.getDisance(that.coordinate['latitude'], that.coordinate['longitude'], arr[index]['latitude'], arr[index]['longitude']);
+						dis = that.abotapi.getDistance(that.coordinate['latitude'], that.coordinate['longitude'], arr[index]['latitude'], arr[index]['longitude']);
 						
 						
 						
