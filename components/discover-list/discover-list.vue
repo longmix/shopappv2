@@ -88,11 +88,13 @@
 		                  <view class="" style="margin-bottom: 10rpx; margin-left: 0;height: 40rpx;line-height: 40rpx;font-size: 26rpx;text-align: left;color:#666;">
 		                      
 		                      <block  v-if="(faquan_tag_status == 1) && (item.tag_count > 0) ">
-		                        <view>  
+		                        <view> 
+								 <view style="margin-top: 80rpx;height: 40rpx;line-height: 40rpx;font-size: 26rpx;text-align: left;color:#666;">
+									 <view><text style="font-weight:bold;">标签</text></view></view>
 		                          <block v-for="(item,index) in tag" :key="index"  :data-index="index"
 		                              style="margin-top: 50rpx;font-size: 26rpx;height: 30rpx;line-height: 30rpx;"><text style="margin-left:20rpx;">{{item3}}</text></block>
 		                        </view>
-								<view style="font-weight:bold;margin-top: 55rpx;margin-top: 55rpx;margin-left: -213rpx;">标签</view>
+								
 		                      </block>
 		                      
 		                  </view>
