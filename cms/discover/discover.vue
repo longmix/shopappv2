@@ -61,16 +61,19 @@
 				
 			</view>
 			<view class="publist_list_num">
-				<view style="margin-left: 100px;" @click="my_publish_and_collect" data-type="my_publish">{{publish_list.count_my_publish}}<span style="font-weight: 100; opacity: 0.8;">发布</span></view>
-				<view style="margin-left: 70px;"  @click="my_publish_and_collect" data-type="my_like">{{publish_list.count_like}}<span style="font-weight: 100; opacity: 0.8;">点赞</span></view>
-				<view style="margin-left: 60px;"  @click="my_publish_and_collect" data-type="my_collection">{{publish_list.count_collect}}<span style="font-weight: 100; opacity: 0.8;">收藏</span></view>
+				<view style="margin-left: 250rpx;" @click="my_publish_and_collect" data-type="my_publish">{{publish_list.count_my_publish}}
+				<span style="font-weight: 100; opacity: 0.8;font-size: 24rpx;">发布</span></view>
+				<view style="margin-left: 100rpx;"  @click="my_publish_and_collect" data-type="my_like">{{publish_list.count_like}}
+				<span style=" font-weight: 100; opacity: 0.8;font-size: 24rpx;">点赞</span></view>
+				<view style="margin-left: 100rpx;"  @click="my_publish_and_collect" data-type="my_collection">{{publish_list.count_collect}}
+				<span style="font-weight: 100; opacity: 0.8;font-size: 24rpx;">收藏</span></view>
 				
 			</view>
 		</view>
        
 	    <!-- 我收藏、发布的按钮 -->
 	    <view class='publish_box' v-if="faquan_button_status==1"  >
-	    	<view class='my_publish1' @click="my_publish_and_collect" data-type="my_publish" v-if="is_my_show == 1">
+	    	<view class='my_publish' @click="my_publish_and_collect" data-type="my_publish" v-if="is_my_show == 1">
 	    		<image style="width: 40rpx;height: 40rpx;margin-right: 10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/edit.png"></image>
 	    		<view>我的发布</view>
 	    	</view>
@@ -948,6 +951,7 @@
 					post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/get_faquan_like_list';
 					
 					if (!userInfo) {
+						
 						var last_url = '/pages/user/user';
 						that.abotapi.goto_user_login(last_url, 'normal');
 						return;
@@ -988,6 +992,7 @@
 					success: function(res) {
 						var faquanList = res.data.data;
 						that.publish_list = res.data;
+						
 						if(faquanList == undefined){
 							return;
 						}
@@ -1164,6 +1169,7 @@
 					this.is_my_discover_like = 0;
 
 					this.is_my_show = 0;
+					this.is_like_show = 1;
 					this.is_recently_show = 1;
 					this.is_collection_show = 1;
 
@@ -1199,7 +1205,7 @@
 					this.is_my_discover_collection = 1;
 					this.is_my_discover_like = 0;
 
-					this.is_collection_show = 0;
+					this.is_collection_show = 1;
 					this.is_my_show = 1;
 					this.is_recently_show = 1;
 					uni.setNavigationBarTitle({
@@ -1813,12 +1819,12 @@
 		width: 100%;
 		display: flex;
 		justify-content: center;
-		font-size: 32rpx;
+		font-size: 28rpx;
 		color: #333;
 		margin-top: 30rpx;
 	}
 
-	.my_publish1 {
+	.my_publish {
 		width: 50%;
 		display: flex;
 		justify-content: center;
@@ -1911,7 +1917,8 @@
 		}
 	}
 	.publist_list_num{
-		display: flex;	
+		display: flex;
+		margin-top: -20rpx;
 	}
 	
 	

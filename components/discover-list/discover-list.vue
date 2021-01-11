@@ -85,21 +85,20 @@
 						
 		
 		                <block v-if="is_my_discover_collection || is_my_discover">
-		                  <view class="" style="margin-left: 0;height: 40rpx;line-height: 40rpx;font-size: 26rpx;text-align: left;color:#666;">
+		                  <view class="" style="margin-bottom: 10rpx; margin-left: 0;height: 40rpx;line-height: 40rpx;font-size: 26rpx;text-align: left;color:#666;">
 		                      
 		                      <block  v-if="(faquan_tag_status == 1) && (item.tag_count > 0) ">
-		                        <view><text style="font-weight:bold;">标签</text>  
+		                        <view>  
 		                          <block v-for="(item,index) in tag" :key="index"  :data-index="index"
-		                              style="font-size: 26rpx;height: 30rpx;line-height: 30rpx;"><text style="margin-left:20rpx;">{{item3}}</text></block>
+		                              style="margin-top: 50rpx;font-size: 26rpx;height: 30rpx;line-height: 30rpx;"><text style="margin-left:20rpx;">{{item3}}</text></block>
 		                        </view>
-		                        
+								<view style="font-weight:bold;margin-top: 55rpx;margin-top: 55rpx;margin-left: -213rpx;">标签</view>
 		                      </block>
 		                      
 		                  </view>
 		                </block>
-						
 		                <block v-if="is_my_discover">
-		                  <view class="" style="margin-left: 0;height: 40rpx;line-height: 40rpx;font-size: 26rpx;text-align: left;color:#666;">
+		                  <view class="" style="margin-top: 60rpx; margin-left: 0;height: 40rpx;line-height: 40rpx;font-size: 26rpx;text-align: left;color:#666;">
 		                      <view><text style="font-weight:bold;">点赞</text> <text style="margin-left:20rpx;">{{item.like_num}}</text>
 		                      </view>  
 		                  </view>
@@ -232,7 +231,7 @@
 	  padding-bottom:2rpx;
 	}
 	.list-con{
-	    border-bottom: 2rpx solid #eee;
+	    //border-bottom: 2rpx solid #eee;
 	}
 	.list-avatar {
 	  float: left;
@@ -349,9 +348,9 @@
 	}
 	
 	.pb-time{
-		height: 60rpx;
-		line-height: 60rpx;
-		margin:20rpx 0;
+		height: 20rpx;
+		line-height: 20rpx;
+		margin:30rpx 0;
 		float:left;
 	}
 </style>

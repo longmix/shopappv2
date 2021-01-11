@@ -45,7 +45,7 @@
 		    <view class="wx-popup-con">
 		      
 		    <scroll-view scroll-y class="a-1 wx-popup-content" :scroll-left="scrollLeft" bindscrolltolower="lower"  >     
-		     {{faquan_xieyi_content}}      
+			{{faquan_xieyi_content}}
 		    </scroll-view>  
 		
 		
@@ -789,7 +789,7 @@
 	  margin-top:26rpx;
 	}
 	.wx-popup-con {
-	  margin: 80rpx 30rpx;
+	  margin: 60rpx 25rpx;
 	  text-align: center;
 	  font-size:28rpx;
 	  margin-top:20rpx;
@@ -813,7 +813,6 @@
 	
 	.wx-popup-content{
 	  height: 300px;
-	  text-align: left;
-	  white-space: pre-line;
+	  text-align: center;
 	}
 </style>

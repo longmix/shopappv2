@@ -18,7 +18,7 @@
 			</view>
 			<view class="btn" v-show="showBtn" @tap="printscreen"
 				 v-if="!option_list || (option_list.hide_qrcode_img != 1)">
-				{{tis}} 
+				{{tis}}
 			</view>
 			
 			<view class="mydescribe" v-if="option_list && option_list.describe">
