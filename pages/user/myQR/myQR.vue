@@ -225,7 +225,7 @@
 	width: 60vw;
 	height: 60vw;
 	margin: 0 auto;
-	margin-top: 20upx;
+	margin-top: -180upx;
 	background-color: #fff;
 	display: flex;
 	justify-content: center;
@@ -237,7 +237,7 @@
 }
 .title{
 	width: 100%;
-	margin-top: 50upx;
+	margin-top: 30upx;
 	margin-bottom: 20upx;
 	display: flex;
 	justify-content: center;
