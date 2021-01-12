@@ -73,18 +73,29 @@
        
 	    <!-- 我收藏、发布的按钮 -->
 	    <view class='publish_box' v-if="faquan_button_status==1"  >
-	    	<view class='my_publish' @click="my_publish_and_collect" data-type="my_publish" v-if="is_my_show == 1">
-	    		<image style="width: 40rpx;height: 40rpx;margin-right: 10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/edit.png"></image>
-	    		<view>我的发布</view>
-	    	</view>
-	    	<view class="my_collection" @click="my_publish_and_collect" data-type="my_collection" v-if="is_collection_show == 1">
-	    		<image style="width: 40rpx;height: 40rpx;margin-right: 10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/favorite.png"></image>
-	    		<view>我的收藏</view>
-	    	</view>
-	    	<view class="my_collection" @click="my_publish_and_collect" data-type="recently_update" v-if="is_recently_show == 1">
+	    	<view class="my_collection" @click="my_publish_and_collect" data-type="recently_update" 
+				:style="{border:is_recently_show == 1 ? '1px solid red' : '1px solid #ccc'}">
 	    		<image style="width: 40rpx;height: 40rpx;margin-right: 10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/weather_icon/qing.png"></image>
 	    		<view>最近更新</view>
 	    	</view>
+			
+			<view class='my_publish' @click="my_publish_and_collect" data-type="my_publish"
+				:style="{border:is_my_fabu_show == 1 ? '1px solid red' : '1px solid #ccc'}">
+	    		<image style="width: 40rpx;height: 40rpx;margin-right: 10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/edit.png"></image>
+	    		<view>我的发布</view>
+	    	</view>
+			<view class="my_collection" @click="my_publish_and_collect" data-type="my_like"
+				:style="{border:is_my_discover_like == 1 ? '1px solid red' : '1px solid #ccc'}">
+				<image style="width: 40rpx;height: 40rpx;margin-right: 10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/favorite.png"></image>
+				<view>我点的赞</view>
+			</view>
+	    	<view class="my_collection" @click="my_publish_and_collect" data-type="my_collection"
+				:style="{border:is_collection_show == 1 ? '1px solid red' : '1px solid #ccc'}">
+	    		<image style="width: 40rpx;height: 40rpx;margin-right: 10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/favorite.png"></image>
+	    		<view>我的收藏</view>
+	    	</view>
+			
+	    	
 			
 	    </view>
 
@@ -166,9 +177,9 @@
 			return {
 				page: 1,
 				faquanList: [],
-				publish_list:'',  //帖子的发布，点赞，收藏数量
+				publish_list:{count_my_publish:0, count_like:0, count_collect:0},  //帖子的发布，点赞，收藏数量
 				isShowBottomLine: 0,
-				display_type: 'my',
+
 				imgheights: [],
 				current: 0,
 				startself: 0,
@@ -182,9 +193,20 @@
 				current_faquanid: 0,
 				faquan_one_click_to_save_show: 'none',
 				faquan_tag_status: 0,
-				is_my_discover: 0,
-				is_my_discover_collection: 0,
-				is_my_discover_like:0,
+				
+				//当前列表类型：  最近更新，我的发布， 我的点赞 我的收藏
+				current_list_type : 'recently_update',
+				
+				is_my_discover: 0,				//获取 我的发布的列表
+				is_my_discover_collection: 0,	//获取 我的收藏的列表
+				is_my_discover_like:0,			//获取 我的点赞的列表
+				
+				
+				//按钮显示（控制当前按钮哪个被选中）
+				is_my_fabu_show: 0,			//我的发布 被选中	
+				is_like_show: 0,		//我的点赞 被选中
+				is_collection_show: 0,	//我的收藏 被选中
+				is_recently_show: 1,	//最近更新 被选中
 
 				faquan_button_status: 0,
 				selectTabStr: '',
@@ -205,11 +227,7 @@
 				sousuo_text: '',
 				isShowBanner: false,
 
-				//按钮显示
-				is_my_show: 1,
-				is_like_show: 1,
-				is_collection_show: 1,
-				is_recently_show: 0,
+				
 
 				//订单跳转查看订单评价    商家id  请求接口用
 				xianmai_shangid: '',
@@ -250,14 +268,19 @@
 				if (options.faquanid) {
 					that.current_faquanid = options.faquanid,
 						that.is_search = true;
-				} else if (options.display_type) {
+				} 
+				else if (options.display_type) {
 					if (options.display_type == 'my') {
+						
+						that.current_list_type = 'my_publish';
 
 						that.is_my_discover = 1;
 						that.nav_title = '发现.我发布的';
 						that.current_page_title = '发现.我发布的';
 
-					} else if (options.display_type == 'collect') {
+					} 
+					else if (options.display_type == 'collect') {
+						that.current_list_type = 'my_collect';
 
 						that.is_my_discover_collection = 1;
 						that.nav_title = '发现.我收藏的';
@@ -265,6 +288,7 @@
 
 					}
 					else if (options.display_type == 'like') {
+						that.current_list_type = 'my_like';
 					
 						that.is_my_discover_like = 1;
 						that.nav_title = '发现.我点赞的';
@@ -282,7 +306,7 @@
 					this.xianmai_shangid = options.xianmai_shangid;
 					this.is_search = false;
 					this.is_my_discover = 1;
-					this.is_my_show = 0;
+					this.is_my_fabu_show = 0;
 					this.is_like_show = 0;
 					this.is_collection_show = 0;
 					this.is_recently_show = 0;
@@ -339,10 +363,15 @@
 
 		},
 		onShow() {
-
-
-
-			this.__getFaquanList();
+			//this.__getFaquanList();
+			
+			var e = Object();
+			e.currentTarget = Object();
+			e.currentTarget.dataset = Object();
+			e.currentTarget.dataset.type = this.current_list_type;
+			
+			this.my_publish_and_collect(e);
+			
 		},
 		onHide(){
 			console.log('discover.vue被隐藏');
@@ -445,6 +474,7 @@
 
 
 			uni.removeStorageSync("cms_faquan_setting");
+			
 			this.abotapi.getFaquanSetting(this, this.callback_flash_ad_list);
 
 			this.__getFaquanList();
@@ -709,12 +739,14 @@
 					that.nav_title = cms_faquan_setting.faquan_my_title;
 					that.current_page_title = cms_faquan_setting.faquan_my_title;
 
-				} else if (that.is_my_discover_collection && cms_faquan_setting.faquan_collect_title) {
+				} 
+				else if (that.is_my_discover_collection && cms_faquan_setting.faquan_collect_title) {
 
 					that.nav_title = cms_faquan_setting.faquan_collect_title;
 					that.current_page_title = cms_faquan_setting.faquan_collect_title;
 
-				} else if (that.is_my_discover_like && cms_faquan_setting.faquan_like_title) {
+				} 
+				else if (that.is_my_discover_like && cms_faquan_setting.faquan_like_title) {
 
 					that.nav_title = cms_faquan_setting.faquan_like_title;
 					that.current_page_title = cms_faquan_setting.faquan_like_title;
@@ -755,9 +787,21 @@
 
 				console.log('66666666666666666', cms_faquan_setting)
 
+
+				console.log('cms_faquan_setting', cms_faquan_setting)
+
+				if (cms_faquan_setting.faquan_button_status) {
+
+					that.faquan_button_status = cms_faquan_setting.faquan_button_status;
+
+				}
+				
+				
+				
+				
 				var type = cms_faquan_setting.faquan_flash_ad_type;
-
-
+				
+				
 				that.isShowBanner = type != 888 ? true : false;
 				console.log('66666666666666666q', that.isShowBanner)
 				if (type != 888) {
@@ -775,13 +819,13 @@
 							var banner = res.data.data;
 							console.log(res);
 							console.log(banner);
-
+				
 							//that.initProductData(data);
-
+				
 							that.imgUrls = banner;
-
+				
 							console.log('that.imgUrls', that.imgUrls);
-
+				
 							//endInitData
 						},
 						fail: function(e) {
@@ -792,14 +836,9 @@
 						},
 					})
 				}
-
-				console.log('cms_faquan_setting', cms_faquan_setting)
-
-				if (cms_faquan_setting.faquan_button_status) {
-
-					that.faquan_button_status = cms_faquan_setting.faquan_button_status;
-
-				}
+				
+				
+				
 
 
 			},
@@ -1164,73 +1203,77 @@
 					//我的发布
 					this.page = 1;
 					this.faquanList = [];
+					
 					this.is_my_discover = 1;
 					this.is_my_discover_collection = 0;
 					this.is_my_discover_like = 0;
 
-					this.is_my_show = 0;
-					this.is_like_show = 1;
-					this.is_recently_show = 1;
-					this.is_collection_show = 1;
+					this.is_my_fabu_show = 1;
+					this.is_like_show = 0;
+					this.is_recently_show = 0;
+					this.is_collection_show = 0;
 
-					uni.setNavigationBarTitle({
-						title: '我的发布'
-					})
-					
-					this.__getFaquanList();
 					
 				}
 				else if (e.currentTarget.dataset.type == 'my_like') {
 					//我的点赞
 					this.page = 1;
 					this.faquanList = [];
+					
 					this.is_my_discover = 0;
 					this.is_my_discover_collection = 0;
 					this.is_my_discover_like = 1;
 					
-					this.is_like_show = 0;
-					this.is_collection_show = 1;
-					this.is_my_show = 1;		
-					this.is_recently_show = 1;
-					uni.setNavigationBarTitle({
-						title: '我的点赞'
-					})
-					this.__getFaquanList();	
+					this.is_like_show = 1;
+					this.is_collection_show = 0;
+					this.is_my_fabu_show = 0;		
+					this.is_recently_show = 0;
+					
 				}
 				else if (e.currentTarget.dataset.type == 'my_collection') {
 					//我的收藏
 					this.page = 1;
 					this.faquanList = [];
+					
 					this.is_my_discover = 0;
 					this.is_my_discover_collection = 1;
 					this.is_my_discover_like = 0;
 
+					this.is_like_show = 0;
 					this.is_collection_show = 1;
-					this.is_my_show = 1;
-					this.is_recently_show = 1;
-					uni.setNavigationBarTitle({
-						title: '我的收藏'
-					})
-					this.__getFaquanList();
+					this.is_my_fabu_show = 0;
+					this.is_recently_show = 0;
+					
+					
 				} else if (e.currentTarget.dataset.type == 'recently_update') {
 					//最近更新
 					this.page = 1;
 					this.faquanList = [];
+					
 					this.is_my_discover = 0;
 					this.is_my_discover_collection = 0;
 					this.is_my_discover_like = 0;
 
-					this.is_collection_show = 1;
-					this.is_my_show = 1;
-					this.is_like_show = 1;
-					this.is_recently_show = 0;
+					this.is_like_show = 0;
+					this.is_collection_show = 0;
+					this.is_my_fabu_show = 0;
+					this.is_recently_show = 1;
 
-					uni.setNavigationBarTitle({
-						title: this.current_page_title
-					})
+					
 
-					this.__getFaquanList();
+					
 				}
+				
+				
+				//修改标题 为  最近更新  或其他
+				/*uni.setNavigationBarTitle({
+					title: this.current_page_title
+				})*/
+				
+				this.abotapi.getFaquanSetting(this, this.callback_flash_ad_list);
+				
+				this.__getFaquanList();
+				
 				//e.detail.width  my_publish">my_collection  e.currentTarget.dataset.type;
 			},
 

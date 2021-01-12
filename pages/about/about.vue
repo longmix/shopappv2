@@ -408,7 +408,7 @@
 		width: 50%;
 		height: 90rpx;
 		line-height: 90rpx;
-		font-size: 26rpx;
+		font-size: 28rpx;
 		opacity: 0.7;
 		text-indent: 16rpx;
 		float: left;
@@ -419,7 +419,7 @@
 		width: 50%;
 		height: 90rpx;
 		line-height: 90rpx;
-		font-size: 32rpx;
+		font-size: 30rpx;
 		float: right;
 		color: #2a2a2a;
 		box-sizing: border-box;

@@ -76,7 +76,8 @@
 		                
 		                <view class="pb-time">{{item.createtime}}</view>
 						
-						<view style="display:block; float:right;height: 60px;margin-top: 30rpx">
+						<view style="display:block; float:right;height: 60px;margin-top: 30rpx"
+							v-if="!is_my_discover">
 							<image class='list-zan' style="float:left;" 
 								:data-faquanid='item.faquanid' :data-index='idx' @tap="fanquaJubao"
 								src="../../static/img/help/jubao.png"></image>
@@ -84,21 +85,23 @@
 						</view>
 						
 		
-		                <block v-if="is_my_discover_collection || is_my_discover">
-		                  <view class="" style="margin-bottom: 10rpx; margin-left: 0;height: 40rpx;line-height: 40rpx;font-size: 26rpx;text-align: left;color:#666;">
+		                <block>
+		                  <view class="" 
+							style="margin-bottom: 10rpx; margin-left: 0;height: 40rpx;line-height: 40rpx;font-size: 26rpx;text-align: left;color:#666;">
 		                      
 		                      <block  v-if="(faquan_tag_status == 1) && (item.tag_count > 0) ">
 		                        <view> 
-								 <view style="margin-top: 80rpx;height: 40rpx;line-height: 40rpx;font-size: 26rpx;text-align: left;color:#666;">
+								 <view style="margin-top: 50rpx;height: 40rpx;line-height: 40rpx;font-size: 26rpx;text-align: left;color:#666;">
 									 <view><text style="font-weight:bold;">标签</text></view></view>
-		                          <block v-for="(item,index) in tag" :key="index"  :data-index="index"
-		                              style="margin-top: 50rpx;font-size: 26rpx;height: 30rpx;line-height: 30rpx;"><text style="margin-left:20rpx;">{{item3}}</text></block>
+		                          <block v-for="(item01,index01) in item.tag" :key="index01"  :data-index="index01"
+		                              style="margin-top: 50rpx;font-size: 26rpx;height: 30rpx;line-height: 30rpx;"><text>{{item01}}</text></block>
 		                        </view>
 								
 		                      </block>
 		                      
 		                  </view>
 		                </block>
+						
 		                <block v-if="is_my_discover">
 		                  <view class="" style="margin-top: 60rpx; margin-left: 0;height: 40rpx;line-height: 40rpx;font-size: 26rpx;text-align: left;color:#666;">
 		                      <view><text style="font-weight:bold;">点赞</text> <text style="margin-left:20rpx;">{{item.like_num}}</text>
@@ -352,7 +355,7 @@
 	.pb-time{
 		height: 20rpx;
 		line-height: 20rpx;
-		margin:30rpx 0;
+		margin-top: 20rpx;
 		float:left;
 	}
 </style>
