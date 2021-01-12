@@ -27,7 +27,9 @@
 			<label style="font-size: 30rpx;opacity: 0.7;">标签</label>
 				<view>
 					<view style="margin-top: 20rpx;" v-for="(item001,ids) in faquan_hot_tag_words" :key="ids">
-						<view :class="item001.is_select?'biaoqian001':'biaoqian000'" :data-index="ids" 
+						<view :class="item001.is_select?'biaoqian001':'biaoqian000'" 
+							:style="{color:item001.is_select? ''+wxa_shop_nav_font_color : '#333', backgroundColor:item001.is_select? ''+wxa_shop_nav_bg_color : '#fff'}"
+							:data-index="ids" 
 							@click="faquan_tag_click">{{item001.name}}
 						</view>	
 					</view>
@@ -38,7 +40,7 @@
 			
 		<view style="clear: both;">
 		  <view class='pub-btn-con'>
-		    <view class='pub-btn' @click="publishIdea" :style="{background:btn_bg_color}">立即发布</view>
+		    <view class='pub-btn' @click="publishIdea" :style="{background:wxa_shop_nav_bg_color}">立即发布</view>
 		    <checkbox-group @change="checkBox" class="" v-if="faquan_xieyi_status=='1'">
 			  <label class='pub-xieyi' v-if="faquan_xieyi_show_directly == 1">
 				<checkbox :value="checked_status"  :checked="checked_status"/>我已阅读并同意以下协议
@@ -47,7 +49,7 @@
 		        <checkbox :value="checked_status"  :checked="checked_status"/>完成立即发布表示同意
 		      </label>
 			  <view v-if="faquan_xieyi_show_directly == 0" @click='readAgreement' 
-			  style='float:right;color:red;margin-top:24rpx;height: 40rpx;line-height: 40rpx;'>《{{faquan_xieyi_title}}》</view>
+				style='float:right;color:red;margin-top:24rpx;height: 40rpx;line-height: 40rpx;'>《{{faquan_xieyi_title}}》</view>
 			  
 		    </checkbox-group >
 		  </view>
@@ -99,6 +101,9 @@
 				disable: false,
 				publishtype:'image',
 				
+				wxa_shop_nav_bg_color:'',
+				wxa_shop_nav_font_color:'',
+				
 				faquan_xieyi_status:1,
 				faquan_xieyi_title:'',
 				faquan_xieyi_content:'',
@@ -114,7 +119,6 @@
 				orderid:'',
 				ideaText:'',
 				scrollLeft:'',
-				btn_bg_color:'',
 				
 				page_not_in_tabbar:0
 			}
@@ -156,6 +160,9 @@
 			}
 			
 			
+			
+			
+			
 			//2、判断是否登录
 			var userInfo = this.abotapi.get_user_info();
 			
@@ -179,9 +186,16 @@
 			}
 			
 			
+			this.abotapi.set_option_list_str(that, function(that02, option_list) {
+				that02.abotapi.getColor();
 			
-			this.btn_bg_color = this.abotapi.getColor();
+				if (option_list.wxa_shop_nav_bg_color) {
 			
+					that02.wxa_shop_nav_bg_color = option_list.wxa_shop_nav_bg_color;
+					that02.wxa_shop_nav_font_color = option_list.wxa_shop_nav_font_color;
+			
+				}
+			});
 			
 			
 			//4、获取发圈设置
@@ -257,6 +271,7 @@
 				that.faquan_hot_tag_words = cms_faquan_setting.faquan_hot_tag_words;
 				
 			},
+			
 			  
 			// 分类改变函数  （从shopapp搬过来的  前端执行该方法的注释了没有搬）
 			bindPickerChangeCata: function (e) {
