@@ -185,7 +185,7 @@
 				return;
 			}
 			
-			
+			//读取导航栏背景颜色，字体颜色
 			this.abotapi.set_option_list_str(that, function(that02, option_list) {
 				that02.abotapi.getColor();
 			
