@@ -254,15 +254,17 @@
 			this.callback_func_for_shop_info;
 
 			console.log('discover options====>>>>', options);
+			
 			var that = this;
 			
 			
-				var box_info = uni.getSystemInfoSync();
-				
-				console.log('getSystemInfo==>>>system_info==>>>', box_info)
-				console.log('getSystemInfo==>>>system_info==>>>', box_info.windowWidth)
-				that.windowWidth = box_info.windowWidth;
-				that.windowHeight = box_info.windowHeight;
+			var box_info = uni.getSystemInfoSync();
+			
+			console.log('getSystemInfo==>>>system_info==>>>', box_info)
+			console.log('getSystemInfo==>>>system_info==>>>', box_info.windowWidth)
+			
+			that.windowWidth = box_info.windowWidth;
+			that.windowHeight = box_info.windowHeight;
 				
 			
 			

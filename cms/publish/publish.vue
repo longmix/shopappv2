@@ -27,7 +27,7 @@
 			<label style="font-size: 30rpx;opacity: 0.7;">标签</label>
 				<view>
 					<view style="margin-top: 20rpx;" v-for="(item001,ids) in faquan_hot_tag_words" :key="ids">
-						<view :class="item001.is_select?'biaoqian001':'biaoqian000'" 
+						<view class="biaoqian000" 
 							:style="{color:item001.is_select? ''+wxa_shop_nav_font_color : '#333', backgroundColor:item001.is_select? ''+wxa_shop_nav_bg_color : '#fff'}"
 							:data-index="ids" 
 							@click="faquan_tag_click">{{item001.name}}
