@@ -3,7 +3,7 @@
 		<view :style="{backgroundColor:wxa_shop_nav_bg_color,fontColor:wxa_shop_nav_font_color}">
 			<view class="xuanchuan_img" v-if="option_list && option_list.xuanchuan_img"
 				style="background-color: #fff;">
-				<image :src="option_list.xuanchuan_img" style="width: 100%;" ></image>
+				<image :src="option_list.xuanchuan_img" style="width: 100%;" mode="widthFix"></image>
 			</view>
 			
 			<view class="myblock" v-if="!option_list || (option_list.hide_qrcode_img != 1)">
