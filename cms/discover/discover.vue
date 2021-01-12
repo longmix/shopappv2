@@ -61,43 +61,48 @@
 				
 			</view>
 			<view class="publist_list_num">
-				<view style="margin-left: 250rpx;" @click="my_publish_and_collect" data-type="my_publish">{{publish_list.count_my_publish}}
-				<span style="font-weight: 100; opacity: 0.8;font-size: 24rpx;">发布</span></view>
-				<view style="margin-left: 100rpx;"  @click="my_publish_and_collect" data-type="my_like">{{publish_list.count_like}}
-				<span style=" font-weight: 100; opacity: 0.8;font-size: 24rpx;">点赞</span></view>
-				<view style="margin-left: 100rpx;"  @click="my_publish_and_collect" data-type="my_collection">{{publish_list.count_collect}}
-				<span style="font-weight: 100; opacity: 0.8;font-size: 24rpx;">收藏</span></view>
+				<view style="margin-left: 250rpx; font-size: 40rpx;" @click="my_publish_and_collect" data-type="my_publish">{{publish_list.count_my_publish}}
+					<span style="font-weight: 100; opacity: 0.8;font-size: 24rpx;margin-left: 10rpx;">发布</span>
+				</view>
+				<view style="margin-left: 100rpx; font-size: 40rpx;"  @click="my_publish_and_collect" data-type="my_like">{{publish_list.count_like}}
+					<span style=" font-weight: 100; opacity: 0.8;font-size: 24rpx;margin-left: 10rpx;">点赞</span>
+				</view>
+				<view style="margin-left: 100rpx; font-size: 40rpx;"  @click="my_publish_and_collect" data-type="my_collection">{{publish_list.count_collect}}
+					<span style="font-weight: 100; opacity: 0.8;font-size: 24rpx;margin-left: 10rpx;">收藏</span>
+				</view>
 				
 			</view>
 		</view>
        
 	    <!-- 我收藏、发布的按钮 -->
 	    <view class='publish_box' v-if="faquan_button_status==1"  >
-	    	<view class="my_collection" @click="my_publish_and_collect" data-type="recently_update" 
-				:style="{border:is_recently_show == 1 ? '1px solid red' : '1px solid #ccc'}">
-	    		<image style="width: 40rpx;height: 40rpx;margin-right: 10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/weather_icon/qing.png"></image>
+	    	<view class="nav_icon_btn" @click="my_publish_and_collect" data-type="recently_update" 
+				:style="{border:is_recently_show == 1 ? '1px solid '+wxa_shop_nav_bg_color : '1px solid #ccc'}">
+	    		<image style="width: 40rpx;height: 40rpx;margin-right: 10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/shijian.png"></image>
 	    		<view>最近更新</view>
 	    	</view>
 			
-			<view class='my_publish' @click="my_publish_and_collect" data-type="my_publish"
-				:style="{border:is_my_fabu_show == 1 ? '1px solid red' : '1px solid #ccc'}">
+			<view class='nav_icon_btn' @click="my_publish_and_collect" data-type="my_publish"
+				:style="{border:is_my_fabu_show == 1 ? '1px solid '+wxa_shop_nav_bg_color : '1px solid #ccc'}">
 	    		<image style="width: 40rpx;height: 40rpx;margin-right: 10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/edit.png"></image>
 	    		<view>我的发布</view>
-	    	</view>
-			<view class="my_collection" @click="my_publish_and_collect" data-type="my_like"
-				:style="{border:is_my_discover_like == 1 ? '1px solid red' : '1px solid #ccc'}">
-				<image style="width: 40rpx;height: 40rpx;margin-right: 10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/favorite.png"></image>
-				<view>我点的赞</view>
-			</view>
-	    	<view class="my_collection" @click="my_publish_and_collect" data-type="my_collection"
-				:style="{border:is_collection_show == 1 ? '1px solid red' : '1px solid #ccc'}">
-	    		<image style="width: 40rpx;height: 40rpx;margin-right: 10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/favorite.png"></image>
-	    		<view>我的收藏</view>
-	    	</view>
-			
-	    	
+	    	</view>			
 			
 	    </view>
+		
+		<view class='publish_box' v-if="faquan_button_status==1"  style="margin-top: -5px;">
+			<view class="nav_icon_btn" @click="my_publish_and_collect" data-type="my_like"
+				:style="{border:is_my_discover_like == 1 ? '1px solid '+wxa_shop_nav_bg_color : '1px solid #ccc'}">
+				<image style="width: 40rpx;height: 40rpx;margin-right: 10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/dianzan2.png"></image>
+				<view>我点的赞</view>
+			</view>
+			<view class="nav_icon_btn" @click="my_publish_and_collect" data-type="my_collection"
+				:style="{border:is_collection_show == 1 ? '1px solid '+wxa_shop_nav_bg_color : '1px solid #ccc'}">
+				<image style="width: 40rpx;height: 40rpx;margin-right: 10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png"></image>
+				<view>我的收藏</view>
+			</view>
+			
+		</view>
 
 		<!-- <import src="../../wxParse/wxParse.wxml"/> 
 	    <view class="wxParse"> 
@@ -1846,12 +1851,23 @@
 		background: #1E90FF;
 	}
 
-	.my_collection {
+	.nav_icon_btn {
 		width: 50%;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		border: 1px solid #ccc;
+		padding: 10px;
+		margin: 2%;
+		border-radius: 10rpx;
+		border: 1px solid #ccc;
+	}
+	
+	.my_publish888888 {
+		width: 50%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		padding: 10px;
 		margin: 2%;
 		border-radius: 10rpx;
@@ -1864,19 +1880,10 @@
 		justify-content: center;
 		font-size: 28rpx;
 		color: #333;
-		margin-top: 30rpx;
+		margin-top: 5rpx;
 	}
 
-	.my_publish {
-		width: 50%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		padding: 10px;
-		margin: 2%;
-		border-radius: 10rpx;
-		border: 1px solid #ccc;
-	}
+	
 
 	.swiper {
 		width: 100%;

@@ -22,6 +22,12 @@
 		  </view>
 		</view>
 		
+		<!-- 显示标签列表 -->
+		<view v-for=" (item,idx) in hot_tag" :key="idx">
+			<label>
+			    <checkbox value='{item.name}' checked=''>{{}}</checkbox></label>
+		</view>
+			
 		<view>
 		  <view class='pub-btn-con'>
 		    <view class='pub-btn' @click="publishIdea" :style="{background:btn_bg_color}">立即发布</view>
@@ -83,10 +89,15 @@
 				checked_status: 'checked',
 				disable: false,
 				publishtype:'image',
+				
 				faquan_xieyi_status:1,
 				faquan_xieyi_title:'',
 				faquan_xieyi_content:'',
 				faquan_xieyi_show_directly:1,
+				
+				//发圈可以选择的标签
+				faquan_hot_tag_words:[],
+				
 				video:'',
 				xianmai_shangid:'',
 				orderid:'',
@@ -185,8 +196,10 @@
 		},
 		methods: {
 			callback_xieyi_content: function (that, cms_faquan_setting) {
-			console.log('cms_faquan_setting',cms_faquan_setting);
-				that.abotapi.getColor();
+				
+				console.log('cms_faquan_setting',cms_faquan_setting);
+				
+				
 			    
 				if (!cms_faquan_setting) {
 			
@@ -228,6 +241,9 @@
 				}
 				
 				console.log('that.page_not_in_tabbar ===>>> ', that.page_not_in_tabbar);
+				
+				//读取标签
+				that.faquan_hot_tag_words = cms_faquan_setting.faquan_hot_tag_words;
 				
 			},
 			  
