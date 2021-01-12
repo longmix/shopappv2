@@ -85,16 +85,19 @@
 						</view>
 						
 		
-		                <block>
-		                  <view class="" 
-							style="margin-bottom: 10rpx; margin-left: 0;height: 40rpx;line-height: 40rpx;font-size: 26rpx;text-align: left;color:#666;">
+		                <block style="margin-top: 30rpx;">
+		                  <view class="" style="margin-top: 70rpx; height: 40rpx;line-height: 40rpx;font-size: 26rpx;text-align: left;color:#666;">
 		                      
 		                      <block  v-if="(faquan_tag_status == 1) && (item.tag_count > 0) ">
 		                        <view> 
 								 <view style="margin-top: 50rpx;height: 40rpx;line-height: 40rpx;font-size: 26rpx;text-align: left;color:#666;">
-									 <view><text style="font-weight:bold;">标签</text></view></view>
-		                          <block v-for="(item01,index01) in item.tag" :key="index01"  :data-index="index01"
-		                              style="margin-top: 50rpx;font-size: 26rpx;height: 30rpx;line-height: 30rpx;"><text>{{item01}}</text></block>
+									 <view>
+										 <text style="font-weight:bold;">标签</text>
+									 </view>
+								</view>
+									<block v-for="(item01,index01) in item.tag" :key="index01"  :data-index="index01"
+										style="margin-top: 60rpx;font-size: 26rpx;height: 30rpx;line-height: 30rpx;"><text style="margin-left: 30rpx;">{{item01}}</text>
+									</block>
 		                        </view>
 								
 		                      </block>
@@ -357,5 +360,6 @@
 		line-height: 20rpx;
 		margin-top: 20rpx;
 		float:left;
+		opacity: 0.8;
 	}
 </style>

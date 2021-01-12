@@ -23,12 +23,20 @@
 		</view>
 		
 		<!-- 显示标签列表 -->
-		<view v-for=" (item,idx) in hot_tag" :key="idx">
-			<label>
-			    <checkbox value='{item.name}' checked=''>{{}}</checkbox></label>
+		<view class="pub-xieyi001" v-if="faquan_hot_tag_words.length > 0">
+			<label style="font-size: 30rpx;opacity: 0.7;">标签</label>
+				<view>
+					<view style="margin-top: 20rpx;" v-for="(item001,ids) in faquan_hot_tag_words" :key="ids">
+						<view :class="item001.is_select?'biaoqian001':'biaoqian000'" :data-index="ids" 
+							@click="faquan_tag_click">{{item001.name}}
+						</view>	
+					</view>
+					<view style="height: 40rpx; clear: both;">
+				</view>
+			</view>
 		</view>
 			
-		<view>
+		<view style="clear: both;">
 		  <view class='pub-btn-con'>
 		    <view class='pub-btn' @click="publishIdea" :style="{background:btn_bg_color}">立即发布</view>
 		    <checkbox-group @change="checkBox" class="" v-if="faquan_xieyi_status=='1'">
@@ -38,7 +46,8 @@
 		      <label class='pub-xieyi'  v-if="faquan_xieyi_show_directly == 0">
 		        <checkbox :value="checked_status"  :checked="checked_status"/>完成立即发布表示同意
 		      </label>
-			  <view v-if="faquan_xieyi_show_directly == 0" @click='readAgreement' style='float:right;color:red;margin-top:24rpx;height: 40rpx;line-height: 40rpx;'>《{{faquan_xieyi_title}}》</view>
+			  <view v-if="faquan_xieyi_show_directly == 0" @click='readAgreement' 
+			  style='float:right;color:red;margin-top:24rpx;height: 40rpx;line-height: 40rpx;'>《{{faquan_xieyi_title}}》</view>
 			  
 		    </checkbox-group >
 		  </view>
@@ -63,7 +72,7 @@
 		</view>
 		
 		<!-- 1 显示在立即发布按钮下方  0 弹窗-->
-		<view class='' v-if="faquan_xieyi_show_directly == 1 && faquan_xieyi_status == 1">
+		<view class="wx-popup001" v-if="faquan_xieyi_show_directly == 1 && faquan_xieyi_status == 1">
 		    <view class="wx-popup-title">{{faquan_xieyi_title}}</view>
 		    <view class="wx-popup-subtitle" style="display:none;"></view>
 		    <view class="wx-popup-con">
@@ -97,6 +106,8 @@
 				
 				//发圈可以选择的标签
 				faquan_hot_tag_words:[],
+				//已经选择的标签
+				faquan_tag_list:[],
 				
 				video:'',
 				xianmai_shangid:'',
@@ -367,6 +378,11 @@
 					checkstr:userInfo.checkstr,
 				
 					text: that.ideaText ? that.ideaText: '',
+				}
+				
+				//检查是否有标签
+				if(that.faquan_tag_list.length > 0){
+					data_params.tag = that.faquan_tag_list.join(',');
 				}
 				
 				if(that.xianmai_shangid){
@@ -665,6 +681,37 @@
 			        }
 			      });
 			    },
+				
+				//点击标签被选中更换背景颜色和字体颜色
+				faquan_tag_click:function(e){
+					console.log('faquan_tag_click===>>>>', e);
+					
+					var index = e.currentTarget.dataset.index;
+					
+					var tttt = this.faquan_hot_tag_words[index];
+					
+					tttt.is_select = !tttt.is_select;
+					
+					this.$set(this.faquan_hot_tag_words, index, tttt);
+					
+					//this.faquan_hot_tag_words = faquan_hot_tag_words;
+					
+					console.log(this.faquan_hot_tag_words);
+					
+					var _this = this;
+					
+					this.faquan_tag_list = [];
+					
+					this.faquan_hot_tag_words.forEach(function(item){
+						if(item.is_select){
+							_this.faquan_tag_list.push(item.name);
+						}
+					});
+					
+					console.log(this.faquan_tag_list);
+					
+					
+				},
 			  
 
 		},
@@ -734,15 +781,15 @@
 	}
 	
 	.pub-btn{
-	  font-size: 40rpx;
-	background: #6798E9;
-	color: #fff;
-	padding: 8rpx 50rpx;
-	border-radius: 50px;
-	height: 80rpx;
-	width: 80%;
-	text-align: center;
-	line-height: 80rpx;
+		font-size: 40rpx;
+		background: #6798E9;
+		color: #fff;
+		padding: 8rpx 50rpx;
+		border-radius: 50px;
+		height: 80rpx;
+		width: 80%;
+		text-align: center;
+		line-height: 80rpx;
 	}
 	
 	.pub-xieyi{
@@ -756,6 +803,29 @@
 	
 	.pub-xieyi checkbox{
 	  zoom:0.7
+	}
+	.pub-xieyi001{
+		margin: 30rpx 10rpx;
+		
+		
+	}
+	.biaoqian000{
+		float: left;
+		font-size: 22rpx;
+		padding: 10rpx 30rpx;
+		margin: 5rpx;
+		border: 1px solid #C6C6C6;
+		border-radius: 5%;
+	}
+	.biaoqian001{
+		float: left;
+		font-size: 22rpx;
+		padding: 10rpx 30rpx;
+		margin: 5rpx;
+		border: 1px solid #C6C6C6;
+		border-radius: 5%;
+		color:#fff;
+		background-color: #0055FF;
 	}
 	
 	.remark-bar{
@@ -791,11 +861,14 @@
 	  overflow: hidden;
 	  background: #fff;
 	}
+	.wx-popup001{
+		border: 2rpx solid #C0C0C0;
+		margin:30rpx 30rpx;
+	}
 	.wx-popup-title {
 	  padding: 20rpx;
 	  text-align: center;
-	  font-size: 28rpx;
-	  border-bottom: 2rpx solid red;
+	  font-size: 32rpx;
 	}
 	
 	.wx-popup-subtitle{
@@ -807,7 +880,8 @@
 	.wx-popup-con {
 	  margin: 60rpx 25rpx;
 	  text-align: center;
-	  font-size:28rpx;
+	  font-size:26rpx;
+	  opacity: 0.8;
 	  margin-top:20rpx;
 	}
 	.wx-popup-btn {
