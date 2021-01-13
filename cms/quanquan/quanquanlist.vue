@@ -311,14 +311,45 @@
 		* 页面相关事件处理函数--监听用户下拉动作
 		*/
 		onPullDownRefresh: function () {
-			this.getVideoList();
+			
+			
 			console.log('下拉刷新==')
+			
+			// #ifndef MP-ALIPAY
+			uni.showToast({
+				title: '数据更新中……',
+				icon:'loading',
+			});
+			// #endif
+			
+			// #ifdef MP-ALIPAY
+			uni.showToast({
+				title: '数据更新中……',
+				//icon:'loading', 	//支付宝不支持icon为 loading
+				//duration:2000
+			});
+			// #endif
+			
 			this.onLoad();
 			this.onShow();
+			
+			
+			this.getVideoList();
+			
 			console.log('下拉刷新==============')
+			
 			// app.set_option_list_str(this, this.getShopOptionAndRefresh);
 			//停止当前页面的下拉刷新
-			uni.stopPullDownRefresh();
+			setTimeout(function() {
+				console.log('timeout===>>>stopPullDownRefresh===>>>hideToast');
+				
+				uni.stopPullDownRefresh();
+				
+				uni.hideToast();
+				//uni.hideLoading();
+				
+			}, 2000);
+			
 		},
 	  
 	

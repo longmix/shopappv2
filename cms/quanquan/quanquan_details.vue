@@ -362,11 +362,17 @@
 			          return;
 			
 			        }
-			
-			
-			        var file_url = that.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/download_file_02?url=';
-			        file_url += encodeURIComponent(that.video_data.video_url);
-			        file_url += '&userid='+userInfo.userid+'&download_token='+download_token;
+					
+					//组织文件的下载地址
+					var file_url = that.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/download_file_02?url=';
+					file_url += encodeURIComponent(that.video_data.video_url);
+					file_url += '&userid='+userInfo.userid+'&download_token='+download_token;
+					
+					//如果是在APP中，没有安全域名的限制，直接下载文件网址
+					// #ifdef APP-PLUS
+						file_url = that.video_data.video_url;
+					// #endif
+			        
 			
 					that.disabled = true;
 			        

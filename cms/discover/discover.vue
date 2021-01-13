@@ -635,11 +635,25 @@
 
 				var faquanid = e.currentTarget.dataset.faquanid;
 				var status = e.currentTarget.dataset.status;
+								
 
 				var userInfo = this.abotapi.get_user_info();
 				if (!userInfo) {
 					return;
 				}
+				
+				if(status == 3){
+					uni.showModal({
+						title:'确认',
+						content:'是否删除此记录？',
+						success(res) {
+							if (!res.confirm) {
+								return;
+							}
+						}
+					})
+				}
+				
 
 				var that = this;
 				that.abotapi.abotRequest({

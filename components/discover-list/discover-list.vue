@@ -81,7 +81,7 @@
 							<image class='list-zan' style="float:left;" 
 								:data-faquanid='item.faquanid' :data-index='idx' @tap="fanquaJubao"
 								src="../../static/img/help/jubao.png"></image>
-							<view style="color:#707070;float: left;">举报</view>
+							<view style="color:#707070;float: left;font-size:26rpx;">举报</view>
 						</view>
 						
 		
