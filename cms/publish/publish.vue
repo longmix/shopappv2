@@ -826,7 +826,7 @@
 	}
 	.biaoqian000{
 		float: left;
-		font-size: 22rpx;
+		font-size: 25rpx;
 		padding: 10rpx 30rpx;
 		margin: 5rpx;
 		border: 1px solid #C6C6C6;
@@ -834,7 +834,7 @@
 	}
 	.biaoqian001{
 		float: left;
-		font-size: 22rpx;
+		font-size: 25rpx;
 		padding: 10rpx 30rpx;
 		margin: 5rpx;
 		border: 1px solid #C6C6C6;
