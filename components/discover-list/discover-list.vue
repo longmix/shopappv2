@@ -92,11 +92,11 @@
 		                        <view> 
 								 <view style="margin-top: 50rpx;height: 40rpx;line-height: 40rpx;font-size: 26rpx;text-align: left;color:#666;">
 									 <view>
-										 <text style="font-weight:bold;">标签</text>
+										 <text style="font-weight:100;font-size: 22rpx;">标签</text>
 									 </view>
 								</view>
 									<block v-for="(item01,index01) in item.tag" :key="index01"  :data-index="index01"
-										style="margin-top: 60rpx;font-size: 26rpx;height: 30rpx;line-height: 30rpx;"><text style="margin-left: 30rpx;">{{item01}}</text>
+										style="margin-top: 60rpx;font-size: 26rpx;height: 30rpx;line-height: 30rpx;"><text style="margin-right: 30rpx;">{{item01}}</text>
 									</block>
 		                        </view>
 								

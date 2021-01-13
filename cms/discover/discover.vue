@@ -637,10 +637,7 @@
 				var status = e.currentTarget.dataset.status;
 								
 
-				var userInfo = this.abotapi.get_user_info();
-				if (!userInfo) {
-					return;
-				}
+				var _this = this;
 				
 				if(status == 3){
 					uni.showModal({
@@ -650,21 +647,36 @@
 							if (!res.confirm) {
 								return;
 							}
+							else{
+								_this.__change_faquan_status_to_server(faquanid, status);
+							}
 						}
 					})
 				}
+				else{
+					_this.__change_faquan_status_to_server(faquanid, status);
+				}
+					
 				
-
+			},
+			__change_faquan_status_to_server:function(faquanid, status){
+				
+				var userInfo = this.abotapi.get_user_info();
+				if (!userInfo) {
+					return;
+				}
+				
 				var that = this;
+				
 				that.abotapi.abotRequest({
 					url: that.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/change_faquan_status',
 					data: {
 						appid: that.abotapi.globalData.xiaochengxu_appid,
 						sellerid: that.abotapi.get_sellerid(),
-
+				
 						userid: userInfo.userid,
 						checkstr: userInfo.checkstr,
-
+				
 						faquanid: faquanid,
 						status: status
 					},
@@ -676,9 +688,9 @@
 								showCancel: false,
 								success() {
 									that.page = 1;
-
+				
 									that.faquanList = [];
-
+				
 									that.__getFaquanList();
 								}
 							})
@@ -689,7 +701,7 @@
 								showCancel: false
 							})
 						}
-
+				
 					},
 					fail: function(e) {
 						wx.showToast({
@@ -698,8 +710,6 @@
 						});
 					},
 				});
-					
-				
 			},
 			
 			

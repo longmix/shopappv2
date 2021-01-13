@@ -15,8 +15,10 @@
     "force_sellerid_flag": 1,
     "force_sellerid_value": "pNJNyxkkP",
     "shop_name": "陆家嘴电脑维修",
-    "version_number": "Ver 1.6.2 Build 150",
+    "version_number": "Ver 1.8.0 Build 361",
     "navigationBarBackgroundColor_fixed": 1,
+    "navigationBar_font_color":"#ffffff",
+    "navigationBar_bg_color":"#269ad7",
     "kefu_telephone": "",
     "kefu_qq": "",
     "kefu_website": "",
@@ -31,13 +33,10 @@
       "navigationBarTitleText": "个人中心"
     }
   },
-  "tabBar": {
-    
-  },
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#269ad7",
-    "navigationBarTitleText": "延誉电商",
+    "navigationBarTitleText": "陆家嘴电脑维修",
     "navigationBarTextStyle": "white"
   },
   "networkTimeout": {
