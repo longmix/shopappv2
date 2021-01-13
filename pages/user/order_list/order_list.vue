@@ -63,17 +63,17 @@
 								<view class="sp_text">
 									<view class="sp_tit ovh1">{{product_item.name}}</view>
 									<view class="sp_neb">¥{{product_item.price}}×{{product_item.amount}}</view>
-									<view class="sp_jg">¥：{{product_item.price2}}</view>   
+									<view class="sp_jg">¥{{product_item.price2}}</view>   
 								</view>
 							</navigator>
 							<view class="borderb bordert font_14">
-								<view>共计{{item.total_num}}商品<view class='fl_r'></view></view>
-								<view>商品金额：<view class='fl_r'>￥{{item.price}}</view></view>
-								<view>快递费：<view class='fl_r'>￥{{item.price3}}</view></view>
-								<view>订单金额：<view class='fl_r'>￥{{item.all_price}}</view></view>
-								<view>余额支付：<view class='fl_r'>￥{{item.yue_price}}</view></view>
-								<view>赠款支付：<view class='fl_r'>￥{{item.coupon_price}}</view></view>        
-								<view>实际支付：<view class='fl_r'>￥{{item.pay_price}}</view></view>
+								<view class="font_12">共计{{item.total_num}}商品<view class='fl_r'></view></view>
+								<view style="clear: both;"><view class="font_12">商品金额：</view><view class='fl_r'>￥{{item.price}}</view></view>
+								<view style="clear: both;"><view class="font_12">快递费：</view><view class='fl_r'>￥{{item.price3}}</view></view>
+								<view style="clear: both;"><view class="font_12">订单金额：</view><view class='fl_r'>￥{{item.all_price}}</view></view>
+								<view style="clear: both;"><view class="font_12">余额支付：</view><view class='fl_r'>￥{{item.yue_price}}</view></view>
+								<view style="clear: both;"><view class="font_12">赠款支付：</view><view class='fl_r'>￥{{item.coupon_price}}</view></view>        
+								<view style="clear: both;"><view class="font_12">实际支付：</view><view class='fl_r'>￥{{item.pay_price}}</view></view>
 								<!-- <view>支付方式：<view class='fl_r'>{{item.payment_name}}</view></view> -->
 							</view>
 							
@@ -1311,7 +1311,17 @@
 	.orderno{
 	  font-size: 30rpx;
 	}
-	.fl_r{ float: right;}
+	.fl_r { 
+		float: right;
+		font-size: 28rpx;
+	}
+	
+	.font_12 {
+		font-size: 24rpx;
+		color: #666;
+		float:left;
+	}
+	
 	.font_14 view{
 		height: 48upx;
 	}
