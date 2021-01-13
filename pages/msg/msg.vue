@@ -8,9 +8,10 @@
 		</view>
 		<view class="chat-list" v-else>
 			<view class="chat" v-for="(chat,index) in latestMsgList" :key="index" v-if="chat.chat_type == 1">
-				<view class="row" @tap="toChat(chat)">
+				<view class="row" @tap888="toChat(chat)">
 					<view class="left">
-						<image  src="../../static/img/VIP.png"></image>
+						<image v-if="!chat.from_person_detail" src="../../static/img/VIP.png"></image>
+						<image v-if="chat.from_person_detail" :src="chat.from_person_detail.headimgurl"></image>
 					</view>
 					<view class="right">
 						<view class="top">

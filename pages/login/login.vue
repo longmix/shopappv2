@@ -31,15 +31,26 @@
 					<input style="width: 60%;" type="text" class="flexIcon-text"  name="password"  placeholder-class="cl-white" @input="telInput" placeholder-style="color: #999;"  placeholder="请输入手机验证码" />
 				</view>
 				<div></div>
-				<button type="primary"  formType="submit" 
 				
-					open-type="getUserInfo" @getuserinfo="btnWxaGetUserinfo"
+				<!-- #ifdef MP-WEIXIN -->
+					<button type="primary"  formType="submit" 
 					
-					@click="btn_user_login"
+						open-type="getUserInfo" @getuserinfo="btnWxaGetUserinfo"
+
+						class="btn-row-submit"
+						:style="{background:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" 
+						style="width: 84%;background: #2E85D8;margin: auto;">登陆/注册</button>
+				<!-- #endif -->
+				<!-- #ifndef MP-WEIXIN -->	
+					<button type="primary"  formType="submit"
+						
+						@click="btn_user_login"
+						
+						class="btn-row-submit"
+						:style="{background:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" 
+						style="width: 84%;background: #2E85D8;margin: auto;">登陆/注册</button>
+				<!-- #endif -->	
 					
-					class="btn-row-submit"
-					:style="{background:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" 
-					style="width: 84%;background: #2E85D8;margin: auto;">登陆/注册</button>
 				<div class="flex mgb-20">
 					<div class="cl-black pointer flex-1" style="color: #a2a2a2;font-size: 26rpx;">手机号码首次登录自动注册</div>
 				</div>
@@ -61,7 +72,9 @@
 			</div>
 			<div class="flex flex-center2">
 				<!-- <button open-type="getUserInfo" @getuserinfo="wxLogin" class="btn-round bg-success icon-weixin"></button> -->
-				<button open-type="getPhoneNumber" plain="true" class="btn-round bg-success icon weixin-icon" @getphonenumber="btn_wxa_one_click_login"></button>
+				<button open-type="getPhoneNumber" plain="true" 
+					class="btn-round bg-success icon weixin-icon" 
+					@getphonenumber="btn_wxa_one_click_login"></button>
 			</div>
 			<!-- #endif -->
 			
@@ -299,7 +312,7 @@
 			
 			//手机验证码登录
 			btn_user_login: function (e) {
-			    console.log('getUserInfo button click, and get following msg', e);
+			    //console.log('getUserInfo button click, and get following msg', e);
 			    // console.log(userinfo);
 				
 				var that = this;
@@ -312,6 +325,7 @@
 					})
 					return;
 			    }
+				
 			    if (!this.img) {
 					uni.showToast({
 						title: '请输入图片验证码！',
@@ -320,6 +334,7 @@
 					})
 					return; 
 			    }
+				
 			    if (!this.tel) {
 					uni.showToast({
 						title: '请输入手机验证码！',
@@ -444,9 +459,7 @@
 												//===========End================
 											}									
 											else{
-												uni.switchTab({
-													url: '/pages/index/index'
-												})
+												that.abotapi.call_h5browser_or_other_goto_url('/pages/index/index');
 											}
 											
 											
@@ -582,9 +595,7 @@
 												 	
 												 }
 												 else{
-												 	uni.switchTab({
-												 		url: '/pages/index/index'
-												 	})
+												 	that.abotapi.call_h5browser_or_other_goto_url('/pages/index/index');
 												 }
 												 
 											 }
