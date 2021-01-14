@@ -1,0 +1,79 @@
+{
+  "extEnable": true,
+  "extAppid": "wxf8d9a6d164fada19",
+  "directCommit": true,
+  "ext": {
+    "name": "wechat",
+    "attr": {
+      "host": "open.weixin.qq.com",
+      "users": [
+        "user_1",
+        "user_2"
+      ]
+    },
+    "xiaochengxu_appid": "wxf8d9a6d164fada19",
+    "force_sellerid_flag": 1,
+    "force_sellerid_value": "fyiNPaWPq",
+    "shop_name": "贝斯口腔",
+    "version_number": "Ver 1.8.0 Build 364",
+    "navigationBarBackgroundColor_fixed": 1,
+    "navigationBar_font_color":"#ffffff",
+    "navigationBar_bg_color":"#11a8bd",
+    "kefu_telephone": "",
+    "kefu_qq": "",
+    "kefu_website": "",
+    "kefu_gongzhonghao": "",
+    "default_copyright_text": "南通贝斯口腔 @ 版权所有"
+  },
+  "extPages": {
+    "pages/publish/publish_list": {
+      "navigationBarTitleText": "分类信息"
+    },
+    "pages/user/user": {
+      "navigationBarTitleText": "个人中心"
+    }
+  },
+  "tabBar": {
+    "color": "#515151",
+    "selectedColor": "#d81e06",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "static/img/tabBar/home.png",
+        "selectedIconPath": "static/img/tabBar/home-on.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/publish/publish_list",
+        "iconPath": "static/img/tabBar/imglist.png",
+        "selectedIconPath": "static/img/tabBar/imglist-on.png",
+        "text": "创业与开业"
+      },
+      {
+        "pagePath": "pages/shopList/shopList",
+        "iconPath": "static/img/tabBar/category.png",
+        "selectedIconPath": "static/img/tabBar/category-on.png",
+        "text": "城市合伙人"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "iconPath": "static/img/tabBar/user.png",
+        "selectedIconPath": "static/img/tabBar/user-on.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#f37404",
+    "navigationBarTitleText": "贝斯口腔",
+    "navigationBarTextStyle": "white"
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "downloadFile": 10000
+  }
+ 
+}
