@@ -38,7 +38,7 @@
     "selectedColor": "#d81e06",
     "borderStyle": "black",
     "backgroundColor": "#ffffff",
-    "list": [
+     "list": [
       {
         "pagePath": "pages/index/index",
         "iconPath": "static/img/tabBar/home.png",
@@ -46,22 +46,10 @@
         "text": "首页"
       },
       {
-        "pagePath": "pages/publish/publish_list",
-        "iconPath": "static/img/tabBar/imglist.png",
-        "selectedIconPath": "static/img/tabBar/imglist-on.png",
-        "text": "创业与开业"
-      },
-      {
-        "pagePath": "pages/shopList/shopList",
-        "iconPath": "static/img/tabBar/category.png",
-        "selectedIconPath": "static/img/tabBar/category-on.png",
-        "text": "城市合伙人"
-      },
-      {
         "pagePath": "pages/user/user",
         "iconPath": "static/img/tabBar/user.png",
         "selectedIconPath": "static/img/tabBar/user-on.png",
-        "text": "我的"
+        "text": "会员中心"
       }
     ]
   },
