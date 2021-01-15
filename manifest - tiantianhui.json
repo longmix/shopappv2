@@ -2,8 +2,8 @@
     "name" : "天天汇",
     "appid" : "__UNI__5B54B05",
     "description" : "天天汇APP",
-    "versionName" : "1.7.4",
-    "versionCode" : 219,
+    "versionName" : "1.8.0",
+    "versionCode" : 361,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true, //是否启用`自定义组件模式`，为true表示新的`自定义组件模式` ，否则为`template模板模式`   
@@ -108,33 +108,33 @@
             },
             "icons" : {
                 "android" : {
-                    "hdpi" : "unpackage/res/icons/72x72.png",
-                    "xhdpi" : "unpackage/res/icons/96x96.png",
-                    "xxhdpi" : "unpackage/res/icons/144x144.png",
-                    "xxxhdpi" : "unpackage/res/icons/192x192.png"
+                    "hdpi" : "unpackage/res/icons_tiantianhui/72x72.png",
+                    "xhdpi" : "unpackage/res/icons_tiantianhui/96x96.png",
+                    "xxhdpi" : "unpackage/res/icons_tiantianhui/144x144.png",
+                    "xxxhdpi" : "unpackage/res/icons_tiantianhui/192x192.png"
                 },
                 "ios" : {
-                    "appstore" : "unpackage/res/icons/1024x1024.png",
+                    "appstore" : "unpackage/res/icons_tiantianhui/1024x1024.png",
                     "ipad" : {
-                        "app" : "unpackage/res/icons/76x76.png",
-                        "app@2x" : "unpackage/res/icons/152x152.png",
-                        "notification" : "unpackage/res/icons/20x20.png",
-                        "notification@2x" : "unpackage/res/icons/40x40.png",
-                        "proapp@2x" : "unpackage/res/icons/167x167.png",
-                        "settings" : "unpackage/res/icons/29x29.png",
-                        "settings@2x" : "unpackage/res/icons/58x58.png",
-                        "spotlight" : "unpackage/res/icons/40x40.png",
-                        "spotlight@2x" : "unpackage/res/icons/80x80.png"
+                        "app" : "unpackage/res/icons_tiantianhui/76x76.png",
+                        "app@2x" : "unpackage/res/icons_tiantianhui/152x152.png",
+                        "notification" : "unpackage/res/icons_tiantianhui/20x20.png",
+                        "notification@2x" : "unpackage/res/icons_tiantianhui/40x40.png",
+                        "proapp@2x" : "unpackage/res/icons_tiantianhui/167x167.png",
+                        "settings" : "unpackage/res/icons_tiantianhui/29x29.png",
+                        "settings@2x" : "unpackage/res/icons_tiantianhui/58x58.png",
+                        "spotlight" : "unpackage/res/icons_tiantianhui/40x40.png",
+                        "spotlight@2x" : "unpackage/res/icons_tiantianhui/80x80.png"
                     },
                     "iphone" : {
-                        "app@2x" : "unpackage/res/icons/120x120.png",
-                        "app@3x" : "unpackage/res/icons/180x180.png",
-                        "notification@2x" : "unpackage/res/icons/40x40.png",
-                        "notification@3x" : "unpackage/res/icons/60x60.png",
-                        "settings@2x" : "unpackage/res/icons/58x58.png",
-                        "settings@3x" : "unpackage/res/icons/87x87.png",
-                        "spotlight@2x" : "unpackage/res/icons/80x80.png",
-                        "spotlight@3x" : "unpackage/res/icons/120x120.png"
+                        "app@2x" : "unpackage/res/icons_tiantianhui/120x120.png",
+                        "app@3x" : "unpackage/res/icons_tiantianhui/180x180.png",
+                        "notification@2x" : "unpackage/res/icons_tiantianhui/40x40.png",
+                        "notification@3x" : "unpackage/res/icons_tiantianhui/60x60.png",
+                        "settings@2x" : "unpackage/res/icons_tiantianhui/58x58.png",
+                        "settings@3x" : "unpackage/res/icons_tiantianhui/87x87.png",
+                        "spotlight@2x" : "unpackage/res/icons_tiantianhui/80x80.png",
+                        "spotlight@3x" : "unpackage/res/icons_tiantianhui/120x120.png"
                     }
                 }
             },
