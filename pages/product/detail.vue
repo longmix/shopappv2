@@ -344,9 +344,10 @@
 				
 				<view class="drpt_0">
 					<view class="yhmc"
-					@tap='youhui_huodong_handle'
-					:data-youhuitype='youhui_item.youhui_type'
-					:data-youhuiurl='youhui_item.youhui_url'>{{youhui_item.youhui_name}}</view>
+						:style="{'background-color': wxa_shop_nav_bg_color, 'color':wxa_shop_nav_font_color, 'border':'1px solid '+wxa_shop_nav_bg_color}"
+						@tap='youhui_huodong_handle'
+						:data-youhuitype='youhui_item.youhui_type'
+						:data-youhuiurl='youhui_item.youhui_url'>{{youhui_item.youhui_name}}</view>
 					<block v-if="youhui_item.youhui_type == 'jietijiage'">
 						<!-- 阶梯价格 -->
 						<view class="drpt_1" v-for="(item, index) in youhui_item.youhui_data" :key="index">
@@ -658,6 +659,7 @@
 				
 				
 				wxa_shop_nav_bg_color:'',
+				wxa_shop_nav_font_color:'',
 				
 				//2020.12.14
 				AlertClassKaijiang: 0,
@@ -1178,15 +1180,17 @@
 				
 				var that = this;
 				
-				that.abotapi.getColor();
+				console.log('product detail callback_set_option_list_str====>>>>',cb_params);
 				
-				console.log('wxa_order_hide_daishouhuo_refund',cb_params);
-				that.wxa_shop_nav_bg_color = cb_params.wxa_shop_nav_bg_color;
 				
 				if (!cb_params) {
 					return;
 				}
-
+				
+				
+				that.wxa_shop_nav_bg_color = cb_params.wxa_shop_nav_bg_color;
+				that.wxa_shop_nav_font_color = cb_params.wxa_shop_nav_font_color;
+				
 				that.default_copyright_text = that.abotapi.globalData.default_copyright_text;
 
 				if (cb_params.wxa_show_kucun_xiaoliang) {
@@ -3315,3 +3319,4 @@
 		color: #666666;
 	}
 </style>
+
