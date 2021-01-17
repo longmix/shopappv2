@@ -8,12 +8,12 @@
 				<view class="a">
 					<image :src="current_user_card_data.card_logo" style="width: 100upx;height: 100upx;border-radius: 50%;overflow: hidden;"></image>
 					<view style="margin-left:30rpx;line-height: 50rpx;">
-						<view>{{current_user_card_data.card_name}}</view>
-						<view>{{current_user_card_data.card_desc}}</view>
+						<view :style="{color:current_user_card_data.card_name_color}" >{{current_user_card_data.card_name}}</view>
+						<view :style="{color:current_user_card_data.card_desc_color}">{{current_user_card_data.card_desc}}</view>
 					</view>
 				</view>
 				<view style="text-align: right;padding-right: 57px;color: #000000;margin-top:165upx;padding-right: 170upx;">
-					<b>{{current_user_card_data.card_no}}</b>
+					<b :style="{color:current_user_card_data.card_no_color}">{{current_user_card_data.card_no}}</b>
 				</view>
 			</view>
 		</view>
@@ -658,7 +658,7 @@
 				});
 				
 				
-				var url = that.abotapi.globalData.yanyubao_server_url + '/index.php?g=Yanyubao&m=Xiaochengxu&a=get_user_card';
+				var url = that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=Xiaochengxu&a=get_user_card';
 				var data = {
 					sellerid: that.abotapi.get_sellerid(),
 					checkstr: userInfo.checkstr,

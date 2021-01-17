@@ -89,6 +89,8 @@
 					<view>商家名称<view class='fl_r'>{{order_xianmai_shangdata.name}}</view></view>
 				</view>
 				
+				<view v-if="orderData.order_option.xianmai_order_peisong_type && orderData.order_option.xianmai_order_peisong_type == 'snatch_order'">					<view>配送状态<view class='fl_r'>{{orderData.order_option.xianmai_order_peisong_status_str}}</view></view>				</view>
+				
 				<view class="bordert">
 					<view>订单状态<view class='fl_r'>{{orderData.status_str}}</view></view>
 				</view>
