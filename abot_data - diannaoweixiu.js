@@ -25,8 +25,8 @@ const globalData = {
 		//current_platform : 'app-android',
 		//current_platform : 'app-ios',
 		//current_platform : 'mp-weixin',
-		current_platform : 'mp-baidu',
-		//current_platform : 'mp-alipay',
+		//current_platform : 'mp-baidu',
+		current_platform : 'mp-alipay',
 		//current_platform : 'h5',
 		
 		//固定导航栏的背景色，如果为0，则使用服务器端的配置

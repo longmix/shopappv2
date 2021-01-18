@@ -27,9 +27,15 @@
 			</view>
 			<!-- 昵称,个性签名 -->
 			<view class="right">
-				<view class="username" :style="{color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}">
-					<label v-if="user_info">{{fenxiao_info.nickname}}</label><label v-else @click="toLogin">请点击此处登录</label>
+				<view v-if="user_info" class="username" 
+					:style="{color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}">
+					<label>{{fenxiao_info.nickname}}</label>
 				</view>
+				<view v-else @click="toLogin" class="username"
+					:style="{color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}">
+					<label>请点击此处登录</label>
+				</view>
+				
 				<view class="signature" :style="{color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}">
 					<label v-if="user_info && user_info.signature !=null">{{user_info.signature}}</label><label v-if="user_info.signature == null"></label>
 				</view>
@@ -618,10 +624,12 @@
 
 			},
 			toLogin() {
+				console.log('user.vue toLogin===>>>');
 
 				uni.navigateTo({
 					url: '/pages/login/login'
 				})
+				
 				this.isfirst = false;
 			},
 			isLogin() {
@@ -997,6 +1005,7 @@
 
 	.logo {
 		width: 90rpx;
+		border-radius: 10rpx;
 	}
 
 	.wx-popup {

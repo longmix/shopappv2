@@ -211,7 +211,8 @@
     "mp-alipay" : {
         "uniStatistics" : {
             "enable" : false
-        }
+        },
+        "appid" : "2021001187630273"
     },
     "mp-baidu" : {
         "uniStatistics" : {

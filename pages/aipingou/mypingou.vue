@@ -103,12 +103,12 @@
 </template>
 
 <script>
-	import mypingou from '../../pages/aipingou/mypingou.vue';
+	//import mypingou from '../../pages/aipingou/mypingou.vue';
 
 	export default {
-		components: {
+		/*components: {
 			mypingou
-		},
+		},*/
 		data() {
 			return {
 				current_page: 1,

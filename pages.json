@@ -601,8 +601,7 @@
 		}
         ,{
             "path" : "pages/aipingou/aipingou",
-            "style" :                                                                                    
-            {
+            "style" : {
                 "navigationBarTitleText": "",
                 "enablePullDownRefresh": true
             }
@@ -610,8 +609,7 @@
         },
 		{
 		    "path" : "pages/aipingou/mypingou",
-		    "style" :                                                                                    
-		    {
+		    "style" : {
 				"onReachBottomDistance":5,
 		        "navigationBarTitleText": "我的拼购",
 		        "enablePullDownRefresh": true
