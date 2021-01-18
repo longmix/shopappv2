@@ -92,8 +92,9 @@
 					-webkit-line-clamp: 2;
 					text-align: justify;
 					overflow: hidden;
-					font-size: 30rpx;
+					font-size: 28rpx;
 					height: 80rpx;
+					line-height: 40rpx;
 				}
 				.info{
 					display: flex;
