@@ -34,7 +34,7 @@
 			<view class="typeTree">
 				<block v-if="wxa_product_super_list_style == 0">
 					<view class="brand" v-for="(data,index) in typeTree" :key="index">
-						<navigator :url="'../product/detail?productid=' + data.productid" wx:key="typeId" class="item">
+						<navigator :url="'../product/detail?productid=' + data.productid" wx:key="typeId" class="product_name_item">
 							<image :src="data.picture"></image>
 							<text>{{data.name}}</text>
 						</navigator>
@@ -47,7 +47,7 @@
 				<block v-if="wxa_product_super_list_style == 1">
 					<view class="logo_info navigator" v-for="(item,index) in typeTree" :key="index" open-type='navigate'>
 
-						<navigator style="" :url="'../product/detail?productid=' + item.productid" open-type='navigate'>
+						<navigator style="" :url="'/pages/product/detail?productid=' + item.productid" open-type='navigate'>
 							<view class="logo_pic" style="margin-top:18rpx;">
 								<image :src="item.picture" style="width:100%;" mode="widthFix"></image>
 							</view>
@@ -520,10 +520,11 @@
 		padding-bottom: 20rpx;
 	}
 
-	.item text {
+	.product_name_item text {
 		padding-bottom: 10rpx;
 		display: block;
-		height: 100rpx;
+		height: 80rpx;
+		line-height: 40rpx;
 		text-overflow: hidden;
 		overflow: hidden;
 		font-size: 28rpx;
