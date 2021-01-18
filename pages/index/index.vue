@@ -5,7 +5,8 @@
 		<!-- 顶部导航栏 -->
 		<view v-if="showHeader" class="header" :style="{ position: headerPosition,top:headerTop,opacity: afterHeaderOpacity }">
 			<!-- 定位城市 -->
-			<navigator url="../locationList/locationList" class="addr" :style="{fontSize:current_citynameWidth+'px'}">
+			<navigator v-if="disable_gps_location != 1"
+				url="../locationList/locationList" class="addr" :style="{fontSize:current_citynameWidth+'px'}">
 				<view class="icon location"></view>
 				<view style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:28rpx;">{{current_cityname}}</view>
 			</navigator>
@@ -140,6 +141,20 @@
 				</view>
 			</view>
 		</view> -->
+		
+		<!-- 营业地址卡片 2021.1.18. -->
+		
+		
+		
+		
+		<!-- 富媒体组件 2021.1.18. -->
+		
+		
+		
+		
+		
+		
+		
 		
 		<!-- 实体商家列表 -->
 		<shopList v-if="twoArr" 
@@ -358,6 +373,19 @@ export default {
 			 yinsi_cfg_yinsizhengce_cms_token:'',
 			 yinsi_cfg_yinsizhengce_imgid:'',   
 			 yinsi_cfg_shiyongxieyi_imgid:'',
+			 
+			 //禁用GPS定位
+			 disable_gps_location:0,
+			 
+			 //显示营业地址卡片
+			 show_address_card_in_index:0,
+			 address_card_in_index:null,
+			 
+			 //显示富媒体组件
+			 show_rich_html_in_index:0,
+			 index_rich_html_type:'',
+			 index_rich_html_content:'',
+
 		};
 	},
 	
@@ -1034,6 +1062,27 @@ export default {
 			}
 			
 			
+			//2021.1.18. 判断一组新的 选项
+			//禁用GPS
+			if(cb_params.option_list.disable_gps_location == 1){
+				that.disable_gps_location = 1;
+			}
+			
+			//显示营业地址卡片
+			if(cb_params.option_list.show_address_card_in_index == 1){
+				that.show_address_card_in_index = 1;
+				//地址名片的内容
+				that.address_card_in_index = cb_params.option_list.address_card_in_index;
+			}
+			
+			//显示富媒体组件
+			if(cb_params.option_list.show_rich_html_in_index == 1){
+				that.show_rich_html_in_index = 1;
+				that.index_rich_html_type = cb_params.option_list.index_rich_html_type;
+				that.index_rich_html_content = cb_params.option_list.index_rich_html_content;
+			}
+			
+			
 			that.get_flash_ad_list();
 			that.get_flash_img_list();
 			that.initArticleList();
@@ -1114,7 +1163,14 @@ export default {
 			var that = this;
 			
 			if(!this.showHeader){
-				console.log('隐藏了搜索框，所以没有顶部的城市定位，不再获取附件商家');
+				console.log('隐藏了搜索框，所以没有顶部的城市定位，不再获取附近商家');
+				
+				return;
+			}
+			
+			if(this.disable_gps_location == 1){
+				console.log('禁用了GPS定位，无法排序获取附近商家，不再获取附近商家');
+				
 				return;
 			}
 			
