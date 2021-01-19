@@ -143,7 +143,30 @@
 		</view> -->
 		
 		<!-- 营业地址卡片 2021.1.18. -->
+		<view class="index_address_card" v-if="show_address_card_in_index == 1">
+			<view class="index_address_card_address">
+				<view class="index_address_card_address_detail">{{address_card_in_index.address}}
+				<view class="index_address_card_contact_mobile">营业时间：{{address_card_in_index.yingyeshijian}}</view></view>
+			</view>
+			
+			<view class="index_address_card_icon_telephone">
+				<image class="index_address_card_icon_telephone_img" src="../../static/img/map_new.png" mode="widthFix"></image>
+				<view style="display: -webkit-inline-box;font-size: 20rpx;">地图</view>
+			</view>
+			<view class="index_address_card_icon_telephone" 
+				style="border-left: #bcbcbc 1px solid;">
+				<image class="index_address_card_icon_telephone_img" src="../../static/img/mobile_new.png" mode="widthFix"></image>
+				<view style="display: -webkit-inline-box;font-size: 20rpx;">电话</view>
+			</view>
+			<!-- <image class="mobile_img" src="../../static/img/mobile_new.png" mode="widthFix" ></image>
+			<view>电话</view> -->
+			
+			
+			
+			
 		
+			
+		</view>
 		
 		
 		
@@ -1069,6 +1092,7 @@ export default {
 			}
 			
 			//显示营业地址卡片
+			
 			if(cb_params.option_list.show_address_card_in_index == 1){
 				that.show_address_card_in_index = 1;
 				//地址名片的内容
@@ -1076,13 +1100,14 @@ export default {
 			}
 			
 			//显示富媒体组件
+			
 			if(cb_params.option_list.show_rich_html_in_index == 1){
 				that.show_rich_html_in_index = 1;
 				that.index_rich_html_type = cb_params.option_list.index_rich_html_type;
 				that.index_rich_html_content = cb_params.option_list.index_rich_html_content;
 			}
 			
-			
+			console.log('sssswsaaaa', that.index_rich_html_content);
 			that.get_flash_ad_list();
 			that.get_flash_img_list();
 			that.initArticleList();
@@ -2524,4 +2549,44 @@ page{position: relative;background-color: #fff;}
 		margin-right:20rpx;
 		width: 50rpx;
 	}
+	
+	/*地址卡片相关*/
+	.index_address_card{
+		display: flex;
+		padding: 10rpx;
+		box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+		/*width: 90%;
+		margin: 0 auto;
+		color: #666666;
+		padding: 10rpx;
+		border-radius: 10rpx;*/
+	}
+	.index_address_card_address{
+		order:1;
+		flex-grow:1;
+		display: flex;
+		margin: 10rpx 0 0 40rpx;
+		
+	}
+	
+	.index_address_card_icon_telephone{
+		order:2;
+		width:80rpx;
+		min-width: 80rpx;
+		text-align: center;
+	}
+	.index_address_card_icon_telephone_img{
+		width: 40rpx;
+	}
+	
+	.index_address_card_address_detail{
+		font-size:26rpx;
+	}
+	.index_address_card_contact_mobile{
+		margin-top: 15rpx;
+		font-size: 22rpx;
+		color: #666;
+	}
+	
+	
 </style>
