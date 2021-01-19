@@ -110,7 +110,7 @@
 			<view class="a-dikou" :hidden="wxa_order_hide_balance_zengsong==1">
 				<view class="b-dikou">
 					<view>赠款抵扣</view>
-					<view class="c-dikou">使用￥<span class="c-dikou_amount">{{balance_zengsong_dikou}}</span> 剩余￥{{balance_zengsong}}</view>
+					<view class="c-dikou">使用￥<span class="c-dikou_amount">{{balance_zengsong_dikou}}</span> 可用￥{{balance_zengsong}}</view>
 				</view>
 				<switch class='d-dikou' :checked="isSwitch1" @change="switch1Change($event)" data-type="1" />
 			</view>
@@ -119,7 +119,7 @@
 			<view class="a-dikou" :hidden="wxa_order_hide_balance==1">
 				<view class="b-dikou">
 					<view>余额抵扣</view>
-					<view class="c-dikou">使用￥<span class="c-dikou_amount">{{balance_dikou}}</span> 剩余￥{{balance}}</view>
+					<view class="c-dikou">使用￥<span class="c-dikou_amount">{{balance_dikou}}</span> 可用￥{{balance}}</view>
 				</view>
 				<switch class='d-dikou' :checked="isSwitch2" @change="switch1Change($event)" data-type="2" />
 			</view>

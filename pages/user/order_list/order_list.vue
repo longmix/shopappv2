@@ -80,7 +80,9 @@
 						</block>
 						<view class="sp_neb" v-if="item.buyer_memo != ''">备注：<view class='fl_r'>{{item.buyer_memo}}</view></view>
 						<view  class="btn_b">
-							<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
+							<navigator 
+								:url="'../orderDetail/orderDetail?orderId='+item.orderid" 
+								class="font_12 btn_min fl_r mr_5" style="color: #fff;">订单详情</navigator>
 						</view> 
 					</view>
 				</swiper-item>
