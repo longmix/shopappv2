@@ -171,6 +171,8 @@
 		
 		
 		<!-- 富媒体组件 2021.1.18. -->
+		<view v-if="index_rich_html_type == 'static'" v-html="index_rich_html_content"></view>
+		
 		
 		
 		
@@ -2009,6 +2011,12 @@ export default {
 				}
 			});
 		},
+		
+		
+		//富媒体点击事件
+		index_rich_html:function(e){
+			console.log('888888999===', e);
+		}
 		
 	}
 };
