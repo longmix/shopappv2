@@ -149,14 +149,14 @@
 				<view class="index_address_card_yingyeshijian">营业时间：{{address_card_in_index.yingyeshijian}}</view></view>
 			</view>
 			
-			<view class="index_address_card_icon_telephone">
+			<view class="index_address_card_icon_telephone" @tap="index_address_card_go_map">
 				<image class="index_address_card_icon_telephone_img" src="https://yanyubao.tseo.cn/Tpl/static/images/location_map_new.png" mode="widthFix"></image>
-				<view style="display: -webkit-inline-box;font-size: 20rpx;">地图</view>
+				<view style=";font-size: 20rpx;display: block;">地图</view>
 			</view>
 			<view class="index_address_card_icon_telephone" 
-				style="border-left: #bcbcbc 1px solid;">
+				style="border-left: #bcbcbc 1px solid;" @tap="index_address_card_call_seller">
 				<image class="index_address_card_icon_telephone_img" src="https://yanyubao.tseo.cn/Tpl/static/images/location_mobile_new.png" mode="widthFix"></image>
-				<view style="display: -webkit-inline-box;font-size: 20rpx;">电话</view>
+				<view style="display: block;font-size: 20rpx;">电话</view>
 			</view>
 			<!-- <image class="mobile_img" src="../../static/img/mobile_new.png" mode="widthFix" ></image>
 			<view>电话</view> -->
@@ -2057,29 +2057,22 @@ export default {
 		},
 		
 		//拨打客服电话
-		index_call_seller: function() {
-			// #ifdef MP-WEIXIN
-			return;
-			// #endif
-			
+		index_address_card_call_seller: function() {
 			var that = this;
+			//console.log('88888ss', that.address_card_in_index.telephone);
+			uni.makePhoneCall({
+				phoneNumber: that.address_card_in_index.telephone,
+			})
+			
+			return;
+		},
 		
-			// #ifdef MP-BAIDU
-			uni.makePhoneCall({
-				phoneNumber: that.kefu_telephone,
-			})
+		//跳转到地图
+		index_address_card_go_map:function(){
+			var new_url = '/pages/shopMap/shopMap?&latitude='
+			new_url += this.address_card_in_index.latitude + '&longitude='+this.address_card_in_index.longitude;
 			
-			return;
-			// #endif
-			
-			// #ifdef MP-ALIPAY
-			uni.makePhoneCall({
-				phoneNumber: that.kefu_telephone,
-			})
-			
-			return;
-			
-			// #endif
+			this.abotapi.call_h5browser_or_other_goto_url(new_url);
 		},
 		
 	}
@@ -2646,6 +2639,10 @@ page{position: relative;background-color: #fff;}
 		width:80rpx;
 		min-width: 80rpx;
 		text-align: center;
+		justify-content: center;
+		display: grid;
+		align-items: center;//子元素垂直居中
+		padding-top:15rpx ;
 	}
 	.index_address_card_icon_telephone_img{
 		width: 40rpx;
