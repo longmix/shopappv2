@@ -144,7 +144,7 @@
 		
 		<!-- 富媒体组件 2021.1.18. -->
 		<view v-if="show_rich_html_in_index == 1" 
-			v-html="index_rich_html_content" @click="index_rich_html_click"></view>
+			v-html="index_rich_html_content" @click="index_rich_html_click($event)"></view>
 		
 		
 		<!-- 平铺广告图 -->
@@ -2023,8 +2023,22 @@ export default {
 		
 		//富媒体 点击事件
 		index_rich_html_click:function(e){
+			
+			
+			
 			console.log('888888999===', e);
-		},
+			
+			e = e || window.event;
+			
+			//#ifdef H5
+			console.log('888888999===', window.event);
+			//#endif
+			
+			console.log('ssss',e.target.className) // testssss
+			console.log('wwww',e.target.nodeName) // p
+		}, 
+		
+		
 		
 		__index_rich_html_get_content:function(that){
 			//判断是否是http开头的？

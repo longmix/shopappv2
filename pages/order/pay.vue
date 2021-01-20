@@ -233,7 +233,7 @@
 				vid:0,
 				addemt:0,//为0 的时候显示请去添加地址   1的时候显示的是已经设置过的地址
 				vou:[],
-				orderId:{},
+				orderid:{},
 				amount:1,
 				cartId:'321',
 				
@@ -1339,7 +1339,7 @@ tuansn = 参团的编号，如果没有，则代表新开团
 							that.orderno = res.data.orderno;
 							
 							if(that.order_type_001 == 'shopmall'){
-								var url_to_payment = '/pages/pay/payment/payment?orderId=' + that.orderid;
+								var url_to_payment = '/pages/pay/payment/payment?orderid=' + that.orderid;
 								url_to_payment += '&balance_zengsong_dikou=' + that.balance_zengsong_dikou;
 								url_to_payment += '&balance_dikou=' + that.balance_dikou;
 								url_to_payment += '&traffic_price=' + that.traffic_price;
@@ -1462,7 +1462,7 @@ tuansn = 参团的编号，如果没有，则代表新开团
 						 key: 'waimai_list_' + that.xianmaishangid,
 						 success(res) {
 						   uni.redirectTo({
-						   	url: '/pages/pay/payment/payment?orderId=' + that.orderid + '&balance_zengsong_dikou=' + that.balance_zengsong_dikou + '&balance_dikou=' + that.balance_dikou + '&traffic_price=' + that.traffic_price,
+						   	url: '/pages/pay/payment/payment?orderid=' + that.orderid + '&balance_zengsong_dikou=' + that.balance_zengsong_dikou + '&balance_dikou=' + that.balance_dikou + '&traffic_price=' + that.traffic_price,
 						   })
 						 }
 					   })
@@ -1472,7 +1472,7 @@ tuansn = 参团的编号，如果没有，则代表新开团
 						 key: 'cart_list_' + that.xianmaishangid,
 						 success(res) {
 						   uni.redirectTo({
-						   	url: '/pages/pay/payment/payment?orderId=' + that.orderid + '&balance_zengsong_dikou=' + that.balance_zengsong_dikou + '&balance_dikou=' + that.balance_dikou + '&traffic_price=' + that.traffic_price,
+						   	url: '/pages/pay/payment/payment?orderid=' + that.orderid + '&balance_zengsong_dikou=' + that.balance_zengsong_dikou + '&balance_dikou=' + that.balance_dikou + '&traffic_price=' + that.traffic_price,
 						   })
 						 }
 					   })

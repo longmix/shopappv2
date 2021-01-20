@@ -169,6 +169,9 @@
 	export default {
 		data() {
 			return {
+				//打开i页面时候带进来的参数
+				current_options:{},
+				
 				date: '2016-09-01',
 				
 				zz_pay: true,
@@ -190,7 +193,7 @@
 				adds: '',
 				name: '',
 				time: '',
-				orderId: '',
+				orderid: '',
 				key: '',
 				
 				btn_bg_color: '#1AAD19',
@@ -207,6 +210,8 @@
 			
 			var that = this;
 			
+			this.current_options = options;
+			
 			this.abotapi.set_option_list_str(this, (_self, option_list)=>{
 				that.btn_bg_color = _self.abotapi.getColor();
 				
@@ -220,7 +225,7 @@
 			
 			showView: (options.showView == "true" ? true : false)
 			
-			that.orderId = options.orderId;
+			that.orderid = options.orderid;
 			that.traffic_price = options.traffic_price ? options.traffic_price : 0;
 			
 			if (options.balance_zengsong_dikou) {
@@ -378,7 +383,7 @@
 					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_xiangqing',
 					method: 'post',
 					data: {
-						orderid: that.orderId,
+						orderid: that.orderid,
 						userid: userInfo.userid,
 						checkstr: userInfo.checkstr,
 						sellerid: that.abotapi.get_sellerid()
@@ -500,7 +505,7 @@
 				var userInfo = that.abotapi.get_user_info();
 
 				var data_params = {
-					orderid: that.orderId,
+					orderid: that.orderid,
 					payment_type: 6,
 					userid: userInfo.userid,
 					checkstr: userInfo.checkstr,
@@ -567,13 +572,87 @@
 
 				var that = this;
 				
+				//2021.1.20. 如果需要跳转到微信小程序中区支付
+				// #ifdef APP-PLUS
+				if(that.abotapi.globalData.order_buy_payment_to_mp_weixin == 1){
+					
+					uni.showModal({
+						title:'提示',
+						content:'即将跳转到微信中支付',
+						success(res) {
+							if(res.confirm){
+								
+								
+								
+								//跳转到小程序中的网址
+								var wxa_path = 'pages/pay/payment/payment';
+								
+								//读取所有的参数
+								var arr = Object.keys(that.current_options);
+								var options_len = arr.length;
+								
+								if (options_len > 0){
+									var params_str = '';
+								
+									for(var key in that.current_options){
+										params_str += key+'='+that.current_options[key]+'&';
+									}
+									params_str = params_str.substr(0, params_str.length - 1);
+								
+									wxa_path = wxa_path+'?'+params_str;
+								}
+								
+								plus.share.getServices(
+									function(res){  
+										var sweixin = null;  
+										for(var i=0;i<res.length;i++){  
+											var t = res[i];  
+											if(t.id == 'weixin'){  
+												sweixin = t;  
+											}  
+										}  
+										if(sweixin){
+											//唤醒微信小程序
+											sweixin.launchMiniProgram({
+												id: that.abotapi.globalData.xiaochengxu_account,
+												path:wxa_path,
+												type: 0,
+												webUrl:'https://www.abot.cn'
+											});
+										}  
+									},
+									function(res){  
+										console.log(JSON.stringify(res));
+										
+										uni.showToast({
+											title:'没有检测到微信'
+										})
+									}
+								);
+								
+								
+								
+								
+								
+							}
+						}
+					})
+					
+				}
+				// #endif
+				//========= End ===============
+				
+				
+				
+				
+				
 				var userInfo = that.abotapi.get_user_info();
 				
 				var payment_provider = 'wxpay';
 				
 				var post_data = {
 						// productid: that.productid,
-						orderid: that.orderId,
+						orderid: that.orderid,
 						payment_type: 3,						//支付类型，将来作为函数参数传入。3代表微信支付   2 代表支付宝支付
 						userid: userInfo.userid,
 						checkstr: userInfo.checkstr,
@@ -794,7 +873,7 @@
 				console.log('paysuccess_url===', paysuccess_url)
 				
 				if (paysuccess_url && (typeof(paysuccess_url) == 'string') ){
-					paysuccess_url = paysuccess_url.replace('%orderid%', this.orderId);
+					paysuccess_url = paysuccess_url.replace('%orderid%', this.orderid);
 												
 					this.abotapi.call_h5browser_or_other_goto_url(paysuccess_url);
 					uni.removeStorageSync('paysuccess_url');
