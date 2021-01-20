@@ -112,38 +112,10 @@
 <!-- #endif -->
 		
 		
-		<!-- 广告图 -->
-		<view v-for="(tab,index) in flash_img_list" :key="index" @click="toAdDetails(tab.url)">
-			<view class="banner" >
-				<image :src="tab.image" style="width: 100%;vertical-align: middle;" mode="widthFix"></image>
-			</view>
-		</view>
-		<!-- 活动区 -->
-		<!-- <view class="promotion">
-			<view class="text">优惠专区</view>
-			<view class="list">
-				<view class="column" v-for="(row, index) in Promotion" @tap="toPromotion(row)" :key="index">
-					<view class="top">
-						<view class="title">{{ row.title }}</view>
-						<view class="countdown" v-if="row.countdown">
-							<view>{{ row.countdown.h }}</view>
-							:
-							<view>{{ row.countdown.m }}</view>
-							:
-							<view>{{ row.countdown.s }}</view>
-						</view>
-					</view>
-					<view class="left">
-						<view class="ad">{{ row.ad }}</view>
-						<view class="into">点击进入</view>
-					</view>
-					<view class="right"><image :src="row.img"></image></view>
-				</view>
-			</view>
-		</view> -->
+		
 		
 		<!-- 营业地址卡片 2021.1.18. -->
-		<view class="index_address_card" v-if="show_address_card_in_index == 1">
+		<view class="index_address_card_main" v-if="show_address_card_in_index == 1">
 			<view class="index_address_card_address">
 				<view class="index_address_card_address_detail">{{address_card_in_index.address}}
 				<view class="index_address_card_yingyeshijian">营业时间：{{address_card_in_index.yingyeshijian}}</view></view>
@@ -175,7 +147,35 @@
 			v-html="index_rich_html_content" @click="index_rich_html_click"></view>
 		
 		
-		
+		<!-- 平铺广告图 -->
+		<view v-for="(tab,index) in flash_img_list" :key="index" @click="toAdDetails(tab.url)">
+			<view class="banner" >
+				<image :src="tab.image" style="width: 100%;vertical-align: middle;" mode="widthFix"></image>
+			</view>
+		</view>
+		<!-- 活动区 -->
+		<!-- <view class="promotion">
+			<view class="text">优惠专区</view>
+			<view class="list">
+				<view class="column" v-for="(row, index) in Promotion" @tap="toPromotion(row)" :key="index">
+					<view class="top">
+						<view class="title">{{ row.title }}</view>
+						<view class="countdown" v-if="row.countdown">
+							<view>{{ row.countdown.h }}</view>
+							:
+							<view>{{ row.countdown.m }}</view>
+							:
+							<view>{{ row.countdown.s }}</view>
+						</view>
+					</view>
+					<view class="left">
+						<view class="ad">{{ row.ad }}</view>
+						<view class="into">点击进入</view>
+					</view>
+					<view class="right"><image :src="row.img"></image></view>
+				</view>
+			</view>
+		</view> -->
 		
 		
 		
@@ -2069,7 +2069,8 @@ export default {
 		
 		//跳转到地图
 		index_address_card_go_map:function(){
-			var new_url = '/pages/shopMap/shopMap?&latitude='
+			var new_url = '/pages/shopMap/shopMap?&latitude=';
+			
 			new_url += this.address_card_in_index.latitude + '&longitude='+this.address_card_in_index.longitude;
 			
 			this.abotapi.call_h5browser_or_other_goto_url(new_url);
@@ -2616,10 +2617,11 @@ page{position: relative;background-color: #fff;}
 	}
 	
 	/*地址卡片相关*/
-	.index_address_card{
+	.index_address_card_main{
 		display: flex;
-		padding: 10rpx;
-		box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+		padding: 20rpx;
+		margin: 10rpx 0;
+		box-shadow: 0rpx 4rpx 12rpx rgba(0, 0, 0, 0.2);
 		/*width: 90%;
 		margin: 0 auto;
 		color: #666666;

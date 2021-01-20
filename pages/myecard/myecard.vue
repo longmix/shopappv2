@@ -1,4 +1,4 @@
-<template style="padding: 0upx;margin: 0upx; display:block;">
+<template style="padding: 0rpx;margin: 0rpx; display:block;">
 	<view :style="[{'background-image':'url('+ bg_img.page_bg_img_body +')' }]" >
 		
 		<view v-if=" ecard_data_type == 'ecard'">
@@ -6,13 +6,13 @@
 			
 			<view :style="[{'background-image':'url('+ current_user_card_data.card_bg_img +')' }]" class="c">
 				<view class="a">
-					<image :src="current_user_card_data.card_logo" style="width: 100upx;height: 100upx;border-radius: 50%;overflow: hidden;"></image>
+					<image :src="current_user_card_data.card_logo" style="width: 100rpx;height: 100rpx;border-radius: 50%;overflow: hidden;"></image>
 					<view style="margin-left:30rpx;line-height: 50rpx;">
 						<view :style="{color:current_user_card_data.card_name_color}" >{{current_user_card_data.card_name}}</view>
 						<view :style="{color:current_user_card_data.card_desc_color}">{{current_user_card_data.card_desc}}</view>
 					</view>
 				</view>
-				<view style="text-align: right;padding-right: 57px;color: #000000;margin-top:165upx;padding-right: 170upx;">
+				<view class="card_no_text">
 					<b :style="{color:current_user_card_data.card_no_color}">{{current_user_card_data.card_no}}</b>
 				</view>
 			</view>
@@ -23,13 +23,13 @@
 			
 			<view :style="[{'background-image':'url('+ huiyuan_detail_info.huiyuan_detail_setting.card_bg_img +')' }]" class="c">
 				<view class="a">
-					<image :src="huiyuan_detail_info.huiyuan_detail_setting.card_touxiang" style="width: 100upx;height: 100upx;border-radius: 50%;overflow: hidden;"></image>
+					<image :src="huiyuan_detail_info.huiyuan_detail_setting.card_touxiang" style="width: 100rpx;height: 100rpx;border-radius: 50%;overflow: hidden;"></image>
 					<view style="margin-left:30rpx;line-height: 50rpx;">
 						<view>{{huiyuan_detail_info.huiyuan_detail_setting.card_name}}</view>
 						<view>{{huiyuan_detail_info.huiyuan_info.cardno}}</view>
 					</view>
 				</view>
-				<view style="text-align: right;padding-right: 57px;color: #000000;margin-top:165upx;padding-right: 170upx;">
+				<view style="text-align: right;padding-right: 57px;color: #000000;margin-top:165rpx;padding-right: 170rpx;">
 					<b>{{huiyuan_detail_info.mobile}}</b>
 				</view>
 			</view>
@@ -823,8 +823,9 @@
 		display: flex;
 		align-items: center;
 		color: #007AFF;
-		margin-left: 20upx;
-		margin-top: 50upx;
+		margin-left: 20rpx;
+		margin-top: 50rpx;
+		padding-top: 50rpx;
 	}
     .head_c{
 		z-index: 1;
@@ -842,10 +843,18 @@
 		margin-top: 25rpx;
 		margin-left: 5%;
 		width: 90%;
-		height: 400upx;
-		border-top: 1px solid #fff;
+		height: 400rpx;
+		/*border-top: 1px solid #fff;*/
 		background-size: 100% 100%;
-		border-radius: 25upx;
+		border-radius: 25rpx;
+	}
+	
+	.card_no_text{
+		text-align: right;
+		color: #000000;
+		margin-top:165rpx;
+		padding-right: 50rpx;
+		font-size: 40rpx;
 	}
 
 	.mid-tips {
@@ -1069,36 +1078,36 @@
 <style>
 	.myecard{
 		width: 90%;
-		height: 400upx;
+		height: 400rpx;
 		background-size: 100% 100%;
 		-moz-background-size: 100% 100%;
 		background-image: url(../../static/img/card.png);
 		background-repeat:no-repeat;
-		border-radius: 30upx;
+		border-radius: 30rpx;
 		margin:auto;
 	}
       image{
-		width: 100upx;
-		height: 100upx;
+		width: 100rpx;
+		height: 100rpx;
 		border-radius: inherit;
 		display: inline-block;
-		margin-left:10upx;
+		margin-left:10rpx;
 		position: relative;
 	}
 	.card-n{
-		margin-top: 100upx;
+		margin-top: 100rpx;
 		display: inline-block;
 	}
     .vip{
 		color:#FFFFFF;
-		font-size: 30upx;
+		font-size: 30rpx;
 		display: inline-block;
 		position: absolute;
 	}
     .number{
 		color: #000000;
 		display: inline-block;
-		margin-left: 200upx;
+		margin-left: 200rpx;
 	}
 </style>
  -->
