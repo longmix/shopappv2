@@ -39,22 +39,22 @@
 			style="text-align: center;margin-top:100rpx;background-color: #FFFFFF;margin-bottom: 10rpx;">
 			<view class="mid-tips" style="border-right: 1rpx solid #c5c5c5;">
 				<view class="mid-level">会员等级</view>
-				<view style="font-size: 30rpx;font-weight: bold;">{{current_user_card_data.level_name}}</view>
+				<view class="mid-value">{{current_user_card_data.level_name}}</view>
 			</view>
 
 			<view class="mid-tips" style="border-right: 1rpx solid #c5c5c5;">
 				<view class="mid-level">卡内余额</view>
-				<view style="font-size: 30rpx;font-weight: bold;">{{current_user_card_data.balance}}</view>
+				<view class="mid-value">{{current_user_card_data.balance}}</view>
 			</view>
 
 			<view class="mid-tips" style="border-right: 1rpx solid #c5c5c5;">
 				<view class="mid-level">可用积分</view>
-				<view style="font-size: 30rpx;font-weight: bold;">{{current_user_card_data.member_score}}</view>
+				<view class="mid-value">{{current_user_card_data.member_score}}</view>
 			</view>
 
 			<view class="mid-tips">
 				<view class="mid-level">优惠券</view>
-				<view style="font-size: 30rpx;font-weight: bold;">{{current_user_card_data.youhui_count}}</view>
+				<view class="mid-value">{{current_user_card_data.youhui_count}}</view>
 			</view>
 
 		</view>
@@ -122,14 +122,14 @@
 		<!--商户头条end-->
 
 		<!-- 九宫格图标 begin -->
-		<view class="icon-box-con" style="overflow: hidden;background-color: #FFFFFF;margin-bottom: 10rpx;">
-			<view class='icon-box' v-for="(item,index) in list_first" :key="index">
-				<navigator :url="item.url" open-type="navigate">
+		<view class="icon-box-con">
+			<view class='icon-box' v-for="(item,index) in list_first" :key="index" 
+				@tap="goto_user_function(item.url)">
 					<view class='icon-list'>
 						<image mode="widthFix" :src='item.src'></image>
 						<view class='icon-text'><text>{{item.name}}</text></view>
 					</view>
-				</navigator>
+				
 			</view>
 		</view>
 		<!-- 九宫格图标 end -->
@@ -144,18 +144,17 @@
 
 
 		<!-- 新增插件 begin -->
-		<view class="mobile_msg" style="background-color: #FFFFFF;">
+		<view class="mobile_msg">
 		
-		<view class="info_list" v-for="(item,index) in list_two" :key="index">
-		
-			<navigator :url="item.url" open-type="navigate">
+		<view class="info_list" v-for="(item,index) in list_two" :key="index"
+			@tap="goto_user_function(item.url)">		
+			
 				<view class="weui_cell">
 					<view class="weui_cell_bd">
 						<image :src="item.src"></image>
 						<view class="weui_cell_bd_p">{{item.name}}</view>
 					</view>
 				</view>
-			</navigator>
 			
 			
 		</view>
@@ -184,7 +183,7 @@
 			
 			<view style='font-size:15px; margin:10px;position:relative;' v-if="ecard_option_list.ecard_show_copyright_text == 1">
 			
-				<view style='position:absolute;top:10px;text-align: center;width: 100%;color: #666;'>Copyright ©
+				<view style='text-align: center;width: 100%;color: #666;'>
 					{{ecard_option_list.ecard_copyright_text}}</view>
 			</view>
 		</view>
@@ -807,6 +806,10 @@
 				
 				})
 				
+			},
+			
+			goto_user_function:function(url){
+				this.abotapi.call_h5browser_or_other_goto_url(url);
 			}
 
 		},
@@ -857,6 +860,11 @@
 	.mid-level {
 		font-size: 24rpx;
 		color: #808080;
+	}
+	.mid-value {
+		font-size: 30rpx;
+		color: #666;
+		
 	}
 
 	.mid-imgs image {
@@ -940,6 +948,13 @@
 		width: 100rpx;
 		margin-top: 20rpx;
 	}
+	
+	.icon-box-con {
+		overflow: hidden;
+		background-color: #FFFFFF;
+		margin-bottom: 10rpx;    
+		padding: 10rpx 30rpx 10rpx 30rpx;
+	}
 	.icon-box navigator{
 		display: inline;
 		overflow: hidden;
@@ -954,16 +969,18 @@
 	.supplier-img{
 		width: 100%;
 	}
+	
+	.weui_cell {
+		 padding: 10rpx 30rpx;
+	}
 	.weui_cell_bd_p{
-		font-size: 35rpx;
+		font-size: 30rpx;
 		margin-left: 35rpx;
 		line-height: 75rpx;
 		align-items: center;
 		display: flex;
 	}
-	.info_list{
-		border-bottom:  1rpx solid #b5b5b5;
-	}
+	
 	.weui_cell_bd{
 		display:flex;
 		margin-left: 30rpx;
@@ -978,9 +995,16 @@
 	.weizhi_msg{
 		background-color: #FFFFFF;
 		margin-top: 10rpx;
+		padding: 30rpx;
 	}
+	
+	.info_list{
+		border-bottom:  1rpx solid #b5b5b5;
+	}
+	
 	.mobile_msg{
 		margin-top: 10rpx;
+		background-color: #FFFFFF;
 	}
 	.super_vip_balance{
 		display: flex;   
