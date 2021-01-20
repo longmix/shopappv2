@@ -5,7 +5,8 @@
 
 		<!-- 商品搜索 -->
 		<view class="product_sousuo">
-			<view class="icon-btn" @click="back_return">
+			<view class="icon-btn" @click="back_return" 
+				v-if="wxa_product_super_list_in_bottom == 0">
 				<view class="icon xiangqian before"></view>
 			</view>
 			<view v-if="1" class="scroll-txt" @tap="goto_search" data-value="">
@@ -36,7 +37,7 @@
 					<view class="brand" v-for="(data,index) in typeTree" :key="index">
 						<navigator :url="'../product/detail?productid=' + data.productid" wx:key="typeId" class="product_name_item">
 							<image :src="data.picture"></image>
-							<text>{{data.name}}</text>
+							<view class="product_name">{{data.name}}</view>
 						</navigator>
 						<view class="addcart-con">
 							<text>￥ {{data.price}}</text>
@@ -64,12 +65,14 @@
 								<view class='yueduliang'>
 									<text class="rexiao" style="color:red;font-size:30rpx;padding-left:20rpx;">{{item.product_take_score}}</text>
 								</view>
+								
+								<view style="float:right;margin-top: -8rpx;">
+									<image style="margin-right: 10rpx;width:36rpx;height:36rpx;" src="../../static/img/car.png"
+									 :data-productid="item.productid"></image>
+								</view>
 							</view>
 
-							<view style="float:right;margin-top: 8rpx;">
-								<image style="margin-right: 10rpx;width:36rpx;height:36rpx;" src="../../static/img/car.png"
-								 :data-productid="item.productid"></image>
-							</view>
+							
 						</navigator>
 
 					</view>
@@ -97,8 +100,12 @@
 				bus_x: '',
 				bus_y: '',
 				typeTree_icon: '',
-				wxa_product_super_list_style: '',
-				wxa_order_super_cata_parentid: '',
+				
+				wxa_product_super_list_style: 0,
+				wxa_order_super_cata_parentid: 0,
+				//2021.1.20. 是否固定在底部导航中
+				wxa_product_super_list_in_bottom:0,
+				
 				showHeader: true,
 				headerPosition: 'fixed',
 				headerTop: null,
@@ -198,11 +205,20 @@
 					return;
 				}
 
-
-				that.wxa_product_super_list_style = option_list.wxa_product_super_list_style ? option_list.wxa_product_super_list_style :
-					0;
-				that.wxa_order_super_cata_parentid = option_list.wxa_order_super_cata_parentid ? option_list.wxa_order_super_cata_parentid :
-					0;
+				//商品显示风格， 0： 一行两个  1： 一行一个
+				if(option_list.wxa_product_super_list_style && (option_list.wxa_product_super_list_style == 1)){
+					that.wxa_product_super_list_style = option_list.wxa_product_super_list_style;
+				}
+				
+				//商品的父分类ID
+				if(option_list.wxa_order_super_cata_parentid){
+					that.wxa_order_super_cata_parentid = option_list.wxa_order_super_cata_parentid;
+				}
+					
+				//这个页面是否在底部导航栏中
+				if(option_list.wxa_product_super_list_in_bottom && (option_list.wxa_product_super_list_in_bottom == 1)){
+					that.wxa_product_super_list_in_bottom = option_list.wxa_product_super_list_in_bottom;
+				}
 
 				that.abotapi.abotRequest({
 					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_cata_tree_chart',
@@ -532,6 +548,18 @@
 		margin: 20rpx auto;
 		color: #2a2a2a;
 	}
+	
+	.product_name {
+		margin: 10rpx 4%;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+		text-align: justify;
+		overflow: hidden;
+		font-size: 28rpx;
+		height: 80rpx;
+		line-height: 40rpx;
+	}
 
 	.addcart-con {
 		display: flex;
@@ -595,7 +623,7 @@
 	.product_item_right_one_line_one {
 		float: left;
 		height: 200rpx;
-		padding: 30rpx 10rpx;
+		padding: 30rpx 10rpx 10rpx;
 		width: 55%;
 		display: block;
 

@@ -1,8 +1,13 @@
 <template>
 	<view>
 		<view class="search df">
-			<input class="df_1" placeholder="请输入你要搜索的内容" :value="searchValue" confirm-type="search" :style="'border:2rpx solid' + wxa_shop_nav_bg_color +';'" @input="searchValueInput($event)" :focus="focus"  @confirm="doSearch($event)"/><!--  -->
-			<button @tap="doSearch"><image class="searchcion" src="../../static/img/search.png" style="width: 35rpx;height:35rpx;"></image></button>
+			<input class="df_1" placeholder="请输入你要搜索的内容" :value="searchValue" 
+				confirm-type="search" 
+				:style="'border:2rpx solid' + wxa_shop_nav_bg_color +';'" 
+				@input="searchValueInput($event)" 
+				:focus="focus"  
+				@confirm="doSearch($event)"/><!--  -->
+			<button @tap="doSearch"><image class="searchcion" src="../../static/img/search.png" style="width: 50rpx;height:50rpx;"></image></button>
 		</view>
 		<view class="cont" v-if="hotKeyShow">
 			<text class="font_14">热门搜索</text>
@@ -589,13 +594,13 @@
 	    border: none;
 	    font-size: 25rpx;
 	    padding:1% 2.5%;
-	    }
+		height: 60rpx;
+	}
 	.search button{
-	    line-height:60rpx;
 	    background: none;
 	    text-align: center;
 	    border: none;
-	    padding: 6rpx;
+	    padding: 6rpx 0 0 10rpx;
 	    position:absolute;
 	    right:27rpx;
 	    top:4rpx;
