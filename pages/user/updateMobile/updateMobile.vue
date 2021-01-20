@@ -59,7 +59,13 @@
 		},
 		onLoad(options) {
 			var that = this
+			
+			uni.setNavigationBarTitle({
+				title:'更换手机号'
+			})
+			
 			this.abotapi.getColor()
+			
 			this.userAcountInfo = this.abotapi.get_user_account_info();
 			this.mobile = this.userAcountInfo.mobile || '';
 			

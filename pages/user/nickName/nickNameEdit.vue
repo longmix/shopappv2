@@ -21,6 +21,10 @@
 		},
 		onLoad(options) {
 			
+			uni.setNavigationBarTitle({
+				title:'修改昵称'
+			})
+			
 	
 			this.abotapi.getColor()
 			

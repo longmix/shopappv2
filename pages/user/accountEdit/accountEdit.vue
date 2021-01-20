@@ -1,6 +1,6 @@
 <template>
 	<view class="container" style='padding:0;'>
-	<form @submit="formSubmit">
+	<form @submit="formSubmit" style="margin-top: 100rpx;">
 	    <view class="weui-cell">
 	          <view class="weui-cell__hd"><label class="weui-label">账号</label></view>
 	          <view class="weui-cell__bd">
@@ -38,6 +38,10 @@
 			};
 		},
 		onLoad(options) {
+			
+			uni.setNavigationBarTitle({
+				title:'修改账号和密码'
+			})
 
 			this.abotapi.getColor()
 			this.userAcountInfo = this.abotapi.get_user_account_info();
@@ -147,7 +151,7 @@
 
 <style lang="scss">
 .weui-cell {
-    padding: 10px 15px;
+    padding: 20rpx 30rpx;
     position: relative;
     display: -webkit-box;
     display: -webkit-flex;
@@ -158,7 +162,7 @@
     font-size: 30rpx;
 }
 
-.weui-cells {
+.weui-cells888 {
     margin-top: 1.17647059em;
     background-color: #FFFFFF;
     line-height: 1.47058824;
@@ -169,7 +173,7 @@
 
 .weui-label {
     display: block;
-    width: 105px;
+    width: 200rpx;
     word-wrap: break-word;
     word-break: break-all;
 }
@@ -178,6 +182,9 @@
     -webkit-box-flex: 1;
     -webkit-flex: 1;
     flex: 1;
+	border: 1rpx solid #aaa;
+	padding: 5rpx;
+	border-radius: 5rpx;
 }
 
 
@@ -189,8 +196,6 @@
     background-color: transparent;
     font-size: inherit;
     color: inherit;
-    height: 1.47058824em;
-    line-height: 1.47058824;
 }
 
 .weui-btn_primary {
@@ -202,15 +207,16 @@
     display: block;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 14px;
-    padding-right: 14px;
+    padding-left: 28rpx;
+    padding-right: 28rpx;
+	margin-top: 50rpx;
     box-sizing: border-box;
-    font-size: 18px;
+    font-size: 36rpx;
     text-align: center;
     text-decoration: none;
     color: #FFFFFF;
     line-height: 2.55555556;
-    border-radius: 5px;
+    border-radius: 10rpx;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     overflow: hidden;
 }

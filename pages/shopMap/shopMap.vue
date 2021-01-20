@@ -9,8 +9,12 @@
 			<view class="name">{{shopInfo.name}}</view>
 			<view class="adderss">{{shopInfo.address}}</view>
 			<view class="adderss" @tap="call_seller">{{shopInfo.telephone}}</view>
-			<view v-if="from_page == 1 || from_page == 2" @tap="seeRoute" class="seeroute">到这去</view>
-			<view v-else-if="from_page == 3" :style="{background: btn_bg_color,color:frontColor}" @tap="seeRoute" class="seeroute">打卡</view>
+			<view v-if="from_page == 1 || from_page == 2" 
+				 :style="{background: btn_bg_color,color:frontColor}"
+				@tap="seeRoute" class="seeroute">到这去</view>
+			<view v-else-if="from_page == 3" 
+				:style="{background: btn_bg_color,color:frontColor}" 
+				@tap="seeRoute" class="seeroute">打卡</view>
 		</view>
 		
 	</view>
@@ -37,8 +41,8 @@
 				bmap_latitude: '',
 				bmap_longitude: '',
 				
-				
-				from_page:1,
+				//来自哪个功能模块， 1 商家详情页面 2 会员卡页面 3 打开签到页面
+				from_page:1,  
 				
 				rgcData: {},
 				detail:[],
@@ -100,8 +104,10 @@
 			this.markers = markers;
 			this.shopInfo = options;
 			
+			if(options.from_page){
+				this.from_page = options.from_page;
+			}
 			
-			this.from_page = options.from_page;
 			console.log('this.from_page',this.from_page);
 		},
 		methods: {
