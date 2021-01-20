@@ -8,6 +8,7 @@ const abotRequest = (params) => {
   uni.request({
     url: params.url,
     method: params.method || 'POST',
+	dataType: params.dataType || 'json',
     data: params.data || {},
     header: {
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -523,7 +524,7 @@ module.exports = {
 				
 			uni.request({
 				//url: this.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_shop_option',
-				url: that002.globalData.yanyubao_server_url + '/openapi/ShopAppV2Data/get_shop_option',
+				url: that002.globalData.yanyubao_server_url + 'openapi/ShopAppV2Data/get_shop_option',
 				method: 'post',
 				data: {
 					sellerid: that002.globalData.default_sellerid,

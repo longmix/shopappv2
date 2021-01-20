@@ -146,16 +146,16 @@
 		<view class="index_address_card" v-if="show_address_card_in_index == 1">
 			<view class="index_address_card_address">
 				<view class="index_address_card_address_detail">{{address_card_in_index.address}}
-				<view class="index_address_card_contact_mobile">营业时间：{{address_card_in_index.yingyeshijian}}</view></view>
+				<view class="index_address_card_yingyeshijian">营业时间：{{address_card_in_index.yingyeshijian}}</view></view>
 			</view>
 			
 			<view class="index_address_card_icon_telephone">
-				<image class="index_address_card_icon_telephone_img" src="../../static/img/map_new.png" mode="widthFix"></image>
+				<image class="index_address_card_icon_telephone_img" src="https://yanyubao.tseo.cn/Tpl/static/images/location_map_new.png" mode="widthFix"></image>
 				<view style="display: -webkit-inline-box;font-size: 20rpx;">地图</view>
 			</view>
 			<view class="index_address_card_icon_telephone" 
 				style="border-left: #bcbcbc 1px solid;">
-				<image class="index_address_card_icon_telephone_img" src="../../static/img/mobile_new.png" mode="widthFix"></image>
+				<image class="index_address_card_icon_telephone_img" src="https://yanyubao.tseo.cn/Tpl/static/images/location_mobile_new.png" mode="widthFix"></image>
 				<view style="display: -webkit-inline-box;font-size: 20rpx;">电话</view>
 			</view>
 			<!-- <image class="mobile_img" src="../../static/img/mobile_new.png" mode="widthFix" ></image>
@@ -171,7 +171,8 @@
 		
 		
 		<!-- 富媒体组件 2021.1.18. -->
-		<view v-if="index_rich_html_type == 'static'" v-html="index_rich_html_content"></view>
+		<view v-if="show_rich_html_in_index == 1" 
+			v-html="index_rich_html_content" @click="index_rich_html_click"></view>
 		
 		
 		
@@ -1106,7 +1107,14 @@ export default {
 			if(cb_params.option_list.show_rich_html_in_index == 1){
 				that.show_rich_html_in_index = 1;
 				that.index_rich_html_type = cb_params.option_list.index_rich_html_type;
-				that.index_rich_html_content = cb_params.option_list.index_rich_html_content;
+				if(that.index_rich_html_type == 'static'){
+					that.index_rich_html_content = cb_params.option_list.index_rich_html_content;
+				}
+				else if(that.index_rich_html_type == 'https'){
+					
+					that.__index_rich_html_get_content(that);
+				}
+				
 			}
 			
 			console.log('sssswsaaaa', that.index_rich_html_content);
@@ -2013,10 +2021,66 @@ export default {
 		},
 		
 		
-		//富媒体点击事件
-		index_rich_html:function(e){
+		//富媒体 点击事件
+		index_rich_html_click:function(e){
 			console.log('888888999===', e);
-		}
+		},
+		
+		__index_rich_html_get_content:function(that){
+			//判断是否是http开头的？
+			
+			if(!that.index_rich_html_content 
+				|| (that.index_rich_html_content.substr(0, 4) != 'http') ){
+				
+				return;
+				
+			}
+			
+			
+			that.abotapi.abotRequest({
+			    url: that.index_rich_html_content,
+				method:'GET',
+				dataType:'html',
+			    data: {},
+			    success: function (res) {
+					
+					that.index_rich_html_content = res;
+					
+			    },
+			    fail: function (e) {
+					uni.showToast({
+						title: '请求富媒体失败',
+						duration: 2000
+					});
+			    },
+			});
+		},
+		
+		//拨打客服电话
+		index_call_seller: function() {
+			// #ifdef MP-WEIXIN
+			return;
+			// #endif
+			
+			var that = this;
+		
+			// #ifdef MP-BAIDU
+			uni.makePhoneCall({
+				phoneNumber: that.kefu_telephone,
+			})
+			
+			return;
+			// #endif
+			
+			// #ifdef MP-ALIPAY
+			uni.makePhoneCall({
+				phoneNumber: that.kefu_telephone,
+			})
+			
+			return;
+			
+			// #endif
+		},
 		
 	}
 };
@@ -2590,7 +2654,7 @@ page{position: relative;background-color: #fff;}
 	.index_address_card_address_detail{
 		font-size:26rpx;
 	}
-	.index_address_card_contact_mobile{
+	.index_address_card_yingyeshijian{
 		margin-top: 15rpx;
 		font-size: 22rpx;
 		color: #666;
