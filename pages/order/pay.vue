@@ -267,8 +267,8 @@
 				
 				//外卖相关的参数
 				is_waimai: 0,
-				waimai_buyer_longitude:'121.491127',	//经度
-				waimai_buyer_latitude:'121.491127',	//纬度
+				waimai_buyer_longitude:'121.524494',	//经度
+				waimai_buyer_latitude:'31.238075',	//纬度
 				xianmaishangid: '',
 				current_shang_item:{'name':''},
 				cartlist: [],
@@ -992,10 +992,10 @@ tuansn = 参团的编号，如果没有，则代表新开团
 							
 				        if (thats.addemt == 0) {
 							
-				          for (var i = 0; i < addressList.length; i++) {
-				            if (addressList[i].is_default == 1) {
-				              var address = addressList[i];
-				              break;
+							for (var i = 0; i < addressList.length; i++) {
+								if (addressList[i].is_default == 1) {
+								var address = addressList[i];
+								break;
 				            }
 				          }
 							
@@ -1021,11 +1021,33 @@ tuansn = 参团的编号，如果没有，则代表新开团
 				          }
 											
 						  thats.address = address;
-				          // 新建百度地图对象 
-				          var BMap = new bmap.BMapWX({
-				            ak: thats.abotapi.globalData.baidu_map_ak
-				          });
 						  
+				          //====== 给百度地图提供的函数=========
+						  //===== H5版本 =============
+						  var baidu_map_h5_handle = function() {
+								//如果搜索的有结果
+								if(local.getResults() != undefined) {
+									map.clearOverlays(); //清除地图上所有覆盖物
+									if(local.getResults().getPoi(0)) {
+										point = local.getResults().getPoi(0).point; //获取第一个智能搜索的结果
+										map.centerAndZoom(point, 18);
+										marker = new BMap.Marker(point); // 创建标注
+										map.addOverlay(marker); // 将标注添加到地图中
+										marker.enableDragging(); // 可拖拽
+										//alert("当前定位经度:"+point.lng+"纬度:"+point.lat);
+										
+										$('#longitude').attr('value', point.lng);
+										$('#latitude').attr('value', point.lat);
+										
+									} else {
+										alert("未匹配到地点!可拖动地图上的红色图标到精确位置");
+									}
+								} else {
+									alert("未找到搜索结果")
+								}
+							}
+							
+						  //===== 给小程序和APP提供 ====
 				          var baidu_map_fail = function (data) {
 							
 				            console.log('baidu map geocoding fail ===>>>>', data);
@@ -1044,6 +1066,8 @@ tuansn = 参团的编号，如果没有，则代表新开团
 							
 							thats.waimai_buyer_longitude = wxMarkerData[0].longitude;
 							thats.waimai_buyer_latitude = wxMarkerData[0].latitude;
+							
+							console.log('888999sss', wxMarkerData[0]);
 							
 							console.log('shang_detail====', shang_detail);
 							
@@ -1094,23 +1118,42 @@ tuansn = 参团的编号，如果没有，则代表新开团
 							console.log('最终配送费', thats.traffic_price);
 							console.log('最终配送费', traffic_price);
 				          }
-							
-							
+						  
+						  
 						  var address = thats.address.province_name + thats.address.city_name + thats.address.district_name + thats.address.address;
-												
-							console.log('address===',address);
-								
+						  												
+						  console.log('address===',address);
+						  
+						  
+						  //#ifdef H5
+						  
+						  var local, point, marker = null;
+						  local = new BMap.LocalSearch(map, { //智能搜索
+						  	onSearchComplete: baidu_map_h5_handle
+						  });
+						  						 
+						  local.search(value);
+						   
+						  //#endif
+						  
+						  //#ifndef H5
+						  // 新建百度地图对象
+						  var BMap = new bmap.BMapWX({
+						    ak: thats.abotapi.globalData.baidu_map_ak
+						  });
 								
 							// 发起geocoding检索请求 
-							BMap.geocoding({
+						  BMap.geocoding({
 								address: address,
 								fail: baidu_map_fail,
 								success: baidu_map_success,
 								iconPath: '../../img/marker_red.png',
 								iconTapPath: '../../img/marker_red.png'
 							});
+							//#endif
 							
 							
+							    
 							
 							
 				        } else {
