@@ -91,6 +91,15 @@
 				
 				<view v-if="orderData.order_option.xianmai_order_peisong_type && orderData.order_option.xianmai_order_peisong_type == 'snatch_order'">					<view>配送状态<view class='fl_r'>{{orderData.order_option.xianmai_order_peisong_status_str}}</view></view>				</view>
 				
+				<view v-if="orderData.order_option.xianmai_order_peisong_status == 3">
+					<view style="height: 50rpx;" @tap="queren_shouhuo()"> <view class='fl_r' 
+					style="margin-top: 35rpx;border-radius: 10rpx;background-color: #1AAD19;padding: 8rpx;color: #fff;">确认收货</view></view>
+					<view style="font-size: 26rpx;">{{orderData.order_option.xianmai_order_peisong_003}}自动收货</view>
+				</view>
+				
+				
+				
+				
 				<view class="bordert">
 					<view>订单状态<view class='fl_r'>{{orderData.status_str}}</view></view>
 				</view>
@@ -217,6 +226,7 @@
 				
 				
 				xianmai_shang_order_remark:'',//订单是否评价过
+				
 			}
 		},
 		
@@ -571,6 +581,48 @@
 						}
 					});
 				},
+				
+				//确认收货
+				queren_shouhuo:function(){
+					
+					
+					
+					var that = this;
+					
+					var userInfo = that.abotapi.get_user_info();
+					
+					that.abotapi.abotRequest({
+					  url: that.abotapi.globalData.yanyubao_server_url + 'openapi/SnatchOrdersysData/buyer_set_status_as_finish',
+					  data: {
+					    checkstr: userInfo.checkstr,
+					    sellerid: that.abotapi.get_sellerid(),
+						yanyubao_orderid:that.orderId,
+						userid:userInfo.userid,
+					  },
+					  success: function (res) {
+						if(res.data.code == 1){
+							uni.showModal({
+								title:'提示',
+								content:res.data.msg,
+								showCancel:false,
+								success() {
+									uni.redirectTo({
+										url:'/pages/user/order_list/order_list'
+									})
+								}
+							})
+						}else{
+							uni.showToast({
+								title: res.data.msg,
+								duration: 2000
+							});
+						}
+
+					  },
+					  fail: function () {}
+					});
+					
+				}
 				
 		}
 		
