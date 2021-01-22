@@ -27,7 +27,7 @@
 		</scroll-view>
 
 		<!-- 右侧数据 -->
-		<scroll-view scroll-y="true" class="right">
+		<scroll-view scroll-y="true" class="right" @scrolltolower="scroll_view_event">
 			<view>
 				<image :src="typeTree_icon" mode="widthFix" style="max-width:95%;" v-if="typeTree_icon"></image>
 			</view>
@@ -95,7 +95,12 @@
 				currType: 0,
 				// 当前类型
 				"types": [],
-				typeTree: [],
+				
+				typeTree: [],					//界面上渲染的商品列表
+				current_type_tree_data:null,	//当前实际商品列表
+				current_type_tree_data_show_page_num:0,	//显示第几页的商品
+				current_type_tree_data_show_page_size:10,
+				
 				hide_good_box: true,
 				bus_x: '',
 				bus_y: '',
@@ -118,17 +123,7 @@
 				// #endif
 			}
 		},
-		onPageScroll(e) {
-			//兼容iOS端下拉时顶部漂移
-			if (e.scrollTop >= 0) {
-				this.headerPosition = "fixed";
-			} else {
-				this.headerPosition = "absolute";
-			}
-
-			this.headerTop = e.scrollTop >= 0 ? null : 0;
-			this.statusTop = e.scrollTop >= 0 ? null : -this.statusHeight + 'px';
-		},
+		
 		onLoad: function() {
 
 			var that = this;
@@ -188,12 +183,33 @@
 
 			//_self.onLoad();
 			
-			
+			//将缓存的过期时间延长至一个小时之前，以便刷新数据
+			var currentTime = (new Date()).getTime();//获取当前时间
+			currentTime = 3600 * 1000 - 60*1000;
+			uni.setStorageSync("product_cata_tree_chart_time", currentTime);
+
+
+
 
 			this.abotapi.set_option_list_str(this, this.call_back_set_option);
 
 			//停止当前页面的下拉刷新
 			uni.stopPullDownRefresh();
+		},
+		onPageScroll(e) {
+			//兼容iOS端下拉时顶部漂移
+			if (e.scrollTop >= 0) {
+				this.headerPosition = "fixed";
+			} else {
+				this.headerPosition = "absolute";
+			}
+		
+			this.headerTop = e.scrollTop >= 0 ? null : 0;
+			this.statusTop = e.scrollTop >= 0 ? null : -this.statusHeight + 'px';
+		},
+		//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
+		onReachBottom() {
+			
 		},
 		methods: {
 			call_back_set_option: function(that, cb_params) {
@@ -219,6 +235,28 @@
 				if(option_list.wxa_product_super_list_in_bottom && (option_list.wxa_product_super_list_in_bottom == 1)){
 					that.wxa_product_super_list_in_bottom = option_list.wxa_product_super_list_in_bottom;
 				}
+				
+				
+				var currentTime = (new Date()).getTime();//获取当前时间
+				if (uni.getStorageSync('product_cata_tree_chart_' + that.abotapi.globalData.default_sellerid) 
+					&& (currentTime - uni.getStorageSync("product_cata_tree_chart_time")) < 3600 * 1000) {
+				  
+					var sub_cata_list = JSON.parse(uni.getStorageSync('product_cata_tree_chart_' + that.abotapi.globalData.default_sellerid));
+					
+					that.types = sub_cata_list;
+					that.currType = 0;
+					
+					that.__tapType001();
+					
+					return;
+						
+				}
+				
+				
+				uni.showToast({
+					title: '数据加载中……',
+					//icon:'loading'
+				});
 
 				that.abotapi.abotRequest({
 					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_cata_tree_chart',
@@ -232,14 +270,26 @@
 						'Content-Type': 'application/x-www-form-urlencoded'
 					},
 					success: function(res) {
-						var data = res.data;
-						if (data.code == 1) {
-							var list = res.data.data;
+						
+						
+						uni.hideToast();
+						
 
-							that.types = data.data.sub_cata_list;
-							that.typeTree = data.data.sub_cata_list[0].product_list;
-							that.typeTree_icon = data.data.sub_cata_list[0].icon;
+						if (res.data.code == 1) {
+							
+							//做数据缓存
+							uni.setStorageSync("product_cata_tree_chart_" + that.abotapi.globalData.default_sellerid, 
+										JSON.stringify(res.data.data.sub_cata_list));
+							var currentTime = (new Date()).getTime();//获取当前时间
+							uni.setStorageSync("product_cata_tree_chart_time", currentTime);
+							
+
+							that.types = res.data.data.sub_cata_list;
 							that.currType = 0;
+							
+							that.__tapType001();
+							
+							
 						}
 
 						console.log('lllllllllll', res)
@@ -260,13 +310,71 @@
 
 			tapType: function(e) {
 				var that = this;
+				
 				var currType = e.currentTarget.dataset.idx;
 				console.log(currType);
 				that.currType = currType;
-				that.typeTree = that.types[currType].product_list ? that.types[currType].product_list : [];
-				that.typeTree_icon = that.types[currType].icon;
+				
+				
+				that.__tapType001();
+				
+				
 
 			},
+			
+			__tapType001:function(){
+				
+				var that = this;
+				
+				var currType = that.currType;
+				
+				//分类商品列表上方的图标
+				that.typeTree_icon = that.types[currType].icon;
+				
+				that.current_type_tree_data = that.types[currType].product_list ? that.types[currType].product_list : [];
+				
+				that.current_type_tree_data_show_page_num = 0;
+				
+				//如果小于0个，直接显示
+				if(that.current_type_tree_data && that.current_type_tree_data.length <= that.current_type_tree_data_show_page_size){
+					that.typeTree = that.current_type_tree_data;
+				}
+				//如果大于10个，触底刷新加载更多
+				else if(that.current_type_tree_data && that.current_type_tree_data.length > that.current_type_tree_data_show_page_size){
+					that.typeTree = that.current_type_tree_data.slice(0, that.current_type_tree_data_show_page_size);
+				}
+				
+			},
+			
+			
+			//右侧滚动控件触底的事件
+			scroll_view_event:function(e){
+				console.log('scroll_view_event====>>>>', e);
+				
+				var that = this;
+				
+				console.log('aaaaaaaaaaaaaaaa onReachBottom ===>>>'+that.current_type_tree_data_show_page_num);
+				
+				that.current_type_tree_data_show_page_num ++;
+				
+				var start = that.current_type_tree_data_show_page_num*that.current_type_tree_data_show_page_size;
+				var end = (that.current_type_tree_data_show_page_num + 1)*that.current_type_tree_data_show_page_size;
+				
+				if(start >= that.current_type_tree_data.length){
+					console.log('本分类已经全部显示');
+					return;
+				}
+				
+				if(end > that.current_type_tree_data.length){
+					end = that.current_type_tree_data.length;
+				}
+				
+				var new_list = that.current_type_tree_data.slice(start, end);
+				console.log('追加商品队列', new_list);
+				
+				that.typeTree = that.typeTree.concat( new_list );
+			},
+			
 
 			// 加载品牌、二级类目数据
 			getTypeTree(currType) {
