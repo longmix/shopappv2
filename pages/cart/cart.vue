@@ -8,8 +8,19 @@
 		<view v-if="showHeader" class="place"></view>
 		<!-- 商品列表 -->
 		<view class="goods-list">
-			<view class="tis" v-if="cart_list.length == 0 ">购物车是空的哦~</view>
+			
+			<view class="tis" v-if="(!cart_list) || (cart_list.length == 0) ">
+				<view><image src="https://yanyubao.tseo.cn/Tpl/static/images/empty_cart.png" style="width: 250rpx;height: 250rpx;"></image></view>
+				
+			</view>
+			<view class="tis" v-if="(!cart_list) || (cart_list.length == 0) ">
+				
+				<view>购物车是空的哦~</view>
+			</view>
 			<!-- <image style="width:50%;" mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/empty_cart.png"></image> -->
+			
+			
+			
             <view class="row" v-else v-for="(item,index) in cart_list" :key="index" >
 				<!-- 删除按钮 -->
 				<view class="menu" @tap.stop="deleteGoods(index)">
@@ -637,7 +648,7 @@
 	
 	.goods-list .tis{
 			width: 100%;
-			height: 60upx;
+			height: 100rpx;
 			display: flex;
 			justify-content: center;
 			align-items: center;
