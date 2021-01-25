@@ -631,6 +631,7 @@
 	.goods-list{
 		width: 100%;
 		padding: 20upx 0 120upx 0;
+
 	
 	}
 	
@@ -641,6 +642,7 @@
 			justify-content: center;
 			align-items: center;
 			font-size: 32upx;
+			margin-top: 50rpx;
 	}
 	
 	.goods-list .row{
