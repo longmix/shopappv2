@@ -278,6 +278,17 @@ function parseHtml(html) {
   };
   HTMLParser(html, {
     start: function start(tag, attrs, unary) {
+		
+		
+		if(tag == 'a'){
+			console.log('start tag====>>>>>', tag);
+			console.log('start attrs====>>>>>', attrs);
+			console.log('start unary====>>>>>', unary);
+			
+			attrs.push({'name':'@click', 'value':'abcdefggggf'});
+			attrs.push({'name':'data-src', 'value':'aaaaaa'});
+		}
+		
       var node = {
         name: tag
       };
@@ -285,6 +296,11 @@ function parseHtml(html) {
       if (attrs.length !== 0) {
         node.attrs = parseAttrs(attrs);
       }
+	  
+	  if(tag == 'a'){
+		  console.log('start node.attrs====>>>>>', node.attrs);
+		}
+	  
 
       if (unary) {
         var parent = stacks[0] || results;

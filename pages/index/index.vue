@@ -274,12 +274,16 @@ var ttt = 0;
 import bmap from '../../common/SDK/bmap-wx.js';
 import amap from '@/common/SDK/amap-wx.js';
 import io from '../../common/weapp.socket.io.js'; 
+
 import locationapi from '../../common/locationapi.js'; 
+
 import shopList from '../../components/shop-list/shop-list.vue';
 import publishList from '../../components/publish-list/publish-list.vue';
 import productList from '../../components/product-list/product-list.vue'
 import publish_list_api from '../../common/publish_list_api.js';
+
 import parseHtml from "../../common/html-parser.js"
+
 const isNullOrUndefined = obj=>obj===null || obj === undefined  || obj === '';
 
 export default {
@@ -410,8 +414,8 @@ export default {
 			 
 			 //显示富媒体组件
 			 show_rich_html_in_index:0,
-			 index_rich_html_type:'',
-			 index_rich_html_content:'',
+			 index_rich_html_type:'static',
+			 index_rich_html_content:[],
 
 		};
 	},
@@ -1104,14 +1108,22 @@ export default {
 			}
 			
 			//显示富媒体组件
+			cb_params.option_list.show_rich_html_in_index = 1;
+			cb_params.option_list.index_rich_html_type = 'https';
+			cb_params.option_list.index_rich_html_content = 'http://192.168.0.206/yanyubao_server/openapi/Jianghanyinhua/agent_get_order_list';
+			
 			
 			if(cb_params.option_list.show_rich_html_in_index == 1){
 				that.show_rich_html_in_index = 1;
 				that.index_rich_html_type = cb_params.option_list.index_rich_html_type;
 				
-				console.log('ssswwwa', that.index_rich_html_type);
+				
+				console.log('index_rich_html_type====>>>>', that.index_rich_html_type);
+				console.log('index_rich_html_content====>>>>>', that.index_rich_html_content);
+				
 				if(that.index_rich_html_type == 'static'){
-					that.index_rich_html_content = cb_params.option_list.index_rich_html_content;
+					
+					that.index_rich_html_content = that.__parse_html_to_array(cb_params.option_list.index_rich_html_content);
 				}
 				else if(that.index_rich_html_type == 'https'){
 					
@@ -1121,7 +1133,11 @@ export default {
 				
 			}
 			
-			console.log('sssswsaaaa', that.index_rich_html_content);
+			
+			
+			
+			
+			
 			that.get_flash_ad_list();
 			that.get_flash_img_list();
 			that.initArticleList();
@@ -2032,7 +2048,38 @@ export default {
 			console.log('888888999wwweeeee===', e);
 			
 			
-		}, 
+		},
+		
+		//将html字符串转为数组，并绑定事件
+		__parse_html_to_array:function(htmlString){
+			
+			let newArr = [];
+			
+			let arr = parseHtml(htmlString, {
+				start: function(tag, attrs, unary) {
+					console.log('start tag====>>>>>', tag);
+					console.log('start attrs====>>>>>', attrs);
+					console.log('start unary====>>>>>', unary);
+				},
+			    end: function(tag) {
+					
+				},
+			    chars: function(text) {
+					
+				},
+			    comment: function(text) {
+					
+				}
+			});
+			
+			console.log(arr);
+			
+			arr.forEach((item, index)=>{
+				newArr.push(item);
+			});
+			
+			return newArr;
+		},
 		
 		__index_rich_html_get_content:function(rich_html_url){
 			//判断是否是http开头的？
@@ -2060,7 +2107,7 @@ export default {
 					
 					console.log('aaaa111==', res.data);
 					
-					that.index_rich_html_content = res.data;
+					that.index_rich_html_content = that.__parse_html_to_array(res.data);
 					
 			    },
 			    fail: function (e) {
