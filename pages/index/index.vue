@@ -60,31 +60,31 @@
 		
 		
 		<!--商户头条start-->
-		    <view v-if="wxa_show_toutiao == 1">
-			   <view class="toutiao">
-					<view class="toutiao_left" @tap="touTiaoList" v-if="!wxa_shop_toutiao_icon">
-						<image :src="wxa_shop_toutiao_icon"></image>
-					</view>
-					<view class="toutiao_left" @tap="touTiaoList" v-if="wxa_shop_toutiao_icon">
-						<image :src="wxa_shop_toutiao_icon"></image>
-					</view>
-					<swiper class="toutiao_right" vertical="true" autoplay="true" circular="true" interval="2000" v-if="!wxa_shop_toutiao_flash_line||wxa_shop_toutiao_flash_line!=2">
-						<swiper-item v-for="(item,index) in articlelist" :key="index">
-							<view class="toutiao_right" @tap="touTiaoList(item.id)" >
-								<text>{{item.title}}</text>
-							</view>
-						</swiper-item>
-					</swiper>
-				
-					<swiper class="toutiao_right2" vertical="true" autoplay="true" circular="true" interval="2000" v-if="wxa_shop_toutiao_flash_line==2">
-						<swiper-item v-for="(item2,index2) in articlelist2" :key="index2" @tap="touTiaoList(item2.id)">
-							<view class="toutiao_right2_item">{{item2[0].title}}</view>
-							<view class="toutiao_right2_item">{{item2[1].title}}</view>
-						</swiper-item>
-					</swiper>
-			   </view>
+		<view v-if="wxa_show_toutiao == 1">
+		   <view class="toutiao">
+				<view class="toutiao_left" @tap="touTiaoList" v-if="!wxa_shop_toutiao_icon">
+					<image :src="wxa_shop_toutiao_icon"></image>
+				</view>
+				<view class="toutiao_left" @tap="touTiaoList" v-if="wxa_shop_toutiao_icon">
+					<image :src="wxa_shop_toutiao_icon"></image>
+				</view>
+				<swiper class="toutiao_right" vertical="true" autoplay="true" circular="true" interval="2000" v-if="!wxa_shop_toutiao_flash_line||wxa_shop_toutiao_flash_line!=2">
+					<swiper-item v-for="(item,index) in articlelist" :key="index">
+						<view class="toutiao_right" @tap="touTiaoList(item.id)" >
+							<text>{{item.title}}</text>
+						</view>
+					</swiper-item>
+				</swiper>
+			
+				<swiper class="toutiao_right2" vertical="true" autoplay="true" circular="true" interval="2000" v-if="wxa_shop_toutiao_flash_line==2">
+					<swiper-item v-for="(item2,index2) in articlelist2" :key="index2" @tap="touTiaoList(item2.id)">
+						<view class="toutiao_right2_item">{{item2[0].title}}</view>
+						<view class="toutiao_right2_item">{{item2[1].title}}</view>
+					</swiper-item>
+				</swiper>
 		   </view>
-		   <!--商户头条end-->
+	   </view>
+	   <!--商户头条end-->
 		
 		<!-- 首页导航图标列表 -->
 		<view class="category-list">
@@ -137,17 +137,15 @@
 		
 		
 		<!-- 富媒体组件 2021.1.18. -->
-		<rich-text v-if="show_rich_html_in_index == 1" 
-			:nodes="index_rich_html_content" bindtap="index_rich_html_click"></rich-text>
+		<!-- rich-text  和 v-html 都有各自的优缺点 -->
+		<u-parse v-if="show_rich_html_in_index == 1" 
+			:content="index_rich_html_content" 
+			@preview="preview" 
+			@navigate="index_rich_html_click" />
 		
 		
 		<!-- 平铺广告图 -->
 		<view v-for="(tab,index) in flash_img_list" :key="index" @click="toAdDetails(tab.url)">
-			
-			<view class="born_erweima_pic">
-				
-				生成二维码
-			</view>
 			
 			<view class="banner" >
 				<image :src="tab.image" style="width: 100%;vertical-align: middle;" mode="widthFix"></image>
@@ -282,7 +280,9 @@ import publishList from '../../components/publish-list/publish-list.vue';
 import productList from '../../components/product-list/product-list.vue'
 import publish_list_api from '../../common/publish_list_api.js';
 
-import parseHtml from "../../common/html-parser.js"
+//import parseHtml from "../../common/html-parser.js"
+//import mpHtml from "../../components/mp-html/mp-html.vue"
+import uParse from '@/components/gaoyia-parse/parse.vue'
 
 const isNullOrUndefined = obj=>obj===null || obj === undefined  || obj === '';
 
@@ -290,7 +290,8 @@ export default {
 	components:{
 		shopList,
 		publishList,
-		productList
+		productList,
+		uParse
 	},
 	data() {
 		return {
@@ -1111,7 +1112,8 @@ export default {
 			cb_params.option_list.show_rich_html_in_index = 1;
 			cb_params.option_list.index_rich_html_type = 'https';
 			cb_params.option_list.index_rich_html_content = 'http://192.168.0.206/yanyubao_server/openapi/Jianghanyinhua/agent_get_order_list';
-			
+			cb_params.option_list.index_rich_html_type = 'static';
+			cb_params.option_list.index_rich_html_content = '<div><div  style="background-color:#67c23a;width:80px;border-radius:5px;text-align:center;margin:0 auto;padding:10px;margin-top:10px;color:#fff;"><a href="http://192.168.0.87/yanyubao_server/openapi/Jianghanyinhua/agent_show_order_list?show_new_modal=1">创建订单</a></div></div>';
 			
 			if(cb_params.option_list.show_rich_html_in_index == 1){
 				that.show_rich_html_in_index = 1;
@@ -1123,7 +1125,7 @@ export default {
 				
 				if(that.index_rich_html_type == 'static'){
 					
-					that.index_rich_html_content = that.__parse_html_to_array(cb_params.option_list.index_rich_html_content);
+					that.index_rich_html_content = cb_params.option_list.index_rich_html_content;
 				}
 				else if(that.index_rich_html_type == 'https'){
 					
@@ -2003,6 +2005,8 @@ export default {
 				})
 			}
 		},
+		
+		// APP自动升级
 		__doUpdataAppApk:function(apk_download_url){
 			uni.showLoading({
 				title: '更新中……'
@@ -2040,46 +2044,38 @@ export default {
 			});
 		},
 		
+		//拨打客服电话
+		index_address_card_call_seller: function() {
+			var that = this;
+			//console.log('88888ss', that.address_card_in_index.telephone);
+			uni.makePhoneCall({
+				phoneNumber: that.address_card_in_index.telephone,
+			})
+			
+			return;
+		},
 		
-		//富媒体 点击事件
-		index_rich_html_click:function(e){
+		//跳转到地图
+		index_address_card_go_map:function(){
+			var new_url = '/pages/shopMap/shopMap?&latitude=';
 			
+			new_url += this.address_card_in_index.latitude + '&longitude='+this.address_card_in_index.longitude;
 			
-			console.log('888888999wwweeeee===', e);
+			this.abotapi.call_h5browser_or_other_goto_url(new_url);
+		},
+		
+		
+		
+		//富媒体 链接点击事件
+		index_rich_html_click:function(new_url){
+			
+			console.log('index_rich_html_click====>>>>>', new_url);
+			
+			this.abotapi.call_h5browser_or_other_goto_url(new_url);
 			
 			
 		},
 		
-		//将html字符串转为数组，并绑定事件
-		__parse_html_to_array:function(htmlString){
-			
-			let newArr = [];
-			
-			let arr = parseHtml(htmlString, {
-				start: function(tag, attrs, unary) {
-					console.log('start tag====>>>>>', tag);
-					console.log('start attrs====>>>>>', attrs);
-					console.log('start unary====>>>>>', unary);
-				},
-			    end: function(tag) {
-					
-				},
-			    chars: function(text) {
-					
-				},
-			    comment: function(text) {
-					
-				}
-			});
-			
-			console.log(arr);
-			
-			arr.forEach((item, index)=>{
-				newArr.push(item);
-			});
-			
-			return newArr;
-		},
 		
 		__index_rich_html_get_content:function(rich_html_url){
 			//判断是否是http开头的？
@@ -2107,7 +2103,7 @@ export default {
 					
 					console.log('aaaa111==', res.data);
 					
-					that.index_rich_html_content = that.__parse_html_to_array(res.data);
+					that.index_rich_html_content = res.data;
 					
 			    },
 			    fail: function (e) {
@@ -2119,25 +2115,6 @@ export default {
 			});
 		},
 		
-		//拨打客服电话
-		index_address_card_call_seller: function() {
-			var that = this;
-			//console.log('88888ss', that.address_card_in_index.telephone);
-			uni.makePhoneCall({
-				phoneNumber: that.address_card_in_index.telephone,
-			})
-			
-			return;
-		},
-		
-		//跳转到地图
-		index_address_card_go_map:function(){
-			var new_url = '/pages/shopMap/shopMap?&latitude=';
-			
-			new_url += this.address_card_in_index.latitude + '&longitude='+this.address_card_in_index.longitude;
-			
-			this.abotapi.call_h5browser_or_other_goto_url(new_url);
-		},
 		
 	}
 };
