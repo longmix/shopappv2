@@ -132,23 +132,23 @@
 			</view>
 			<!-- <image class="mobile_img" src="../../static/img/mobile_new.png" mode="widthFix" ></image>
 			<view>电话</view> -->
-			
-			
-			
-			
-		
-			
 		</view>
 		
 		
 		
 		<!-- 富媒体组件 2021.1.18. -->
-		<view v-if="show_rich_html_in_index == 1" 
-			v-html="index_rich_html_content" @click="index_rich_html_click($event)"></view>
+		<rich-text v-if="show_rich_html_in_index == 1" 
+			:nodes="index_rich_html_content" bindtap="index_rich_html_click"></rich-text>
 		
 		
 		<!-- 平铺广告图 -->
 		<view v-for="(tab,index) in flash_img_list" :key="index" @click="toAdDetails(tab.url)">
+			
+			<view class="born_erweima_pic">
+				
+				生成二维码
+			</view>
+			
 			<view class="banner" >
 				<image :src="tab.image" style="width: 100%;vertical-align: middle;" mode="widthFix"></image>
 			</view>
@@ -279,6 +279,7 @@ import shopList from '../../components/shop-list/shop-list.vue';
 import publishList from '../../components/publish-list/publish-list.vue';
 import productList from '../../components/product-list/product-list.vue'
 import publish_list_api from '../../common/publish_list_api.js';
+import parseHtml from "../../common/html-parser.js"
 const isNullOrUndefined = obj=>obj===null || obj === undefined  || obj === '';
 
 export default {
@@ -414,7 +415,6 @@ export default {
 
 		};
 	},
-	
 	onLoad: function (options) {
 		///this.bindKeyInput();
 		
@@ -563,6 +563,7 @@ export default {
 		
 		
 	},
+	
 	//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
 	onPullDownRefresh: function () {
 		var that = this;
@@ -1107,12 +1108,15 @@ export default {
 			if(cb_params.option_list.show_rich_html_in_index == 1){
 				that.show_rich_html_in_index = 1;
 				that.index_rich_html_type = cb_params.option_list.index_rich_html_type;
+				
+				console.log('ssswwwa', that.index_rich_html_type);
 				if(that.index_rich_html_type == 'static'){
 					that.index_rich_html_content = cb_params.option_list.index_rich_html_content;
 				}
 				else if(that.index_rich_html_type == 'https'){
 					
-					that.__index_rich_html_get_content(that);
+					that.__index_rich_html_get_content(cb_params.option_list.index_rich_html_content);
+					
 				}
 				
 			}
@@ -2025,40 +2029,38 @@ export default {
 		index_rich_html_click:function(e){
 			
 			
+			console.log('888888999wwweeeee===', e);
 			
-			console.log('888888999===', e);
 			
-			e = e || window.event;
-			
-			//#ifdef H5
-			console.log('888888999===', window.event);
-			//#endif
-			
-			console.log('ssss',e.target.className) // testssss
-			console.log('wwww',e.target.nodeName) // p
 		}, 
 		
-		
-		
-		__index_rich_html_get_content:function(that){
+		__index_rich_html_get_content:function(rich_html_url){
 			//判断是否是http开头的？
 			
-			if(!that.index_rich_html_content 
-				|| (that.index_rich_html_content.substr(0, 4) != 'http') ){
+			
+			
+			if(!rich_html_url
+				|| (rich_html_url.substr(0, 4) != 'http') ){
+				
 				
 				return;
 				
 			}
 			
+			var that = this;
+			
 			
 			that.abotapi.abotRequest({
-			    url: that.index_rich_html_content,
+			    url: rich_html_url,
 				method:'GET',
 				dataType:'html',
 			    data: {},
 			    success: function (res) {
 					
-					that.index_rich_html_content = res;
+					
+					console.log('aaaa111==', res.data);
+					
+					that.index_rich_html_content = res.data;
 					
 			    },
 			    fail: function (e) {
@@ -2672,6 +2674,11 @@ page{position: relative;background-color: #fff;}
 		font-size: 22rpx;
 		color: #666;
 	}
+	//rich-text 富媒体样式
 	
+	/* .born_btn{
+		background-color: #67c23a;
+		font-size: 80px;
+	} */
 	
 </style>
