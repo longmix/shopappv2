@@ -7,7 +7,7 @@ const globalData = {
 		version_number:'Ver 1.7.9 Build 230',
 		version_code:230,
 		
-		force_sellerid:0,
+		force_sellerid:1,
 	
 		xiaochengxu_appid: 'wxe6565fced2f812da',			//微信小程序的appid  （还是继续使用延誉电商这个小程序，不是延誉宝这个！！！）
 		xiaochengxu_account: 'gh_a95e5a0852aa',				//微信小程序的账号
@@ -34,7 +34,7 @@ const globalData = {
 		//并确保与 navigationBarTextStyle / navigationBarBackgroundColor   保持一致
 		navigationBarBackgroundColor_fixed:1,
 		navigationBar_font_color:'#ffffff',
-		navigationBar_bg_color:'#269ad7',
+		navigationBar_bg_color:'#11C1F3',
 		//======================End=======================
 		
 		//======以下选项可以在服务器端修改，这里是默认值=====
@@ -45,10 +45,10 @@ const globalData = {
 		//底部导航的设置，如果没有设置，或者设置为 -1 ，则默认使用服务器端的设置。
 		//这里的设置需要与pages.json的tabbar同步。
 		//！！！！如果不清楚，发布版本的时候务必不要设置
-		is_index_index_in_tabbar : 1,
-		is_user_user_in_tabbar : 1,
-		is_publish_list_in_tabbar:1,
-		is_xianmai_shang_list_in_tabbar:1,
+		//is_index_index_in_tabbar : 1,
+		//is_user_user_in_tabbar : 1,
+		//is_publish_list_in_tabbar:1,
+		//is_xianmai_shang_list_in_tabbar:1,
 		
 		
 		

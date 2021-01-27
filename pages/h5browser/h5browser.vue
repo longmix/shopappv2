@@ -20,6 +20,14 @@
 		
 		onLoad: function (options) {
 			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
+			
+			//console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+			
+			/*
+			uni.setNavigationBarColor({
+				backgroundColor:"#11C1F3"
+			})*/
+			
 		
 			if(options.ret_page){
 				ret_page = options.ret_page

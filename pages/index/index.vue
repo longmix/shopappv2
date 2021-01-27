@@ -2,8 +2,10 @@
 	<view>
 		<!-- 状态栏 -->
 		<view v-if="showHeader" class="mystatusbar" :style="{ position: headerPosition,top:statusTop,opacity: afterHeaderOpacity, fontColor:wxa_shop_nav_font_color}"></view>
+		
 		<!-- 顶部导航栏 -->
-		<view v-if="showHeader" class="header" :style="{ position: headerPosition,top:headerTop,opacity: afterHeaderOpacity }">
+		<view v-if="wxa_show_search_input == 1" class="header" 
+			:style="{ position: headerPosition,top:headerTop,opacity: afterHeaderOpacity }">
 			<!-- 定位城市 -->
 			<navigator v-if="disable_gps_location != 1"
 				url="../locationList/locationList" class="addr" :style="{fontSize:current_citynameWidth+'px'}">
@@ -29,8 +31,10 @@
 				<view class="icon tongzhi" @tap="toMsg"></view>  <!-- 下版本换为:toMsg -->
 			</view>
 		</view>
+		
 		<!-- 占位 -->
 		<view v-if="showHeader" class="place"></view>
+		
 		<!-- 轮播图 -->
 		<view class="swiper" v-if="wxa_show_index_swiper == 1">
 			<view class="swiper-box">
@@ -430,7 +434,7 @@ export default {
 		///this.bindKeyInput();
 		
 		
-		//以下代码加载了会出错，所以不是用
+		//以下代码加载了会出错，所以不使用
 // #ifdef APP-PLUS-H5
 		this.nVueTitle = uni.getSubNVueById('homeTitleNvue');
 		this.nVueTitle.onMessage(res => {
@@ -932,8 +936,10 @@ export default {
 			  
 			    that.wxa_show_search_input = cb_params.option_list.wxa_show_search_input
 				
+				console.log('that.wxa_show_search_input====>>>>', that.wxa_show_search_input);
+				
 				if (cb_params.option_list.wxa_show_search_input != 1) {
-					that.showHeader = false;
+					//that.showHeader = false;
 				}
 				
 			  

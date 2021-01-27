@@ -347,7 +347,24 @@
 					}]
 				},
 				"h5": {
-					"titleNView": false ,//禁用原生导航栏
+					//"titleNView": false ,//禁用原生导航栏
+					"titleNView": {
+						"backgroundColor888":"#f37404",
+						"titlecolor888":"#ffffff",
+						"autoBackButton":true,
+						"homeButton888":true,
+						"splitLine888":{ "color":"#e9e9e9" },
+						"buttons":[
+							{
+								"text":"首页",
+								"type":"none",
+								"color":"#FFFFFF",
+								"background":"#000000",
+								"fontSize":"16px",
+								"float":"right"
+							}
+						]
+					} ,//禁用原生导航栏
 					"softinputNavBar":"none"
 				}
 			}
