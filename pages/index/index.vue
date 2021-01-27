@@ -142,6 +142,7 @@
 			:content="index_rich_html_content" 
 			@preview="preview" 
 			@navigate="index_rich_html_click" />
+
 		
 		
 		<!-- 平铺广告图 -->
@@ -1109,11 +1110,11 @@ export default {
 			}
 			
 			//显示富媒体组件
-			cb_params.option_list.show_rich_html_in_index = 1;
-			cb_params.option_list.index_rich_html_type = 'https';
-			cb_params.option_list.index_rich_html_content = 'http://192.168.0.206/yanyubao_server/openapi/Jianghanyinhua/agent_get_order_list';
-			cb_params.option_list.index_rich_html_type = 'static';
-			cb_params.option_list.index_rich_html_content = '<div><div  style="background-color:#67c23a;width:80px;border-radius:5px;text-align:center;margin:0 auto;padding:10px;margin-top:10px;color:#fff;"><a href="http://192.168.0.87/yanyubao_server/openapi/Jianghanyinhua/agent_show_order_list?show_new_modal=1">创建订单</a></div></div>';
+			//cb_params.option_list.show_rich_html_in_index = 1;
+			//cb_params.option_list.index_rich_html_type = 'https';
+			//cb_params.option_list.index_rich_html_content = 'http://192.168.0.206/yanyubao_server/openapi/Jianghanyinhua/agent_get_order_list';
+			//cb_params.option_list.index_rich_html_type = 'static';
+			//cb_params.option_list.index_rich_html_content = '<div><div  style="background-color:#67c23a;width:80px;border-radius:5px;text-align:center;margin:0 auto;padding:10px;margin-top:10px;color:#fff;"><a href="http://192.168.0.87/yanyubao_server/openapi/Jianghanyinhua/agent_show_order_list?show_new_modal=1">创建订单</a></div></div>';
 			
 			if(cb_params.option_list.show_rich_html_in_index == 1){
 				that.show_rich_html_in_index = 1;
@@ -1125,7 +1126,7 @@ export default {
 				
 				if(that.index_rich_html_type == 'static'){
 					
-					that.index_rich_html_content = cb_params.option_list.index_rich_html_content;
+					that.index_rich_html_content = that.__parse_html_to_array(cb_params.option_list.index_rich_html_content);
 				}
 				else if(that.index_rich_html_type == 'https'){
 					
@@ -2067,15 +2068,47 @@ export default {
 		
 		
 		//富媒体 链接点击事件
-		index_rich_html_click:function(new_url){
-			
+		/* index_rich_html_click:function(new_url){
+
 			console.log('index_rich_html_click====>>>>>', new_url);
+
 			
 			this.abotapi.call_h5browser_or_other_goto_url(new_url);
 			
 			
-		},
+		}, */
 		
+		
+		//将html字符串转为数组，并绑定事件
+		__parse_html_to_array:function(htmlString){
+					
+					let newArr = [];
+					
+					let arr = parseHtml(htmlString, {
+						start: function(tag, attrs, unary) {
+							console.log('start tag====>>>>>', tag);
+							console.log('start attrs====>>>>>', attrs);
+							console.log('start unary====>>>>>', unary);
+						},
+					    end: function(tag) {
+							
+						},
+					    chars: function(text) {
+							
+						},
+					    comment: function(text) {
+							
+						}
+					});
+					
+					console.log(arr);
+					
+					arr.forEach((item, index)=>{
+						newArr.push(item);
+					});
+					
+					return newArr;
+				},
 		
 		__index_rich_html_get_content:function(rich_html_url){
 			//判断是否是http开头的？
@@ -2103,7 +2136,7 @@ export default {
 					
 					console.log('aaaa111==', res.data);
 					
-					that.index_rich_html_content = res.data;
+					that.index_rich_html_content = that.__parse_html_to_array(res.data);
 					
 			    },
 			    fail: function (e) {
