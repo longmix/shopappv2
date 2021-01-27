@@ -32,7 +32,7 @@
 		<!-- 占位 -->
 		<view v-if="showHeader" class="place"></view>
 		<!-- 轮播图 -->
-		<view class="swiper">
+		<view class="swiper" v-if="wxa_show_index_swiper == 1">
 			<view class="swiper-box">
 				<swiper circular="true" autoplay="true" @change="swiperChange" :style="{height:imgheights[current] + 'px'} ">
 					<swiper-item v-for="(swiper,index) in flash_ad_list" :key="swiper.id" @click="toAdDetails(flash_ad_list[index].url)">
@@ -87,7 +87,7 @@
 	   <!--商户头条end-->
 		
 		<!-- 首页导航图标列表 -->
-		<view class="category-list">
+		<view class="category-list" v-if="wxa_show_index_icon == 1">
 			<view class="category" :style="wxa_show_icon_index_count== 4? 'width:25%':'width:20%'" v-for="(item, index) in index_icon_list"	:key="index" @click="toAdDetails(item.url)"> <!--  -->
 				<view >
 					<view class="img"><image :src="item.src"></image></view>
@@ -304,6 +304,12 @@ export default {
 			wxMarkerData:'',
 			articlelist:'',
 			articlelist2:'',
+			
+			
+			wxa_show_index_swiper:0,
+			wxa_show_search_input:0,
+			wxa_show_index_icon:0,
+			
 			wxa_show_toutiao:'',
 			wxa_shop_toutiao_flash_line:'',
 			
@@ -1109,11 +1115,11 @@ export default {
 			}
 			
 			//显示富媒体组件
-			cb_params.option_list.show_rich_html_in_index = 1;
-			cb_params.option_list.index_rich_html_type = 'https';
-			cb_params.option_list.index_rich_html_content = 'http://192.168.0.206/yanyubao_server/openapi/Jianghanyinhua/agent_get_order_list';
-			cb_params.option_list.index_rich_html_type = 'static';
-			cb_params.option_list.index_rich_html_content = '<div><div  style="background-color:#67c23a;width:80px;border-radius:5px;text-align:center;margin:0 auto;padding:10px;margin-top:10px;color:#fff;"><a href="http://192.168.0.87/yanyubao_server/openapi/Jianghanyinhua/agent_show_order_list?show_new_modal=1">创建订单</a></div></div>';
+			//cb_params.option_list.show_rich_html_in_index = 1;
+			//cb_params.option_list.index_rich_html_type = 'https';
+			//cb_params.option_list.index_rich_html_content = 'http://192.168.0.206/yanyubao_server/openapi/Jianghanyinhua/agent_get_order_list';
+			//cb_params.option_list.index_rich_html_type = 'static';
+			//cb_params.option_list.index_rich_html_content = '<div><div  style="background-color:#67c23a;width:80px;border-radius:5px;text-align:center;margin:0 auto;padding:10px;margin-top:10px;color:#fff;"><a href="http://192.168.0.87/yanyubao_server/openapi/Jianghanyinhua/agent_show_order_list?show_new_modal=1">创建订单</a></div></div>';
 			
 			if(cb_params.option_list.show_rich_html_in_index == 1){
 				that.show_rich_html_in_index = 1;
