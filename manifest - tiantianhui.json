@@ -82,7 +82,7 @@
                 },
                 "payment" : {
                     "weixin" : {
-                        "appid" : "wx6939a00416c5d3aa",
+                        "appid" : "wx6a3b6ecb6fcff9a9",
                         "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/tiantianhui/"
                     },
                     "alipay" : {}
@@ -93,14 +93,14 @@
                 },
                 "oauth" : {
                     "weixin" : {
-                        "appid" : "wx6939a00416c5d3aa",
+                        "appid" : "wx6a3b6ecb6fcff9a9",
                         "appsecret" : "aaaaaaaaaaaaaaaaaaaaaaa",
                         "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/tiantianhui/"
                     }
                 },
                 "share" : {
                     "weixin" : {
-                        "appid" : "wx6939a00416c5d3aa",
+                        "appid" : "wx6a3b6ecb6fcff9a9",
                         "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/tiantianhui/"
                     }
                 },
