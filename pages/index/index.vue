@@ -426,7 +426,7 @@ export default {
 			 //显示富媒体组件
 			 show_rich_html_in_index:0,
 			 index_rich_html_type:'static',
-			 index_rich_html_content:[],
+			 index_rich_html_content:'',
 
 		};
 	},
@@ -2088,11 +2088,9 @@ export default {
 			
 		},
 		
-		
+		//富媒体请求后台设置的动态网址获取参数。
 		__index_rich_html_get_content:function(rich_html_url){
 			//判断是否是http开头的？
-			
-			
 			
 			if(!rich_html_url
 				|| (rich_html_url.substr(0, 4) != 'http') ){
@@ -2104,7 +2102,20 @@ export default {
 			
 			var that = this;
 			
-			
+			//判断登录，并且拼接替换这个参数
+			 if(rich_html_url.indexOf("%current_userid%") != -1) {
+				var userInfo = that.abotapi.get_user_info();
+				console.log('userid===',userInfo);
+				if(!userInfo){
+					
+					that.abotapi.goto_user_login('/pages/index/index', 'normal');
+					
+					return;  
+				}
+				
+				rich_html_url = rich_html_url.replace('%current_userid%', userInfo.userid);
+			} 
+			console.log('888888888url=',rich_html_url);
 			that.abotapi.abotRequest({
 			    url: rich_html_url,
 				method:'GET',
@@ -2119,6 +2130,8 @@ export default {
 					
 			    },
 			    fail: function (e) {
+					console.log('aaaa111==', e);
+					
 					uni.showToast({
 						title: '请求富媒体失败',
 						duration: 2000
