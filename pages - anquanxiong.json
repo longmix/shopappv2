@@ -2,7 +2,7 @@
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText" : "安全熊,
-		"navigationBarBackgroundColor" : "#E3170D",
+		"navigationBarBackgroundColor" : "#ff8040",
 		"backgroundColor" : "#ffffff",
 		"backgroundColorTop":"#ffffff",
 		"backgroundColorBottom":"#ffffff"
@@ -19,22 +19,10 @@
 				"text": "首页"
 			},
 			{
-				"pagePath": "pages/aipingou/aipingou",
-				"iconPath": "static/img/tabBar/cart.png",
-				"selectedIconPath": "static/img/tabBar/cart-on.png",
-				"text": "拼购"
-			},
-			{
-				"pagePath": "pages/category/index2",
-				"iconPath": "static/img/tabBar/category.png",
-				"selectedIconPath": "static/img/tabBar/category-on.png",
-				"text": "分类"
-			},				
-			{
 				"pagePath": "pages/user/user",
 				"iconPath": "static/img/tabBar/user.png",
 				"selectedIconPath": "static/img/tabBar/user-on.png",
-				"text": "我的"
+				"text": "个人中心"
 			}
 		]
 	},

@@ -9,8 +9,8 @@ const globalData = {
 		
 		force_sellerid:1,
 	
-		xiaochengxu_appid: 'wx47cf36b7d0a0f792--',			//微信小程序的appid
-		xiaochengxu_account: 'gh_3deff1aa52cb--',				//微信小程序的账号
+		xiaochengxu_appid: 'wxfa86f96b2b9a54b4',			//微信小程序的appid
+		xiaochengxu_account: 'gh_e9cc776c000b',				//微信小程序的账号
 		weixin_open_platform_appid: 'wx6939a00416c5d3aa--',	//微信开放平台中登记的APP对应的appid（务必与manifest中的配置一致）
 		
 		//通版商城
@@ -34,7 +34,7 @@ const globalData = {
 		//并确保与 navigationBarTextStyle / navigationBarBackgroundColor   保持一致
 		navigationBarBackgroundColor_fixed:1,
 		navigationBar_font_color:'#ffffff',
-		navigationBar_bg_color:'#E3170D',
+		navigationBar_bg_color:'#ff8040',
 		//======================End=======================
 		
 		//======以下选项可以在服务器端修改，这里是默认值=====
