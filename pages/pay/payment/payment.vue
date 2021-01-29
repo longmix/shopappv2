@@ -72,29 +72,29 @@
 					</view>
 
 
-					<view class="zhifu_li" :key="index" :data-index='index' @tap='zhuangzhangPay($event)' v-for="(item,index) in pay_list"
-					 :style='key==index?"background-color:#e6e6e6":""+zz_pay?"display:none":"display:block"'>
+					<view class="zhifu_li" :key="index" :data-index='index' @tap='zhuangzhangPay($event)' v-for="(item,index) in zhuanzhang_pay_list"
+					 :style='key==index?"background-color:#e6e6e6":""+is_online_pay?"display:none":"display:block"'>
 						<view class="zhifu_name" :key="index" :data-index='index' @tap='zhuangzhangPay($event)' style="font-weight: bold;">{{item.pay_name}}</view>
 					</view>
 					<view :style="payView?'display:none':'display:block'+';font-size:15px;margin-bottom:100px;'">
-						<view :style="zz_pay?'display:none':'display:block'">
-							<view v-if="payList.pay_type==0">
+						<view :style="is_online_pay?'display:none':'display:block'">
+							<view v-if="zhuanzhang_pay_item.pay_type==0">
 								<view class="section">
 									<label class='section_view'>收款人：</label>
-									<view class='section_view2'>{{payList.username}}</view>
+									<view class='section_view2'>{{zhuanzhang_pay_item.username}}</view>
 								</view>
 								<view class="section">
 									<label class='section_view'>收款银行：</label>
-									<view class='section_view2'>{{payList.bank_name}}</view>
+									<view class='section_view2'>{{zhuanzhang_pay_item.bank_name}}</view>
 								</view>
 								<view class="section">
 									<label class='section_view'>收款账号：</label>
-									<view class='section_view2'>{{payList.card_num}}</view>
+									<view class='section_view2'>{{zhuanzhang_pay_item.card_num}}</view>
 								</view>
 							</view>
 
 							<view style='text-align:center' v-else>
-								<image style='width:250px;' mode='widthFix' :src='payList.card_num'></image>
+								<image style='width:250px;' mode='widthFix' :src='zhuanzhang_pay_item.card_num'></image>
 							</view>
 
 							<view>
@@ -140,10 +140,10 @@
 			</view>
 		</view>
 
-		<view class="pay_submit" v-if="zz_pay">
+		<view class="pay_submit" v-if="is_online_pay">
 			<button type="default" id="Pay" formType="submit" 
 				:style="{backgroundColor:btn_bg_color+' !important'}"
-				:data-price="pay_price" @tap="zz_pay?createProductOrderByWX():createProductOrderByZZ()">确认支付</button>
+				:data-price="pay_price" @tap="is_online_pay?createProductOrderByWX():createProductOrderByZZ()">确认支付</button>
 		</view>
 		<view class="pay_submit" v-if="pay_price == 0.00">
 			<button type="default" id="Pay" formType="submit" 
@@ -174,9 +174,11 @@
 				
 				date: '2016-09-01',
 				
-				zz_pay: true,
+				is_online_pay: true,	//是否是在线支付（微信 活着 支付宝，而不是 转账支付）
 				payView: true,
+				
 				current_payment_type:'',
+				
 				
 				pageBackgroundColor: '',
 				orderData: '',
@@ -184,12 +186,18 @@
 				balance_dikou: '',
 				balance_zengsong_dikou: '',
 				pay_price: '',
+				
 				show_weixin_pay: 0,
 				show_ali_pay: 0,
 				show_zhuanzhang_pay: 0,
-				pay_list: '',
-				payList: '',
+				
+				//可用的转账支付的方式列表，例如 银行账号、收款二维码等
+				zhuanzhang_pay_list: '',
+				zhuanzhang_pay_item: '',
+				
+				
 				pay_type: '',
+				
 				adds: '',
 				name: '',
 				time: '',
@@ -326,21 +334,28 @@
 				
 				var that = this;
 				
-				var pay = e.detail.value;
+				that.current_payment_type = e.detail.value;
 				
-				if (pay == 'zz_pay') {
-					that.zz_pay = false
-				} else {
-					that.zz_pay = true;
+				if (that.current_payment_type == 'zz_pay') {
+					//如果是 转账支付   ，那么肯定不是 微信 或者  支付宝 的在线支付方式
+					that.is_online_pay = false
+				} 
+				else {
+					that.is_online_pay = true;
 					that.payView = true;
 				}
 				
-				that.current_payment_type = pay;
+				
+				console.log('ppppp',that.current_payment_type);
+				
 				
 				var userInfo = that.abotapi.get_user_info();
-				var pay_list = that.pay_list
-				console.log('pay_list1', pay_list);
-				if (pay_list == '') {
+				
+				console.log('that.zhuanzhang_pay_list ====>>>>> ', that.zhuanzhang_pay_list);
+				
+				
+				if ((that.current_payment_type == 'zz_pay') && (that.zhuanzhang_pay_list == '') ) {
+				//if ((pay_list == '') ) {
 					that.abotapi.abotRequest({
 						url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=offlinepay_get',
 						method: 'post',
@@ -355,11 +370,12 @@
 						success: function(res) {
 
 							var code = res.data.code;
+							console.log('888888==',code);
 							if (code == 1) {
-								var pay_list = res.data.data;
-								console.log('pay_list', pay_list);
-								that.pay_list = pay_list;
-							} else {
+								that.zhuanzhang_pay_list = res.data.data;
+								console.log('get  zhuanzhang_pay_list from server ===>>>>', that.zhuanzhang_pay_list);
+							} 
+							else {
 								uni.showToast({
 									title: res.data.msg,
 									duration: 2000
@@ -376,6 +392,8 @@
 					});
 				}
 			},
+			
+			
 			loadOrderDetail: function() {
 				var that = this;
 				var userInfo = that.abotapi.get_user_info();
@@ -423,7 +441,7 @@
 							that.pay_price = util.sprintf("%6.2f", that.pay_price);
 
 							if (that.pay_price == 0.00) {
-								that.zz_pay = false
+								that.is_online_pay = false
 							}
 
 						} else {
@@ -490,9 +508,12 @@
 				if (key == null) {
 					return;
 				};
-				var pay_list = that.pay_list;
-				that.payList = pay_list[key];
+				
+				var current_zz_pay_list = that.zhuanzhang_pay_list;
+				that.zhuanzhang_pay_item = current_zz_pay_list[key];
+				
 				that.payView = false;
+				
 				that.key = e.target.dataset.index
 			},
 			//线下支付
@@ -514,8 +535,11 @@
 					user_coupon_dikou:that.user_coupon_dikou,
 					yue_amount: that.balance_dikou,
 					zengkuan_amount: that.balance_zengsong_dikou,
-					// offlinepayid: that.payList.offlinepayid,
+					
+					// offlinepayid: that.zhuanzhang_pay_item.offlinepayid,
+					
 					time: that.date + ' ' + that.time,
+					
 					// huikuan_pingtai: that.adds.huikuan_pingtai,
 					// name: that.adds.name,
 					body: "商城支付订单",
@@ -524,7 +548,8 @@
 
 
 				if (that.pay_price != 0.00) {
-					data_params.offlinepayid = that.payList.offlinepayid;
+					data_params.offlinepayid = that.zhuanzhang_pay_item.offlinepayid;
+					
 					data_params.huikuan_pingtai = that.adds.huikuan_pingtai;
 					data_params.name = that.adds.name;
 				}
