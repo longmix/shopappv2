@@ -31,7 +31,7 @@
       "navigationBarTitleText": "分类信息"
     },
     "pages/user/user": {
-      "navigationBarTitleText": "个人中心"
+      "navigationBarTitleText": "短视频+定位广告二维码生成平台"
     }
   },
   "tabBar": {

@@ -695,15 +695,22 @@
 										duration: 500
 									})
 									
-									
-									// #ifdef MP-WEIXIN	
-									that.login_after_get_userinfo = 0;
-									that.btn_user_login();
-									// #endif
-				  
 			
 								}
-							}
+								
+								
+								// #ifdef MP-WEIXIN
+								that.login_after_get_userinfo = 0;
+								that.btn_user_login();
+								// #endif
+								
+							},
+							fail: function (e) {
+								uni.showToast({
+									title: '网络连接错误~',
+									duration: 2000
+								});
+							},
 						});
 					  
 					},

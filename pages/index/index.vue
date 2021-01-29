@@ -564,10 +564,13 @@ export default {
 	},
 	onShow:function(){
 		this.get_tianqi();
+		console.log('sssss');
 		var city_name = uni.getStorageSync('city_name');
 		if(city_name){
 			this.current_cityname = city_name;
 		}
+		//console.log('wwwwaa',cb_params.option_list.index_rich_html_content);
+		//this.__index_rich_html_get_content(cb_params.option_list.index_rich_html_content);
 	},
 	onPageScroll: function (e) {
 		//兼容iOS端下拉时顶部漂移
@@ -2114,8 +2117,10 @@ export default {
 				}
 				
 				rich_html_url = rich_html_url.replace('%current_userid%', userInfo.userid);
-			} 
+			}
+			
 			console.log('888888888url=',rich_html_url);
+			
 			that.abotapi.abotRequest({
 			    url: rich_html_url,
 				method:'GET',
@@ -2127,6 +2132,12 @@ export default {
 					console.log('aaaa111==', res.data);
 					
 					that.index_rich_html_content = res.data;
+					
+					if(!res.data){
+						that.index_rich_html_content = '<h1></h1>';
+					}
+					
+					
 					
 			    },
 			    fail: function (e) {
@@ -2730,5 +2741,7 @@ page{position: relative;background-color: #fff;}
 		background-color: #67c23a;
 		font-size: 80px;
 	} */
-	
+	.copyright_info {
+		padding: 40rpx 0 80rpx 0;
+	}
 </style>
