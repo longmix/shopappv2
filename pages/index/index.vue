@@ -428,7 +428,7 @@ export default {
 			 //显示富媒体组件
 			 show_rich_html_in_index:0,
 			 index_rich_html_type:'static',
-			 index_rich_html_content:'',
+			 index_rich_html_content:'<h1></h1>',
 
 		};
 	},
