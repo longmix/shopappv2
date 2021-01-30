@@ -149,7 +149,8 @@
 		
 		
 		<!-- 平铺广告图 -->
-		<view v-for="(tab,index) in flash_img_list" :key="index" @click="toAdDetails(tab.url)">
+		<view v-if="wxa_show_pic_pinpu == 1"
+			v-for="(tab,index) in flash_img_list" :key="index" @click="toAdDetails(tab.url)">
 			
 			<view class="banner" >
 				<image :src="tab.image" style="width: 100%;vertical-align: middle;" mode="widthFix"></image>
@@ -313,6 +314,7 @@ export default {
 			wxa_show_index_swiper:0,
 			wxa_show_search_input:0,
 			wxa_show_index_icon:0,
+			wxa_show_pic_pinpu:0,
 			
 			wxa_show_toutiao:'',
 			wxa_shop_toutiao_flash_line:'',
