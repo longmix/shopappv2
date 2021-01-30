@@ -3,7 +3,7 @@
     "appid" : "__UNI__27F82A3",
     "description" : "田震电商志购APP",
     "versionName" : "1.8.1",
-    "versionCode" : 366,
+    "versionCode" : 367,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true, //是否启用`自定义组件模式`，为true表示新的`自定义组件模式` ，否则为`template模板模式`   
@@ -69,7 +69,8 @@
                     "NSCameraUsageDescription" : "使用相机拍摄商品以及设置头像",
                     "NSLocationWhenInUseUsageDescription" : "访问位置以计算最近的服务网点",
                     "NSLocationAlwaysUsageDescription" : "访问位置以计算最近的服务网点",
-                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "访问位置以计算最近的服务网点"
+                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "访问位置以计算最近的服务网点",
+                    "NSMicrophoneUsageDescription" : "使用麦克风录制视频时获取声音"
                 }
             },
             /* ios打包配置 */
