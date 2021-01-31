@@ -51,11 +51,37 @@ angular.module("login",[]).config(
     }
 )
 
-    .controller("shanghu_login",function($scope,$http,$state, $stateParams,$ionicLoading,$interval,$ionicModal){
+.controller("shanghu_login",function($scope,$http,$state, $stateParams,$ionicLoading,$interval,$ionicModal){
 
     // set_login_info('aasasdds', '435435435');
     //var login_obj = get_login_info();
     //alert(login_obj.sellerid);
+	
+	console.log('打开登陆页面');
+	console.log(uni);
+	
+	uni.redirectTo({
+		url:'/pages/login/login',
+		success:function(res){
+			
+		},
+		fail:function(res){
+			
+		},
+		complete:function(res){
+			
+		}
+	});
+	
+	console.log('跳转到shopapp vue的登陆界面');
+	
+	return;
+	
+	
+	
+	
+	
+	
    
     //第三方登录页面
      $ionicModal.fromTemplateUrl('templates/modal.html', {
@@ -71,7 +97,7 @@ angular.module("login",[]).config(
     
     
     $scope.input={};
-    console.log(http_server);
+    console.log("http_server ===>>>> " + http_server);
     //初始化请求获取tokenstr
 
         $scope.get_verify=function() {

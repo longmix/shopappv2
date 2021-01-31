@@ -17,12 +17,9 @@
 
    
      <div class="list" style="margin-top: 10px;">
-        <li class="item  item-icon-right" ui-sref="change_photo({head_logo:input.head_logo})">
-          会员卡头像
-         <i class="icon ion-ios-arrow-right set_i"></i>
-        </li>
+        
          <li class="item  item-icon-right" ui-sref="set_up5">
-            <span class="text-left" style="float:left;">会员卡名称</span>
+            <span class="text-left" style="float:left;">会员卡名称和背景</span>
             <span class="text-right" style="float: right; width: 50%;white-space: nowrap;overflow: hidden; text-overflow: ellipsis;margin-right: -15px;">{{input.cardname}}</span>
              <i class="icon ion-ios-arrow-right set_i"></i>
         </li>
@@ -43,6 +40,15 @@
               <span class="text-right" style="float: right; width: 50%;white-space: nowrap;overflow: hidden; text-overflow: ellipsis;margin-right: -15px;">{{input.name}}</span>
              <i class="icon ion-ios-arrow-right set_i"></i>
          </li>
+		 <li class="item  item-icon-right" ui-sref="change_photo({head_logo:input.head_logo})">
+		   我的头像
+		  <i class="icon ion-ios-arrow-right set_i"></i>
+		 </li>
+		 <li class="item  item-icon-right" ui-sref="change_company_name({company_name:input.company_name})">
+		   <span class="text-left" style="float:left;">公司名称</span>
+		   <span class="text-right" style="float: right; width: 50%;white-space: nowrap;overflow: hidden; text-overflow: ellipsis;margin-right: -15px;">{{input.company_name}}</span>
+		  <i class="icon ion-ios-arrow-right set_i"></i>
+		 </li>
          <li class="item  item-icon-right" ui-sref="set_up3({telephone:input.telephone})">
               <span class="text-left" style="float:left;">联系电话</span>
               <span class="text-right" style="float: right; width: 50%;white-space: nowrap;overflow: hidden; text-overflow: ellipsis;margin-right: -15px;">{{input.telephone}}</span>

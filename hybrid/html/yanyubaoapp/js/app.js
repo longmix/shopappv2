@@ -43,7 +43,11 @@ angular.module("myApp",["ionic","highcharts-ng","login","shouye","member","data_
         .state("set_up4",{url:"/set_up4",templateUrl:"views/set/set_up4.html",controller:"set_up4"})
         .state("set_up5",{url:"/set_up5",templateUrl:"views/set/set_up5.html",controller:"set_up5"})
         .state("set_up6",{url:"/set_up6",templateUrl:"views/set/set_up6.html",controller:"set_up6"})///使用帮助
-        .state("set_up7",{url:"/set_up7",templateUrl:"views/set/set_up7.html",controller:"set_up7"})///使用帮助
+        .state("set_up7",{url:"/set_up7",templateUrl:"views/set/set_up7.html",controller:"set_up7"})///使用帮助,
+		
+		.state("change_photo",{url:"/change_photo",templateUrl:"views/set/change_photo.html",params:{'head_logo':null},controller:"change_photo"})
+		.state("change_company_name",{url:"/change_company_name",templateUrl:"views/set/change_company_name.html",params:{'company_name':null},controller:"change_company_name"})
+		
          .state("cash_integral",{url:"/cash_integral",templateUrl:"views/set/cash_integral.html",controller:"cash_integral",cache:false})
          .state("add",{url:"/add",templateUrl:"views/set/add.html",params:{'action':null},controller:"add",cache:false})
         .state("duanxin_manage",{url:"/duanxin_manage",templateUrl:"views/set/duanxin_manage.html",controller:"duanxin_manage",cache:false})
@@ -54,7 +58,7 @@ angular.module("myApp",["ionic","highcharts-ng","login","shouye","member","data_
         .state("shanghu_imgs",{url:"/shanghu_imgs",templateUrl:"views/set/shanghu_imgs.html",controller:"shanghu_imgs",cache:false})
         .state("help",{url:"/help",templateUrl:"views/set/help.html",params:{'gonggaoid':null,'action':null},controller:"help",cache:false})
         .state("yijianfankui",{url:"/yijianfankui",templateUrl:"views/set/yijianfankui.html",controller:'yijianfankui'})
-        .state("change_photo",{url:"/change_photo",templateUrl:"views/set/change_photo.html",params:{'head_logo':null},controller:"change_photo"})
+        
         .state("server",{url:"/server",templateUrl:"views/shouye/server.html",controller:"server"})
         .state("set_address",{url:"/set_address",templateUrl:"views/set/set_address.html",controller:"set_address",cache:false})
         .state("tongxunlu",{url:"/tongxunlu",templateUrl:"views/tongxunlu/tongxunlu.html",controller:"tongxunlu",cache:false})

@@ -9,25 +9,30 @@ angular.module("qrcode_info_shoukuan",[])
             $state.go("login", {}, {reload:true});
             return false;
         }
+		
         $scope.input={};
         
         ///收款二维码类型
         var qrcode_type = $stateParams['type'];
+		
         if(qrcode_type == 'weixin'){
         	$scope.qrcode_name = "微信钱包收款二维码";
         	$scope.upload_text = "更换微信收款二维码";
         	var qrcode_text = "微信";
-        }else if(qrcode_type == 'zhifubao'){
+        }
+		else if(qrcode_type == 'zhifubao'){
         	$scope.qrcode_name = "支付宝收款二维码";
         	$scope.upload_text = "更换支付宝收款二维码";
         }
-         $ionicLoading.show({
-               showBackdrop: false,
+		
+		
+        $ionicLoading.show({
+            showBackdrop: false,
             template:'<ion-spinner icon="ios-small" class="spinner-calm"></ion-spinner>',
             duration:2000
         });
         
-         //加载图片
+        //加载图片
         $scope.loadImage = function(){
                
               window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
@@ -91,7 +96,20 @@ angular.module("qrcode_info_shoukuan",[])
 			
         }
         
-        $scope.loadImage();
+        //$scope.loadImage();
+		
+		//加载图片
+        $scope.loadImage_using_plus = function(){
+			console.log('aaaaaaaaaaaaaaa');
+	
+			$scope.img = 'images/shoukuan_pic.png';
+			$ionicLoading.hide();
+	
+	
+			
+        }
+		
+		$scope.loadImage_using_plus();
 
         
         ////选择图片

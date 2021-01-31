@@ -4,12 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
     <meta name="format-detection" content="telephone=no">
-    <title></title>
+    <title>延誉宝</title>
 
     <!--<script src="lib/js/ionic.bundle.min.js"></script>-->
     
     <script>
 	    var agent = navigator.userAgent.toLowerCase() ;
+		
+		console.log('current_agent ==>> ' + agent);
+		
+		console.log('url===>>>'+ window.location.search);
+		
 	    if(agent.indexOf("yanyu") > 0){
 	       document.write("<script src=\"cordova.js\">"+"</scr"+"ipt>"); 
 	    }
@@ -59,15 +64,101 @@
 			padding-bottom: constant(safe-area-inset-bottom);//为底下圆弧的高度 34px       
 		}
 	</style>
+	
+	
+	
 </head>
 <body class="main_body"  ng-controller="modalCtrl">
+	
+	<script src="https://js.cdn.aliyun.dcloud.net.cn/dev/uni-app/uni.webview.1.5.2.js"></script>
+	<script type="text/javascript">
+		document.addEventListener('UniAppJSBridgeReady', function() {
+		  uni.getEnv(function(res) {
+			console.log('当前环境：' + JSON.stringify(res));
+		  });
+		  // uni.webView.navigateTo(...)
+		  
+		  
+		  
+		  //uni.webView.redirectTo('/pages/index/index');
+		  
+		  
+		});
+		
+		// H5 plus事件处理  
+		function plusReady(){  
+			// 5+ API code  
+			var ws = plus.webview.currentWebview();  
+			// ......  
+			
+			console.log('plusReady  plusReady  plusReady====>>>>', plus.device.model);
+			
+			//在shopapp vue中写的普通用户的登陆信息
+			//var login_info = uni.webView.getStorageSync("wxa_user_info");
+			var shopapp_wxa_user_info = plus.storage.getItem('wxa_user_info');			
+			console.log('shopapp_wxa_user_info====>>>>' + shopapp_wxa_user_info);
+			
+			//从shopapp vue中通过过来的普通用户的登陆信息
+			var angular_user_info = localStorage.getItem('angular_user_info');			
+			console.log('angular_user_info====>>>>' + angular_user_info);
+			
+			//如果这两个信息不相同，则同步，并刷新浏览器界面
+			if((angular_user_info || shopapp_wxa_user_info) 
+				&& !(angular_user_info == shopapp_wxa_user_info) ){
+					
+				if(!shopapp_wxa_user_info){
+					localStorage.removeItem('angular_user_info');
+					console.log('删除angular_user_info');
+				}
+				else{
+					localStorage.setItem('angular_user_info', shopapp_wxa_user_info);
+					console.log('重写angular_user_info====>>>>' + shopapp_wxa_user_info);
+				}
+				
+				localStorage.removeItem("yanyubao_login_info");
+				console.log('因为来自shopapp vue的user登陆信息变更，所以必然删除 yanyubao_login_info 这个登陆缓存');
+				
+				ws.reload();
+			}
+			
+			//if(shopapp_wxa_user_info){	}
+			
+			
+			
+			//console.log('wxa_user_info====>>>>' + plus.Webview.baseURL);
+			
+			
+			
+			return;
+			
+			// 从相册中选择图片
+				console.log("从相册中选择图片:");
+			    plus.gallery.pick( function(path){
+			    	console.log(path);
+			    }, function ( e ) {
+			    	console.log( "取消选择图片" );
+			    }, {filter:"image"} );
+			
+			
+		}  
+		//监听“plusready”事件  
+		document.addEventListener("plusready",plusReady,false);  
+		
+	</script>
+	
+	
+	
+	
+	
+	
 <script type="text/javascript">
 //alert(cordova.platformId);
 //console.log("当前平台："+cordova.platformId);
 
 document.addEventListener("deviceready", onDeviceReady, false);  
 
-function onDeviceReady() {  
+function onDeviceReady() { 
+	
 	//navigator.splashscreen.hide();
 	if (cordova.platformId == 'android') {
 		//StatusBar.backgroundColorByHexString("#333");

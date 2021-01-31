@@ -1,0 +1,15 @@
+<ion-view id="view" view-title="我的公司名称">
+      <ion-content>
+
+        <div class="list list-inset">
+        <label class="item item-input">
+          <input type="text" placeholder="请输入公司名称" ng-model="input.company_name">
+        </label>
+      </div>
+      <div class="padding">
+        <button class="button button-block button-calm" id="btn" 
+			ng-click="set_company_name(input.company_name)" 
+			style="border-radius: 3px;">保存</button>
+      </div>
+    </ion-content>
+</ion-view>

@@ -35,26 +35,111 @@ angular.module("shouye",[])
   }
  }
 })
-.controller("shouye",function($scope,$http,$state, $stateParams,$timeout,$ionicLoading,$ionicPopup,$ionicSlideBoxDelegate,$ionicScrollDelegate){
-   
-  $scope.$on("$ionicView.beforeEnter", function() {
-
-        var login_obj = get_login_info();
+.controller("shouye",function($scope,$http,$state, $stateParams,$timeout,
+	$ionicLoading,$ionicPopup,$ionicSlideBoxDelegate,$ionicScrollDelegate,
+	$location){
 		
+	/*	
+	$scope.getUrlParam = function(name){
+		console.log('wwww',name);
+		
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+		
+		console.log('ssssre',reg);
+		
+		var r = window.location.search.substr(1).match(reg);
+		
+		console.log('ssssre',r);
+		
+		if (r != null) return unescape(r[2]); return null;
+	}
+   
+   //$stateParams['id'];
+   console.log('$location=====>>>>>'+$location.search());
+   
+   //var para = location.search.substring(1).split('&');
+   
+   //console.log('para=====>>>>>',  para);
+   //console.log('para=====>>>>>', $scope.getUrlParam('userid') );
+   */
+  
+	$scope.callmobile = function () {
+	      var phone = mobile_phone_number;
+	      //alert("拨打:" + phone);
+	      window.location.href = "tel:" + phone;
+	};
+	
+	
+	var login_obj = get_login_info();
+	
+	console.log('current login obj ===>>> ' + login_obj);
+	
+	//====== 2021.1.30. 检查是否 shopapp vue带过来的登陆信息 =====
+	if(!login_obj){
+		var angular_user_info = localStorage.getItem('angular_user_info');
+		
+		console.log('检查是否有来自shopapp vue的user登陆信息：'+angular_user_info);
+		
+		if(angular_user_info){
+			
+			
+			var angular_user_info_obj = JSON.parse(angular_user_info);
+			
+			console.log('登陆信息对象为：');
+			console.log(angular_user_info_obj);
+			
+			if(angular_user_info_obj){
+				$http({
+				    method: 'post',//请求方式
+				    url: http_server+"/index.php?g=Yanyubao&m=ShopApp&a=get_user_shang_login_info",//请求地址
+				    data: {'sellerid':'pQNNmSkaq','userid':angular_user_info_obj.userid,'checkstr':angular_user_info_obj.checkstr}//请求参数，如果使用JSON格式的对象则可为 data: JSON.stringify(obj),
+				    //cache:cache
+				    //timeout: 8000//请求等待时间
+				})
+				.success(function(data){
+					console.log('请求服务器实现集成登陆，返回==>>');
+					console.log(data);
+					
+					if(data.code == 1){
+						set_login_info(data.sellerid, data.checkstr);
+						
+						login_obj = get_login_info();
+						
+						//刷新界面
+						$scope.doRefresh();
+						
+					}
+				})
+				.error(function(data,header,config,status){
+					//处理响应失败
+				    // 当ajax请求出现错误时，显示一个提示信息
+				    $ionicLoading.show({
+				        template:"网络延迟，请重新尝试",
+				        duration:3000
+				    });
+				});
+			}
+		}
+	}
+	//============ End =============
+	
+	
+	//读缓存先写一遍数据
+	//var cache_shouye = cache.get("cache_shouye");
+	var cache_shouye = localStorage.getItem("cache_shouye");///读取基本信息缓存
+	var cache_common_app_toutiao = localStorage.getItem("common_app_toutiao");///读取头条缓存
+	var cash_common_app_img_list = localStorage.getItem("common_app_img_list");///读取平铺图片缓存
+	var cash_common_app_img_gundong = localStorage.getItem("common_app_img_gundong");///读取滚动图片缓存
+	
+	
+   
+	$scope.$on("$ionicView.beforeEnter", function() {
+
+        
         $scope.input={};
 		
-        $scope.callmobile = function () {
-              var phone = mobile_phone_number;
-              //alert("拨打:" + phone);
-              window.location.href = "tel:" + phone;
-        };
-        //读缓存先写一遍数据
-        //var cache_shouye = cache.get("cache_shouye");
-        var cache_shouye = localStorage.getItem("cache_shouye");///读取基本信息缓存
-    	  var cache_common_app_toutiao = localStorage.getItem("common_app_toutiao");///读取头条缓存
-        var cash_common_app_img_list = localStorage.getItem("common_app_img_list");///读取平铺图片缓存
-        var cash_common_app_img_gundong = localStorage.getItem("common_app_img_gundong");///读取滚动图片缓存
-
+        
+        
 
 
 
@@ -62,6 +147,7 @@ angular.module("shouye",[])
     	//console.log(cache_common_app_toutiao);
         if(cache_shouye){
         	var cache_data_shouye = JSON.parse(cache_shouye);
+			
         	$scope.input.name = cache_data_shouye.name;
             $scope.input.telephone = cache_data_shouye.telephone;
             $scope.input.user_num = cache_data_shouye.user_num;
@@ -347,299 +433,304 @@ angular.module("shouye",[])
             
         }
         
-       $scope.toutiao_jump = function(info){
-    	   if(info.url.indexOf("location::") == 0){
-			 	var str = info.url;
-			 	var url = str.replace(/location::/, "");
-  				if(info.key){
-  					var name = info.key;
-  					
-  					//var options = new Object();
-  					var options = {};
-  					options[name] = info.value;	//用变量作为键值创建对象
-  					console.log(JSON.stringify(options));
-  					
-  					$state.go(url, options, {reload:true});//若头条带参数
-  					//$state.go(url, {'imgid':info.value}, {reload:true});//若头条带参数
-  				}else{
-  					$state.go(url, {}, {reload:true});
-  				}
-  				
-  			}else if(info.url.indexOf("inappbrowser::") == 0){
-				var str = info.url;
-				var url = str.replace(/inappbrowser::/, "");
-				$scope.jump_InAppBrowser(url);
-			}
-			else{
-  				 window.location.href = info.url;
-      		}
-       }
-        
-        $scope.doRefresh = function() {
-        	console.log('aaaaaaaaaaa:'+login_obj.sellerid);
-        	if(!login_obj.sellerid){
-        		return;
-        	}
-        	
-            $http({
-                method: 'post',//请求方式
-                url: http_server+"/index.php?g=Yanyubao&m=Shang&a=get_user_info&action=get",//请求地址
-                data: {'sellerid':login_obj.sellerid,'checkstr':login_obj.checkstr}//请求参数，如果使用JSON格式的对象则可为 data: JSON.stringify(obj),
-                //timeout: 8000//请求等待时间
-            })
-                .success(function(data){
-
-                    if(data.code == '-1'){
-                        $ionicLoading.show({
-                            showBackdrop: false,
-                            template:data.msg,
-                            duration:2000
-                        });
-                        //跳转至登入页
-                        $state.go("login", {}, {reload:true});
-                    }
-                    if(data.code == '1'){
-
-                    	if(data.data){
-                    		var data_shouye = JSON.stringify(data.data);
-                        	localStorage.setItem("cache_shouye",data_shouye);//更新缓存
-                    		$scope.input.name = data.data.name;
-                            $scope.input.telephone = data.data.telephone;
-                            $scope.input.user_num = data.data.user_num;
-                            $scope.input.score_send = data.data.score_send;
-                            $scope.input.score_receive = data.data.score_receive;
-                            $scope.input.youhui_num = data.data.youhui_num;
-                            if(data.data.head_logo==''){
-                                $scope.input.head_logo = "images/yanyubao_128.png";
-                            }else{
-                                $scope.input.head_logo = data.data.head_logo;
-                            }
-                            $scope.input.balcance_log_count = data.data.balcance_log_count;
-                    	}
-                        
-                        var common_app_toutiao = JSON.stringify(data.common_app_toutiao);
-                    	//console.log(common_app_toutiao);
-                    	
-                    	if(cache_common_app_toutiao != common_app_toutiao){
-                			localStorage.setItem("common_app_toutiao",common_app_toutiao);//更新头条缓存
-                			$scope.common_app_toutiao = data.common_app_toutiao;
-                		}
-                    }
-                })
-                .finally(function() {
-                    $scope.$broadcast('scroll.refreshComplete');
-                })
-            
-        };
-
-
-        $scope.yemian_tiaozhuan=function(url){
-
-            if (!login_obj) {
-                  $state.go("login", {}, {reload:true});
-                
-            }else{
      
-                // 
-                        if (url == 'change_photo') {
-                           $state.go(url, {'head_logo':$scope.input.head_logo}, {reload:true});
-                        }
 
-                        else if(url == 'set_up3'){
-
-                           $state.go(url, {'telephone':$scope.input.telephone}, {reload:true});
-                        
-                        }
-
-                        else{
-                            $state.go(url, {}, {reload:true});
-                        }
-                }
-
-        }
-
-     //解决轮播是两张图片时的bug
-      $scope.slideBanner = function (index) {
-          //console.log(index);
-          $scope.slideIndex = index;
-          if (($ionicSlideBoxDelegate.count() - 1 ) == index) {
-              $timeout(function () {
-                  $ionicSlideBoxDelegate.slide(0);
-              }, 4000);
-          }
-      };
-
-
-
-
-      /////////////预览跳转
-      $scope.yulan_tioazhuan=function(canshu,type){
-     
-         $http({
-            method: 'post',//请求方式
-            url: http_server+"/index.php?g=Yanyubao&m=Shang&a=goto_url",//请求地址
-            data: {'sellerid':login_obj.sellerid,'checkstr':login_obj.checkstr,'goto':canshu}//请求参数，如果使用JSON格式的对象则可为 data: JSON.stringify(obj),
-            //timeout: 8000//请求等待时间
-          })
-            .success(function(data){
-
-                if(data.code == '1'){
-                
-	                 var url= data.url;
+    });
+	
+	
+	
+	
+	  $scope.toutiao_jump = function(info){
+	    	   if(info.url.indexOf("location::") == 0){
+				 	var str = info.url;
+				 	var url = str.replace(/location::/, "");
+	  				if(info.key){
+	  					var name = info.key;
+	  					
+	  					//var options = new Object();
+	  					var options = {};
+	  					options[name] = info.value;	//用变量作为键值创建对象
+	  					console.log(JSON.stringify(options));
+	  					
+	  					$state.go(url, options, {reload:true});//若头条带参数
+	  					//$state.go(url, {'imgid':info.value}, {reload:true});//若头条带参数
+	  				}else{
+	  					$state.go(url, {}, {reload:true});
+	  				}
+	  				
+	  			}else if(info.url.indexOf("inappbrowser::") == 0){
+					var str = info.url;
+					var url = str.replace(/inappbrowser::/, "");
+					$scope.jump_InAppBrowser(url);
+				}
+				else{
+	  				 window.location.href = info.url;
+	 		}
+	  }
+	   
+	   $scope.doRefresh = function() {
+	   	console.log('aaaaaaaaaaa:'+login_obj.sellerid);
+	   	if(!login_obj.sellerid){
+	   		return;
+	   	}
+	   	
+	       $http({
+	           method: 'post',//请求方式
+	           url: http_server+"/index.php?g=Yanyubao&m=Shang&a=get_user_info&action=get",//请求地址
+	           data: {'sellerid':login_obj.sellerid,'checkstr':login_obj.checkstr}//请求参数，如果使用JSON格式的对象则可为 data: JSON.stringify(obj),
+	           //timeout: 8000//请求等待时间
+	       })
+	           .success(function(data){
+	
+	               if(data.code == '-1'){
+	                   $ionicLoading.show({
+	                       showBackdrop: false,
+	                       template:data.msg,
+	                       duration:2000
+	                   });
+	                   //跳转至登入页
+	                   $state.go("login", {}, {reload:true});
+	               }
+	               if(data.code == '1'){
+	
+	               	if(data.data){
+	               		var data_shouye = JSON.stringify(data.data);
+	                   	localStorage.setItem("cache_shouye",data_shouye);//更新缓存
+	               		$scope.input.name = data.data.name;
+	                       $scope.input.telephone = data.data.telephone;
+	                       $scope.input.user_num = data.data.user_num;
+	                       $scope.input.score_send = data.data.score_send;
+	                       $scope.input.score_receive = data.data.score_receive;
+	                       $scope.input.youhui_num = data.data.youhui_num;
+	                       if(data.data.head_logo==''){
+	                           $scope.input.head_logo = "images/yanyubao_128.png";
+	                       }else{
+	                           $scope.input.head_logo = data.data.head_logo;
+	                       }
+	                       $scope.input.balcance_log_count = data.data.balcance_log_count;
+	               	}
+	                   
+	                   var common_app_toutiao = JSON.stringify(data.common_app_toutiao);
+	               	//console.log(common_app_toutiao);
+	               	
+	               	if(cache_common_app_toutiao != common_app_toutiao){
+	           			localStorage.setItem("common_app_toutiao",common_app_toutiao);//更新头条缓存
+	           			$scope.common_app_toutiao = data.common_app_toutiao;
+	           		}
+	               }
+	           })
+	           .finally(function() {
+	               $scope.$broadcast('scroll.refreshComplete');
+	           })
+	       
+	   };
+	
+	
+	   $scope.yemian_tiaozhuan=function(url){
+	
+	       if (!login_obj) {
+	             $state.go("login", {}, {reload:true});
+	           
+	       }else{
+	
+	           // 
+	                   if (url == 'change_photo') {
+	                      $state.go(url, {'head_logo':$scope.input.head_logo}, {reload:true});
+	                   }
+	
+	                   else if(url == 'set_up3'){
+	
+	                      $state.go(url, {'telephone':$scope.input.telephone}, {reload:true});
+	                   
+	                   }
+	
+	                   else{
+	                       $state.go(url, {}, {reload:true});
+	                   }
+	           }
+	
+	   }
+	
+	//解决轮播是两张图片时的bug
+	 $scope.slideBanner = function (index) {
+	     //console.log(index);
+	     $scope.slideIndex = index;
+	     if (($ionicSlideBoxDelegate.count() - 1 ) == index) {
+	         $timeout(function () {
+	             $ionicSlideBoxDelegate.slide(0);
+	         }, 4000);
+	     }
+	 };
+	
+	
+	
+	
+	 /////////////预览跳转
+	 $scope.yulan_tioazhuan=function(canshu,type){
+	
+	    $http({
+	       method: 'post',//请求方式
+	       url: http_server+"/index.php?g=Yanyubao&m=Shang&a=goto_url",//请求地址
+	       data: {'sellerid':login_obj.sellerid,'checkstr':login_obj.checkstr,'goto':canshu}//请求参数，如果使用JSON格式的对象则可为 data: JSON.stringify(obj),
+	       //timeout: 8000//请求等待时间
+	     })
+	       .success(function(data){
+	
+	           if(data.code == '1'){
+	           
+	                var url= data.url;
+	                console.log(url);
+	                if(type == 'inappbrowser'){
+	               	 $scope.jump_InAppBrowser(url);
+	                }else{
+	               	 window.location.href = url;
+	                }
+	          }
+	
+	
+	       })
+	       .error(function(data,header,config,status){
+	
+	           //处理响应失败
+	           // 当ajax请求出现错误时，显示一个提示信息
+	           $ionicLoading.show({
+	               template:"网络延迟，请重新尝试",
+	               duration:3000
+	           });
+	       });
+	
+	
+	
+	
+	}
+	 
+	 
+	$scope.jump_InAppBrowser=function(url){
+	    	  if (!cordova.InAppBrowser) {
+	         return;
+	     }
+	     //location：设置为yes或no来打开或关闭插件的locationbar
+	     //android
+	     //zoom：设置为yes则显示缩放浏览器页面的按钮，设置为no则不显示缩放按钮
+	     //hardwareback：设置为yes则调用Android返回键回到前一界面，设置为no则返回键为退出浏览器页面
+	     
+	     //ios
+	     // toolbar=yes 仅iOS有效,提供关闭、返回、前进三个按钮
+	     // toolbarposition=top/bottom 仅iOS有效,决定toolbar的位置
+	     // closebuttoncaption=关闭 仅iOS有效
+	     
+	     var options = 'location=no,toolbarposition=top,toolbar=yes,closebuttoncaption=返回';
+	     if(cordova.platformId == 'android'){
+	         //options = 'location=yes,zoom=no,hardwareback=yes';
+	          options = 'location=no,zoom=no,hardwareback=yes';
+	     }
+	      else if(cordova.platformId == 'ios'){
+	          StatusBar.hide();
+	      }
+	      //StatusBar.styleBlackTranslucent();
+	      
+	     var ref = cordova.InAppBrowser.open(url, '_blank', options);
+	     ref.addEventListener('exit', function(){
+	                          //StatusBar.show();
+	                          if(cordova.platformId == 'ios'){
+	                              StatusBar.show();
+	                          }
+	                          
+	                          //跳转到首页
+	                          console.log('InAppBrowser被关闭');
+	                          $state.go("shouye", {}, {reload:true});
+	                          return;
+	     });
+	 }
+	 
+	 //服务市场
+	 $scope.server = function(){
+	    	  if(!login_obj){
+	         //跳转至登入页
+	         $state.go("login", {}, {reload:true});
+	         return;
+	     }
+	    	  
+	    	  $http({
+	         method: 'post',//请求方式
+	         url: http_server+"/index.php?g=Yanyubao&m=Shang&a=get_shop_shang_url",//请求地址
+	         //headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+	         data: {'sellerid':login_obj.sellerid,'checkstr':login_obj.checkstr}//请求参数，如果使用JSON格式的对象则可为 data: JSON.stringify(obj),
+	         //timeout: 8000//请求等待时间
+	     })
+	         .success(function(data){
+	             console.log(data);
+	             if(data.code == '1'){
+	                 //alert(data.shop_shang_url);
+	                 /*url = data.shop_shang_url;
 	                 console.log(url);
-	                 if(type == 'inappbrowser'){
-	                	 $scope.jump_InAppBrowser(url);
-	                 }else{
-	                	 window.location.href = url;
+	                 console.log(data.shop_shang_url);*/
+	                 
+	                 var url = data.shop_shang_url;
+	                 window.location.href = url;
+	                 //console.log(url);
+	                 /*if (!cordova.InAppBrowser) {
+	                     return;
+	                 }*/
+	                 //location：设置为yes或no来打开或关闭插件的locationbar
+	                 //android
+	                 //zoom：设置为yes则显示缩放浏览器页面的按钮，设置为no则不显示缩放按钮
+	                 //hardwareback：设置为yes则调用Android返回键回到前一界面，设置为no则返回键为退出浏览器页面
+	                 
+	                 //ios
+	                 // toolbar=yes 仅iOS有效,提供关闭、返回、前进三个按钮
+	                 // toolbarposition=top/bottom 仅iOS有效,决定toolbar的位置
+	                 // closebuttoncaption=关闭 仅iOS有效
+	                 
+	                 /*var options = 'location=no,toolbarposition=top,toolbar=yes,closebuttoncaption=返回';
+	                 if(cordova.platformId == 'android'){
+	                     //options = 'location=yes,zoom=no,hardwareback=yes';
+	                      options = 'location=no,zoom=no,hardwareback=yes';
 	                 }
-               }
-     
-
-            })
-            .error(function(data,header,config,status){
-
-                //处理响应失败
-                // 当ajax请求出现错误时，显示一个提示信息
-                $ionicLoading.show({
-                    template:"网络延迟，请重新尝试",
-                    duration:3000
-                });
-            });
-
-
-
-
-         }
-      
-      
-      $scope.jump_InAppBrowser=function(url){
-    	  if (!cordova.InAppBrowser) {
-              return;
-          }
-          //location：设置为yes或no来打开或关闭插件的locationbar
-          //android
-          //zoom：设置为yes则显示缩放浏览器页面的按钮，设置为no则不显示缩放按钮
-          //hardwareback：设置为yes则调用Android返回键回到前一界面，设置为no则返回键为退出浏览器页面
-          
-          //ios
-          // toolbar=yes 仅iOS有效,提供关闭、返回、前进三个按钮
-          // toolbarposition=top/bottom 仅iOS有效,决定toolbar的位置
-          // closebuttoncaption=关闭 仅iOS有效
-          
-          var options = 'location=no,toolbarposition=top,toolbar=yes,closebuttoncaption=返回';
-          if(cordova.platformId == 'android'){
-              //options = 'location=yes,zoom=no,hardwareback=yes';
-               options = 'location=no,zoom=no,hardwareback=yes';
-          }
-           else if(cordova.platformId == 'ios'){
-               StatusBar.hide();
-           }
-           //StatusBar.styleBlackTranslucent();
-           
-          var ref = cordova.InAppBrowser.open(url, '_blank', options);
-          ref.addEventListener('exit', function(){
-                               //StatusBar.show();
-                               if(cordova.platformId == 'ios'){
-                                   StatusBar.show();
-                               }
-                               
-                               //跳转到首页
-                               console.log('InAppBrowser被关闭');
-                               $state.go("shouye", {}, {reload:true});
-                               return;
-          });
-      }
-      
-      //服务市场
-      $scope.server = function(){
-    	  if(!login_obj){
-              //跳转至登入页
-              $state.go("login", {}, {reload:true});
-              return;
-          }
-    	  
-    	  $http({
-              method: 'post',//请求方式
-              url: http_server+"/index.php?g=Yanyubao&m=Shang&a=get_shop_shang_url",//请求地址
-              //headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-              data: {'sellerid':login_obj.sellerid,'checkstr':login_obj.checkstr}//请求参数，如果使用JSON格式的对象则可为 data: JSON.stringify(obj),
-              //timeout: 8000//请求等待时间
-          })
-              .success(function(data){
-                  console.log(data);
-                  if(data.code == '1'){
-                      //alert(data.shop_shang_url);
-                      /*url = data.shop_shang_url;
-                      console.log(url);
-                      console.log(data.shop_shang_url);*/
-                      
-                      var url = data.shop_shang_url;
-                      window.location.href = url;
-                      //console.log(url);
-                      /*if (!cordova.InAppBrowser) {
-                          return;
-                      }*/
-                      //location：设置为yes或no来打开或关闭插件的locationbar
-                      //android
-                      //zoom：设置为yes则显示缩放浏览器页面的按钮，设置为no则不显示缩放按钮
-                      //hardwareback：设置为yes则调用Android返回键回到前一界面，设置为no则返回键为退出浏览器页面
-                      
-                      //ios
-                      // toolbar=yes 仅iOS有效,提供关闭、返回、前进三个按钮
-                      // toolbarposition=top/bottom 仅iOS有效,决定toolbar的位置
-                      // closebuttoncaption=关闭 仅iOS有效
-                      
-                      /*var options = 'location=no,toolbarposition=top,toolbar=yes,closebuttoncaption=返回';
-                      if(cordova.platformId == 'android'){
-                          //options = 'location=yes,zoom=no,hardwareback=yes';
-                           options = 'location=no,zoom=no,hardwareback=yes';
-                      }
-                       else if(cordova.platformId == 'ios'){
-                           StatusBar.hide();
-                       }
-                       //StatusBar.styleBlackTranslucent();
-                       
-                      var ref = cordova.InAppBrowser.open(url, '_blank', options);
-                      ref.addEventListener('exit', function(){
-                                           //StatusBar.show();
-                                           if(cordova.platformId == 'ios'){
-                                               StatusBar.show();
-                                           }
-                                           
-                                           //跳转到首页
-                                           console.log('InAppBrowser被关闭');
-                                           $state.go("shouye", {}, {reload:true});
-                                           return;
-                      });*/
-                      //cordova.InAppBrowser.open(url, '_blank', 'location=no,hardwareback=yes,zoom=yes');
-                  }
-                  else if(data.code == -1){
-                      del_login_info();
-
-                      $ionicLoading.show({
-                          showBackdrop: false,
-                          template:data.msg,
-                          duration:2000
-                      });
-                      //跳转至登入页
-                      $state.go("login", {}, {reload:true});
-                      return;
-                  }
-
-                  //$scope.myUrl=$sce.trustAsResourceUrl(url);
-              })
-              .error(function(data,header,config,status){
-                  //处理响应失败
-                  // 当ajax请求出现错误时，显示一个提示信息
-                  $ionicLoading.show({
-                      template:"网络延迟，请重新尝试",
-                      duration:3000
-                  });
-              });
-      }
-     
-
-    })
+	                  else if(cordova.platformId == 'ios'){
+	                      StatusBar.hide();
+	                  }
+	                  //StatusBar.styleBlackTranslucent();
+	                  
+	                 var ref = cordova.InAppBrowser.open(url, '_blank', options);
+	                 ref.addEventListener('exit', function(){
+	                                      //StatusBar.show();
+	                                      if(cordova.platformId == 'ios'){
+	                                          StatusBar.show();
+	                                      }
+	                                      
+	                                      //跳转到首页
+	                                      console.log('InAppBrowser被关闭');
+	                                      $state.go("shouye", {}, {reload:true});
+	                                      return;
+	                 });*/
+	                 //cordova.InAppBrowser.open(url, '_blank', 'location=no,hardwareback=yes,zoom=yes');
+	             }
+	             else if(data.code == -1){
+	                 del_login_info();
+	
+	                 $ionicLoading.show({
+	                     showBackdrop: false,
+	                     template:data.msg,
+	                     duration:2000
+	                 });
+	                 //跳转至登入页
+	                 $state.go("login", {}, {reload:true});
+	                 return;
+	             }
+	
+	             //$scope.myUrl=$sce.trustAsResourceUrl(url);
+	         })
+	         .error(function(data,header,config,status){
+	             //处理响应失败
+	             // 当ajax请求出现错误时，显示一个提示信息
+	             $ionicLoading.show({
+	                 template:"网络延迟，请重新尝试",
+	                 duration:3000
+	             });
+	         });
+	 }
+	
 
 
 

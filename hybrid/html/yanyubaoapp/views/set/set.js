@@ -39,6 +39,8 @@ angular.module("set",[])
             //timeout: 8000//请求等待时间
         })
             .success(function(data){
+				
+				console.log('get_user_info set ==>> ' + JSON.stringify(data));
 
                 if(data.code == '-1'){
                     $ionicLoading.show({
@@ -50,18 +52,28 @@ angular.module("set",[])
                     $state.go("login", {}, {reload:true});
                     return;
                 }
+				
                 if(data.code == '1'){
                 	$scope.input.renzheng = data.data.renzheng;
+					
                     $scope.input.name = data.data.name;
+					
+					$scope.input.company_name = data.data.company_name;
+					
                     $scope.input.telephone = data.data.telephone;
                     $scope.input.address = data.data.address;
                     $scope.input.cardname = data.data.cardname;
+					
                     if(!data.data.head_logo){
                     	$scope.input.head_logo = 'images/yanyubao_128.png';
                     }else{
                     	$scope.input.head_logo = data.data.head_logo;
                     }
+					
                     $scope.input.mobile = data.data.mobile;
+					
+					
+					
                 }
                 if(wait == null){
                 	$ionicLoading.hide();
@@ -250,7 +262,86 @@ angular.module("set_up3",[])
              });
         }
 
+})
+
+
+///////////////////////////设置 商户字号(change_company_name)
+
+//angular.module("change_company_name",[])
+
+    .controller("change_company_name",function($scope,$http,$state,$ionicLoading,$stateParams){
+        var login_obj = get_login_info();
+        if(!login_obj){
+            //跳转至登入页
+            $state.go("login", {}, {reload:true});
+            return;
+        }
+		
+        $scope.input={};
+		
+        if($stateParams['company_name'] == "请输入公司名称"){
+            $scope.input.company_name = '';
+        }
+		else{
+            $scope.input.company_name = $stateParams['company_name'];
+        }
+		
+        $scope.set_company_name = function(company_name){
+            
+
+		   if(!company_name){
+				$ionicLoading.show({
+					showBackdrop: false,
+					template:"字号不能为空",
+					duration:2000
+				});
+				return false;
+			}
+
+            //设置商户名称
+            $http({
+             method: 'post',//请求方式
+             url: http_server+"/index.php?g=Yanyubao&m=Shang&a=set_company_name&action=set",//请求地址
+             data: {'sellerid':login_obj.sellerid,
+				'checkstr':login_obj.checkstr,
+				'company_name':company_name}//请求参数，如果使用JSON格式的对象则可为 data: JSON.stringify(obj),
+             //timeout: 8000//请求等待时间
+             })
+             .success(function(data){
+
+                     if(data.code == '-1'){
+                         $ionicLoading.show({
+                         showBackdrop: false,
+                         template:data.msg,
+                         duration:2000
+                         });
+                         //跳转至登入页
+                         $state.go("login", {}, {reload:true});
+                         return;
+                     }
+                     if(data.code == '1'){
+                         $ionicLoading.show({
+                              showBackdrop: false,
+                             template:data.msg,
+                             duration:2000
+                         });
+						 
+                         //跳转至设置页
+                         $state.go("set", {}, {reload:true});
+                         return;
+                     }
+                })
+             .error(function(data,header,config,status){
+                 $ionicLoading.show({
+                 showBackdrop: false,
+                 template:"网络延迟，请重新尝试",
+                 duration:2000
+                 });
+             });
+        }
+
 });
+
 
 ////////////////////////设置主题颜色(set_up4)
 
@@ -1103,8 +1194,110 @@ angular.module("set_up7",[])
         }
 });
 
-/////////////////设置商户地址(set_address)
 
+//////////////////地图坐标的转换
+//    //测试
+//    var res = CoordinateUtil.getWgs84xy(113.153461, 22.645211);
+//    console.log(res)
+	
+/**
+ * @原算法 https://www.jianshu.com/p/57ca061f3987
+ * @根据该作者的修改成JS版的
+ * @time 2019-7-17 09:58:42
+ * @description bd09 转WGS84,精准度高
+ * */
+var CoordinateUtil = {
+	x_pi: 3.14159265358979324 * 3000.0 / 180.0,
+	//pai
+	pi: 3.1415926535897932384626,
+	//离心率
+	ee: 0.00669342162296594323,
+	//长半轴
+	a: 6378245.0,
+	//百度转国测局
+	bd09togcj02: function(bd_lon, bd_lat) {
+		var x = bd_lon - 0.0065;
+		var y = bd_lat - 0.006;
+		var z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * CoordinateUtil.x_pi);
+		var theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * CoordinateUtil.x_pi);
+		var gg_lng = z * Math.cos(theta);
+		var gg_lat = z * Math.sin(theta);
+		return {
+			lng: gg_lng,
+			lat: gg_lat
+		}
+	},
+	//国测局转百度
+	gcj02tobd09: function(lng, lat) {
+	    var z = Math.sqrt(lng * lng + lat * lat) + 0.00002 * Math.sin(lat * CoordinateUtil.x_pi);
+	    var theta = Math.atan2(lat, lng) + 0.000003 * Math.cos(lng * CoordinateUtil.x_pi);
+		var bd_lng = z * Math.cos(theta) + 0.0065;
+		var bd_lat = z * Math.sin(theta) + 0.006;
+		return {
+			lng: bd_lng,
+			lat: bd_lat
+		};
+	},
+	//国测局转84
+	gcj02towgs84: function(lng, lat) {
+	    var dlat = CoordinateUtil.transformlat(lng - 105.0, lat - 35.0);
+	    var dlng = CoordinateUtil.transformlng(lng - 105.0, lat - 35.0);
+		var radlat = lat / 180.0 * CoordinateUtil.pi;
+		var magic = Math.sin(radlat);
+		magic = 1 - CoordinateUtil.ee * magic * magic;
+		var sqrtmagic = Math.sqrt(magic);
+		dlat = (dlat * 180.0) / ((CoordinateUtil.a * (1 - CoordinateUtil.ee)) / (magic * sqrtmagic) * CoordinateUtil.pi);
+		dlng = (dlng * 180.0) / (CoordinateUtil.a / sqrtmagic * Math.cos(radlat) * CoordinateUtil.pi);
+		var mglat = lat + dlat;
+		var mglng = lng + dlng;
+		return {
+			lng: lng * 2 - mglng,
+			lat: lat * 2 - mglat
+		};
+	},
+	//84转国测局
+	wgs84togcj02: function(lng, lat) {
+		
+	},
+	//经度转换
+	transformlat: function(lng, lat) {
+		var ret = -100.0 + 2.0 * lng + 3.0 * lat + 0.2 * lat * lat + 0.1 * lng * lat + 0.2 * Math.sqrt(Math.abs(lng));
+		ret += (20.0 * Math.sin(6.0 * lng * CoordinateUtil.pi) + 20.0 * Math.sin(2.0 * lng * CoordinateUtil.pi)) * 2.0 / 3.0;
+		ret += (20.0 * Math.sin(lat * CoordinateUtil.pi) + 40.0 * Math.sin(lat / 3.0 * CoordinateUtil.pi)) * 2.0 / 3.0;
+		ret += (160.0 * Math.sin(lat / 12.0 * CoordinateUtil.pi) + 320 * Math.sin(lat * CoordinateUtil.pi / 30.0)) * 2.0 / 3.0;
+		return ret;
+	},
+	//纬度转换
+	transformlng: function(lng, lat) {
+		var ret = 300.0 + lng + 2.0 * lat + 0.1 * lng * lng + 0.1 * lng * lat + 0.1 * Math.sqrt(Math.abs(lng));
+		ret += (20.0 * Math.sin(6.0 * lng * CoordinateUtil.pi) + 20.0 * Math.sin(2.0 * lng * CoordinateUtil.pi)) * 2.0 / 3.0;
+		ret += (20.0 * Math.sin(lng * CoordinateUtil.pi) + 40.0 * Math.sin(lng / 3.0 * CoordinateUtil.pi)) * 2.0 / 3.0;
+		ret += (150.0 * Math.sin(lng / 12.0 * CoordinateUtil.pi) + 300.0 * Math.sin(lng / 30.0 * CoordinateUtil.pi)) * 2.0 / 3.0;
+		return ret;
+	},
+	getWgs84xy:function(x,y){
+		//先转 国测局坐标
+		var doubles_gcj = CoordinateUtil.bd09togcj02(x, y); //（x 117.   y 36. ）
+		//国测局坐标转wgs84
+		var doubles_wgs84 = CoordinateUtil.gcj02towgs84(doubles_gcj.lng, doubles_gcj.lat);
+		//返回 纠偏后 坐标
+		 
+		return doubles_wgs84;
+	},
+	getBd09fromWgs84:function(lng, lat){
+		//84转国测局
+		var doubles_gcj = CoordinateUtil.gcj02towgs84(lng, lat); //（x 117.   y 36. ）
+		//国测局转百度
+		var doubles_bd09 = CoordinateUtil.gcj02tobd09(doubles_gcj.lng, doubles_gcj.lat);
+		
+		return doubles_bd09;
+		
+	},
+}
+
+
+
+/////////////////设置商户地址(set_address)
 angular.module("set_address",[])
 
     .controller("set_address",function($scope,$http,$state,$ionicLoading,$stateParams){
@@ -1136,12 +1329,46 @@ angular.module("set_address",[])
          
             function onError(error) {  
               console.log('code: '    + error.code    + '\n' + 'message: ' + error.message + '\n');  
-            }  
+            }
+			
+			
+			
             navigator.geolocation.getCurrentPosition(onSuccess, onError);  
-          }  
+        }  
         
-        $scope.getGeolocation();
+        //$scope.getGeolocation();
+		
+		///读取gps信息
+		$scope.getGeolocationUsingPlus = function() {
+			function onSuccess(p){
+				console.log('Geolocation\nLatitude:' + p.coords.latitude + '\nLongitude:' + p.coords.longitude + '\nAltitude:' + p.coords.altitude);
+				
+				$scope.wgs84_latitude = p.coords.latitude;//纬度
+				$scope.wgs84_longitude = p.coords.longitude;//经度
+				
+				var res = CoordinateUtil.getBd09fromWgs84($scope.wgs84_longitude, $scope.wgs84_latitude);
+				
+				console.log('Geolocation转换后\nLatitude:' + res.lat + '\nLongitude:' + res.lng);
+				
+				$scope.latitude = res.lat;//纬度
+				$scope.longitude = res.lng;//经度
+				
+			}
+			
+		 
+		    function onError(e) {  
+		      console.log('Geolocation error: ' + e.message);  
+		    }
+			
+			plus.geolocation.getCurrentPosition(onSuccess,  onError, 
+				{provider:'system', timeout:5000, enableHighAccuracy:false}
+			);
+		}
         
+		$scope.getGeolocationUsingPlus();
+		
+		
+		
         
         
         $scope.allProvinces = [  
@@ -1261,7 +1488,8 @@ angular.module("set_address",[])
          //timeout: 8000//请求等待时间
          })
          .success(function(data){
-                console.log(data);
+                console.log('set_address ==>> get ==>>' + JSON.stringify(data));
+				
                 if(data.code == '-1'){
                     $ionicLoading.show({
                              showBackdrop: false,
@@ -1275,15 +1503,19 @@ angular.module("set_address",[])
                 if(data.code == '1'){
                     if(data.province > '0'){
                         $scope.data.currentProvinceId = data.province;
+						
                         if(data.city > '0'){
                             $scope.switchProvince(data.province);
+							
                             $scope.data.currentCityId = data.city;
+							
                             if(data.district > '0'){
                                 $scope.switchCity(data.city);
                                 $scope.data.currentAreaId = data.district; 
                             }
                         }
                     }
+					
                     $scope.input.address = data.address; 
                      
                      
@@ -1299,11 +1531,12 @@ angular.module("set_address",[])
          });
         
 
-       $scope.set_shanghu_address=function(){
+       $scope.set_shanghu_address = function(){
             var province = $scope.data.currentProvinceId;
             var city = $scope.data.currentCityId;
             var district = $scope.data.currentAreaId;
             var address = $scope.input.address;
+			
             if(!province){
                 $ionicLoading.show({
                              showBackdrop: false,
@@ -1314,7 +1547,7 @@ angular.module("set_address",[])
             }
             if(!city){
                 $ionicLoading.show({
-                             showBackdrop: false,
+                    showBackdrop: false,
                     template:"请选择城市",
                     duration:2000
                 });
@@ -1322,7 +1555,7 @@ angular.module("set_address",[])
             }
             if(!district){
                 $ionicLoading.show({
-                             showBackdrop: false,
+                    showBackdrop: false,
                     template:"请选择区县",
                     duration:2000
                 });
@@ -1336,11 +1569,16 @@ angular.module("set_address",[])
                 });
                 return false;
             }
+			
             //设置商户地址
             $http({
              method: 'post',//请求方式
              url: http_server+"/index.php?g=Yanyubao&m=Shang&a=set_address&action=set",//请求地址
-             data: {'sellerid':login_obj.sellerid,'checkstr':login_obj.checkstr,'province':province,'city':city,'district':district,'address':address,'latitude':$scope.latitude,'longitude':$scope.longitude}//请求参数，如果使用JSON格式的对象则可为 data: JSON.stringify(obj),
+             data: {'sellerid':login_obj.sellerid,'checkstr':login_obj.checkstr,
+				'province':province,'city':city,'district':district,
+				'address':address,
+				'latitude':$scope.latitude,'longitude':$scope.longitude,
+				'wgs84_latitude':$scope.wgs84_latitude,'longitude':$scope.wgs84_longitude}//请求参数，如果使用JSON格式的对象则可为 data: JSON.stringify(obj),
              //timeout: 8000//请求等待时间
              })
              .success(function(data){
@@ -1769,12 +2007,12 @@ angular.module("set_user_mobile",[])
 
 /////////////更换头像(change_photo)
 document.addEventListener("deviceready", onDeviceReady, false);
+
 function onDeviceReady() {
-    console.log(navigator.camera);
+    console.log('navigator.camera ===>>> ' + navigator.camera);
 }
+
 angular.module("change_photo",[])
-
-
 .controller('change_photo', function($scope,$state,$ionicActionSheet,$stateParams,$ionicLoading,$timeout){
     var login_obj = get_login_info();
     if(!login_obj){
@@ -1805,13 +2043,100 @@ angular.module("change_photo",[])
             cancel: function() {
             },
             buttonClicked: function(index) {
+				
+				hideSheet();
+				
+				if(index == 0){
+					//拍照
+					var cmr = plus.camera.getCamera();
+					console.log( "Camera supperted image resolutions: " + cmr.supportedImageResolutions );
+					console.log( "Camera supperted image formats: " + cmr.supportedImageFormats );
+					console.log( "Camera supperted video formats: " + cmr.supportedVideoFormats );
+					
+					var res = cmr.supportedImageResolutions[0];
+					var fmt = cmr.supportedImageFormats[0];
+					console.log("Resolution: "+res+", Format: "+fmt);
+					cmr.captureImage( 
+						function( path ){
+							console.log( "Capture image success: " + path ); 
+							
+							
+							$scope.temp_image = path;
+							$scope.img = path;
+							//$scope.uoload_img();
+							
+							
+							                    
+							//弹出缓冲提示
+							$scope.showLoadingToast();
+							//这里使用定时器是为了缓存一下加载过程，防止加载过快
+							$timeout(function () {
+							  //停止缓冲提示
+							  $scope.hideLoadingToast();
+							}, 2500);
+							
+							
+						},
+						function( error ) {
+							console.log( "Capture image failed: " + error.message );
+						},
+						{resolution:res,format:fmt}
+					);
+					
+					
+				}
+				else if(index == 1){
+					//从相册选择
+					
+					console.log("从相册中选择图片:");
+					plus.gallery.pick( 
+						function(path){
+							console.log(path);
+							
+							
+							
+							$scope.temp_image = path;
+							$scope.img = path;
+							//$scope.uoload_img();
+							
+							
+												
+							//弹出缓冲提示
+							$scope.showLoadingToast();
+							//这里使用定时器是为了缓存一下加载过程，防止加载过快
+							$timeout(function () {
+							  //停止缓冲提示
+							  $scope.hideLoadingToast();
+							}, 2500);
+							
+							
+							
+							
+							
+						}, function ( e ) {
+							console.log( "取消选择图片" );
+						}, 
+						{filter:"image"} 
+					);
+					
+					
+					
+				}
+				
+				return;
+				
+				/*
+				var srcType = null;
+				
+				
                 if(index == 0){
                     //type = 'camera';
-                    var srcType = Camera.PictureSourceType.CAMERA;
+                    srcType = Camera.PictureSourceType.CAMERA;
                 }else if(index == 1){
                     //type = 'gallery';
-                    var srcType = Camera.PictureSourceType.SAVEDPHOTOALBUM;
+                    srcType = Camera.PictureSourceType.SAVEDPHOTOALBUM;
                 }
+				
                 var options = setOptions(srcType);
                 //var func = createNewFileEntry;
                 
@@ -1847,17 +2172,69 @@ angular.module("change_photo",[])
                       $scope.hideLoadingToast();
                     }, 2500);
                 }, options);
+				*/
                 
                 
                 
     　　　　　　　
-            }
+            }	// End of  buttonClicked: function(index) {
         });
+		
         $timeout(function() {
              hideSheet();
-         }, 3000);
+         }, 30000);
        
     };
+	
+	$scope.upload_img_using_plus = function(){
+		
+		var filename = $scope.temp_image.substr($scope.temp_image.lastIndexOf('/')+1);
+		
+		console.log('upload_img_using_plus filename ===>>> ' + filename);
+		
+		var task = plus.uploader.createUpload( http_server + "/index.php?g=Yanyubao&m=Shang&a=upload_image_file", 
+			{ method:"POST",priority:100 },
+			function ( t, status ) {
+				// 上传完成
+				if ( status == 200 ) { 
+					console.log( "Upload success: " + JSON.stringify(t) );
+					
+					var resp = JSON.parse(t.responseText);
+					
+					//显示提示信息
+					$ionicLoading.show({
+					    showBackdrop: false,
+					    template:resp.msg,
+					    duration:2000
+					});
+					
+					
+					$timeout(function() {
+					     if(resp.code == 1){
+					         //跳转至设置页
+					         $state.go("set", {}, {reload:true});
+					     }
+					 }, 2000);
+					
+					
+					
+				} else {
+					console.log( "Upload failed: " + JSON.stringify(status) );
+				}
+			}
+		);
+		
+		
+		task.addFile( $scope.temp_image, {key:"ffile"} );
+		task.addData( "sellerid", login_obj.sellerid );
+		task.addData( "checkstr", login_obj.checkstr );
+		task.addData( "fileName", filename );
+		//task.addEventListener( "statechanged", onStateChanged, false );
+		task.start();
+	
+		
+		
+	};
     
     
     $scope.uoload_img=function(){
@@ -2085,7 +2462,8 @@ angular.module('shanghu_imgs', [])
                                 {text:"添加",
                                     
                                     onTap:function(){
-                                         $scope.shanghu_img_add();
+                                        //$scope.shanghu_img_add();
+										$scope.shanghu_img_add_using_plus();
                                     }
                                 }
                             ]
@@ -2107,9 +2485,41 @@ angular.module('shanghu_imgs', [])
         }
         
         $scope.get_shanghu_imgs();
+		
+		$scope.shanghu_img_add_using_plus = function(){
+			console.log("从相册中选择图片:");
+			plus.gallery.pick( 
+				function(path){
+					console.log(path);
+					
+					$scope.temp_image = path;
+					
+					$scope.upload_img_using_plus();
+					
+					//弹出缓冲提示
+					$scope.showLoadingToast();
+					//这里使用定时器是为了缓存一下加载过程，防止加载过快
+					$timeout(function () {
+					  //停止缓冲提示
+					  $scope.hideLoadingToast();
+					}, 2500);
+					
+					
+					
+					
+				}, function ( e ) {
+					console.log( "取消选择图片" );
+				}, 
+				{filter:"image"} 
+			);
+			
+			
+		};
         
-        $scope.shanghu_img_add=function() {
+        $scope.shanghu_img_add = function() {
+			
             //alert('aaa');
+			
             var type = 'gallery';
             var srcType = Camera.PictureSourceType.SAVEDPHOTOALBUM;
             var options = setOptions(srcType);
@@ -2148,6 +2558,57 @@ angular.module('shanghu_imgs', [])
            
         };
         
+		
+		$scope.upload_img_using_plus = function(){
+			
+			var filename = $scope.temp_image.substr($scope.temp_image.lastIndexOf('/')+1);
+			
+			console.log('upload_img_using_plus filename ===>>> ' + filename);
+			
+			var task = plus.uploader.createUpload( http_server + "/index.php?g=Yanyubao&m=Shang&a=upload_image_file&action="+'upload_shanghu_img',
+				{ method:"POST",priority:100 },
+				function ( t, status ) {
+					// 上传完成
+					if ( status == 200 ) { 
+						console.log( "Upload success: " + JSON.stringify(t) );
+						
+						var resp = JSON.parse(t.responseText);
+						
+						//显示提示信息
+						$ionicLoading.show({
+						    showBackdrop: false,
+						    template:resp.msg,
+						    duration:2000
+						});
+						
+						
+						$timeout(function() {
+						     if(resp.code == 1){
+						        
+								$scope.get_shanghu_imgs();
+								
+						     }
+						 }, 2000);
+						
+						
+						
+					} else {
+						console.log( "Upload failed: " + JSON.stringify(status) );
+					}
+				}
+			);
+			
+			
+			task.addFile( $scope.temp_image, {key:"ffile"} );
+			task.addData( "sellerid", login_obj.sellerid );
+			task.addData( "checkstr", login_obj.checkstr );
+			task.addData( "fileName", filename );
+			//task.addEventListener( "statechanged", onStateChanged, false );
+			task.start();
+		
+			
+			
+		};
         
         $scope.uoload_img=function(){
             //新建文件上传选项，并设置文件key，name，type
@@ -2390,52 +2851,36 @@ angular.module("yijianfankui",[])
             cancel: function() {
             },
             buttonClicked: function(index) {
-                if(index == 10){
-                    //type = 'camera';
-                    var srcType = Camera.PictureSourceType.CAMERA;
-                }else if(index == 0){
-                    //type = 'gallery';
-                    var srcType = Camera.PictureSourceType.SAVEDPHOTOALBUM;
-                }
-                var options = setOptions(srcType);
-                //var func = createNewFileEntry;
-                
-                options.targetHeight = 1200;
-                options.targetWidth =1200;
-                
-                navigator.camera.getPicture(function cameraSuccess(imageUri) {
-                     $scope.temp_image=imageUri;
-                     $scope.input.pic01=imageUri;
-                     $scope.input.isshow=true;
-                     //$scope.uoload_img();
-                     
-                     
-                    
-                     //弹出缓冲提示
-                     $scope.showLoadingToast();
-                     //这里使用定时器是为了缓存一下加载过程，防止加载过快
-                     $timeout(function () {
-                       //停止缓冲提示
-                       $scope.hideLoadingToast();
-                     }, 500);
-                     
-
-                }, function cameraError(error) {
-                    console.debug("Unable to obtain picture: " + error, "app");
-                    
-                     /*//显示等待
-                    //弹出缓冲提示
-                    $scope.showLoadingToast();
-                    //这里使用定时器是为了缓存一下加载过程，防止加载过快
-                    $timeout(function () {
-                      //停止缓冲提示
-                      $scope.hideLoadingToast();
-                    }, 2500);*/
-                }, options);
-                
-                
-                
-    　　　　　　　
+				
+				console.log("从相册中选择图片:");
+				plus.gallery.pick( 
+					function(path){
+						console.log(path);
+						
+						$scope.temp_image = path;
+						$scope.input.pic01 = path;
+						$scope.input.isshow = true;
+						//$scope.uoload_img();
+						
+						
+						                    
+						//弹出缓冲提示
+						$scope.showLoadingToast();
+						//这里使用定时器是为了缓存一下加载过程，防止加载过快
+						$timeout(function () {
+						  //停止缓冲提示
+						  $scope.hideLoadingToast();
+						}, 500);
+						
+						
+					}, function ( e ) {
+						console.log( "取消选择图片" );
+					}, 
+					{filter:"image"} 
+				);
+				
+				return;
+				
             }
         });
         $timeout(function() {
@@ -2448,6 +2893,7 @@ angular.module("yijianfankui",[])
     $scope.submit_yijian=function(){
         
         var yijian = $scope.input.yijian;
+		
         if(!yijian){
             $ionicLoading.show({
                              showBackdrop: false,
@@ -2456,6 +2902,7 @@ angular.module("yijianfankui",[])
             });
             return;
         }
+		
         if(!$scope.temp_image){
             
            //存储意见反馈,不带图
@@ -2502,68 +2949,59 @@ angular.module("yijianfankui",[])
        
             
             
-        }else{
-            var options = new FileUploadOptions();
-            
-            options.fileKey="ffile";
-            options.fileName=$scope.temp_image.substr($scope.temp_image.lastIndexOf('/')+1);
-            options.mimeType="image/jpeg";
-            //用params保存其他参数，例如昵称，年龄之类
-            var params = {};
-            params['content'] = yijian;
-            params['sellerid'] = login_obj.sellerid;
-            params['checkstr'] = login_obj.checkstr;
-            params['fileName'] = options.fileName;
-            //把params添加到options的params中
-            options.params = params;
-            //新建FileTransfer对象
-            var ft = new FileTransfer();
-            var upload_url = http_server + "/index.php?g=Yanyubao&m=Shang&a=submit_yijian";
-            //上传文件
-            ft.upload(
-                $scope.temp_image,
-                encodeURI(upload_url),//把图片及其他参数发送到这个URL，相当于一个请求，在后台接收图片及其他参数然后处理
-                uploadSuccess,
-                uploadError,
-                options);
-            //upload成功的话
-            function uploadSuccess(r) {
-                console.log(r);
-                var resp = JSON.parse(r.response);
-                
-                if(resp.code == '-1'){
-                    $ionicLoading.show({
-                             showBackdrop: false,
-                        template:resp.msg,
-                        duration:2000
-                    });
-                    //跳转至登入页
-                    $state.go("login", {}, {reload:true});
-                    return;
-                }
-                
-                if(resp.code == 1){
-                    $ionicLoading.show({
-                             showBackdrop: false,
-                        template:resp.msg,
-                        duration:2000
-                    });
-                    //跳转至登入页
-                    $state.go("set", {}, {reload:true});
-                    return;
-                }
-                
-            }
-            //upload失败的话
-            function uploadError(error) {
-                $ionicLoading.show({
-                             showBackdrop: false,
-                    template:"头像上传失败",
-                    duration:2000
-                });
-                //跳转至登入页
-                $state.go("set", {}, {reload:true});
-            }
+        }
+		else{
+			
+			var filename = $scope.temp_image.substr($scope.temp_image.lastIndexOf('/')+1);
+						
+			console.log('upload_img_using_plus filename ===>>> ' + filename);
+			
+			var task = plus.uploader.createUpload( http_server + "/index.php?g=Yanyubao&m=Shang&a=submit_yijian",
+				{ method:"POST",priority:100 },
+				function ( t, status ) {
+					// 上传完成
+					if ( status == 200 ) { 
+						console.log( "Upload success: " + JSON.stringify(t) );
+						
+						var resp = JSON.parse(t.responseText);
+						
+						//显示提示信息
+						$ionicLoading.show({
+							showBackdrop: false,
+							template:resp.msg,
+							duration:2000
+						});
+						
+						
+						$timeout(function() {
+							 if(resp.code == 1){
+								
+								//跳转至设置页
+								$state.go("set", {}, {reload:true});
+								
+							 }
+						 }, 2000);
+						
+						
+						
+					} else {
+						console.log( "Upload failed: " + JSON.stringify(status) );
+					}
+				}
+			);
+			
+			
+			task.addFile( $scope.temp_image, {key:"ffile"} );
+			task.addData( "sellerid", login_obj.sellerid );
+			task.addData( "checkstr", login_obj.checkstr );
+			task.addData( "fileName", filename );
+			
+			task.addData( "content", yijian );
+			
+			//task.addEventListener( "statechanged", onStateChanged, false );
+			task.start();
+			
+			
         }
         
     }

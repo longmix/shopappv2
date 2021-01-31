@@ -201,13 +201,14 @@
 			:show_zhuanti_title = 1></publishList>
 			
 		<!-- 商品列表 -->
-		<view v-if="current_product_list && (wxa_hidden_product_list ==0)"
-			class="zhuanti_title">———— ※ 最新上架 ※ ————</view>
-		<productList v-if="current_product_list && (wxa_hidden_product_list == 0)" 
-			:productsList="current_product_list" 
-			:loadingText="loadingText" 
-			:showKucunSale="wxa_show_kucun_in_list" 
-			@toGoods="toGoods"></productList>	
+		<block v-if="current_product_list && (wxa_hidden_product_list ==0)">
+			<view class="zhuanti_title">   ———— ※ 最新上架 ※ ————   </view>
+			<productList  
+				:productsList="current_product_list" 
+				:loadingText="loadingText" 
+				:showKucunSale="wxa_show_kucun_in_list" 
+				@toGoods="toGoods"></productList>
+		</block>
 
 		<!-- 客服按钮 -->
 		<view class="u-tap-btn" v-if="(wxa_show_kefu_button==1) && (wxa_kefu_bg_no_color_flag == 0)">
@@ -358,18 +359,22 @@ export default {
 			navigation_icon:0,
 			
 			yingxiao_list:'',
+			
 			page_num:1,
-			page_size:5,
+			page_size:10,
 			is_OK:false,
+			
 			cb_params:'',
 			city: '北京',
 			
 			coordinate:'',
 			index_list:[],
 			Promotion: [],
+			
+			
 			//猜你喜欢列表
 			twoArr:'',
-			page: '',
+
 			
 			current_product_list:[{inventory:"1", price:"0"}],
 			loadingText: '正在加载...',
@@ -640,66 +645,9 @@ export default {
 	
 	//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
 	onReachBottom: function () {
-		var that = this;
 		
-		if(that.wxa_hidden_product_list == 1){
-			return;
-		}
+		this.get_product_list();
 		
-		var page_num = that.page_num;
-		that.page_num ++;
-		
-		if(this.is_OK){
-			/*uni.showToast({
-				title: '已经到底了~',
-				duration: 2000
-			});*/
-			
-			return;
-		}
-		
-		var post_data = {
-				sellerid:this.abotapi.globalData.default_sellerid,
-				sort: 1,
-				page: that.page_num,
-				page_size:that.page_size,
-		    };
-		
-		if(this.wxa_product_list_show_type == 'is_recommend'){
-			post_data.is_recommend = 1;
-		}
-		else if(this.wxa_product_list_show_type == 'is_hot'){
-			post_data.is_hot = 1;
-		}
-		
-		
-		this.abotapi.abotRequest({
-		    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
-		    data: post_data,
-		    success: function (res) {
-	
-				
-				if(res.data.code == 1){
-					that.is_OK = false;
-					that.current_product_list = that.current_product_list.concat(res.data.product_list);
-					console.log('超过一页',that.current_product_list)
-					uni.stopPullDownRefresh();//得到数据后停止下拉刷新
-				}else if(res.data.code == 0){
-					that.is_OK = true;
-					uni.showToast({
-						title: '已经到底了~',
-						duration: 2000
-					});
-					return;
-				}
-		    },
-		    fail: function (e) {
-				uni.showToast({
-					title: '已经到底了~',
-					duration: 2000
-				});
-		    },
-		});
 	},
 	 
 	onShareTimeline: function () {
@@ -1534,12 +1482,31 @@ export default {
 		get_product_list:function(){
 			console.log('get_product_list=====>>>>>');
 			
+			if(this.wxa_hidden_product_list == 1){
+				console.log('隐藏了商品列表，不加载');
+				
+				return;
+			}
+			
 			var that = this;
+			
+			
+			
+			if(this.is_OK){
+				/*uni.showToast({
+					title: '已经到底了~',
+					duration: 2000
+				});*/
+				
+				return;
+			}
+			
+			this.is_OK = true;
 			
 			var post_data = {
 					sellerid:this.abotapi.globalData.default_sellerid,
 					sort: 1,
-					page: that.page,
+					page: that.page_num,
 					page_size:that.page_size,
 			    };
 			
@@ -1561,16 +1528,39 @@ export default {
 					}
 					
 					if(res.data.code == 1){
-						that.is_OK = false;
-						that.current_product_list = res.data.product_list;
-						if(that.page == 1){
+						
+						console.log('获取商品列表，页码：' + that.page_num);
+						
+						
+						
+						if(that.page_num == 1){
 							console.log('第一页')
 							that.current_product_list = res.data.product_list;
-							console.log('第一页index',that.current_product_list)
+							//console.log('第一页index',that.current_product_list)
 						}
+						else{
+							that.current_product_list = that.current_product_list.concat(res.data.product_list);
+							
+							//console.log('超过一页',that.current_product_list)
+							
+							uni.stopPullDownRefresh();//得到数据后停止下拉刷新
+						}
+						
+						that.is_OK = false;
+						that.page_num ++;
+					}
+					else if(res.data.code == 0){
+						that.is_OK = true;
+						uni.showToast({
+							title: '已经到底了~',
+							duration: 2000
+						});
+						return;
 					}
 					
-					console.log('第一1111111页index111',that.current_product_list)
+					
+					
+					
 			    },
 			    fail: function (e) {
 					uni.showToast({

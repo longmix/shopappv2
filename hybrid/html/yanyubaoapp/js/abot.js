@@ -43,10 +43,18 @@ function get_login_info(){
     //缓存返回数据
     var login_info = localStorage.getItem("yanyubao_login_info");
 
-    console.log(login_info);
-
-
     var obj = JSON.parse(login_info);
+
+	
+	//console.log('plus===>>>', plus);
+	
+	//var login_info = plus.storage.getItem('wxa_user_info');
+	//var wxa_user_info = localStorage.getItem('wxa_user_info');	
+	//var login_info = uni.getStorageSync("wxa_user_info");	
+	//console.log('wxa_user_info====>>>>'+wxa_user_info);
+	//console.log('yanyubao_login_info====>>>>'+login_info);
+	
+	
     /*if(obj == null){
      location.href="login.html";
      }*/
