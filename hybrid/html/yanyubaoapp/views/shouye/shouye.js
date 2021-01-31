@@ -283,7 +283,7 @@ angular.module("shouye",[])
                         
 
                     	//版本更新提示
-                    	if(data.update_app_msg){
+                    	if(data.update_app_msg == '88888888888888888'){
                     		if(data.update_app_msg.code == '1'){
                             	$ionicPopup.show({
                                     template:"<p style='text-align: center'>"+data.update_app_msg.msg+"</p>",
@@ -307,7 +307,8 @@ angular.module("shouye",[])
                             }
                     	}
                     	/////引导用户去评论的弹出框内容
-                    	else if(data.rate){
+                    	//else if(data.rate){
+						else if(data.rate == '888888888888888'){
                     		//localStorage.removeItem(data.rate.version_id);
                     		var rate_to_app = localStorage.getItem(data.rate.version_id);
                         	console.log(rate_to_app);
@@ -369,7 +370,7 @@ angular.module("shouye",[])
                             }
                     	}
                     	//弹出普通消息
-                    	else if(data.common_app_msg){
+                    	else if(data.common_app_msg == '888888888888888888'){
                     		$ionicPopup.show({
                                 template:"<p style='text-align: center'>"+data.common_app_msg.msg+"</p>",
                                 title:"友情提示",

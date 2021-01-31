@@ -108,13 +108,36 @@
 		<view v-if="wxa_show_video_player == 1" style="text-align: center;">
 		   <video object-fit='fill' :src="wxa_video_player_url" :poster='wxa_video_screen_url'
 			controls="true" :autoplay="wxa_show_video_autoplay"
-			
-			:style="{width:videometa_width_height[0] + 'rpx;height:' + videometa_width_height[1] + 'rpx;'}"
+			:style="{width:videometa_width_height[0] + 'rpx', height: + videometa_width_height[1] + 'rpx'}"
 			@loadedmetadata="videometa_auto_set($event)"
 			enable-play-gesture="true"
 
 			>
 			</video>
+		</view>
+<!-- #endif -->
+<!-- #ifdef H5 -->		
+		<view v-if="wxa_show_video_player == 1" style="text-align: center;">
+		   <video object-fit='fill' :src="wxa_video_player_url" :poster='wxa_video_screen_url'
+			controls="true" :autoplay="wxa_show_video_autoplay"
+			:style="{width:videometa_width_height[0] + 'rpx', height: + videometa_width_height[1] + 'rpx'}"
+			enable-play-gesture="true"
+			>
+			</video>
+			<view style="display:none;">
+				<image mode="widthFix" :src="wxa_video_screen_url" @load="videometa_auto_set($event)"></image>
+			</view>
+		</view>
+<!-- #endif -->
+<!-- #ifdef APP-PLUS -->		
+		<view v-if="wxa_show_video_player == 1" style="text-align: center;">
+		   <video object-fit='fill' :src="wxa_video_player_url" :poster='wxa_video_screen_url'
+			controls="true" :autoplay="wxa_show_video_autoplay"	
+			:style="{width:videometa_width_height[0] + 'rpx', height: + videometa_width_height[1] + 'rpx'}"
+			enable-play-gesture="true"
+			>
+			</video>
+			<view style="display:none;"><image :src="wxa_video_screen_url" @load="videometa_auto_set($event)"></image></view>
 		</view>
 <!-- #endif -->
 		
@@ -805,9 +828,10 @@ export default {
 			//赋值给前端
 			var videometa_width_height = [current_view_width, current_view_height];
 		
-			console.log('videometa_width_height====>>>>', videometa_width_height);
 			
 			this.videometa_width_height = videometa_width_height;
+			
+			console.log('videometa_width_height====>>>>', this.videometa_width_height);
 			
 		},
 		
@@ -927,6 +951,8 @@ export default {
 			if (cb_params.option_list.wxa_video_screen_url) {
 			  
 			    that.wxa_video_screen_url = cb_params.option_list.wxa_video_screen_url
+				
+				//that.videometa_width_height = [375, 210];
 			  
 			}
 			if (cb_params.option_list.wxa_shop_toutiao_flash_line) {
