@@ -1,10 +1,11 @@
 <template>
 	<view>
 		<!-- 状态栏 -->
-		<view v-if="showHeader" class="mystatusbar" :style="{ position: headerPosition,top:statusTop,opacity: afterHeaderOpacity, fontColor:wxa_shop_nav_font_color}"></view>
+		<view v-if="showHeader" class="mystatusbar" 
+			:style="{ position: headerPosition,top:statusTop,opacity: afterHeaderOpacity, fontColor:wxa_shop_nav_font_color}"></view>
 		
 		<!-- 顶部导航栏 -->
-		<view v-if="wxa_show_search_input == 1" class="header" 
+		<view v-if="wxa_show_search_input == 1" class="statusbar_header" 
 			:style="{ position: headerPosition,top:headerTop,opacity: afterHeaderOpacity }">
 			<!-- 定位城市 -->
 			<navigator v-if="disable_gps_location != 1"
@@ -33,15 +34,17 @@
 		</view>
 		
 		<!-- 占位 -->
-		<view v-if="showHeader" class="place"></view>
+		<view v-if="showHeader" class="statusbar_place"
+			:style="(wxa_show_search_input == 1)?'height:100rpx;':'height:10rpx;' "></view>
 		
 		<!-- 轮播图 -->
 		<view class="swiper" v-if="wxa_show_index_swiper == 1">
-			<view class="swiper-box">
-				<swiper circular="true" autoplay="true" @change="swiperChange" :style="{height:imgheights[current] + 'px'} ">
-					<swiper-item v-for="(swiper,index) in flash_ad_list" :key="swiper.id" @click="toAdDetails(flash_ad_list[index].url)">
+			<view class="swiper-box" :style="{height:swiper_box_height + 'px'} ">
+				<swiper circular="true" autoplay="true" @change="swiperChange" 
+					:style="{height:swiper_box_height + 'px'} ">
+					<swiper-item v-for="(swiper, index) in flash_ad_list" :key="swiper.id" @click="toAdDetails(flash_ad_list[index].url)">
 						<image class="img_swiper" @load="imageLoad($event)" 
-							 :style="{height:imgheights[current] + 'px'} "
+							 :style="{height:swiper_img_heights[currentSwiper] + 'px'} "
 							:data-id='index' :src="swiper.image" mode="widthFix"></image>
 					</swiper-item>
 				</swiper>
@@ -347,8 +350,8 @@ export default {
 			statusTop:null,
 			nVueTitle:null,
 			
-			currentSwiper: 0,
-			// 轮播图片
+			
+			
 			
 			flash_ad_list:null,
 			flash_img_list:null,
@@ -383,8 +386,11 @@ export default {
 			wxa_product_list_show_type:'',
 			wxa_hidden_product_list:0,
 			
-			imgheights: [],
-			current: 0,
+			// 轮播图片
+			currentSwiper: 0,
+			swiper_img_heights: [],
+			swiper_box_height:100,
+			
 			windowHeight: 0,
 			windowWidth: 0,
 			sugData:'',
@@ -1942,17 +1948,19 @@ export default {
 			console.log('imageLoad id===>>> '+e.target.dataset.id +'显示大小：');
 			console.log(this.windowWidth * 0.92, imgheight)
 			
-		    var imgheights = this.imgheights;
+		    var imgheights = this.swiper_img_heights;
 			
 			console.log('sdhsdshjdsk',imgheights);
 			
 		    //把每一张图片的对应的高度记录到数组里  
 		    //imgheights[e.target.dataset.id] = uni.upx2px(imgheight);
 			imgheights[e.target.dataset.id] = imgheight;
+			
+			this.swiper_box_height = imgheight;
 	
 		    console.log('imageLoad id===>>> '+e.target.dataset.id +", imgheights====>>>", imgheights);		
 	
-		     this.imgheights = imgheights
+		    this.swiper_img_heights = imgheights
 		   
 		  },
 		
@@ -2186,7 +2194,16 @@ page{position: relative;background-color: #fff;}
 	height: var(--status-bar-height); //覆盖样式
 	/*  #endif  */
 }
-.header {
+
+.statusbar_place {
+	background-color: #ffffff;
+	height: 10rpx;
+	/*  #ifdef  APP-PLUS  */
+	margin-top: var(--status-bar-height);
+	/*  #endif  */
+}
+
+.statusbar_header {
 	width: 92%;
 	padding: 0 4%;
 	height: 100upx;
@@ -2258,13 +2275,7 @@ page{position: relative;background-color: #fff;}
 		}
 	}
 }
-.place {
-	background-color: #ffffff;
-	height: 100upx;
-	/*  #ifdef  APP-PLUS  */
-	margin-top: var(--status-bar-height);
-	/*  #endif  */
-}
+
 .swiper {
 	width: 100%;
 	margin-top: 10upx;
