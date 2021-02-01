@@ -3,7 +3,7 @@
     "appid" : "__UNI__A79BAA4",
     "description" : "会员.电商.SaaS云",
     "versionName" : "3.0.1",
-    "versionCode" : 830,
+    "versionCode" : 832,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true, //是否启用`自定义组件模式`，为true表示新的`自定义组件模式` ，否则为`template模板模式`   
@@ -25,7 +25,9 @@
             "VideoPlayer" : {},
             "Maps" : {},
             "Speech" : {},
-            "Payment" : {}
+            "Payment" : {},
+            "Push" : {},
+            "Geolocation" : {}
         },
         /* 模块配置 */
         "distribute" : {
@@ -68,7 +70,8 @@
                     "NSCameraUsageDescription" : "使用相机拍摄商品以及设置头像",
                     "NSLocationWhenInUseUsageDescription" : "访问位置以计算最近的服务网点",
                     "NSLocationAlwaysUsageDescription" : "访问位置以计算最近的服务网点",
-                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "访问位置以计算最近的服务网点"
+                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "访问位置以计算最近的服务网点",
+                    "NSMicrophoneUsageDescription" : "使用麦克风录制视频的时候获取声音"
                 }
             },
             /* ios打包配置 */
@@ -105,6 +108,13 @@
                 },
                 "push" : {
                     "unipush" : {}
+                },
+                "geolocation" : {
+                    "amap" : {
+                        "__platform__" : [ "ios", "android" ],
+                        "appkey_ios" : "93094a28bc895a74cd1690bf390ba6ea",
+                        "appkey_android" : "647d08ffaa523902a2503fa958e5afa7"
+                    }
                 }
             },
             "icons" : {
