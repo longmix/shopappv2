@@ -2028,6 +2028,57 @@ angular.module("change_photo",[])
     }else{
         $scope.img=img;
     }
+	
+	
+	
+	
+	
+	
+	
+	//图片压缩
+	function compressImage(url, filename){    
+	       var name="_doc/upload/"+filename;  
+	       plus.zip.compressImage({    
+	               src:url,//src: (String 类型 )压缩转换原始图片的路径    
+	               dst:name,//压缩转换目标图片的路径    
+	               quality:90,//quality: (Number 类型 )压缩图片的质量.取值范围为1-100    
+	               overwrite:true,//overwrite: (Boolean 类型 )覆盖生成新文件
+				   format:'jpg',
+	               width:'250',
+	                height:'320'
+	                
+	           },    
+	           function(zip) {  
+	               //页面显示图片  
+	               showPics(zip.target,name); 
+	           },function(error) {    
+	               plus.nativeUI.toast("压缩图片失败，请稍候再试");    
+	       });    
+	   }
+	
+	 function showPics(url,name){ 
+	     //根据路径读取到文件   
+	       plus.io.resolveLocalFileSystemURL(url,function(entry){  
+	           entry.file( function(file){  
+	               var fileReader = new plus.io.FileReader();  
+	               fileReader.readAsDataURL(file);  
+	               fileReader.onloadend = function(e) {  
+	                    var picUrl = e.target.result.toString();  
+	                    var img1 = $("#img1").attr("src");//获取页面存放图片标签的值
+	                    if(img1 =="" || img1 == undefined){    
+	                        $("#img1").attr("src",picUrl);//将图片base64编码赋值给img标签
+	                    }  
+	               }  
+	           });  
+	      });   
+	   }
+	
+	
+	
+	
+	
+	
+	
     
     $scope.choosePicMenu = function() {
         //alert('aaa');
@@ -2049,38 +2100,49 @@ angular.module("change_photo",[])
 				if(index == 0){
 					//拍照
 					var cmr = plus.camera.getCamera();
-					console.log( "Camera supperted image resolutions: " + cmr.supportedImageResolutions );
+					console.log( "Camera supperted image resolutions: " + JSON.stringify(cmr.supportedImageResolutions) );
 					console.log( "Camera supperted image formats: " + cmr.supportedImageFormats );
 					console.log( "Camera supperted video formats: " + cmr.supportedVideoFormats );
 					
 					var res = cmr.supportedImageResolutions[0];
 					var fmt = cmr.supportedImageFormats[0];
-					console.log("Resolution: "+res+", Format: "+fmt);
+					
+					console.log("Resolution: "+res+", format: "+fmt);
+					
+					//弹出缓冲提示
+					$scope.showLoadingToast();
+					
 					cmr.captureImage( 
 						function( path ){
 							console.log( "Capture image success: " + path ); 
 							
-							
-							$scope.temp_image = path;
-							$scope.img = path;
-							//$scope.uoload_img();
-							
+							plus.io.resolveLocalFileSystemURL(path, function(entry) {    
+								//compressImage(entry.toLocalURL(),entry.name);
+								
+								console.log('aaaaa====>>>>' + entry.toLocalURL() + '  bbbbbbbbbbb====>>>>' + entry.name);
+								
+								
+								$scope.temp_image = entry.toLocalURL();
+								$scope.img = entry.toLocalURL();
+								
+								$scope.compress_image_file_using_plus();
+								
+								
+							}, function(e) {    
+								plus.nativeUI.toast("读取拍照文件错误：" + e.message);    
+							});    
+							   
 							
 							                    
-							//弹出缓冲提示
-							$scope.showLoadingToast();
-							//这里使用定时器是为了缓存一下加载过程，防止加载过快
-							$timeout(function () {
-							  //停止缓冲提示
-							  $scope.hideLoadingToast();
-							}, 2500);
+							
+							
 							
 							
 						},
 						function( error ) {
 							console.log( "Capture image failed: " + error.message );
 						},
-						{resolution:res,format:fmt}
+						{resolution:res, format:fmt, optimize:true}
 					);
 					
 					
@@ -2088,7 +2150,14 @@ angular.module("change_photo",[])
 				else if(index == 1){
 					//从相册选择
 					
+					
+					//弹出缓冲提示
+					$scope.showLoadingToast();
+					
+					
 					console.log("从相册中选择图片:");
+					
+					
 					plus.gallery.pick( 
 						function(path){
 							console.log(path);
@@ -2097,19 +2166,8 @@ angular.module("change_photo",[])
 							
 							$scope.temp_image = path;
 							$scope.img = path;
-							//$scope.uoload_img();
 							
-							
-												
-							//弹出缓冲提示
-							$scope.showLoadingToast();
-							//这里使用定时器是为了缓存一下加载过程，防止加载过快
-							$timeout(function () {
-							  //停止缓冲提示
-							  $scope.hideLoadingToast();
-							}, 2500);
-							
-							
+							$scope.compress_image_file_using_plus();
 							
 							
 							
@@ -2185,6 +2243,34 @@ angular.module("change_photo",[])
          }, 30000);
        
     };
+	
+	//商家头像： 裁剪成正方形并压缩
+	$scope.compress_image_file_using_plus = function(){
+		plus.zip.compressImage({
+		        src:$scope.temp_image,//src: (String 类型 )压缩转换原始图片的路径    
+		        dst:$scope.temp_image,//压缩转换目标图片的路径    
+		        quality:20,//quality: (Number 类型 )压缩图片的质量.取值范围为1-100    
+		        overwrite:true,//overwrite: (Boolean 类型 )覆盖生成新文件
+				format:'jpg',
+		        width:'500',
+		        height:'500'
+		    },    
+		    function(zip) {  
+		        //页面显示图片  
+		        //showPics(zip.target,name);
+				console.log('图片压缩完成===>>>'+zip.target + '' );
+				
+				$scope.temp_image = zip.target;
+				$scope.img = zip.target;
+				
+				
+				$scope.hideLoadingToast();
+				
+				
+		    },function(error) {    
+		        plus.nativeUI.toast("压缩图片失败，请稍候再试");    
+		});
+	};
 	
 	$scope.upload_img_using_plus = function(){
 		
@@ -2413,15 +2499,18 @@ angular.module('shanghu_imgs', [])
             $state.go("login", {}, {reload:true});
             return false;
         }
+		
         $scope.items={};
+		
         $scope.input={};
+		
         $ionicLoading.show({
-                             showBackdrop: false,
+            showBackdrop: false,
             template:'<ion-spinner icon="ios-small" class="spinner-calm"></ion-spinner>',
             duration:3000
         });
         
-        $scope.get_shanghu_imgs=function(){
+        $scope.get_shanghu_imgs = function(){
             //请求商户图片
             $http({
                 method: 'post',//请求方式
@@ -2486,23 +2575,84 @@ angular.module('shanghu_imgs', [])
         
         $scope.get_shanghu_imgs();
 		
+		//商户风采：等比压缩并上传图片
+		$scope.compress_image_file_using_plus = function(){
+			
+			console.log('准备获取图片信息：' + $scope.temp_image);
+			
+			plus.io.getImageInfo({
+				src:$scope.temp_image,
+				success:function(e){
+					//  e     ImageInfo
+					console.log('获取图片信息成功====>>>>' + JSON.stringify(e));
+					
+					var new_width = 600;
+					var new_height = e.height * new_width / e.width;
+					
+					if(e.width <= 600){
+						new_width = e.width;
+						new_height = e.height;
+					}
+					
+					console.log('新的宽和高：' + new_width + ',' + new_height);
+					
+					
+					plus.zip.compressImage({
+					        src:$scope.temp_image,//src: (String 类型 )压缩转换原始图片的路径    
+					        dst:$scope.temp_image,//压缩转换目标图片的路径    
+					        quality:20,//quality: (Number 类型 )压缩图片的质量.取值范围为1-100    
+					        overwrite:true,//overwrite: (Boolean 类型 )覆盖生成新文件
+					        width:new_width,
+					        height:new_height
+					    },    
+					    function(zip) {  
+					        //页面显示图片  
+					        //showPics(zip.target,name);
+							console.log('图片压缩完成===>>>'+ zip.target + '' );
+							
+							$scope.temp_image = zip.target;
+							$scope.img = zip.target;
+							
+							console.log('压缩完毕，准备上传图像');
+							
+							$scope.upload_img_using_plus();
+							
+							
+					    },function(error) {    
+					        plus.nativeUI.toast("压缩图片失败，请稍候再试");    
+						}
+					);
+					
+					
+				},
+				fail:function(e){
+					console.log('获取图片信息失败====>>>>' + JSON.stringify(e));
+				},
+			});
+			
+			return;
+			
+			
+		};
+		
 		$scope.shanghu_img_add_using_plus = function(){
+			
 			console.log("从相册中选择图片:");
+			
 			plus.gallery.pick( 
 				function(path){
-					console.log(path);
+					console.log('选择的图片路径为：' + path);
 					
 					$scope.temp_image = path;
 					
-					$scope.upload_img_using_plus();
 					
-					//弹出缓冲提示
-					$scope.showLoadingToast();
+					$scope.compress_image_file_using_plus();
+					
 					//这里使用定时器是为了缓存一下加载过程，防止加载过快
 					$timeout(function () {
 					  //停止缓冲提示
 					  $scope.hideLoadingToast();
-					}, 2500);
+					}, 1500);
 					
 					
 					
@@ -2883,9 +3033,10 @@ angular.module("yijianfankui",[])
 				
             }
         });
+		
         $timeout(function() {
              hideSheet();
-         }, 3000);
+         }, 30000);
        
     };
     
