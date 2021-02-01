@@ -103,46 +103,6 @@
 			</view>
 		</view>
 		
-		<!-- 视频组件 -->
-<!-- #ifdef MP-WEIXIN -->		
-		<view v-if="wxa_show_video_player == 1" style="text-align: center;">
-		   <video object-fit='fill' :src="wxa_video_player_url" :poster='wxa_video_screen_url'
-			controls="true" :autoplay="wxa_show_video_autoplay"
-			:style="{width:videometa_width_height[0] + 'rpx', height: + videometa_width_height[1] + 'rpx'}"
-			@loadedmetadata="videometa_auto_set($event)"
-			enable-play-gesture="true"
-
-			>
-			</video>
-		</view>
-<!-- #endif -->
-<!-- #ifdef H5 -->		
-		<view v-if="wxa_show_video_player == 1" style="text-align: center;">
-		   <video object-fit='fill' :src="wxa_video_player_url" :poster='wxa_video_screen_url'
-			controls="true" :autoplay="wxa_show_video_autoplay"
-			:style="{width:videometa_width_height[0] + 'rpx', height: + videometa_width_height[1] + 'rpx'}"
-			enable-play-gesture="true"
-			>
-			</video>
-			<view style="display:none;">
-				<image mode="widthFix" :src="wxa_video_screen_url" @load="videometa_auto_set($event)"></image>
-			</view>
-		</view>
-<!-- #endif -->
-<!-- #ifdef APP-PLUS -->		
-		<view v-if="wxa_show_video_player == 1" style="text-align: center;">
-		   <video object-fit='fill' :src="wxa_video_player_url" :poster='wxa_video_screen_url'
-			controls="true" :autoplay="wxa_show_video_autoplay"	
-			:style="{width:videometa_width_height[0] + 'rpx', height: + videometa_width_height[1] + 'rpx'}"
-			enable-play-gesture="true"
-			>
-			</video>
-			<view style="display:none;"><image :src="wxa_video_screen_url" @load="videometa_auto_set($event)"></image></view>
-		</view>
-<!-- #endif -->
-		
-		
-		
 		
 		<!-- 营业地址卡片 2021.1.18. -->
 		<view class="index_address_card_main" v-if="show_address_card_in_index == 1">
@@ -208,6 +168,32 @@
 		
 		
 		
+		<!-- 视频组件 -->
+		<!-- #ifdef MP-WEIXIN -->		
+				<view v-if="wxa_show_video_player == 1" style="text-align: center;">
+				   <video object-fit='fill' :src="wxa_video_player_url" :poster='wxa_video_screen_url'
+					controls="true" :autoplay="wxa_show_video_autoplay"
+					:style="{width:videometa_width_height[0] + 'rpx', height: + videometa_width_height[1] + 'rpx'}"
+					@loadedmetadata="videometa_auto_set($event)"
+					enable-play-gesture="true"
+		
+					>
+					</video>
+				</view>
+		<!-- #endif -->
+		<!-- #ifndef MP-WEIXIN -->		
+				<view v-if="wxa_show_video_player == 1" style="text-align: center;">
+				   <video object-fit='fill' :src="wxa_video_player_url" :poster='wxa_video_screen_url'
+					controls="true" :autoplay="wxa_show_video_autoplay"
+					:style="{width:videometa_width_height[0] + 'rpx', height: + videometa_width_height[1] + 'rpx'}"
+					enable-play-gesture="true"
+					>
+					</video>
+					<view style="display:none;">
+						<image mode="widthFix" :src="wxa_video_screen_url" @load="videometa_auto_set($event)"></image>
+					</view>
+				</view>
+		<!-- #endif -->
 		
 		
 		

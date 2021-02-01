@@ -150,7 +150,7 @@
 				<!-- 发布须知的弹层 -->
 				<view class="zhezhao" v-if="know==true"></view>
 				<view class="kcrzxy" v-if="know==true">
-				    <view class="kcrzxyhd" :style="{background:wxa_shop_nav_bg_color + ';font-size:26upx;'}">内容规范</view>
+				    <view class="kcrzxyhd" :style="{background:wxa_shop_nav_bg_color, fontSize:'26rpx'}">内容规范</view>
 				    <scroll-view scrollY class="kcrzxybd" style="height: 600rpx;">
 				        <textarea :value="publish_write_fabu_xuzhi" 
 							disabled="disabled"
@@ -158,7 +158,7 @@
 							auto-height='true' 
 							maxlength="-1"></textarea>
 				    </scroll-view>
-				    <view @click="knows" class="queren" :style="{background:wxa_shop_nav_bg_color + ';font-size:26upx;'}">确定</view>
+				    <view @click="knows" class="queren" :style="{background:wxa_shop_nav_bg_color, fontSize:'26rpx'}">确定</view>
 				</view>
 				
 			</view><!-- End of main-body -->

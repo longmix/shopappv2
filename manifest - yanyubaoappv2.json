@@ -2,8 +2,8 @@
     "name" : "延誉宝",
     "appid" : "__UNI__A79BAA4",
     "description" : "会员.电商.SaaS云",
-    "versionName" : "1.7.9",
-    "versionCode" : 230,
+    "versionName" : "3.0.1",
+    "versionCode" : 830,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true, //是否启用`自定义组件模式`，为true表示新的`自定义组件模式` ，否则为`template模板模式`   

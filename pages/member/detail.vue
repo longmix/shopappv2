@@ -60,7 +60,7 @@
 						<view class="aui-footer aui-footer-fixed"  v-for="(item,index) in citizen_detail.buttons" :key="index">
 						   
 								<view class="aui-tabBar-item " :style="{'backgroundColor':btn_bg_color}" @click="go_to_url" :data-url="item.url">
-									{{item.name}}333
+									{{item.name}}
 								</view>
 							
 						</view>

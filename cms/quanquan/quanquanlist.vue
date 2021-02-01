@@ -75,7 +75,9 @@
 			};
 		},
 		onLoad(options) {
-			console.log('dsfsd');
+			console.log('quanquanlist onLoad');
+			
+			
 			if(options.cata){
 				this.cata = options.cata;
 			}
