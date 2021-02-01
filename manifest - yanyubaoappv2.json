@@ -25,7 +25,6 @@
             "VideoPlayer" : {},
             "Maps" : {},
             "Speech" : {},
-            "Push" : {},
             "Payment" : {}
         },
         /* 模块配置 */
@@ -82,7 +81,7 @@
                 },
                 "payment" : {
                     "weixin" : {
-                        "appid" : "wx029e1ddb38b4c630",
+                        "appid" : "wx5403058c22c21d35",
                         "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/yyds/"
                     },
                     "alipay" : {}
@@ -93,14 +92,14 @@
                 },
                 "oauth" : {
                     "weixin" : {
-                        "appid" : "wx029e1ddb38b4c630",
+                        "appid" : "wx5403058c22c21d35",
                         "appsecret" : "aaaaaaaaaaaaaaaaaaaaaaa",
                         "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/yyds/"
                     }
                 },
                 "share" : {
                     "weixin" : {
-                        "appid" : "wx029e1ddb38b4c630",
+                        "appid" : "wx5403058c22c21d35",
                         "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/yyds/"
                     }
                 },
@@ -110,41 +109,41 @@
             },
             "icons" : {
                 "android" : {
-                    "hdpi" : "unpackage/res/icons - shopappv2/72x72.png",
-                    "xhdpi" : "unpackage/res/icons - shopappv2/96x96.png",
-                    "xxhdpi" : "unpackage/res/icons - shopappv2/144x144.png",
-                    "xxxhdpi" : "unpackage/res/icons - shopappv2/192x192.png"
+                    "hdpi" : "unpackage/res/icons_yanyubaoappv2/72x72.png",
+                    "xhdpi" : "unpackage/res/icons_yanyubaoappv2/96x96.png",
+                    "xxhdpi" : "unpackage/res/icons_yanyubaoappv2/144x144.png",
+                    "xxxhdpi" : "unpackage/res/icons_yanyubaoappv2/192x192.png"
                 },
                 "ios" : {
-                    "appstore" : "unpackage/res/icons - shopappv2/1024x1024.png",
+                    "appstore" : "unpackage/res/icons_yanyubaoappv2/1024x1024.png",
                     "ipad" : {
-                        "app" : "unpackage/res/icons - shopappv2/76x76.png",
-                        "app@2x" : "unpackage/res/icons - shopappv2/152x152.png",
-                        "notification" : "unpackage/res/icons - shopappv2/20x20.png",
-                        "notification@2x" : "unpackage/res/icons - shopappv2/40x40.png",
-                        "proapp@2x" : "unpackage/res/icons - shopappv2/167x167.png",
-                        "settings" : "unpackage/res/icons - shopappv2/29x29.png",
-                        "settings@2x" : "unpackage/res/icons - shopappv2/58x58.png",
-                        "spotlight" : "unpackage/res/icons - shopappv2/40x40.png",
-                        "spotlight@2x" : "unpackage/res/icons - shopappv2/80x80.png"
+                        "app" : "unpackage/res/icons_yanyubaoappv2/76x76.png",
+                        "app@2x" : "unpackage/res/icons_yanyubaoappv2/152x152.png",
+                        "notification" : "unpackage/res/icons_yanyubaoappv2/20x20.png",
+                        "notification@2x" : "unpackage/res/icons_yanyubaoappv2/40x40.png",
+                        "proapp@2x" : "unpackage/res/icons_yanyubaoappv2/167x167.png",
+                        "settings" : "unpackage/res/icons_yanyubaoappv2/29x29.png",
+                        "settings@2x" : "unpackage/res/icons_yanyubaoappv2/58x58.png",
+                        "spotlight" : "unpackage/res/icons_yanyubaoappv2/40x40.png",
+                        "spotlight@2x" : "unpackage/res/icons_yanyubaoappv2/80x80.png"
                     },
                     "iphone" : {
-                        "app@2x" : "unpackage/res/icons - shopappv2/120x120.png",
-                        "app@3x" : "unpackage/res/icons - shopappv2/180x180.png",
-                        "notification@2x" : "unpackage/res/icons - shopappv2/40x40.png",
-                        "notification@3x" : "unpackage/res/icons - shopappv2/60x60.png",
-                        "settings@2x" : "unpackage/res/icons - shopappv2/58x58.png",
-                        "settings@3x" : "unpackage/res/icons - shopappv2/87x87.png",
-                        "spotlight@2x" : "unpackage/res/icons - shopappv2/80x80.png",
-                        "spotlight@3x" : "unpackage/res/icons - shopappv2/120x120.png"
+                        "app@2x" : "unpackage/res/icons_yanyubaoappv2/120x120.png",
+                        "app@3x" : "unpackage/res/icons_yanyubaoappv2/180x180.png",
+                        "notification@2x" : "unpackage/res/icons_yanyubaoappv2/40x40.png",
+                        "notification@3x" : "unpackage/res/icons_yanyubaoappv2/60x60.png",
+                        "settings@2x" : "unpackage/res/icons_yanyubaoappv2/58x58.png",
+                        "settings@3x" : "unpackage/res/icons_yanyubaoappv2/87x87.png",
+                        "spotlight@2x" : "unpackage/res/icons_yanyubaoappv2/80x80.png",
+                        "spotlight@3x" : "unpackage/res/icons_yanyubaoappv2/120x120.png"
                     }
                 }
             },
             "splashscreen" : {
                 "android" : {
-                    "hdpi" : "unpackage/res/splashscreen - shopappv2/welandroid_480x762.png",
-                    "xhdpi" : "unpackage/res/splashscreen - shopappv2/welandroid_720x1242.png",
-                    "xxhdpi" : "unpackage/res/splashscreen - shopappv2/welandroid_1080x1882.png"
+                    "hdpi" : "unpackage/res/splashscreen_yanyubaoappv2/splashscreen.9.png",
+                    "xhdpi" : "unpackage/res/splashscreen_yanyubaoappv2/splashscreen.9.png",
+                    "xxhdpi" : "unpackage/res/splashscreen_yanyubaoappv2/splashscreen.9.png"
                 },
                 "ios" : {
                     "iphone" : {
@@ -156,7 +155,7 @@
                         "retina40" : "unpackage/res/splashscreen - shopappv2/welcome_640x1136.png",
                         "retina35" : "unpackage/res/splashscreen - shopappv2/welcome_640x960.png"
                     },
-                    "storyboard" : "D:/延誉电商APP/苹果开发者证书/CustomStoryboard.zip"
+                    "storyboard" : "D:/延誉电商APP/苹果开发者证书/延誉宝APP 2021 苹果欢迎图片/CustomStoryboard.zip"
                 },
                 "iosStyle" : "storyboard"
             }
@@ -203,7 +202,7 @@
         "uniStatistics" : {
             "enable" : false
         },
-        "title" : "延誉电商",
+        "title" : "延誉宝2021",
         "template" : "h5_index_template.html"
     },
     "uniStatistics" : {
