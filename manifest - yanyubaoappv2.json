@@ -85,7 +85,7 @@
                 "payment" : {
                     "weixin" : {
                         "appid" : "wx5403058c22c21d35",
-                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/yyds/"
+                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/yanyubao/"
                     },
                     "alipay" : {}
                 },
@@ -97,13 +97,13 @@
                     "weixin" : {
                         "appid" : "wx5403058c22c21d35",
                         "appsecret" : "aaaaaaaaaaaaaaaaaaaaaaa",
-                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/yyds/"
+                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/yanyubao/"
                     }
                 },
                 "share" : {
                     "weixin" : {
                         "appid" : "wx5403058c22c21d35",
-                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/yyds/"
+                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/yanyubao/"
                     }
                 },
                 "push" : {
