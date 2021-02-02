@@ -27,7 +27,11 @@
 				</view>
 				<view class="flexIcon" :style="{border:'1px solid ' + wxa_shop_nav_bg_color}" style="overflow: hidden;">
 					<view class="flexIcon-icon iconfont icon-password flexIcon-icon-current"></view>
-					<button type="primary"  @click="send_btn" :disabled="disabled" :style="{background:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" style="height: 50rpx;line-height: 50rpx;" class="send_btn">{{second}}</button>
+					<button type="primary"  @click="send_btn" 
+						:disabled="disabled" 
+						:style="{background:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" 
+						style="height: 60rpx;line-height: 60rpx;" 
+						class="send_btn">{{second}}</button>
 					<input style="width: 60%;" type="text" class="flexIcon-text"  name="password"  placeholder-class="cl-white" @input="telInput" placeholder-style="color: #999;"  placeholder="请输入手机验证码" />
 				</view>
 				<div></div>
@@ -194,9 +198,12 @@
 					return;
 				}
 				
+				// #ifdef MP-WEIXIN
+				//只有在微信的环境下，才检查此项
 				if(cb_params.wxa_login_only_weixin){
 					that.wxa_login_only_weixin = cb_params.wxa_login_only_weixin
 				}
+				// #endif
 				
 				if(cb_params.wxa_shop_nav_bg_color){
 					that.wxa_shop_nav_bg_color = cb_params.wxa_shop_nav_bg_color

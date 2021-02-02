@@ -586,13 +586,42 @@ export default {
 	},
 	onShow:function(){
 		this.get_tianqi();
+		
 		console.log('sssss');
+		
+		
 		var city_name = uni.getStorageSync('city_name');
 		if(city_name){
 			this.current_cityname = city_name;
 		}
+		
 		//console.log('wwwwaa',cb_params.option_list.index_rich_html_content);
 		//this.__index_rich_html_get_content(cb_params.option_list.index_rich_html_content);
+		
+		var that = this;
+		
+		uni.getStorage({
+			key : 'need_pulldown_refresh_flag',
+			success:function(res){
+				var need_pulldown_refresh = res.data;
+				
+				if(need_pulldown_refresh == 1){
+					console.log('onShow ===>>> (need_pulldown_refresh_flag == 1) ===>>> 需要下拉刷新');
+					
+					try {
+					    uni.removeStorageSync('need_pulldown_refresh_flag');
+					} catch (e) {
+					    // error
+					}
+					
+					
+					uni.startPullDownRefresh();
+				}
+			}
+		})
+		
+		
+		
 	},
 	onPageScroll: function (e) {
 		//兼容iOS端下拉时顶部漂移
@@ -2122,6 +2151,11 @@ export default {
 				var userInfo = that.abotapi.get_user_info();
 				console.log('userid===',userInfo);
 				if(!userInfo){
+					//下次进入 onShow 函数的时候，自动执行下拉刷新的操作
+					
+					console.log('准备跳转到登录页面，下次进入的时候执行下拉刷新');
+					
+					uni.setStorageSync('need_pulldown_refresh_flag', 1);
 					
 					that.abotapi.goto_user_login('/pages/index/index', 'normal');
 					
@@ -2140,8 +2174,8 @@ export default {
 			    data: {},
 			    success: function (res) {
 					
-					
-					console.log('aaaa111==', res.data);
+					console.log('aaaa111==获取富媒体内容成功（HTML代码）');
+					///console.log('aaaa111==', res.data);
 					
 					that.index_rich_html_content = res.data;
 					
