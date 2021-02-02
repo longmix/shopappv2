@@ -173,7 +173,7 @@
 				<view v-if="wxa_show_video_player == 1" style="text-align: center;">
 				   <video object-fit='fill' :src="wxa_video_player_url" :poster='wxa_video_screen_url'
 					controls="true" :autoplay="wxa_show_video_autoplay"
-					:style="{width:videometa_width_height[0] + 'rpx', height: + videometa_width_height[1] + 'rpx'}"
+					:style="{width:videometa_width_height[0] + 'rpx', height: videometa_width_height[1] + 'rpx'}"
 					@loadedmetadata="videometa_auto_set($event)"
 					enable-play-gesture="true"
 		
@@ -185,7 +185,7 @@
 				<view v-if="wxa_show_video_player == 1" style="text-align: center;">
 				   <video object-fit='fill' :src="wxa_video_player_url" :poster='wxa_video_screen_url'
 					controls="true" :autoplay="wxa_show_video_autoplay"
-					:style="{width:videometa_width_height[0] + 'rpx', height: + videometa_width_height[1] + 'rpx'}"
+					:style="{width:videometa_width_height[0] + 'rpx', height: videometa_width_height[1] + 'rpx'}"
 					enable-play-gesture="true"
 					>
 					</video>
@@ -349,6 +349,8 @@ export default {
 			wxa_video_screen_url:'', //视频相关路径
 			wxa_show_video_player:0, //视频是否启用
 			wxa_show_video_autoplay:false,
+			//wxa_show_video_meta_width:400,
+			//wxa_show_video_meta_height:300,
 			videometa_width_height:[400, 300],
 			
 			
@@ -845,6 +847,8 @@ export default {
 		
 			
 			this.videometa_width_height = videometa_width_height;
+			//this.wxa_show_video_meta_width = current_view_width;
+			//this.wxa_show_video_meta_height = current_view_height;
 			
 			console.log('videometa_width_height====>>>>', this.videometa_width_height);
 			
