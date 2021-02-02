@@ -2,8 +2,8 @@
     "name" : "天天汇",
     "appid" : "__UNI__5B54B05",
     "description" : "天天汇APP",
-    "versionName" : "1.8.2",
-    "versionCode" : 365,
+    "versionName" : "1.8.3",
+    "versionCode" : 367,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true, //是否启用`自定义组件模式`，为true表示新的`自定义组件模式` ，否则为`template模板模式`   
@@ -82,7 +82,7 @@
                 },
                 "payment" : {
                     "weixin" : {
-                        "appid" : "wx6939a00416c5d3aa",
+                        "appid" : "wx6a3b6ecb6fcff9a9",
                         "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/tiantianhui/"
                     },
                     "alipay" : {}
@@ -93,14 +93,14 @@
                 },
                 "oauth" : {
                     "weixin" : {
-                        "appid" : "wx6939a00416c5d3aa",
+                        "appid" : "wx6a3b6ecb6fcff9a9",
                         "appsecret" : "aaaaaaaaaaaaaaaaaaaaaaa",
                         "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/tiantianhui/"
                     }
                 },
                 "share" : {
                     "weixin" : {
-                        "appid" : "wx6939a00416c5d3aa",
+                        "appid" : "wx6a3b6ecb6fcff9a9",
                         "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/tiantianhui/"
                     }
                 },

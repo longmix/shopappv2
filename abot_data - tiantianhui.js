@@ -4,14 +4,14 @@ const globalData = {
 		o2owaimai_server_url: 'https://app.tseo.cn/o2owaimai/index.php/',
 		socket_server: 'https://socketio.tseo.cn',
 		
-		version_number:'Ver 1.8.2 Build 365',
-		version_code:365,
+		version_number:'Ver 1.8.3 Build 367',
+		version_code:367,
 		
 		force_sellerid:1,
 	
 		xiaochengxu_appid: 'wx47cf36b7d0a0f792',			//微信小程序的appid
 		xiaochengxu_account: 'gh_3deff1aa52cb',				//微信小程序的账号
-		weixin_open_platform_appid: 'wx6939a00416c5d3aa--',	//微信开放平台中登记的APP对应的appid（务必与manifest中的配置一致）
+		weixin_open_platform_appid: 'wx6a3b6ecb6fcff9a9',	//微信开放平台中登记的APP对应的appid（务必与manifest中的配置一致）
 		
 		//通版商城
 		default_shopname: '天天汇',
