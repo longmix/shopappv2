@@ -14,7 +14,7 @@
 			
 		</div>
 		<form class="loginBox"  id="login-form" @submit="formSubmit" :report-submit="true">
-			<view v-if="wxa_login_only_weixin == 0">
+			<view v-if="wxa_login_only_weixin != 1">
 				<view class="flexIcon" :style="{border:'1px solid ' + wxa_shop_nav_bg_color}">
 					<view class="flexIcon-icon iconfont icon-phone_light flexIcon-icon-current"></view>
 					<input type="text" class="flexIcon-text" placeholder-class="cl-white" name="telephone" @input="phoneInput" placeholder-style="color: #999;" placeholder="请输入手机号码" />
