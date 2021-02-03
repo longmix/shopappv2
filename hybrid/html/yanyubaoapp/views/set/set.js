@@ -2160,14 +2160,24 @@ angular.module("change_photo",[])
 					
 					plus.gallery.pick( 
 						function(path){
-							console.log(path);
+							console.log('plus.gallery.pick ===>>> ' + path);
 							
 							
 							
 							$scope.temp_image = path;
-							$scope.img = path;
+							//$scope.img = path;
+							
+							
+							
+							
 							
 							$scope.compress_image_file_using_plus();
+							
+							
+							$timeout(function () {
+							  //停止缓冲提示
+							  $scope.hideLoadingToast();
+							}, 2500);
 							
 							
 							
@@ -2246,29 +2256,124 @@ angular.module("change_photo",[])
 	
 	//商家头像： 裁剪成正方形并压缩
 	$scope.compress_image_file_using_plus = function(){
-		plus.zip.compressImage({
-		        src:$scope.temp_image,//src: (String 类型 )压缩转换原始图片的路径    
-		        dst:$scope.temp_image,//压缩转换目标图片的路径    
-		        quality:20,//quality: (Number 类型 )压缩图片的质量.取值范围为1-100    
-		        overwrite:true,//overwrite: (Boolean 类型 )覆盖生成新文件
-				format:'jpg',
-		        width:'500',
-		        height:'500'
-		    },    
-		    function(zip) {  
-		        //页面显示图片  
-		        //showPics(zip.target,name);
-				console.log('图片压缩完成===>>>'+zip.target + '' );
+		
+		
+		console.log('准备获取图片信息：' + $scope.temp_image);
+		
+		plus.io.getImageInfo({
+			src:$scope.temp_image,
+			success:function(e){
+				//  e     ImageInfo
+				console.log('获取图片信息成功====>>>>' + JSON.stringify(e));
 				
-				$scope.temp_image = zip.target;
-				$scope.img = zip.target;
+				var new_width = 800;
+				
+				if(e.width < new_width){
+					new_width = e.width;
+				}
+				
+				if(e.height < new_width){
+					new_width = e.height;
+				}
+				
+				//做成正方形
+				//var new_height = e.height * new_width / e.width;
+				var new_height = new_width;
+				
+				console.log('新的宽和高：' + new_width + ',' + new_height);
+				
+				//   file:///storage/emulated/0/Download/1534896314830.jpg
+				var fileNamePos = $scope.temp_image.lastIndexOf(".");//获取到文件名开始到最后一个“.”的长度。
+				//最后一个点前面的字符串
+				var fileName01 = $scope.temp_image.substring(0, fileNamePos);
+				//最后一个点 后面的字符串
+				var fileName02 = $scope.temp_image.substring(fileNamePos + 1);
+				fileName02 = 'jpg';
+				
+				var new_file_name = fileName01 + '_compress.' + fileName02;
+				console.log('新的文件名称：' + new_file_name);
+				
+		
+				plus.zip.compressImage({
+						src: $scope.temp_image,//src: (String 类型 )压缩转换原始图片的路径    
+						dst: new_file_name,//压缩转换目标图片的路径    
+						quality: 80,//quality: (Number 类型 )压缩图片的质量.取值范围为1-100    
+						overwrite: true,//overwrite: (Boolean 类型 )覆盖生成新文件
+						format: 'jpg',
+						//width: new_width+'px',
+						//height: new_height+'px',
+						//clip:{top:"25%",left:"25%",width:"50%",height:"50%"}	//截取中间部分
+						clip:{top:"0",left:"0",width:new_height,height:new_height}
+					},    
+					function(zip) {  
+						//页面显示图片  
+						//showPics(zip.target,name);
+						console.log('图片压缩完成===>>>'+zip.target + '' );
+						
+						
+						console.log('图片压缩完成===>>>等待被上传' );
+						
+						$scope.hideLoadingToast();
+						
+						
+						
+						console.log( "准备将图片加载为base64编码，以避免http模式下无法显示图片" );
+						
+						var path = zip.target;
+						
+						
+						plus.io.requestFileSystem( plus.io.PRIVATE_DOC, function(fobject){
+							// fs.root是根目录操作对象DirectoryEntry
+							fobject.root.getFile(path, {create:true}, function(fileEntry){
+								fileEntry.file( function(file){
+									var fileReader = new plus.io.FileReader();
+									
+									
+									//fileReader.readAsText(file, 'utf-8');
+									fileReader.readAsDataURL( file, 'utf-8' );
+									
+									
+									fileReader.onloadend = function(evt) {
+										
+										console.log( "onloadend    Read success 将图片加载为base64编码" );
+										// Get data
+										//console.log( evt.target.result);
+										
+										console.log( "===============================" );
+										
+										$scope.img = evt.target.result;
+										
+										//self.resInfo = self.resInfo+'--'+JSON.stringify(evt);
+										
+			
+										//var blob = new Blob([new Uint8Array(evt)], { type: "image/png" });
+										
+										//console.log( blob);
+									}
+									
+									//self.resInfo = self.resInfo+'--'+file.size + '--' + file.name;
+								} );
+							});
+						} );
+						
+						
+						
+						
+						$scope.temp_image = zip.target;
+						//$scope.img = zip.target;
+						
+						
+						
+						
+					},function(error) {    
+						plus.nativeUI.toast("压缩图片失败，请稍候再试");    
+				});
 				
 				
-				$scope.hideLoadingToast();
-				
-				
-		    },function(error) {    
-		        plus.nativeUI.toast("压缩图片失败，请稍候再试");    
+			},
+			fail:function(e){
+				console.log('获取图片信息失败====>>>>' + JSON.stringify(e));
+			},
 		});
 	};
 	
@@ -2576,7 +2681,7 @@ angular.module('shanghu_imgs', [])
         $scope.get_shanghu_imgs();
 		
 		//商户风采：等比压缩并上传图片
-		$scope.compress_image_file_using_plus = function(){
+		$scope.compress_shanghu_image_file_using_plus = function(){
 			
 			console.log('准备获取图片信息：' + $scope.temp_image);
 			
@@ -2586,24 +2691,35 @@ angular.module('shanghu_imgs', [])
 					//  e     ImageInfo
 					console.log('获取图片信息成功====>>>>' + JSON.stringify(e));
 					
-					var new_width = 600;
+					var new_width = 800;
 					var new_height = e.height * new_width / e.width;
 					
-					if(e.width <= 600){
+					if(e.width <= 800){
 						new_width = e.width;
 						new_height = e.height;
 					}
 					
 					console.log('新的宽和高：' + new_width + ',' + new_height);
 					
+					//   file:///storage/emulated/0/Download/1534896314830.jpg
+					var fileNamePos = $scope.temp_image.lastIndexOf(".");//获取到文件名开始到最后一个“.”的长度。
+					//最后一个点前面的字符串
+					var fileName01 = $scope.temp_image.substring(0, fileNamePos);
+					//最后一个点 后面的字符串
+					var fileName02 = $scope.temp_image.substring(fileNamePos + 1);
+					fileName02 = 'jpg';
+					
+					var new_file_name = fileName01 + '_compress.' + fileName02;
+					console.log('新的文件名称：' + new_file_name);
 					
 					plus.zip.compressImage({
 					        src:$scope.temp_image,//src: (String 类型 )压缩转换原始图片的路径    
-					        dst:$scope.temp_image,//压缩转换目标图片的路径    
-					        quality:20,//quality: (Number 类型 )压缩图片的质量.取值范围为1-100    
+					        dst:new_file_name,//压缩转换目标图片的路径    
+					        quality:80,//quality: (Number 类型 )压缩图片的质量.取值范围为1-100    
 					        overwrite:true,//overwrite: (Boolean 类型 )覆盖生成新文件
-					        width:new_width,
-					        height:new_height
+					        width:new_width+'px',
+					        height:new_height+'px'
+							//width:"600px",
 					    },    
 					    function(zip) {  
 					        //页面显示图片  
@@ -2611,11 +2727,53 @@ angular.module('shanghu_imgs', [])
 							console.log('图片压缩完成===>>>'+ zip.target + '' );
 							
 							$scope.temp_image = zip.target;
-							$scope.img = zip.target;
+							
+							//2021.2.3. 转成base64用于本地显示
+							//$scope.img = zip.target;
+							var path = zip.target;
+							
+							
+							plus.io.requestFileSystem( plus.io.PRIVATE_DOC, function(fobject){
+								// fs.root是根目录操作对象DirectoryEntry
+								fobject.root.getFile(path, {create:true}, function(fileEntry){
+									fileEntry.file( function(file){
+										var fileReader = new plus.io.FileReader();
+										
+										
+										//fileReader.readAsText(file, 'utf-8');
+										fileReader.readAsDataURL( file, 'utf-8' );
+										
+										
+										fileReader.onloadend = function(evt) {
+											
+											console.log( "onloadend    Read success 将图片加载为base64编码" );
+											// Get data
+											//console.log( evt.target.result);
+											
+											console.log( "===============================" );
+											
+											$scope.img = evt.target.result;
+											
+											//self.resInfo = self.resInfo+'--'+JSON.stringify(evt);
+											
+								
+											//var blob = new Blob([new Uint8Array(evt)], { type: "image/png" });
+											
+											//console.log( blob);
+										}
+										
+										//self.resInfo = self.resInfo+'--'+file.size + '--' + file.name;
+									} );
+								});
+							} );
+							
+							
+							
+							
 							
 							console.log('压缩完毕，准备上传图像');
 							
-							$scope.upload_img_using_plus();
+							$scope.upload_shanghu_img_using_plus();
 							
 							
 					    },function(error) {    
@@ -2646,7 +2804,7 @@ angular.module('shanghu_imgs', [])
 					$scope.temp_image = path;
 					
 					
-					$scope.compress_image_file_using_plus();
+					$scope.compress_shanghu_image_file_using_plus();
 					
 					//这里使用定时器是为了缓存一下加载过程，防止加载过快
 					$timeout(function () {
@@ -2709,7 +2867,7 @@ angular.module('shanghu_imgs', [])
         };
         
 		
-		$scope.upload_img_using_plus = function(){
+		$scope.upload_shanghu_img_using_plus = function(){
 			
 			var filename = $scope.temp_image.substr($scope.temp_image.lastIndexOf('/')+1);
 			
@@ -3008,7 +3166,52 @@ angular.module("yijianfankui",[])
 						console.log(path);
 						
 						$scope.temp_image = path;
-						$scope.input.pic01 = path;
+						
+						//2021.2.3. 转成 base64显示
+						//$scope.input.pic01 = path;
+						//var path = zip.target;
+						
+						
+						plus.io.requestFileSystem( plus.io.PRIVATE_DOC, function(fobject){
+							// fs.root是根目录操作对象DirectoryEntry
+							fobject.root.getFile(path, {create:true}, function(fileEntry){
+								fileEntry.file( function(file){
+									var fileReader = new plus.io.FileReader();
+									
+									
+									//fileReader.readAsText(file, 'utf-8');
+									fileReader.readAsDataURL( file, 'utf-8' );
+									
+									
+									fileReader.onloadend = function(evt) {
+										
+										console.log( "onloadend    Read success 将图片加载为base64编码" );
+										// Get data
+										//console.log( evt.target.result);
+										
+										console.log( "===============================" );
+										
+										$scope.input.pic01 = evt.target.result;
+										
+										//self.resInfo = self.resInfo+'--'+JSON.stringify(evt);
+										
+							
+										//var blob = new Blob([new Uint8Array(evt)], { type: "image/png" });
+										
+										//console.log( blob);
+									}
+									
+									//self.resInfo = self.resInfo+'--'+file.size + '--' + file.name;
+								} );
+							});
+						} );
+						
+						
+						
+						
+						
+						
+						
 						$scope.input.isshow = true;
 						//$scope.uoload_img();
 						

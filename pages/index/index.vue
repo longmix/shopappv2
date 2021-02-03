@@ -587,9 +587,11 @@ export default {
 		
 	},
 	onShow:function(){
+		console.log('call onShow function (/pages/index/index)');
+		
 		this.get_tianqi();
 		
-		console.log('sssss');
+		
 		
 		
 		var city_name = uni.getStorageSync('city_name');
