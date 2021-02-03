@@ -14,7 +14,7 @@ const globalData = {
 		weixin_open_platform_appid: 'wx6939a00416c5d3aa--',	//微信开放平台中登记的APP对应的appid（务必与manifest中的配置一致）
 		
 		//通版商城
-		default_shopname: '安全熊',
+		default_shopname: '安全熊广告码',
 		default_sellerid: 'fSmyUPkjj',
 		default_copyright_text:'上海卓位服装有限公司 @ 版权所有',
 		

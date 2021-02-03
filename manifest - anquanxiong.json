@@ -1,7 +1,7 @@
 {
-    "name" : "安全熊",
+    "name" : "安全熊广告码",
     "appid" : "__UNI__5B54B05",
-    "description" : "安全熊APP",
+    "description" : "安全熊广告码APP",
     "versionName" : "1.7.4",
     "versionCode" : 219,
     "transformPx" : false,
@@ -69,7 +69,8 @@
                     "NSCameraUsageDescription" : "使用相机拍摄商品以及设置头像",
                     "NSLocationWhenInUseUsageDescription" : "访问位置以计算最近的服务网点",
                     "NSLocationAlwaysUsageDescription" : "访问位置以计算最近的服务网点",
-                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "访问位置以计算最近的服务网点"
+                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "访问位置以计算最近的服务网点",
+                    "NSMicrophoneUsageDescription" : "使用麦克风在录制视频的时候获取声音"
                 }
             },
             /* ios打包配置 */
@@ -108,41 +109,41 @@
             },
             "icons" : {
                 "android" : {
-                    "hdpi" : "unpackage/res/icons/72x72.png",
-                    "xhdpi" : "unpackage/res/icons/96x96.png",
-                    "xxhdpi" : "unpackage/res/icons/144x144.png",
-                    "xxxhdpi" : "unpackage/res/icons/192x192.png"
+                    "hdpi" : "unpackage/res/icons_anquanxiong/72x72.png",
+                    "xhdpi" : "unpackage/res/icons_anquanxiong/96x96.png",
+                    "xxhdpi" : "unpackage/res/icons_anquanxiong/144x144.png",
+                    "xxxhdpi" : "unpackage/res/icons_anquanxiong/192x192.png"
                 },
                 "ios" : {
-                    "appstore" : "unpackage/res/icons/1024x1024.png",
+                    "appstore" : "unpackage/res/icons_anquanxiong/1024x1024.png",
                     "ipad" : {
-                        "app" : "unpackage/res/icons/76x76.png",
-                        "app@2x" : "unpackage/res/icons/152x152.png",
-                        "notification" : "unpackage/res/icons/20x20.png",
-                        "notification@2x" : "unpackage/res/icons/40x40.png",
-                        "proapp@2x" : "unpackage/res/icons/167x167.png",
-                        "settings" : "unpackage/res/icons/29x29.png",
-                        "settings@2x" : "unpackage/res/icons/58x58.png",
-                        "spotlight" : "unpackage/res/icons/40x40.png",
-                        "spotlight@2x" : "unpackage/res/icons/80x80.png"
+                        "app" : "unpackage/res/icons_anquanxiong/76x76.png",
+                        "app@2x" : "unpackage/res/icons_anquanxiong/152x152.png",
+                        "notification" : "unpackage/res/icons_anquanxiong/20x20.png",
+                        "notification@2x" : "unpackage/res/icons_anquanxiong/40x40.png",
+                        "proapp@2x" : "unpackage/res/icons_anquanxiong/167x167.png",
+                        "settings" : "unpackage/res/icons_anquanxiong/29x29.png",
+                        "settings@2x" : "unpackage/res/icons_anquanxiong/58x58.png",
+                        "spotlight" : "unpackage/res/icons_anquanxiong/40x40.png",
+                        "spotlight@2x" : "unpackage/res/icons_anquanxiong/80x80.png"
                     },
                     "iphone" : {
-                        "app@2x" : "unpackage/res/icons/120x120.png",
-                        "app@3x" : "unpackage/res/icons/180x180.png",
-                        "notification@2x" : "unpackage/res/icons/40x40.png",
-                        "notification@3x" : "unpackage/res/icons/60x60.png",
-                        "settings@2x" : "unpackage/res/icons/58x58.png",
-                        "settings@3x" : "unpackage/res/icons/87x87.png",
-                        "spotlight@2x" : "unpackage/res/icons/80x80.png",
-                        "spotlight@3x" : "unpackage/res/icons/120x120.png"
+                        "app@2x" : "unpackage/res/icons_anquanxiong/120x120.png",
+                        "app@3x" : "unpackage/res/icons_anquanxiong/180x180.png",
+                        "notification@2x" : "unpackage/res/icons_anquanxiong/40x40.png",
+                        "notification@3x" : "unpackage/res/icons_anquanxiong/60x60.png",
+                        "settings@2x" : "unpackage/res/icons_anquanxiong/58x58.png",
+                        "settings@3x" : "unpackage/res/icons_anquanxiong/87x87.png",
+                        "spotlight@2x" : "unpackage/res/icons_anquanxiong/80x80.png",
+                        "spotlight@3x" : "unpackage/res/icons_anquanxiong/120x120.png"
                     }
                 }
             },
             "splashscreen" : {
                 "android" : {
-                    "hdpi" : "unpackage/res/splashscreen_tiantianhui/splashscreen_480x762.png",
-                    "xhdpi" : "unpackage/res/splashscreen_tiantianhui/splashscreen_720x1242.png",
-                    "xxhdpi" : "unpackage/res/splashscreen_tiantianhui/splashscreen_1080x1882.png"
+                    "hdpi" : "unpackage/res/splashscreen_anquanxiong/splashscreen.9.png",
+                    "xhdpi" : "unpackage/res/splashscreen_anquanxiong/splashscreen.9.png",
+                    "xxhdpi" : "unpackage/res/splashscreen_anquanxiong/splashscreen.9.png"
                 },
                 "ios" : {
                     "iphone" : {
@@ -154,7 +155,7 @@
                         "retina40" : "unpackage/res/splashscreen/welcome_640x1136.png",
                         "retina35" : "unpackage/res/splashscreen/welcome_640x960.png"
                     },
-                    "storyboard" : "unpackage/res/apple dev - tiantianhui/CustomStoryboard.zip"
+                    "storyboard" : "unpackage/res/apple dev - anquanxiong/CustomStoryboard.zip"
                 },
                 "iosStyle" : "storyboard",
                 "androidStyle" : "default"
