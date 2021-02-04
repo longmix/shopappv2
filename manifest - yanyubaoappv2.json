@@ -1,9 +1,9 @@
 {
     "name" : "延誉宝",
-    "appid" : "__UNI__A79BAA4",
+    "appid" : "__UNI__EAF2441",
     "description" : "会员.电商.SaaS云",
     "versionName" : "3.0.1",
-    "versionCode" : 832,
+    "versionCode" : 835,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true, //是否启用`自定义组件模式`，为true表示新的`自定义组件模式` ，否则为`template模板模式`   
@@ -60,7 +60,8 @@
                     "<uses-permission android:name=\"android.permission.WRITE_CONTACTS\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
-                ]
+                ],
+                "abiFilters" : [ "armeabi-v7a", "arm64-v8a", "x86" ]
             },
             "ios" : {
                 "idfa" : false,
@@ -78,8 +79,8 @@
             "sdkConfigs" : {
                 "maps" : {
                     "amap" : {
-                        "appkey_ios" : "93094a28bc895a74cd1690bf390ba6ea",
-                        "appkey_android" : "647d08ffaa523902a2503fa958e5afa7"
+                        "appkey_ios" : "0250dc7ede3e54cbf0b9814639841dac",
+                        "appkey_android" : "da734fe13f5cb0d541c124423cea29a3"
                     }
                 },
                 "payment" : {
@@ -106,14 +107,12 @@
                         "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/yanyubao/"
                     }
                 },
-                "push" : {
-                    "unipush" : {}
-                },
+                "push" : {},
                 "geolocation" : {
                     "amap" : {
                         "__platform__" : [ "ios", "android" ],
-                        "appkey_ios" : "93094a28bc895a74cd1690bf390ba6ea",
-                        "appkey_android" : "647d08ffaa523902a2503fa958e5afa7"
+                        "appkey_ios" : "0250dc7ede3e54cbf0b9814639841dac",
+                        "appkey_android" : "da734fe13f5cb0d541c124423cea29a3"
                     }
                 }
             },
