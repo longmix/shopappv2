@@ -824,7 +824,7 @@
 		align-items: center;
 		color: #007AFF;
 		margin-left: 20rpx;
-		margin-top: 50rpx;
+		/* margin-top: 50rpx; */
 		padding-top: 50rpx;
 	}
     .head_c{
@@ -840,7 +840,7 @@
 	.c {
 		z-index: 2;
 		position: relative;
-		margin-top: 25rpx;
+		/* margin-top: 25rpx; */
 		margin-left: 5%;
 		width: 90%;
 		height: 400rpx;
