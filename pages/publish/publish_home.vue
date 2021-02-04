@@ -88,7 +88,15 @@
 			}
 		},
 		
-		
+		/**
+		 * 显示文章列表（帖子列表）
+		 * 
+		 * 参数 
+		 * 	cataid
+		 * 	token	如果没有，则使用
+		 * 
+		 * @param {Object} options
+		 */
 		onLoad:function(options){
 			console.log('options',options);
 			
@@ -98,7 +106,9 @@
 				return;
 			}
 			
-			this.cms_cataid = options.cataid;
+			if(options.cataid){
+				this.cms_cataid = options.cataid;
+			}
 			
 			//==== 2020.9.7. 如果是跳转过来的时候带了search 参数，则先过滤 ====
 			if(options.search){
@@ -106,7 +116,10 @@
 			}
 			//====================== End ===============
 			
-			
+			//2021.2.4. 如果有参数token，则优先使用
+			if(options.token){
+				this.cms_token = options.token;
+			}
 			
 			uni.getSystemInfo({
 				//获取手机信息
@@ -138,7 +151,7 @@
 			
 			that.current_page ++;
 			
-			publish_list_api.get_publish_list(that,that.get_api_publish_list);
+			publish_list_api.get_publish_list(that, that.get_api_publish_list);
 			
 			
 			
@@ -167,9 +180,15 @@
 			
 			callback_function:function(that, shop_option_data){
 				console.log('aaaaaaa====',shop_option_data);
-				that.abotapi.getColor();
 				
-				that.cms_token = shop_option_data.option_list.cms_token;
+				//that.abotapi.getColor();
+				
+				if(!that.cms_token){
+					that.cms_token = shop_option_data.option_list.cms_token;
+				}
+				
+				//console.log('that.cms_token ====>>>> ', shop_option_data.option_list.cms_token);
+				//console.log('that.cms_token ====>>>> ', that.cms_token);
 				
 				if(shop_option_data.option_list.publish_hiddend_btn_for_write){
 					that.publish_hiddend_btn_for_write = shop_option_data.option_list.publish_hiddend_btn_for_write; //是否显示发帖按钮
@@ -187,7 +206,7 @@
 					this.index_list = [];
 					this.current_page = 1;
 					this.is_get_article_list = true;
-					publish_list_api.get_publish_list(this,this.get_api_publish_list,'search')
+					publish_list_api.get_publish_list(this, this.get_api_publish_list,'search')
 				}
 				else{
 					publish_list_api.get_publish_list(that,that.get_api_publish_list);

@@ -178,8 +178,11 @@
 					
 			return {
 				pageData:{},
+				
 				formid:'',
+				
 				know:false,
+				
 				hezuodiqu: [],
 				tigongziyuan:[],
 				xunqiuziyuan:[],
@@ -187,8 +190,11 @@
 				tigongziyuanmiaoshu:[],
 				xunqiuziyuanmiaoshu:[],
 				lianxifangshi:[],
+				
 				inputtype:'',
+				
 				list:[],
+				
 				red:'red',
 				index:0,
 				data2:'',
@@ -199,8 +205,10 @@
 				input_youxiaoshijian: '',
 				bg_color:'',
 				checkbox_field_value_list:[],
+				
 				form_type:3,
 				submit_url:'', //即将提交表单的url 如果没有就用默认
+				
 				wxa_shop_nav_bg_color:'',
 				publish_write_fabu_xuzhi:'',//发帖须知
 				
@@ -210,8 +218,11 @@
 				form_logourl:'',
 				form_intro:'',
 				form_content:'',
+				
 				//首页 > 功能扩展 > 万能表单 中定义的平铺广告图片
-				ad_img_list:''
+				ad_img_list:'',
+				
+				cms_token:'',
 			}
 			
 		},
@@ -264,6 +275,11 @@
 				this.formid = options.cataid; //栏目页面跳转带过来的参数  栏目id
 			}
 			
+			//2021.2.4.  如果参数设置了CMS token，则不适用系统设置的
+			if(options.token){
+				this.cms_token = options.token;
+			}
+			
 			this.catename = options.name; //栏目页面跳转带过来的参数  栏目名称
 			
 			this.abotapi.set_option_list_str(that, function(that002, shop_option_data){
@@ -274,6 +290,9 @@
 				that002.wxa_shop_nav_bg_color = shop_option_data.wxa_shop_nav_bg_color;
 				
 				console.log('======>>>>>that002.wxa_shop_nav_bg_color ====>>>'+that002.wxa_shop_nav_bg_color);
+				
+				
+				this.getWriteFormInputList();
 				
 			});
 			
@@ -319,7 +338,7 @@
 			console.log('sssssss',2)
 			var that = this;
 			
-			this.getArticleList()
+			
 			
 			//end
 			 
@@ -526,11 +545,15 @@
 					this.know = !know;
 					
 			},
-			getArticleList:function(){
+			getWriteFormInputList:function(){
 				
 				var shop_option_data = uni.getStorageSync('shop_option_data_' + this.abotapi.globalData.default_sellerid);
 				var json_shop_option_data = JSON.parse(shop_option_data);
-				this.cms_token = json_shop_option_data.option_list.cms_token;
+				
+				if(!this.cms_token){
+					this.cms_token = json_shop_option_data.option_list.cms_token;
+				}
+				
 				
 				var that = this;
 				

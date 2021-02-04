@@ -88,7 +88,9 @@
 				dianzan_num2:0,
 				num01:'',
 				click:'',
+				
 				cms_token:'',
+				
 				my_collect:'', //判断是不是收藏的
 				cms_cataid:0,
 				cms_cataname:'内容列表',
@@ -104,12 +106,16 @@
 		
 		
 		onLoad:function(options){
-			console.log('options',options);
+			console.log('publish_list ===>>> options ===>>>', options);
 			
 			var that = this;
 			
 			if(options.cataid){
 				this.cms_cataid = options.cataid;
+			}
+			
+			if(options.token){
+				this.cms_token = options.token;
 			}
 			
 			//==== 2020.9.7. 如果是跳转过来的时候带了cataid参数，则先过滤 ====
@@ -149,6 +155,7 @@
 			
 			that.abotapi.set_shop_option_data(that, that.callback_function);
 		},
+		
 		onShow:function(){
 			var that = this;
 			
@@ -221,9 +228,12 @@
 			},
 			callback_function:function(that, shop_option_data){
 				console.log('aaaaaaa====',shop_option_data);
-				that.abotapi.getColor();
+				//that.abotapi.getColor();
 				
-				that.cms_token = shop_option_data.option_list.cms_token;
+				if(!that.cms_token){
+					that.cms_token = shop_option_data.option_list.cms_token;
+				}
+				
 				
 				if(shop_option_data.option_list.wxa_shop_nav_bg_color){
 					that.wxa_shop_nav_bg_color = shop_option_data.option_list.wxa_shop_nav_bg_color; //头部导航的颜色

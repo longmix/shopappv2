@@ -33,7 +33,7 @@
 			
 			<view class="content" @tap="goForum(item.id)">
 				<!-- 内容 -->
-				{{item.info}}
+				{{item.text}}
 			</view>
 			<view class="content_img_box">
 				<!-- 图片，有就显示没有就不显示 -->

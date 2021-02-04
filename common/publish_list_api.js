@@ -22,8 +22,9 @@ module.exports = {
 		
 		if(!that.cms_token){
 			//没有cms——token
-			console.log('get_publish_list 没有 CMS Token');
-			publishData['title'] = '缺少参数';
+			console.log('(common/publish_list_api.js) ===>>> get_publish_list 没有 CMS Token');
+			
+			publishData['title'] = '缺少token参数';
 			typeof callback_function == "function" && callback_function(that, publishData);
 			return;
 		}

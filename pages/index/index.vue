@@ -61,7 +61,7 @@
 			<image  mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/weather_icon/duoyun.png" class="weatherinfo_icon"  
 			v-if="weather == '多云'"></image>
 			<view class="weather" style="font-size: 28rpx;color: #333;">
-				<view class="weatherinfo gobyndsingle">{{area}} {{temperature}}℃  {{weather}}  {{reporttime}} {{w1}}</view>
+				<view class="weatherinfo gobyndsingle">{{tianqi_today.area}} {{tianqi_today.temperature}}℃  {{tianqi_today.weather}}  {{tianqi_today.reporttime}} {{tianqi_today.w1}}</view>
 			</view>
 		</view>
 		
@@ -420,13 +420,16 @@ export default {
 			is_get_article_list:true,// publish_list_api 帖子列表判断是否请求 
 			cms_token:'',//cms_token
 			current_page_size:'',
+			
 			//天气
-			area:'',
+			tianqi_today:{},
+			/*area:'',
 			reporttime:'',
 			weather:'',
 			w1:'',
-			temperature:'',
+			temperature:'',*/
 			show_weather_forecast_in_index:0,
+			
 			default_copyright_text:'',
 			
 			//分享转发
@@ -738,11 +741,11 @@ export default {
 					
 					
 					//console.log('t===>',t);
-					that.area = t.city.data; //地区 （浦东新区）
-					that.reporttime = reporttime; //时间
-					that.weather = t.liveData.weather; //天气（多云）
-					that.w1 = weekDay;
-					that.temperature = t.liveData.temperature; //温度
+					that.tianqi_today.area = t.city.data; //地区 （浦东新区）
+					that.tianqi_today.reporttime = reporttime; //时间
+					that.tianqi_today.weather = t.liveData.weather; //天气（多云）
+					that.tianqi_today.w1 = weekDay;
+					that.tianqi_today.temperature = t.liveData.temperature; //温度
 				}
 
 			});
