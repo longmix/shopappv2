@@ -1,5 +1,8 @@
 
 import bmap from './SDK/bmap-wx.js';
+
+import amap from '@/common/SDK/amap-wx.js';
+
 import abotapi from './abotapi.js';
 
 
@@ -265,6 +268,8 @@ module.exports = {
 				// baidu_map_ak = that.abotapi.globalData.option_list.baidu_map_ak_wxa;
 				// console.log('结束2',baidu_map_ak);
 				
+				//调用系统配置的高德地图获取GPS坐标
+				
 				uni.getLocation({
 				    type: 'wgs84',
 					geocode:true,
@@ -279,6 +284,7 @@ module.exports = {
 						locationData.latitude = res.latitude;
 						locationData.longitude = res.longitude;
 						
+						// geocode为true的时候， 有address对象， 里面有 城市代码，具体见： https://uniapp.dcloud.io/api/location/location
 						locationData.addressComponent = res.address;
 									
 						
@@ -406,5 +412,56 @@ module.exports = {
 	},
 	
 	
+	//获取当地的天气预报，如果是APP中调用，需要传入GPS坐标参数
+	get_local_tianqi: function (that, callback_function='') {
+		
+			
+			if(!that.abotapi.globalData.option_list.amap_map_ak_h5){
+				that.abotapi.globalData.option_list.amap_map_ak_h5 = '8ea39971ec18a332e5af9e18795e7604';
+			}
+
+			var AMap_obj = new amap.AMapWX({
+				key: that.abotapi.globalData.option_list.amap_map_ak_h5     //'8ea39971ec18a332e5af9e18795e7604'
+			});
+			console.log('get_tianqi 实例化高德地图');
+				
+			AMap_obj.getWeather({
+				success: function(tianqiData) {
+					console.log('微信小程序通过搞的地图获得天气数据 ===>', tianqiData);
+					
+					var reporttime = tianqiData.liveData.reporttime.slice(0, 10);
+					
+					var date = reporttime;
+					var dt = new Date(date.split("-")[0], date.split("-")[1]-1,date = date.split("-")[2]);
+					var weekDay = ["星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+					
+					var weekDay = weekDay[dt.getDay()]
+					
+					//回调函数的参数：//天气（多云）     //地区 （浦东新区）   //温度   //日期   //周几
+					var tianqi_today = {};
+					tianqi_today.weather = tianqiData.liveData.weather;//天气（多云）
+					tianqi_today.area = tianqiData.city.data; //地区 （浦东新区）
+					tianqi_today.temperature = tianqiData.liveData.temperature; //温度
+					tianqi_today.reporttime = reporttime; //日期
+					tianqi_today.w1 = weekDay;  //周几
+					
+					
+					typeof callback_function == "function" && callback_function(tianqi_today);
+					
+					return;
+					
+					
+				}
+			
+			});
+
+		
+		// #ifdef APP-PLUS
+			
+		// #endif
+		
+		
+		
+	},
 	
 }

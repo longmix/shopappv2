@@ -52,14 +52,17 @@
 		</view>
 		
 		<view class="content_block" v-if="show_weather_forecast_in_index == 1">
-			<image  mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/weather_icon/dayu.png" class="weatherinfo_icon" 
-			v-if="weather!='多云'&&weather!='晴'&&weather!='阴'"></image>
-			<image  mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/weather_icon/yin.png" class="weatherinfo_icon"  
-			v-if="weather=='阴'"></image>
+			<image  mode="widthFix" 
+				src="https://yanyubao.tseo.cn/Tpl/static/images/weather_icon/dayu.png" 
+				class="weatherinfo_icon" 
+				v-if="tianqi_today.weather!='多云'&&tianqi_today.weather!='晴'&&tianqi_today.weather!='阴'"></image>
+			<image  mode="widthFix" 
+				src="https://yanyubao.tseo.cn/Tpl/static/images/weather_icon/yin.png" class="weatherinfo_icon"  
+				v-if="tianqi_today.weather=='阴'"></image>
 			<image  mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/weather_icon/qing.png" class="weatherinfo_icon"  
-			v-if="weather=='晴'"></image>
+				v-if="tianqi_today.weather=='晴'"></image>
 			<image  mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/weather_icon/duoyun.png" class="weatherinfo_icon"  
-			v-if="weather == '多云'"></image>
+				v-if="tianqi_today.weather == '多云'"></image>
 			<view class="weather" style="font-size: 28rpx;color: #333;">
 				<view class="weatherinfo gobyndsingle">{{tianqi_today.area}} {{tianqi_today.temperature}}℃  {{tianqi_today.weather}}  {{tianqi_today.reporttime}} {{tianqi_today.w1}}</view>
 			</view>
@@ -286,9 +289,11 @@
 <script>
  
 var ttt = 0;
+
 //高德SDK
 import bmap from '../../common/SDK/bmap-wx.js';
-import amap from '@/common/SDK/amap-wx.js';
+//import amap from '@/common/SDK/amap-wx.js';
+
 import io from '../../common/weapp.socket.io.js'; 
 
 import locationapi from '../../common/locationapi.js'; 
@@ -338,7 +343,7 @@ export default {
 			
 			addListener:'',
 			wxa_show_icon_index_count:'',
-			current_cityname:'',
+			current_cityname:'上海市',
 			current_citynameLength:'',
 			current_citynameWidth:'',
 			wxa_shop_toutiao_icon:'',
@@ -422,7 +427,11 @@ export default {
 			current_page_size:'',
 			
 			//天气
-			tianqi_today:{},
+			tianqi_today:{area:'',
+				reporttime:'',
+				weather:'',
+				w1:'',
+				temperature:'',},
 			/*area:'',
 			reporttime:'',
 			weather:'',
@@ -592,7 +601,7 @@ export default {
 	onShow:function(){
 		console.log('call onShow function (/pages/index/index)');
 		
-		this.get_tianqi();
+		
 		
 		
 		
@@ -722,36 +731,21 @@ export default {
 		//获取天气
 		get_tianqi:function(){
 			var that = this;
-			var AMap_obj = new amap.AMapWX({
-				key: '8ea39971ec18a332e5af9e18795e7604'
-			});
-			console.log('get_tianqi 实例化高德地图');
+			
+			console.log('准备获取天气预报');
+			
+			locationapi.get_local_tianqi(that, function(tianqiData){
+				console.log('获取到的天气数据 tianqiData===>', tianqiData);
 				
-			AMap_obj.getWeather({
-				success: function(t) {
-					console.log('t===>',t);
-					
-					var reporttime = t.liveData.reporttime.slice(0, 10);
-					
-					var date = reporttime;
-					var dt = new Date(date.split("-")[0], date.split("-")[1]-1,date = date.split("-")[2]);
-					var weekDay = ["星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
-					
-					var weekDay = weekDay[dt.getDay()]
-					
-					
-					//console.log('t===>',t);
-					that.tianqi_today.area = t.city.data; //地区 （浦东新区）
-					that.tianqi_today.reporttime = reporttime; //时间
-					that.tianqi_today.weather = t.liveData.weather; //天气（多云）
-					that.tianqi_today.w1 = weekDay;
-					that.tianqi_today.temperature = t.liveData.temperature; //温度
-				}
-
-			});
+				//console.log('t===>',t);
+				that.tianqi_today.area = tianqiData.area; //地区 （浦东新区）
+				that.tianqi_today.reporttime = tianqiData.reporttime; //时间
+				that.tianqi_today.weather = tianqiData.weather; //天气（多云）
+				that.tianqi_today.w1 = tianqiData.w1;
+				that.tianqi_today.temperature = tianqiData.temperature; //温度
+				
+			})
 			
-			
-			    
 		},
 		//跳转文章详情
 		goForum: function(id) {
@@ -1170,9 +1164,15 @@ export default {
 			
 			that.call_back_get_shang_list();
 			
+			//显示最新的帖子列表
 			if(that.abotapi.globalData.default_publish_list_count_in_front_page > 0){
 				publish_list_api.get_publish_list(that,that.get_api_publish_list);
 			}
+			
+			//加载天气预报
+			that.get_tianqi();
+			
+			
 			
 			//2020.12.22. 检查版本更新
 			// #ifdef APP-PLUS		
@@ -1303,11 +1303,16 @@ export default {
 			
 			console.log('获取坐标locationData',locationData);
 			
-			if(!isNullOrUndefined(locationData.addressComponent)){
+			if(!isNullOrUndefined(locationData.addressComponent) && locationData.addressComponent.city){
 				that.current_cityname = locationData.addressComponent.city;
+				
+				console.log('locationData.addressComponent 获取到当前城市名称================>>>>>>', that.current_cityname);
+			}
+			else{
+				console.log('locationData.addressComponent 没有获取到，使用默认的================>>>>>>', that.current_cityname);
 			}
 			
-			console.log('locationData.addressComponent================>>>>>>', that.current_cityname);
+			
 			
 			
 			var coordinate = [];
