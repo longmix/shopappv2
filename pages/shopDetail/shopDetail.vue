@@ -365,10 +365,32 @@
 				beforeHeaderOpacity: 1,//不透明度
 				afterHeaderOpacity: 0,//不透明度
 				showBack:true,
+				
 				//是否显示返回按钮
 				// #ifndef MP
-				showBack:true,
+					showBack:true,
 				// #endif
+				
+				
+				showHeader: true,
+				afterHeaderOpacitys: 1, //不透明度
+				headerPosition: 'fixed',
+				
+				headerTop: null,
+				statusTop: null,
+				nVueTitle: null,
+				productLists: '',
+				pictures: '',
+				yingxiao_list: '',
+				page_num: 1,
+				page_size: 5,
+				is_OK: false,
+				cb_params: '',
+				city: '北京',
+				currentSwiper: 0,
+				// 轮播图片
+				
+				
 				
 				ak: "", //填写申请到的ak，从shop_option中获取 baidu_map_ak_wxa这个属性
 				markers: [],
@@ -392,23 +414,8 @@
 				spec: '',
 				isShoucang: 0,
 				
-				showHeader: true,
-				afterHeaderOpacitys: 1, //不透明度
-				headerPosition: 'fixed',
 				
-				headerTop: null,
-				statusTop: null,
-				nVueTitle: null,
-				productLists: '',
-				pictures: '',
-				yingxiao_list: '',
-				page_num: 1,
-				page_size: 5,
-				is_OK: false,
-				cb_params: '',
-				city: '北京',
-				currentSwiper: 0,
-				// 轮播图片
+				
 
 				index_icon_list: '',
 				Promotion: [],
@@ -450,7 +457,7 @@
 				app_kefu_msg_type:'is_call_mobile',
 				
 				//会员卡列表
-				vip_card_list:[],
+				vip_card_list:'',
 			};
 		},
 		
@@ -462,6 +469,14 @@
 			var that = this;
 
 			var xianmai_shangid = 0;
+			
+			//如果传了商户编号 sellerid （suppliersn），则保存
+			if(options.sellerid){
+				var new_sellerid_to_save = options.sellerid;
+				
+				this.abotapi.set_sellerid(new_sellerid_to_save);
+				this.abotapi.globalData.default_sellerid = new_sellerid_to_save;
+			}
 
 			if (options.shangid) {
 				xianmai_shangid = options.shangid;
@@ -473,8 +488,8 @@
 			}
 
 			// #ifdef MP
-			//小程序隐藏返回按钮
-			this.showBack = false;
+				//小程序隐藏返回按钮
+				this.showBack = false;
 			// #endif
 
 			this.current_xianmai_shangid = xianmai_shangid;
@@ -906,13 +921,18 @@
 						
 						var data = res.data.data;
 						
-						that.vip_card_list = res.data.vip_card_list;
-						
-						console.log('8888888888888',that.vip_card_list);
 						
 						if(!data){
 							return;
 						}
+						
+						
+						//2021.2.5. 如果有返回的商户id和sn，则覆盖本地
+						if(data.sellerid && data.sellersn){
+							that.abotapi.set_sellerid(data.sellersn);
+							that.abotapi.globalData.default_sellerid = data.sellersn;
+						}
+						
 
 						var spec = data.spec;
 						if (spec) {
@@ -947,10 +967,38 @@
 						
 
 						that.get_user_data_option(); //获取这个商家是否被收藏
+						
+						
+						//2021.1.XXXX 检查商户会员卡（超级会员卡）
+						if(res.data.vip_card_list){
+							that.vip_card_list = res.data.vip_card_list;
+						}
+						
+						
+						console.log('8888888888888',that.vip_card_list);
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
 						// var latitude_longitude = {
 						//   latitude : data.latitude,
 						//   longitude : data.longitude,
 						// };
+						
+						
+						
+						
+						
+						
+						
 
 						// wx.setStorageSync("longitude_" + data.current_xianmai_shangid + "_latitude", latitude_longitude);
 						var shang_detail = {

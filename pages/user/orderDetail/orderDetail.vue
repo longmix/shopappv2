@@ -48,9 +48,9 @@
 			</view>
 			<view style="overflow: hidden;margin-right: 3%;">
 				<view class="font_12 btn_min fl_r mr_5 mg_l" @tap="refundOrder" 
-				v-if="wxa_order_hide_daishouhuo_refund == 0 && orderData.status_str=='待发货'" 
-				:data-order-id="orderData.orderid">
-				申请退款
+					v-if="(wxa_order_hide_daishouhuo_refund != 1) && (orderData.status == 1)" 
+					:data-order-id="orderData.orderid">
+					申请退款
 				</view>
 				
 				<navigator v-if="orderData.status_str=='待付款'" 
@@ -63,10 +63,22 @@
 					style="background-color: #999;">取消订单</view>
 				
 				
-				<view class="font_12 btn_min fl_r mr_5 mg_l" @tap="refundOrder" v-if="wxa_order_hide_daishouhuo_refund_after == 0 && orderData.status_str=='待收货'" :data-order-id="orderData.orderid">申请退款</view>
-				<view v-if="orderData.status_str=='待收货'" @click="recOrder" :data-orderid="orderData.orderid" class="font_12 fl_r mr_5 btn_min mg_l">确认收货</view>
-				<view v-if="orderData.status_str=='待收货' && xianmai_shang_order_remark == ''" class="font_12 fl_r mr_5 btn_min mg_l" @click="pingjia" :data-orderid='orderData.orderid' :data-xianmaishangid='orderData.order_option.hahading_order_xianmai_shangid'>立即评价</view>
-				<view v-if="orderData.status_str=='待收货' && xianmai_shang_order_remark" class="font_12 fl_r mr_5 btn_min mg_l" @click="go_to_page" :data-faquanid='xianmai_shang_order_remark'>查看评价</view>
+				<view class="font_12 btn_min fl_r mr_5 mg_l" @tap="refundOrder" 
+					v-if="(wxa_order_hide_daishouhuo_refund_after != 1) && ((orderData.status == 2) || (orderData.status == 3)  || (orderData.status == 4))" 
+					:data-order-id="orderData.orderid">申请退款</view>
+				<view v-if="orderData.status_str=='待收货'" 
+					@click="recOrder" 
+					:data-orderid="orderData.orderid" 
+					class="font_12 fl_r mr_5 btn_min mg_l">确认收货</view>
+				<view v-if="orderData.status_str=='待收货' && xianmai_shang_order_remark == ''" 
+					class="font_12 fl_r mr_5 btn_min mg_l" 
+					@click="pingjia" 
+					:data-orderid='orderData.orderid' 
+					:data-xianmaishangid='orderData.order_option.hahading_order_xianmai_shangid'>立即评价</view>
+				<view v-if="orderData.status_str=='待收货' && xianmai_shang_order_remark" 
+					class="font_12 fl_r mr_5 btn_min mg_l" 
+					@click="go_to_page" 
+					:data-faquanid='xianmai_shang_order_remark'>查看评价</view>
 				
 				<view v-if="orderData.status_str=='订单已完成'" 
 					class="font_12 fl_r mr_5 btn_min mg_l" 
@@ -78,7 +90,10 @@
 					@click="pingjia" 
 					:data-orderid='orderData.orderid' 
 					:data-xianmaishangid='orderData.order_option.hahading_order_xianmai_shangid'>立即评价</view>
-				<view v-if="xianmai_shang_order_remark" class="font_12 fl_r mr_5 btn_min mg_l" @click="go_to_page" :data-faquanid='xianmai_shang_order_remark'>查看评价</view>
+				<view v-if="xianmai_shang_order_remark" 
+					class="font_12 fl_r mr_5 btn_min mg_l" 
+					@click="go_to_page" 
+					:data-faquanid='xianmai_shang_order_remark'>查看评价</view>
 			</view>
 			<view class="p_all bg_white mt10 c6 l_h20  font_14">
 				<view v-if="orderData.order_option">
@@ -89,9 +104,9 @@
 					<view>商家名称<view class='fl_r'>{{order_xianmai_shangdata.name}}</view></view>
 				</view>
 				
-				<view v-if="orderData.order_option.xianmai_order_peisong_type && orderData.order_option.xianmai_order_peisong_type == 'snatch_order'">					<view>配送状态<view class='fl_r'>{{orderData.order_option.xianmai_order_peisong_status_str}}</view></view>				</view>
+				<view v-if="orderData && orderData.order_option && orderData.order_option.xianmai_order_peisong_type && (orderData.order_option.xianmai_order_peisong_type == 'snatch_order')">					<view>配送状态<view class='fl_r'>{{orderData.order_option.xianmai_order_peisong_status_str}}</view></view>				</view>
 				
-				<view v-if="orderData.order_option.xianmai_order_peisong_status == 3">
+				<view v-if="orderData && orderData.order_option &&orderData.order_option.xianmai_order_peisong_status == 3">
 					<view style="height: 50rpx;" @tap="queren_shouhuo()"> <view class='fl_r' 
 					style="margin-top: 35rpx;border-radius: 10rpx;background-color: #1AAD19;padding: 8rpx;color: #fff;">确认收货</view></view>
 					<view style="font-size: 26rpx;">{{orderData.order_option.xianmai_order_peisong_003}}自动收货</view>
@@ -218,8 +233,11 @@
 					payment_name:'',
 				},
 				wxa_shop_nav_bg_color:'',
-				wxa_order_hide_daishouhuo_refund_after:'',
-				wxa_order_hide_daishouhuo_refund:'',
+				
+				//两个退款按钮
+				wxa_order_hide_daishouhuo_refund_after:0,
+				wxa_order_hide_daishouhuo_refund:0,
+				
 				orderno:'',
 				waimai_order_type:0,
 				order_xianmai_shangdata:'', //商家信息
@@ -271,6 +289,9 @@
 			
 				if(option_list.wxa_order_hide_daishouhuo_refund){
 					this.wxa_order_hide_daishouhuo_refund = option_list.wxa_order_hide_daishouhuo_refund;
+				}
+				if(option_list.wxa_order_hide_daishouhuo_refund_after){
+					this.wxa_order_hide_daishouhuo_refund_after = option_list.wxa_order_hide_daishouhuo_refund_after;
 				}
 				
 			    if (option_list.wxa_shop_nav_bg_color) {
