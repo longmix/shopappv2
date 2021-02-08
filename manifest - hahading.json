@@ -2,8 +2,8 @@
     "name" : "哈哈订",
     "appid" : "__UNI__5B54B05",
     "description" : "哈哈订APP",
-    "versionName" : "1.7.9",
-    "versionCode" : 230,
+    "versionName" : "1.8.0",
+    "versionCode" : 360,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true, //是否启用`自定义组件模式`，为true表示新的`自定义组件模式` ，否则为`template模板模式`   
@@ -69,7 +69,8 @@
                     "NSCameraUsageDescription" : "使用相机拍摄商品以及设置头像",
                     "NSLocationWhenInUseUsageDescription" : "访问位置以计算最近的服务网点",
                     "NSLocationAlwaysUsageDescription" : "访问位置以计算最近的服务网点",
-                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "访问位置以计算最近的服务网点"
+                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "访问位置以计算最近的服务网点",
+                    "NSMicrophoneUsageDescription" : "使用麦克风以获取录制视频时候的声音"
                 }
             },
             /* ios打包配置 */
