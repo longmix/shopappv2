@@ -2,8 +2,8 @@
     "name" : "商城V2加载中",
     "appid" : "__UNI__A79BAA4",
     "description" : "",
-    "versionName" : "1.8.1",
-    "versionCode" : 365,
+    "versionName" : "1.8.2",
+    "versionCode" : 370,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true, //是否启用`自定义组件模式`，为true表示新的`自定义组件模式` ，否则为`template模板模式`   
