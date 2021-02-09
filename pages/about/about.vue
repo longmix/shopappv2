@@ -14,19 +14,19 @@
 		<view class="list">
 			<view class="list_li" v-if="kefu_telephone">
 				<view class="li_title">客服电话</view>
-				<view class="li_info" bindtap="callTel">{{kefu_telephone}}</view>
+				<view class="li_info" @tap="callKefuTel">{{kefu_telephone}}</view>
 			</view>
 			<view class="list_li" v-if="kefu_qq">
-				<view class="li_title">客服</view>
-				<view class="li_info">{{kefu_qq}}</view>
+				<view class="li_title">客服QQ</view>
+				<view class="li_info" @tap="callKefuQQ">{{kefu_qq}}</view>
 			</view>
 			<view class="list_li" v-if="kefu_website">
 				<view class="li_title">官方网站</view>
-				<view class="li_info">{{kefu_website}}</view>
+				<view class="li_info" @tap="callWebsite">{{kefu_website}}</view>
 			</view>
 			<view class="list_li" v-if="kefu_gongzhonghao">
 				<view class="li_title">微信公众号</view>
-				<view class="li_info">{{kefu_gongzhonghao}}</view>
+				<view class="li_info" @tap="callWeixinMp">{{kefu_gongzhonghao}}</view>
 			</view>
 			<!--
 	  <view class="list_li" bindtap="openChat">
@@ -294,25 +294,25 @@
 			//拨打客服电话
 			call_seller: function() {
 				// #ifdef MP-WEIXIN
-				return;
+					//return;
 				// #endif
 				
 				var that = this;
 
 				// #ifdef MP-BAIDU
-				uni.makePhoneCall({
-					phoneNumber: that.kefu_telephone,
-				})
-				
-				return;
+					uni.makePhoneCall({
+						phoneNumber: that.kefu_telephone,
+					})
+					
+					return;
 				// #endif
 				
 				// #ifdef MP-ALIPAY
-				uni.makePhoneCall({
-					phoneNumber: that.kefu_telephone,
-				})
-				
-				return;
+					uni.makePhoneCall({
+						phoneNumber: that.kefu_telephone,
+					})
+					
+					return;
 				
 				// #endif
 				
@@ -337,6 +337,105 @@
 					
 				}
 			},
+			
+			callKefuTel:function(e){
+				
+				
+				var that = this;
+				
+				console.log('callKefuTel ====>>>> ' + that.kefu_telephone);
+				
+				
+				//that.kefu_telephone = that.abotapi.globalData.kefu_telephone;
+				//that.kefu_qq = that.abotapi.globalData.kefu_qq;
+				//that.kefu_website = that.abotapi.globalData.kefu_website;
+				//that.kefu_gongzhonghao = that.abotapi.globalData.kefu_gongzhonghao;
+				
+				uni.makePhoneCall({
+					phoneNumber: that.kefu_telephone,
+				})
+				
+				
+			},
+			
+			callWeixinMp:function(e){
+				var that = this;
+				
+				console.log('callWeixinMp ====>>>> ' + that.kefu_gongzhonghao);
+				
+				uni.setClipboardData({
+				  data: that.kefu_gongzhonghao,
+				})
+							
+				uni.showModal({
+				  title:'公众号名称已经复制',
+				  showCancel:false,
+				  content: '打开手机微信，点击右上角选择“添加朋友”，类型“公众号”，输入“'+that.kefu_gongzhonghao+'”。',
+				})
+			},
+			
+			callKefuQQ:function(e){
+				var that = this;
+				
+				console.log('callKefuQQ ====>>>> ' + that.kefu_qq);
+				
+				// #ifdef APP-PLUS
+					var new_url = 'http://wpa.qq.com/msgrd?v=3&uin=' + that.kefu_qq + '&site=qq&menu=yes';
+					plus.runtime.openURL(new_url);
+				// #endif
+				
+				// #ifdef H5
+					var new_url = 'http://wpa.qq.com/msgrd?v=3&uin=' + that.kefu_qq + '&site=qq&menu=yes';
+					plus.runtime.openURL(new_url);
+				// #endif
+				
+				// setClipboardData  在 H5平台不可用
+				
+				// #ifndef APP-PLUS
+					uni.setClipboardData({
+					  data: that.kefu_qq,
+					})
+								
+					uni.showModal({
+					  title:'客服QQ已经复制',
+					  showCancel:false,
+					  content: '打开QQ，搜索“'+that.kefu_gongzhonghao+'”添加好友即可。',
+					})
+				// #endif
+				
+				
+			},
+			
+			
+			
+			callWebsite:function(e){
+				var that = this;
+				
+				console.log('callWebsite ====>>>> ' + that.kefu_website);
+				
+				// #ifdef APP-PLUS
+					plus.runtime.openURL(that.kefu_website);
+				// #endif
+				
+				// #ifdef H5
+					plus.runtime.openURL(that.kefu_website);
+				// #endif
+				
+				// #ifndef APP-PLUS
+					uni.setClipboardData({
+					  data: that.kefu_website,
+					})
+								
+					uni.showModal({
+					  title:'官方网址已经复制',
+					  showCancel:false,
+					  content: '打开浏览器，输入“'+that.kefu_website+'”访问',
+					})
+				// #endif
+				
+				
+			},
+			
 		},
 
 

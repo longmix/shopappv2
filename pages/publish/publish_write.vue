@@ -292,7 +292,7 @@
 				console.log('======>>>>>that002.wxa_shop_nav_bg_color ====>>>'+that002.wxa_shop_nav_bg_color);
 				
 				
-				this.getWriteFormInputList();
+				that.getWriteFormInputList();
 				
 			});
 			

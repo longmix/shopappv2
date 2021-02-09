@@ -103,29 +103,30 @@
 			<!-- 营业时间 地址结束 -->
 
 		</view>
-		<!-- 功能按钮-->
 		
-			<view v-if="vip_card_list">
-				<view style="text-align: center;">会员卡列表</view>
-				<view class="vip_card_list" v-for="(item,index) in vip_card_list" :key='index'>
-				<view style="width: 75%;display: flex;">
-					<img :src="item.card_touxiang" alt="" class="vip_logo">
-					<view class="vip_card_name">{{item.card_name}}</view>
-				</view>
-				<view v-if="item.huiyuan_status == 1" class="banka_btn" style="margin-top: 20rpx;" @tap="go_detail_huiyuan(item.userid)">
-					<view>
-						<view class="banka_ft">查看卡片</view>
-					</view>
-				</view>
-				<view v-else class="banka_btn" style="margin-top: 20rpx;"  @tap="become_huiyuan(item.userid)">
-					<view>
-						<view class="banka_ft">我要领卡</view>
-					</view>
-				</view>
+		<!-- 关联的超级会员卡 Begin -->
+		<view v-if="vip_card_list">
+			<view style="text-align: center;">会员卡列表</view>
+			<view class="vip_card_list" v-for="(item,index) in vip_card_list" :key='index'>
+			<view style="width: 75%;display: flex;">
+				<img :src="item.card_touxiang" alt="" class="vip_logo">
+				<view class="vip_card_name">{{item.card_name}}</view>
+			</view>
+			<view v-if="item.huiyuan_status == 1" class="banka_btn" style="margin-top: 20rpx;" @tap="go_detail_huiyuan(item.userid)">
+				<view>
+					<view class="banka_ft">查看卡片</view>
 				</view>
 			</view>
+			<view v-else class="banka_btn" style="margin-top: 20rpx;"  @tap="become_huiyuan(item.userid)">
+				<view>
+					<view class="banka_ft">我要领卡</view>
+				</view>
+			</view>
+			</view>
+		</view>
+		<!-- 关联的超级会员卡 End -->
 
-
+		<!-- 功能按钮-->
 		<view>
 			<!-- 按钮1 -->
 			<view class="paidui-con" v-if="shop_product_btn_show == 1">
@@ -173,21 +174,25 @@
 		</view>
 
 		<!-- 功能按钮结束-->
-	<discoverList 
-	:faquanList="current_faquanList"
-	:videometa_width_height_list="current_videometa_width_height_list"
-	@fanquaDianzan="fanquaDianzan"
-	@fanquanCollect="fanquanCollect"
-	@click_share_btn="click_share_btn"
-	@bigImg="bigImg"
-	>
-	<!-- 
-	@videometa="videometa"
-	@change_faquan_status="change_faquan_status"
-	@oneClickSave="oneClickSave" 
-	@copyText="copyText"
-	@img_or_video_download="img_or_video_download" -->
-	</discoverList>
+		
+		<!-- 发圈发现随拍 （关联商家的） -->
+		<discoverList 
+			:faquanList="current_faquanList"
+			:videometa_width_height_list="current_videometa_width_height_list"
+			@fanquaDianzan="fanquaDianzan"
+			@fanquanCollect="fanquanCollect"
+			@click_share_btn="click_share_btn"
+			@bigImg="bigImg"
+			>
+			<!-- 
+			@videometa="videometa"
+			@change_faquan_status="change_faquan_status"
+			@oneClickSave="oneClickSave" 
+			@copyText="copyText"
+			@img_or_video_download="img_or_video_download" -->
+		</discoverList>
+		
+		
 		<!-- 优惠 -->
 		<view style="border-bottom:6px solid #eee;" v-if="current_shang_detail.youhui_title != ''">
 			<view class="icon-title2">
@@ -209,6 +214,7 @@
 				</view>
 			</block>
 		</view>
+		
 		<!--商家简介-->
 		<view style="border-bottom:6px solid #eee;" v-if="current_shang_detail.brief != ''">
 			<view class="icon-title2">
@@ -229,6 +235,7 @@
 			</block>
 		</view>
 		
+		<!-- 小程序码 -->
 		<view class="page_bottom">
 			
 			<image v-if="user_console_setting.show_shang_shop_wxa_qrcode == 1" 
@@ -1912,8 +1919,8 @@
 
 	.page_bottom {
 		width: 100%;
-		height: 180rpx;
-		padding: 120rpx 0rpx;
+		/*height: 180rpx;*/
+		padding: 40rpx 0rpx 200rpx;
 		text-align: center;
 	}
 

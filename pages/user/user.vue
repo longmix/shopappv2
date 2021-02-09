@@ -474,14 +474,21 @@
 				console.log('get_current_userinfo--userInfo==', userInfo)
 
 				if (userInfo && userInfo.userid) {
-					that.abotapi.abotRequest({
-						url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
-						data: {
+					
+					var post_data = {
 							sellerid: that.abotapi.globalData.default_sellerid,
 							checkstr: userInfo.checkstr,
 							userid: userInfo.userid,
-							appid: that.abotapi.globalData.xiaochengxu_appid,
-						},
+							//appid: that.abotapi.globalData.xiaochengxu_appid,
+					};
+					
+					// #ifdef MP-WEIXIN
+						post_data.appid = that.abotapi.globalData.xiaochengxu_appid,
+					// #endif
+					
+					that.abotapi.abotRequest({
+						url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=get_user_info',
+						data: post_data,
 						success: function(res) {
 							console.log('ddd', res);
 							
