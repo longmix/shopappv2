@@ -411,10 +411,20 @@
 			callWebsite:function(e){
 				var that = this;
 				
-				console.log('callWebsite ====>>>> ' + that.kefu_website);
+				//that.kefu_website = 'https://www.abot.cn';
+				
+				var new_url = that.kefu_website;
+				
+				if(new_url.substr(0, 4) != 'http'){
+					new_url = 'http://' + new_url;
+				}
+				
+				console.log('callWebsite ====>>>> ' + new_url);
+				
 				
 				// #ifdef APP-PLUS
-					plus.runtime.openURL(that.kefu_website);
+					console.log('callWebsite ====>>>> to open url ==>> ' + new_url);
+					plus.runtime.openURL(new_url);
 				// #endif
 				
 				// #ifdef H5
