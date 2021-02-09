@@ -399,7 +399,7 @@
 					uni.showModal({
 					  title:'客服QQ已经复制',
 					  showCancel:false,
-					  content: '打开QQ，搜索“'+that.kefu_gongzhonghao+'”添加好友即可。',
+					  content: '打开QQ，搜索“'+that.kefu_qq+'”添加好友即可。',
 					})
 				// #endif
 				

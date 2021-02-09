@@ -3,7 +3,7 @@
     "appid" : "__UNI__A79BAA4",
     "description" : "",
     "versionName" : "1.8.2",
-    "versionCode" : 370,
+    "versionCode" : 376,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true, //是否启用`自定义组件模式`，为true表示新的`自定义组件模式` ，否则为`template模板模式`   
