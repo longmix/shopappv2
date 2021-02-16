@@ -67,6 +67,18 @@
 		</view>
 		<view style='font-size:12px;color:#666;margin:6rpx 24rpx 0rpx 24rpx;'>{{video_data.ext_info}}</view>
 		<view style='font-size:12px;color:#666;margin:6rpx 24rpx 0rpx 24rpx;'>{{video_data.ext_info02}}</view>
+		
+		
+		<!-- 富媒体组件 2021.1.18. -->
+		<!-- rich-text  和 v-html 都有各自的优缺点 -->
+		<view style="margin:50rpx 0 50rpx 0;">
+		<u-parse v-if="video_data.describe != null" 
+			:content="index_rich_html_content" 
+			@preview="preview" 
+			@navigate="index_rich_html_click" />
+		</view>
+		
+		
 		<view class="userwords" v-for="(item,index) in video_remark_list" :key="index">
 		    <image class="userwords_img" :src="item.headlogo"></image>
 		    <view class="userwords_rit">
@@ -105,9 +117,12 @@
 	import abotshare from '../../components/abot_share_api/abot_share_api.vue';
 	import abotsharejs from '../../common/abot_share_api.js';
 	
+	import uParse from '@/components/gaoyia-parse/parse.vue'
+	
 	export default {
 		components:{
-			abotshare,
+			abotshare,			
+			uParse
 		},
 		data() {
 			return {
@@ -122,6 +137,8 @@
 				animationData:'',
 				
 				current_params_str:'',
+				
+				index_rich_html_content:'<h1></h1>'
 			};
 		},
 		onLoad(options) {
@@ -179,6 +196,10 @@
 				  if(res.data.code == 1){
 				    that.video_data = data.video_data;
 					that.video_remark_list = data.video_remark_list;
+					
+					if(data.video_data.describe){
+						that.index_rich_html_content = data.video_data.describe;
+					}
 							
 				    uni.setNavigationBarTitle({
 				      title: data.video_data.title
