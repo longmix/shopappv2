@@ -690,6 +690,16 @@
 			        }.bind(this), 200)
 			      }
 			    },
+				
+				//2021.2.17. 富媒体 链接点击事件
+				index_rich_html_click:function(new_url){
+					
+					console.log('index_rich_html_click====>>>>>', new_url);
+					
+					this.abotapi.call_h5browser_or_other_goto_url(new_url);
+					
+					
+				},
 		},
 	};
 </script>

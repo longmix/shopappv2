@@ -1,10 +1,11 @@
 <script>
 	import abot_data from 'abot_data.js';
+	
 	export default {
 
 
 		onLaunch: function() {
-			console.log('App Launch')
+			console.log('App Launch - shopapp vue')
 
 			console.log('aa===>>>', abot_data);
 

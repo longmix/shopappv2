@@ -8,11 +8,22 @@
 		
 		<block v-if="content_type == 'cms'">
 		<view class='wenzhang_detail'>
+			
+			
+			
+			
+			
 <!-- #ifdef MP-ALIPAY -->			
-			<rich-text :nodes="describe"></rich-text>
+			<rich-text :nodes="index_rich_html_content"></rich-text>
 <!-- #endif -->				
 <!-- #ifndef MP-ALIPAY -->
-			<rich-text v-if="describe" :nodes="describe|formatRichText"></rich-text>
+			
+			<!-- 富媒体组件 2021.1.18. -->
+			<!-- rich-text  和 v-html 都有各自的优缺点 -->
+			<u-parse v-if="index_rich_html_content" 
+				:content="index_rich_html_content" 
+				@preview="preview" 
+				@navigate="index_rich_html_click" />
 <!-- #endif -->
 			
 		</view>
@@ -51,7 +62,11 @@
 		<view class="zdy_btn_box" 
 			v-if="welcome_page_btn_count > 0"
 			:style="{background:welcome_page_bottom_bg_color,color:welcome_page_bottom_font_color,borderTop:'1rpx solid '+ welcome_page_bottom_font_color}">
-		    <view :class="[welcome_page_btn_count > 2 ? 'btn_up_and_dow' : 'btn_left_and_right']" v-for="(item,index) in welcome_page_bottom_icon_list" :key="index" @click="btn_to_page" :data-url="item.url">
+		    <view :class="[welcome_page_btn_count > 2 ? 'btn_up_and_dow' : 'btn_left_and_right']" 
+				v-for="(item,index) in welcome_page_bottom_icon_list" 
+				:key="index" 
+				@click="btn_to_page" 
+				:data-url="item.url">
 		        <image :style="{width:welcome_page_bottom_icon_size + 'rpx',height:welcome_page_bottom_icon_size + 'rpx'}" :src="item.src" style="width:40rpx;height:40rpx;"></image> 
 		        <view :style="{fontSize:welcome_page_bottom_font_size + 'rpx'}">{{item.name}}</view>
 		    </view>
@@ -70,12 +85,17 @@ var ttt = 0;
 
 //import abotapi001 from '../../../common/abotapi.js';
 
+import uParse from '@/components/gaoyia-parse/parse.vue'
+
 // #ifdef MP-ALIPAY
 	import parseHtml from "../../common/html-parser.js"
 // #endif
 
 
 export default {
+	components:{
+		uParse
+	},
 	data() {
 		return {
 			get_default_imgid:false,
@@ -88,7 +108,9 @@ export default {
 			video_url:'',
 			wxa_show_latest_product_in_welcome_page:'',
 			is_more:'',
-			describe:'',
+			
+			index_rich_html_content:'<h1></h1>',
+			
 			shopList:[],
 			page:1,
 			
@@ -389,19 +411,19 @@ export default {
 		        })
 		        that.current_title = res.data.data.title;
 		          
-				that.describe = res.data.data.info;
+				that.index_rich_html_content = res.data.data.info;
 		        
 		        //WxParse.wxParse('content', 'html', res.data.data.info, that, 15);
 				
 // #ifdef MP-ALIPAY		
-						console.log('that.describe====>>>>', that.describe);
+						console.log('that.index_rich_html_content====>>>>', that.index_rich_html_content);
 						
 						const filter = that.$options.filters["formatRichText"];
-						that.describe = filter(that.describe);
+						that.index_rich_html_content = filter(that.index_rich_html_content);
 						
-						console.log('that.describe====>>>>', that.describe);
+						console.log('that.index_rich_html_content====>>>>', that.index_rich_html_content);
 						
-						let data001 = that.describe;
+						let data001 = that.index_rich_html_content;
 						let newArr = [];
 						let arr = parseHtml(data001);
 						arr.forEach((item, index)=>{
@@ -411,8 +433,7 @@ export default {
 						//console.log('arr arr arr====>>>>', arr);
 						//console.log('newArr newArr newArr====>>>>', newArr);
 						
-						that.describe = newArr;
-
+						that.index_rich_html_content = newArr;
 // #endif				
 							
 				
@@ -510,16 +531,14 @@ export default {
 		        })
 		        that.current_title = res.data.data.title;
 		
-				that.describe = res.data.data.info;
+				that.index_rich_html_content = res.data.data.info;
 				
 // #ifdef MP-ALIPAY		
 						
 						const filter = that.$options.filters["formatRichText"];
-						that.describe = filter(that.describe);
+						that.index_rich_html_content = filter(that.index_rich_html_content);
 						
-						//console.log('that.describe====>>>>', that.describe);
-						
-						let data001 = that.describe;
+						let data001 = that.index_rich_html_content;
 						let newArr = [];
 						let arr = parseHtml(data001);
 						arr.forEach((item, index)=>{
@@ -529,7 +548,7 @@ export default {
 						//console.log('arr arr arr====>>>>', arr);
 						//console.log('newArr newArr newArr====>>>>', newArr);
 						
-						that.describe = newArr;
+						that.index_rich_html_content = newArr;
 
 // #endif				
 				
@@ -645,7 +664,16 @@ export default {
 	      videometa_width_height: videometa_width_height
 	    });
 	
-	  },
+	},
+	//2021.2.17. 富媒体 链接点击事件
+	index_rich_html_click:function(new_url){
+		
+		console.log('index_rich_html_click====>>>>>', new_url);
+		
+		this.abotapi.call_h5browser_or_other_goto_url(new_url);
+		
+		
+	},
 	filters: {
 		/**
 		 * 处理富文本里的图片宽度自适应
