@@ -1502,14 +1502,17 @@ tuansn = 参团的编号，如果没有，则代表新开团
 					  
 					 if(that.is_waimai == 1){
 					   uni.removeStorage({
-						 key: 'waimai_list_' + that.xianmaishangid,
-						 success(res) {
-						   uni.redirectTo({
-						   	url: '/pages/pay/payment/payment?orderid=' + that.orderid + '&balance_zengsong_dikou=' + that.balance_zengsong_dikou + '&balance_dikou=' + that.balance_dikou + '&traffic_price=' + that.traffic_price,
-						   })
-						 }
+							key: 'waimai_list_' + that.xianmaishangid,
+							success(res) {
+								 
+								uni.redirectTo({
+									url: '/pages/pay/payment/payment?orderid=' + that.orderid + '&balance_zengsong_dikou=' + that.balance_zengsong_dikou + '&balance_dikou=' + that.balance_dikou + '&traffic_price=' + that.traffic_price,
+								})
+								
+							}
 					   })
-					 }else{
+					 }
+					 else{
 					   
 					   uni.removeStorage({
 						 key: 'cart_list_' + that.xianmaishangid,
@@ -1519,6 +1522,9 @@ tuansn = 参团的编号，如果没有，则代表新开团
 						   })
 						 }
 					   })
+					   
+					   
+					   
 					 }
 					  
 			      },

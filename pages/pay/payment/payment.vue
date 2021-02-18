@@ -218,10 +218,114 @@
 			
 			var that = this;
 			
-			this.current_options = options;
+			that.current_options = options;
+			
+			
+			
+			
+			//检查参数
+			var arr = Object.keys(options);
+			
+			var options_len = arr.length;
+			var params_str = '';
+			
+			if (options_len > 0){
+				for(var key in options){
+					params_str += key+'='+options[key]+'&';
+				}
+				params_str = params_str.substr(0, params_str.length - 1);
+			
+			}
+			
+			//检查用户是否登录
+			var userInfo = this.abotapi.get_user_info();
+			
+			if(!userInfo || !userInfo.userid){
+				var last_url = 'pages/pay/payment/payment';
+				
+				last_url = last_url+'?'+params_str;
+				
+				that.abotapi.goto_user_login(last_url, 'normal');
+				return;
+			}
+			
+			//检查是否跳转到小程序支付
+			
+			//2021.1.20. 如果需要跳转到微信小程序中区支付
+			// #ifdef APP-PLUS
+			if(that.abotapi.globalData.order_buy_payment_to_mp_weixin == 1){
+				
+				
+				//跳转到小程序中的网址
+				var wxa_path = 'pages/pay/payment/payment';
+				
+				//读取所有的参数
+				if (options_len > 0){
+					wxa_path = wxa_path+'?'+params_str;
+				}
+				
+				console.log('即将跳转到微信小程序中去支付===>>>>'+ that.abotapi.globalData.xiaochengxu_account);
+				
+				plus.share.getServices(
+					function(res){ 
+						var sweixin = null;  
+						for(var i=0;i<res.length;i++){  
+							var t = res[i];  
+							if(t.id == 'weixin'){  
+								sweixin = t;
+								
+								uni.showModal({
+									title:'提示',
+									content:'即将跳转到微信中支付',
+									success(res) {
+										//唤醒微信小程序
+										sweixin.launchMiniProgram({
+											id: that.abotapi.globalData.xiaochengxu_account,
+											path:wxa_path,
+											type: 0,
+											webUrl:'https://www.abot.cn'
+										});
+									}
+								});
+								
+								return;
+							}  
+						}
+						
+						if(!sweixin){
+							uni.showModal({
+								title:'没有找到微信',
+								content:'唤起微信支付失败',
+								success(res) {
+									if(res.confirm){
+									}
+								}
+							});
+							
+						}  
+					},
+					function(res){  
+						console.log(JSON.stringify(res));
+						
+						uni.showToast({
+							title:'没有检测到微信'
+						})
+					}
+				);
+				
+				
+				
+			}
+			// #endif
+			//========= End ===============
+			
 			
 			this.abotapi.set_option_list_str(this, (_self, option_list)=>{
 				that.btn_bg_color = _self.abotapi.getColor();
+				
+				
+				
+				
 				
 			});
 			
@@ -597,75 +701,6 @@
 
 				var that = this;
 				
-				//2021.1.20. 如果需要跳转到微信小程序中区支付
-				// #ifdef APP-PLUS
-				if(that.abotapi.globalData.order_buy_payment_to_mp_weixin == 1){
-					
-					uni.showModal({
-						title:'提示',
-						content:'即将跳转到微信中支付',
-						success(res) {
-							if(res.confirm){
-								
-								
-								
-								//跳转到小程序中的网址
-								var wxa_path = 'pages/pay/payment/payment';
-								
-								//读取所有的参数
-								var arr = Object.keys(that.current_options);
-								var options_len = arr.length;
-								
-								if (options_len > 0){
-									var params_str = '';
-								
-									for(var key in that.current_options){
-										params_str += key+'='+that.current_options[key]+'&';
-									}
-									params_str = params_str.substr(0, params_str.length - 1);
-								
-									wxa_path = wxa_path+'?'+params_str;
-								}
-								
-								plus.share.getServices(
-									function(res){  
-										var sweixin = null;  
-										for(var i=0;i<res.length;i++){  
-											var t = res[i];  
-											if(t.id == 'weixin'){  
-												sweixin = t;  
-											}  
-										}  
-										if(sweixin){
-											//唤醒微信小程序
-											sweixin.launchMiniProgram({
-												id: that.abotapi.globalData.xiaochengxu_account,
-												path:wxa_path,
-												type: 0,
-												webUrl:'https://www.abot.cn'
-											});
-										}  
-									},
-									function(res){  
-										console.log(JSON.stringify(res));
-										
-										uni.showToast({
-											title:'没有检测到微信'
-										})
-									}
-								);
-								
-								
-								
-								
-								
-							}
-						}
-					})
-					
-				}
-				// #endif
-				//========= End ===============
 				
 				
 				

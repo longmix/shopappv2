@@ -579,16 +579,18 @@ export default {
 		this.abotapi.globalData.default_sellerid = sellerid
 		this.abotapi.set_sellerid(sellerid);
 		//========  End =======
-			
+		
+		
+		
+		//2021.2.18. 判断是否有  向其他界面跳转  的指令
+		
+		
+		
 		this.abotapi.get_shop_info_from_server(this.callback_func_for_shop_info);	
 		
 		this.abotapi.set_shop_option_data(this, this.callback_function_shop_option_data);
 		
 		
-		
-		// locationapi.get_location(this, this.call_back_get_shang_list2);
-		
-
 		
 		
 		
