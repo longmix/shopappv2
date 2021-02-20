@@ -277,6 +277,7 @@
 								uni.showModal({
 									title:'提示',
 									content:'即将跳转到微信中支付',
+									showCancel:false,
 									success(res) {
 										//唤醒微信小程序
 										sweixin.launchMiniProgram({
@@ -285,6 +286,10 @@
 											type: 0,
 											webUrl:'https://www.abot.cn'
 										});
+										
+										uni.navigateBack({
+											delta:1
+										})
 									}
 								});
 								
