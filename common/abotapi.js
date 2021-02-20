@@ -1456,22 +1456,72 @@ module.exports = {
    
 			}
    
-		} else if ((url.indexOf('http://') == 0)
+		} 
+		else if ((url.indexOf('http://') == 0)
 			||(url.indexOf('https://') == 0)
 			||(url.indexOf('/hybrid/html/') == 0)) {
+				
 			console.log('abotapi.js call_h5browser_or_other_goto_url ==>> 准备跳转网址：'+url);
 			
+			if((this.globalData.current_platform == 'mp-weixin')
+				||(this.globalData.current_platform == 'mp-baidu')
+				||(this.globalData.current_platform == 'mp-alipay')){
+				//如果是小程序平台的本地hybrid请求
+				if(url.indexOf('/hybrid/html/') == 0){
+					uni.showToast({
+						title:'不合法本地路径'
+					})
+					
+					return;
+				}
+				
+				
+				var is_domain_in_allow_list = false;
+				
+				if(!this.globalData.option_list.wxa_domain_allow_list){
+					is_domain_in_allow_list = true;
+				}
+				else{
+					for(var ii=0; ii<this.globalData.option_list.wxa_domain_allow_list.length; ii++){
+						if(url.indexOf(this.globalData.option_list.wxa_domain_allow_list[ii]) == 0){
+							is_domain_in_allow_list = true;
+							break;
+						}
+					}
+				}
+				
+				if(!is_domain_in_allow_list){
+					uni.setClipboardData({
+						data: url,
+						success: function () {
+						    console.log('小程序中将链接复制到剪切板');
+							
+							uni.showToast({
+								title:'链接已经复制'
+							})
+						}
+					})
+					
+					return;
+				}
+				
+			}
+			
+			var new_url = '/pages/h5browser/h5browser?url=' + encodeURIComponent(url);
+			if(ret_page){
+				new_url +=  '&ret_page=' + ret_page;
+			}
 			
 			if (url.indexOf('#redirectTo') != -1){
 				//如果指定了跳转方式为 #redirectTo
 				url = url.replace(/#redirectTo/, '');
 				uni.redirectTo({
-				  url: '/pages/h5browser/h5browser?url=' + encodeURIComponent(url) + '&ret_page=' + ret_page,
+					url: new_url,
 				})
 			}
 			else{
 				uni.navigateTo({
-					url: '/pages/h5browser/h5browser?url=' + encodeURIComponent(url) + '&ret_page=' + ret_page,
+					url: new_url,
 				})
 			}
 		}

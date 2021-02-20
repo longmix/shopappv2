@@ -590,15 +590,15 @@ export default {
 		  
 		
 		
-		  //详情页跳转
-		  lookdetail: function (e) {
+		//详情页跳转
+		lookdetail: function (e) {
 		    console.log(e)
 		    var lookid = e.currentTarget.dataset.procuctid;
 		    console.log(lookid);
 		    uni.navigateTo({
 		      url: "../index/detail?id=" + lookid.id
 		    })
-		  },
+		},
 		  
 		imageLoad: function (e) {//获取图片真实宽度  
 				
@@ -625,55 +625,63 @@ export default {
 		    console.log(e);
 		    var url = e.currentTarget.dataset.url;
 		    this.abotapi.call_h5browser_or_other_goto_url(url);
-		  }
+		},
+		
+		//播放点击视频并停止播放其他视频
+		start_and_stop_other_videos: function (e) {
+			console.log('start_and_stop_other_videos=====>>>>', e);
+			var video_id = e.currentTarget.dataset.id;
+		},
+		
+		videometa:function(e){
+		    console.log('videometa======>>>>>', e);
+		
+		    var imgwidth = e.detail.width;
+		    var imgheight = e.detail.height;
+		
+		
+		    //宽高比  
+		    var ratio = imgwidth / imgheight;
+		
+		    console.log(imgwidth, imgheight)
+		
+		    var current_view_width = 750;
+		
+		    current_view_width = current_view_width ;
+		
+		    //计算的高度值  
+		    var current_view_height = current_view_width / ratio;
+		
+		
+		    //赋值给前端
+		    var videometa_width_height = [current_view_width, current_view_height];
+		
+		    console.log('videometa_width_height====>>>>', videometa_width_height);
+		
+		    this.setData({
+		      videometa_width_height: videometa_width_height
+		    });
+		
+		},
+		//2021.2.17. 富媒体 链接点击事件
+		index_rich_html_click:function(new_url){
+			
+			console.log('index_rich_html_click====>>>>>', new_url);
+			
+			this.abotapi.call_h5browser_or_other_goto_url(new_url);
+			
+			
+		},
+		
+		
+		
+		
+		
+		
 
 		
 	},
-	//播放点击视频并停止播放其他视频
-	start_and_stop_other_videos: function (e) {
-		console.log('start_and_stop_other_videos=====>>>>', e);
-		var video_id = e.currentTarget.dataset.id;
-	},
 	
-	videometa:function(e){
-	    console.log('videometa======>>>>>', e);
-	
-	    var imgwidth = e.detail.width;
-	    var imgheight = e.detail.height;
-	
-	
-	    //宽高比  
-	    var ratio = imgwidth / imgheight;
-	
-	    console.log(imgwidth, imgheight)
-	
-	    var current_view_width = 750;
-	
-	    current_view_width = current_view_width ;
-	
-	    //计算的高度值  
-	    var current_view_height = current_view_width / ratio;
-	
-	
-	    //赋值给前端
-	    var videometa_width_height = [current_view_width, current_view_height];
-	
-	    console.log('videometa_width_height====>>>>', videometa_width_height);
-	
-	    this.setData({
-	      videometa_width_height: videometa_width_height
-	    });
-	
-	},
-	//2021.2.17. 富媒体 链接点击事件
-	index_rich_html_click:function(new_url){
-		
-		console.log('index_rich_html_click====>>>>>', new_url);
-		
-		this.abotapi.call_h5browser_or_other_goto_url(new_url);
-		
-		
-	},
 	filters: {
 		/**
 		 * 处理富文本里的图片宽度自适应

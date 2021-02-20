@@ -131,11 +131,16 @@
 		
 		<!-- 富媒体组件 2021.1.18. -->
 		<!-- rich-text  和 v-html 都有各自的优缺点 -->
+<!-- #ifdef H5 -->
+		<view v-html="index_rich_html_content" ></view>
+<!-- #endif -->
+
+<!-- #ifndef H5 -->
 		<u-parse v-if="show_rich_html_in_index == 1" 
 			:content="index_rich_html_content" 
-			@preview="preview" 
-			@navigate="index_rich_html_click" />
-		
+			@preview="index_rich_html_preview_image" 
+			@navigate="index_rich_html_click_link" />
+<!-- #endif -->		
 		
 		<!-- 平铺广告图 -->
 		<view v-if="wxa_show_pic_pinpu == 1"
@@ -1143,6 +1148,12 @@ export default {
 				if(that.index_rich_html_type == 'static'){
 					
 					that.index_rich_html_content = cb_params.option_list.index_rich_html_content;
+					
+					// #ifdef H5
+						const filter = that.$options.filters["formatRichText"];
+						that.index_rich_html_content = filter(that.index_rich_html_content);
+					// #endif
+					
 				}
 				else if(that.index_rich_html_type == 'https'){
 					
@@ -2136,12 +2147,14 @@ export default {
 			this.abotapi.call_h5browser_or_other_goto_url(new_url);
 		},
 		
-		
+		//富媒体 图片被点击
+		index_rich_html_preview_image:function(img_src, e){
+		},
 		
 		//富媒体 链接点击事件
-		index_rich_html_click:function(new_url){
+		index_rich_html_click_link:function(new_url, e){
 			
-			console.log('index_rich_html_click====>>>>>', new_url);
+			console.log('index_rich_html_click_link====>>>>>', new_url);
 			
 			this.abotapi.call_h5browser_or_other_goto_url(new_url);
 			
@@ -2200,6 +2213,11 @@ export default {
 					}
 					
 					
+					// #ifdef H5
+						const filter = that.$options.filters["formatRichText"];
+						that.index_rich_html_content = filter(that.index_rich_html_content);
+					// #endif
+					
 					
 			    },
 			    fail: function (e) {
@@ -2214,7 +2232,41 @@ export default {
 		},
 		
 		
-	}
+	},
+	filters: {
+		/**
+		 * 处理富文本里的图片宽度自适应
+		 * 1.去掉img标签里的style、width、height属性
+		 * 2.img标签添加style属性：max-width:100%;height:auto
+		 * 3.修改所有style里的width属性为max-width:100%
+		 * 4.去掉<br/>标签
+		 * @param html
+		 * @returns {void|string|*}
+		 */
+		formatRichText (html) { //控制小程序中图片大小
+			let newContent= html.replace(/<img[^>]*>/gi,function(match,capture){
+				match = match.replace(/style="[^"]+"/gi, '').replace(/style='[^']+'/gi, '');
+				match = match.replace(/width="[^"]+"/gi, '').replace(/width='[^']+'/gi, '');
+				match = match.replace(/height="[^"]+"/gi, '').replace(/height='[^']+'/gi, '');
+				return match;
+			});
+			
+			newContent = newContent.replace(/style="[^"]+"/gi,function(match,capture){
+				match = match.replace(/width:[^;]+;/gi, 'max-width:100%;').replace(/width:[^;]+;/gi, 'max-width:100%;');
+				return match;
+			});
+			//newContent = newContent.replace(/<br[^>]*\/>/gi, '');
+			
+			newContent = newContent.replace(/<p[^>]*>/gi, '<p style="margin:20px;">');
+			
+			newContent = newContent.replace(/\<img/gi, '<img style="max-width:100%;height:auto;display:inline-block;margin:10rpx auto;vertical-align: middle;"');
+			//newContent = newContent.replace(/\<img/gi, '<img width="5rem"');
+			
+			newContent = newContent.replace(/<h2[^>]*>/gi, '<h2 class="content-article-detail_h2">');
+			
+			return newContent;
+		}	
+	},
 };
 </script>
 <style lang="scss">
