@@ -1022,39 +1022,45 @@
 			}
 		},
 
-		share_return: function() {
-			var that = this;
-
-			var share_title = that.goods_detail.name;
-			if (share_title.length > 22) {
-				share_title = share_title.substr(0, 20) + '...';
-			}
-
-			var share_path = 'productid=' + that.productid + '&sellerid' + this.abotapi.get_sellerid();
-
-			var userInfo = this.abotapi.get_user_info();
-
-			if (userInfo && userInfo.userid) {
-				share_path += '&userid=' + userInfo.userid;
-			}
-
-			var share_img = that.goods_detail.pictures;
-
-			return {
-				title: share_title + ' ￥' + that.goods_detail.price,
-				query: share_path,
-				imageUrl: share_img,
-			}
-		},
+		
 
 		onShareTimeline: function() {
-			this.share_return();
+			return this.share_return();
 		},
 		onAddToFavorites: function() {
-			this.onShareTimeline();
+			return this.share_return();
 		},
 
 		methods: {
+			share_return: function() {
+				var that = this;
+				
+				var share_title = that.goods_detail.name;
+				
+				console.log('8888999aaa', share_title);
+				if (share_title.length > 22) {
+					share_title = share_title.substr(0, 20) + '...';
+				}
+			
+				var share_path = 'productid=' + that.productid + '&sellerid' + this.abotapi.get_sellerid();
+			
+				var userInfo = this.abotapi.get_user_info();
+			
+				if (userInfo && userInfo.userid) {
+					share_path += '&userid=' + userInfo.userid;
+				}
+			
+				var share_img = that.goods_detail.pictures;
+				
+				console.log('8888999aaa', share_img);
+				
+				return {
+					title: share_title + ' ￥' + that.goods_detail.price,
+					query: share_path,
+					imageUrl: share_img[0].picture,
+				}
+			},
+			
 			changeSpec1: function(e) {
 				var that = this
 				var spec1 = e.currentTarget.dataset.spec1;
