@@ -41,7 +41,7 @@
 				</view>
 			</view>
 			<!-- 二维码按钮 -->
-			<view class="erweima" @tap="toMyQR">
+			<view v-if="wxa_hidden_qrcode_scan_btn_in_usercenter != 1" class="erweima" @tap="toMyQR">
 				<view class="icon scan_qr"></view>
 			</view>
 		</view>
@@ -279,6 +279,9 @@
 				icon_jump_bg_color: '#000', //返回首页的悬浮图标的背景颜色
 				wxa_usercenter_function_list: 0, //控制工具栏的样式  是九宫格还是列表
 				wxa_usercenter_ad_list: [], //平铺图片
+				
+				//是否隐藏扫码图标
+				wxa_hidden_qrcode_scan_btn_in_usercenter:0
 			}
 		},
 
@@ -355,6 +358,11 @@
 					//广告图片
 					if (option_list.wxa_usercenter_ad_list) {
 						that.wxa_usercenter_ad_list = option_list.wxa_usercenter_ad_list;
+					}
+					
+					//隐藏扫码图标
+					if(option_list.wxa_hidden_qrcode_scan_btn_in_usercenter){
+						that.wxa_hidden_qrcode_scan_btn_in_usercenter = option_list.wxa_hidden_qrcode_scan_btn_in_usercenter;
 					}
 
 					that001.get_current_userinfo();
