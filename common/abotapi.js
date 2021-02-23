@@ -505,6 +505,20 @@ module.exports = {
 	
 	set_shop_option_data : function (that, callback_function) {
 		
+		// #ifdef MP-WEIXIN
+		this.globalData.current_platform = 'mp-weixin'
+		// #endif
+		// #ifdef MP-BAIDU
+		this.globalData.current_platform = 'mp-baidu'
+		// #endif
+		// #ifdef MP-ALIPAY
+		this.globalData.current_platform = 'mp-alipay'
+		// #endif
+		// #ifdef H5
+		this.globalData.current_platform = 'h5'
+		// #endif
+		
+		
 		var currentTime = (new Date()).getTime();//获取当前时间
 				
 		if (uni.getStorageSync('shop_option_data_' + this.globalData.default_sellerid) && (currentTime - uni.getStorageSync("shop_option_data_time")) < 3600 * 1000) {
@@ -1096,18 +1110,7 @@ module.exports = {
 			this.globalData.is_xianmai_shang_list_in_tabbar = 0;
 		}
 		
-		// #ifdef MP-WEIXIN
-		this.globalData.current_platform = 'mp-weixin'
-		// #endif
-		// #ifdef MP-BAIDU
-		this.globalData.current_platform = 'mp-baidu'
-		// #endif
-		// #ifdef MP-ALIPAY
-		this.globalData.current_platform = 'mp-alipay'
-		// #endif
-		// #ifdef H5
-		this.globalData.current_platform = 'h5'
-		// #endif
+		
 		
 	},
 	

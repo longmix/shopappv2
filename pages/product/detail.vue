@@ -493,6 +493,9 @@
 </template>
 
 <script>
+	
+	import util from '../../common/util.js';
+	
 	// var app = getApp();
 	// var abotapi = require("../../common/abotapi.js");
 	//var productid;
@@ -782,24 +785,25 @@
 						//处理商品详情
 						that.describe = that.goods_detail.describe;
 
+
 						// #ifdef MP-ALIPAY		
 
-						const filter = that.$options.filters["formatRichText"];
-						that.describe = filter(that.describe);
+							const filter = that.$options.filters["formatRichText"];
+							that.describe = filter(that.describe);
 
-						//console.log('that.describe====>>>>', that.describe);
+							//console.log('that.describe====>>>>', that.describe);
 
-						let data001 = that.describe;
-						let newArr = [];
-						let arr = parseHtml(data001);
-						arr.forEach((item, index) => {
-							newArr.push(item);
-						});
+							let data001 = that.describe;
+							let newArr = [];
+							let arr = parseHtml(data001);
+							arr.forEach((item, index) => {
+								newArr.push(item);
+							});
 
-						//console.log('arr arr arr====>>>>', arr);
-						//console.log('newArr newArr newArr====>>>>', newArr);
+							//console.log('arr arr arr====>>>>', arr);
+							//console.log('newArr newArr newArr====>>>>', newArr);
 
-						that.describe = newArr;
+							that.describe = newArr;
 
 						// #endif	
 
@@ -897,6 +901,13 @@
 							//获取正在等待开团的团列表
 							that.__get_aipingou_tuan_list(that.productid, that.aipingou_current_rulesn);
 						}
+						
+						
+						//2021.2.23. 百度分享相关
+						// #ifdef MP-BAIDU
+							that.__set_mp_baidu_seo_page_info(that.abotapi.globalData.option_list);
+						// #endif	
+						
 						
 
 					}
@@ -2141,6 +2152,55 @@
 			    }, 1);*/
 			},
 			
+			//设置百度小程序中的页面SEO信息
+			__set_mp_baidu_seo_page_info:function(){
+				
+				var that = this;
+				
+				var share_title = that.goods_detail.name;
+				
+				console.log('__set_mp_baidu_seo_page_info title ===>>> ', share_title);
+				
+				if (share_title.length > 22) {
+					share_title = share_title.substr(0, 20) + '...';
+				}
+							
+				var share_path = 'productid=' + that.productid + '&sellerid' + this.abotapi.get_sellerid();
+							
+				var userInfo = this.abotapi.get_user_info();
+							
+				if (userInfo && userInfo.userid) {
+					share_path += '&userid=' + userInfo.userid;
+				}
+							
+				var share_img = that.goods_detail.pictures;
+				
+				console.log('__set_mp_baidu_seo_page_info share_img ===>>> ', share_img);
+				
+				console.log('当前时间：' + util.formatTime( new Date() ) + ' '+util.formatTime2( new Date() ) + ':01' );
+				
+				swan.setPageInfo({
+					title: share_title + ' ￥' + that.goods_detail.price,
+					keywords: share_title,
+					description: that.goods_detail.brief,
+					articleTitle: share_title,
+					releaseDate: util.formatTime( new Date() ) + ' '+util.formatTime2( new Date() ) + ':01',
+					image: [share_img],
+					video: [],
+					visit: {},
+					likes: '75',
+					comments: '13',
+					collects: '23',
+					shares: '8',
+					followers: '35',
+					success: res => {
+						console.log('setPageInfo success');
+					},
+					fail: err => {
+						console.log('setPageInfo fail', err);
+					}
+				});
+			},
 			
 			
 		},

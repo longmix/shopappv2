@@ -295,6 +295,8 @@
  
 var ttt = 0;
 
+import util from '../../common/util.js';
+
 //高德SDK
 import bmap from '../../common/SDK/bmap-wx.js';
 //import amap from '@/common/SDK/amap-wx.js';
@@ -472,7 +474,9 @@ export default {
 		};
 	},
 	onLoad: function (options) {
-		///this.bindKeyInput();
+		
+		console.log('当前时间：' + util.formatTime( new Date() ) + ' ' + util.formatTime2( new Date() ) + ':01' );
+		
 		
 		
 		//以下代码加载了会出错，所以不使用
@@ -716,25 +720,79 @@ export default {
 		this.get_product_list();
 		
 	},
-	 
-	onShareTimeline: function () {
-		
-	},
-	onAddToFavorites: function () {
-		//this.onShareTimeline();
-	},
 	
 	onShareAppMessage: function () {
+		var that = this;
 		
+		var option_list = this.abotapi.globalData.option_list;
+		
+		var share_title = option_list.wxa_share_title;
+		if (share_title.length > 22) {
+			share_title = share_title.substr(0, 20) + '...';
+		}
+		
+		var share_path = '/pages/index/index?sellerid=' + this.abotapi.get_sellerid();
+		
+		var userInfo = this.abotapi.get_user_info();
+		
+		if (userInfo && userInfo.userid) {
+			share_path += '&userid=' + userInfo.userid;
+		}
+		
+		var share_img = option_list.wxa_share_img;
+		if(!share_img){
+			share_img = option_list.wxa_shop_operation_logo_url;
+		}
+		
+		return {
+			title: share_title,
+			path: share_path,
+			imageUrl: share_img,
+			success: function(res) {
+				// 分享成功
+			},
+			fail: function(res) {
+				// 分享失败
+			}
+		}
 	},
 	
 	onShareTimeline: function () {
-		
+		return this.share_return();
 	},
 	onAddToFavorites: function () {
-		//this.onShareTimeline();
+		return this.share_return();
 	},
 	methods: {
+		share_return: function() {
+			var that = this;
+			
+			var option_list = this.abotapi.globalData.option_list;
+			
+			var share_title = option_list.wxa_share_title;
+			if (share_title.length > 22) {
+				share_title = share_title.substr(0, 20) + '...';
+			}
+			
+			var share_path = 'sellerid=' + this.abotapi.get_sellerid();
+			
+			var userInfo = this.abotapi.get_user_info();
+			
+			if (userInfo && userInfo.userid) {
+				share_path += '&userid=' + userInfo.userid;
+			}
+			
+			var share_img = option_list.wxa_share_img;
+			if(!share_img){
+				share_img = option_list.wxa_shop_operation_logo_url;
+			}			
+			
+			return {
+				title: share_title,
+				query: share_path,
+				imageUrl: share_img[0].picture,
+			}
+		},
 		//获取天气
 		get_tianqi:function(){
 			var that = this;
@@ -1234,6 +1292,14 @@ export default {
 				});*/
 			}
 			// #endif
+			
+					
+			//2021.2.23. 百度分享相关			
+			// #ifdef MP-BAIDU
+				that.__set_mp_baidu_seo_page_info(that.abotapi.globalData.option_list);
+			// #endif	
+			
+			
 			
 			
 			
@@ -2115,7 +2181,11 @@ export default {
 											force: true
 										},
 										function(res) {
-											utils.showToast('更新成功，重启中');
+											
+											uni.showToast({
+												title:'更新成功，重启中'
+											});
+											
 											plus.runtime.restart();
 										}
 									);
@@ -2230,7 +2300,43 @@ export default {
 			    },
 			});
 		},
-		
+		//设置百度小程序中的页面SEO信息
+		__set_mp_baidu_seo_page_info:function(option_list){
+			
+			var share_title = option_list.wxa_share_title;
+			if (share_title.length > 22) {
+				share_title = share_title.substr(0, 20) + '...';
+			}
+			
+			var share_img = option_list.wxa_share_img;
+			if(!share_img){
+				share_img = option_list.wxa_shop_operation_logo_url;
+			}
+			
+			console.log('当前时间：' + util.formatTime( new Date() ) + ' '+util.formatTime2( new Date() ) + ':01');
+			
+			swan.setPageInfo({
+				title: share_title,
+				keywords: option_list.wxa_share_keywords,
+				description: option_list.wxa_share_description,
+				articleTitle: share_title,
+				releaseDate: util.formatTime( new Date() ) + ' '+util.formatTime2( new Date() ) + ':01',
+				image: [share_img],
+				video: [],
+				visit: {},
+				likes: '75',
+				comments: '13',
+				collects: '23',
+				shares: '8',
+				followers: '35',
+				success: res => {
+					console.log('setPageInfo success');
+				},
+				fail: err => {
+					console.log('setPageInfo fail', err);
+				}
+			});
+		}
 		
 	},
 	filters: {
