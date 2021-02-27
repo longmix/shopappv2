@@ -279,11 +279,11 @@
 									content:'即将跳转到微信中支付',
 									showCancel:false,
 									success(res) {
-										//唤醒微信小程序
+										//唤醒微信小程序  type 可取值： 0-正式版； 1-测试版； 2-体验版。 默认值为0。 
 										sweixin.launchMiniProgram({
 											id: that.abotapi.globalData.xiaochengxu_account,
 											path:wxa_path,
-											type: 0,
+											type: 2,
 											webUrl:'https://www.abot.cn'
 										});
 										

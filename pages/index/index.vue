@@ -790,9 +790,10 @@ export default {
 			return {
 				title: share_title,
 				query: share_path,
-				imageUrl: share_img[0].picture,
+				imageUrl: share_img,
 			}
 		},
+		
 		//获取天气
 		get_tianqi:function(){
 			var that = this;
