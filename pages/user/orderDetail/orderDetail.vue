@@ -49,23 +49,23 @@
 			<view style="overflow: hidden;margin-right: 3%;">
 				<view class="font_12 btn_min fl_r mr_5 mg_l" @tap="refundOrder" 
 					v-if="(wxa_order_hide_daishouhuo_refund != 1) && (orderData.status == 1)" 
-					:data-order-id="orderData.orderid">
+					:data-orderid="orderData.orderid">
 					申请退款
 				</view>
 				
 				<navigator v-if="orderData.status_str=='待付款'" 
-					:url="'../../pay/payment/payment?orderId=' + orderData.orderid + '&balance_zengsong_dikou=' + orderData.coupon_price + '&balance_dikou=' + orderData.yue_price" 
+					:url="'../../pay/payment/payment?orderid=' + orderData.orderid + '&balance_zengsong_dikou=' + orderData.coupon_price + '&balance_dikou=' + orderData.yue_price" 
 					class="font_12 fl_r mr_5 btn_min mg_l">立即支付</navigator>
 					
 				<view v-if="orderData.status_str=='待付款'"
-					@tap="cancelOrder" :data-order-id="orderData.orderid"
+					@tap="cancelOrder" :data-orderid="orderData.orderid"
 					class="font_12 fl_r mr_5 btn_min mg_l"
 					style="background-color: #999;">取消订单</view>
 				
 				
 				<view class="font_12 btn_min fl_r mr_5 mg_l" @tap="refundOrder" 
 					v-if="(wxa_order_hide_daishouhuo_refund_after != 1) && ((orderData.status == 2) || (orderData.status == 3)  || (orderData.status == 4))" 
-					:data-order-id="orderData.orderid">申请退款</view>
+					:data-orderid="orderData.orderid">申请退款</view>
 				<view v-if="orderData.status_str=='待收货'" 
 					@click="recOrder" 
 					:data-orderid="orderData.orderid" 
@@ -83,7 +83,7 @@
 				<view v-if="orderData.status_str=='订单已完成'" 
 					class="font_12 fl_r mr_5 btn_min mg_l" 
 					style="background-color: #E3170D;"
-					@click="cancelOrder" :data-order-id='orderData.orderid' 
+					@click="cancelOrder" :data-orderid='orderData.orderid' 
 					:data-action-type='1'>删除订单</view>
 				<view v-if="orderData.status_str=='订单已完成' && xianmai_shang_order_remark == ''" 
 					class="font_12 fl_r mr_5 btn_min mg_l" 
@@ -245,6 +245,8 @@
 				
 				xianmai_shang_order_remark:'',//订单是否评价过
 				
+				current_orderid:0
+				
 			}
 		},
 		
@@ -264,7 +266,7 @@
 			
 			that.abotapi.set_option_list_str(this, this.callback_set_option);
 			
-			this.orderId = options.orderId
+			this.current_orderid = options.orderid
 			this.balance_zengsong_dikou = options.balance_zengsong_dikou
 			this.balance_dikou = options.balance_dikou
 			
@@ -318,7 +320,7 @@
 			      that.abotapi.abotRequest({
 			        url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_xiangqing',
 			        data: {
-			          orderid: that.orderId,
+			          orderid: that.current_orderid,
 			          userid: userInfo.userid,
 			          checkstr: userInfo.checkstr,
 			          sellerid: that.abotapi.get_sellerid()
@@ -428,7 +430,7 @@
 				//申请退款
 				refundOrder: function (e) {
 					var that = this;
-					var orderId = e.currentTarget.dataset.orderId;
+					var orderid = e.currentTarget.dataset.orderid;
 					uni.showModal({
 						title: '提示',
 						content: '你确定要申请退款吗？',
@@ -439,7 +441,7 @@
 								url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_tuikuan_direct',
 								method: 'post',
 								data: {
-									orderid: orderId,
+									orderid: orderid,
 									sellerid: that.abotapi.get_sellerid(),
 									checkstr: userInfo.checkstr,
 									userid: userInfo.userid
@@ -539,7 +541,7 @@
 				//申请退款
 				cancelOrder: function (e) {
 					var that = this;
-					var orderId = e.currentTarget.dataset.orderId;
+					var orderid = e.currentTarget.dataset.orderid;
 					
 					var action_type = 0;
 					if(e.currentTarget.dataset.actionType){
@@ -561,7 +563,7 @@
 									sellerid: that.abotapi.get_sellerid(),
 									checkstr: userInfo.checkstr,
 									userid: userInfo.userid,
-									orderid: orderId,
+									orderid: orderid,
 									action_type:action_type
 								},
 								header: {
@@ -617,7 +619,7 @@
 					  data: {
 					    checkstr: userInfo.checkstr,
 					    sellerid: that.abotapi.get_sellerid(),
-						yanyubao_orderid:that.orderId,
+						yanyubao_orderid: that.current_orderid,
 						userid:userInfo.userid,
 					  },
 					  success: function (res) {

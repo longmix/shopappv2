@@ -192,7 +192,7 @@
 							that.orderid = res.data.orderid;
 							that.orderno = res.data.orderno;
 							uni.navigateTo({
-								url: '/pages/pay/payment/payment?orderId=' + that.orderid + '&recharge=1',
+								url: '/pages/pay/payment/payment?orderid=' + that.orderid + '&recharge=1',
 							})
 			
 						} else if (data.code == 2) {

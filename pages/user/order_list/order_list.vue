@@ -31,7 +31,7 @@
 						</view>
 					</view>
 					<view class="shop df bordermax" v-for="(item,index) in orderList" :key="index" style='display: block;'>
-						<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="borderb font_14 orderno">
+						<navigator :url="'../orderDetail/orderDetail?orderid='+item.orderid" class="borderb font_14 orderno">
 							订单编号：{{item.orderno}}
 							<view style="float:right;color: #666;font-size: 26rpx;">{{item.status_str}}</view>
 						</navigator> 
@@ -81,7 +81,7 @@
 						<view class="sp_neb" v-if="item.buyer_memo != ''">备注：<view class='fl_r'>{{item.buyer_memo}}</view></view>
 						<view  class="btn_b">
 							<navigator 
-								:url="'../orderDetail/orderDetail?orderId='+item.orderid" 
+								:url="'../orderDetail/orderDetail?orderid='+item.orderid" 
 								class="btn_min fl_r mr_5" style="color: #fff;">订单详情</navigator>
 						</view> 
 					</view>
@@ -96,7 +96,7 @@
 						</view>
 					</view>
 					<view class="shop df bordermax" v-for="(item,index) in orderList0" :key="index" style='display: block;'>
-						<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator> 
+						<navigator :url="'../orderDetail/orderDetail?orderid='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator> 
 						
 						<block v-if="item.order_option.hahading_order_product_list_length > 0">
 							<view class="df_1 borb" style='display:flex;'>
@@ -143,13 +143,13 @@
 						
 						<view  class="btn_b">
 							<navigator 
-								:url="'../orderDetail/orderDetail?orderId='+item.orderid" 
+								:url="'../orderDetail/orderDetail?orderid='+item.orderid" 
 								class="btn_min fl_r mr_5" style="color: #fff;">订单详情</navigator>
 						</view> 
 						
 						<!-- <view  class="btn_b">
-							<navigator :url="'/pages/pay/payment/payment?orderId='+item.orderid+'&balance_zengsong_dikou='+item.coupon_price+'&balance_dikou='+item.yue_price" class="font_12 fl_r mr_5 btn_min">支付订单</navigator>
-							<view class="font_12 fl_r mr_5 btn_min" @tap="removeOrder" :data-order-id="item.orderid">取消订单</view>
+							<navigator :url="'/pages/pay/payment/payment?orderid='+item.orderid+'&balance_zengsong_dikou='+item.coupon_price+'&balance_dikou='+item.yue_price" class="font_12 fl_r mr_5 btn_min">支付订单</navigator>
+							<view class="font_12 fl_r mr_5 btn_min" @tap="removeOrder" :data-orderid="item.orderid">取消订单</view>
 						</view> -->
 					</view>
 				</swiper-item>
@@ -163,7 +163,7 @@
 						</view>
 					</view>
 					<view class="shop df bordermax" v-for="(item,index) in orderList1" :key="index" style='display: block;'>
-						<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator> 
+						<navigator :url="'../orderDetail/orderDetail?orderid='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator> 
 						
 						<block v-if="item.order_option.hahading_order_product_list_length > 0">
 							<view class="df_1 borb" style='display:flex;'>
@@ -210,7 +210,7 @@
 						
 						<view  class="btn_b">
 							<navigator 
-								:url="'../orderDetail/orderDetail?orderId='+item.orderid" 
+								:url="'../orderDetail/orderDetail?orderid='+item.orderid" 
 								class="btn_min fl_r mr_5" style="color: #fff;">订单详情</navigator>
 						</view> 
 						
@@ -227,7 +227,7 @@
 						</view>
 					</view>
 					<view class="shop df bordermax" v-for="(item,index) in orderList2" :key="index" style='display: block;'>
-						<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator>      
+						<navigator :url="'../orderDetail/orderDetail?orderid='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator>      
 						
 						<block v-if="item.order_option.hahading_order_product_list_length > 0">
 							<view class="df_1 borb" style='display:flex;'>
@@ -271,16 +271,16 @@
 						</block>
 						<view class="sp_neb" v-if="item.buyer_memo != ''">备注：<view class='fl_r'>{{item.buyer_memo}}</view></view>
 						<!-- <view  class="btn_b">
-							<navigator v-if="wxa_order_hide_daishouhuo_refund_after == 0" class="font_12 btn_min fl_r" :url="'tuihuo?orderId='+item.orderid">申请退款</navigator>
-							<view class="font_12 btn_min fl_r mr_5" @tap="recOrder" :data-order-id="item.orderid">确认收货</view>
-							<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
+							<navigator v-if="wxa_order_hide_daishouhuo_refund_after == 0" class="font_12 btn_min fl_r" :url="'tuihuo?orderid='+item.orderid">申请退款</navigator>
+							<view class="font_12 btn_min fl_r mr_5" @tap="recOrder" :data-orderid="item.orderid">确认收货</view>
+							<navigator :url="'../orderDetail/orderDetail?orderid='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
 							<view v-if="item.status=='3'" class="font_12 btn_min fl_r mr_5" @click="pingjia" :data-orderid='item.orderid' :data-xianmaishangid='item.order_option.hahading_order_xianmai_shangid'>立即评价</view>
 							
 						</view> -->
 						
 						<view  class="btn_b">
 							<navigator 
-								:url="'../orderDetail/orderDetail?orderId='+item.orderid" 
+								:url="'../orderDetail/orderDetail?orderid='+item.orderid" 
 								class="btn_min fl_r mr_5" style="color: #fff;">订单详情</navigator>
 						</view> 
 						
@@ -299,7 +299,7 @@
 						</view> 
 					</view>
 					<view class="shop df bordermax" v-for="(item,index) in orderList3" :key="index" style='display: block;'>        
-						<navigator :url="'../orderDetail/orderDetail?orderId='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator>
+						<navigator :url="'../orderDetail/orderDetail?orderid='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator>
 						
 						<block v-if="item.order_option.hahading_order_product_list_length > 0">
 							<view class="df_1 borb" style='display:flex;'>
@@ -345,7 +345,7 @@
 						
 						<view  class="btn_b">
 							<navigator 
-								:url="'../orderDetail/orderDetail?orderId='+item.orderid" 
+								:url="'../orderDetail/orderDetail?orderid='+item.orderid" 
 								class="btn_min fl_r mr_5" style="color: #fff;">订单详情</navigator>
 						</view> 
 						
@@ -369,7 +369,7 @@
 							<view class="sp_neb">单价：¥ {{item.price_yh}} 数量：×{{item.product_num}} 产品：×{{item.pro_count}}</view>
 							<view class="sp_jg">¥：{{item.price}}</view>
 							<view class="font_12 red fl_r">{{item.desc}}</view>
-							<navigator url="../orderDetail/orderDetail?orderId={{item.id}}" class="font_12 red fl_r mr_5">订单详情</navigator>
+							<navigator url="../orderDetail/orderDetail?orderid={{item.id}}" class="font_12 red fl_r mr_5">订单详情</navigator>
 						</view>
 					</view>
 				</view>
@@ -546,7 +546,7 @@
 			//取消订单
 			removeOrder:function(e){
 			    var that = this;
-			    var orderId = e.currentTarget.dataset.orderId;
+			    var orderid = e.currentTarget.dataset.orderid;
 				var userInfo = that.abotapi.get_user_info();
 			    uni.showModal({
 					title: '提示',
@@ -556,7 +556,7 @@
 							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=orderdel',
 							method:'post',
 							data: {
-								orderid: orderId,
+								orderid: orderid,
 								sellerid: that.abotapi.get_sellerid(),
 								checkstr: userInfo.checkstr,
 								userid: userInfo.userid
@@ -597,7 +597,7 @@
 			//确认收货
 			recOrder:function(e){
 			    var that = this;
-			    var orderId = e.currentTarget.dataset.orderId;
+			    var orderid = e.currentTarget.dataset.orderid;
 				var userInfo = this.abotapi.get_user_info();
 				uni.showModal({
 					title: '提示',
@@ -607,7 +607,7 @@
 							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_finish',
 							method:'post',
 							data: {
-								orderid: orderId,
+								orderid: orderid,
 								sellerid: that.abotapi.get_sellerid(),
 								checkstr: userInfo.checkstr,
 								userid: userInfo.userid
@@ -649,7 +649,7 @@
 			//申请退款
 			refundOrder: function (e) {
 				var that = this;
-				var orderId = e.currentTarget.dataset.orderId;
+				var orderid = e.currentTarget.dataset.orderid;
 				uni.showModal({
 					title: '提示',
 					content: '你确定要申请退款吗？',
@@ -660,7 +660,7 @@
 							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_tuikuan_direct',
 							method: 'post',
 							data: {
-								orderid: orderId,
+								orderid: orderid,
 								sellerid: that.abotapi.get_sellerid(),
 								checkstr: userInfo.checkstr,
 								userid: userInfo.userid
@@ -1084,8 +1084,8 @@
 	   * 微信支付订单
 	   */
 	  // payOrderByWechat: function(event){
-	  //   var orderId = event.currentTarget.dataset.orderId;
-	  //   this.prePayWechatOrder(orderId);
+	  //   var orderid = event.currentTarget.dataset.orderid;
+	  //   this.prePayWechatOrder(orderid);
 	  //   var successCallback = function(response){
 	  //     console.log(response);
 	  //   }
@@ -1101,12 +1101,12 @@
 	  /**
 	   * 调用服务器微信统一下单接口创建一笔微信预订单
 	   */
-	//   prePayWechatOrder: function(orderId){
+	//   prePayWechatOrder: function(orderid){
 	//     var uri = "/ztb/userZBT/GetWxOrder";
 	//     var method = "post";
 	//     var dataMap = {
 	//       SessionId: that.abotapi.globalData.userInfo.sessionId,
-	//       OrderNo: orderId
+	//       OrderNo: orderid
 	//     }
 	//     console.log(dataMap);
 	//     var successCallback = function (response) {
