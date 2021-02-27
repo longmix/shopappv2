@@ -283,7 +283,7 @@
 										sweixin.launchMiniProgram({
 											id: that.abotapi.globalData.xiaochengxu_account,
 											path:wxa_path,
-											type: 2,
+											type: 0,
 											webUrl:'https://www.abot.cn'
 										});
 										
