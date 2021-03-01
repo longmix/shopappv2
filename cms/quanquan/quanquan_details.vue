@@ -1,5 +1,7 @@
 <template>
 	<view>
+		<!-- 资料库页面  / 视频库及评论 -->
+		
 		<!--cms/quanquan/quanquan_details.wxml-->
 		<image v-if="video_data.video_type == 'file'" :src="video_data.img_url" style='width:100%;'></image>
 		<video  v-else  :src="video_data.video_url" style='width:100%;'></video>
@@ -71,11 +73,22 @@
 		
 		<!-- 富媒体组件 2021.1.18. -->
 		<!-- rich-text  和 v-html 都有各自的优缺点 -->
-		<view style="margin:50rpx 0 50rpx 0;">
-		<u-parse v-if="video_data.describe != null" 
-			:content="index_rich_html_content" 
-			@preview="preview" 
-			@navigate="index_rich_html_click" />
+		<view style="margin:50rpx 0 50rpx 0;" v-if="video_data.describe != null">
+			
+			<!-- #ifdef MP-ALIPAY -->
+						<rich-text :nodes="index_rich_html_content"></rich-text>
+			<!-- #endif -->		
+			<!-- #ifdef H5 -->
+					<view v-html="index_rich_html_content" ></view>
+			<!-- #endif -->
+			
+			<!-- #ifndef MP-ALIPAY | H5 -->
+					<u-parse 
+						:content="index_rich_html_content" 
+						@preview="index_rich_html_preview_image" 
+						@navigate="index_rich_html_click_link" />
+			<!-- #endif -->
+			
 		</view>
 		
 		
@@ -118,6 +131,11 @@
 	import abotsharejs from '../../common/abot_share_api.js';
 	
 	import uParse from '@/components/gaoyia-parse/parse.vue'
+	
+	// #ifdef MP-ALIPAY
+		import parseHtml from "../../common/html-parser.js"
+	// #endif
+	
 	
 	export default {
 		components:{
@@ -199,6 +217,30 @@
 					
 					if(data.video_data.describe){
 						that.index_rich_html_content = data.video_data.describe;
+						
+						
+						// #ifdef MP-ALIPAY
+							console.log('that.index_rich_html_content====>>>>', that.index_rich_html_content);
+							
+							const filter = that.$options.filters["formatRichText"];
+							that.index_rich_html_content = filter(that.index_rich_html_content);
+							
+							console.log('that.index_rich_html_content====>>>>', that.index_rich_html_content);
+							
+							let data001 = that.index_rich_html_content;
+							let newArr = [];
+							let arr = parseHtml(data001);
+							arr.forEach((item, index)=>{
+								newArr.push(item);
+							});
+							
+							//console.log('arr arr arr====>>>>', arr);
+							//console.log('newArr newArr newArr====>>>>', newArr);
+							
+							that.index_rich_html_content = newArr;
+						// #endif
+						
+						
 					}
 							
 				    uni.setNavigationBarTitle({
@@ -691,10 +733,14 @@
 			      }
 			    },
 				
-				//2021.2.17. 富媒体 链接点击事件
-				index_rich_html_click:function(new_url){
+				//富媒体 图片被点击
+				index_rich_html_preview_image:function(img_src, e){
+				},
+				
+				//富媒体 链接点击事件
+				index_rich_html_click_link:function(new_url, e){
 					
-					console.log('index_rich_html_click====>>>>>', new_url);
+					console.log('index_rich_html_click_link====>>>>>', new_url);
 					
 					this.abotapi.call_h5browser_or_other_goto_url(new_url);
 					

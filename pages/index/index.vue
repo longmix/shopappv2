@@ -131,11 +131,16 @@
 		
 		<!-- 富媒体组件 2021.1.18. -->
 		<!-- rich-text  和 v-html 都有各自的优缺点 -->
+		<!-- u-parse虽然可以支持链接和图片的点击事件，但是对CSS的支持过于广泛，所以效率低，
+		而且在服务器端要求更专业的CSS定义，不适用于商品详情页和发帖内容页面 -->
+<!-- #ifdef MP-ALIPAY -->			
+			<rich-text :nodes="index_rich_html_content"></rich-text>
+<!-- #endif -->		
 <!-- #ifdef H5 -->
 		<view v-html="index_rich_html_content" ></view>
 <!-- #endif -->
 
-<!-- #ifndef H5 -->
+<!-- #ifndef MP-ALIPAY | H5 -->
 		<u-parse v-if="show_rich_html_in_index == 1" 
 			:content="index_rich_html_content" 
 			@preview="index_rich_html_preview_image" 
@@ -313,6 +318,10 @@ import publish_list_api from '../../common/publish_list_api.js';
 //import parseHtml from "../../common/html-parser.js"
 //import mpHtml from "../../components/mp-html/mp-html.vue"
 import uParse from '@/components/gaoyia-parse/parse.vue'
+
+// #ifdef MP-ALIPAY
+	import parseHtml from "../../common/html-parser.js"
+// #endif
 
 const isNullOrUndefined = obj=>obj===null || obj === undefined  || obj === '';
 
@@ -1208,9 +1217,37 @@ export default {
 					
 					that.index_rich_html_content = cb_params.option_list.index_rich_html_content;
 					
+					// 2021.3.1. 不需要使用formatRichText过滤，具体的css由html代码控制。
+					console.log('1111111111====>>>' + that.index_rich_html_content);
+					
+					//const filter = that.$options.filters["formatRichText"];
+					//that.index_rich_html_content = filter(that.index_rich_html_content);
+					
+					//console.log('222222222====>>>' + that.index_rich_html_content);
+					
 					// #ifdef H5
+						
+					// #endif
+					
+					// #ifdef MP-ALIPAY
+						console.log('that.index_rich_html_content====>>>>', that.index_rich_html_content);
+						
 						const filter = that.$options.filters["formatRichText"];
 						that.index_rich_html_content = filter(that.index_rich_html_content);
+						
+						console.log('that.index_rich_html_content====>>>>', that.index_rich_html_content);
+						
+						let data001 = that.index_rich_html_content;
+						let newArr = [];
+						let arr = parseHtml(data001);
+						arr.forEach((item, index)=>{
+							newArr.push(item);
+						});
+						
+						//console.log('arr arr arr====>>>>', arr);
+						//console.log('newArr newArr newArr====>>>>', newArr);
+						
+						that.index_rich_html_content = newArr;
 					// #endif
 					
 				}
@@ -2279,15 +2316,39 @@ export default {
 					
 					that.index_rich_html_content = res.data;
 					
-					if(!res.data){
+					if(!that.index_rich_html_content){
 						that.index_rich_html_content = '<h1></h1>';
 					}
 					
 					
 					// #ifdef H5
+					//	const filter = that.$options.filters["formatRichText"];
+					//	that.index_rich_html_content = filter(that.index_rich_html_content);
+					// #endif
+					
+					// #ifdef MP-ALIPAY
+						console.log('that.index_rich_html_content====>>>>', that.index_rich_html_content);
+						
 						const filter = that.$options.filters["formatRichText"];
 						that.index_rich_html_content = filter(that.index_rich_html_content);
+						
+						console.log('that.index_rich_html_content====>>>>', that.index_rich_html_content);
+						
+						let data001 = that.index_rich_html_content;
+						let newArr = [];
+						let arr = parseHtml(data001);
+						arr.forEach((item, index)=>{
+							newArr.push(item);
+						});
+						
+						//console.log('arr arr arr====>>>>', arr);
+						//console.log('newArr newArr newArr====>>>>', newArr);
+						
+						that.index_rich_html_content = newArr;
 					// #endif
+					
+					
+					
 					
 					
 			    },
@@ -2366,7 +2427,8 @@ export default {
 			
 			newContent = newContent.replace(/<p[^>]*>/gi, '<p style="margin:20px;">');
 			
-			newContent = newContent.replace(/\<img/gi, '<img style="max-width:100%;height:auto;display:inline-block;margin:10rpx auto;vertical-align: middle;"');
+			//newContent = newContent.replace(/\<img/gi, '<img style="max-width:100%;height:auto;display:inline-block;margin:10rpx auto;vertical-align: middle;"');
+			newContent = newContent.replace(/\<img/gi, '<img style="width:100%; display:inline-block;"');
 			//newContent = newContent.replace(/\<img/gi, '<img width="5rem"');
 			
 			newContent = newContent.replace(/<h2[^>]*>/gi, '<h2 class="content-article-detail_h2">');

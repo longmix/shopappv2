@@ -15,15 +15,18 @@
 			
 <!-- #ifdef MP-ALIPAY -->			
 			<rich-text :nodes="index_rich_html_content"></rich-text>
-<!-- #endif -->				
-<!-- #ifndef MP-ALIPAY -->
+<!-- #endif -->
+<!-- #ifdef H5 -->
+			<view v-html="index_rich_html_content" ></view>
+<!-- #endif -->
+<!-- #ifndef MP-ALIPAY | H5 -->
 			
 			<!-- 富媒体组件 2021.1.18. -->
 			<!-- rich-text  和 v-html 都有各自的优缺点 -->
 			<u-parse v-if="index_rich_html_content" 
 				:content="index_rich_html_content" 
-				@preview="preview" 
-				@navigate="index_rich_html_click" />
+				@preview="index_rich_html_preview_image" 
+				@navigate="index_rich_html_click_link" />
 <!-- #endif -->
 			
 		</view>
@@ -663,15 +666,21 @@ export default {
 		    });
 		
 		},
-		//2021.2.17. 富媒体 链接点击事件
-		index_rich_html_click:function(new_url){
+		
+		//富媒体 图片被点击
+		index_rich_html_preview_image:function(img_src, e){
+		},
+		
+		//富媒体 链接点击事件
+		index_rich_html_click_link:function(new_url, e){
 			
-			console.log('index_rich_html_click====>>>>>', new_url);
+			console.log('index_rich_html_click_link====>>>>>', new_url);
 			
 			this.abotapi.call_h5browser_or_other_goto_url(new_url);
 			
 			
 		},
+		
 		
 		
 		
