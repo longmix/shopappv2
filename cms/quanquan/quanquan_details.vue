@@ -5,9 +5,10 @@
 		<!--cms/quanquan/quanquan_details.wxml-->
 		<image v-if="video_data.video_type == 'file'" :src="video_data.img_url" style='width:100%;'></image>
 		<video  v-else  :src="video_data.video_url" style='width:100%;'></video>
+		
 		<view class='a-1' style="display: flex;">
 		  <!-- 观看人数和评论 -->
-		  <view style="width: 50%;">
+		  <view style="width: 40%;">
 		    
 		    <text style='font-size:12px;color:#666;margin-left:12px;'>{{video_data.number}}人观看</text>
 		    
@@ -16,21 +17,28 @@
 		    <text style='font-size:26rpx;' @click='showRemarkInput'>评论</text>
 		  </view>
 		
-		<!-- 收藏下载转发功能按钮 -->
-		  <view style="width: 50%;display: flex;align-items: center;">
+		  <!-- 收藏下载转发功能按钮 -->
+		  <view style="width: 50%; display: flex;align-items: center;align-content: flex-end; text-align: right;">
 		    
-		    <view style="display: flex;align-items: center;width:33%;justify-content: center;">
-		      <image :src="video_data.has_video_collect == '0' ? '../../static/img/help/star_off.png' : '../../static/img/help/star_on.png'"  @click='collectVedio' style='width:30rpx;height:30rpx;margin-right:10rpx;'></image>
+		    <view style="align-items: center; justify-content: center;">
+		      <image :src="video_data.has_video_collect == '0' ? '../../static/img/help/star_off.png' : '../../static/img/help/star_on.png'"  @click='collectVedio' 
+					style='width:30rpx;height:30rpx;margin-left:10rpx;margin-right:10rpx;'></image>
 		      <text style='font-size:26rpx;' @click="collectVedio">收藏</text>
 		    </view>
-		    <view style="display: flex;align-items: center;width:33%;justify-content: center;">
+			
+		    <view style="align-items: center; justify-content: center;">
 		      <block v-if="video_data.video_type == 'video'">
-		      <image v-if="faquan_one_click_to_save == 1" src="../../static/img/download.png"  style='width:30rpx;height:30rpx;margin-left:28rpx;' @click="disabled ? '' : saveVedio(video_data.video_type)"></image>
-		      <text  v-if="faquan_one_click_to_save == 1" style='font-size:26rpx;' @click="disabled ? '' : saveVedio(video_data.video_type)" >下载</text>
+		      <image v-if="faquan_one_click_to_save == 1" src="../../static/img/download.png"  
+					style='width:30rpx;height:30rpx;margin-left:10rpx;margin-right:10rpx;' 
+					@click="disabled ? '' : saveVedio(video_data.video_type)"></image>
+		      <text  v-if="faquan_one_click_to_save == 1" style='font-size:26rpx;' 
+					@click="disabled ? '' : saveVedio(video_data.video_type)" >下载</text>
 		      </block>
 		      <block v-if="video_data.video_type == 'file'">
 			
-		      <image v-if="file_one_click_download == 1" :src="video_data.file_can_be_open_in_wxa == '1' ? '../../static/img/help/click_view.png' : '../../static/img/download.png'"  style='width:30rpx;height:30rpx;margin-right:10rpx;'  @click="disabled ? '' : 'saveVedio'" :data-video-type="video_data.video_type"></image>
+		      <image v-if="file_one_click_download == 1" :src="video_data.file_can_be_open_in_wxa == '1' ? '../../static/img/help/click_view.png' : '../../static/img/download.png'"  
+					style='width:30rpx;height:30rpx;margin-left:10rpx;margin-right:10rpx;'  
+					@click="disabled ? '' : 'saveVedio'" :data-video-type="video_data.video_type"></image>
 			
 		      <text  v-if="file_one_click_download == 1" style='font-size:26rpx;'  @click="disabled ? '' : saveVedio(video_data.video_type)">
 		        <block v-if="video_data.file_can_be_open_in_wxa == 1">查看 </block>
@@ -42,16 +50,17 @@
 		   
 			<!-- #ifdef MP-WEIXIN -->
 			
-			<view style="display: flex;align-items: center;width:33%;justify-content: center;position: relative;">
-			        <image src="../../static/img/help/share.png"  style='width:30rpx;height:30rpx;margin-right:10rpx;'></image>
+			<view style="align-items: center; position: relative;">
+			        <image src="../../static/img/help/share.png"  style='width:30rpx;height:30rpx;margin-left:10rpx;margin-right:10rpx;'></image>
 			        <text style='font-size:26rpx;'>转发</text>
 			        <button class="share" open-type="share"></button>
 			</view>
 			
 			<!-- #endif -->
+			
 			<!-- #ifdef APP-PLUS -->
-			<view style="display: flex;align-items: center;width:33%;justify-content: center;position: relative;" @click="is_show()">
-			        <image src="../../static/img/help/share.png"  style='width:30rpx;height:30rpx;margin-right:10rpx;'></image>
+			<view style="align-items: center; position: relative;" @click="is_show()">
+			        <image src="../../static/img/help/share.png"  style='width:30rpx;height:30rpx;margin-left:10rpx;margin-right:10rpx;'></image>
 			        <text style='font-size:26rpx;'>转发</text>
 			        <button class="share"></button>
 			</view>
@@ -67,8 +76,14 @@
 		  <text style='font-size:15px;'>转发</text> -->
 		  
 		</view>
+		
+		
+		
+		
 		<view style='font-size:12px;color:#666;margin:6rpx 24rpx 0rpx 24rpx;'>{{video_data.ext_info}}</view>
 		<view style='font-size:12px;color:#666;margin:6rpx 24rpx 0rpx 24rpx;'>{{video_data.ext_info02}}</view>
+		
+		
 		
 		
 		<!-- 富媒体组件 2021.1.18. -->

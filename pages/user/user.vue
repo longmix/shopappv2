@@ -80,7 +80,7 @@
 		<view class="order">
 			<!-- 订单类型 -->
 			<view class="list" v-if="wxa_hidden_order_index_in_usercenter != 1">
-				<view class="box" style="width: 25%;" v-for="(row,index) in orderList" :key="index" @tap="toOrderList(row.otype,index)">
+				<view class="box" style="width: 25%;" v-for="(row,index) in order_icon_list" :key="index" @tap="toOrderList(row.otype,index)">
 					<view class="img order_icon_msg">
 						<view class="icon" :class="row.icon"></view>
 						<div class="order_icon_alarm" v-if="row.order_num">
@@ -229,10 +229,11 @@
 				fenxiao_info: '',
 				wxa_shop_nav_bg_color: '',
 				wxa_shop_nav_font_color: '',
+				
 				// 订单类型
-				orderList: [{
+				order_icon_list: [{
 						text: '全部',
-						icon: "pingjia",
+						icon: "jianpan",
 						otype: 0,
 						order_num:0,
 					},
@@ -513,10 +514,11 @@
 								console.log('fenxiao_userinfo==>>', that.fenxiao_info);
 								
 								
-								that.orderList[1].order_num = that.user_info.status_count1;
-								that.orderList[2].order_num = that.user_info.status_count2;
-								that.orderList[3].order_num = that.user_info.status_count3;
-								console.log('fenxiao_userinfo==>>====', that.orderList);
+								that.order_icon_list[1].order_num = that.user_info.status_count1;
+								that.order_icon_list[2].order_num = that.user_info.status_count2;
+								that.order_icon_list[3].order_num = that.user_info.status_count3;
+								
+								console.log('fenxiao_userinfo==>>====', that.order_icon_list);
 								
 								
 							}

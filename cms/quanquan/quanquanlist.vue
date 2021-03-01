@@ -36,10 +36,10 @@
 			<image class='video-img' mode="widthFix" :src="item.img_url"></image>
 			<view class='c-2'>{{item.title}}</view>
 			<view class="d-1">
-			  <view>{{item.number}}人观看</view>
+			  <view style="font-size: 22rpx;">{{item.number}}人观看</view>
 			  <image class="time" src="../../static/img/VIP.png"></image>
 			  <view class='c-3'>{{item.month}}</view>
-			  <view>{{item.video_type_text}}</view>
+			  <view class="d-1-type" :style="{backgroundColor:wxa_shop_nav_bg_color}">{{item.video_type_text}}</view>
 			</view>
 		  </view>
 		
@@ -72,6 +72,8 @@
 				page_info:'精彩瞬间',
 				cataArr:[], 
 				monthArr:[],
+				
+				wxa_shop_nav_bg_color:'red'
 			};
 		},
 		onLoad(options) {
@@ -91,7 +93,11 @@
 			
 			    
 			
-			//this.abotapi.set_option_list_str(null, this.abotapi.getColor());
+			this.abotapi.set_shop_option_data(this, function(that002, cb_params){
+				if (cb_params.option_list.wxa_shop_nav_bg_color) {
+				    that002.wxa_shop_nav_bg_color = cb_params.option_list.wxa_shop_nav_bg_color
+				}
+			});
 			
 			
 			var that = this;
@@ -552,6 +558,13 @@ margin-top: 20rpx;
   align-items:center;
   justify-content:space-between;
   color:#8a8a8a;
+}
+.d-1-type {
+	font-size: 20rpx;
+	background-color: red;
+	color: #fff;
+	padding: 2px;
+	border-radius: 3px;
 }
 
 .e-1{
