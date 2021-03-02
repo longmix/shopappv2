@@ -232,7 +232,7 @@
 				
 				// 订单类型
 				order_icon_list: [{
-						text: '全部',
+						text: '全部订单',
 						icon: "jianpan",
 						otype: 0,
 						order_num:0,
