@@ -574,7 +574,8 @@
 				isKeep: false, //收藏
 				//商品描述html
 				describe: '',
-				descriptionStr: '<div style="text-align:center;"><img width="100%" src="https://ae01.alicdn.com/kf/HTB1t0fUl_Zmx1VjSZFGq6yx2XXa5.jpg"/><img width="100%" src="https://ae01.alicdn.com/kf/HTB1LzkjThTpK1RjSZFKq6y2wXXaT.jpg"/><img width="100%" src="https://ae01.alicdn.com/kf/HTB18dkiTbvpK1RjSZPiq6zmwXXa8.jpg"/></div>',
+				//descriptionStr: '<div style="text-align:center;"><img width="100%" src="https://ae01.alicdn.com/kf/HTB1t0fUl_Zmx1VjSZFGq6yx2XXa5.jpg"/><img width="100%" src="https://ae01.alicdn.com/kf/HTB1LzkjThTpK1RjSZFKq6y2wXXaT.jpg"/><img width="100%" src="https://ae01.alicdn.com/kf/HTB18dkiTbvpK1RjSZPiq6zmwXXa8.jpg"/></div>',
+				descriptionStr: '<h1>加载中</h1>',
 				option_list_arr: [],
 				spec1: '',
 				spec2: '',
@@ -764,15 +765,38 @@
 			}
 
 
+			uni.showLoading({
+				title: '数据加载中……'
+			});
 
 			this.abotapi.abotRequest({
 				url: detail_url,
 				data: detail_data,
 				success: function(res) {
+					
+					uni.hideLoading();
+					
 					console.log('5555588558===', res);
+					
+					if(res.data.code != 1){
+						
+						uni.showModal({
+							title:'提示',
+							showCancel:false,
+							content:res.data.msg,
+							success: function(res) {
+								that.abotapi.call_h5browser_or_other_goto_url('/pages/index/index');
+							}
+						})
+						
+						
+						return;
+					}
 
 					if (res.data.code == 1) {
 						that.goods_detail = res.data.data;
+						
+						
 						
 						console.log('that.goods_detail===>>>', that.goods_detail);
 						
@@ -912,8 +936,10 @@
 
 					}
 				},
-
 				fail: function(e) {
+					
+					uni.hideLoading();
+					
 					uni.showToast({
 						title: '网络异常！',
 						duration: 2000
@@ -962,6 +988,7 @@
 			//小程序隐藏返回按钮
 			this.showBack = false;
 			// #endif
+			
 			//option为object类型，会序列化上个页面传递的参数
 			console.log(options.cid); //打印出上个页面传递的参数。
 
@@ -1130,6 +1157,12 @@
 						var productid = attr_list[i].productid
 					}
 				}
+				
+				
+				uni.showLoading({
+					title: '数据加载中……'
+				});
+				
 
 				this.abotapi.abotRequest({
 					url: this.abotapi.globalData.yanyubao_server_url + '/Yanyubao/ShopAppWxa/product_detail',
@@ -1141,7 +1174,28 @@
 						'Content-Type': 'application/x-www-form-urlencoded'
 					},
 					success: function(res) {
+						
+						uni.hideLoading();
+						
+						
+						if(res.data.code != 1){
+							
+							uni.showModal({
+								title:'提示',
+								showCancel:false,
+								content:res.data.msg,
+								success: function(res) {
+									that.abotapi.call_h5browser_or_other_goto_url('/pages/index/index');
+								}
+							})
+							
+							
+							return;
+						}
+						
+						
 						var code = res.data.code;
+						
 						if (code == 1) {
 
 							that.goods_detail = res.data.data;
@@ -1175,15 +1229,13 @@
 
 							that.picture_length = that.goods_detail.picture_list ? that.goods_detail.picture_list.length : 0;
 
-						} else {
-							uni.showToast({
-								title: res.data.msg,
-								icon: 'none'
-							})
 						}
 
 					},
 					fail: function(res) {
+						
+						uni.hideLoading();
+						
 						uni.showToast({
 							title: '网络异常',
 							duration: 2000
@@ -1747,8 +1799,11 @@
 			},
 			block_tanchuang: function(productid) {
 				console.log('productid====》》》》', productid);
+				
 				var productid = productid.currentTarget.dataset.productid;
+				
 				console.log('6666666pppppp', productid);
+				
 				uni.navigateTo({
 
 					url: 'detail?productid=' + productid //这是跳转到的页面路径，？id=1这些都是传递的数据，可以直接在test页面接受
