@@ -39,6 +39,7 @@
 				scrollTop: 100,
 				productList: [],
 				types:[],
+				typeTree:'',
 				page:1,
 				searchValue:'',
 				currentTab2:0,
