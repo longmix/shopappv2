@@ -7,11 +7,12 @@
 	</view>
 	<view class="w100">
 			
+		<!-- 普通商品订单的商品列表 -->
 	    <navigator v-if="waimai_order_type != 1" 
 			:open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" 
 			:url="'../../product/detail?productid=' + item.productid"  
 			class="p_all bg_white df item" 
-			v-for="(item,index) in orderList" :key="index">
+			v-for="(item,index) in current_order_product_list" :key="index">
 	
 				<view class="cp_photo">			
 					<image :src="item.picture?item.picture:item.img"></image>
@@ -20,11 +21,18 @@
 					<view class="font_14 mt5 ovh1">
 			           {{item.name}}
 			        </view>
-				<text class="gm_ovh_1h pt10" >数量：{{item.amount?item.amount:item.count}} 单价：¥{{item.price}}</text>
-				<text class="gm_ovh_1h pt10" style="font-weight:bold;color: #333;">¥{{item.price2?item.price2:item.price}}</text>
+					<view class="gm_ovh_1h pt10" style="font-size:20rpx;color: #666;">
+						单价 ¥{{item.price}} x 数量 {{item.amount?item.amount:item.count}}</view>
+					<view class="gm_ovh_1h pt10" style="font-weight:bold;color: #333;">
+						{{item.price2?item.price2:item.price}}
+					</view>
 				</view>
 	    </navigator>
-		<view v-if="waimai_order_type == 1" class="p_all bg_white df item" v-for="(item,index) in orderList" :key="index">
+		
+		<!-- 外卖订单的商品列表 -->
+		<view v-if="waimai_order_type == 1" 
+			class="p_all bg_white df item" 
+			v-for="(item,index) in current_order_product_list" :key="index">
 			
 				<view class="cp_photo">			
 					<image :src="item.picture?item.picture:item.img"></image>
@@ -33,19 +41,28 @@
 					<view class="font_14 mt5 ovh1">
 			           {{item.name}}
 			        </view>
-				<text class="gm_ovh_1h pt10" >数量：{{item.amount?item.amount:item.count}} 单价：¥{{item.price}}</text>
-				<text class="gm_ovh_1h pt10" style="font-weight:bold;color: #333;">¥{{item.price2?item.price2:item.price}}</text>
+					<view class="gm_ovh_1h pt10" style="font-size:20rpx;color: #666;">
+						单价：¥{{item.price}} x 数量：{{item.amount?item.amount:item.count}}</view>
+					<view class="gm_ovh_1h pt10" style="font-weight:bold;color: #333;">
+						{{item.price_total?item.price_total:item.price}}</view>
 				</view>
 		</view>
+		
+		
+		<!-- 收货地址 -->
+	
 	
 			<view class="p_all bg_white mt10 font_14" v-if="orderData.realname">
 				<view class="df" v-if="orderData.order_option && orderData.order_option.xianmai_order_type == 1">
 					<view class="df_1 c6">
-					<view class="l_h20" style="font-weight: bold;color: #333;">{{orderData.realname}}   <text>{{orderData.mobile}}</text> </view>
+					<view class="l_h20" style="font-weight: bold;color: #333;">{{orderData.realname}}    <text style="margin-left: 10rpx;">{{orderData.mobile}}</text> </view>
 					<view class="l_h20 mt5" style="font-size: 25rpx;">地址：<text v-if="!wxa_order_hide_sanji_address">{{orderData.address01}}</text>{{orderData.address02}}</view>
 					</view>
 				</view>
 			</view>
+			
+		<!-- 功能按钮 -->
+		
 			<view style="overflow: hidden;margin-right: 3%;">
 				<view class="font_12 btn_min fl_r mr_5 mg_l" @tap="refundOrder" 
 					v-if="(wxa_order_hide_daishouhuo_refund != 1) && (orderData.status == 1)" 
@@ -95,69 +112,108 @@
 					@click="go_to_page" 
 					:data-faquanid='xianmai_shang_order_remark'>查看评价</view>
 			</view>
+			
+		<!-- 商家订单 -->	
+			
 			<view class="p_all bg_white mt10 c6 l_h20  font_14">
-				<view v-if="orderData.order_option">
-					<view>订单类型<view class='fl_r'>商家订单</view></view>
+				<view v-if="waimai_order_type == 1">
+					<view class="order_item_desc_name">订单类型<view class="order_item_desc_value">商家订单</view></view>
 				</view>
 				
 				<view v-if="order_xianmai_shangdata.name">
-					<view>商家名称<view class='fl_r'>{{order_xianmai_shangdata.name}}</view></view>
+					<view class="order_item_desc_name">商家名称<view class="order_item_desc_value">{{order_xianmai_shangdata.name}}</view></view>
 				</view>
 				
-				<view v-if="orderData && orderData.order_option && orderData.order_option.xianmai_order_peisong_type && (orderData.order_option.xianmai_order_peisong_type == 'snatch_order')">					<view>配送状态<view class='fl_r'>{{orderData.order_option.xianmai_order_peisong_status_str}}</view></view>				</view>
+				<view v-if="orderData && orderData.order_option 
+					&& orderData.order_option.xianmai_order_peisong_type 
+					&& (orderData.order_option.xianmai_order_peisong_type == 'snatch_order')">					<view class="order_item_desc_name">配送状态
+						<view class="order_item_desc_value">
+							{{orderData.order_option.xianmai_order_peisong_status_str}}
+						</view>
+					</view>
+					
+					<view class="order_item_desc_name"
+						v-if="(orderData.order_option.xianmai_order_peisong_status == 1) 
+							|| (orderData.order_option.xianmai_order_peisong_status == 2) 
+							|| (orderData.order_option.xianmai_order_peisong_status == 6)">
+						<view class="order_item_desc_value">
+							<navigator :url="'/pages/shopMap/shopMap?address=' + orderData.order_option.xianmai_order_peisongyuan_location.address + 
+							'&latitude=' + orderData.order_option.xianmai_order_peisongyuan_location.latitude + 
+							'&longitude=' + orderData.order_option.xianmai_order_peisongyuan_location.longitude">
+								点击查看骑手位置
+							</navigator>
+						</view>
+					</view>				</view>
 				
 				<view v-if="orderData && orderData.order_option &&orderData.order_option.xianmai_order_peisong_status == 3">
-					<view style="height: 50rpx;" @tap="queren_shouhuo()"> <view class='fl_r' 
-					style="margin-top: 35rpx;border-radius: 10rpx;background-color: #1AAD19;padding: 8rpx;color: #fff;">确认收货</view></view>
+					<view class="order_item_desc_name" style="height: 50rpx;" @tap="queren_shouhuo()"> 
+						<view class="order_item_desc_value" 
+							style="margin-top: 35rpx;border-radius: 10rpx;background-color: #1AAD19;padding: 8rpx;color: #fff;">
+								确认收货
+						</view>
+					</view>
 					<view style="font-size: 26rpx;">{{orderData.order_option.xianmai_order_peisong_003}}自动收货</view>
 				</view>
 				
 				
-				
+		<!-- 普通订单状态 -->		
 				
 				<view class="bordert">
-					<view>订单状态<view class='fl_r'>{{orderData.status_str}}</view></view>
+					
 				</view>
 				
-				<view class="mt10">
-					订单时间<view class='fl_r'>{{orderData.createtime}}</view>
-				</view>  
+				<view>
+					<view class="order_item_desc_name">订单状态<view class="order_item_desc_value">{{orderData.status_str}}</view></view>
+				</view>
+				
+				<view>
+					<view class="order_item_desc_name">
+						订单时间<view class="order_item_desc_value">{{orderData.createtime}}</view>
+					</view>  
+				</view>
+				
 	
-				<view class="mt10" v-if="orderData.buyer_memo">
-					留言备注：<view class='fl_r' style="font-size:24rpx; color:#666;">{{orderData.buyer_memo?orderData.buyer_memo:''}}</view>
+				<view v-if="orderData.buyer_memo">
+					<view class="order_item_desc_name">
+						留言备注：
+						<view class="order_item_desc_value" style="font-size:24rpx; color:#666;">{{orderData.buyer_memo?orderData.buyer_memo:''}}</view>
+					</view>
 				</view> 
 	
-	      
+		<!-- 商品和物流 -->
 	
 	
 	      <view class="bordert font_14">
-	          <view>商品数量<view class='fl_r'>x {{orderData.total_num}}</view></view>
-	          <view>商品金额<view class='fl_r'>￥{{orderData.price}}</view></view>
+	          <view class="order_item_desc_name">商品数量<view class="order_item_desc_value">x {{orderData.total_num}}</view></view>
+	          <view class="order_item_desc_name">商品金额<view class="order_item_desc_value">￥{{orderData.price}}</view></view>
 	          
 	      </view>
 	
 	      <view class="bordert font_14">
-	          <view>快递费<view class='fl_r'>￥{{orderData.price3}}</view></view>
-			  <view v-if="orderData.delivery_company">物流公司<view class='fl_r'>{{orderData.delivery_company}}</view></view>
+	          <view class="order_item_desc_name">快递费<view class="order_item_desc_value">￥{{orderData.price3}}</view></view>
+			  <view v-if="orderData.delivery_company">物流公司<view class="order_item_desc_value">{{orderData.delivery_company}}</view></view>
 			  <view v-if="orderData.delivery_no">
 				  物流编号
 				  <view class="fuzhi" @click="Clipboard_text(orderData.delivery_no)" style="">复制</view>
-				  <view class='fl_r'>{{orderData.delivery_no}}</view>
+				  <view class="order_item_desc_value">{{orderData.delivery_no}}</view>
 				  
 		      </view>
 	      </view>
-	      <view class="bordert font_14">
-	          <view>订单金额<view class='fl_r'>￥{{orderData.order_total_price}}</view></view>
+	    
+		<!-- 订单金额 -->
+		
+		  <view class="bordert font_14">
+	          <view class="order_item_desc_name">订单金额<view class="order_item_desc_value">￥{{orderData.order_total_price}}</view></view>
 			  
-			  <view v-if="orderData.user_coupon_dikou">优惠券抵扣<view class='fl_r'>￥{{orderData.user_coupon_dikou}}</view></view>
+			  <view v-if="orderData.user_coupon_dikou">优惠券抵扣<view class="order_item_desc_value">￥{{orderData.user_coupon_dikou}}</view></view>
 			  
-	          <view>余额支付<view class='fl_r'>￥{{orderData.yue_price}}</view></view>
-	          <view>赠款支付<view class='fl_r'>￥{{orderData.coupon_price}}</view></view>   
+	          <view class="order_item_desc_name">余额支付<view class="order_item_desc_value">￥{{orderData.yue_price}}</view></view>
+	          <view class="order_item_desc_name">赠款支付<view class="order_item_desc_value">￥{{orderData.coupon_price}}</view></view>   
 	      </view>
 	
 	      <view class="borderb bordert font_14">
-	          <view v-if='orderData.pay_price'>实际支付<view class='fl_r'>￥{{orderData.pay_price}}</view></view>
-	          <view>支付方式<view class='fl_r'>{{orderData.payment_name}}</view></view>
+	          <view v-if='orderData.pay_price' class="order_item_desc_name">实际支付<view class="order_item_desc_value">￥{{orderData.pay_price}}</view></view>
+	          <view class="order_item_desc_name">支付方式<view class="order_item_desc_value">{{orderData.payment_name}}</view></view>
 	        </view>
 			  </view>
 	
@@ -207,12 +263,8 @@
 				isStatus:1,//0全部,1待付款，2待发货，6待收货 7已完成
 				page:1,
 				refundpage:0,
-				orderList:[],
-				orderList0:[],
-				orderList1:[],
-				orderList2:[],
-				orderList3:[],
-				orderList4:[],
+				current_order_product_list:[],
+			
 				orderData:{
 					orderno:'',
 					realname:'',
@@ -337,13 +389,16 @@
 						  
 						if(orderData.order_option && (orderData.order_option.xianmai_order_type)){
 							var order_product_list = JSON.parse(orderData.order_option.hahading_order_product_list);
-							console.log('order_product_list',order_product_list);
+							
+							console.log('hahading_order_product_list ===>>> order_product_list===>>>>>',order_product_list);
+							
 							that.orderData = orderData;
-							that.orderList = order_product_list;
+							that.current_order_product_list = order_product_list;
 							that.waimai_order_type = 1;
+							
 						}else{
 							that.orderData = orderData;
-							that.orderList = orderData.orderProduct;
+							that.current_order_product_list = orderData.orderProduct;
 						}
 						 
 						if(orderData.order_option && (orderData.order_option.xianmai_shang_order_remark)){
@@ -352,7 +407,7 @@
 			           
 						
 			          
-			            console.log(that.orderList);
+			            console.log('current_order_product_list ====>>>>>', that.current_order_product_list);
 			          } else {
 			            uni.showToast({
 			              title: res.data.msg,
@@ -658,6 +713,19 @@
 
 
 <style>
+	/*浮动*/
+	.order_item_desc_name {
+		font-size:28rpx;
+		height: 30px;
+		line-height: 30px;
+	}
+	
+	.order_item_desc_value {
+		float: right;
+		font-size:28rpx;
+		font-weight: 600;
+	}
+	
 	.item .cp_photo{ 
 	    width: 60px; 
 	    height: 60px;
@@ -717,6 +785,7 @@
 	.w100{ 
 	  width: 100%;
 	  color:#333;
+	  font-size:28rpx;
 	}
 	
 	.iconWarn{
