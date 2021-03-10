@@ -425,29 +425,56 @@
 				 
 				 
 				 this.current_wxa_qrcode = e.currentTarget.dataset.qrcode;
+				 
 				 console.log('wwa',this.current_wxa_qrcode);
+				 
+				 
 				// #ifdef MP-WEIXIN
-			    let index = e.currentTarget.dataset.index;
-				console.log(this.liveList);
+					let index = e.currentTarget.dataset.index;
+					console.log(this.liveList);
+					
+					let roomId = this.liveList[index].roomid;
 				
-			    let roomId = this.liveList[index].roomid;
-			
-			    roomId = [roomId] // 填写具体的房间号，可通过下面【获取直播房间列表】 API 获取
-			
+					roomId = [roomId] // 填写具体的房间号，可通过下面【获取直播房间列表】 API 获取
 				
-			    console.log('ddddddd',roomId);
-			
-			    let customParams = encodeURIComponent(JSON.stringify({ path: 'pages/index/index', pid: 1 })) // 开发者在直播间页面路径上携带自定义参数（如示例中的path和pid参数），后续可以在分享卡片链接和跳转至商详页时获取，详见【获取自定义参数】、【直播间到商详页面携带参数】章节（上限600个字符，超过部分会被截断）
-			    
+					
+					console.log('ddddddd',roomId);
 				
-			    uni.navigateTo({
-			        url: 'plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id=' + roomId +'&custom_params='+ customParams
-			    })
+					let customParams = encodeURIComponent(JSON.stringify({ path: 'pages/index/index', pid: 1 })) // 开发者在直播间页面路径上携带自定义参数（如示例中的path和pid参数），后续可以在分享卡片链接和跳转至商详页时获取，详见【获取自定义参数】、【直播间到商详页面携带参数】章节（上限600个字符，超过部分会被截断）
+					
+					//判断直播功能和当前的小程序是否一致
+					let wxa_appid = this.liveList[index].wxa_appid;
+					
+					if(wxa_appid == this.abotapi.globalData.xiaochengxu_appid){
+						uni.navigateTo({
+							url: 'plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id=' + roomId +'&custom_params='+ customParams
+						})
+					}
+					else{
+						uni.navigateToMiniProgram({
+							appId: wxa_appid,
+							path: 'plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id=' + roomId +'&custom_params='+ customParams,
+							extraData: {
+							    'from_wxa': this.abotapi.globalData.xiaochengxu_appid
+							},
+							success:function(res){
+								console.log('跳转到直播小程序成功');
+							},
+							fail:function(res){
+								console.log('跳转到直播小程序失败', res);
+							}
+						});
+					}
+					
+					
+					
+					
 				// #endif
 				
 				//#ifndef MP-WEIXIN
-				this.open(0, 'center');
+					this.open(0, 'center');
 				// #endif
+				
 			  },
 			
 			  open(Class, Position) {
@@ -537,9 +564,10 @@
 	}
 	.wxa_live_name{
 	margin-top: -200rpx;
-	width: 50%;
+	width: 80%;
 	color: #fff;
-	margin-bottom: 80rpx;
-	
+	margin-bottom: 90rpx;
+	margin-left: 10px;
+	font-size: 13px;
 }
 </style>

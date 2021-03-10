@@ -6,12 +6,12 @@
 		</view> -->
 
 		<view class="head-img">
-			<view style="margin-right: 450rpx;color: #666666;font-size: 36rpx">请设置分享图片</view>
+			<view style="margin-right: 450rpx;color: #666666;font-size: 30rpx">请设置分享图片</view>
 			<view>
 				<image :src="shareImg" @tap="upLoadimgs(2)" mode="widthFix"></image>
 				<view style="display: flex;float: right;margin-right: 15rpx;">
 					<view style="color: red;margin-top: 4rpx;">*</view>
-					<view style="color:#cbcbcb ;">建议像素800*640，大小不超过2M</view>
+					<view style="color:#cbcbcb ;font-size: 20rpx;">建议像素800*640，大小不超过2M</view>
 				</view>
 
 			</view>
@@ -21,13 +21,13 @@
 		</view>
 
 		<view class="head-img" v-if="zhibotype == 'weixin'">
-			<view style="margin-right: 350rpx;color: #666666;font-size: 36rpx">请设置直播间背景图片</view>
+			<view style="margin-right: 350rpx;color: #666666;font-size: 30rpx">请设置直播间背景图片</view>
 			<view>
 				<image :src="coverImg" @tap="upLoadimgs(1)" mode="widthFix"></image>
 
 				<view style="display: flex;float: right;margin-right: 15rpx;">
 					<view style="color: red;margin-top: 4rpx;">*</view>
-					<view style="color:#cbcbcb ;">建议像素1080*1920，大小不超过2M</view>
+					<view style="color:#cbcbcb ;font-size: 20rpx">建议像素1080*1920，大小不超过2M</view>
 				</view>
 
 			</view>
@@ -47,8 +47,7 @@
 				<span>主播微信 :</span>
 				<input id="name" type="text" name="name" v-model="anchorWechat" class="error" placeholder="请输入主播微信号" style="height: 60rpx;" />
 				<view style="display: flex; margin-top: 15rpx;">
-					<view style="color: red;margin-top: 4rpx;">*</view>
-					<view style="color:#666666 ;">需实名认证，如未认证请前往“小程序直播”小程序认证</view>
+					<view style="color:#666666 ;font-size: 20rpx;">需实名认证，如未认证请前往“小程序直播”小程序认证</view>
 				</view>
 
 			</label>
@@ -188,7 +187,9 @@
 		</view>
 		</view>
 		
-		
+		<openAlert ref="openAlert" :AlertClass="AlertClass" :AlertPosition="AlertPosition">
+		    <img :src="wechat_qrcode_url" alt="">
+		</openAlert>
 
 
 		<view class="success-msg">
@@ -233,7 +234,14 @@
 				date:'2020-06-22', //显示开始的时间
 				date_end:'', //显示结束的时间
 				defaultValue: '2020-06-08 10:30', // 默认值
-				videocode:''
+				videocode:'',
+				
+				
+				//open-alert
+				AlertClass: 0,
+				AlertPosition: '',
+				//实名认证二维码
+				wechat_qrcode_url:''
 			}
 		},
 		onLoad(option) {
@@ -609,19 +617,41 @@
 					url: that.abotapi.globalData.yanyubao_server_url + 'openapi/VideoLiveData/set_plan_video_live',
 					data:livetips,
 					success(res) {
-						console.log('jjjjjjjjjjjjjjjsssssssssss',res);
+						
 						var videocode = res.data.code;
-						if(this.videocode == 0){
+						
+						
+						console.log('8899===',this.videocode);
+						
+						if(videocode == 0){
 						  uni.showModal({
 							title:'提示！',
-							content:'请先实名微信号!',
+							content:res.data.msg,
+							showCancel:false,
+							success: function(res002) {
+								if (res002.confirm) {}
+								
+								console.log('用户点击确定',res);
+								
+								if(res.data.data && res.data.data.qrcode_url){
+									that.wechat_qrcode_url = res.data.data.qrcode_url;
+									
+									console.log('wwa', that.wechat_qrcode_url);
+									that.open(0, 'center');
+									
+								}
+							}
 						  })
+						  
+						  
+						  
 						  return;
 						}
-						console.log("aaaaa111", res)
-						console.log('99999999ssss999====',livetips );
+						
 						var roomid = res.data.roomid;
+						
 						console.log('99999999ooo',roomid );
+						
 						uni.showToast({
 						  title: res.data.msg,
 						  duration: 2000
@@ -721,6 +751,17 @@
 
 
 			},
+			
+			//open-alert
+			open(Class, Position) {
+			    this.$nextTick(function() {
+			        this.AlertClass = Class;
+			        this.AlertPosition = Position;
+			        this.$nextTick(function() {
+			            this.$refs.openAlert.Show();
+			        });
+			    });
+			}
 
 
 		}
@@ -762,6 +803,7 @@
 		line-height: 55rpx;
 		width: 90%;
 		border-radius: 10rpx;
+		margin-top: 10rpx;
 	}
 
 	.error-msg textarea {
@@ -841,5 +883,14 @@
 	
 	.right-icon {
 		color: #707070;
+	}
+	span{
+		font-size: 28rpx;
+	}
+	input{
+		padding-left:5px;
+	}
+	.name{
+		font-size: 28rpx;
 	}
 </style>

@@ -139,7 +139,9 @@
 						<view class="order_item_desc_value">
 							<navigator :url="'/pages/shopMap/shopMap?address=' + orderData.order_option.xianmai_order_peisongyuan_location.address + 
 							'&latitude=' + orderData.order_option.xianmai_order_peisongyuan_location.latitude + 
-							'&longitude=' + orderData.order_option.xianmai_order_peisongyuan_location.longitude">
+							'&longitude=' + orderData.order_option.xianmai_order_peisongyuan_location.longitude + 
+							'&name=' + orderData.order_option.xianmai_order_peisongyuan_location.snatch_name +
+							 '&telephone=' + orderData.order_option.xianmai_order_peisongyuan_location.mobile"">
 								点击查看骑手位置
 							</navigator>
 						</view>
