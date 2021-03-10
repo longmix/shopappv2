@@ -179,9 +179,17 @@ export default {
 
 			if (url_data.length < 3) {
 				//跳转到首页
-				uni.switchTab({
-					url: '../index/index'
+				uni.showModal({
+					title:'提示',
+					content:'参数错误',
+					showCancel:false,
+					success:function(res){
+						//跳转到首页
+						this.abotapi.call_h5browser_or_other_goto_url('/pages/index/index');
+						
+					}
 				})
+				
 				return;
 			}
 

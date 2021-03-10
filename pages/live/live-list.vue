@@ -17,9 +17,13 @@
 				</view>
 			</navigator>
 			
-			<view v-if="is_weixin" v-for="(item,index) in liveList" :key="index" class="live_list_li" @click="toLiveStudio" :data-index="index"  data-class="live_list_li">
+			<view v-if="is_weixin" v-for="(item,index) in liveList" :key="index" 
+				class="live_list_li" 
+				@click="toLiveStudio" 
+				:data-index="index"  
+				data-class="live_list_li">
 				<view class="live_list_li_ve">
-					<image :src="item.share_img" mode="aspectFill"></image>
+					<image :src="item.local_share_img" mode="aspectFill"></image>
 					<view class="live_list_li_ve_title">
 						<view class="live_list_li_ve_title_l">
 							<view>{{item.name}}</view>
@@ -199,9 +203,83 @@
 			
 			
 			
+			
+			
+			
+			//如果是扫码进入（只有在小程序中才有这个可能）   
+			//roomid@weixinlive@sellersn  例如   1234@weixinlive@fSSmPaega
+			if(options.scene){
+				
+				var url_value = decodeURIComponent(options.scene);
+				
+				console.log('带参二维码的参数===>>>' + url_value);
+				
+				var url_data = url_value.split('@');
+				console.log(url_data);
+				
+				if (url_data.length < 3) {
+					uni.showModal({
+						title:'提示',
+						content:'参数错误',
+						showCancel:false,
+						success:function(res){
+							//跳转到首页
+							this.abotapi.call_h5browser_or_other_goto_url('/pages/index/index');
+							
+						}
+					})
+					
+					return;
+				}
+				
+				var roomId = url_data[0];
+				var live_type = url_data[1];
+				var sellerid = url_data[2];
+				
+				//重写sellerid
+				this.abotapi.set_sellerid(sellerid);
+				
+				//获取商城设置
+				this.abotapi.set_shop_option_data(null, function(){
+					
+				});
+				
+				
+				if(live_type == 'weixinlive'){
+					//跳转到直播间
+					console.log('ddddddd',roomId);
+								
+					let customParams = encodeURIComponent(JSON.stringify({ path: 'pages/index/index', pid: 1 })) // 开发者在直播间页面路径上携带自定义参数（如示例中的path和pid参数），后续可以在分享卡片链接和跳转至商详页时获取，详见【获取自定义参数】、【直播间到商详页面携带参数】章节（上限600个字符，超过部分会被截断）
+					
+					
+					uni.navigateTo({
+					    url: 'plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id=' + roomId +'&custom_params='+ customParams
+					})
+				}
+				else{
+					uni.showModal({
+						title:'提示',
+						content:'不支持的直播类型',
+						showCancel:false,
+						success:function(res){
+							//跳转到首页
+							this.abotapi.call_h5browser_or_other_goto_url('/pages/index/index');
+							
+						}
+					})
+				}
+				
+				
+				
+				return;
+			}
+			
+			
+			//获取商城设置
 			this.abotapi.set_shop_option_data(null, function(){
 				
 			});
+			
 			
 			if(options.zhibotype && options.zhibotype == 'weixin'){
 				
