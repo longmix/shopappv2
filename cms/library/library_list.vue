@@ -8,18 +8,18 @@
 		<view v-if="type == 0">
 			<view v-if="pictureList.length > 1">
 				<view class="tupian" v-for="(item, index) in pictureList" :key="index">
-					<image src="item.item" mode="widthFix" bundtap="bigImg" data-index="index"></image>
+					<image :src="item" mode="widthFix" @click="bigImg" :data-index="index"></image>
 				</view>
 			</view>
 			<view style='padding:40rpx 5% 0 5%;'>
-				<image style='width:100%' mode="widthFix" bindtap="bigImg" data-index="0" src="pictureList[0]"></image>
+				<image style='width:100%' mode="widthFix" @click="bigImg" :data-index="0" :src="pictureList[0]"></image>
 			</view>
 		  
 		</view>
 		
 		<view class="a-1" v-if="type == 1">
-			<view class="a-2" v-for="(item02, index02) in pictureList" :key="index02" data-productid="item02.productid" bindtap="get_picture_album_list">
-				<image src="item02.img"></image>
+			<view class="a-2" v-for="(item02, index02) in pictureList" :key="index02" :data-productid="item02.productid" @click="get_picture_album_list">
+				<image :src="item02.img"></image>
 				<view>{{item02.name}}</view>
 			</view>
 		</view>
@@ -50,6 +50,8 @@
 			*/
 			onLoad: function (options) {
 			    console.log('options======', options)
+				
+				var that = this;
 			    if(options && options.productid){
 					
 					that.productid = options.productid;

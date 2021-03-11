@@ -8,20 +8,20 @@
 		<view>
 		    <scroll-view scroll-x="true" class="tab-h1" scroll-left="scrollLeft">
 				<block v-for="(item, index) in types" :key="index">
-					<view class="tab-item1 currentTab==item.cataid?'active':''"  data-cataid="item.cataid" bindtap="swichNav">{{item.name}}</view>
+					<view class="tab-item1 currentTab==item.cataid?'active':''"  :data-cataid="item.cataid" @click="swichNav">{{item.name}}</view>
 				</block>   
 		    </scroll-view>
 			
 		    <scroll-view class="a-1" scroll-x="true" scroll-left="scrollLeft">
 		        <block v-for="(item01, index1) in typeTree" :key="index1">
-					<view class="tab-item currentTab2==item.cataid?'active2':''" data-cataid="item01.cataid" bindtap="swichNav2">{{item01.name}}</view>
+					<view class="tab-item currentTab2==item.cataid?'active2':''" :data-cataid="item01.cataid" @click="swichNav2">{{item01.name}}</view>
 				</block>         
 		    </scroll-view>
 			<scroll-view scroll-y class="a-1" scroll-left="scrollLeft" bindscrolltolower="lower" style="height: windowHeight-150px;">
 				<block v-for="(item02, index2) in productList" :key="index2">
-					<view class="a-2" bindtap="toLibraryList" data-productid="item02.productid">
-						<image src="item02.picture"></image>
-						<view class="a-3" data-cataid="item02.cataid">{{item02.name}}</view>
+					<view class="a-2" @click="toLibraryList" :data-productid="item02.productid">
+						<image :src="item02.picture"></image>
+						<view class="a-3" :data-cataid="item02.cataid">{{item02.name}}</view>
 					</view>
 				</block>
 				
@@ -43,6 +43,7 @@
 				page:1,
 				searchValue:'',
 				currentTab2:0,
+				currentTab:'',
 			}
 		},
 		methods: {
@@ -51,7 +52,7 @@
 			*/
 			onLoad: function (options) {
 				var that = this;
-			      
+				
 			    uni.getSystemInfo({
 			        success(res) {
 						console.log(res.model)
@@ -194,11 +195,13 @@
 			},
 			// 滚动切换标签样式
 			switchTab: function (e) {
-						  
-				this.setData({
-					currentTab: e.detail.current
-				});
-				this.checkCor();
+				
+					console.log('ewewew===', e); 
+					var that = this;
+
+					that.currentTab = e.detail.current;
+				
+				that.checkCor();
 			},
 					  
 			// 点击一级分类
@@ -207,7 +210,10 @@
 				var that = this;
 				var cataid = e.target.dataset.cataid;
 				
-				if (this.data.currentTab == cataid) { 
+				console.log('catid===', cataid, this.currentTab);
+				
+				if (this.currentTab == cataid) { 
+					console.log('111111111111111111111111');
 					return false; 
 				}
 				else {
@@ -301,10 +307,13 @@
 					});
 				}
 			},
+			
+			
+			
 				
 			//判断当前滚动超过一屏时，设置tab标题滚动条。
 			checkCor: function () {
-				if (this.data.currentTab > 4) {
+				if (this.currentTab > 4) {
 					this.setData({
 						scrollLeft: 300
 					})
