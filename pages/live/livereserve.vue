@@ -4,9 +4,24 @@
 	<!-- 	<view class="head">
 			<h1>请填写直播信息</h1>
 		</view> -->
-
-		<view class="head-img">
-			<view style="margin-right: 450rpx;color: #666666;font-size: 30rpx">请设置分享图片</view>
+		
+		<view class="error-msg">
+			<label>
+				<span>请设置分享图片</span>
+				<view>
+					<image :src="shareImg" @tap="upLoadimgs(2)" mode="widthFix"></image>
+					<view style="display: flex;float: right;margin-right: 15rpx;">
+						<view style="color: red;margin-top: 4rpx;">*</view>
+						<view style="color:#cbcbcb ;font-size: 20rpx;">建议像素800*640，大小不超过2M</view>
+					</view>
+				
+				</view>
+		
+			</label>
+		</view>
+		
+		<!-- <view class="head-img">
+			<view style="margin-right: 450rpx;color: #666666;font-size: 15px">请设置分享图片</view>
 			<view>
 				<image :src="shareImg" @tap="upLoadimgs(2)" mode="widthFix"></image>
 				<view style="display: flex;float: right;margin-right: 15rpx;">
@@ -15,13 +30,31 @@
 				</view>
 
 			</view>
-		</view>
+		</view> -->
+		
 		<view style="margin-top: 55rpx;">
 			
 		</view>
-
-		<view class="head-img" v-if="zhibotype == 'weixin'">
-			<view style="margin-right: 350rpx;color: #666666;font-size: 30rpx">请设置直播间背景图片</view>
+		
+		<view class="error-msg"  v-if="zhibotype == 'weixin'">
+			<label>
+				<span>请设置直播间背景图片</span>
+				<view>
+					<image :src="coverImg" @tap="upLoadimgs(1)" mode="widthFix"></image>
+				
+					<view style="display: flex;float: right;margin-right: 15rpx;">
+						<view style="color: red;margin-top: 4rpx;">*</view>
+						<view style="color:#cbcbcb ;font-size: 20rpx">建议像素1080*1920，大小不超过2M</view>
+					</view>
+				
+				</view>
+		
+			</label>
+		</view>
+		
+		
+		<!-- <view class="head-img" v-if="zhibotype == 'weixin'">
+			<view style="margin-right: 350rpx;color: #666666;font-size: 15px">请设置直播间背景图片</view>
 			<view>
 				<image :src="coverImg" @tap="upLoadimgs(1)" mode="widthFix"></image>
 
@@ -31,7 +64,7 @@
 				</view>
 
 			</view>
-		</view>
+		</view> -->
 
 		<view style="margin-top: 55rpx;"></view>
 		<view class="error-msg">
@@ -81,7 +114,7 @@
 			</label>
 		</view> -->
 		<view class="row">
-			<text class="name">开始时间：</text>
+			<span class="name">开始时间：</span>
 			<view class="value">
 				<biaofun-datetime-picker
 					placeholder="请选择活动时间"
@@ -95,11 +128,11 @@
 			</view>
 		</view>
 		<view class="row">
-			<text class="name">结束时间：</text>
+			<span class="name">结束时间：</span>
 			<view class="value">
 				<biaofun-datetime-picker
 					placeholder="请选择活动时间"
-					:defaultValue="defaultValue"
+					:defaultValue="defaultValue_end"
 					start="2000-02-03 02:08"
 					end="2100-10-28 22:58"
 					fields="minute"
@@ -124,46 +157,36 @@
 
 		</view>
 		
-		<view class="text_line" style="padding: 0 30rpx; margin-top: 15px;" v-if="zhibotype == 'weixin'">
-			<view style="display: flex;justify-content: space-between;">
+		
+		<view class="text_line" style="margin-top: 15px;" v-if="zhibotype == 'weixin'">
+			<span style="display: flex;justify-content: space-between;">
 				<span>是否关闭点赞:</span><switch class="text_check" @change="checkbox" data-name="closeLike"/>
-				<!-- <radio-group style="display: flex; justify-content: space-around;margin-top: 35rpx;" @change="aaaa" data-name="closeLike">
-					<label>
-						<view>
-							<radio value="0" :checked="closeLike==0" />关闭
-						</view>
-					</label>
-			
-					<label>
-						<view>
-							<radio value="1"  :checked="closeLike==1" />开启
-						</view>
-					</label>
-				</radio-group> -->
-			</view>
+				
+			</span>
 		</view>
 		
 
-		<view class="text_line" style="padding: 0 30rpx;" v-if="zhibotype == 'weixin'">
+		<view class="text_line"  v-if="zhibotype == 'weixin'">
 			<view  style="display: flex;justify-content: space-between;">
 				<span>是否关闭货架:</span><switch class="text_check" @change="checkbox" data-name="closeGoods"/>
 			</view>
 		</view>
 		
-		<view class="text-line" style="padding: 0 30rpx;" v-if="zhibotype == 'weixin'">
+		<view class="text_line" v-if="zhibotype == 'weixin'">
 			<view style="display: flex;justify-content: space-between;">
-				<span>直播方式:</span><switch class="text_check" @change="checkbox" data-name="screenType"/>
+				<span>直播方式:</span>
+				<switch class="text_check" @change="checkbox" data-name="screenType"/>
 			</view>
 		</view>
 		
 		
-		<view class="text-line" style="padding: 0 30rpx;" v-if="zhibotype == 'weixin'">
+		<view class="text_line" v-if="zhibotype == 'weixin'">
 			<view style="display: flex;justify-content: space-between;">
-				<span>是否关闭评论:</span><switch class="text_check" @change="checkbox" data-name="closeComment"/>
+				<span>是否关闭评论:</span>
+				<switch class="text_check" @change="checkbox" data-name="closeComment"/>
 			</view>
 		</view>
 		
-
 
 
 
@@ -175,7 +198,7 @@
 		</view>
 		
 		<view class="goods_list" v-if="zhibotype == 'weixin'">
-			<view style="text-align: center;">请选择商品</view>
+			<view style="text-align: center;font-size: 15px;color: #666666;padding: 0px 5px;">请选择商品</view>
 		
 
 		<view class="goods" v-for="(item,index) in recommend_product_list" :key="index" @click="live_goods($event)"
@@ -188,7 +211,7 @@
 		</view>
 		
 		<openAlert ref="openAlert" :AlertClass="AlertClass" :AlertPosition="AlertPosition">
-		    <img :src="wechat_qrcode_url" alt="">
+		    <img style="width: 200px;" :src="wechat_qrcode_url" alt="">
 		</openAlert>
 
 
@@ -205,6 +228,7 @@
 <script>
 	
 	import biaofunDatetimePicker from '@/components/biaofun-datetime-picker/biaofun-datetime-picker.vue';
+	import util from '@/common/util.js';
 	
 	export default {
 		components: {
@@ -234,6 +258,7 @@
 				date:'2020-06-22', //显示开始的时间
 				date_end:'', //显示结束的时间
 				defaultValue: '2020-06-08 10:30', // 默认值
+				defaultValue_end:'',//结束时间
 				videocode:'',
 				
 				
@@ -297,7 +322,7 @@
 			  });
 			  
 			
-			
+			this.auto_information_anchor();
 
 		},
 		methods: {
@@ -752,7 +777,7 @@
 
 			},
 			
-			//open-alert
+			//open-alert 悬浮窗效果
 			open(Class, Position) {
 			    this.$nextTick(function() {
 			        this.AlertClass = Class;
@@ -761,7 +786,49 @@
 			            this.$refs.openAlert.Show();
 			        });
 			    });
+			},
+			
+			//自动填写直播信息
+			
+			auto_information_anchor:function(){
+				
+				var userInfo = this.abotapi.get_user_account_info();
+				
+				/* var now_time = new Date();
+				
+				this.now_time =  now_time.getFullYear() + "-" + (now_time.getMonth() + 1) + "-" + now_time.getDate() 
+				+" " + now_time.getHours() + ":" + now_time.getMinutes();
+				
+				var end_time = now_time.getFullYear() + "-" + (now_time.getMonth() + 1) + "-" + (now_time.getDate() + 1) 
+				+" " + now_time.getHours() + ":" + now_time.getMinutes();
+				
+				console.log('wwadwad', this.now_time, end_time); */
+				
+				//直播开始时间
+				var timestamp = (new Date()).valueOf();
+				timestamp += 15*60*1000;
+				
+				var date_time = util.formatTime(new Date(timestamp));
+				var hour_time = util.formatTime2(new Date(timestamp));
+				
+				this.defaultValue = date_time + ' ' + hour_time;
+				
+				//直播结束时间
+				timestamp += 3*24*60*60*1000;
+				
+				date_time = util.formatTime(new Date(timestamp));
+				hour_time = util.formatTime2(new Date(timestamp));
+				
+				this.defaultValue_end = date_time + ' ' + hour_time;
+				
+				
+				this.anchorName = userInfo.nickname;
+				this.name = userInfo.nickname + '的直播间';
+				console.log('wadadwads', userInfo.nickname);			
+								
+				
 			}
+			
 
 
 		}
@@ -886,11 +953,15 @@
 	}
 	span{
 		font-size: 28rpx;
+		color: #666666;
 	}
 	input{
 		padding-left:5px;
 	}
 	.name{
 		font-size: 28rpx;
+	}
+	.text_line{
+		padding: 0px 21px;
 	}
 </style>
