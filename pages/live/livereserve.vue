@@ -9,7 +9,8 @@
 			<label>
 				<span>请设置分享图片</span>
 				<view>
-					<image :src="shareImg" @tap="upLoadimgs(2)" mode="widthFix"></image>
+					<image :src="shareImg" @tap="upLoadimgs(2)" mode="widthFix" style="width: 200px;text-align: center;margin: 0px auto;
+    display: block;"></image>
 					<view style="display: flex;float: right;margin-right: 15rpx;">
 						<view style="color: red;margin-top: 4rpx;">*</view>
 						<view style="color:#cbcbcb ;font-size: 20rpx;">建议像素800*640，大小不超过2M</view>
@@ -40,7 +41,8 @@
 			<label>
 				<span>请设置直播间背景图片</span>
 				<view>
-					<image :src="coverImg" @tap="upLoadimgs(1)" mode="widthFix"></image>
+					<image :src="coverImg" @tap="upLoadimgs(1)" mode="widthFix" style="width: 200px;margin: 0px auto;
+    display: block;"></image>
 				
 					<view style="display: flex;float: right;margin-right: 15rpx;">
 						<view style="color: red;margin-top: 4rpx;">*</view>
@@ -218,7 +220,7 @@
 		<view class="success-msg">
 			<label>
 				<span>&nbsp;</span>
-				<button type="submit" class="button" value="提交" @click="bt_live_data">提交</button>
+				<button type="submit" :style="{'background-color': btn_color}" class="button" value="提交" @click="bt_live_data">提交</button>
 			</label>
 		</view>
 
@@ -266,7 +268,8 @@
 				AlertClass: 0,
 				AlertPosition: '',
 				//实名认证二维码
-				wechat_qrcode_url:''
+				wechat_qrcode_url:'',
+				btn_color:''//提交按钮颜色
 			}
 		},
 		onLoad(option) {
@@ -348,8 +351,8 @@
 					return;
 				}
 
-				console.log('cb_params====', cb_params);
-				
+				console.log('cb_params====', cb_params.wxa_shop_nav_bg_color);
+				that.btn_color = cb_params.wxa_shop_nav_bg_color;
 				that.abotapi.getColor();
 			},
 			

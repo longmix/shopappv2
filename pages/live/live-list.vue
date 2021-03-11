@@ -47,12 +47,15 @@
 					
 					<view class="live_list_li_ve_title">
 						<view class="wxa_live_name">{{item.name}}</view>
+					<view class="live_bto_class">
 						<view class="live_list_li_ve_title_l">
 							<view>{{item.live_status_str}}</view>
 						</view>
+						
 						<view class="live_list_li_ve_title_r">
 							<view>{{item.anchor_name}}</view>
 						</view>
+					</view>	
 					</view>
 				</view>
 			</view>
@@ -535,7 +538,8 @@
 	.live_list .live_list_li .live_list_li_ve .live_list_li_ve_title .live_list_li_ve_title_r,.live_list_li_ve_title_l{
 		padding:5upx;
 	}
-	.live_list .live_list_li .live_list_li_ve .live_list_li_ve_title .live_list_li_ve_title_r{padding-right:13upx;}
+	.live_list .live_list_li .live_list_li_ve .live_list_li_ve_title .live_list_li_ve_title_r{padding-right:13upx;
+	}
 	.live_list .live_list_li .live_list_li_ve .live_list_li_ve_title .live_list_li_ve_title_r view{
 		color:#fff;
 		font-size:20upx;
@@ -553,8 +557,8 @@
 	.live_list .live_list_li .live_list_li_ve .live_list_li_ve_title .live_list_li_ve_title_l view{
 		height:100%;
 		border:0px red solid;
-		color:#fff;
-		font-size:25upx;
+		color:#d4caca;
+		font-size:22upx;
 		float: left;
 		left:0;
 		display: flex;
@@ -563,11 +567,13 @@
 		padding-left:10upx;
 	}
 	.wxa_live_name{
-	margin-top: -200rpx;
-	width: 80%;
-	color: #fff;
-	margin-bottom: 90rpx;
-	margin-left: 10px;
-	font-size: 13px;
+		width: 90%;
+		color: #fff;
+		margin-top: -220rpx;
+		font-size: 13px;
+		margin-bottom: 50px;
+		position: absolute;
+		padding-left: 5px;
+		
 }
 </style>
