@@ -106,11 +106,12 @@
 					})
 			},
 			
+			//点击图片弹出放大
 			bigImg:function(e){
 			    var index = e.currentTarget.dataset.index
 			    uni.previewImage({
-					current: this.data.pictureList[index], // 当前显示图片的http链接
-					urls: this.data.pictureList // 需要预览的图片http链接列表
+					current: this.pictureList[index], // 当前显示图片的http链接
+					urls: this.pictureList // 需要预览的图片http链接列表
 				})
 			},
 			/**
