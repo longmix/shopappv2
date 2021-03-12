@@ -28,6 +28,7 @@
 			    <view><img style="
 				    background-color: #fff;
 				    width: 250px;
+					border: red 1px solid;
 				" :src="current_wxa_qrcode" alt=""></view>
 			</openAlert>
 			

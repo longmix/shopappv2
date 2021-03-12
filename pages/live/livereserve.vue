@@ -161,7 +161,7 @@
 		
 		
 		<view class="text_line" style="margin-top: 15px;" v-if="zhibotype == 'weixin'">
-			<span style="display: flex;justify-content: space-between;">
+			<span class="text_radio_box">
 				<span>是否关闭点赞:</span><switch class="text_check" @change="checkbox" data-name="closeLike"/>
 				
 			</span>
@@ -169,21 +169,25 @@
 		
 
 		<view class="text_line"  v-if="zhibotype == 'weixin'">
-			<view  style="display: flex;justify-content: space-between;">
+			<view  class="text_radio_box">
 				<span>是否关闭货架:</span><switch class="text_check" @change="checkbox" data-name="closeGoods"/>
 			</view>
 		</view>
 		
 		<view class="text_line" v-if="zhibotype == 'weixin'">
-			<view style="display: flex;justify-content: space-between;">
+			<view class="text_radio_box">
 				<span>直播方式:</span>
-				<switch class="text_check" @change="checkbox" data-name="screenType"/>
+				<!-- <switch class="text_check" @change="checkbox" data-name="screenType"/> -->
+				 <radio-group @change="radioChange" > 
+					<label style="font-size: 26rpx;margin-right: 20rpx;" class="radio"><radio value="1" />选中</label>
+					<label style="font-size: 26rpx;" class="radio"><radio value="0" />未选中</label>
+				 </radio-group>
 			</view>
 		</view>
 		
 		
 		<view class="text_line" v-if="zhibotype == 'weixin'">
-			<view style="display: flex;justify-content: space-between;">
+			<view class="text_radio_box">
 				<span>是否关闭评论:</span>
 				<switch class="text_check" @change="checkbox" data-name="closeComment"/>
 			</view>
@@ -199,21 +203,22 @@
 			</label>
 		</view>
 		
-		<view class="goods_list" v-if="zhibotype == 'weixin'">
+		<view class="goods_list" v-if="zhibotype == 'weixin'" v-show="this.closeGoods != 1">
 			<view style="text-align: center;font-size: 15px;color: #666666;padding: 0px 5px;">请选择商品</view>
 		
 
 		<view class="goods" v-for="(item,index) in recommend_product_list" :key="index" @click="live_goods($event)"
 		 :data-productid="item.goodsId">
 			<label>
-				<image :src="item.coverImgUrl" style="width: 200rpx;" mode="widthFix"></image>
+				<image :src="item.coverImgLocalUrl" style="width: 200rpx;" mode="widthFix"></image>
 				<checkbox value="" style="text-align: center;margin-left: 40px;margin-top: 10px;" />
 			</label>
 		</view>
 		</view>
 		
 		<openAlert ref="openAlert" :AlertClass="AlertClass" :AlertPosition="AlertPosition">
-		    <img style="width: 200px;" :src="wechat_qrcode_url" alt="">
+		    <img style="width: 200px;border: red 1px solid;" :src="wechat_qrcode_url" :style="{'background-color': btn_color}"
+			 alt="" mode="widthFix">
 		</openAlert>
 
 
@@ -384,6 +389,7 @@
 					
 					if(closeGoods){
 						this.closeGoods =1;
+						this.productid_str = [];
 					console.log('closeGoodsssssssss',this.closeGoods);	
 					}
 					else{
@@ -602,7 +608,7 @@
 						userid: userInfo.userid,
 						sellerid: this.abotapi.globalData.default_sellerid,
 						checkstr: userInfo.checkstr,
-						type: 0,
+						type: this.screenType,
 						// value2_json_str: JSON.stringify(value2_json_str),
 						name: this.name,
 						startTime: this.startTime,
@@ -613,12 +619,13 @@
 						// liveNo: this.liveNO,
 						closeLike:this.closeLike,
 						closeGoods:this.closeGoods,
-						screenType:this.screenType,
+						//screenType:this.screenType,
 						closeComment:this.closeComment,
 						zhibotype:this.zhibotype,
 						shareImg:this.shareImg,
 						coverImg:this.coverImg,
 						wxa_appid: this.abotapi.globalData.xiaochengxu_appid,
+						'productid_str': this.productid_str.join(","),
 					}
 					console.log('5555aaaa==',this.shareImg);
 					console.log('5555aaaa==',this.coverImg);
@@ -641,19 +648,29 @@
 				console.log('99999999999====',this.zhibotype );
 				var that = this
 				var userInfo = this.abotapi.get_user_info();
+				
+				
+				uni.showLoading({
+				    title: '加载中'
+				});
+				
+				
+				
 				this.abotapi.abotRequest({
 					url: that.abotapi.globalData.yanyubao_server_url + 'openapi/VideoLiveData/set_plan_video_live',
 					data:livetips,
 					success(res) {
 						
+						uni.hideLoading();
+						 
+							
 						var videocode = res.data.code;
-						
 						
 						console.log('8899===',this.videocode);
 						
 						if(videocode == 0){
 						  uni.showModal({
-							title:'提示！',
+							title:'提示',
 							content:res.data.msg,
 							showCancel:false,
 							success: function(res002) {
@@ -715,6 +732,8 @@
 						
 					},
 					fail(error) {
+						uni.hideLoading();
+						
 						console.log("ccccccc====", error)
 					}
 				})
@@ -761,7 +780,9 @@
 			live_goods: function(e) {
 				console.log('aaaaaaaa11111888', e);
 				var productid = e.currentTarget.dataset.productid;
-
+				if(productid){
+					this.closeGoods = 0;
+				}
 				console.log('aaaaaaaa11111', productid);
 
 
@@ -825,10 +846,19 @@
 				this.defaultValue_end = date_time + ' ' + hour_time;
 				
 				
+				this.startTime = this.defaultValue;
+				this.endTime = this.defaultValue_end;
+				
 				this.anchorName = userInfo.nickname;
 				this.name = userInfo.nickname + '的直播间';
 				console.log('wadadwads', userInfo.nickname);			
 								
+				
+			},
+			radioChange:function(e){
+				
+				this.screenType = e.detail.value;
+				console.log(e.detail.value);
 				
 			}
 			
@@ -966,5 +996,10 @@
 	}
 	.text_line{
 		padding: 0px 21px;
+	}
+	.text_radio_box{
+		display: flex;
+		justify-content: space-between;
+		margin-top: 10rpx;
 	}
 </style>

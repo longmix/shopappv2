@@ -6,9 +6,9 @@
 			</view>
 			<view class="log_text_box"><!-- 右侧数据 -->
 				<view>
-					<view>{{item.startTime}}</view>
-					<view>{{item.anchorName}}</view>
-					<view>{{item.anchorWechat}}</view>
+					<view style="font-size: 24rpx;">开播时间：{{item.startTime}}</view>
+					<view style="font-size: 24rpx;">主播名称：{{item.anchorName}}</view>
+					<view style="font-size: 24rpx;">主播微信：{{item.anchorWechat}}</view>
 				</view>
 				<!-- <view>
 					<view>查看</view>
@@ -19,10 +19,10 @@
 		<!-- 结束 -->
 		
 		<!-- 说明 -->
-		<view style="text-align: center;color: #333;background: #ffffff;">
+		<view style="text-align: center;color: #666;background: #ffffff;line-height: 50rpx;">
 			<image style="width: 50%;" :src="video_live_log.qrcode"></image>
-			<view>{{video_live_log.qrcode_msg}}</view>
-			<view>{{video_live_log.zhubo_msg}}</view>
+			<view style="font-size: 24rpx;">{{video_live_log.qrcode_msg}}</view>
+			<view style="font-size: 24rpx;">{{video_live_log.zhubo_msg}}</view>
 		</view>
 		
 	</view>
@@ -88,7 +88,7 @@
 		display: flex;
 		align-items: center;
 		background: #ffffff;
-		margin: 10rpx 0rpx;
+		margin: 2rpx 0rpx;
 		padding: 10rpx 20rpx;
 		color: #333;
 	}
@@ -98,5 +98,6 @@
 		justify-content: space-between;
 		align-items: center;
 		margin-left: 20rpx;
+		line-height: 40rpx;
 	}
 </style>
