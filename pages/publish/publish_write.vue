@@ -54,11 +54,11 @@
 								<view style="display: flex;flex-wrap:wrap;">
 									<!-- 放上传的图片 -->
 									<view style="width: 32%;height: 250upx;position: relative;" v-for="(items,index) in imgArray" :key="items">
-										<view style="width: 100%;position: absolute;z-index: 9999;">
+										<view style="width: 100%;position: absolute;z-index: 1;">
 											<image @tap="delectImg(index)"  style="width: 50upx;height: 50upx;position: absolute;right:0" src="../../static/img/delete_red.png"></image>
 										</view>
 										
-										<image style="width: 100%;height: 100%;" mode="aspectFit" :src="items"></image>
+										<image style="width: 100%;height: 100%;" mode="aspectFit" :src="items" ></image>
 									</view>
 									
 									
@@ -106,6 +106,60 @@
 							</checkbox-group>
 						</view>
 						
+						<!-- 文件或图片类型 -->
+						<view class="box_1" v-if="item.inputtype == 'file'" >							
+							<span>{{item.displayname}}</span>
+							<span>{{item.fieldname}}</span>
+							<span>{{image_list[item.image_list_seq]}}</span>
+							<image 
+								:src="image_list[item.fieldname]"
+								mode="widthFix" 
+								style="width: 200px;margin: 0px auto;display: block;"></image>
+							<view style="display: flex;float: right;margin-right: 15rpx;">
+								<view style="color: red;margin-top: 4rpx;">*</view>
+								<view style="color:#cbcbcb ;font-size: 20rpx"></view>
+							</view>
+							
+							<view @click="upLoadimgs" :data-name="item.fieldname"
+								:data-seq="item.image_list_seq" >上传图片</view>
+							
+							
+						</view>	
+						
+						<!-- 日期时间类型 -->
+						<view class="box_1" v-if="item.inputtype == 'date'" >
+							<view class="box_2">
+								<text>{{item.displayname}}</text>
+								<label class="FH" v-if="item.require == 1">*</label>
+							</view>
+							<biaofun-datetime-picker
+								placeholder="请选择活动时间"
+								:defaultValue="defaultValue_end"
+								fields="minute"
+								:name="item.fieldname" 
+								:data-name="item.fieldname"
+								@change="changeDatetimePicker"
+								change_name="endTime"
+							></biaofun-datetime-picker>
+						</view>						
+						
+						<!-- <view class="input-flex" style="overflow: auto;border-bottom: #DDDDDD 1upx solid;padding:17px 20px 10px" v-if="item.inputtype== 'date' || item.inputtype== 'text' && item.fieldname != 'imgimg_title'">
+							<view class="input-flex-label w60" style="float: left;">{{item.displayname}}<label class="FH" v-if="item.require == 1">*</label></view>
+								<input :type='item.inputtype'  
+									:name="item.fieldname" 
+									style="float: left;width: 70%;" 
+									placeholder="点此输入" 
+									value="" 
+									v-if="item.inputtype== 'text'"/>
+								  <picker mode="date" :value="date" :start="startDate" style="margin-left: 55%;margin-top: 6upx;" :type='item.inputtype' :end="endDate" @change="bindDateChange"  :data-fieldname='item.fieldname' v-if="item.inputtype== 'date'">
+									<view class="uni-input">{{date}}</view>
+								</picker> 
+							
+							
+							
+						</view>
+						--> 
+						
 						
 						<view class="uni-textarea" style="padding: 0upx 40upx;" v-if="item.fieldname != 'imgimg_content' && item.inputtype == 'textarea'">
 							<view style="font-size: 32upx;border-bottom: 1upx solid #EEEEEE;background-color: #FFFFFF;padding: 20upx 0upx;">{{item.displayname}}</view>
@@ -113,20 +167,6 @@
 						</view>
 						
 						
-						
-						<view class="input-flex" style="overflow: auto;border-bottom: #DDDDDD 1upx solid;padding:17px 20px 10px" v-if="item.inputtype== 'date' || item.inputtype== 'text' && item.fieldname != 'imgimg_title'">
-							<view class="input-flex-label w60" style="float: left;">{{item.displayname}}<label class="FH" v-if="item.require == 1">*</label></view>
-							<input :type='item.inputtype'  
-								:name="item.fieldname" 
-								style="float: left;width: 70%;" 
-								placeholder="点此输入" 
-								value="" 
-								v-if="item.inputtype== 'text'"/>
-							 <picker mode="date" :value="date" :start="startDate" style="margin-left: 55%;margin-top: 6upx;" :type='item.inputtype' :end="endDate" @change="bindDateChange"  :data-fieldname='item.fieldname' v-if="item.inputtype== 'date'">
-								<view class="uni-input">{{date}}</view>
-							</picker>
-							
-						</view>
 						
 						
 					
@@ -167,6 +207,8 @@
 </template>
 
 <script>
+	import util from '@/common/util.js';
+	import biaofunDatetimePicker from '@/components/biaofun-datetime-picker/biaofun-datetime-picker.vue';
 	
 	export default {
 		
@@ -225,6 +267,13 @@
 				cms_token:'',
 				
 				current_options: null,
+				
+				//图片和文件上传相关
+				idcard_main:'../../static/img/add.png',				
+				image_list:[],
+				//image_list_seq:0,
+				
+				defaultValue_end:'',
 			}
 			
 		},
@@ -240,6 +289,8 @@
 			
 		onLoad: function (options) {
 			console.log('sssssss ===>>>',  options)
+			
+			//this.image_list['shenfenzhengzhengmian'] = 'http://saas.tseo.cn/staticsvc/uploads/2021/03/12/622af3fba321397b0b0a9761ba738c3a2211.jpg';
 			
 			this.current_options = options;
 			
@@ -360,6 +411,8 @@
 				let year = date.getFullYear();
 				let month = date.getMonth() + 1;
 				let day = date.getDate();
+				let hours = date.getHours();
+				let minutes = date.getMinutes();
  
 				if (type === 'start') {
 					year = year - 60;
@@ -368,7 +421,12 @@
 				}
 				month = month > 9 ? month : '0' + month;;
 				day = day > 9 ? day : '0' + day;
-				return `${year}-${month}-${day}`;
+				
+				
+				return `${year}-${month}-${day} ${hours}:${minutes}`; 
+				
+				
+				
 			},			
 			
 			//提交表单数据
@@ -433,7 +491,7 @@
 						
 						post_data[key] = e.detail.value[key];
 					}
-					console.log(post_data);
+					console.log('858899',post_data);
 				}else if(that.form_type == 2){//微读客的万能表单
 					submit_url = that.abotapi.globalData.weiduke_server_url+'index.php/openapi/SelfformData/submit_data_url_selfform';
 					
@@ -452,7 +510,7 @@
 						
 						post_data[key] = e.detail.value[key];
 					}
-					
+					console.log('858899',post_data);
 				}else if(that.form_type == 3){//微读客的帖子
 					submit_url = that.abotapi.globalData.weiduke_server_url+'index.php/openapi/ArticleImgApi/add_article_item';
 					
@@ -668,6 +726,8 @@
 							
 							var list = res.data.data;
 							
+							var image_list_seq = 0;
+							
 							for(var i=0; i<list.length; i++){
 								
 								if(list[i].options){
@@ -686,6 +746,11 @@
 									}
 								}
 								
+								if(list[i].inputtype == 'file'){
+									list[i].image_list_seq = image_list_seq;
+									
+									image_list_seq ++;
+								}
 																					
 							}
 								
@@ -846,6 +911,113 @@
 			bindDateChange: function(e) {
 								
 				this.date = e.target.value;
+				console.log('wadawda', e);
+			},
+			upLoadimgs: function(a) {
+				console.log('wadad', a);
+				
+				var current_fieldname = a.currentTarget.dataset.name;
+				var current_seq = a.currentTarget.dataset.seq;
+				
+				console.log('current_fieldname====>>>>'+ current_fieldname);
+				console.log('current_fieldname====>>>>'+ typeof(current_fieldname));
+				
+				//return;
+				
+				var that = this;
+				
+				var userInfo = this.abotapi.get_user_info();
+				
+				var formData = {};
+				formData.sellerid = that.abotapi.globalData.default_sellerid;
+				
+				if(userInfo && userInfo.userid){
+					formData.checkstr = userInfo.checkstr;
+					formData.userid = userInfo.userid;
+				}
+				
+				uni.chooseImage({
+					// count:  允许上传的照片数量
+					count: 1,
+					// sizeType:  original 原图，compressed 压缩图，默认二者都有
+					//sizeType: "original",
+					sizeType: "compressed",
+					success(res) {
+						console.log(res, 'aaaaa8888')
+			
+						var filepath = res.tempFilePaths[0];
+						
+						console.log('8888888888', res.tempFilePaths[0])
+						console.log('8888888888===>', that.abotapi.globalData.yanyubao_server_url);
+						
+						uni.uploadFile({
+							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=upload_image_file_by_user',
+							filePath: filepath,
+							name: 'file',
+							formData: formData,
+							success: function(res) {
+			
+								console.log('res===>>', res.data);
+								
+								var obj = JSON.parse(res.data);
+								
+								
+								that.image_list[current_fieldname] = obj.img_url;
+								
+								console.log('image_list ===>>', that.image_list);
+								console.log('image_list ===>>', that.image_list[current_fieldname]);
+								
+			
+							}
+						});
+			
+					}
+			
+			
+				});
+			
+			
+			},
+			
+			auto_information_anchor:function(){
+				
+				var userInfo = this.abotapi.get_user_account_info();
+				
+				/* var now_time = new Date();
+				
+				this.now_time =  now_time.getFullYear() + "-" + (now_time.getMonth() + 1) + "-" + now_time.getDate() 
+				+" " + now_time.getHours() + ":" + now_time.getMinutes();
+				
+				var end_time = now_time.getFullYear() + "-" + (now_time.getMonth() + 1) + "-" + (now_time.getDate() + 1) 
+				+" " + now_time.getHours() + ":" + now_time.getMinutes();
+				
+				console.log('wwadwad', this.now_time, end_time); */
+				
+				//直播开始时间
+				var timestamp = (new Date()).valueOf();
+				timestamp += 15*60*1000;
+				
+				var date_time = util.formatTime(new Date(timestamp));
+				var hour_time = util.formatTime2(new Date(timestamp));
+				
+				this.defaultValue_end = date_time + ' ' + hour_time;			
+								
+			},
+			changeDatetimePicker: function(date,change_name) {
+				
+				if(change_name == 'endTime'){
+					//选择的是结束时间
+					this.endTime = date.f3;
+				}
+				
+				if(change_name == 'startTime'){
+					//选择的是开始时间
+					this.startTime = date.f3;
+				}
+				
+				console.log('选择的日期时间的change_name：', change_name);
+				
+				console.log('选择的日期时间数据：', date);
 			},
 
 			
