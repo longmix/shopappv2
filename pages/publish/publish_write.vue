@@ -173,8 +173,8 @@
 		data:function(){
 			
 			const currentDate = this.getDate({
-			            format: true
-			        })
+				format: true
+			})
 					
 			return {
 				pageData:{},
@@ -223,6 +223,8 @@
 				ad_img_list:'',
 				
 				cms_token:'',
+				
+				current_options: null,
 			}
 			
 		},
@@ -237,7 +239,10 @@
 		    },
 			
 		onLoad: function (options) {
-			console.log('sssssss',options)
+			console.log('sssssss ===>>>',  options)
+			
+			this.current_options = options;
+			
 			
 			var that = this;
 			
@@ -269,9 +274,11 @@
 			if(options.submit_url){
 				this.submit_url = options.submit_url;
 			}
+			
 			if(options.form_type && options.form_type == 2){
 				this.formid = options.formid; //栏目页面跳转带过来的参数  栏目id
-			}else{
+			}
+			else{
 				this.formid = options.cataid; //栏目页面跳转带过来的参数  栏目id
 			}
 			
@@ -460,12 +467,30 @@
 					
 				}
 				
-				
+				//如果设置了提交地址，则以这个数据保存地址为准
 				if(that.submit_url){
 					submit_url = that.submit_url;
+					
 					//因为数据要外送第三方，所以将checkstr设置成假的
 					post_data.checkstr = 'mock_checkstr';
 				}
+				
+				
+				//检查是否有隐藏域 （其他参数）
+				//var hidden_list = [];
+				for(var key in that.current_options){
+					if((key == 'form_type')||(key == 'submit_url')||(key == 'formid')
+						|| (key == 'cataid') || (key == 'sellerid') || (key == 'token')){
+						continue;
+					}
+		  
+					//hidden_list[key] = options[key];
+					post_data[key] = that.current_options[key];
+				}
+				
+				
+				console.log('11111111111111111111====>>完整的提交数据01：', post_data);
+				
 				
 				that.abotapi.abotRequest({
 					url:submit_url,

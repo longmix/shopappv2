@@ -52,14 +52,14 @@
 			    console.log('options======', options)
 				
 				var that = this;
+				
 			    if(options && options.productid){
 					
 					that.productid = options.productid;
 			   }
 			
 				//uni.set_option_list_str(null, app.getColor());
-			
-				var that = this;
+				
 				this.abotapi.abotRequest({
 					url: that.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/ProductAlbumData/get_product_album_list',
 					method: 'post',

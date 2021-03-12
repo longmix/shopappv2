@@ -526,7 +526,7 @@
 	}
 	.fabu_button{
 		position: fixed;
-		bottom: 240rpx;
+		bottom: 300rpx;
 		right: 16rpx;
 		border-radius: 54%;
 		padding: 10rpx;
@@ -540,7 +540,7 @@
 	}
 	.wode_button{
 		position: fixed;
-		bottom: 140rpx;
+		bottom: 200rpx;
 		right: 16rpx;
 		border-radius: 54%;
 		padding: 10rpx;
@@ -554,7 +554,7 @@
 	}
 	.shoucang_button{
 		position: fixed;
-		bottom: 40rpx;
+		bottom: 100rpx;
 		right: 16rpx;
 		border-radius: 54%;
 		padding: 10rpx;
