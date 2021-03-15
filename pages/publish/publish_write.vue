@@ -36,7 +36,7 @@
 			<view class="main-body">
 				
 				<form @submit="formSubmit">
-					<block v-for="item in list" :key="item.fieldname">
+					<block v-for="item in input_field_list" :key="item.fieldname">
 						<!-- 帖子的固定字段开始 -->
 						<block v-if="form_type == 3">
 							<view class="input_flex" v-if="item.fieldname == 'imgimg_title'" style="overflow: auto;padding:35upx 40upx 20upx 40upx;background-color: #FFFFFF;border-bottom: 1upx solid #EEEEEE;">
@@ -108,20 +108,28 @@
 						
 						<!-- 文件或图片类型 -->
 						<view class="box_1" v-if="item.inputtype == 'file'" >							
-							<span>{{item.displayname}}</span>
-							<span>{{item.fieldname}}</span>
-							<span>{{image_list[item.image_list_seq]}}</span>
-							<image 
-								:src="image_list[item.fieldname]"
+							<image  
+								:src="image_list[item.fieldname]?image_list[item.fieldname]:img_upload_default_icon"
 								mode="widthFix" 
+								:name="item.fieldname" 
+								:data-name="item.fieldname"
+								@click="upLoadimgs"
 								style="width: 200px;margin: 0px auto;display: block;"></image>
-							<view style="display: flex;float: right;margin-right: 15rpx;">
+								
+								
+								<input type="hidden" :name="item.fieldname" 
+								:value="image_list[item.fieldname]"
+								style='display:none'>
+								
+								
+							<view class="error_tips" v-if="item.errortip">
 								<view style="color: red;margin-top: 4rpx;">*</view>
-								<view style="color:#cbcbcb ;font-size: 20rpx"></view>
+								<view style="color:#cbcbcb ;font-size: 20rpx">{{item.errortip}}</view>
 							</view>
 							
 							<view @click="upLoadimgs" :data-name="item.fieldname"
-								:data-seq="item.image_list_seq" >上传图片</view>
+								:data-seq="item.image_list_seq" class="up_images"
+								:style="{backgroundColor:wxa_shop_nav_bg_color}">上传图片</view>
 							
 							
 						</view>	
@@ -134,13 +142,16 @@
 							</view>
 							<biaofun-datetime-picker
 								placeholder="请选择活动时间"
-								:defaultValue="defaultValue_end"
+								:defaultValue="time_start_end[item.fieldname]"
 								fields="minute"
 								:name="item.fieldname" 
 								:data-name="item.fieldname"
 								@change="changeDatetimePicker"
-								change_name="endTime"
+								:change_name="item.fieldname"
 							></biaofun-datetime-picker>
+							<input type="hidden" style="display: none;" 
+							:name="item.fieldname" 
+							:value="time_start_end[item.fieldname]">
 						</view>						
 						
 						<!-- <view class="input-flex" style="overflow: auto;border-bottom: #DDDDDD 1upx solid;padding:17px 20px 10px" v-if="item.inputtype== 'date' || item.inputtype== 'text' && item.fieldname != 'imgimg_title'">
@@ -235,7 +246,7 @@
 				
 				inputtype:'',
 				
-				list:[],
+				input_field_list:[],
 				
 				red:'red',
 				index:0,
@@ -269,11 +280,11 @@
 				current_options: null,
 				
 				//图片和文件上传相关
-				idcard_main:'../../static/img/add.png',				
+				img_upload_default_icon:'../../static/img/add.png',				
 				image_list:[],
 				//image_list_seq:0,
 				
-				defaultValue_end:'',
+				time_start_end:[],
 			}
 			
 		},
@@ -442,25 +453,33 @@
 				
 				var that=this;
 				
-				var input_value = e.detail.value;
-				//input_value.input_youxiaoshijian = this.date;
+				var input_value_list = e.detail.value;
+				console.log('input-value', input_value_list);
+				//input_value_list.input_youxiaoshijian = this.date;
+				
 				var picture_list = encodeURIComponent(JSON.stringify(this.imgArray));
+				
 				//将checkbox的值追加到要提交的数组上
+				
 				for(var key in that.checkbox_field_value_list){
-					input_value[key] = that.checkbox_field_value_list[key];
+					
+					input_value_list[key] = that.checkbox_field_value_list[key];
+					
 				}
 				
-				for(var key in e.detail.value){
+				//检查必填字段
+				for(var form_key in e.detail.value){
 					
-					for(var keys in that.list){
-						console.log('456',key);
-						console.log('123',that.list);
-						if(key == that.list[keys]['fieldname']){
-							if(that.list[keys]['require'] == 1){
+					for(var keys in that.input_field_list){
+						console.log('456 form_key ===>>>',form_key);
+						console.log('123',that.input_field_list);
+						if(form_key == that.input_field_list[keys]['fieldname']){
+							if(that.input_field_list[keys]['require'] == 1){
 								//判断是否为必填（是）
-								if(!e.detail.value[key]){
+								console.log('888889===>>', e.detail.value[form_key]);
+								if(!e.detail.value[form_key]){
 									uni.showToast({
-										title:'请填写'+that.list[keys]['displayname']
+										title:'请填写'+that.input_field_list[keys]['displayname']
 									})
 									return;
 								}
@@ -472,7 +491,7 @@
 				}
 				
 				
-				input_value = encodeURIComponent(JSON.stringify(input_value));			
+				var input_value_list_json = encodeURIComponent(JSON.stringify(input_value_list));			
 				var userInfo = that.abotapi.get_user_info();
 				
 				var submit_url =  '';
@@ -519,7 +538,7 @@
 						userid: userInfo.userid,
 						checkstr: userInfo.checkstr,
 						token: that.cms_token,
-						input_value:input_value,
+						input_value:input_value_list_json,
 						picture_list:picture_list,
 					}
 					
@@ -754,7 +773,7 @@
 																					
 							}
 								
-							that.list = list;
+							that.input_field_list = list;
 							
 								
 							}
@@ -894,7 +913,7 @@
 			bindPickerChange:function(e){
 				var that = this;
 				var fieldname = e.currentTarget.dataset.fieldname;
-				var list = that.list;
+				var list = that.input_field_list;
 				var index = e.detail.value;
 				
 				for(var i=0; i<list.length; i++){
@@ -922,6 +941,7 @@
 				console.log('current_fieldname====>>>>'+ current_fieldname);
 				console.log('current_fieldname====>>>>'+ typeof(current_fieldname));
 				
+		
 				//return;
 				
 				var that = this;
@@ -935,6 +955,18 @@
 					formData.checkstr = userInfo.checkstr;
 					formData.userid = userInfo.userid;
 				}
+				
+				//  
+				
+				/* that.image_list[current_fieldname] = 'http://saas.tseo.cn/staticsvc/uploads/2021/03/15/aab466fa19913d99c39f5fe8ee67aed44201.jpg';
+				
+				console.log('image_list ===>>', that.image_list);
+				console.log('image_list ===>>', that.image_list[current_fieldname]);
+				
+				that.$forceUpdate();
+				
+				return;
+				 */
 				
 				uni.chooseImage({
 					// count:  允许上传的照片数量
@@ -963,7 +995,7 @@
 								
 								
 								that.image_list[current_fieldname] = obj.img_url;
-								
+								that.$forceUpdate();
 								console.log('image_list ===>>', that.image_list);
 								console.log('image_list ===>>', that.image_list[current_fieldname]);
 								
@@ -1005,19 +1037,13 @@
 			},
 			changeDatetimePicker: function(date,change_name) {
 				
-				if(change_name == 'endTime'){
-					//选择的是结束时间
-					this.endTime = date.f3;
-				}
 				
-				if(change_name == 'startTime'){
-					//选择的是开始时间
-					this.startTime = date.f3;
-				}
+					//选择的时间
+					this.time_start_end[change_name] = date.f3;
 				
-				console.log('选择的日期时间的change_name：', change_name);
-				
-				console.log('选择的日期时间数据：', date);
+					console.log('选择的日期时间的change_name：', change_name);
+					
+					console.log('选择的日期时间数据：', date);
 			},
 
 			
@@ -1199,8 +1225,19 @@
 	
 	}
 
-
-
+	.up_images{
+	float: right;
+	background-color: #67C23A;
+	padding: 10rpx;
+	border-radius: 5px;
+	color: #fff;
+	}
+	.error_tips{
+		display: flex;
+		float: left;
+		margin-right: 15rpx;
+		line-height: 60rpx;
+	}
 
 
 
