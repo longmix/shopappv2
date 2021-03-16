@@ -1289,17 +1289,17 @@ export default {
 			var is_check_new_version = false;
 			var new_version_check_time = uni.getStorageSync("new_version_check_time");
 			var currentTime = (new Date()).getTime();//获取当前时间
-			if(currentTime - new_version_check_time > 24*60*60*1000){
+			if(currentTime - new_version_check_time > 4*60*60*1000){
 				is_check_new_version = true;
 			}
 			else{
-				console.log('最近24小时已经检查过版本更新了');
+				console.log('最近4小时已经检查过版本更新了');
 				
 				//is_check_new_version = true;
 			}
 			
 	
-			console.log('最近24小时是否检查：', is_check_new_version);
+			console.log('最近4小时是否检查：', is_check_new_version);
 			console.log('服务器返回是否有新版本：', cb_params.option_list.is_there_new_version);
 			
 			if(is_check_new_version && cb_params.option_list.is_there_new_version && (cb_params.option_list.is_there_new_version == 1)){
