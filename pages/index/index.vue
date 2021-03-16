@@ -1284,7 +1284,7 @@ export default {
 			
 			
 			//2020.12.22. 检查版本更新
-			// #ifdef APP-PLUS		
+			// #ifdef APP-PLUS	
 				
 			var is_check_new_version = false;
 			var new_version_check_time = uni.getStorageSync("new_version_check_time");
@@ -1298,15 +1298,16 @@ export default {
 				//is_check_new_version = true;
 			}
 			
-			console.log('最近24小时', is_check_new_version);
-			console.log('最近24小时', cb_params.option_list.is_there_new_version);
+	
+			console.log('最近24小时是否检查：', is_check_new_version);
+			console.log('服务器返回是否有新版本：', cb_params.option_list.is_there_new_version);
 			
 			if(is_check_new_version && cb_params.option_list.is_there_new_version && (cb_params.option_list.is_there_new_version == 1)){
 				uni.setStorageSync("new_version_check_time", currentTime);
 				
 				uni.showModal({
 					title: "发现新版本",
-					content: "确认下载更新",
+					content: "立即下载最新版本吗？",
 					success: (res) => {
 						if (res.confirm == true) {//当用户确定更新，执行更新
 							if(that.abotapi.globalData.current_platform == 'app-android'){
