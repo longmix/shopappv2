@@ -123,7 +123,6 @@
 								
 								
 							<view class="error_tips" v-if="item.errortip">
-								<view style="color: red;margin-top: 4rpx;">*</view>
 								<view style="color:#cbcbcb ;font-size: 20rpx">{{item.errortip}}</view>
 							</view>
 							
@@ -515,6 +514,7 @@
 					submit_url = that.abotapi.globalData.weiduke_server_url+'index.php/openapi/SelfformData/submit_data_url_selfform';
 					
 					post_data = {
+						sellerid:that.abotapi.get_sellerid(),
 						token:that.cms_token,
 						formid:that.formid,
 						openid:this.abotapi.get_current_openid(),
@@ -530,10 +530,11 @@
 						post_data[key] = e.detail.value[key];
 					}
 					console.log('858899',post_data);
-				}else if(that.form_type == 3){//微读客的帖子
+				}else if(that.form_type == 3){	//微读客的帖子
 					submit_url = that.abotapi.globalData.weiduke_server_url+'index.php/openapi/ArticleImgApi/add_article_item';
 					
 					post_data = {
+						sellerid:that.abotapi.get_sellerid(),
 						classid:that.formid,
 						userid: userInfo.userid,
 						checkstr: userInfo.checkstr,

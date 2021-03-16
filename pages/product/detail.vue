@@ -452,6 +452,8 @@
 
 
 		</view>
+		
+		
 
 		<view class="re-commend" v-if="hot_product_list.length != 0">
 			<view class="re-h">热销商品</view>
@@ -461,7 +463,13 @@
 				<view class="re-price">¥{{item.price}}</view>
 			</view>
 		</view>
-
+		
+		<block v-if="form_product_info.form_show == 1">
+			<view class="form_box_liuyan">
+				<img class="form_icon_box" src="https://yanyubao.tseo.cn/Tpl/static/images/bee_data.png" alt="">
+				<view class="form_submit_box" @tap="go_form_submit">{{form_product_info.form_text}}</view>
+			</view>
+		</block>
 
 		<view class="description">
 			<view class="title">———— ※ 详情介绍 ※ ————</view>
@@ -668,6 +676,10 @@
 				//2020.12.14
 				AlertClassKaijiang: 0,
 				AlertPositionKaijiang: '',
+				
+				
+				form_product_info:{form_show:0},
+				
 			};
 		},
 		/**
@@ -1255,6 +1267,16 @@
 				if (!cb_params) {
 					return;
 				}
+				
+				
+				that.form_product_info.form_text = cb_params.product_ask_form_link_text;
+				that.form_product_info.form_token = cb_params.product_ask_form_cms_token;
+				that.form_product_info.form_id = cb_params.product_ask_form_id;
+				that.form_product_info.form_subimt_url = cb_params.product_ask_submit_url;
+				that.form_product_info.form_show = cb_params.product_ask_form_link_show;
+				
+				
+				console.log('adwadad', that.form_product_info);
 				
 				
 				that.wxa_shop_nav_bg_color = cb_params.wxa_shop_nav_bg_color;
@@ -2256,6 +2278,21 @@
 					}
 				});
 			},
+			
+			
+			//2021-3-16商品详情页下方的咨询留言
+			
+			go_form_submit:function(){
+				
+				var that = this;
+				
+				var form_url = '?form_type=2&token='+that.form_product_info.form_token + '&formid=' + that.form_product_info.form_id+
+				'&productid='+ that.productid + '&submit_url='+ that.form_product_info.form_subimt_url;
+				console.log('sdadwadwa', form_url);
+				
+				that.abotapi.call_h5browser_or_other_goto_url('/pages/publish/publish_write' + form_url);
+			}
+			
 			
 			
 		},
@@ -3438,6 +3475,26 @@
 	.tuan_time_over{
 		font-size:25rpx;
 		color: #666666;
+	}
+	.form_box_liuyan{
+		display: flex;
+		line-height: 50rpx;
+		padding-left: 10rpx;
+		margin: 20rpx;
+		padding: 10rpx;
+		border-radius: 5rpx;
+		border-style: solid;
+		border-width: 1rpx;
+		border-color: #666;
+	}
+	.form_submit_box{
+		margin-left: 10rpx;
+		font-size: 12px;
+		color: #666;
+		
+	}
+	.form_icon_box{
+		width: 50rpx;
 	}
 </style>
 
