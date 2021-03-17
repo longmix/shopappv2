@@ -1300,9 +1300,12 @@ export default {
 			
 	
 			console.log('最近4小时是否检查：', is_check_new_version);
-			console.log('服务器返回是否有新版本：', cb_params.option_list.is_there_new_version);
+			console.log('服务器返回版本号：', cb_params.option_list.version_code_from_server);
 			
-			if(is_check_new_version && cb_params.option_list.is_there_new_version && (cb_params.option_list.is_there_new_version == 1)){
+			//如果服务器端返回的版本号大于当前的版本，则提示更新
+			if(is_check_new_version && cb_params.option_list.version_code_from_server 
+				&& (cb_params.option_list.version_code_from_server > that.abotapi.globalData.version_code)){
+					
 				uni.setStorageSync("new_version_check_time", currentTime);
 				
 				uni.showModal({
