@@ -1,6 +1,6 @@
 {
   "extEnable": true,
-  "extAppid": "wxfa86f96b2b9a54b4",
+  "extAppid": "wx6576af86ad5d4804",
   "directCommit": true,
   "ext": {
     "name": "wechat",
@@ -11,7 +11,7 @@
         "user_2"
       ]
     },
-    "xiaochengxu_appid": "wxfa86f96b2b9a54b4",
+    "xiaochengxu_appid": "wx6576af86ad5d4804",
     "force_sellerid_flag": 1,
     "force_sellerid_value": "fSmyUPkjj",
     "shop_name": "安全熊",
