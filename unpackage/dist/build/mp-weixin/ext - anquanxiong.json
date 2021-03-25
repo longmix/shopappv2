@@ -14,8 +14,8 @@
     "xiaochengxu_appid": "wx6576af86ad5d4804",
     "force_sellerid_flag": 1,
     "force_sellerid_value": "fSmyUPkjj",
-    "shop_name": "安全熊",
-    "version_number": "Ver 1.7.2 Build 219",
+    "shop_name": "安全熊广告码",
+    "version_number": "Ver 1.7.5 Build 231",
     "navigationBarBackgroundColor_fixed": 1,
 	"navigationBar_font_color":"#ffffff",
     "navigationBar_bg_color":"#ff8040",
@@ -23,8 +23,7 @@
     "kefu_telephone": "",
     "kefu_qq": "",
     "kefu_website": "",
-    "kefu_gongzhong
-	hao": "",
+    "kefu_gongzhonghao": "",
     "default_copyright_text": "安全熊信息科技有限公司 @ 版权所有"
   },
   "extPages": {

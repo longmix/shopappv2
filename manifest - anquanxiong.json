@@ -2,8 +2,8 @@
     "name" : "安全熊广告码",
     "appid" : "__UNI__5B54B05",
     "description" : "安全熊广告码APP",
-    "versionName" : "1.7.4",
-    "versionCode" : 219,
+    "versionName" : "1.7.5",
+    "versionCode" : 231,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true, //是否启用`自定义组件模式`，为true表示新的`自定义组件模式` ，否则为`template模板模式`   
@@ -18,15 +18,11 @@
             "delay" : 0
         },
         "modules" : {
-            "Share" : {},
-            "OAuth" : {},
-            "LivePusher" : {},
             "Bluetooth" : {},
             "VideoPlayer" : {},
             "Maps" : {},
             "Speech" : {},
-            "Payment" : {},
-            "Push" : {}
+            "Share" : {}
         },
         /* 模块配置 */
         "distribute" : {
@@ -35,17 +31,13 @@
             "android" : {
                 /* android打包配置 */
                 "permissions" : [
-                    "<uses-feature android:name=\"android.hardware.camera\"/>",
-                    "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
                     "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>",
                     "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
                     "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.CALL_PHONE\"/>",
-                    "<uses-permission android:name=\"android.permission.CAMERA\"/>",
                     "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
                     "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>",
                     "<uses-permission android:name=\"android.permission.INTERNET\"/>",
                     "<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>",
@@ -70,7 +62,8 @@
                     "NSLocationWhenInUseUsageDescription" : "访问位置以计算最近的服务网点",
                     "NSLocationAlwaysUsageDescription" : "访问位置以计算最近的服务网点",
                     "NSLocationAlwaysAndWhenInUseUsageDescription" : "访问位置以计算最近的服务网点",
-                    "NSMicrophoneUsageDescription" : "使用麦克风在录制视频的时候获取声音"
+                    "NSMicrophoneUsageDescription" : "使用麦克风在录制视频的时候获取声音",
+                    "NSLocalNetworkUsageDescription" : "用于网络连接"
                 }
             },
             /* ios打包配置 */

@@ -252,7 +252,7 @@
 	/*  #ifndef APP-PLUS-NVUE  */
 
 	* {
-		font-size: 30upx;
+		font-size: 30rpx;
 	}
 
 	page {

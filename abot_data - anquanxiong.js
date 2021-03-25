@@ -4,13 +4,13 @@ const globalData = {
 		o2owaimai_server_url: 'https://app.tseo.cn/o2owaimai/index.php/',
 		socket_server: 'https://socketio.tseo.cn',
 		
-		version_number:'Ver 1.7.4 Build 219',
-		version_code:219,
+		version_number:'Ver 1.7.5 Build 231',
+		version_code:231,
 		
 		force_sellerid:1,
 	
-		xiaochengxu_appid: 'wxfa86f96b2b9a54b4',			//微信小程序的appid
-		xiaochengxu_account: 'gh_e9cc776c000b',				//微信小程序的账号
+		xiaochengxu_appid: 'wx6576af86ad5d4804',			//微信小程序的appid
+		xiaochengxu_account: 'gh_74c59a54559c',				//微信小程序的账号
 		weixin_open_platform_appid: 'wx6939a00416c5d3aa--',	//微信开放平台中登记的APP对应的appid（务必与manifest中的配置一致）
 		
 		//通版商城
@@ -22,8 +22,8 @@ const globalData = {
 		//=======以下配置项在发布版本的时候确定，服务器端配置无效===
 		
 		//平台相关的配置
-		current_platform : 'app-android',
-		//current_platform : 'app-ios',
+		//current_platform : 'app-android',
+		current_platform : 'app-ios',
 		//current_platform : 'mp-weixin',
 		//current_platform : 'mp-baidu',
 		//current_platform : 'mp-alipay',
@@ -48,9 +48,8 @@ const globalData = {
 		baidu_map_ak: 'OTsGerqQhowGSFOWG8c6p86R',
 		userInfo: {},
 		
-		//2021.1.13. 关于订单支付的特殊设置（对于没有申请微信和支付宝的APP通道有用）
-		//将支付订单页面强制跳转到小程序中，需要设置 xiaochengxu_account 和 weixin_open_platform_appid 在同一个微信开放平台账号下面
-		order_buy_payment_to_mp_weixin:1,
+		//2021.1.13. 关于订单支付的特殊设置
+		order_buy_payment_to_mp_weixin:1,	//将微信支付订单跳转到小程序中
 	};
 
 module.exports = {
