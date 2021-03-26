@@ -61,7 +61,7 @@
 			return {
 				
 				citizen_list_url:'https://yanyubao.tseo.cn/fulaozhucan/index.php/openapi/UserApi/get_checkin_list',
-				//citizen_list_url:'http://192.168.0.205/yanyubao_web/yidaozhucan_server/index.php/openapi/UserApi/get_checkin_list', //获取数据的api
+				//citizen_list_url:'http://192.168.0.206/yanyubao_web/yidaozhucan_server/index.php/openapi/UserApi/get_checkin_list', //获取数据的api
 				checkin_list :[], //数据
 				btn_bg_color:'', //按钮颜色
 				is_empty_msg_show: 0,
@@ -185,6 +185,19 @@
 				
 				var userInfo = this.abotapi.get_user_info();
 				
+				if(!userInfo){
+					
+					that.abotapi.del_user_info()
+					
+					
+					var last_url = '/pages/index/index'
+					that.abotapi.goto_user_login(last_url);
+					
+					return;
+				}
+				
+				console.log('wwwwas===', userInfo);
+				
 				this.abotapi.abotRequest({
 					url: this.citizen_list_url,
 					data: {
@@ -195,14 +208,27 @@
 					},
 					success: function (res) {
 						
+						
 						if(res.data.code == 1){
 							
 							for(var i=0; i<res.data.data.length; i++){
-							     that.checkin_list.push(res.data.data[i]);
+							     that.checkin_list.push(res.data.data[i]); 
+								 
 							}
 							
 							that.is_empty_msg_show = 0;
-						}else{
+						}
+						else if(res.data.code == -1){
+							//提升登录超时，跳转到登录界面
+							that.abotapi.del_user_info()
+							
+							
+							var last_url = '/pages/index/index'
+							that.abotapi.goto_user_login(last_url);
+							
+							return;
+						}
+						else{
 							
 							that.is_get_user = false
 							

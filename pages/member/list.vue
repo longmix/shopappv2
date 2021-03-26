@@ -17,6 +17,16 @@
 			<!-- #endif -->
 			
 		            <view class="aui-scrollView">
+						
+						<view class="top-input-con">
+						
+							<view  class="scroll-txt" :style="'border:2rpx solid '+ wxa_shop_nav_bg_color + ';'">   
+								<input type="text" v-model="search_text" placeholder="搜索受助人" confirm-type="search" style="background: #e6e6e6;" @confirm="search()"/>
+								<icon type="search" size="15" style="margin: 0px 10rpx 0 0;position:absolute;right:30rpx;" @tap="search()"></icon>
+								<!-- <text class="scroll-ads">搜索附近商家</text> -->
+							</view>
+						</view>
+						
 		                <view class="aui-extreme">
 							<!-- 开始 -->
 							
@@ -109,6 +119,8 @@
 				page:1,
 				current_params_str:'',
 				 empty_list_msg:'到底了~',
+				 
+				 search_text:''
 			}
 		},
 		
@@ -312,6 +324,54 @@
 				})
 				
 			},
+			
+			//搜索
+			search: function (view) {
+				
+				var that = this;
+				var userInfo = this.abotapi.get_user_info();
+				
+				that.abotapi.abotRequest({
+					url: this.data_url,
+					method: 'post',
+					data: {
+						sellerid: that.abotapi.globalData.default_sellerid,
+						checkstr: userInfo.checkstr,
+						userid: userInfo.userid,
+						
+						keywords: this.search_text,
+					},
+					success: function (res) {
+						
+						if(res.data.code == 1){
+							
+							that.citizen_list = [];
+							
+							for(var i=0; i<res.data.data.length; i++){
+								
+							     that.citizen_list.push(res.data.data[i]);
+							}
+							
+						}else{
+							
+							that.citizen_list = [];
+							uni.showToast({
+								title:'没有该受助人'
+							})
+							
+						}
+						
+					}
+				})
+				    
+				console.log('search_text',this.search_text);
+				
+				// var welfareId = view.currentTarget.dataset.value;
+				// var url = "/pages/listdetail/listdetail?name=" + welfareId;
+				// uni.navigateTo({
+				// 	url: url
+				// });
+			}
 		}
 	} 
 </script>
@@ -756,6 +816,33 @@
 		height: 60rpx;
 		line-height: 60rpx;
 		padding: 5rpx 20rpx;
+	}
+	//搜索样式
+	.top-input-con {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 10rpx 20rpx;
+		background: #fff;
+		z-index: 2;
+		/*  #ifdef  APP-PLUS  */
+		margin-top: var(--status-bar-height);
+		/*  #endif  */
+	}
+	.scroll-txt {
+		text-align: center;
+		margin: 10rpx 0rpx;
+		border: 20rpx red;
+		padding: 12rpx 0 12rpx 0;
+		color: #333;
+		background: #e6e6e6;
+		justify-content: center;
+		display: flex;
+		align-items: center;
+		border-radius: 10rpx;
+		height: 50rpx;
+		width: 100%;
+	
 	}
 	
 </style>
