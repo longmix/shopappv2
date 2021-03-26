@@ -21,7 +21,7 @@
 						<view class="top-input-con">
 						
 							<view  class="scroll-txt" :style="'border:2rpx solid '+ wxa_shop_nav_bg_color + ';'">   
-								<input type="text" v-model="search_text" placeholder="搜索受助人" confirm-type="search" style="background: #e6e6e6;" @confirm="search()"/>
+								<input type="text" v-model="search_text" :placeholder="list_search_tips" confirm-type="search" style="background: #e6e6e6;" @confirm="search()"/>
 								<icon type="search" size="15" style="margin: 0px 10rpx 0 0;position:absolute;right:30rpx;" @tap="search()"></icon>
 								<!-- <text class="scroll-ads">搜索附近商家</text> -->
 							</view>
@@ -120,7 +120,8 @@
 				current_params_str:'',
 				 empty_list_msg:'到底了~',
 				 
-				 search_text:''
+				 search_text:'',
+				 list_search_tips:'搜索会员'
 			}
 		},
 		
@@ -165,6 +166,8 @@
 				
 				this.data_url_flag = 1;
 			}
+			
+			
 			
 			//获取配置项
 			this.abotapi.set_option_list_str(this, this.call_back_set_option);
@@ -281,11 +284,15 @@
 					success: function (res) {
 						
 						uni.hideLoading();
-						
+										
 						if(res.data.list_title){
 							uni.setNavigationBarTitle({
 								title: res.data.list_title
 							})
+						}
+						
+						if(res.data.list_search_tips){
+							that.list_search_tips = res.data.list_search_tips;
 						}
 						
 						if(res.data.code == 1){
@@ -343,6 +350,10 @@
 					},
 					success: function (res) {
 						
+						if(res.data.list_search_tips){
+							that.list_search_tips = res.data.list_search_tips;
+						}
+						
 						if(res.data.code == 1){
 							
 							that.citizen_list = [];
@@ -356,7 +367,7 @@
 							
 							that.citizen_list = [];
 							uni.showToast({
-								title:'没有该受助人'
+								title:res.data.msg,
 							})
 							
 						}
