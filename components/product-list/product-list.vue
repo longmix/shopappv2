@@ -1,7 +1,8 @@
 <template>
 	<view class="goods-list">
 		<view class="product-list">
-	
+			
+				
 				<view class="product"  v-for="(item,indexs) in productsList" :key="indexs" @click="toGoods(item)">
 					
 					<image class="shouqing" v-if="item.inventory == 0" src="https://yanyubao.tseo.cn/Tpl/static/images/shouqing.png" ></image>
@@ -16,7 +17,7 @@
 						<!-- <view class="slogan">{{item.seller_name}}</view> -->
 					</view>
 				</view>
-
+			
 		</view>
 		
 	</view>

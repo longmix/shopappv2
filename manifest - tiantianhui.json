@@ -69,7 +69,8 @@
                     "NSCameraUsageDescription" : "使用相机拍摄商品以及设置头像",
                     "NSLocationWhenInUseUsageDescription" : "访问位置以计算最近的服务网点",
                     "NSLocationAlwaysUsageDescription" : "访问位置以计算最近的服务网点",
-                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "访问位置以计算最近的服务网点"
+                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "访问位置以计算最近的服务网点",
+					"NSMicrophoneUsageDescription" : "使用麦克风以获取录制视频时候的声音"
                 }
             },
             /* ios打包配置 */

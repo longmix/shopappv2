@@ -234,6 +234,7 @@
 				:showKucunSale="wxa_show_kucun_in_list" 
 				@toGoods="toGoods"></productList>
 		</block>
+		
 
 		<!-- 客服按钮 -->
 		<view class="u-tap-btn" v-if="(wxa_show_kefu_button==1) && (wxa_kefu_bg_no_color_flag == 0)">
@@ -411,7 +412,8 @@ export default {
 			twoArr:'',
 
 			
-			current_product_list:[{inventory:"1", price:"0"}],
+			//current_product_list:[{inventory:"1", price:"0"}],
+			current_product_list:'',
 			loadingText: '正在加载...',
 			
 			
@@ -1733,10 +1735,15 @@ export default {
 					}
 					else if(res.data.code == 0){
 						that.is_OK = true;
-						uni.showToast({
-							title: '已经到底了~',
-							duration: 2000
-						});
+						
+						if(that.current_product_list && that.current_product_list.length 
+							&& (that.current_product_list.length > 0)){
+								uni.showToast({
+									title: '已经到底了~',
+									duration: 2000
+								});
+							}
+						
 						return;
 					}
 					
