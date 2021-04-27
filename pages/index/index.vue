@@ -110,8 +110,10 @@
 		<!-- 营业地址卡片 2021.1.18. -->
 		<view class="index_address_card_main" v-if="show_address_card_in_index == 1">
 			<view class="index_address_card_address">
-				<view class="index_address_card_address_detail">{{address_card_in_index.address}}
-				<view class="index_address_card_yingyeshijian">营业时间：{{address_card_in_index.yingyeshijian}}</view></view>
+				<view class="index_address_card_address_detail">
+					<view class="index_address_card_address_text">{{address_card_in_index.address}}</view>
+					<view class="index_address_card_yingyeshijian">营业时间：{{address_card_in_index.yingyeshijian}}</view>
+				</view>
 			</view>
 			
 			<view class="index_address_card_icon_telephone" @tap="index_address_card_go_map">
@@ -3006,7 +3008,7 @@ page{position: relative;background-color: #fff;}
 		order:1;
 		flex-grow:1;
 		display: flex;
-		margin: 10rpx 0 0 40rpx;
+		margin: 10rpx 0 0 10rpx;
 		
 	}
 	
@@ -3027,6 +3029,17 @@ page{position: relative;background-color: #fff;}
 	.index_address_card_address_detail{
 		font-size:26rpx;
 	}
+	
+	.index_address_card_address_text {
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 1;
+		text-align: justify;
+		overflow: hidden;
+		height: 40rpx;
+		line-height: 40rpx;
+	}
+	
 	.index_address_card_yingyeshijian{
 		margin-top: 15rpx;
 		font-size: 22rpx;
