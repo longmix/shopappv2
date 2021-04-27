@@ -4,8 +4,8 @@ const globalData = {
 		o2owaimai_server_url: 'https://app.tseo.cn/o2owaimai/index.php/',
 		socket_server: 'https://socketio.tseo.cn',
 		
-		version_number:'Ver 1.7.5 Build 231',
-		version_code:231,
+		version_number:'Ver 1.7.7 Build 255',
+		version_code:255,
 		
 		force_sellerid:1,
 	
