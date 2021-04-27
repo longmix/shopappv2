@@ -8,7 +8,7 @@
 					<image :src="wxa_shop_operation_logo_url"></image>
 				</view>
 				<view class="code_num2" v-if="wxa_shop_new_name">{{wxa_shop_new_name}}</view>
-				<view class="code_num" v-if="version_number">版本号：{{version_number}}</view>
+				<view class="code_num" v-if="version_number">版本 {{version_number}}</view>
 			</view>
 		</view>
 		<view class="list">

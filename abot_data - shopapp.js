@@ -4,8 +4,8 @@ const globalData = {
 		o2owaimai_server_url: 'https://app.tseo.cn/o2owaimai/index.php/',
 		socket_server: 'https://socketio.tseo.cn',
 		
-		version_number:'Ver 1.8.2 Build 376',
-		version_code:376,
+		version_number:'Ver 2.0.1 Build 291',
+		version_code:291,
 		
 		force_sellerid:0,
 		
@@ -14,9 +14,9 @@ const globalData = {
 		weixin_open_platform_appid: 'wx029e1ddb38b4c630',	//微信开放平台中登记的APP对应的appid（务必与manifest中的配置一致）
 		
 		//通版商城，目前主要是用于小程序模板的发布
-		default_shopname: '通版商城V2',
+		default_shopname: '通版商城V2默认模板',
 		default_sellerid: 'pQNNmSkaq',
-		default_copyright_text:'延誉宝 @ 版权所有',
+		default_copyright_text:'技术支持：延誉宝',
 		
 		//=======以下配置项在发布版本的时候确定，服务器端配置无效===
 		
