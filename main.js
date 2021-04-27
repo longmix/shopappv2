@@ -12,6 +12,10 @@ import $abotapi from './common/abotapi.js';
 // var default_sellerid = 'pmyxQxkkU';
 // var xiaochengxu_appid = 'wx60a801e5fb7f9378';
 
+//系统的调试开关是否打开
+var system_debug_flag = false;
+//这里赋值，用于在 App.vue中可以通过 this.system_debug_flag 调用到。
+Vue.prototype.system_debug_flag = system_debug_flag
 
 Vue.prototype.abotapi = $abotapi
 Vue.config.productionTip = false

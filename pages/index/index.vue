@@ -535,6 +535,13 @@ export default {
 		
 		
 		
+		console.log('当前调试开关ii：' + this.system_debug_flag);
+		console.log('当前平台名称ii：' + this.abotapi.globalData.current_platform);
+		
+		
+		
+		
+		
 		//=====判断sellerid和parentid Begin=====
 		var sellerid = null;
 		
@@ -933,6 +940,9 @@ export default {
 		},
 		
 		callback_function_shop_option_data:function(that, cb_params){
+			
+			console.log('当前调试开关22：' + this.system_debug_flag);
+			console.log('当前平台名称22：' + this.abotapi.globalData.current_platform);
 			
 			if(!cb_params){
 				return;

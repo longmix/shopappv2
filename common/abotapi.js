@@ -504,19 +504,26 @@ module.exports = {
 	},
 	
 	set_shop_option_data : function (that, callback_function) {
+		//如果不是调试状态
+		if(!this.system_debug_flag){
+			// #ifdef MP-WEIXIN
+			this.globalData.current_platform = 'mp-weixin'
+			// #endif
+			// #ifdef MP-BAIDU
+			this.globalData.current_platform = 'mp-baidu'
+			// #endif
+			// #ifdef MP-ALIPAY
+			this.globalData.current_platform = 'mp-alipay'
+			// #endif
+			// #ifdef H5
+			this.globalData.current_platform = 'h5'
+			// #endif
+		}
 		
-		// #ifdef MP-WEIXIN
-		this.globalData.current_platform = 'mp-weixin'
-		// #endif
-		// #ifdef MP-BAIDU
-		this.globalData.current_platform = 'mp-baidu'
-		// #endif
-		// #ifdef MP-ALIPAY
-		this.globalData.current_platform = 'mp-alipay'
-		// #endif
-		// #ifdef H5
-		this.globalData.current_platform = 'h5'
-		// #endif
+		console.log('当前调试开关：' + this.system_debug_flag);
+		console.log('当前平台名称：' + this.globalData.current_platform);
+		
+		
 		
 		
 		var currentTime = (new Date()).getTime();//获取当前时间
