@@ -642,6 +642,8 @@
 	.goods-list{
 		width: 100%;
 		padding: 20upx 0 120upx 0;
+		
+		margin-top:40rpx;
 
 	
 	}
