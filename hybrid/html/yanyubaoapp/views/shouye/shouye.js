@@ -707,7 +707,7 @@ angular.module("shouye",[])
 	                 });*/
 	                 //cordova.InAppBrowser.open(url, '_blank', 'location=no,hardwareback=yes,zoom=yes');
 	             }
-	             else if(data.code == -1){
+	             else if(data.code == '-1'){
 	                 del_login_info();
 	
 	                 $ionicLoading.show({
@@ -3287,7 +3287,7 @@ angular.module("server",[]).config(
                     });*/
                     //cordova.InAppBrowser.open(url, '_blank', 'location=no,hardwareback=yes,zoom=yes');
                 }
-                else if(data.code == -1){
+                else if(data.code == '-1'){
                     del_login_info();
 
                     $ionicLoading.show({

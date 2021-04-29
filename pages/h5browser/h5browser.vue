@@ -25,7 +25,7 @@
 			
 			/*
 			uni.setNavigationBarColor({
-				backgroundColor:"#11C1F3"
+				backgroundColor:"#269ad7"
 			})*/
 			
 		

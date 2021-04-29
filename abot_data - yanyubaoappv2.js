@@ -4,8 +4,8 @@ const globalData = {
 		o2owaimai_server_url: 'https://app.tseo.cn/o2owaimai/index.php/',
 		socket_server: 'https://socketio.tseo.cn',
 		
-		version_number:'Ver 3.0.2 Build 839',
-		version_code:839,
+		version_number:'Ver 3.0.5 Build 860',
+		version_code:860,
 		
 		force_sellerid:1,
 	
@@ -34,7 +34,7 @@ const globalData = {
 		//并确保与 navigationBarTextStyle / navigationBarBackgroundColor   保持一致
 		navigationBarBackgroundColor_fixed:1,
 		navigationBar_font_color:'#ffffff',
-		navigationBar_bg_color:'#11C1F3',
+		navigationBar_bg_color:'#269ad7',
 		//======================End=======================
 		
 		//======以下选项可以在服务器端修改，这里是默认值=====

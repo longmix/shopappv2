@@ -83,7 +83,7 @@
 #view .set-text{font-size: 16px;color: #444;font-family: "微软雅黑"}
 #view .set_mid_p{margin-top:1px;font-size:16px;color: #888;font-family: "微软雅黑";margin-right: 6px;}
 #view .set_i{font-size: 25px;color: #999;}
-.set_bg1{background: #11C1F3;}
+.set_bg1{background: #269ad7;}
 .set_bg2{background: #E26D2F;}
 .set_bg3{background: #64B371;}
 .set_bg4{background: #AE639D;}
@@ -392,7 +392,7 @@ text-indent: 20px;
   right:20px;
   border-radius: 50%;
   overflow: hidden; 
-   background:#11c1f3;
+   background:#269ad7;
    z-index: 999999;
    border:1px solid #ccc;
 /*  box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);*/

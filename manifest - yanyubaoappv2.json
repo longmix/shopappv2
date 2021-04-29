@@ -2,8 +2,8 @@
     "name" : "延誉宝",
     "appid" : "__UNI__EAF2441",
     "description" : "会员.电商.SaaS云",
-    "versionName" : "3.0.2",
-    "versionCode" : 839,
+    "versionName" : "3.0.5",
+    "versionCode" : 860,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true, //是否启用`自定义组件模式`，为true表示新的`自定义组件模式` ，否则为`template模板模式`   
@@ -164,7 +164,7 @@
                         "retina40" : "unpackage/res/splashscreen - shopappv2/welcome_640x1136.png",
                         "retina35" : "unpackage/res/splashscreen - shopappv2/welcome_640x960.png"
                     },
-                    "storyboard" : "D:/延誉电商APP/苹果开发者证书/延誉宝APP 2021 苹果欢迎图片/CustomStoryboard.zip"
+                    "storyboard" : "unpackage/res/apple dev - yanyubaoappv2/CustomStoryboard.zip"
                 },
                 "iosStyle" : "storyboard"
             }

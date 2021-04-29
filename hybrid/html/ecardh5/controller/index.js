@@ -179,7 +179,7 @@
                   
 
                   }
-                 else if(res.code == -1){
+                 else if(res.code == '-1'){
 					 //登录超时，可能是在其他地方登录，这里被挤下来了
            layer.msg(res.msg);
 					 del_login_info();
