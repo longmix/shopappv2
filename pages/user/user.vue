@@ -503,7 +503,9 @@
 							
 							
 							
-							if (res.data.code == "-1") {
+							if (res.data.code == -1) {
+								that.abotapi.del_user_info();
+								
 								var last_url = '/pages/user/user';
 								that.abotapi.goto_user_login(last_url, 'normal');
 							} else {
