@@ -1,7 +1,7 @@
 {
   "globalStyle": {
   	"navigationBarTextStyle": "white",
-  	"navigationBarTitleText" : "安全熊",
+  	"navigationBarTitleText" : "安全熊广告码",
   	"navigationBarBackgroundColor" : "#ff8040",
   	"backgroundColor" : "#ffffff",
   	"backgroundColorTop":"#ffffff",
@@ -17,6 +17,18 @@
   			"selectedIconPath": "static/img/tabBar/home-on.png",
   			"text": "首页"
   		},
+  		{
+  			"pagePath": "pages/category/index2",
+  			"iconPath": "static/img/tabBar/category.png",
+  			"selectedIconPath": "static/img/tabBar/category-on.png",
+  			"text": "分类"
+  		},
+  		{
+  			"pagePath": "pages/cart/cart",
+  			"iconPath": "static/img/tabBar/cart.png",
+  			"selectedIconPath": "static/img/tabBar/cart-on.png",
+  			"text": "购物车"
+  		},	
   		{
   			"pagePath": "pages/user/user",
   			"iconPath": "static/img/tabBar/user.png",
