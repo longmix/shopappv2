@@ -650,6 +650,25 @@ module.exports = {
 		//console.log(uni.getStorageSync("wxa_user_info"));
 	},
 	
+	
+	get_user_info: function () {
+		//缓存返回数据
+		var user_info_str = uni.getStorageSync("wxa_user_info");
+				   
+		//console.log("获取小程序用户数据：" + user_info_str + '333333333');
+				   
+		if (!user_info_str) {
+			return null;
+		}
+				   
+		return JSON.parse(user_info_str);
+	},
+	del_user_info: function () {
+		//缓存返回数据
+		uni.removeStorageSync("wxa_user_info");
+				   
+	},
+	
 	/**
 	 * @param {Object} user_account_info
 	 * 
@@ -683,23 +702,6 @@ module.exports = {
 	 
 	 
 	
-	get_user_info: function () {
-		//缓存返回数据
-		var user_info_str = uni.getStorageSync("wxa_user_info");
-				   
-		//console.log("获取小程序用户数据：" + user_info_str + '333333333');
-				   
-		if (!user_info_str) {
-			return null;
-		}
-				   
-		return JSON.parse(user_info_str);
-	},
-	del_user_info: function () {
-		//缓存返回数据
-		uni.removeStorageSync("wxa_user_info");
-				   
-	},
 	 
 	   /**
 	    * page_type normal/switchTab
