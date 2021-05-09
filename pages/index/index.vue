@@ -1231,7 +1231,15 @@ export default {
 					
 					that.index_rich_html_content = cb_params.option_list.index_rich_html_content;
 					
+					if(!that.index_rich_html_content){
+						that.index_rich_html_content = '<h1></h1>';
+					}
+					
 					// 2021.3.1. 不需要使用formatRichText过滤，具体的css由html代码控制。
+					
+					const filter = that.$options.filters["formatRichText"];
+					that.index_rich_html_content = filter(that.index_rich_html_content);
+					
 					console.log('1111111111====>>>' + that.index_rich_html_content);
 					
 					//const filter = that.$options.filters["formatRichText"];
@@ -1244,10 +1252,8 @@ export default {
 					// #endif
 					
 					// #ifdef MP-ALIPAY
-						console.log('that.index_rich_html_content====>>>>', that.index_rich_html_content);
+						console.log('that.index_rich_html_content====>>>>支付宝小程序');
 						
-						const filter = that.$options.filters["formatRichText"];
-						that.index_rich_html_content = filter(that.index_rich_html_content);
 						
 						console.log('that.index_rich_html_content====>>>>', that.index_rich_html_content);
 						
@@ -2343,6 +2349,13 @@ export default {
 						that.index_rich_html_content = '<h1></h1>';
 					}
 					
+					console.log('that.index_rich_html_content====>>>>', that.index_rich_html_content);
+					
+					const filter = that.$options.filters["formatRichText"];
+					that.index_rich_html_content = filter(that.index_rich_html_content);
+					
+					console.log('that.index_rich_html_content====>>>> formatRichText之后 ===>>>', that.index_rich_html_content);
+					
 					
 					// #ifdef H5
 					//	const filter = that.$options.filters["formatRichText"];
@@ -2350,12 +2363,6 @@ export default {
 					// #endif
 					
 					// #ifdef MP-ALIPAY
-						console.log('that.index_rich_html_content====>>>>', that.index_rich_html_content);
-						
-						const filter = that.$options.filters["formatRichText"];
-						that.index_rich_html_content = filter(that.index_rich_html_content);
-						
-						console.log('that.index_rich_html_content====>>>>', that.index_rich_html_content);
 						
 						let data001 = that.index_rich_html_content;
 						let newArr = [];
@@ -2450,8 +2457,8 @@ export default {
 			
 			newContent = newContent.replace(/<p[^>]*>/gi, '<p style="margin:20px;">');
 			
-			//newContent = newContent.replace(/\<img/gi, '<img style="max-width:100%;height:auto;display:inline-block;margin:10rpx auto;vertical-align: middle;"');
-			newContent = newContent.replace(/\<img/gi, '<img style="width:100%; display:inline-block;"');
+			newContent = newContent.replace(/\<img/gi, '<img style="max-width:100%;height:auto;display:inline-block;margin:10rpx auto;vertical-align: middle;"');
+			///newContent = newContent.replace(/\<img/gi, '<img style="width:100%; display:inline-block;"');
 			//newContent = newContent.replace(/\<img/gi, '<img width="5rem"');
 			
 			newContent = newContent.replace(/<h2[^>]*>/gi, '<h2 class="content-article-detail_h2">');

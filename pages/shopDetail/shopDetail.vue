@@ -105,9 +105,12 @@
 		</view>
 		
 		<!-- 关联的超级会员卡 Begin -->
-		<view v-if="vip_card_list">
-			<view style="text-align: center;">会员卡列表</view>
-			<view class="vip_card_list" v-for="(item,index) in vip_card_list" :key='index'>
+		<view style="border-bottom:6px solid #eee;"  v-if="vip_card_list">
+			<view class="icon-title2">
+				<image src="https://yanyubao.tseo.cn/Tpl/static/images/ecard.png" mode="widthFix"></image>
+				<view class='biaoti'>会员卡列表</view>
+			</view>
+			<view class="vip_card_item_show" v-for="(item,index) in vip_card_list" :key='index'>
 			<view style="width: 75%;display: flex;">
 				<img :src="item.card_touxiang" alt="" class="vip_logo">
 				<view class="vip_card_name">{{item.card_name}}</view>
@@ -196,7 +199,7 @@
 		<!-- 优惠 -->
 		<view style="border-bottom:6px solid #eee;" v-if="current_shang_detail.youhui_title != ''">
 			<view class="icon-title2">
-				<image :src="user_console_setting.user_console_icon_youhui"></image>
+				<image :src="user_console_setting.user_console_icon_youhui" mode="widthFix"></image>
 				<view class='biaoti'>优惠活动</view>
 			</view>
 
@@ -218,7 +221,7 @@
 		<!--商家简介-->
 		<view style="border-bottom:6px solid #eee;" v-if="current_shang_detail.brief != ''">
 			<view class="icon-title2">
-				<image :src="user_console_setting.user_console_icon_jianjie"></image>
+				<image :src="user_console_setting.user_console_icon_jianjie" mode="widthFix"></image>
 				<view class='biaoti'>商家简介</view>
 			</view>
 			<block v-if="current_shang_detail.brief == ''">
@@ -2279,12 +2282,11 @@
 		padding-top: 10rpx;
 		padding-bottom: 10rpx;
 	}
-	.vip_card_list{
+	.vip_card_item_show{
 		display: flex;
 		width: 90%;
-		border: 1px solid #666;
-		margin: 0 auto;
-		margin-top: 5rpx;
-		border-radius: 5px;
+		border: 1rpx dotted #666;
+		margin: 20rpx auto;		
+		border-radius: 5rpx;
 	}
 </style>

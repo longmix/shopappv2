@@ -466,7 +466,7 @@
 		
 		<block v-if="form_product_info.form_show == 1">
 			<view class="form_box_liuyan">
-				<img class="form_icon_box" src="https://yanyubao.tseo.cn/Tpl/static/images/bee_data.png" alt="">
+				<img class="form_icon_box" src="https://yanyubao.tseo.cn/Tpl/static/images/bee_data.png" alt="" mode="widthFix">
 				<view class="form_submit_box" @tap="go_form_submit">{{form_product_info.form_text}}</view>
 			</view>
 		</block>
@@ -3483,9 +3483,11 @@
 		margin: 20rpx;
 		padding: 10rpx;
 		border-radius: 5rpx;
-		border-style: solid;
+		border-style: dotted;
 		border-width: 1rpx;
 		border-color: #666;
+		border-left: 0;
+		border-right: 0;
 	}
 	.form_submit_box{
 		margin-left: 10rpx;
