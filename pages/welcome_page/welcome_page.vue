@@ -353,17 +353,20 @@ export default {
 		
 		    that.wxa_show_latest_product_in_welcome_page = wxa_show_latest_product_in_welcome_page;
 		
+			wxa_show_latest_product_in_welcome_page = 0;
+		
 		    if(wxa_show_latest_product_in_welcome_page == 1){
-		      console.log('66666666666', that.data.cataid)
-		      uni.request({
-		        url: this.abotapi.globalData.http_server + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
+		      console.log('66666666666 显示最新的商品信息')
+			  
+		      this.abotapi.abotRequest({
+		        url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=product_list',
 		        method: 'post',
 		        data: {
 		          sellerid: this.abotapi.get_sellerid(),
-		          keyword: that.data.searchValue ? that.data.searchValue : '',
+		          //keyword: that.data.searchValue ? that.data.searchValue : '',
 		          sort: 1,
-		          page: that.data.page,
-		          cataid: that.data.cataid ? that.data.cataid : ''
+		          page: 1,
+		          //cataid: that.data.cataid ? that.data.cataid : ''
 		        },
 		        header: {
 		          'Content-Type': 'application/x-www-form-urlencoded'
@@ -474,7 +477,7 @@ export default {
 		      title: '数据加载中……',
 		    });
 		
-		    var url = this.abotapi.globalData.http_server + 'index.php/openapi/SupplierData/get_swiper_pic_url';
+		    var url = this.abotapi.globalData.yanyubao_server_url + '/index.php/openapi/SupplierData/get_swiper_pic_url';
 		    var data = {
 		      sellerid: this.abotapi.get_sellerid(),
 		      swiperid:imgid
