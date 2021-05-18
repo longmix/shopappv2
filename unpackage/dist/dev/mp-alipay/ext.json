@@ -12,9 +12,9 @@
         "user_2"
       ]
     },
-    "xiaochengxu_appid": "wxe6565fced2f812da",
+    "alipay_wxa_appid": "wxe6565fced2f812da",
     "force_sellerid_flag": 0,
-    "force_sellerid_value": "pQNNmSkaq",
+    "force_sellerid_value": "fJxSPaVgj",
     "shop_name": "延誉宝扫码点餐2.0",
     "version_number": "Ver 2.0.1 Build 290",
     "navigationBarBackgroundColor_fixed": 1,
@@ -24,7 +24,7 @@
     "kefu_qq": "",
     "kefu_website": "",
     "kefu_gongzhonghao": "",
-    "default_copyright_text": "延誉电商 - 延誉宝 @ 版权所有"
+    "default_copyright_text": "延誉宝 @ 版权所有"
   },
   "extPages": {
     "pages/publish/publish_list": {

@@ -1,0 +1,236 @@
+{
+    "name" : "延誉宝扫码点餐2.0",
+    "appid" : "__UNI__A79BAA4",
+    "description" : "拥抱互联网+，找延誉电商5天搞定！",
+    "versionName" : "2.0.1",
+    "versionCode" : 290,
+    "transformPx" : false,
+    "app-plus" : {
+        "usingComponents" : true, //是否启用`自定义组件模式`，为true表示新的`自定义组件模式` ，否则为`template模板模式`   
+        "softinput" : {
+            "navBar" : "none" // 是否显示软键盘上的导航条  
+        },
+        /* 5+App特有相关 */
+        "splashscreen" : {
+            "alwaysShowBeforeRender" : true,
+            "waiting" : false,
+            "autoclose" : true,
+            "delay" : 0
+        },
+        "modules" : {
+            "Share" : {},
+            "OAuth" : {},
+            "LivePusher" : {},
+            "Bluetooth" : {},
+            "VideoPlayer" : {},
+            "Maps" : {},
+            "Speech" : {},
+            "Push" : {},
+            "Payment" : {}
+        },
+        /* 模块配置 */
+        "distribute" : {
+            "orientation" : [ "portrait-primary" ],
+            /* 应用发布信息 */
+            "android" : {
+                /* android打包配置 */
+                "permissions" : [
+                    "<uses-feature android:name=\"android.hardware.camera\"/>",
+                    "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CALL_PHONE\"/>",
+                    "<uses-permission android:name=\"android.permission.CAMERA\"/>",
+                    "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
+                    "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>",
+                    "<uses-permission android:name=\"android.permission.INTERNET\"/>",
+                    "<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>",
+                    "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_CONTACTS\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>",
+                    "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
+                    "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_CONTACTS\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
+                ]
+            },
+            "ios" : {
+                "idfa" : false,
+                "privacyDescription" : {
+                    "NSPhotoLibraryUsageDescription" : "读取相册以用于设置头像",
+                    "NSPhotoLibraryAddUsageDescription" : "保存视频或图片素材到相册",
+                    "NSCameraUsageDescription" : "使用相机拍摄商品以及设置头像",
+                    "NSLocationWhenInUseUsageDescription" : "访问位置以计算最近的服务网点",
+                    "NSLocationAlwaysUsageDescription" : "访问位置以计算最近的服务网点",
+                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "访问位置以计算最近的服务网点",
+                    "NSMicrophoneUsageDescription" : "使用麦克风以获取录制视频时候的声音"
+                }
+            },
+            /* ios打包配置 */
+            "sdkConfigs" : {
+                "maps" : {
+                    "amap" : {
+                        "appkey_ios" : "93094a28bc895a74cd1690bf390ba6ea",
+                        "appkey_android" : "647d08ffaa523902a2503fa958e5afa7"
+                    }
+                },
+                "payment" : {
+                    "weixin" : {
+                        "appid" : "wx029e1ddb38b4c630",
+                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/yyds/"
+                    },
+                    "alipay" : {}
+                },
+                "ad" : {},
+                "speech" : {
+                    "ifly" : {}
+                },
+                "oauth" : {
+                    "weixin" : {
+                        "appid" : "wx029e1ddb38b4c630",
+                        "appsecret" : "aaaaaaaaaaaaaaaaaaaaaaa",
+                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/yyds/"
+                    }
+                },
+                "share" : {
+                    "weixin" : {
+                        "appid" : "wx029e1ddb38b4c630",
+                        "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/yyds/"
+                    }
+                },
+                "push" : {}
+            },
+            "icons" : {
+                "android" : {
+                    "hdpi" : "unpackage/res/icons - shopappv2/72x72.png",
+                    "xhdpi" : "unpackage/res/icons - shopappv2/96x96.png",
+                    "xxhdpi" : "unpackage/res/icons - shopappv2/144x144.png",
+                    "xxxhdpi" : "unpackage/res/icons - shopappv2/192x192.png"
+                },
+                "ios" : {
+                    "appstore" : "unpackage/res/icons - shopappv2/1024x1024.png",
+                    "ipad" : {
+                        "app" : "unpackage/res/icons - shopappv2/76x76.png",
+                        "app@2x" : "unpackage/res/icons - shopappv2/152x152.png",
+                        "notification" : "unpackage/res/icons - shopappv2/20x20.png",
+                        "notification@2x" : "unpackage/res/icons - shopappv2/40x40.png",
+                        "proapp@2x" : "unpackage/res/icons - shopappv2/167x167.png",
+                        "settings" : "unpackage/res/icons - shopappv2/29x29.png",
+                        "settings@2x" : "unpackage/res/icons - shopappv2/58x58.png",
+                        "spotlight" : "unpackage/res/icons - shopappv2/40x40.png",
+                        "spotlight@2x" : "unpackage/res/icons - shopappv2/80x80.png"
+                    },
+                    "iphone" : {
+                        "app@2x" : "unpackage/res/icons - shopappv2/120x120.png",
+                        "app@3x" : "unpackage/res/icons - shopappv2/180x180.png",
+                        "notification@2x" : "unpackage/res/icons - shopappv2/40x40.png",
+                        "notification@3x" : "unpackage/res/icons - shopappv2/60x60.png",
+                        "settings@2x" : "unpackage/res/icons - shopappv2/58x58.png",
+                        "settings@3x" : "unpackage/res/icons - shopappv2/87x87.png",
+                        "spotlight@2x" : "unpackage/res/icons - shopappv2/80x80.png",
+                        "spotlight@3x" : "unpackage/res/icons - shopappv2/120x120.png"
+                    }
+                }
+            },
+            "splashscreen" : {
+                "android" : {
+                    "hdpi" : "unpackage/res/splashscreen - shopappv2/welandroid_480x762.9.png",
+                    "xhdpi" : "unpackage/res/splashscreen - shopappv2/welandroid_720x1242.9.png",
+                    "xxhdpi" : "unpackage/res/splashscreen - shopappv2/welandroid_1080x1882.9.png"
+                },
+                "ios" : {
+                    "iphone" : {
+                        "portrait-896h@3x" : "unpackage/res/splashscreen - shopappv2/welcome_1242x2688.png",
+                        "portrait-896h@2x" : "unpackage/res/splashscreen - shopappv2/welcome_828x1792.png",
+                        "iphonex" : "unpackage/res/splashscreen - shopappv2/welcome_1125x2436.png",
+                        "retina55" : "unpackage/res/splashscreen - shopappv2/welcome_1242x2208.png",
+                        "retina47" : "unpackage/res/splashscreen - shopappv2/welcome_750x1334.png",
+                        "retina40" : "unpackage/res/splashscreen - shopappv2/welcome_640x1136.png",
+                        "retina35" : "unpackage/res/splashscreen - shopappv2/welcome_640x960.png"
+                    },
+                    "storyboard" : "D:/延誉电商APP/苹果开发者证书/CustomStoryboard.zip"
+                },
+                "iosStyle" : "storyboard"
+            }
+        },
+        "uniStatistics" : {
+            "enable" : false
+        }
+    },
+    /* SDK配置 */
+    "quickapp" : {},
+    /* 快应用特有相关 */
+    "mp-weixin" : {
+        /* 小程序特有相关 */
+        "appid" : "wx00d1e2843c3b3f77",
+        "setting" : {
+            "urlCheck" : true,
+            "minified" : true,
+            "es6" : false
+        },
+        "permission" : {
+            "scope.userLocation" : {
+                "desc" : "你的位置信息将用于显示所在城市"
+            }
+        },
+        "uniStatistics" : {
+            "enable" : false
+        }
+    },
+    /* 插件放到ext.json 中定义,
+		"plugins": {
+			"live-player-plugin": {
+			  "version": "1.0.15",
+			  "provider": "wx2b03c6e691cd7370"
+			}
+		 }*/
+    "h5" : {
+        "router" : {
+            "base" : "/h5/abotds/",
+            "mode" : "hash"
+        },
+        "devServer" : {
+            "port" : ""
+        },
+        "uniStatistics" : {
+            "enable" : false
+        },
+        "title" : "延誉电商",
+        "template" : "h5_index_template.html"
+    },
+    "uniStatistics" : {
+        "enable" : false
+    },
+    "mp-alipay" : {
+        "uniStatistics" : {
+            "enable" : false
+        },
+        "appid" : "2018122262698438"
+    },
+    "mp-baidu" : {
+        "uniStatistics" : {
+            "enable" : false
+        },
+        "appid" : "19900151",
+        "setting" : {
+            "urlCheck" : true
+        }
+    },
+    "mp-qq" : {
+        "uniStatistics" : {
+            "enable" : false
+        }
+    },
+    "mp-toutiao" : {
+        "uniStatistics" : {
+            "enable" : false
+        }
+    }
+}
