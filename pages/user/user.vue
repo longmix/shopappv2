@@ -320,57 +320,7 @@
 
 
 			that.abotapi.set_option_list_str(that,
-				function(that001, option_list) {
-					//that001.abotapi.getColor();
-					console.log('option_list(/pages/user/user)', option_list);
-					that001.wxa_shop_nav_bg_color = option_list.wxa_shop_nav_bg_color;
-
-					that001.wxa_shop_nav_font_color = option_list.wxa_shop_nav_font_color;
-					
-					if(option_list.text_balance_str){
-						that001.text_balance_str = option_list.text_balance_str;
-					}
-					if(option_list.text_balance_zengsong_str){
-						that001.text_balance_zengsong_str = option_list.text_balance_zengsong_str;
-					}
-					if(option_list.text_score_str){
-						that001.text_score_str = option_list.text_score_str;
-					}
-					
-
-					that.user_center_function_list_icon_type = option_list.user_center_function_list_icon_type;
-					if (option_list.user_center_function_list_icon_type == -1) {
-						that.user_center_function_list_icon_list = option_list.user_center_function_list_icon_list;
-					}
-
-					if (option_list.wxa_show_return_to_index_in_usercenter) {
-						that.wxa_show_return_to_index_in_usercenter = option_list.wxa_show_return_to_index_in_usercenter;
-					}
-
-					if (option_list.wxa_shop_nav_bg_color) {
-						that.icon_jump_bg_color = option_list.wxa_shop_nav_bg_color;
-					}
-
-					if (option_list.wxa_usercenter_function_list) {
-						that.wxa_usercenter_function_list = option_list.wxa_usercenter_function_list;
-					}
-
-
-					//广告图片
-					if (option_list.wxa_usercenter_ad_list) {
-						that.wxa_usercenter_ad_list = option_list.wxa_usercenter_ad_list;
-					}
-					
-					//隐藏扫码图标
-					if(option_list.wxa_hidden_qrcode_scan_btn_in_usercenter){
-						that.wxa_hidden_qrcode_scan_btn_in_usercenter = option_list.wxa_hidden_qrcode_scan_btn_in_usercenter;
-					}
-
-					that001.get_current_userinfo();
-
-					that001.get_user_function_list();
-
-				}
+				that.set_option_list_callback
 			);
 
 
@@ -448,19 +398,7 @@
 			}, 1000);
 
 			this.abotapi.set_option_list_str(this,
-				function(that001, option_list) {
-
-					that001.get_current_userinfo();
-
-
-					that001.user_center_function_list_icon_type = option_list.user_center_function_list_icon_type;
-					if (option_list.user_center_function_list_icon_type == -1) {
-						that001.user_center_function_list_icon_list = option_list.user_center_function_list_icon_list;
-					}
-
-					that001.get_user_function_list();
-
-				}
+				this.set_option_list_callback
 			);
 
 
@@ -473,6 +411,56 @@
 			this.statusTop = e.scrollTop >= 0 ? null : -this.statusHeight + 'px';
 		},
 		methods: {
+			set_option_list_callback:function(that001, option_list){
+				//that001.abotapi.getColor();
+				console.log('option_list(/pages/user/user)', option_list);
+				that001.wxa_shop_nav_bg_color = option_list.wxa_shop_nav_bg_color;
+				
+				that001.wxa_shop_nav_font_color = option_list.wxa_shop_nav_font_color;
+				
+				if(option_list.text_balance_str){
+					that001.text_balance_str = option_list.text_balance_str;
+				}
+				if(option_list.text_balance_zengsong_str){
+					that001.text_balance_zengsong_str = option_list.text_balance_zengsong_str;
+				}
+				if(option_list.text_score_str){
+					that001.text_score_str = option_list.text_score_str;
+				}
+				
+				
+				that001.user_center_function_list_icon_type = option_list.user_center_function_list_icon_type;
+				if (option_list.user_center_function_list_icon_type == -1) {
+					that001.user_center_function_list_icon_list = option_list.user_center_function_list_icon_list;
+				}
+				
+				if (option_list.wxa_show_return_to_index_in_usercenter) {
+					that001.wxa_show_return_to_index_in_usercenter = option_list.wxa_show_return_to_index_in_usercenter;
+				}
+				
+				if (option_list.wxa_shop_nav_bg_color) {
+					that001.icon_jump_bg_color = option_list.wxa_shop_nav_bg_color;
+				}
+				
+				if (option_list.wxa_usercenter_function_list) {
+					that001.wxa_usercenter_function_list = option_list.wxa_usercenter_function_list;
+				}
+				
+				
+				//广告图片
+				if (option_list.wxa_usercenter_ad_list) {
+					that001.wxa_usercenter_ad_list = option_list.wxa_usercenter_ad_list;
+				}
+				
+				//隐藏扫码图标
+				if(option_list.wxa_hidden_qrcode_scan_btn_in_usercenter){
+					that001.wxa_hidden_qrcode_scan_btn_in_usercenter = option_list.wxa_hidden_qrcode_scan_btn_in_usercenter;
+				}
+				
+				that001.get_current_userinfo();
+				
+				that001.get_user_function_list();
+			},
 			//获取用户信息
 			get_current_userinfo: function() {
 				var that = this;
