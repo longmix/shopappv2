@@ -225,10 +225,12 @@ export default {
 		//this.last_url = last_url
 		var userInfo = this.abotapi.get_user_info();
 		
+		//2021.6.6. 将检测用户是否登录，转移到添加购物车的时候判读
+		/*
 		if(!userInfo || ! userInfo.userid){
 			this.abotapi.goto_user_login(last_url, 'normal');
 			return;
-		}
+		}*/
 		
 		
 		var shopId = options.xianmai_shangid;
@@ -447,10 +449,11 @@ export default {
 		this.busPos['y'] = this.hh - 32;
 	
 		this.abotapi.set_option_list_str(that, function(that002, shop_option_data){
-			that002.abotapi.getColor();
+			
 			
 			that002.wxa_shop_nav_bg_color = shop_option_data.wxa_shop_nav_bg_color;
-			console.log('that002.wxa_shop_nav_bg_color',that002.wxa_shop_nav_bg_color);
+			
+			console.log('that002.wxa_shop_nav_bg_color==>>',that002.wxa_shop_nav_bg_color);
 		});
 	},
 	onPageScroll(e) {
@@ -1175,7 +1178,7 @@ export default {
 }
 
 .header-name{
-  padding-left: 0.5rem; 
+  padding-left: 5rpx; 
   font-size: 30rpx;
   display: flex;
   flex-direction: column;
@@ -1210,24 +1213,21 @@ export default {
   flex-direction: column;
   margin: 0;
   padding: 0;
-  height: 22.5rem;
+  height: 225rpx;
   width: 80%;
 }
 .title{
   width: 100%;
-  height: 2rem;
   background-color: #fff;
   height: 80rpx;
   line-height: 80rpx;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 28rpx;
   color: #333333;
   margin-left: 20rpx;
-  font-size: 28rpx;
 }
 .body-col{
  width: 20%;
- height: 22rem;
+ height: 220rpx;
  
 }
 .body-section{
@@ -1239,7 +1239,7 @@ export default {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 26rpx;
   color: #666666;
-  border-left: 2px solid #eee;
+  border-left: 4rpx solid #eee;
   background: #eee;
   /* text-overflow: ellipsis;
   white-space: nowrap;
@@ -1259,7 +1259,7 @@ export default {
 }
 
 .body-col .body-section.active{
-  border-left: 2px solid #f00;
+  border-left: 4rpx solid #f00;
   background: #fff;
 }
 
@@ -1277,7 +1277,7 @@ export default {
   border-radius: 4px;
 }
 .item-txt{
-  font-size: 0.8rem;
+  font-size: 32rpx;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   display: flex;
   flex-direction: column;
@@ -1289,7 +1289,7 @@ export default {
   color: #333;
 }
 .txt-message{
-  font-size: 0.7rem;
+  font-size: 25rpx;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   display: flex;
   flex-direction: row;
@@ -1311,8 +1311,8 @@ export default {
 .txt-message .like{
 	background-image: url(http://xs01.meituan.net/waimai_web/img/sprite/icons_559f3531_1.png);
 	display: inline-block;
-	width: 15px;
-	height: 15px;
+	width: 110rpx;
+	height: 110rpx;
 	background-position: -416px -63px;
 }
 .txt-price{
@@ -1327,20 +1327,20 @@ export default {
 .addCart{
 width:40rpx;
 height:40rpx;
-margin-top:3rem;
+margin-top:30rpx;
 position:absolute;
-right:1rem;
+right:10rpx;
 background:#feb70f;
 border-radius:50%;
 text-align:center;
 line-height:34rpx;
 color:#333;
-font-size:24px;
-box-shadow: 0px 0px 15px #feb70f inset;
+font-size:48rpx;
+box-shadow: 0rpx 0rpx 110rpx #feb70f inset;
 }
 /* .addCart image{
  pointer-events: none;
- padding: 0.5rem;
+ padding: 5rpx;
 	width: 24rpx;
 	height: 24rpx;
 } */
@@ -1348,8 +1348,8 @@ box-shadow: 0px 0px 15px #feb70f inset;
 /*购物车*/
 .cart{
   position: fixed;
-  bottom: 0rem;
-  height: 3.5rem;
+  bottom: 0rpx;
+  height: 120rpx;
   width: 90%;
   display: flex;
   flex-direction: row;
@@ -1362,7 +1362,7 @@ box-shadow: 0px 0px 15px #feb70f inset;
   margin-left:-20rpx;
   margin-top:-16px;
   background:#EB4E27;
-  border-radius:202px;
+  border-radius:204rpx;
   height:35rpx;
   width:35rpx;
   font-size:22rpx;
@@ -1371,40 +1371,40 @@ box-shadow: 0px 0px 15px #feb70f inset;
   color:#fff;
 }
 .data{
-  line-height: 1;
+  padding-top:40rpx;
   width: 70%;
-  border-top-left-radius:100px;
-  border-bottom-left-radius:100px;
+  border-top-left-radius:200rpx;
+  border-bottom-left-radius:200rpx;
   background-color:#333333;
   background:#333 linear-gradient(to bottom, rgba(51,51,51,0), rgba(2555,255,255,.5));
 }
 .icon{
-  height: 2rem;
+  height: 30rpx;
   width: 100%;
   display: flex;
   flex-direction: row;
 }
 .icon-img{
-  height: 2rem;
-  width: 2rem;
+  height: 60rpx;
+  width: 60rpx;
    background-color: #feb70f;
-  margin-top: -0.5rem;
+  margin-top: -5rpx;
   border-radius: 50%;
 }
 .icon-img image{
-  height: 1.5rem;
-  width: 1.5rem;
-  padding: 0.25rem;
+  height: 50rpx;
+  width: 50rpx;
+  padding: 3rpx;
 }
 .count{
-  padding-left: 1rem;
+  padding-left: 10rpx;
   font-size: 28rpx;
   margin-top:14rpx;
   color: #fff;
 }
 
 .total{
-  height: 1rem;
+  height: 10rpx;
 }
 .cart form{
     width: 20%;
@@ -1422,7 +1422,7 @@ box-shadow: 0px 0px 15px #feb70f inset;
   bottom:110rpx;
   left: 0;
   width: 100%;
-  height: 15rem;
+  height: 30rpx;
   background: #fff;
 
   /* width:100%;
@@ -1436,22 +1436,22 @@ box-shadow: 0px 0px 15px #feb70f inset;
 }
 .list{
   width:100%;
-  height: 35rem;
+  height: 350rpx;
   /* position:absolute;
-  bottom:2rem;
+  bottom:20rpx;
   left:0;
   width:100%;
-  height:15rem;
+  height:30rpx;
   background:#fff;
   z-index:1; */
 }
 .list-a{
   width:100%;
   font-size:33rpx;
-  height:27px;
+  height:214rpx;
   text-align:center;
   background-color:#F7CE65;
-  line-height:27px;
+  line-height:214rpx;
 
 }
 
@@ -1459,22 +1459,22 @@ box-shadow: 0px 0px 15px #feb70f inset;
 
 .list-item{
   width: 100%;
-  height: 35rem;
+  height: 350rpx;
 }
 .local-item{
   width:100%;
-  height:5rem;
+  height:50rpx;
   display:flex;
   flex-direction:row;
   background-color:#eee;
-  padding:0.1rem;
-  margin-bottom:1rem;
-  border-radius:12px;
+  padding:1rpx;
+  margin-bottom:10rpx;
+  border-radius:14rpx;
 
 }
 .item-img image{
-  height:3.5rem;
-  width:3.5rem;
+  height:35rpx;
+  width:35rpx;
   margin-top:10px;
 }
 .item-info{
@@ -1482,13 +1482,13 @@ box-shadow: 0px 0px 15px #feb70f inset;
   display: flex;
   flex-direction: column;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-size: 1.5rem;
-  margin-left:25px;
-  margin-top:7px;
+  font-size: 15rpx;
+  margin-left:50rpx;
+  margin-top:14rpx;
   color:#555;
 }
 .info-name{
-  font-size: 1rem;
+  font-size: 10rpx;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 .item-name-con{
@@ -1504,12 +1504,12 @@ box-shadow: 0px 0px 15px #feb70f inset;
 }
 
 .info-price{
-  font-size: 0.7rem;
+  font-size: 7rpx;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   margin-bottom:6rpx;
 }
 .info-num{
-  font-size: 0.8rem;
+  font-size: 8rpx;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   display: flex;
 }
@@ -1521,20 +1521,20 @@ box-shadow: 0px 0px 15px #feb70f inset;
 }
 .add-add{
   background-color: yellow;
-  width: 1rem;
-  height: 1rem;
+  width: 10rpx;
+  height: 10rpx;
   border-radius: 50%;
-  margin: 0 0.4rem;
-  font-size: 0.8rem;
+  margin: 0 4rpx;
+  font-size: 8rpx;
   text-align: center;
 }
 .add-de{
   background-color: yellow;
-  width: 1rem;
-  height: 1rem;
+  width: 10rpx;
+  height: 10rpx;
   border-radius: 50%;
-  font-size: 0.8rem;
-  margin: 0 0.4rem;
+  font-size: 8rpx;
+  margin: 0 4rpx;
   text-align: center;
 }
 
@@ -1570,9 +1570,9 @@ box-shadow: 0px 0px 15px #feb70f inset;
 .chooseSpecs{
 width: 100rpx;
 height: 40rpx;
-margin-top: 3rem;
+margin-top: 30rpx;
 position: absolute;
-right: 1rem;
+right: 10rpx;
 background: #feb70f;
 border-radius: 100px;
 text-align: center;
@@ -1758,7 +1758,7 @@ font-size: 24rpx;
 .specs-btn-ok{
   background: #F6C657;
   padding: 10rpx 20rpx;
-  border-radius: 30px;
+  border-radius: 60rpx;
 }
 
 .select-specs{
@@ -1779,7 +1779,7 @@ font-size: 24rpx;
 	font-size: 16rpx;
 }
 .txt-zhekoprice span{
-	font-size: 11px;
-	margin-left: 5px;
+	font-size: 22rpx;
+	margin-left: 10rpx;
 }
 </style>
