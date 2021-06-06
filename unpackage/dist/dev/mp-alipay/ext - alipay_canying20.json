@@ -35,7 +35,9 @@
     }
   },
   "window":{
-    "defaultTitle": "延誉宝扫码点餐2.0"
+    "defaultTitle": "延誉宝扫码点餐2.0",
+    "titleBarColor": "#f37404",
+    "backgroundColor": "#ffffff"
   }
   
 }

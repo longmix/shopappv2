@@ -33,7 +33,7 @@ const globalData = {
 		//并确保与 navigationBarTextStyle / navigationBarBackgroundColor   保持一致
 		navigationBarBackgroundColor_fixed:1,
 		navigationBar_font_color:'#ffffff',
-		navigationBar_bg_color:'#f37404',
+		navigationBar_bg_color:'#f37404',	//需要同步修改 pages.json的 globalStyle 中的 navigationBarBackgroundColor
 		//======================End=======================
 		
 		//======以下选项可以在服务器端修改，这里是默认值=====
