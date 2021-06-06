@@ -36,6 +36,7 @@
 				</view>
 				<div></div>
 				
+				
 				<!-- #ifdef MP-WEIXIN -->
 					<button type="primary"  formType="submit" 
 					
@@ -43,9 +44,18 @@
 
 						class="btn-row-submit"
 						:style="{background:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" 
+						style="width: 84%;background: #228B22;margin: auto;">登陆/注册</button>
+				<!-- #endif -->
+				
+				<!-- #ifdef MP-ALIPAY -->
+					<!-- 	type="default"	scope="phoneNumber"	 open-type="getAuthorize" @getAuthorize="onGetAlipayAuthorize"	 -->
+					<button type="primary"	@click="onGetAlipayAuthCode"			
+						class="btn-row-submit"
+						:style="{background:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" 
 						style="width: 84%;background: #2E85D8;margin: auto;">登陆/注册</button>
 				<!-- #endif -->
-				<!-- #ifndef MP-WEIXIN -->	
+				
+				<!-- #ifndef MP-WEIXIN | MP-ALIPAY -->	
 					<button type="primary"  formType="submit"
 						
 						@click="btn_user_login"
@@ -54,6 +64,8 @@
 						:style="{background:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" 
 						style="width: 84%;background: #2E85D8;margin: auto;">登陆/注册</button>
 				<!-- #endif -->	
+				
+				
 					
 				<div class="flex mgb-20">
 					<div class="cl-black pointer flex-1" style="color: #a2a2a2;font-size: 26rpx;">手机号码首次登录自动注册</div>
@@ -164,6 +176,9 @@
 				login_after_get_userinfo:0,
 				current_userinfo:null,
 				wxa_login_only_weixin: 0,
+				
+				//微信和支付宝小程序的 jscode 和 authcode 信息
+				login_data_from_wxa_or_alipay:null
 			}
 		},
 		onLoad:function(){
@@ -317,6 +332,39 @@
 				})
 			},
 			
+			__user_login_request_before:function(){
+				var that = this;
+				
+				if (!that.mobile) {
+					uni.showToast({
+						title: '请输入手机号码！',
+						icon: 'fail',
+						duration: 2000
+					})
+					return false;
+				}
+				
+				if (!that.img) {
+					uni.showToast({
+						title: '请输入图片验证码！',
+						icon: 'fail',
+						duration: 2000
+					})
+					return false; 
+				}
+				
+				if (!that.tel) {
+					uni.showToast({
+						title: '请输入手机验证码！',
+						icon: 'fail',
+						duration: 2000
+					})
+					return false;
+				}
+				
+				return true;
+			},
+			
 			//手机验证码登录
 			btn_user_login: function (e) {
 			    //console.log('getUserInfo button click, and get following msg', e);
@@ -324,59 +372,62 @@
 				
 				var that = this;
 				
-			    if (!this.mobile) {
-					uni.showToast({
-						title: '请输入手机号码！',
-						icon: 'fail',
-						duration: 2000
-					})
-					return;
-			    }
-				
-			    if (!this.img) {
-					uni.showToast({
-						title: '请输入图片验证码！',
-						icon: 'fail',
-						duration: 2000
-					})
-					return; 
-			    }
-				
-			    if (!this.tel) {
-					uni.showToast({
-						title: '请输入手机验证码！',
-						icon: 'fail',
-						duration: 2000
-					})
-					return;
-			    }
-				
-				if(this.login_after_get_userinfo == 1){
+				if(!that.__user_login_request_before()){
 					return;
 				}
 				
+			   
 				
-				that.abotapi.abotRequest({
-				    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=login',
-				    header: {
-						"Content-Type": "application/x-www-form-urlencoded"
-				    },
-				    method: "POST",
-				    data: { 
+				if(that.login_after_get_userinfo == 1){
+					return;
+				}
+				
+				var login_url = that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=login';
+				var post_data = { 
 						mobile: that.mobile,
 						verifycode_sms: that.tel,
 						sellerid: that.abotapi.globalData.default_sellerid,
 						parentid: that.abotapi.get_current_parentid(),
+				    };
+				
+				//#ifdef MP-WEIXIN
+					//ShopAppWxa 里面增加了对 jscode的处理逻辑
+					login_url = that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=login';
+				//#endif
+				
+				//#ifdef MP-ALIPAY
+					login_url = that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=login_in_alipay';
+					
+					if(that.login_data_from_wxa_or_alipay){
+						
+						//post_data.auth_code = that.login_data_from_wxa_or_alipay.auth_code;
+						//post_data.alipay_appid = that.login_data_from_wxa_or_alipay.alipay_appid;
+						for(var key in that.login_data_from_wxa_or_alipay){
+							post_data[key] = that.login_data_from_wxa_or_alipay[key];
+						}
+						
+						console.log('支付宝小程序登录，准备提交的数据：', post_data);
+						
+					}
+				//#endif
+				
+				that.abotapi.abotRequest({
+				    url: login_url,
+				    header: {
+						"Content-Type": "application/x-www-form-urlencoded"
 				    },
+				    method: "POST",
+				    data: post_data,
 				    success: function (request_res) {
-						console.log(4444444444444444444);
+						console.log('网址===>>>>'+login_url+' ===>>> ', request_res);
 						
+						//return;
 						
-						console.log(request_res);
 						var data = request_res.data;
 						//var res = JSON.parse(data);
 						//console.log(res);
-						console.log(request_res.data);
+						//console.log(request_res.data);
+						
 						if (request_res.data && (request_res.data.code == 1)){
 							console.log("update_mobile : check_button : ");
 							console.log('登录成功 返回userid:' + request_res.data.userid);
@@ -394,6 +445,7 @@
 								that.abotapi.globalData.userInfo = {};
 							}
 				        
+							//#ifdef MP-WEIXIN
 							//保存openid
 							if(request_res.data.openid){
 								that.abotapi.globalData.userInfo.user_openid = request_res.data.openid;
@@ -403,6 +455,7 @@
 							if(!that.abotapi.globalData.userInfo.user_openid && !request_res.data.openid){
 								that.abotapi.set_current_openid('userid_openid_' + request_res.data.userid);
 							}
+							//#endif
 							
 							that.abotapi.globalData.userInfo.userid = request_res.data.userid;          
 							that.abotapi.globalData.userInfo.checkstr = request_res.data.checkstr;
@@ -707,9 +760,11 @@
 								
 								
 								// #ifdef MP-WEIXIN
+								
+								// #endif
+								
 								that.login_after_get_userinfo = 0;
 								that.btn_user_login();
-								// #endif
 								
 							},
 							fail: function (e) {
@@ -762,6 +817,98 @@
 				var that=this;
 				
 				// that.btn_user_login();
+			},
+			//获取支付宝的用户ID
+			onGetAlipayAuthCode:function(e){
+				
+				var that = this;
+				
+				console.log("onGetAlipayAuthCode支付宝小程序中点击了登陆按钮 ===>>>" + e);
+				//console.log(that.abotapi.globalData.alipay_third_appid);
+				//return;
+				
+				
+				
+				if(!that.__user_login_request_before()){
+					return;
+				}				
+				
+				
+				my.getAuthCode({
+					scopes: ['auth_base'],
+					 // 主动授权：auth_user，静默授权：auth_base或者其它scope。如需同时获取用户多项授权，可在 scopes 中传入多个 scope 值。
+					success: (res) => {
+
+						if (!res.authCode) {
+							return;
+						}
+						
+						
+						console.log("onGetAlipayAuthCode 获取到的authCode是:" + res.authCode);
+						
+						that.login_data_from_wxa_or_alipay = {};
+						that.login_data_from_wxa_or_alipay.platform = 'alipay';
+						that.login_data_from_wxa_or_alipay.auth_code = res.authCode;
+						
+						that.login_data_from_wxa_or_alipay.alipay_third_appid = that.abotapi.globalData.alipay_third_appid;
+						that.login_data_from_wxa_or_alipay.alipay_user_pid = that.abotapi.globalData.alipay_user_pid;
+						that.login_data_from_wxa_or_alipay.alipay_mini_prog_appid = that.abotapi.globalData.alipay_mini_prog_appid;
+											  
+						// 认证成功
+						// 调用自己的服务端接口，让服务端进行后端的授权认证，并且利用session，需要解决跨域问题
+						// 该url是您自己的服务地址，实现的功能是服务端拿到authcode去开放平台进行token验证
+						
+						that.login_after_get_userinfo = 0;
+						that.btn_user_login();
+						
+						
+						
+						
+						
+					},
+				});
+				
+				
+			},
+			//支付宝的集成登录
+			onGetAlipayAuthorize:function(e){
+				
+				console.log('onGetAlip11111111');
+				
+				
+				
+				
+				
+				my.getOpenUserInfo({
+					success: function(res) {
+						console.log('alipay getOpenUserInfo success, res: ', res.response);
+						//_this.processUserInfo(JSON.parse(res.response).response);
+					},
+					fail: function(err) {
+						console.log('alipay getOpenUserInfo fail, error: ', err);
+					}
+				});
+				
+				my.getPhoneNumber({
+				    success: (res) => {
+				        let encryptedData = res.response;
+						
+				        console.log(encryptedData);
+						
+				        my.request({
+				            url: '服务端接收地址',
+				            data: encryptedData,
+				        });
+				    },
+				    fail: (res) => {
+				        console.log(res);
+				        console.log('getPhoneNumber_fail');
+				    },
+				});
+				
+				
+				
+				
 			}
 		}
 	}

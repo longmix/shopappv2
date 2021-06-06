@@ -119,9 +119,15 @@
 				
 				console.log('cb_params==>',cb_params);
 				
-				this.abotapi.getColor()
+				var that = this;
+				
+				console.log('that.abotapi.globalData.navigationBarBackgroundColor_fixed==>>', that.abotapi.globalData.navigationBarBackgroundColor_fixed);
+				
 				
 				if(that.abotapi.globalData.navigationBarBackgroundColor_fixed == 1){
+					
+					console.log('that.abotapi.globalData.navigationBar_bg_color==>>', that.abotapi.globalData.navigationBar_bg_color)
+					
 					uni.setNavigationBarColor({
 						backgroundColor:that.abotapi.globalData.navigationBar_bg_color,
 						frontColor:that.abotapi.globalData.navigationBar_font_color,
@@ -129,7 +135,8 @@
 					that.frontColor = that.abotapi.globalData.navigationBar_font_color;
 					that.btn_bg_color = that.abotapi.globalData.navigationBar_bg_color;
 					
-				}else{
+				}
+				else{
 					uni.setNavigationBarColor({
 						backgroundColor:cb_params.wxa_shop_nav_bg_color,
 						frontColor:cb_params.wxa_shop_nav_font_color,
