@@ -141,13 +141,15 @@
 		</view>
 
 		<view class="pay_submit" v-if="is_online_pay">
+			<!-- :style="{backgroundColor:btn_bg_color+' !important'}" -->
 			<button type="default" id="Pay" formType="submit" 
-				:style="{backgroundColor:btn_bg_color+' !important'}"
+				:style="{background: btn_bg_color,color:frontColor}"
 				:data-price="pay_price" @tap="is_online_pay?createProductOrderByWX():createProductOrderByZZ()">确认支付</button>
 		</view>
 		<view class="pay_submit" v-if="pay_price == 0.00">
+			<!-- :style="{backgroundColor:btn_bg_color+' !important'}" -->
 			<button type="default" id="Pay" formType="submit" 
-				:style="{backgroundColor:btn_bg_color+' !important'}"
+				:style="{background: btn_bg_color,color:frontColor}"
 				:data-price="pay_price" @tap="createProductOrderByZZ()">确认支付</button>
 		</view>
 
@@ -205,9 +207,13 @@
 				key: '',
 				
 				btn_bg_color: '#1AAD19',
+				frontColor:'#ffffff',
 				
 				//2020.12.14.
 				user_coupon_dikou:0,	//优惠券抵扣的金额
+				
+				//2021.6.7.  //特殊判断：是否为支付宝的门店商家付款
+				is_mp_alipay_xianmai:0,
 			}
 		},
 		onShow: function() {
@@ -325,10 +331,38 @@
 			//========= End ===============
 			
 			
-			this.abotapi.set_option_list_str(this, (_self, option_list)=>{
-				that.btn_bg_color = _self.abotapi.getColor();
+			if(options.is_mp_alipay_xianmai){
+				this.is_mp_alipay_xianmai = options.is_mp_alipay_xianmai;
+			}
+			
+			
+			this.abotapi.set_option_list_str(this, (that, option_list)=>{
 				
-				
+				//====1、更新界面的颜色
+				if(that.abotapi.globalData.navigationBarBackgroundColor_fixed == 1){
+					
+					console.log('that.abotapi.globalData.navigationBar_bg_color==>>', that.abotapi.globalData.navigationBar_bg_color)
+					
+					/*uni.setNavigationBarColor({
+						backgroundColor:that.abotapi.globalData.navigationBar_bg_color,
+						frontColor:that.abotapi.globalData.navigationBar_font_color,
+					})*/
+					
+					that.frontColor = that.abotapi.globalData.navigationBar_font_color;
+					that.btn_bg_color = that.abotapi.globalData.navigationBar_bg_color;
+					
+				}
+				else{
+					/*uni.setNavigationBarColor({
+						backgroundColor:cb_params.wxa_shop_nav_bg_color,
+						frontColor:cb_params.wxa_shop_nav_font_color,
+					})*/
+					
+					console.log('cb_params==>',cb_params.wxa_shop_nav_font_color);
+					
+					that.frontColor = cb_params.wxa_shop_nav_font_color;
+					that.btn_bg_color = cb_params.wxa_shop_nav_bg_color;
+				}
 				
 				
 				
@@ -411,6 +445,7 @@
 						
 						// #ifdef MP-ALIPAY
 							show_weixin_pay = 0;
+							show_ali_pay = 1;
 						// #endif
 
 						that.type_list = type_list;
@@ -455,7 +490,7 @@
 				}
 				
 				
-				console.log('ppppp',that.current_payment_type);
+				console.log('ppppp 切换支付方式：',that.current_payment_type);
 				
 				
 				var userInfo = that.abotapi.get_user_info();
@@ -764,6 +799,28 @@
 					payment_provider = 'wxpay';
 				// #endif
 				
+				//如果在支付宝小程序中
+				// #ifdef MP-ALIPAY
+					payment_provider = 'alipay';
+					
+					post_data.trade_type = 'MP_ALIPAY';
+					
+					post_data.alipay_mini_prog_appid = that.abotapi.globalData.alipay_mini_prog_appid;
+					post_data.alipay_third_appid = that.abotapi.globalData.alipay_third_appid;
+					post_data.alipay_user_pid = that.abotapi.globalData.alipay_user_pid;
+					
+					post_data.is_mp_alipay_xianmai = 1;
+					
+					//门店ID，用于支付宝付款时候统计哪个门店
+					post_data.xianmai_shangid = 0;
+					//二维码ID，用于标记是否为扫码点餐，以及扫了哪个二维码，用于统计每个二维码被扫码的次数
+					post_data.alipay_qrcode_id = 0;
+					
+					//post_data.openid = that.abotapi.get_current_openid();
+					post_data.client = 'alipay_wxa';
+					
+				// #endif
+				
 				
 				
 				that.abotapi.abotRequest({
@@ -915,6 +972,10 @@
 							uni_pay_params.paySign = payment_parameter.paySign;
 						// #endif
 						
+						// #ifdef MP-ALIPAY
+						
+						// #endif
+						
 						//appId: payment_parameter.appId,
 						
 						console.log('开始调用 uni.requestPayment====>>>>>支付方式===>>>', post_data.payment_type);
@@ -1037,7 +1098,7 @@
 		float: right;
 	}
 
-	wx_pay_submit {
+	.wx_pay_submit {
 		margin-top: 100rpx;
 	}
 

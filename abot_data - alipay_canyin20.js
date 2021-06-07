@@ -14,7 +14,7 @@ const globalData = {
 		weixin_open_platform_appid: 'wx029e1ddb38b4c630',	//微信开放平台中登记的APP对应的appid（务必与manifest中的配置一致）
 		
 		alipay_third_appid:'2018111162078907',		//支付宝第三方平台应用信息，默认是延誉公司下面的名字叫延誉宝的应用，但是也可能是哈哈订或者芈隽的应用
-		alipay_user_pid:'2088201901872325',			//上海延誉信息技术有限公司
+		alipay_user_pid:'2088201901872325',			//上海延誉信息技术有限公司的支付宝ID，2088开头的
 		alipay_mini_prog_appid:'2021002147673504',			//支付宝小程序appid：延誉宝扫码点餐
 		
 		//通版商城
@@ -37,7 +37,7 @@ const globalData = {
 		//并确保与 navigationBarTextStyle / navigationBarBackgroundColor   保持一致
 		navigationBarBackgroundColor_fixed:1,
 		navigationBar_font_color:'#ffffff',
-		navigationBar_bg_color:'#f37404',
+		navigationBar_bg_color:'#f37404',	//需要同步修改 pages.json的 globalStyle 中的 navigationBarBackgroundColor
 		//======================End=======================
 		
 		//======以下选项可以在服务器端修改，这里是默认值=====

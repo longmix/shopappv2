@@ -1061,8 +1061,31 @@ export default {
 		
 		    var total = this.total;
 			
+			var buy_url = '/pages/order/pay?order_type_001=xianmaishang';
+			
+			//读取实体商家的ID
+			buy_url += '&xianmaishangid=' + this.shopId;
+			
+			buy_url += '&total=' + this.total;
+			buy_url += '&cart_count=' + this.cart_count;
+			buy_url += '&is_waimai=' + this.is_waimai;
+			buy_url += '&from_o2owaimai=1';
+			
+			//，以及扫码的编号等
+			var scan_qrcode_no = uni.getStorageInfoSync('current_scan_qrcode_no');
+			if(scan_qrcode_no){
+				buy_url += '&scan_qrcode_no=' + scan_qrcode_no;
+			}
+			
+			
+			//餐桌编号
+			var desk_no = uni.getStorageInfoSync('current_desk_no');
+			if(desk_no){
+				buy_url += '&desk_no=' + desk_no;
+			}
+			
 		    uni.navigateTo({
-		      url: '/pages/order/pay?order_type_001=xianmaishang&xianmaishangid=' + this.shopId + '&total=' + this.total + '&cart_count=' + this.cart_count + '&is_waimai=' + this.is_waimai + '&from_o2owaimai=1' 
+		      url: buy_url 
 		    })
 		  },
 		

@@ -218,7 +218,7 @@
 				deduction:0,	//抵扣价格
 				//recinfo:'',
 				address:'',
-				shang_detail:[],
+				
 				
 				itemData:{},
 				userId:0,
@@ -266,17 +266,27 @@
 					address:'',
 				},
 				
-				//外卖相关的参数
-				is_waimai: 0,
-				waimai_buyer_longitude:'121.524494',	//经度
-				waimai_buyer_latitude:'31.238075',	//纬度
-				xianmaishangid: '',
-				current_shang_item:{'name':''},
+				
+				
+				
+				
 				cartlist: [],
 				
 				frontColor:'#ffffff',
 				btn_bg_color: '#1AAD19',
+				
 				order_type_001:'shopmall',
+				
+				order_type_001_xianmaishang_data:null,
+				//外卖相关的参数，都放到 order_type_001_xianmaishang_data
+				//is_waimai: 0,
+				//waimai_buyer_longitude:'121.524494',	//经度
+				//waimai_buyer_latitude:'31.238075',	//纬度
+				//xianmaishangid: '',
+				//current_shang_item:{'name':''},
+				//shang_detail:[],
+				
+				
 				current_userinfo:null,
 				picture_show: false,
 				orderredpackge_list:[],
@@ -419,9 +429,19 @@ tuansn = 参团的编号，如果没有，则代表新开团
 				}
 			}
 			else if(that.order_type_001 == 'xianmaishang'){
-				that.xianmaishangid = options.xianmaishangid;
+				if(!that.order_type_001_xianmaishang_data){
+					that.order_type_001_xianmaishang_data = {}
+				}
+				
+				that.order_type_001_xianmaishang_data.xianmaishangid = options.xianmaishangid;
 				if(options.is_waimai){
-					that.is_waimai = options.is_waimai;
+					that.order_type_001_xianmaishang_data.is_waimai = options.is_waimai;
+				}
+				if(options.desk_no){
+					that.order_type_001_xianmaishang_data.desk_no = options.desk_no;
+				}
+				if(options.scan_qrcode_no){
+					that.order_type_001_xianmaishang_data.scan_qrcode_no = options.scan_qrcode_no;
 				}
 			}
 			
@@ -579,20 +599,20 @@ tuansn = 参团的编号，如果没有，则代表新开团
 					
 					console.log('that.abotapi.globalData.navigationBar_bg_color==>>', that.abotapi.globalData.navigationBar_bg_color)
 					
-					uni.setNavigationBarColor({
+					/*uni.setNavigationBarColor({
 						backgroundColor:that.abotapi.globalData.navigationBar_bg_color,
 						frontColor:that.abotapi.globalData.navigationBar_font_color,
-					})
+					})*/
 					
 					that.frontColor = that.abotapi.globalData.navigationBar_font_color;
 					that.btn_bg_color = that.abotapi.globalData.navigationBar_bg_color;
 					
 				}
 				else{
-					uni.setNavigationBarColor({
+					/*uni.setNavigationBarColor({
 						backgroundColor:cb_params.wxa_shop_nav_bg_color,
 						frontColor:cb_params.wxa_shop_nav_font_color,
-					})
+					})*/
 					
 					console.log('cb_params==>',cb_params.wxa_shop_nav_font_color);
 					
@@ -674,13 +694,13 @@ tuansn = 参团的编号，如果没有，则代表新开团
 					  url: that.abotapi.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/get_shang_detail',
 					  data: {
 					     sellerid:that.abotapi.get_sellerid(),
-						 xianmai_shangid: that.xianmaishangid,
+						 xianmai_shangid: that.order_type_001_xianmaishang_data.xianmaishangid,
 					  },
 					  success: function (res) {	
 						console.log('res===----', res.data.data);
 					    if (res.data.code == 1) {
-					      that.shang_detail = res.data.data;
-						  console.log('that.shang_detail===----',that.shang_detail);
+					      that.order_type_001_xianmaishang_data.shang_detail = res.data.data;
+						  console.log('that.shang_detail===----',that.order_type_001_xianmaishang_data.shang_detail);
 					    } 	
 					  }
 					});
@@ -696,7 +716,9 @@ tuansn = 参团的编号，如果没有，则代表新开团
 				var that = this; 
 				
 				var userInfo = that.current_userinfo;
-				console.log('userInfo====>?',userInfo);
+				
+				console.log('userInfo====>?', userInfo);
+				
 				that.abotapi.abotRequest({
 				  url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
 				  data: {
@@ -714,17 +736,17 @@ tuansn = 参团的编号，如果没有，则代表新开团
 				  }
 				});
 
-				console.log('that.xianmaishangid===>>>>', that.xianmaishangid)
+				console.log('that.xianmaishangid===>>>>', that.order_type_001_xianmaishang_data.xianmaishangid)
 
-				if(that.is_waimai == 1){
-				  that.cartlist = uni.getStorageSync('waimai_list_' + that.xianmaishangid);
+				if(that.order_type_001_xianmaishang_data.is_waimai == 1){
+				  that.cartlist = uni.getStorageSync('waimai_list_' + that.order_type_001_xianmaishang_data.xianmaishangid);
 				}else{
-				  that.cartlist = uni.getStorageSync('cart_list_' + that.xianmaishangid);
+				  that.cartlist = uni.getStorageSync('cart_list_' + that.order_type_001_xianmaishang_data.xianmaishangid);
 				}
 				
 				console.log('that.cartlist====>>>', that.cartlist);
 				
-				if(that.is_waimai == 1){
+				if(that.order_type_001_xianmaishang_data.is_waimai == 1){
 					that.__load_order_detail_xianmaishang_waimai();
 					
 					//外卖配送订单，强制显示配送地址
@@ -948,21 +970,22 @@ tuansn = 参团的编号，如果没有，则代表新开团
 				
 				//外卖订单，重新计算总价
 				var userInfo = that.current_userinfo;	
-				console.log("longitude=====>>>", 'longitude_' + that.xianmaishangid + '_latitude');
+				console.log("longitude=====>>>", 'longitude_' + that.order_type_001_xianmaishang_data.xianmaishangid + '_latitude');
 				// var longitude_latitude = wx.getStorageInfoSync('longitude_' + options.xianmaishangid + '_latitude');
 							
-				var get_str = "shang_" + that.xianmaishangid + "_detail";
+				var get_str = "shang_" + that.order_type_001_xianmaishang_data.xianmaishangid + "_detail";
 				var shang_detail = uni.getStorageSync(get_str);
-				console.log('get_str===',get_str)
-				console.log('shang_detail===',shang_detail)
+				
+				console.log('get_str===', get_str)
+				console.log('shang_detail===', shang_detail)
 							
-				that.current_shang_item = shang_detail
+				that.order_type_001_xianmaishang_data.current_shang_item = shang_detail
 						
 							     
 				that.abotapi.abotRequest({
 				  url: that.abotapi.globalData.o2owaimai_server_url + 'openapi/PublicData/get_option_list',
 				  data: {
-				    merchantid: that.xianmaishangid,
+				    merchantid: that.order_type_001_xianmaishang_data.xianmaishangid,
 				  },
 				  success: function (res) {
 				    var data = res.data;
@@ -1089,8 +1112,12 @@ tuansn = 参团的编号，如果没有，则代表新开团
 							thats.latitude = wxMarkerData[0].latitude;
 							thats.longitude = wxMarkerData[0].longitude;
 							
-							thats.waimai_buyer_longitude = wxMarkerData[0].longitude;
-							thats.waimai_buyer_latitude = wxMarkerData[0].latitude;
+							if(!thats.order_type_001_xianmaishang_data){
+								thats.order_type_001_xianmaishang_data = {};
+							}
+							
+							thats.order_type_001_xianmaishang_data.waimai_buyer_longitude = wxMarkerData[0].longitude;
+							thats.order_type_001_xianmaishang_data.waimai_buyer_latitude = wxMarkerData[0].latitude;
 							
 							console.log('888999sss', wxMarkerData[0]);
 							
@@ -1407,6 +1434,7 @@ tuansn = 参团的编号，如果没有，则代表新开团
 							that.orderno = res.data.orderno;
 							
 							if(that.order_type_001 == 'shopmall'){
+								//普通订单的支付请求
 								var url_to_payment = '/pages/pay/payment/payment?orderid=' + that.orderid;
 								url_to_payment += '&balance_zengsong_dikou=' + that.balance_zengsong_dikou;
 								url_to_payment += '&balance_dikou=' + that.balance_dikou;
@@ -1473,43 +1501,55 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			order_add_new_option_by_key_value: function (e) {
 			    var that = this;
 			    
-			    var is_waimai = that.is_waimai;
+			    var is_waimai = that.order_type_001_xianmaishang_data.is_waimai;
+				
+				var cartlist = null;
 			
 			    if (is_waimai == 1){
-			      var cartlist = wx.getStorageSync('waimai_list_' + that.xianmaishangid);
+			      var cartlist = wx.getStorageSync('waimai_list_' + that.order_type_001_xianmaishang_data.xianmaishangid);
 			    }else{
-			      var cartlist = wx.getStorageSync('cart_list_' + that.xianmaishangid);
+			      var cartlist = wx.getStorageSync('cart_list_' + that.order_type_001_xianmaishang_data.xianmaishangid);
 			    }
 			    
 			    
 				
 			    var order_add_new_option_by_key_value = [];
 			
-			    if(that.is_waimai == 1){
-					if(!that.waimai_rmb && (that.waimai_rmb != 0)){
-						that.waimai_rmb = 12;
+			    if(is_waimai == 1){
+					if(!that.order_type_001_xianmaishang_data.waimai_rmb && (that.order_type_001_xianmaishang_data.waimai_rmb != 0)){
+						that.order_type_001_xianmaishang_data.waimai_rmb = 12;
 					}
 					
 					order_add_new_option_by_key_value.push(
 						{ "key": "hahading_order_product_list", "value": cartlist }, 
-						{ "key": "hahading_order_xianmai_shangid", "value": that.xianmaishangid },  
-						{ "key": "xianmai_order_type", "value": that.is_waimai }, 
-						{ "key": "waimai_buyer_latitude", "value": that.waimai_buyer_latitude }, 
-						{ "key": "waimai_buyer_longitude", "value": that.waimai_buyer_longitude }, 
-						{ "key": "xianmai_waimai_peisong_price", "value": that.waimai_rmb });
+						{ "key": "hahading_order_xianmai_shangid", "value": that.order_type_001_xianmaishang_data.xianmaishangid },  
+						{ "key": "xianmai_order_type", "value": that.order_type_001_xianmaishang_data.is_waimai }, 
+						{ "key": "waimai_buyer_latitude", "value": that.order_type_001_xianmaishang_data.waimai_buyer_latitude }, 
+						{ "key": "waimai_buyer_longitude", "value": that.order_type_001_xianmaishang_data.waimai_buyer_longitude }, 
+						{ "key": "xianmai_waimai_peisong_price", "value": that.order_type_001_xianmaishang_data.waimai_rmb });
 			    }
 				else {
 			      order_add_new_option_by_key_value.push(
 					{ "key": "hahading_order_product_list", "value": cartlist }, 
-					{ "key": "hahading_order_xianmai_shangid", "value": that.xianmaishangid }, 
-					{ "key": "hahading_xianmai_yajin_orderid", "value": that.current_shang_item.yajin_orderid }, 
-					{ "key": "xianmai_order_type", "value": that.is_waimai });
+					{ "key": "hahading_order_xianmai_shangid", "value": that.order_type_001_xianmaishang_data.xianmaishangid }, 
+					//{ "key": "hahading_xianmai_yajin_orderid", "value": that.order_type_001_xianmaishang_data.current_shang_item.yajin_orderid }, 
+					{ "key": "xianmai_order_type", "value": that.order_type_001_xianmaishang_data.is_waimai });
+					
+					if(that.order_type_001_xianmaishang_data.current_shang_item 
+						&& that.order_type_001_xianmaishang_data.current_shang_item.yajin_orderid){
+							order_add_new_option_by_key_value.push({ "key": "hahading_xianmai_yajin_orderid", "value": that.order_type_001_xianmaishang_data.current_shang_item.yajin_orderid });
+						}
 			    }
 			
-			    var desk_no = uni.getStorageInfoSync('current_desk_no');
-			    if(desk_no){
-			      order_add_new_option_by_key_value.push({"key":"hahading_current_desk_no", "value":desk_no});
+				//餐桌编号
+			    if(that.order_type_001_xianmaishang_data.desk_no){
+			      order_add_new_option_by_key_value.push({"key":"hahading_current_desk_no", "value":that.order_type_001_xianmaishang_data.desk_no});
 			    }
+				
+				//扫码的编号
+				if(that.order_type_001_xianmaishang_data.scan_qrcode_no){
+				  order_add_new_option_by_key_value.push({"key":"xianmai_current_scan_qrcode_no", "value":that.order_type_001_xianmaishang_data.scan_qrcode_no});
+				}
 			
 			
 			    var order_add_new_option_by_key_value_str = encodeURIComponent(JSON.stringify(order_add_new_option_by_key_value));
@@ -1525,32 +1565,32 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			      },
 			      success: function (res) {
 					  
-					 if(that.is_waimai == 1){
-					   uni.removeStorage({
-							key: 'waimai_list_' + that.xianmaishangid,
-							success(res) {
-								 
-								uni.redirectTo({
-									url: '/pages/pay/payment/payment?orderid=' + that.orderid + '&balance_zengsong_dikou=' + that.balance_zengsong_dikou + '&balance_dikou=' + that.balance_dikou + '&traffic_price=' + that.traffic_price,
-								})
-								
-							}
-					   })
+					  var new_payment_url = '/pages/pay/payment/payment?orderid=' + that.orderid;
+					  new_payment_url += '&balance_zengsong_dikou=' + that.balance_zengsong_dikou;
+					  new_payment_url += '&balance_dikou=' + that.balance_dikou;
+					  new_payment_url += '&traffic_price=' + that.traffic_price;
+					  
+					  // #ifdef MP-ALIPAY
+					  new_payment_url += '&is_mp_alipay_xianmai=1';
+					  // #endif
+					  
+					  var storage_key = '';
+					  
+					 if(that.order_type_001_xianmaishang_data.is_waimai == 1){
+					   storage_key = 'waimai_list_' + that.order_type_001_xianmaishang_data.xianmaishangid;
 					 }
 					 else{
-					   
-					   uni.removeStorage({
-						 key: 'cart_list_' + that.xianmaishangid,
-						 success(res) {
-						   uni.redirectTo({
-						   	url: '/pages/pay/payment/payment?orderid=' + that.orderid + '&balance_zengsong_dikou=' + that.balance_zengsong_dikou + '&balance_dikou=' + that.balance_dikou + '&traffic_price=' + that.traffic_price,
-						   })
-						 }
-					   })
-					   
-					   
-					   
+						 storage_key = 'cart_list_' + that.order_type_001_xianmaishang_data.xianmaishangid;
 					 }
+					 
+					 uni.removeStorage({
+						key: storage_key,
+						success(res) {							 
+							uni.redirectTo({
+								url: new_payment_url,
+							})							
+						}
+					 })
 					  
 			      },
 			      fail: function (res) {
