@@ -44,7 +44,7 @@
 			<view ng-if="pay_type">
 				<view style="width: 94%;height:35px;line-height:35px;font-size: 14px;color:#666;margin:30px auto 0 auto; ">支付方式</view>
 
-				<view style="width: 100%;border-bottom: 1px solid #e6e6e6;border-top: 1px solid #e6e6e6;">
+				<view style="width: 100%;border-bottom: 2rpx solid #e6e6e6;border-top: 2rpx solid #e6e6e6;">
 					<view class="payment_box">
 						<radio-group class="radio-group" @change="radioChange">
 							<view class="zhifu_li" v-if="show_weixin_pay==1">
@@ -213,7 +213,8 @@
 				user_coupon_dikou:0,	//优惠券抵扣的金额
 				
 				//2021.6.7.  //特殊判断：是否为支付宝的门店商家付款
-				is_mp_alipay_xianmai:0,
+				//2021.6.8. 因为 /pages/pay/payment/payment在订单详情中也会被调用，所以不能再追加多余的参数了
+				//is_mp_alipay_xianmai:0,
 			}
 		},
 		onShow: function() {
@@ -331,9 +332,9 @@
 			//========= End ===============
 			
 			
-			if(options.is_mp_alipay_xianmai){
-				this.is_mp_alipay_xianmai = options.is_mp_alipay_xianmai;
-			}
+			//if(options.is_mp_alipay_xianmai){
+			//	this.is_mp_alipay_xianmai = options.is_mp_alipay_xianmai;
+			//}
 			
 			
 			this.abotapi.set_option_list_str(this, (that, option_list)=>{
@@ -809,7 +810,7 @@
 					post_data.alipay_third_appid = that.abotapi.globalData.alipay_third_appid;
 					post_data.alipay_user_pid = that.abotapi.globalData.alipay_user_pid;
 					
-					post_data.is_mp_alipay_xianmai = 1;
+					//post_data.is_mp_alipay_xianmai = 1;
 					
 					//门店ID，用于支付宝付款时候统计哪个门店
 					post_data.xianmai_shangid = 0;
@@ -895,7 +896,15 @@
 						}
 						else  if (post_data.payment_type == 2){
 							//支付宝支付
-							payment_parameter = res.data.str;
+							//  https://uniapp.dcloud.io/api/plugins/payment?id=orderinfo
+							// 支付宝小程序的 orderInfo(支付宝的规范为 tradeNO) 为 String 类型，表示支付宝交易号。
+							if(post_data.trade_type == 'MP_ALIPAY'){
+								payment_parameter = res.data.tradeNO;
+							}
+							else{
+								payment_parameter = res.data.str;
+							}
+							
 						}
 						
 
@@ -938,6 +947,7 @@
 							}
 						};
 						
+						//手机APP
 						// #ifdef APP-PLUS
 						if (post_data.payment_type == 3){
 							//微信支付
@@ -964,6 +974,7 @@
 						
 						// #endif
 						
+						//微信小程序
 						// #ifdef MP-WEIXIN
 							uni_pay_params.timeStamp = payment_parameter.timeStamp;
 							uni_pay_params.nonceStr = payment_parameter.nonceStr;
@@ -972,8 +983,9 @@
 							uni_pay_params.paySign = payment_parameter.paySign;
 						// #endif
 						
+						//支付宝小程序
 						// #ifdef MP-ALIPAY
-						
+							uni_pay_params.orderInfo = payment_parameter;
 						// #endif
 						
 						//appId: payment_parameter.appId,
@@ -1041,7 +1053,7 @@
 		font-size: 30rpx;
 		display: flex;
 		padding: 20rpx 30rpx;
-		border-bottom: 1px solid #e6e6e6;
+		border-bottom: 2rpx solid #e6e6e6;
 	}
 
 	.section_view {
@@ -1050,16 +1062,17 @@
 
 	.pay_submit button {
 		display: block;
-		position: fixed;
+		/*position: fixed;*/
 		bottom: 20rpx;
 		left: 0;
 		background-color: #1AAD19;
 		z-index: 100;
 		text-align: center;
-		width: 100%;
-		font-size: 16px;
-		border-top: 1px solid #eee;
-		line-height: 50px;
+		width: 90%;
+		margin:0 auto;
+		font-size: 32rpx;
+		border-top: 2rpx solid #eee;
+		line-height: 100rpx;
 		font-weight: 700;
 		color: #fff;
 	}
@@ -1081,7 +1094,7 @@
 	.vw1 {
 		width: 96%;
 		height: 80rpx;
-		border-bottom: 1px solid #e6e6e6;
+		border-bottom: 2rpx solid #e6e6e6;
 		margin: 0 auto;
 	}
 
@@ -1124,7 +1137,7 @@
 		background: #fff;
 		background-color: #fff;
 		position: relative;
-		border-bottom: 1px solid #e6e6e6;
+		border-bottom: 2rpx solid #e6e6e6;
 	}
 
 	.tubiao_zhifu {

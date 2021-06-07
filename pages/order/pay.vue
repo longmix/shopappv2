@@ -1571,7 +1571,7 @@ tuansn = 参团的编号，如果没有，则代表新开团
 					  new_payment_url += '&traffic_price=' + that.traffic_price;
 					  
 					  // #ifdef MP-ALIPAY
-					  new_payment_url += '&is_mp_alipay_xianmai=1';
+					  //new_payment_url += '&is_mp_alipay_xianmai=1';
 					  // #endif
 					  
 					  var storage_key = '';

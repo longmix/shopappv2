@@ -4,8 +4,8 @@
 	export default {
 
 
-		onLaunch: function() {
-			console.log('App Launch - shopapp vue')
+		onLaunch: function(options) {
+			console.log('App Launch - shopapp vue ===>>>', options);
 
 			console.log('abot_data ===>>>', abot_data);
 			
@@ -17,6 +17,13 @@
 			uni.setNavigationBarTitle({
 				title: this.abotapi.globalData.default_shopname
 			})
+			
+			
+			// #ifdef MP-ALIPAY
+				if(options && options.query && options.query.qrCode){
+					this.abotapi.globalData.qrcode_url = options.query.qrCode;
+				}				
+			// #endif
 
 
 			//如果是在小程序平台，则读取服务商的扩展设置

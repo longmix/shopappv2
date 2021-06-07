@@ -153,6 +153,19 @@
 
 <script>
 
+/**
+ * 跳转的路径：
+ * /pages/menuList/menuList?xianmai_shangid=3340&is_waimai=0
+ * 
+ * 如果在支付小程序中， app() 的 onLaunch() 方法中使用 options.query 获取普通二维码的扫码信息，例如：
+ * qrCode=http%3A%2F%2Fshang.abot.cn%2FSupplier%2FIndex%2Fwelcome.html
+ * 则 options.query.qrCode 的值为： http://shang.abot.cn/Supplier/Index/welcome.html
+ * 
+ * http://shang.abot.cn/Supplier/Index/welcome.html?sellerid=fJxSPaVgj&shangid=3340&is_waimai=0
+ * 
+ */
+//  
+//  
 
 //import abotapi001 from '../../../common/abotapi.js';
 import util from '@/common/util.js';
@@ -195,6 +208,33 @@ export default {
 		// document.getElementsByTagName('head')[0].appendChild(oMeta);
 		
 		// console.log('document888',document);
+		
+		
+		//======= 2021.6.7. 如果是从普通二维码扫码过来的（支付宝小程序）
+		//从网址分析出 sellerid、xianmai_shangid、is_waimai
+		if(this.abotapi.globalData.qrcode_url){
+			var myURL = new URL(this.abotapi.globalData.qrcode_url);
+			
+			console.log('this.abotapi.globalData.qrcode_url ===>>> ', myURL);
+			
+			var searchParams = new URLSearchParams(myURL.search);
+			
+			if(searchParams.get('sellerid')){
+				options.sellerid = searchParams.get('sellerid');
+								
+				this.abotapi.globalData.default_sellerid = options.sellerid
+				this.abotapi.set_sellerid(options.sellerid);
+			}
+			
+			if(searchParams.get('shangid')){
+				options.xianmai_shangid = searchParams.get('shangid');				
+			}
+			
+			if(searchParams.get('is_waimai')){
+				options.is_waimai = searchParams.get('is_waimai');				
+			}
+		}
+		//================= End ==========================
 		
 		
 
@@ -1248,6 +1288,10 @@ export default {
   color: #333333;
   font-weight: bold;
   font-size:32rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  margin-top: 20rpx;
+  padding: 0 30rpx;
 }
 .header-text{
   
