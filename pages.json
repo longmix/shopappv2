@@ -649,25 +649,7 @@
                 "enablePullDownRefresh": true
             }
             
-        },
-		{
-            "path" : "cms/library/library",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        },
-		{
-		    "path" : "cms/library/library_list",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "",
-		        "enablePullDownRefresh": false
-		    }
-		    
-		}
+        }
     ],	
 	"condition" : { //模式配置，仅开发期间生效
 		"current": 0, //当前激活的模式(list 的索引项)

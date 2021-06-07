@@ -159,8 +159,9 @@
 		
 			<view class="p_all mt10">
 				<view class="btnGreen">
+					<!-- style="{width: '100%', color:frontColor, backgroundColor:btn_bg_color+' !important'}"  -->
 					<button class="xx_pay_submit" type="default" id="xxPay" 
-						 :style="{width: '90%', backgroundColor:btn_bg_color+' !important'}" 
+						:style="{background: btn_bg_color,color:frontColor}"
 						formType="submit" @tap="createOrder">提交订单</button><!-- :disabled="btnDisabled" -->
 				</view>
 			</view>
@@ -273,7 +274,7 @@
 				current_shang_item:{'name':''},
 				cartlist: [],
 				
-				
+				frontColor:'#ffffff',
 				btn_bg_color: '#1AAD19',
 				order_type_001:'shopmall',
 				current_userinfo:null,
@@ -574,7 +575,31 @@ tuansn = 参团的编号，如果没有，则代表新开团
 				console.log('cb_params====', cb_params);
 				
 				//====1、更新界面的颜色
-				that.btn_bg_color = that.abotapi.getColor();
+				if(that.abotapi.globalData.navigationBarBackgroundColor_fixed == 1){
+					
+					console.log('that.abotapi.globalData.navigationBar_bg_color==>>', that.abotapi.globalData.navigationBar_bg_color)
+					
+					uni.setNavigationBarColor({
+						backgroundColor:that.abotapi.globalData.navigationBar_bg_color,
+						frontColor:that.abotapi.globalData.navigationBar_font_color,
+					})
+					
+					that.frontColor = that.abotapi.globalData.navigationBar_font_color;
+					that.btn_bg_color = that.abotapi.globalData.navigationBar_bg_color;
+					
+				}
+				else{
+					uni.setNavigationBarColor({
+						backgroundColor:cb_params.wxa_shop_nav_bg_color,
+						frontColor:cb_params.wxa_shop_nav_font_color,
+					})
+					
+					console.log('cb_params==>',cb_params.wxa_shop_nav_font_color);
+					
+					that.frontColor = cb_params.wxa_shop_nav_font_color;
+					that.btn_bg_color = cb_params.wxa_shop_nav_bg_color;
+				}
+				
 				
 				//====2、其他的设置选项：商品列表风格、头条图标等等
 				if (cb_params.wxa_product_list_style) {this.wxa_product_list_style = cb_params.wxa_product_list_style; }
@@ -2108,8 +2133,8 @@ tuansn = 参团的编号，如果没有，则代表新开团
 	}
 	.xx_pay_submit{
 	  margin-top: 10px;
-	  color: #fff !important;
-	  background-color: #1AAD19 !important;
+	  color: #fff;
+	  background-color: #1AAD19;
 	
 	}
 	.gms_view{  

@@ -83,7 +83,7 @@
 	           <text style="width: 219%;">支付金额：￥{{item.price_total}}</text>
 	            <view class="info-add">
 	              <view class="add-add"  :data-productid="item.productid" :data-idx='idx' @tap="tapReduceCart">-</view>
-	              <view class="info-num">{{item.count}}</view>
+	              <view class="info-num-digit">{{item.count}}</view>
 	              <view class="add-de"  :data-idx='idx' @tap="cartAddCart">+</view>
 	            </view>
 	
@@ -143,9 +143,9 @@
 	    </view>
 	    <!-- <view class="total">购物车数量：{{cart.count}}</view> -->
 	  </view>
-	  <form @tap="submit">
-	    <button class="yellow"  formType="submit" >去结算</button>
-	  </form>
+	  
+	  <button class="yellow"  formType="submit" @tap="goto_buy_now" >去结算</button>
+	  
 	 </view>
 	
 	</view>
@@ -266,6 +266,11 @@ export default {
 			post_data.userid = userInfo.userid
 		}
 		
+		
+		uni.showLoading({
+			title: '数据加载中……'
+		});
+		
 		// http://192.168.0.205/hahading/server/index.php/openapi/ProductData/get_product_list_all_data
 		//获取商家点餐分类信息
 		this.abotapi.abotRequest({
@@ -282,6 +287,8 @@ export default {
 		  success: function (res) {
 	
 			console.log('fffsssssfeefefsf', res);
+			
+			uni.hideLoading();
 	
 			
 			var data = res.data.data;
@@ -333,7 +340,7 @@ export default {
 	
 		  },
 		  fail: function (e) {
-	
+			uni.hideLoading();
 		  },
 		});
 				
@@ -635,7 +642,6 @@ export default {
 		      }.bind(this), 200)
 		    }
 		   
-		    var userInfo = that.abotapi.get_user_info();
 		    //调用点击购物车接口 
 		
 		    console.log('that.data.cartlist', that.cartlist)
@@ -670,6 +676,7 @@ export default {
 		    console.log('menu_list===00000', this.menu_list)
 		
 		    this.touchOnGoods(this, e);
+			
 		    var that = this;
 		    var menu = that.menu_list;
 		    var productid = e.currentTarget.dataset.productid;
@@ -677,14 +684,20 @@ export default {
 		    var idx1 = e.currentTarget.dataset.idx1;
 		    var idx2 = e.currentTarget.dataset.idx2;
 		    var is_waimai = that.is_waimai;
+			
 		    console.log('gggggfffffssss', is_waimai);
+			
 		    // 获取购物车的缓存数组（没有数据，则赋予一个空数组）  
 		    if (is_waimai == 1) {
 		      var cart_list = uni.getStorageSync('waimai_list_' + shopId) || [];
+			  
 		      console.log("waimai_list_,{}", cart_list);
+			  
 		    }else{
 		      var cart_list = uni.getStorageSync('cart_list_' + shopId) || [];
+			  
 		      console.log("cart_list,{}", cart_list);
+			  
 		    }
 		    
 		    
@@ -918,12 +931,20 @@ export default {
 		  //调用的方法
 		  touchOnGoods: function(that, e) {
 			  console.log('touchOnGoods==',e);
+			  
 		    if (!this.hide_good_box) return;
+			
 		    that.finger = {}; var topPoint = {};
+			
+			if(!e || !e.touches){
+				console.log('模拟动画但是事件没有带过来，微信小程序中正常，支付宝小程序中没有。');
+				return;
+			}
+			
 		    that.finger['x'] = e.touches["0"].clientX;//点击的位置
 		    that.finger['y'] = e.touches["0"].clientY;
 		
-		console.log('that.finger==',that.finger['y']);
+			console.log('that.finger==',that.finger['y']);
 		
 		    if(that.finger['y'] < that.busPos['y']) {
 		      topPoint['y'] = that.finger['y'] - 150;
@@ -1004,17 +1025,26 @@ export default {
 		      }
 		    });
 		  },
-		  submit: function (e) {
+		  goto_buy_now: function (e) {
 		    console.log('waimai======>',this.is_waimai);
+			
 			var that = this;
-		    var last_url = '/pages/menu/menu-list?xianmai_shangid=' + this.shopId + '&is_waimai=' + this.is_waimai;
+			
+		    var last_url = '/pages/menuList/menuList?xianmai_shangid=' + this.shopId + '&is_waimai=' + this.is_waimai;
 		    
-		    that.abotapi.goto_user_login(last_url, 'normal');
+		    			
 		    var userInfo = that.abotapi.get_user_info();
 			
 		    if ((!userInfo) || (!userInfo.userid)) {
-		      return;
+				console.log('没有用户登录信息');
+				
+				that.abotapi.goto_user_login(last_url, 'normal');
+				
+				return;
 		    }
+			
+			console.log('购物车中菜品数量：', this.cartlist.length);
+			
 		
 		    if(this.cartlist.length == 0){
 		      uni.showModal({
@@ -1029,7 +1059,8 @@ export default {
 		    }
 		    
 		
-		    var total = this.total
+		    var total = this.total;
+			
 		    uni.navigateTo({
 		      url: '/pages/order/pay?order_type_001=xianmaishang&xianmaishangid=' + this.shopId + '&total=' + this.total + '&cart_count=' + this.cart_count + '&is_waimai=' + this.is_waimai + '&from_o2owaimai=1' 
 		    })
@@ -1422,7 +1453,7 @@ box-shadow: 0rpx 0rpx 110rpx #feb70f inset;
   bottom:110rpx;
   left: 0;
   width: 100%;
-  height: 30rpx;
+  height: 500rpx;
   background: #fff;
 
   /* width:100%;
@@ -1448,10 +1479,10 @@ box-shadow: 0rpx 0rpx 110rpx #feb70f inset;
 .list-a{
   width:100%;
   font-size:33rpx;
-  height:214rpx;
+  height:60rpx;
   text-align:center;
   background-color:#F7CE65;
-  line-height:214rpx;
+  line-height:60rpx;
 
 }
 
@@ -1463,7 +1494,7 @@ box-shadow: 0rpx 0rpx 110rpx #feb70f inset;
 }
 .local-item{
   width:100%;
-  height:50rpx;
+  height:160rpx;
   display:flex;
   flex-direction:row;
   background-color:#eee;
@@ -1473,8 +1504,8 @@ box-shadow: 0rpx 0rpx 110rpx #feb70f inset;
 
 }
 .item-img image{
-  height:35rpx;
-  width:35rpx;
+  height:120rpx;
+  width:120rpx;
   margin-top:10px;
 }
 .item-info{
@@ -1482,34 +1513,34 @@ box-shadow: 0rpx 0rpx 110rpx #feb70f inset;
   display: flex;
   flex-direction: column;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-size: 15rpx;
+  font-size: 30rpx;
   margin-left:50rpx;
   margin-top:14rpx;
   color:#555;
 }
 .info-name{
-  font-size: 10rpx;
+  font-size: 30rpx;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 .item-name-con{
   display: flex;
   align-items: flex-end;
-  margin-bottom: 22rpx;
+  margin-bottom: 10rpx;
 }
 
 .item-name-con :nth-child(2){
-  font-size: 24rpx;
+  font-size: 28rpx;
   margin-left: 40rpx;
   color: #666;
 }
 
 .info-price{
-  font-size: 7rpx;
+  font-size: 25rpx;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  margin-bottom:6rpx;
+  margin-bottom:10rpx;
 }
 .info-num{
-  font-size: 8rpx;
+  font-size: 25rpx;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   display: flex;
 }
@@ -1519,21 +1550,25 @@ box-shadow: 0rpx 0rpx 110rpx #feb70f inset;
   width: 100%;
  
 }
+
+.info-num-digit{
+	font-size: 35rpx;
+}
 .add-add{
   background-color: yellow;
-  width: 10rpx;
-  height: 10rpx;
+  width: 40rpx;
+  height: 40rpx;
   border-radius: 50%;
   margin: 0 4rpx;
-  font-size: 8rpx;
+  font-size: 35rpx;
   text-align: center;
 }
 .add-de{
   background-color: yellow;
-  width: 10rpx;
-  height: 10rpx;
+  width: 40rpx;
+  height: 40rpx;
   border-radius: 50%;
-  font-size: 8rpx;
+  font-size: 35rpx;
   margin: 0 4rpx;
   text-align: center;
 }
