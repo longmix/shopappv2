@@ -13,9 +13,9 @@ const globalData = {
 		xiaochengxu_account: 'gh_a95e5a0852aa',				//微信小程序的账号
 		weixin_open_platform_appid: 'wx029e1ddb38b4c630',	//微信开放平台中登记的APP对应的appid（务必与manifest中的配置一致）
 		
-		alipay_third_appid:'2018111162078907',		//支付宝第三方平台应用信息，默认是延誉公司下面的名字叫延誉宝的应用，但是也可能是哈哈订或者芈隽的应用
-		alipay_user_pid:'2088201901872325',			//上海延誉信息技术有限公司的支付宝ID，2088开头的
+		alipay_third_appid:'2018111162078907',		//支付宝第三方平台应用信息，默认是延誉公司下面的名字叫延誉宝的应用，但是也可能是哈哈订或者芈隽的应用		
 		alipay_mini_prog_appid:'2021002147673504',			//支付宝小程序appid：延誉宝扫码点餐
+		alipay_user_pid:'2088201901872325',			//上海延誉信息技术有限公司的支付宝ID，2088开头的（小程序所有者）
 		
 		//设置特定的模板标志（目前仅有点餐小程序）
 		current_template_name : 'canyin20_qrcode_diancan',
