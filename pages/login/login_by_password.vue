@@ -41,7 +41,16 @@
 					style="margin-left: 8%;"
 					formType="submit" >登陆</button>
 			<!-- #endif -->
-			<!-- #ifndef MP-WEIXIN -->
+			
+			<!-- #ifdef MP-ALIPAY -->
+				<!-- 	type="default"	scope="phoneNumber"	 open-type="getAuthorize" @getAuthorize="onGetAlipayAuthorize"	 -->
+				<button type="primary"	@click="onGetAlipayAuthCode"			
+					class="btn-row-submit"
+					:style="{background:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" 
+					style="width: 84%;background: #2E85D8;margin: auto;">登陆/注册</button>
+			<!-- #endif -->
+			
+			<!-- #ifndef MP-WEIXIN | MP-ALIPAY -->
 				<button type="primary" class="btn-row-submit"
 					:style="{background:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" 
 					
@@ -123,7 +132,10 @@
 				memo_text_content:'',
 				
 				login_after_get_userinfo:0,
-				current_userinfo:null
+				current_userinfo:null,
+				
+				//微信和支付宝小程序的 jscode 和 authcode 信息
+				login_data_from_wxa_or_alipay:null
 			}
 		},
 		onLoad:function(){
@@ -236,53 +248,97 @@
 			
 			},
 
-			
-			
-			btn_user_login: function () {
-			    console.log('btn_user_login btn_user_login btn_user_login btn_user_login');
+			__user_login_request_before:function(){
+				var that = this;
 				
-			    if (!this.account) {
+				console.log('btn_user_login btn_user_login btn_user_login btn_user_login');
+				
+				if (!that.account) {
 					uni.showToast({
 						title: '请输入手机号码！',
 						icon: 'fail',
 						duration: 2000
 					})
-					return;
-			    }
-			    if (!this.img) {
+					return false;
+				}
+				if (!that.img) {
 					uni.showToast({
 						title: '请输入图片验证码！',
 						icon: 'fail',
 						duration: 2000
 					})
-					return; 
-			    }
-			    if (!this.password) {
+					return false; 
+				}
+				if (!that.password) {
 					uni.showToast({
 						title: '请输入密码！',
 						icon: 'fail',
 						duration: 2000
 					})
-					return;
-			    }
-				
-				if(this.login_after_get_userinfo == 1){
-					return;
+					return false;
 				}
+				
+				
+				return true;
+			},
+			
+			btn_user_login: function () {
+			    
+				
 				
 				var that = this;
 				//console.log(code+'hehe');
 				
-				that.abotapi.abotRequest({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=login_by_password',
-					data: { 
+				if(that.login_after_get_userinfo == 1){
+					return;
+				}
+				
+				if(!that.__user_login_request_before()){
+					return;
+				}
+				
+				
+				
+				var login_url = that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=login_by_password';
+				var post_data = { 
 						account: that.account,
 						password: that.password,
 						tokenstr: that.tokenstr,
 						verifycode: that.img,
 						sellerid: this.abotapi.globalData.default_sellerid,
 						parentid: that.abotapi.get_current_parentid(),
-					},
+				    };
+				
+				//#ifdef MP-WEIXIN
+					//ShopAppWxa 里面增加了对 jscode的处理逻辑
+					login_url = that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=login_by_password';
+					
+					
+					
+				//#endif
+				
+				//#ifdef MP-ALIPAY
+					login_url = that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppMpAlipay&a=login_by_password';
+					
+					if(that.login_data_from_wxa_or_alipay){
+						
+						//post_data.auth_code = that.login_data_from_wxa_or_alipay.auth_code;
+						//post_data.alipay_appid = that.login_data_from_wxa_or_alipay.alipay_appid;
+						for(var key in that.login_data_from_wxa_or_alipay){
+							post_data[key] = that.login_data_from_wxa_or_alipay[key];
+						}
+						
+						console.log('支付宝小程序登录，准备提交的数据：', post_data);
+						
+					}
+				//#endif
+				
+				
+				
+				
+				that.abotapi.abotRequest({
+					url: login_url,
+					data: post_data,
 					success: function (request_res) {
 						console.log('login_by_password=====>>>>>', request_res);
 						
@@ -333,6 +389,8 @@
 							that.abotapi.globalData.userInfo = {};
 						}
 						
+						
+						//#ifdef MP-WEIXIN
 						//保存openid
 						if(request_res.data.openid){
 							that.abotapi.globalData.userInfo.user_openid = request_res.data.openid;
@@ -342,6 +400,8 @@
 						if(!that.abotapi.globalData.userInfo.user_openid && !request_res.data.openid){
 							that.abotapi.set_current_openid('userid_openid_' + request_res.data.userid);
 						}
+						
+						//#endif
 						
 						that.abotapi.globalData.userInfo.userid = request_res.data.userid;          
 						that.abotapi.globalData.userInfo.checkstr = request_res.data.checkstr;
@@ -524,7 +584,61 @@
 				    var that = this;
 					that.formId = e.detail.formId				
 				 
-			}
+			},
+			
+			//获取支付宝的用户ID
+			onGetAlipayAuthCode:function(e){
+				
+				var that = this;
+				
+				console.log("onGetAlipayAuthCode支付宝小程序中点击了登陆按钮 ===>>>" + e);
+				//console.log(that.abotapi.globalData.alipay_third_appid);
+				//return;
+				
+				
+				
+				if(!that.__user_login_request_before()){
+					return;
+				}				
+				
+				
+				my.getAuthCode({
+					scopes: ['auth_base'],
+					 // 主动授权：auth_user，静默授权：auth_base或者其它scope。如需同时获取用户多项授权，可在 scopes 中传入多个 scope 值。
+					success: (res) => {
+			
+						if (!res.authCode) {
+							return;
+						}
+						
+						
+						console.log("onGetAlipayAuthCode 获取到的authCode是:" + res.authCode);
+						
+						that.login_data_from_wxa_or_alipay = {};
+						that.login_data_from_wxa_or_alipay.platform = 'alipay';
+						that.login_data_from_wxa_or_alipay.auth_code = res.authCode;
+						
+						that.login_data_from_wxa_or_alipay.alipay_third_appid = that.abotapi.globalData.alipay_third_appid;
+						that.login_data_from_wxa_or_alipay.alipay_user_pid = that.abotapi.globalData.alipay_user_pid;
+						that.login_data_from_wxa_or_alipay.alipay_mini_prog_appid = that.abotapi.globalData.alipay_mini_prog_appid;
+											  
+						// 认证成功
+						// 调用自己的服务端接口，让服务端进行后端的授权认证，并且利用session，需要解决跨域问题
+						// 该url是您自己的服务地址，实现的功能是服务端拿到authcode去开放平台进行token验证
+						
+						that.login_after_get_userinfo = 0;
+						that.btn_user_login();
+						
+						
+						
+						
+						
+					},
+				});
+				
+				
+			},
+			
 
 		}
 	}
