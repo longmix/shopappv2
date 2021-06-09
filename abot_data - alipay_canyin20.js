@@ -17,9 +17,13 @@ const globalData = {
 		alipay_user_pid:'2088201901872325',			//上海延誉信息技术有限公司的支付宝ID，2088开头的
 		alipay_mini_prog_appid:'2021002147673504',			//支付宝小程序appid：延誉宝扫码点餐
 		
+		//设置特定的模板标志（目前仅有点餐小程序）
+		current_template_name : 'canyin20_qrcode_diancan',
+		
+		
 		//通版商城
 		default_shopname: '延誉宝扫码点餐2.0',
-		default_sellerid: 'fJxSPaVgj',				//  测试和开发账号 13112341236 （Wordpress转APP专用号）
+		default_sellerid: 'fzmQPaPqa',				//  测试和开发账号 13112341238 ，也是所有配置的默认账号
 		default_copyright_text:'延誉宝 @ 版权所有',
 		
 		//=======以下配置项在发布版本的时候确定，服务器端配置无效===

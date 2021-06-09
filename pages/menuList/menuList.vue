@@ -1427,7 +1427,7 @@ width:40rpx;
 height:40rpx;
 margin-top:30rpx;
 position:absolute;
-right:10rpx;
+right:30rpx;
 background:#feb70f;
 border-radius:50%;
 text-align:center;

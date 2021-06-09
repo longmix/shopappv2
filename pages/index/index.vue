@@ -35,7 +35,7 @@
 		
 		<!-- 占位 -->
 		<view v-if="showHeader" class="statusbar_place"
-			:style="(wxa_show_search_input == 1)?'height:100rpx;':'height:10rpx;' "></view>
+			:style="(wxa_show_search_input == 1)?'height:100rpx;':'height:0rpx;' "></view>
 		
 		<!-- 轮播图 -->
 		<view class="swiper" v-if="wxa_show_index_swiper == 1">

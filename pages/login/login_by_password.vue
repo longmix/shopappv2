@@ -50,7 +50,7 @@
 					style="width: 84%;background: #2E85D8;margin: auto;">登陆/注册</button>
 			<!-- #endif -->
 			
-			<!-- #ifndef MP-WEIXIN | MP-ALIPAY -->
+			<!-- #ifndef MP-WEIXIN || MP-ALIPAY -->
 				<button type="primary" class="btn-row-submit"
 					:style="{background:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" 
 					

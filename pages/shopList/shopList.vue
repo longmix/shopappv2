@@ -379,12 +379,13 @@
 							
 						  //显示错误信息
 						  uni.showToast({
-						      title: '失败',
+						      title: '暂无数据',
 						      duration: 2000,
 							  image:'../../static/img/close.png'
 						  });
 						  return;
 						}
+						
 						if(res.data.xianmai_shang_list.length < shang_num){
 							that.is_xiala = 1;
 							/*uni.showToast({

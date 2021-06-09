@@ -55,7 +55,7 @@
 						style="width: 84%;background: #2E85D8;margin: auto;">登陆/注册</button>
 				<!-- #endif -->
 				
-				<!-- #ifndef MP-WEIXIN | MP-ALIPAY -->	
+				<!-- #ifndef MP-WEIXIN || MP-ALIPAY -->	
 					<button type="primary"  formType="submit"
 						
 						@click="btn_user_login"

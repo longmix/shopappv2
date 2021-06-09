@@ -542,17 +542,24 @@ module.exports = {
 				
 				
 			var that002 = this;
+			
+			var post_data = {
+					sellerid: that002.globalData.default_sellerid,
+					platform: that002.globalData.current_platform,
+					version_code: that002.globalData.version_code,	//2020.12.22.
+					weixin_open_platform_appid:that002.globalData.weixin_open_platform_appid,	//2020.12.28. 
+				};
+				
+			if(that002.globalData.current_template_name){
+				post_data.current_template_name = that002.globalData.current_template_name;
+			}
+			
 				
 			uni.request({
 				//url: this.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_shop_option',
 				url: that002.globalData.yanyubao_server_url + 'openapi/ShopAppV2Data/get_shop_option',
 				method: 'post',
-				data: {
-					sellerid: that002.globalData.default_sellerid,
-					platform: that002.globalData.current_platform,
-					version_code: that002.globalData.version_code,	//2020.12.22.
-					weixin_open_platform_appid:that002.globalData.weixin_open_platform_appid,	//2020.12.28. 
-				},
+				data: post_data,
 				header: {
 					'Content-Type': 'application/x-www-form-urlencoded'
 				},

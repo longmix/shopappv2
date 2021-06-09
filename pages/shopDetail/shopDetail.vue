@@ -239,6 +239,7 @@
 		</view>
 		
 		<!-- 小程序码 -->
+		<!-- #ifdef MP-WEIXIN -->
 		<view class="page_bottom">
 			
 			<image v-if="user_console_setting.show_shang_shop_wxa_qrcode == 1" 
@@ -246,6 +247,7 @@
 				style="width:250rpx; height:250rpx; margin: 0 auto;"></image>
 			
 		</view>
+		<!-- #endif -->
 		
 		<view v-if="user_console_setting.user_console_quick_button_position == 'left' || !user_console_setting.user_console_quick_button_position">
 			<view @tap="isShoucang==1?Shoucang('del'):Shoucang('add')" class="home-p">
