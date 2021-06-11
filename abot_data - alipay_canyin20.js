@@ -22,9 +22,9 @@ const globalData = {
 		
 		
 		//通版商城
-		default_shopname: '延誉宝扫码点餐2.0',
+		default_shopname: '新餐饮扫码点餐2.0',
 		default_sellerid: 'fzmQPaPqa',				//  测试和开发账号 13112341238 ，也是所有配置的默认账号
-		default_copyright_text:'延誉宝 @ 版权所有',
+		default_copyright_text:'新餐饮扫码点餐 Ver2.0.0',
 		
 		//=======以下配置项在发布版本的时候确定，服务器端配置无效===
 		

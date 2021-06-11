@@ -484,12 +484,16 @@
 			// var userAcountInfo = this.abotapi.get_user_account_info();
 			// this.loadOrderList();
 		},
+		
+		
 		//重写返回按钮的处理事件
+		// #ifndef MP-ALIPAY
 		onBackPress:function(event){
 			console.log('触发返回事件：', event);
 			
 			this.abotapi.call_h5browser_or_other_goto_url('/pages/user/user');
 		},
+		// #endif
 		
 		methods:{
 			callback_set_option: function (that, cb_params) {

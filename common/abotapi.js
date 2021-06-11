@@ -547,6 +547,7 @@ module.exports = {
 					sellerid: that002.globalData.default_sellerid,
 					platform: that002.globalData.current_platform,
 					version_code: that002.globalData.version_code,	//2020.12.22.
+					xiaochengxu_appid: that002.globalData.xiaochengxu_appid,  //2021.6.10.
 					weixin_open_platform_appid:that002.globalData.weixin_open_platform_appid,	//2020.12.28. 
 				};
 				
