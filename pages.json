@@ -640,8 +640,17 @@
 		        "enablePullDownRefresh": true
 		    }
 		    
-		}
-        ,{
+		},
+		{
+		    "path" : "pages/login/login_with_openid",
+		    "style" : {
+				"onReachBottomDistance":5,
+		        "navigationBarTitleText": "授权登录",
+		        "enablePullDownRefresh": true
+		    }
+		    
+		},
+		{
             "path" : "pages/shutdown_website/shutdown_website",
             "style" :                                                                                    
             {

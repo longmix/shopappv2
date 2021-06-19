@@ -311,6 +311,11 @@
 				current_ucid:0,
 				//================= End =======================
 				
+				
+				//2021.6.19. 不登陆直接下单的情况
+				no_user_login:0,
+				no_user_login_ext_data_str:'',
+				
 			};
 		},
 		
@@ -350,6 +355,10 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
 cuxiao_huodong == aipingou
 tuansn = 参团的编号，如果没有，则代表新开团
 
+//2021.6.19. 不登陆直接下单
+no_user_login = 1	
+no_user_login_ext_data_str = '{}'
+		
 		
 		 * 
 		 */
@@ -382,7 +391,12 @@ tuansn = 参团的编号，如果没有，则代表新开团
 			that.last_url = last_url;
 			var userInfo = this.abotapi.get_user_info();
 			
-			if(!userInfo || !userInfo.userid){
+			//2021.6.19. 有例外的情况，不需要用户登录也可以下单
+			var no_user_login = options.no_user_login;
+			
+			if( (!userInfo || !userInfo.userid) && (no_user_login != 1) ){
+				
+				
 				that.abotapi.goto_user_login(last_url, 'normal');
 				return;
 			}
@@ -544,6 +558,18 @@ tuansn = 参团的编号，如果没有，则代表新开团
 				
 				uni.removeStorageSync('paysuccess_url');
 			}
+			
+			
+			//2021.6.19. 免登陆下单
+			if(options.no_user_login){
+				that.no_user_login = options.no_user_login;
+				that.no_user_login_ext_data_str = decodeURIComponent(options.no_user_login_ext_data_str);
+				
+				console.log('本次下单免登陆，参数为：'+ that.no_user_login_ext_data_str);
+			}
+			
+			
+			
 			
 			
 			//必须放在最后，否则读取不到userinfo信息！！！！！
@@ -719,23 +745,33 @@ tuansn = 参团的编号，如果没有，则代表新开团
 				
 				console.log('userInfo====>?', userInfo);
 				
-				that.abotapi.abotRequest({
-				  url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
-				  data: {
-				    sellerid: that.abotapi.get_sellerid(),
-				    checkstr: userInfo.checkstr,
-				    userid: userInfo.userid
-				  },
-				  success: function (res) {		
-					  
-					console.log("this_get_user_info",res);
-				    if (res.data.code == 1) {
-				      that.balance = res.data.data.balance;
-				      that.balance_zengsong = res.data.data.balance_zengsong;
-				    } 	
-				  }
-				});
-
+				if(userInfo){
+					console.log('请求余额和赠款信息');
+					
+					that.abotapi.abotRequest({
+					  url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
+					  data: {
+					    sellerid: that.abotapi.get_sellerid(),
+					    checkstr: userInfo.checkstr,
+					    userid: userInfo.userid
+					  },
+					  success: function (res) {		
+						  
+						console.log("this_get_user_info",res);
+						
+					    if (res.data.code == 1) {
+					      that.balance = res.data.data.balance;
+					      that.balance_zengsong = res.data.data.balance_zengsong;
+					    } 	
+					  }
+					});
+					
+				}
+				else{
+					console.log('没有用户登录信息，不请求余额和赠款信息');
+				}
+				
+				
 				console.log('that.xianmaishangid===>>>>', that.order_type_001_xianmaishang_data.xianmaishangid)
 
 				if(that.order_type_001_xianmaishang_data.is_waimai == 1){
@@ -1354,8 +1390,10 @@ tuansn = 参团的编号，如果没有，则代表新开团
 								
 						buyer_memo: that.remark,
 						all_price: that.all_price,
-						userid: userInfo.userid,
-						checkstr: userInfo.checkstr,
+						
+						//userid: userInfo.userid,
+						//checkstr: userInfo.checkstr,
+						
 						traffic_price: that.traffic_price,
 						pay_price: that.pay_price,
 						sellerid: that.abotapi.get_sellerid(),
@@ -1400,9 +1438,12 @@ tuansn = 参团的编号，如果没有，则代表新开团
 										
 					  buyer_memo: that.remark,
 					  all_price: that.all_price,
-					  userid: userInfo.userid,
-					  checkstr: userInfo.checkstr,
+					  
+					  //userid: userInfo.userid,
+					  //checkstr: userInfo.checkstr,
+					  
 					  //traffic_price: 0,//that.data.traffic_price,
+					  
 					  pay_price: that.pay_price,
 					  sellerid: that.abotapi.get_sellerid(),
 					  // all_product_take_score: that.data.all_product_take_score,
@@ -1418,6 +1459,17 @@ tuansn = 参团的编号，如果没有，则代表新开团
 					}
 										
 					
+				}
+				
+				//如果用户登录且不是强制要求不登陆
+				if(userInfo && (that.no_user_login != 1)){
+					data_orderAdd.userid = userInfo.userid;
+					data_orderAdd.checkstr = userInfo.checkstr;
+				}
+				
+				if(that.no_user_login == 1){
+					data_orderAdd.no_user_login = 1;
+					data_orderAdd.no_user_login_ext_data_str = that.no_user_login_ext_data_str;
 				}
 				
 				that.abotapi.abotRequest({

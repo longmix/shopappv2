@@ -198,6 +198,9 @@ export default {
 			busPos:{},
 			animationData:'',
 			wxa_shop_nav_bg_color:'',
+			
+			current_alipay_user_id:null,
+			
 		};
 	},
 	onLoad(options) {
@@ -209,11 +212,17 @@ export default {
 		
 		// console.log('document888',document);
 		
-		
+		// #ifdef MP-ALIPAY
 		//======= 2021.6.7. 如果是从普通二维码扫码过来的（支付宝小程序）
 		//从网址分析出 sellerid、xianmai_shangid、is_waimai
-		if(this.abotapi.globalData.qrcode_url){
-			var myURL = new URL(this.abotapi.globalData.qrcode_url);
+		//http://shang.abot.cn/Supplier/Index/welcome.html
+		//qrCode=http%3A%2F%2Fshang.abot.cn%2FSupplier%2FIndex%2Fwelcome.html
+		//http://shang.abot.cn/Supplier/Index/welcome.html?sellerid=abcd&shangid=1213&is_waimai=0
+		//qrCode=http%3A%2F%2Fshang.abot.cn%2FSupplier%2FIndex%2Fwelcome.html%3Fsellerid%3Dabcd%26shangid%3D1213%26is_waimai%3D0
+		if(this.abotapi.globalData.mp_alipay_query && this.abotapi.globalData.mp_alipay_query.qrCode){
+			console.log('有普通二维码扫描进入：' + this.abotapi.globalData.mp_alipay_query.qrCode);
+			
+			var myURL = new URL(this.abotapi.globalData.mp_alipay_query.qrCode);
 			
 			console.log('this.abotapi.globalData.qrcode_url ===>>> ', myURL);
 			
@@ -233,11 +242,31 @@ export default {
 			if(searchParams.get('is_waimai')){
 				options.is_waimai = searchParams.get('is_waimai');				
 			}
+		}		
+		//================= End ==========================		
+		//===== 2021.6.19. 普通的支付宝小程序带参二维码，也是从 App 的 onLaunch函数中加载进来的
+		// pages/menuList/menuList ?  sellerid=fzmQPaPqa&shangid=3343&is_waimai=0
+		// 测试： 在支付宝小程序开发环境下，编译条件设置为：选择这个页面的路径，“全局参数”填写以上参。
+		else if(this.abotapi.globalData.mp_alipay_query){
+			console.log('有支付宝小程序码 扫描进入：', this.abotapi.globalData.mp_alipay_query);
+			
+			if(this.abotapi.globalData.mp_alipay_query.sellerid){
+				options.sellerid = this.abotapi.globalData.mp_alipay_query.sellerid;
+								
+				this.abotapi.globalData.default_sellerid = options.sellerid
+				this.abotapi.set_sellerid(options.sellerid);
+			}
+			
+			if(this.abotapi.globalData.mp_alipay_query.shangid){
+				options.xianmai_shangid = this.abotapi.globalData.mp_alipay_query.shangid;				
+			}
+			
+			if(this.abotapi.globalData.mp_alipay_query.is_waimai){
+				options.is_waimai = this.abotapi.globalData.mp_alipay_query.is_waimai;				
+			}
 		}
 		//================= End ==========================
-		
-		
-
+		// #endif
 		
 		if(options.title){
 			uni.setNavigationBarTitle({
@@ -385,7 +414,7 @@ export default {
 		});
 				
 				
-		this.abotapi.abotRequest({	
+		this.abotapi.abotRequest({
 			url: this.abotapi.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/get_shang_detail',
 			// url: 'https://yanyubao.tseo.cn/hahading/index.php/openapi/ProductData/get_product_list_all_data',
 			data: post_data,
@@ -418,7 +447,7 @@ export default {
 			fail: function (e) {
 	
 			},
-		  })
+		  });
 		
 	
 		/* setTimeout(function() {
@@ -502,6 +531,10 @@ export default {
 			
 			console.log('that002.wxa_shop_nav_bg_color==>>',that002.wxa_shop_nav_bg_color);
 		});
+		
+		
+		
+		
 	},
 	onPageScroll(e) {
 		//兼容iOS端下拉时顶部漂移
@@ -1065,10 +1098,27 @@ export default {
 		      }
 		    });
 		  },
+		  //去结算
 		  goto_buy_now: function (e) {
 		    console.log('waimai======>',this.is_waimai);
 			
 			var that = this;
+			
+			console.log('购物车中菜品数量：', this.cartlist.length);
+			
+					
+			if(this.cartlist.length == 0){
+			  uni.showModal({
+			    title: '提示',
+			    content: '购物车空空如也~',
+			    showCancel: false,
+			    success(res) {
+					
+			    }
+			  })
+			  return;
+			}
+			
 			
 		    var last_url = '/pages/menuList/menuList?xianmai_shangid=' + this.shopId + '&is_waimai=' + this.is_waimai;
 		    
@@ -1078,38 +1128,122 @@ export default {
 		    if ((!userInfo) || (!userInfo.userid)) {
 				console.log('没有用户登录信息');
 				
-				that.abotapi.goto_user_login(last_url, 'normal');
+				// #ifndef MP-ALIPAY
+					that.abotapi.goto_user_login(last_url, 'normal');
+					
+					return;
+				// #endif
+				
+				
+				uni.showModal({
+					title:'是否登录？',
+					content:'登录后下单可以在订单中心记录以方便查询',
+					cancelText:'直接下单',
+					confirmText:'去登录',
+					success: (res001) => {
+						if(res001.confirm){
+							//先登录
+							that.abotapi.goto_user_login(last_url, 'normal');
+							
+							return;
+						}
+						else{
+							
+							//直接去下单		
+							
+							
+							//2021.6.19. 增加支付宝小程序中的逻辑判断：免登陆下单功能
+							//但是需要用户有支付宝user_id（2088开头）
+							if(!that.abotapi.globalData.current_alipay_user_id){
+								uni.getStorage({
+									key : 'current_alipay_user_id',
+									success:function(res){
+										if(res.data){
+											console.log('有用户的支付宝授权的用户ID：' + res.data);
+											
+											that.abotapi.globalData.current_alipay_user_id = res.data;
+											that.current_alipay_user_id = res.data;
+											
+											that.__goto_buy_now_url(1);
+											
+											
+											
+											
+										}
+										else{
+											uni.setStorageSync('login_last_url', last_url);
+											
+											that.abotapi.call_h5browser_or_other_goto_url('/pages/login/login_with_openid');
+											
+											return;
+										}
+										
+									},
+									fail: (res) => {
+										uni.setStorageSync('login_last_url', last_url);
+										
+										that.abotapi.call_h5browser_or_other_goto_url('/pages/login/login_with_openid');
+										
+										return;
+									}
+								})
+							}
+							else{
+								that.current_alipay_user_id = that.abotapi.globalData.current_alipay_user_id;
+								
+								that.__goto_buy_now_url(1);
+							}
+							
+							
+							
+							
+						}
+					}
+					
+				}); // end of   uni.showModal
 				
 				return;
+				
 		    }
 			
-			console.log('购物车中菜品数量：', this.cartlist.length);
+			//如果是登录状态，则可以直接去下单
+			that.__goto_buy_now_url();
 			
-		
-		    if(this.cartlist.length == 0){
-		      uni.showModal({
-		        title: '提示',
-		        content: '购物车空空如也~',
-		        showCancel: false,
-		        success(res) {
-		
-		        }
-		      })
-		      return;
-		    }
-		    
-		
-		    var total = this.total;
+			
+			
+		  },
+		  //下单网址拼接
+		  __goto_buy_now_url:function(no_user_login=0){
+			  var that = this;
+			  
+			//==== 用户下单的代码 Begin =========
+			var total = that.total;
 			
 			var buy_url = '/pages/order/pay?order_type_001=xianmaishang';
 			
 			//读取实体商家的ID
-			buy_url += '&xianmaishangid=' + this.shopId;
+			buy_url += '&xianmaishangid=' + that.shopId;
 			
-			buy_url += '&total=' + this.total;
-			buy_url += '&cart_count=' + this.cart_count;
-			buy_url += '&is_waimai=' + this.is_waimai;
+			buy_url += '&total=' + that.total;
+			buy_url += '&cart_count=' + that.cart_count;
+			buy_url += '&is_waimai=' + that.is_waimai;
 			buy_url += '&from_o2owaimai=1';
+			
+			//--------追加参数告知 /order/pay页面，这个订单不需要登录-----
+			if(no_user_login == 1){
+				
+				buy_url += '&no_user_login=1';
+				
+				var no_user_login_ext_data = {};
+				no_user_login_ext_data.no_login_type="mp-alipay";
+				no_user_login_ext_data.alipay_user_id = that.current_alipay_user_id;
+				
+				buy_url += '&no_user_login_ext_data_str=' + encodeURIComponent(JSON.stringify(no_user_login_ext_data));
+				
+			}
+			
+			//--------------------- End ------------------------
+			
 			
 			//，以及扫码的编号等
 			var scan_qrcode_no = uni.getStorageInfoSync('current_scan_qrcode_no');
@@ -1124,9 +1258,11 @@ export default {
 				buy_url += '&desk_no=' + desk_no;
 			}
 			
-		    uni.navigateTo({
-		      url: buy_url 
-		    })
+			uni.navigateTo({
+			  url: buy_url 
+			})
+			//==== 用户下单的代码 End =========
+			  
 		  },
 		
 		  shopdetail: function (e) {

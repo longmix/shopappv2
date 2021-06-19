@@ -506,25 +506,29 @@
 											
 											//=======检查登录成功之后的跳转=======
 											var login_last_url = uni.getStorageSync('login_last_url');
+											var var_list = null;
+											var ret_page = '';
 											
 											if (login_last_url) {
-												var var_list = uni.getStorageSync('login_var_list');
-												var ret_page = uni.getStorageSync('login_ret_page');
+												var_list = uni.getStorageSync('login_var_list');
+												ret_page = uni.getStorageSync('login_ret_page');
 												
-												that.abotapi.call_h5browser_or_other_goto_url(login_last_url, var_list, ret_page);
+												
 												
 												uni.removeStorageSync('login_last_url');
 												uni.removeStorageSync('login_var_list');
 												uni.removeStorageSync('login_ret_page');
-												 
-												return;
 												
-												//===========End================
 											}									
 											else{
-												that.abotapi.call_h5browser_or_other_goto_url('/pages/index/index');
+												login_last_url = '/pages/index/index';
 											}
 											
+											that.abotapi.call_h5browser_or_other_goto_url(login_last_url, var_list, ret_page);
+											
+											return;
+											
+											//===========End================
 											
 										}
 									});

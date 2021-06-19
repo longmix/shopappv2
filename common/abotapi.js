@@ -5,6 +5,9 @@ const isNullOrUndefined = obj=>obj===null || obj === undefined  || obj === '';
 const is_obj_0_or_1= (obj) => {if(obj == 0) return 0; else if(obj == 1) return 1; return -1;}
 
 const abotRequest = (params) => {
+	
+	console.log('准备请求：' + params.url);
+	
   uni.request({
     url: params.url,
     method: params.method || 'POST',
@@ -443,7 +446,7 @@ module.exports = {
 			return;
 	    }
 	
-	    uni.request({
+	    this.abotRequest({
 			url: that.globalData.yanyubao_server_url + '/openapi/ShopAppV2Data/get_shop_info',
 			method: 'post',
 			data: {
@@ -556,7 +559,7 @@ module.exports = {
 			}
 			
 				
-			uni.request({
+			this.abotRequest({
 				//url: this.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_shop_option',
 				url: that002.globalData.yanyubao_server_url + 'openapi/ShopAppV2Data/get_shop_option',
 				method: 'post',
@@ -1155,7 +1158,7 @@ module.exports = {
 	
 	    var that002 = this;
 	
-	    uni.request({
+	    this.abotRequest({
 			url: that002.globalData.yanyubao_server_url + 'openapi/FaquanData/get_faquan_setting',
 			method: 'post',
 			data: {
@@ -1210,7 +1213,7 @@ module.exports = {
 	    } else {
 			var that002 = this;
 	
-			uni.request({
+			this.abotRequest({
 				url: this.globalData.yanyubao_server_url + '/openapi/O2OAddressData/get_basic_data_option',
 				method: 'post',
 				data: {
@@ -1255,7 +1258,7 @@ module.exports = {
 		console.log(data);
 	
 	    //发起网络请求
-	    uni.request({
+	    this.abotRequest({
 			url: url,
 			header: {
 				"Content-Type": "application/x-www-form-urlencoded"
@@ -1320,7 +1323,7 @@ module.exports = {
 				new_url = this.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=generate_refresh_token_value_for_other_system';
 			}
 			
-			uni.request({
+			this.abotRequest({
 				url: new_url,
 				method: 'post',
 				data: {

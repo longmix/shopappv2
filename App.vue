@@ -20,9 +20,17 @@
 			
 			
 			// #ifdef MP-ALIPAY
-				if(options && options.query && options.query.qrCode){
-					this.abotapi.globalData.qrcode_url = options.query.qrCode;
-				}				
+			
+				//if(options && options.query && options.query.qrCode){
+				//	this.abotapi.globalData.qrcode_url = options.query.qrCode;
+				//}
+								
+				if(options && options.query){					
+					
+					this.abotapi.globalData.mp_alipay_query = options.query;
+					
+					console.log('有支付宝小程序启动的附加参数：', this.abotapi.globalData.mp_alipay_query);
+				}
 			// #endif
 
 
