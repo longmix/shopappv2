@@ -245,6 +245,7 @@
 			}
 			
 			//检查用户是否登录
+			/*
 			var userInfo = this.abotapi.get_user_info();
 			
 			if(!userInfo || !userInfo.userid){
@@ -254,7 +255,7 @@
 				
 				that.abotapi.goto_user_login(last_url, 'normal');
 				return;
-			}
+			}*/
 			
 			//检查是否跳转到小程序支付
 			
@@ -473,9 +474,14 @@
 			});
 		},
 		methods: {
+			//切换支付方式
 			radioChange: function(e) {
 				
 				console.log('radioChange change-->e', e);
+				
+				// wx_pay	微信支付
+				// ali_pay	支付宝支付
+				// zz_pay	转账支付
 				
 				var that = this;
 				
@@ -494,8 +500,6 @@
 				console.log('ppppp 切换支付方式：',that.current_payment_type);
 				
 				
-				var userInfo = that.abotapi.get_user_info();
-				
 				console.log('that.zhuanzhang_pay_list ====>>>>> ', that.zhuanzhang_pay_list);
 				
 				
@@ -505,8 +509,6 @@
 						url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=offlinepay_get',
 						method: 'post',
 						data: {
-							userid: userInfo.userid,
-							checkstr: userInfo.checkstr,
 							sellerid: that.abotapi.get_sellerid()
 						},
 						header: {
@@ -541,16 +543,21 @@
 			
 			loadOrderDetail: function() {
 				var that = this;
+				
 				var userInfo = that.abotapi.get_user_info();
+				
+				var post_data = {orderid: that.orderid,						
+						sellerid: that.abotapi.get_sellerid(),};
+				
+				if(userInfo){
+					post_data.userid = userInfo.userid;
+					post_data.checkstr = userInfo.checkstr;
+				}
+				
 				that.abotapi.abotRequest({
 					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_xiangqing',
 					method: 'post',
-					data: {
-						orderid: that.orderid,
-						userid: userInfo.userid,
-						checkstr: userInfo.checkstr,
-						sellerid: that.abotapi.get_sellerid()
-					},
+					data: post_data,
 					header: {
 						'Content-Type': 'application/x-www-form-urlencoded'
 					},
@@ -668,13 +675,12 @@
 			},
 			zzpay: function() {
 				var that = this;
-				var userInfo = that.abotapi.get_user_info();
+				
 
 				var data_params = {
 					orderid: that.orderid,
 					payment_type: 6,
-					userid: userInfo.userid,
-					checkstr: userInfo.checkstr,
+					
 					sellerid: that.abotapi.get_sellerid(),
 					money: that.pay_price,
 					user_coupon_dikou:that.user_coupon_dikou,
@@ -689,6 +695,13 @@
 					// name: that.adds.name,
 					body: "商城支付订单",
 					subject: "商城支付订单",
+				}
+				
+				//如果用户登录
+				var userInfo = that.abotapi.get_user_info();
+				if(userInfo){
+					data_params.userid = userInfo.userid;
+					data_params.checkstr = userInfo.checkstr;
 				}
 
 
@@ -743,11 +756,18 @@
 				var that = this;
 				
 				
+				//如果没有选择，提示选择支付方式
+				if(!that.current_payment_type){
+					uni.showToast({
+						title:'请选择支付方式',
+						duration:2000
+					});
+					
+					return;
+				}
 				
 				
 				
-				
-				var userInfo = that.abotapi.get_user_info();
 				
 				var payment_provider = 'wxpay';
 				
@@ -755,8 +775,7 @@
 						// productid: that.productid,
 						orderid: that.orderid,
 						payment_type: 3,						//支付类型，将来作为函数参数传入。3代表微信支付   2 代表支付宝支付
-						userid: userInfo.userid,
-						checkstr: userInfo.checkstr,
+						
 						sellerid: that.abotapi.get_sellerid()
 						/*
 						appid:
@@ -769,6 +788,13 @@
 						sub_mch_id:
 						*/
 				};
+				
+				var userInfo = that.abotapi.get_user_info();
+				
+				if(userInfo){
+					post_data.userid = userInfo.userid;
+					post_data.checkstr = userInfo.checkstr;
+				}
 				
 				if(that.current_payment_type == 'ali_pay'){
 					//payment_provider = 'alipay';
@@ -810,6 +836,11 @@
 					post_data.alipay_third_appid = that.abotapi.globalData.alipay_third_appid;
 					post_data.alipay_user_pid = that.abotapi.globalData.alipay_user_pid;
 					
+					if(!that.abotapi.globalData.current_alipay_user_id){
+						that.abotapi.globalData.current_alipay_user_id = uni.getStorageSync('current_alipay_user_id');
+					}					
+					post_data.alipay_buyer_user_pid = that.abotapi.globalData.current_alipay_user_id;
+					
 					//post_data.is_mp_alipay_xianmai = 1;
 					
 					//门店ID，用于支付宝付款时候统计哪个门店
@@ -846,7 +877,15 @@
 
 						if (res.data.str && (res.data.str == 'yue')) {
 							//使用余额或者其他优惠，总之不需要再支付了
-							that.__goto_pay_success_url();
+							uni.showModal({
+								title:'提示',
+								content:'订单不需要支付，已经自动确认',
+								showCancel:false,
+								success:function(rrr){
+									that.__goto_pay_success_url();
+								}
+							});
+							
 
 							return;
 						}
@@ -916,7 +955,7 @@
 							success: function(res) {
 								uni.showModal({
 									title:'提示',
-									content:'支付成功',
+									content:'支付完成，即将跳转确认',
 									showCancel:false,
 									success:function(rrr){
 										that.__goto_pay_success_url();
@@ -1005,6 +1044,7 @@
 				})
 			},
 			__goto_pay_success_url:function(){
+				var that = this;
 				
 				var paysuccess_url = uni.getStorageSync('paysuccess_url');
 												
@@ -1035,7 +1075,7 @@
 					});*/
 				}
 				
-				this.abotapi.call_h5browser_or_other_goto_url('/pages/user/user');
+				that.abotapi.call_h5browser_or_other_goto_url('/pages/pay/success/success?orderid='+that.orderid);
 				
 			}
 		}

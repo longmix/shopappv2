@@ -249,8 +249,11 @@
 
 				isSwitch1:false,
 				isSwitch2:false,
-				balance_zengsong:'',
-				balance:'',
+				
+				//用户的余额和赠款余额
+				balance_zengsong:0,
+				balance:0,
+				
 				all_price:0,
 				single_price:0,	//指定商品的单价
 				traffic_price:0,
@@ -1655,12 +1658,24 @@ no_user_login_ext_data_str = '{}'
 			},
 			//钱包抵扣
 			switch1Change: function (e, type = null, value = null, that = null) {
-			    console.log('准备使用赠款或现金抵扣：', e, type, value)
+			    console.log('准备使用赠款或现金抵扣：', e, type, value);
+				
+				if(!that){
+					that = this;
+				}
+				
+				if(!that.balance_zengsong || !that.balance){
+					console.log('准备使用赠款或现金抵扣，但是赠款或余额没有值：', that.balance_zengsong, that.balance);
+					
+					return;
+				}
 			
 			    if (type == null && value == null) {
 			       type = e.currentTarget.dataset.type
 			       value = e.detail.value
-			       that = this;
+			       
+				   
+				   console.log('准备使用赠款或现金抵扣002：', e, type, value)
 			    }
 			
 			    var pay_price = that.pay_price;
@@ -1674,6 +1689,7 @@ no_user_login_ext_data_str = '{}'
 			
 			    if (type == 1) {
 					that.isSwitch1 = value;
+					
 			      if (value) {
 					//如果使用赠款金额
 					if (parseFloat(balance_zengsong) < parseFloat(pay_price_origin)) {

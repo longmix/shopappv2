@@ -215,8 +215,10 @@ export default {
 		// #ifdef MP-ALIPAY
 		//======= 2021.6.7. 如果是从普通二维码扫码过来的（支付宝小程序）
 		//从网址分析出 sellerid、xianmai_shangid、is_waimai
+		
 		//http://shang.abot.cn/Supplier/Index/welcome.html
 		//qrCode=http%3A%2F%2Fshang.abot.cn%2FSupplier%2FIndex%2Fwelcome.html
+		
 		//http://shang.abot.cn/Supplier/Index/welcome.html?sellerid=abcd&shangid=1213&is_waimai=0
 		//qrCode=http%3A%2F%2Fshang.abot.cn%2FSupplier%2FIndex%2Fwelcome.html%3Fsellerid%3Dabcd%26shangid%3D1213%26is_waimai%3D0
 		if(this.abotapi.globalData.mp_alipay_query && this.abotapi.globalData.mp_alipay_query.qrCode){
@@ -1235,8 +1237,15 @@ export default {
 				buy_url += '&no_user_login=1';
 				
 				var no_user_login_ext_data = {};
+				//来自支付宝小程序，以及对应的支付宝用户ID（2088开头）
 				no_user_login_ext_data.no_login_type="mp-alipay";
 				no_user_login_ext_data.alipay_user_id = that.current_alipay_user_id;
+				//支付宝小程序的信息
+				no_user_login_ext_data.alipay_third_appid = that.abotapi.globalData.alipay_third_appid;
+				no_user_login_ext_data.alipay_user_pid = that.abotapi.globalData.alipay_user_pid;
+				no_user_login_ext_data.alipay_mini_prog_appid = that.abotapi.globalData.alipay_mini_prog_appid;
+					
+				
 				
 				buy_url += '&no_user_login_ext_data_str=' + encodeURIComponent(JSON.stringify(no_user_login_ext_data));
 				

@@ -460,6 +460,20 @@
 							}
 							//#endif
 							
+							//2021.6.20.
+							// #ifdef MP-ALIPAY
+							console.log('支付宝一键授权成功，user_id:' + request_res.data.alipay_user_id);
+							
+							uni.setStorage({
+								key:'current_alipay_user_id',
+								data : request_res.data.alipay_user_id
+							});
+							
+							that.abotapi.globalData.current_alipay_user_id = request_res.data.alipay_user_id;
+							
+							// #endif
+							
+							
 							that.abotapi.globalData.userInfo.userid = request_res.data.userid;          
 							that.abotapi.globalData.userInfo.checkstr = request_res.data.checkstr;
 							  
