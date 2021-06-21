@@ -1051,11 +1051,12 @@
 				console.log('paysuccess_url===', paysuccess_url)
 				
 				if (paysuccess_url && (typeof(paysuccess_url) == 'string') ){
-					paysuccess_url = paysuccess_url.replace('%orderid%', this.orderid);
-												
-					this.abotapi.call_h5browser_or_other_goto_url(paysuccess_url);
 					uni.removeStorageSync('paysuccess_url');
-												
+					
+					paysuccess_url = paysuccess_url.replace('%orderid%', this.orderid);												
+					
+					this.abotapi.call_h5browser_or_other_goto_url(paysuccess_url);
+					
 					return;
 				}
 				

@@ -19,11 +19,14 @@
   -->
 		</view>
 		<view class="c_t60"></view>
-		<view>
-			<swiper  :current="currentTab" class="swiper-box" :style="{height:Height+'px'}" duration="300" @change="bindChange">
+
+		<swiper class="swiper-box" 
+				:style="{height:order_list_swiper_height + 'px' }" 
+				:current="currentTab"
+				duration="300" @change="bindChange">
 			
 				<!-- 全部 -->
-				<swiper-item >
+				<swiper-item>
 					<view class="search_no" v-if="!orderList.length">
 						<view style="text-align: center;margin-top: 100upx;">
 							<image style="width: 150upx;" mode="widthFix" src="../../../static/img/search_no.png"></image>
@@ -375,13 +378,17 @@
 				</view>
 			  </swiper-item>
 			   -->
-			</swiper>
+		</swiper>
+			
+		<view> 
 			<view class="weui-loadmore" :hidden="isHideLoadMore" v-if="isHideLoadMore==false">
 				<view class="weui-loading"></view>
 				<view class="weui-loadmore__tips">正在加载</view>
 			</view>
 			<view v-else>
+				<!-- #ifndef MP-ALIPAY -->
 				<view style='text-align:center;font-size:15px;color:#666;margin-bottom:30px;'>没有更多数据了</view>
+				<!-- #endif -->
 			</view>
 		</view>
 	</view>
@@ -411,7 +418,7 @@
 				isHideLoadMore:false,
 				winWidth: 0,  
 				winHeight: 0,  
-				Height:'',
+				order_list_swiper_height:667,
 				// tab切换  
 				currentTab: 1,  
 				isStatus:0,//0全部,1待付款，2待发货，6待收货 7已完成
@@ -709,15 +716,15 @@
 				console.log('加载更多')
 				var that = this;
 				var page = that.page;
+				
 				// next_page++;
-				uni.showToast({ 
-					title: '加载中',
-					icon: 'loading',
-					duration: 500
+				
+				uni.showLoading({
+					title:'加载中'
 				}) 
 				
 				
-				uni.request({
+				that.abotapi.abotRequest({
 					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_index',
 					method: 'post',
 					data: {
@@ -731,6 +738,8 @@
 						'Content-Type': 'application/x-www-form-urlencoded'
 					},
 					success: function (res) {
+						
+						uni.hideLoading();
 			
 						console.log('11111111');
 						var list = res.data.orderList;
@@ -750,12 +759,17 @@
 								}
 								
 								list[i].order_option.hahading_order_product_list_length = list[i].order_option.hahading_order_product_list.length;
+								
 							  }else{
+								  
 								console.log('ddd88', list[i]);
+								
 								if(!list[i].order_option){
 									list[i].order_option = {};	
 								}
-								list[i].order_option.hahading_order_product_list_length = 0;  
+								
+								list[i].order_option.hahading_order_product_list_length = 0;
+								
 							  }
 							}
 					
@@ -779,10 +793,12 @@
 						}
 						*/
 						console.log('that.orderList0===>>>',that.orderList0);
+						
 						if (list == null) {
 							console.log('2222222');
 							that.isHideLoadMore = true
 							return false;
+							
 						}else{
 							switch (that.currentTab) {
 								case 0:
@@ -817,15 +833,22 @@
 									}, 100)
 									break;
 							}
+							
 							if (list && list != null && list.length > 5) {
 								var winHeight = that.winHeight;
+								
 								console.log('888888888=====',that.page);
+								
 								var Height = winHeight * (winHeight / 370) * (that.page+1);
+								
 								console.log('height====>>>>',Height);
-								that.Height = Height*3
-								console.log('888888888=====',that.Height);
-							} else  {
-								that.Height = that.winHeight + 370;
+								
+								that.order_list_swiper_height = Height*3
+								
+								console.log('888888888=====',that.order_list_swiper_height);
+							} 
+							else  {
+								that.order_list_swiper_height = that.winHeight + 370;
 								that.isHideLoadMore = true;
 							} 
 							
@@ -861,7 +884,8 @@
 				if(this.order_list_filter_keywords){
 					post_data.order_list_filter_keywords = this.order_list_filter_keywords;
 				}
-				uni.request({
+				
+				that.abotapi.abotRequest({
 					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_index',
 					method:'post',
 					data: post_data,
@@ -870,9 +894,11 @@
 					},
 					success: function (res) {
 						//--init data        
-						console.log('list_res',res);
+						//console.log('list_res',res);
+						
 						var code = res.data.code;
 						var list = res.data.orderList;
+						
 						if(!list){
 							list = [];
 						}
@@ -907,6 +933,8 @@
 							list[i].order_option.hahading_order_xianmai_shangdata = JSON.parse(list[i].order_option.hahading_order_xianmai_shangdata)
 						  }
 						}
+						
+						
 					   }
 						
 						/*
@@ -919,54 +947,65 @@
 							}
 						}
 						*/
+					   
 						var Height = that.winHeight;
 						
-						console.log('888888ppppp', Height);
+						console.log('窗体高度：', Height);
 						console.log('that.currentTab====', that.currentTab);
-						console.log('listlist',list);
+						//console.log('listlist',list);
 						
 						switch(that.currentTab){
 							case 0:
-								console.log('ddddddd')
+								console.log('ddddddd');
+								
 								that.isHideLoadMore = false;
 								that.orderList = list;
-								that.Height = Height;
+								that.order_list_swiper_height = Height;
 								that.page = 1;
+								
 								break;
 							case 1:
 								that.isHideLoadMore = false;
 								that.orderList0 = list;
-								that.Height = Height;
+								that.order_list_swiper_height = Height;
 								that.page = 1;
 								break;
 							case 2:
 								that.isHideLoadMore = false;
 								that.orderList1 = list;
-								that.Height = Height;
+								that.order_list_swiper_height = Height;
 								that.page = 1;
 								break;  
 							case 3:
 								that.isHideLoadMore = false;
 								that.orderList2 = list;
-								that.Height = Height;
+								that.order_list_swiper_height = Height;
 								that.page = 1;
 								break;
 							case 4:
 								that.isHideLoadMore = false;
 								that.orderList3 = list;
-								that.Height = Height;
+								that.order_list_swiper_height = Height;
 								that.page = 1;
 								break;
 						}
-						if (list && list != null && list.length>5){
-							var winHeight = that.winHeight
-							var Height = winHeight*2*that.page;
-							that.Height = Height
-							console.log('orderlistorderlist', that.Height);
+						
+						
+						//if (list && list != null && list.length>5){
+						if (list && list != null){
+							var winHeight = that.winHeight;
+							
+							var Height = winHeight * 2 * that.page;
+							
+							that.order_list_swiper_height = Height;
+							
+							that.isHideLoadMore = true;
+							
+							console.log('orderlistorderlist的高度：', that.order_list_swiper_height);
 							
 						} else {
 				
-							that.Height = that.winHeight+370;
+							that.order_list_swiper_height = that.winHeight+370;
 							that.isHideLoadMore = false;
 						}
 						
@@ -1022,9 +1061,11 @@
 				var that = this;  
 				uni.getSystemInfo( {
 					success: function( res ) {  
-						console.log('地地道道的多大的',res)
+						console.log('getSystemInfo====>>>', res)
 						that.winWidth = res.windowWidth;  
 						that.winHeight = res.windowHeight;
+						
+						that.order_list_swiper_height = that.winHeight;
 						
 					}    
 				});

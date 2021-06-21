@@ -240,7 +240,7 @@
 		
 		<!-- 小程序码 -->
 		<!-- #ifdef MP-WEIXIN -->
-		<view class="page_bottom">
+		<view class="wxa_qrcode_block">
 			
 			<image v-if="user_console_setting.show_shang_shop_wxa_qrcode == 1" 
 				:src="shang_shop_wxa_qrcode_url" 
@@ -248,6 +248,10 @@
 			
 		</view>
 		<!-- #endif -->
+		
+		<view class="page_bottom copyright_info">
+			{{default_copyright_text}}
+		</view>
 		
 		<view v-if="user_console_setting.user_console_quick_button_position == 'left' || !user_console_setting.user_console_quick_button_position">
 			<view @tap="isShoucang==1?Shoucang('del'):Shoucang('add')" class="home-p">
@@ -470,6 +474,8 @@
 				
 				//会员卡列表
 				vip_card_list:'',
+				
+				default_copyright_text:'',
 			};
 		},
 		
@@ -508,11 +514,14 @@
 
 
 			this.abotapi.set_option_list_str(this, function(that001, cb_params){
-				that001.abotapi.getColor();
+				//that001.abotapi.getColor();
 				
 				if(cb_params.app_kefu_msg_type){
 					that001.app_kefu_msg_type = cb_params.app_kefu_msg_type;
 				}
+				
+				that.default_copyright_text = that.abotapi.globalData.default_copyright_text;
+				
 			});
 			
 			this.get_merchant_basic_data();
@@ -1922,11 +1931,19 @@
 		margin-left: 10rpx;
 	}
 
-	.page_bottom {
+	.wxa_qrcode_block {
 		width: 100%;
 		/*height: 180rpx;*/
-		padding: 40rpx 0rpx 200rpx;
+		padding: 40rpx 0rpx 40rpx;
 		text-align: center;
+	}
+	
+	.page_bottom {
+		margin-bottom: 200rpx;
+	}
+	
+	.copyright_info {
+		padding: 40rpx 0 80rpx 0;
 	}
 
 	.ps-btn {
