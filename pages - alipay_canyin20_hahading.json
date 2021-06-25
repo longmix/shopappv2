@@ -7,8 +7,6 @@
 		"backgroundColorTop":"#ffffff",
 		"backgroundColorBottom":"#ffffff"
 	},
-	
-	//默认不设置tabbar
 	"tabBar": {"color": "#333333",
 		"selectedColor": "#d81e06",
 		"borderStyle": "black",

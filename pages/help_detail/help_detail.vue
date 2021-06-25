@@ -478,6 +478,9 @@
 				//判断是否登录
 				var userInfo = this.abotapi.get_user_info();
 				if(!userInfo || !userInfo.userid){
+					
+					console.log('当前用户没有登录');
+					
 					uni.showModal({
 						title:'只有登录才可以评论',
 						success:function(res){
@@ -489,7 +492,7 @@
 								if(that.form_page && that.form_page == 'publish_list'){
 									var last_url = '/pages/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid + '&form_page=publish_list';
 								}else{
-									var last_url = '/pages/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid;
+									var last_surl = '/pages/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid;
 								}
 								
 								that.abotapi.goto_user_login(last_url, 'normal');
