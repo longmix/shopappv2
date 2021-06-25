@@ -58,6 +58,17 @@
 					</view>
 				</view>
 			</view>
+			
+			<view class="list_li" @tap="clearStorageIncludeSellerid"
+				:style="{display:show_clear_all_data_include_sellerid}">
+				<view class="li_title">重置延誉宝数据</view>
+				<view class="li_info">
+					<view class="jiantou">
+						<image src="../../static/img/x_right.png"></image>
+					</view>
+				</view>
+			</view>
+			
 
 		</view>
 
@@ -65,23 +76,23 @@
 			<view class="box_img">
 				<view style="width: 50%;float:left;text-align:center;">
 					<!-- #ifdef APP-PLUS -->
-					<button class="xg_button" style="width:90%;" @tap="call_seller" type="primary">联系客服</button>
+					<button class="xg_button" style="width:90%;margin: 0 auto;" @tap="call_seller" type="primary">联系客服</button>
 					<!-- #endif -->
 					<!-- #ifdef H5 -->
-					<button class="xg_button" style="width:90%;" @tap="call_seller" type="primary">联系客服</button>
+					<button class="xg_button" style="width:90%;margin: 0 auto;" @tap="call_seller" type="primary">联系客服</button>
 					<!-- #endif -->
 					<!-- #ifdef MP-WEIXIN -->
-					<button class="xg_button" style="width:90%;" open-type="contact" type="primary">小程序客服</button>
+					<button class="xg_button" style="width:90%;margin: 0 auto;" open-type="contact" type="primary">小程序客服</button>
 					<!-- #endif -->
 					<!-- #ifdef MP-BAIDU -->
-					<button class="xg_button" style="width:90%;" @tap="call_seller" type="primary">联系客服</button>
+					<button class="xg_button" style="width:90%;margin: 0 auto;" @tap="call_seller" type="primary">联系客服</button>
 					<!-- #endif -->
 					<!-- #ifdef MP-ALIPAY -->
-					<button class="xg_button" style="width:90%;" @tap="call_seller" type="primary">联系客服</button>
+					<button class="xg_button" style="width:90%;margin: 0 auto;" @tap="call_seller" type="primary">联系客服</button>
 					<!-- #endif -->
 				</view>
 				<view style="width: 50%;float:left;text-align:center;">
-					<button :data-url="jubao_link_url" @tap="mytiaozhuan" class="xg_button" style="width:90%;background-color: #eee;color:#222;"
+					<button :data-url="jubao_link_url" @tap="mytiaozhuan" class="xg_button" style="width:90%;margin: 0 auto;background-color: #eee;color:#222;"
 					 type="primary">问题反馈</button>
 				</view>
 			</view>
@@ -142,6 +153,9 @@
 				
 				//客服按钮点击后的消息类型
 				app_kefu_msg_type:'is_call_mobile',
+				
+				//是否显示删除所有业务数据的按钮
+				show_clear_all_data_include_sellerid:'none',
 			}
 		},
 		onLoad(options) {
@@ -150,6 +164,11 @@
 			//var userInfo = that.abotapi.get_user_info();
 			
 			// userAcountInfo = that.abotapi.get_user_account_info();
+			
+			
+			if(!that.abotapi.globalData.force_sellerid){
+				that.show_clear_all_data_include_sellerid = 'block';
+			}
 			
 			that.kefu_telephone = that.abotapi.globalData.kefu_telephone;
 			that.kefu_qq = that.abotapi.globalData.kefu_qq;
@@ -252,6 +271,29 @@
 		methods: {
 			clearStorage: function() {
 				this.abotapi.clearStorage();
+			},
+			//删除sellerid，使用系统默认的
+			clearStorageIncludeSellerid: function() {
+				uni.getStorage({
+					key:'org_sellerid',
+					success: (res) => {
+						
+						console.log('获取原始的sellerid成功==>>>', res);
+						
+						this.abotapi.globalData.default_sellerid = res.data;
+						
+						this.abotapi.set_sellerid(this.abotapi.globalData.default_sellerid);
+						
+						this.abotapi.clearStorage();
+						
+						uni.reLaunch({
+							url:'/pages/index/index'
+						})
+					}
+				})
+				
+				
+				
 			},
 
 

@@ -18,13 +18,13 @@ const globalData = {
 		alipay_user_pid:'2088201901872325',			//上海延誉信息技术有限公司的支付宝ID，2088开头的（小程序所有者）
 		
 		//设置特定的模板标志（目前仅有点餐小程序）
-		current_template_name : 'canyin20_qrcode_diancan',
+		//current_template_name : 'canyin20_qrcode_diancan',
 		
 		
 		//通版商城
-		default_shopname: '吃喝玩乐2.0',
+		default_shopname: '来嗨吧',
 		default_sellerid: 'fzmQPaPqa',				//  测试和开发账号 13112341238 ，也是所有配置的默认账号
-		default_copyright_text:'新吃喝玩乐 Ver2.0.0',
+		default_copyright_text:'来嗨吧',
 		
 		//=======以下配置项在发布版本的时候确定，服务器端配置无效===
 		
@@ -41,7 +41,7 @@ const globalData = {
 		//并确保与 navigationBarTextStyle / navigationBarBackgroundColor   保持一致
 		navigationBarBackgroundColor_fixed:1,
 		navigationBar_font_color:'#ffffff',
-		navigationBar_bg_color:'#f37404',	//需要同步修改 pages.json的 globalStyle 中的 navigationBarBackgroundColor
+		navigationBar_bg_color:'#e7141a',	//需要同步修改 pages.json的 globalStyle 中的 navigationBarBackgroundColor
 		//======================End=======================
 		
 		//======以下选项可以在服务器端修改，这里是默认值=====

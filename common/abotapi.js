@@ -903,10 +903,15 @@ module.exports = {
 	    uni.setStorageSync("current_sellerid", sellerid);
 	},
 	
+	del_sellerid: function(){
+		uni.removeStorageSync('current_sellerid');
+	},
+	
 	get_sellerid: function () {
 	    if (this.globalData.force_sellerid == 1){
 			return this.globalData.default_sellerid
 	    }
+		
 	    //缓存返回数据
 	    var sellerid = uni.getStorageSync("current_sellerid");
 	
@@ -981,7 +986,19 @@ module.exports = {
 					// }
 				});
 			}
+			else{
+				uni.setNavigationBarColor({
+					frontColor: this.globalData.navigationBar_font_color,
+					backgroundColor: this.globalData.navigationBar_bg_color,
+				});
+			}
 	    }
+		else{
+			uni.setNavigationBarColor({
+				frontColor: this.globalData.navigationBar_font_color,
+				backgroundColor: this.globalData.navigationBar_bg_color,
+			});
+		}
 		
 		
 		//2020.7.29. 隐藏底部导航的选项

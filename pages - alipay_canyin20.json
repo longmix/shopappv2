@@ -1,8 +1,8 @@
 {	
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
-		"navigationBarTitleText" : "吃喝玩乐2.0",
-		"navigationBarBackgroundColor" : "#f37404",
+		"navigationBarTitleText" : "来嗨吧",
+		"navigationBarBackgroundColor" : "#e7141a",
 		"backgroundColor" : "#ffffff",
 		"backgroundColorTop":"#ffffff",
 		"backgroundColorBottom":"#ffffff"
@@ -19,11 +19,18 @@
 				"selectedIconPath": "static/img/tabBar/home-on.png",
 				"text": "首页"
 			},
+			/*
+			{
+					"pagePath": "/pages/publish/publish_list",
+					"iconPath": "static/img/tabBar/imglist.png",
+					"selectedIconPath": "static/img/tabBar/imglist-on.png",
+					"text": "嗨吧"
+			},*/
 			{
 				"pagePath": "pages/user/user",
 				"iconPath": "static/img/tabBar/user.png",
 				"selectedIconPath": "static/img/tabBar/user-on.png",
-				"text": "个人中心"
+				"text": "我的"
 			}
 		]
 	}

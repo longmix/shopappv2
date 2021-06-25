@@ -51,7 +51,7 @@
 		</view>
 		
 		<publishList :index_list="index_list" @goForum="goForum" @previewImage="previewImage"
-			:show_zhuanti_title = 0
+			:show_zhuanti_title = "0"
 		></publishList>
 	</view>
 </template>
@@ -82,7 +82,7 @@
 				hotKeyList: [],
 				is_more: true,
 				weiduke_resou:'',
-				index_list:[],
+				index_list:'',
 				dianzan_num:0,
 				publish_hiddend_btn_for_write:0,//发帖按钮
 				dianzan_num2:0,
@@ -208,25 +208,39 @@
 			//this.onShareTimeline();
 		},
 		methods: {
-			get_api_publish_list:function(that,publishData){
-				console.log('publishData',publishData);
+			get_api_publish_list:function(that, publishData){
+				console.log('get_api_publish_list publishData===>>>>',publishData);
+				
 				if(publishData.title){
+					
 					uni.showToast({
 						title: publishData.title,
 						duration: 2000
 					});
+					
+					uni.setNavigationBarTitle({
+						title:publishData.list_title
+					})
+				}
+				else{
+					uni.setNavigationBarTitle({
+						title:that.abotapi.globalData.default_shopname
+					})
 				}
 				
 				
-				uni.setNavigationBarTitle({
-					title:publishData.list_title
-				})
+				
+				
+				if(!that.index_list){
+					that.index_list = [];
+				}
 				
 				for(var i in publishData.index_list){
 					that.index_list.push(publishData.index_list[i]);
 				}
 			},
 			callback_function:function(that, shop_option_data){
+				
 				console.log('aaaaaaa====',shop_option_data);
 				//that.abotapi.getColor();
 				

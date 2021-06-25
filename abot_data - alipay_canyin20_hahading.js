@@ -23,7 +23,7 @@ const globalData = {
 		
 		//通版商城
 		default_shopname: '吃喝玩乐2.0',
-		default_sellerid: 'fimmUPUPV',				//  测试和开发账号 13112341238 ，也是所有配置的默认账号
+		default_sellerid: 'fimmUPUPV',				//  测试和开发账号 13112341238 ，这个账号是 hahading
 		default_copyright_text:'新吃喝玩乐 Ver2.0.0',
 		
 		//=======以下配置项在发布版本的时候确定，服务器端配置无效===
