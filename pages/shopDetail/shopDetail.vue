@@ -285,7 +285,7 @@
 					<!-- <image src="../../static/img/addricon.png"></image> -->
 					<view>电话</view>
 				</view>
-				<view @tap="toChat">
+				<view @tap="toChat" v-if="user_console_setting.user_console_quick_button_hidden_kefu != 1">
 					<!-- <image src="../../static/img/addricon.png"></image> -->
 					<view>客服</view>
 				</view>
@@ -344,7 +344,7 @@
 				<image style="width:40rpx;height:40rpx;padding-right:10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_phone.png"></image>
 				<view>电话</view>
 			</view>
-			<view @tap="toChat" class="kefu_box">
+			<view @tap="toChat" class="kefu_box" v-if="user_console_setting.user_console_quick_button_hidden_kefu != 1">
 				<image style="width:40rpx;height:40rpx;padding-right:10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_dialog.png"></image>
 				<view>客服</view>
 			</view>
@@ -1996,19 +1996,17 @@
 		align-items: center;
 		-webkit-justify-content: space-around;
 		justify-content: space-around;
-		background: #666666;
 		width: 90rpx;
 		height: 90rpx;
 		position: fixed;
 		z-index: 100;
 		right: 20rpx;
-		color: #fff;
+		color: #ffffff;
 		font-size: 24rpx;
 		border-radius: 50%;
-		bottom: 110rpx;
-		
-		background-color: #fff;
-		border: 1rpx solid #666;
+		bottom: 110rpx;		
+		background-color: #a2a2a2;
+		border: 1rpx solid #666666;
 	}
 
 	.home-p image {
@@ -2260,7 +2258,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		border-right: 1px solid #999;
+		
 		border-left: 1px solid #999;
 	}
 	.kefu_box{
@@ -2271,6 +2269,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		border-left: 1px solid #999;
 	}
 	
 	.shang_detail_address {

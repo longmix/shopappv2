@@ -412,7 +412,7 @@
 					success: function (res) {
 						if (res.data.code != 1) {
 							uni.showToast({
-								title: '提交失败，请重新发布',
+								title: '提交失败，请重新发布：'+res.data.msg,
 								icon: 'none'
 							})
 							
@@ -517,8 +517,13 @@
 												title: '上传失败',
 											})*/
 											
+											var show_msg = '视频上传失败';
+											if(data.msg){
+												show_msg = '视频上传失败：'+data.msg;
+											}
+											
 											uni.showModal({
-												title: '视频上传失败',
+												title: show_msg,
 												showCancel:false,
 											});
 						
