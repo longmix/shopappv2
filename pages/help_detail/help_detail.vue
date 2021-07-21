@@ -319,10 +319,13 @@
 				
 				var that = this;
 				var option_list = cb_params;
+				
 				console.log('option_list===', option_list)
+				
 				if (!option_list) {
 					return;
 				}
+				
 				if (option_list.wxa_show_article_detail_category) {
 					that.wxa_show_article_detail_category = option_list.wxa_show_article_detail_category    
 				}
@@ -330,6 +333,10 @@
 				
 				if(that.form_page == 'publish_list'){
 					that.current_cms_token = option_list.cms_token;
+				}
+				
+				if(option_list.publish_hiddend_btn_for_write){
+					that.hidden_remark = option_list.publish_hiddend_btn_for_write; //是否显示发帖按钮
 				}
 				
 				

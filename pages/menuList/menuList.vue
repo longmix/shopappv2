@@ -203,6 +203,17 @@ export default {
 			
 		};
 	},
+	/**
+	 * @param {Object} options
+	 * 可选以下参数，直接加载菜单
+	 * sellerid
+	 * xianmai_shangid
+	 * is_waimai
+	 * scan_qrcode_no
+	 * 例如：
+	 * pages/menuList/menuList?sellerid=fzmQPaPqa&shangid=3343&is_waimai=0&scan_qrcode_no=gfdgfdgdgdfgfdgd
+	 * 
+	 */
 	onLoad(options) {
 		
 		// const oMeta = document.createElement('meta');
@@ -213,66 +224,93 @@ export default {
 		// console.log('document888',document);
 		
 		// #ifdef MP-ALIPAY
-		//======= 2021.6.7. 如果是从普通二维码扫码过来的（支付宝小程序）
-		//从网址分析出 sellerid、xianmai_shangid、is_waimai
-		
-		//http://shang.abot.cn/Supplier/Index/welcome.html
-		//qrCode=http%3A%2F%2Fshang.abot.cn%2FSupplier%2FIndex%2Fwelcome.html
-		
-		//http://shang.abot.cn/Supplier/Index/welcome.html?sellerid=abcd&shangid=1213&is_waimai=0
-		//qrCode=http%3A%2F%2Fshang.abot.cn%2FSupplier%2FIndex%2Fwelcome.html%3Fsellerid%3Dabcd%26shangid%3D1213%26is_waimai%3D0
-		if(this.abotapi.globalData.mp_alipay_query && this.abotapi.globalData.mp_alipay_query.qrCode){
-			console.log('有普通二维码扫描进入：' + this.abotapi.globalData.mp_alipay_query.qrCode);
+			//======= 2021.6.7. 如果是从普通二维码扫码过来的（支付宝小程序）
+			//从网址分析出 sellerid、xianmai_shangid、is_waimai   scan_qrcode_no
+			//其中 scan_qrcode_no 用于统计扫描了哪个二维码
 			
-			var myURL = new URL(this.abotapi.globalData.mp_alipay_query.qrCode);
+			//http://shang.abot.cn/Supplier/Index/welcome.html
+			//qrCode=http%3A%2F%2Fshang.abot.cn%2FSupplier%2FIndex%2Fwelcome.html
 			
-			console.log('this.abotapi.globalData.qrcode_url ===>>> ', myURL);
-			
-			var searchParams = new URLSearchParams(myURL.search);
-			
-			if(searchParams.get('sellerid')){
-				options.sellerid = searchParams.get('sellerid');
-								
-				this.abotapi.globalData.default_sellerid = options.sellerid
-				this.abotapi.set_sellerid(options.sellerid);
+			// http://yanyubao.tseo.cn/openapi/XianmaiShangData/menu_list?sellerid=fJxSPaVgj&xianmai_shangid=3340&is_waimai=0&scan_qrcode_no=gfdgfdgdgdfgfdgd
+			//调试方法： 在支付宝小程序的开发环境，做条件编译，参数如下：
+			//qrCode=http%3A%2F%2Fshang.abot.cn%2FSupplier%2FIndex%2Fwelcome.html%3Fsellerid%3Dabcd%26shangid%3D1213%26is_waimai%3D0%26scan_qrcode_no%3Dgfdgfdgdgdfgfdgd
+			if(this.abotapi.globalData.mp_alipay_query && this.abotapi.globalData.mp_alipay_query.qrCode){
+				console.log('有普通二维码扫描进入：' + this.abotapi.globalData.mp_alipay_query.qrCode);
+				
+				var myURL = new URL(this.abotapi.globalData.mp_alipay_query.qrCode);
+				
+				console.log('this.abotapi.globalData.qrcode_url ===>>> ', myURL);
+				
+				var searchParams = new URLSearchParams(myURL.search);
+				
+				if(searchParams.get('sellerid')){
+					options.sellerid = searchParams.get('sellerid');
+									
+					this.abotapi.globalData.default_sellerid = options.sellerid
+					this.abotapi.set_sellerid(options.sellerid);
+				}
+				
+				if(searchParams.get('shangid')){
+					options.xianmai_shangid = searchParams.get('shangid');				
+				}
+				
+				if(searchParams.get('is_waimai')){
+					options.is_waimai = searchParams.get('is_waimai');				
+				}
+				
+				if(searchParams.get('scan_qrcode_no')){
+					options.scan_qrcode_no = searchParams.get('scan_qrcode_no');
+				}
+			}		
+			//================= End ==========================		
+			//===== 2021.6.19. 普通的  支付宝小程序带参二维码，也是从 App 的 onLaunch函数中加载进来的
+			// pages/menuList/menuList ?  sellerid=fzmQPaPqa&shangid=3343&is_waimai=0&scan_qrcode_no=gfdgfdgdgdfgfdgd
+			// 调试方法： 在支付宝小程序开发环境下，编译条件设置为：选择这个页面的路径，“全局参数”填写以上参。
+			else if(this.abotapi.globalData.mp_alipay_query){
+				console.log('有支付宝小程序码 扫描进入：', this.abotapi.globalData.mp_alipay_query);
+				
+				if(this.abotapi.globalData.mp_alipay_query.sellerid){
+					options.sellerid = this.abotapi.globalData.mp_alipay_query.sellerid;
+									
+					this.abotapi.globalData.default_sellerid = options.sellerid
+					this.abotapi.set_sellerid(options.sellerid);
+				}
+				
+				if(this.abotapi.globalData.mp_alipay_query.shangid){
+					options.xianmai_shangid = this.abotapi.globalData.mp_alipay_query.shangid;				
+				}
+				
+				if(this.abotapi.globalData.mp_alipay_query.is_waimai){
+					options.is_waimai = this.abotapi.globalData.mp_alipay_query.is_waimai;				
+				}
+				
+				//扫码点餐的编号
+				if(this.abotapi.globalData.mp_alipay_query.scan_qrcode_no){
+					options.scan_qrcode_no = this.abotapi.globalData.mp_alipay_query.scan_qrcode_no;				
+				}
 			}
-			
-			if(searchParams.get('shangid')){
-				options.xianmai_shangid = searchParams.get('shangid');				
-			}
-			
-			if(searchParams.get('is_waimai')){
-				options.is_waimai = searchParams.get('is_waimai');				
-			}
-		}		
-		//================= End ==========================		
-		//===== 2021.6.19. 普通的支付宝小程序带参二维码，也是从 App 的 onLaunch函数中加载进来的
-		// pages/menuList/menuList ?  sellerid=fzmQPaPqa&shangid=3343&is_waimai=0
-		// 测试： 在支付宝小程序开发环境下，编译条件设置为：选择这个页面的路径，“全局参数”填写以上参。
-		else if(this.abotapi.globalData.mp_alipay_query){
-			console.log('有支付宝小程序码 扫描进入：', this.abotapi.globalData.mp_alipay_query);
-			
-			if(this.abotapi.globalData.mp_alipay_query.sellerid){
-				options.sellerid = this.abotapi.globalData.mp_alipay_query.sellerid;
-								
-				this.abotapi.globalData.default_sellerid = options.sellerid
-				this.abotapi.set_sellerid(options.sellerid);
-			}
-			
-			if(this.abotapi.globalData.mp_alipay_query.shangid){
-				options.xianmai_shangid = this.abotapi.globalData.mp_alipay_query.shangid;				
-			}
-			
-			if(this.abotapi.globalData.mp_alipay_query.is_waimai){
-				options.is_waimai = this.abotapi.globalData.mp_alipay_query.is_waimai;				
-			}
-		}
-		//================= End ==========================
+			//================= End ==========================
 		// #endif
 		
 		if(options.title){
 			uni.setNavigationBarTitle({
 				title:options.title
+			})
+		}
+		
+		//如果有扫码的二维码编号，则存储，在创建订单时候会用到
+		//如果没有，则及时删除或清空这个缓存，以避免误统计
+		if(options.scan_qrcode_no){
+			uni.setStorage({
+				key:'current_scan_qrcode_no',
+				data:options.scan_qrcode_no
+			});
+			
+			console.log('扫描点餐，有二维码编号：' + options.scan_qrcode_no);
+		}
+		else{
+			uni.removeStorage({
+				key:'current_scan_qrcode_no'
 			})
 		}
 		

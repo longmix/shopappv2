@@ -84,7 +84,7 @@
 				weiduke_resou:'',
 				index_list:'',
 				dianzan_num:0,
-				publish_hiddend_btn_for_write:0,//发帖按钮
+				publish_hiddend_btn_for_write:0,//发帖按钮，同时会隐藏 help_detail.vue中的留言评论功能
 				dianzan_num2:0,
 				num01:'',
 				click:'',

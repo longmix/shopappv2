@@ -1603,7 +1603,7 @@ no_user_login_ext_data_str = '{}'
 				
 				//扫码的编号
 				if(that.order_type_001_xianmaishang_data.scan_qrcode_no){
-				  order_add_new_option_by_key_value.push({"key":"xianmai_current_scan_qrcode_no", "value":that.order_type_001_xianmaishang_data.scan_qrcode_no});
+				  order_add_new_option_by_key_value.push({"key":"xianmai_scan_qrcode_no", "value":that.order_type_001_xianmaishang_data.scan_qrcode_no});
 				}
 			
 			
