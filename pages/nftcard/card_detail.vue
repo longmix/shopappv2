@@ -1,5 +1,35 @@
 <template>
-	<view>sadsadadsada</view>
+	<view>
+		<view>
+			<view class="card_detail_border"></view>
+			<view>
+				<image class="card_detail_image" src="../../static/img/nft_card/nft_card_detail.jpeg"></image>
+			</view>
+		</view>
+		<view style="padding: 10px;">
+			<view style="float: right;">
+				<image style="width: 50rpx; height: 50rpx; text-align: center;" src="../../static/img/nft_card/aixin.png"></image>
+				<text> 1 人喜欢</text><br>
+				<text style="float: right;">我有 2 张</text>
+			</view>
+			<h4 style="font-size: 20px;">所属卡包</h4>
+			<view style="padding-top: 10px;">
+				<image style="width: 30%;height: 100px; border-radius: 15%;"  src="../../static/img/nft_card/nft_card_detail.jpeg"></image>
+				<view style="float: right;line-height: 25px;">
+					<text style="font-weight: 800;">卡包名称：</text><text>嘴巴</text><br>
+					<text style="font-weight: 800;">发行商：</text>xxx<br>
+					<text style="font-weight: 800;">库存：</text><text>50</text> &nbsp;&nbsp<text style="font-weight: 800;">|&nbsp;发行：</text>30<text></text>
+				</view>
+				<h4 style="font-size: 20px;">卡牌描述</h4>
+				<view></view>
+				<h4 style="font-size: 20px;">同系列卡牌</h4>
+				<view>
+					<view></view>
+				</view>
+			</view>
+		</view>
+	</view>
+
 </template>
 
 <script>
@@ -149,4 +179,18 @@ export default {
 </script>
 
 <style>
+	.card_detail_border{
+		background:url(../../static/img/nft_card/nft_card_detail.jpeg) no-repeat;
+		background-size: 100%;
+		height: 250px;
+		background-position: center;
+		background-size: cover;
+		filter: blur(8px);
+	}
+	.card_detail_image{
+		position: absolute;
+		left: 0px;
+		top: 0px;
+		height: 250px;
+	}
 </style>
