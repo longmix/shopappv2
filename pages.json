@@ -1,8 +1,8 @@
 {	
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
-		"navigationBarTitleText" : "哈哈订",
-		"navigationBarBackgroundColor" : "#073892",
+		"navigationBarTitleText" : "延誉电商",
+		"navigationBarBackgroundColor" : "#f37404",
 		"backgroundColor" : "#ffffff",
 		"backgroundColorTop":"#ffffff",
 		"backgroundColorBottom":"#ffffff"
@@ -19,17 +19,17 @@
 				"text": "首页"
 			},
 			{
-				"pagePath": "pages/shopList/shopList",
-				"iconPath": "static/img/tabBar/shang.png",
-				"selectedIconPath": "static/img/tabBar/shang-on.png",
-				"text": "附近"
-			},
-			{
-				"pagePath": "cms/discover/discover",
+				"pagePath": "pages/publish/publish_list",
 				"iconPath": "static/img/tabBar/imglist.png",
 				"selectedIconPath": "static/img/tabBar/imglist-on.png",
-				"text": "随拍"
-			},					
+				"text": "创业与开业"
+			},
+			{
+				"pagePath": "pages/shopList/shopList",
+				"iconPath": "static/img/tabBar/category.png",
+				"selectedIconPath": "static/img/tabBar/category-on.png",
+				"text": "城市合伙人"
+			},
 			{
 				"pagePath": "pages/user/user",
 				"iconPath": "static/img/tabBar/user.png",
@@ -38,7 +38,6 @@
 			}
 		]
 	},
-
 
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{	//主页
@@ -140,14 +139,14 @@
 		{	//超级相册
 		    "path" : "cms/library/library",
 		    "style" : {
-				"navigationBarTitleText" : "超级相册",
+				"navigationBarTitleText" : "",
 				"usingComponents": {}
 			}
 		},
 		{	//相册详情
 		    "path" : "cms/library/library_list",
 		    "style" : {
-				  "navigationBarTitleText": "相册详情",
+				  "navigationBarTitleText": "",
 				  "onReachBottomDistance": 50
 				}
 		},
@@ -453,8 +452,9 @@
 		{
 		    "path" : "pages/about/module_list",
 		    "style": {
-		    	"navigationBarTitleText": "图标",
-		    	"softinputNavBar":"none"
+		    	"navigationBarTitleText": "延誉宝功能模块列表",
+		    	"softinputNavBar":"none",
+				"enablePullDownRefresh": true
 		    }
 		}
         ,{
@@ -656,9 +656,29 @@
             {
                 "navigationBarTitleText": "",
                 "enablePullDownRefresh": true
-            }
-            
+            }            
         }
+		//======= NFT卡包卡牌相关 Begin  ====
+		,
+		{
+            "path" : "pages/nftcard/card_detail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": true
+            }            
+        },
+		{
+            "path" : "pages/nftcard/package_detail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": true
+            }            
+        }
+		//======= NFT卡包卡牌相关 Begin  ====
+		
+
     ],	
 	"condition" : { //模式配置，仅开发期间生效
 		"current": 0, //当前激活的模式(list 的索引项)
