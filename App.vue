@@ -626,7 +626,8 @@
 		margin-left: 10px;
 	}
 
-	button[type="warn"] {
+	/*button[type="warn"] {*/
+	.button_warn {
 		color: #FFFFFF;
 		background-color: #d9002f;
 	}

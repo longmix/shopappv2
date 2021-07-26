@@ -225,7 +225,7 @@
 	
 		<view class="p_all mt10">
 			<view class="btnGreen">
-				        <!-- <button type="warn" size="{{warnSize}}" loading="{{loading}}" plain="{{plain}}"
+				        <!-- <button type="warn" class="button_warn" size="{{warnSize}}" loading="{{loading}}" plain="{{plain}}"
 	        :disabled="disabled" @tap="warn"> 确认 </button> -->
 	        		<!--<contact-button type="default-light" session-from="orderNo_{{orderData.OrderNo}}">
 			        客服

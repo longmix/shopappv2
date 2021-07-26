@@ -522,8 +522,14 @@
 				
 				var data = this.current_user_card_data;
 				
+				var new_url = '../shopMap/shopMap?from_page=2&latitude='+data.latitude;
+				new_url += '&longitude='+data.longitude;
+				new_url += '&name='+data.shang_name;
+				new_url += '&address='+data.shang_address;
+				new_url += '&telephone='+data.shang_telephone;
+				
 				uni.navigateTo({
-					url:'../shopMap/shopMap?from_page=2&latitude='+data.latitude+'&longitude='+data.longitude + '&name='+data.shang_name+'&address='+data.shang_address+'&telephone='+data.shang_telephone
+					url:new_url
 				})
 			},
 

@@ -1146,6 +1146,9 @@ export default {
 			    that.abotapi.globalData.default_shang_list_count_in_front_page = cb_params.option_list.default_shang_list_count_in_front_page
 			  
 			}
+			else{
+				that.abotapi.globalData.default_shang_list_count_in_front_page = 0;
+			}
 			 
 			if(cb_params.option_list.cms_token){
 				that.cms_token = cb_params.option_list.cms_token;
@@ -2277,11 +2280,14 @@ export default {
 		
 		//跳转到地图
 		index_address_card_go_map:function(){
-			var new_url = '/pages/shopMap/shopMap?&latitude=';
+			var that = this;
 			
-			new_url += this.address_card_in_index.latitude + '&longitude='+this.address_card_in_index.longitude;
+			var new_url = '/pages/shopMap/shopMap?latitude=';			
+			new_url += that.address_card_in_index.latitude + '&longitude='+that.address_card_in_index.longitude;
+			new_url += '&name='+that.abotapi.globalData.default_shopname;
+			new_url += '&address='+that.address_card_in_index.address;
 			
-			this.abotapi.call_h5browser_or_other_goto_url(new_url);
+			that.abotapi.call_h5browser_or_other_goto_url(new_url);
 		},
 		
 		//富媒体 图片被点击

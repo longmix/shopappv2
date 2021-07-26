@@ -46,7 +46,10 @@
 				
 				rgcData: {},
 				detail:[],
-				shopInfo: {},
+				
+				
+				shopInfo: {},	//存放所有传过来的参数
+				
 				options_citizenid:'',//受助人userid
 				btn_bg_color:'',
 				frontColor:'',
@@ -154,11 +157,20 @@
 					var latitude = parseFloat(this.markers[0].latitude);
 					var longitude = parseFloat(this.markers[0].longitude);
 					
-					uni.openLocation({
+					var location_data = {
 					  latitude,
 					  longitude,
 					  scale: 18
-					})
+					};
+					
+					if(this.shopInfo.name){
+						location_data.name = this.shopInfo.name;
+					}
+					if(this.shopInfo.address){
+						location_data.address = this.shopInfo.address;
+					}
+					
+					uni.openLocation(location_data)
 					
 				}
 				else if(this.from_page == 3){
