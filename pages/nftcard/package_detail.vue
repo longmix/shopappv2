@@ -2,7 +2,7 @@
 	<view>
 		<view class="infor">
 			<view class="pick">
-				<image src="http://192.168.0.87/Tpl/static/ntf_card/package_example/tel.png" width="20rpx" mode=""></image>
+				<image src="http://192.168.0.87/Tpl/static/ntf_card/package_example/1.png" width="20rpx" mode=""></image>
 			</view>
 			<view class="">
 				<view>发行商：{{}}</view>
@@ -19,25 +19,25 @@
 		</view>
 		<view class="">
 			<view class="">
-					<view><image src="http://192.168.0.87/Tpl/static/ntf_card/package_example/2.png" mode=""></image></view>
+					<view><image src="http://192.168.0.87/Tpl/static/ntf_card/package_example/2.jpg" mode=""></image></view>
 					<view>名称：{{}}</view>
 					<view>发行日期：{{}}</view>
 					<view>发行商：{{}}</view>
 			</view>
 			<view class="">
-					<view><image src="" mode=""></image></view>
+					<view><image src="http://192.168.0.87/Tpl/static/ntf_card/package_example/3.jpg" mode=""></image></view>
 					<view>名称：{{}}</view>
 					<view>发行日期：{{}}</view>
 					<view>发行商：{{}}</view>
 			</view>
 			<view class="">
-					<view><image src="" mode=""></image></view>
+					<view><image src="http://192.168.0.87/Tpl/static/ntf_card/package_example/4.jpg" mode=""></image></view>
 					<view>名称：{{}}</view>
 					<view>发行日期：{{}}</view>
 					<view>发行商：{{}}</view>
 			</view>
 			<view class="">
-					<view><image src="" mode=""></image></view>
+					<view><image src="http://192.168.0.87/Tpl/static/ntf_card/package_example/5.jpg" mode=""></image></view>
 					<view>名称：{{}}</view>
 					<view>发行日期：{{}}</view>
 					<view>发行商：{{}}</view>
