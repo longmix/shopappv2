@@ -13,6 +13,8 @@
 		<!-- 筛选 -->
 		<view class="card_button">
 				<button type="warn" size="mini" v-for="item in screen">{{item.message}}</button>
+				<image class="card_icon" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/mark.png" mode="widthFix" style="width: 30rpx;"></image>
+				<view class="num">5</view>
 				<!-- <button type="warn" size="mini">普通卡</button>
 				<button type="warn" size="mini">珍藏卡</button>
 				<button type="warn" size="mini">已有</button>
@@ -245,11 +247,8 @@ export default {
 			if(!cb_params){
 				return;
 			}
-			
 			console.log('cb_params====', cb_params);
 		},
-		
-		
 		
 		
 		
@@ -278,10 +277,23 @@ export default {
 		padding-left: 20rpx;
 	}
 	.card_button{
+		position: relative;
 		display: flex;
 		flexd:1;
 		margin-top: 15rpx;
 		margin-bottom: 20rpx;
+	}
+	.card_icon{
+		position: absolute;
+		
+		top: -15rpx;
+		right: 0rpx;
+	}
+	.num{
+		position: absolute;
+		
+		top: -17rpx;
+		right: 5rpx;
 	}
 	.card{
 		display: flex;
