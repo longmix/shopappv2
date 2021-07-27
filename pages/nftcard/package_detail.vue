@@ -1,49 +1,110 @@
 <template>
 	<view>
+		<!-- 封面 -->
 		<view class="infor">
-			<view class="pick">
-				<image src="http://192.168.0.87/Tpl/static/ntf_card/package_example/1.png" width="20rpx" mode=""></image>
+			<view class="cover">	
+				<view><image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/1.png" mode="widthFix" style="width:200rpx;"></image></view>
 			</view>
-			<view class="">
+			<view class="cover_data">
 				<view>发行商：{{}}</view>
 				<view>详情：{{}}</view>
 			</view>
 		</view>
-	
-		<view class="">
-				<button size="mini">全部卡牌</button>
-				<button size="mini">普通卡</button>
-				<button size="mini">珍藏卡</button>
-				<button size="mini">已有</button>
-				<button size="mini">未有</button>
+		<!-- 筛选 -->
+		<view class="card_button">
+				<button type="warn" size="mini" v-for="item in screen">{{item.message}}</button>
+				<!-- <button type="warn" size="mini">普通卡</button>
+				<button type="warn" size="mini">珍藏卡</button>
+				<button type="warn" size="mini">已有</button>
+				<button type="warn" size="mini">未有</button> -->
 		</view>
-		<view class="">
-			<view class="">
-					<view><image src="http://192.168.0.87/Tpl/static/ntf_card/package_example/2.jpg" mode=""></image></view>
-					<view>名称：{{}}</view>
-					<view>发行日期：{{}}</view>
+		<view class="card">
+			<view class="card_detail">
+					<view><image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/2.jpg" mode="scaleToFill" style="width: 355rpx; height: 260rpx;"></image></view>
+					<view style="float: right;">发行日期</view>
+					<view>名称</view>
 					<view>发行商：{{}}</view>
 			</view>
-			<view class="">
-					<view><image src="http://192.168.0.87/Tpl/static/ntf_card/package_example/3.jpg" mode=""></image></view>
-					<view>名称：{{}}</view>
-					<view>发行日期：{{}}</view>
+			<view class="card_detail">
+					<view><image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/3.jpg" mode="aspectFill" style="width: 355rpx; height: 260rpx;"></image></view>
+					<view style="float: right;">发行日期</view>
+					<view>名称</view>
 					<view>发行商：{{}}</view>
 			</view>
-			<view class="">
-					<view><image src="http://192.168.0.87/Tpl/static/ntf_card/package_example/4.jpg" mode=""></image></view>
-					<view>名称：{{}}</view>
-					<view>发行日期：{{}}</view>
+		</view>
+		<view class="card">
+			<view class="card_detail">
+					<view><image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/4.jpg" mode="widthFix" style="width: 355rpx;"></image></view>
+					<view style="float: right;">发行日期</view>
+					<view>名称</view>
 					<view>发行商：{{}}</view>
 			</view>
-			<view class="">
-					<view><image src="http://192.168.0.87/Tpl/static/ntf_card/package_example/5.jpg" mode=""></image></view>
-					<view>名称：{{}}</view>
-					<view>发行日期：{{}}</view>
+			<view class="card_detail">
+					<view><image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/5.jpg" mode="widthFix" style="width: 355rpx;"></image></view>
+					<view style="float: right;">发行日期</view>
+					<view>名称</view>
 					<view>发行商：{{}}</view>
 			</view>
 		</view>	
-			
+		<view class="card">
+			<view class="card_detail">
+					<view><image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/6.jpg" mode="aspectFill" style="width: 355rpx; height: 260rpx;"></image></view>
+					<view style="float: right;">发行日期</view>
+					<view>名称</view>
+					<view>发行商：{{}}</view>
+			</view>
+			<view class="card_detail">
+					<view><image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/7.jpg" mode="aspectFill" style="width: 355rpx; height: 260rpx;"></image></view>
+					<view style="float: right;">发行日期</view>
+					<view>名称</view>
+					<view>发行商：{{}}</view>
+			</view>
+		</view>
+		<view class="card">
+			<view class="card_detail">
+					<view><image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/8.jpg" mode="aspectFill" style="width: 355rpx; height: 260rpx;"></image></view>
+					<view style="float: right;">发行日期</view>
+					<view>名称</view>
+					<view>发行商：{{}}</view>
+			</view>
+			<view class="card_detail">
+					<view><image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/9.jpg" mode="aspectFill" style="width: 355rpx; height: 260rpx;"></image></view>
+					<view style="float: right;">发行日期</view>
+					<view>名称</view>
+					<view>发行商：{{}}</view>
+			</view>
+		</view>
+		<view class="">
+			<view clas="series_card">
+				<view style="float: right; font-size: smaller; margin: 10rpx; color: red;">>>更多卡牌>></view>
+				<view style="font-weight: bold; font-size: larger;">系列卡牌</view>
+			</view>
+			<!-- 系列卡牌——左右滑动 -->
+			<scroll-view scroll-x="true">
+				<view class="slide_cards">
+					<view class="slide_cards_pic">
+						<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/slide_card_01.jpg" style="width: 355rpx;"></image>
+						<view>名称</view>
+					</view>
+					<view class="slide_cards_pic">
+						<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/slide_card_02.jpg" style="width: 355rpx;"></image>
+						<view>名称</view>
+					</view>
+					<view class="slide_cards_pic">
+						<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/slide_card_03.jpg" style="width: 355rpx;"></image>
+						<view>名称</view>
+					</view>
+					<view class="slide_cards_pic">
+						<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/slide_card_04.jpg" style="width: 355rpx;"></image>
+						<view>名称</view>
+					</view>
+					<view class="slide_cards_pic">
+						<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/slide_card_05.jpg" style="width: 355rpx;"></image>
+						<view>名称</view>
+					</view>	
+				</view>
+			</scroll-view>
+		</view>	
 	</view>
 </template>
 
@@ -54,6 +115,13 @@ import util from '../../common/util.js';
 export default {
 	data() {
 		return {
+			screen:[
+				{message:"全部卡牌"},
+				{message:"珍藏卡"},
+				{message:"普通卡"},
+				{message:"已有"},
+				{message:"未有"}
+			]
 		};
 	},
 	onLoad: function (options) {
@@ -116,11 +184,11 @@ export default {
 		
 	},
 	//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
-	onReachBottom: function () {
+	/*  onReachBottom: function () {
 		
-		this.get_product_list();
+		//this.get_product_list();
 		
-	},
+	}, */
 	
 	onShareAppMessage: function () {
 		var that = this;
@@ -196,11 +264,35 @@ export default {
 </script>
 
 <style>
-.info{
-	
-}
-.pic{
-	float: left;
-	
-}
+	.infor{
+		height: 300rpx;
+		display: flex;
+		background-color:#007AFF;
+	}
+	.cover{
+		margin-top: 60rpx;
+		padding-left: 30rpx;
+	}
+	.cover_data{
+		margin-top: 80rpx;
+		padding-left: 20rpx;
+	}
+	.card_button{
+		display: flex;
+		flexd:1;
+		margin-top: 15rpx;
+		margin-bottom: 20rpx;
+	}
+	.card{
+		display: flex;
+	}
+	.card_detail{
+		margin: 10rpx;
+	}
+	.slide_cards{
+		display: flex;
+	}
+	.slide_cards_pic{
+		margin-right: 10rpx;
+	}
 </style>
