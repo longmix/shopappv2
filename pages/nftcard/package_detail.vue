@@ -1,5 +1,50 @@
 <template>
-	<view>sadsadadsada</view>
+	<view>
+		<view class="infor">
+			<view class="pick">
+				<image src="../../static/img/package/1.png" width="20rpx" mode=""></image>
+			</view>
+			<view class="">
+				<view>发行商：{{}}</view>
+				<view>详情：{{}}</view>
+			</view>
+		</view>
+	
+		<view class="">
+				<button size="mini">全部卡牌</button>
+				<button size="mini">普通卡</button>
+				<button size="mini">珍藏卡</button>
+				<button size="mini">已有</button>
+				<button size="mini">未有</button>
+		</view>
+		<view class="">
+			<view class="">
+					<view><image src="" mode=""></image></view>
+					<view>名称：{{}}</view>
+					<view>发行日期：{{}}</view>
+					<view>发行商：{{}}</view>
+			</view>
+			<view class="">
+					<view><image src="" mode=""></image></view>
+					<view>名称：{{}}</view>
+					<view>发行日期：{{}}</view>
+					<view>发行商：{{}}</view>
+			</view>
+			<view class="">
+					<view><image src="" mode=""></image></view>
+					<view>名称：{{}}</view>
+					<view>发行日期：{{}}</view>
+					<view>发行商：{{}}</view>
+			</view>
+			<view class="">
+					<view><image src="" mode=""></image></view>
+					<view>名称：{{}}</view>
+					<view>发行日期：{{}}</view>
+					<view>发行商：{{}}</view>
+			</view>
+		</view>	
+			
+	</view>
 </template>
 
 <script>
@@ -24,7 +69,7 @@ export default {
 		});
 		
 		uni.setNavigationBarTitle({
-			title : '卡包详情'
+			title : '卡包详情',
 		});
 		
 		this.abotapi.set_shop_option_data(this, this.callback_function_shop_option_data);
@@ -134,7 +179,9 @@ export default {
 			}
 			
 			console.log('cb_params====', cb_params);
-		}
+		},
+		
+		
 		
 		
 		
@@ -149,4 +196,11 @@ export default {
 </script>
 
 <style>
+.info{
+	
+}
+.pic{
+	float: left;
+	
+}
 </style>
