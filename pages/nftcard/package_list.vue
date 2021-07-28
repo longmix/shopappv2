@@ -79,7 +79,8 @@ import util from '../../common/util.js';
 export default {
 	data() {
 		return {
-			current_package_list : null
+			current_package_list : null,
+			
 		};
 	},
 	onLoad: function (options) {
@@ -302,7 +303,7 @@ export default {
 		position: relative; 
 		float: right;
 		right: 50rpx;
-		bottom: 100rpx;
+		top: 450rpx;
 		
 	}
 </style>

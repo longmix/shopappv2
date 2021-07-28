@@ -159,6 +159,57 @@ export default {
 		
 		
 		
+		//获取卡包列表
+		
+		that.abotapi.abotRequest({
+		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_list',
+		    method: 'post',
+		    data: {
+				sellerid:that.abotapi.globalData.default_sellerid,
+				p: 2,
+		    },
+		    success: function (res) {
+				
+				if(res.data.code != 1){
+					uni.showToast({
+						title:'卡包列表没有数据',
+						duration: 2000,
+					});
+					
+					return;
+				}
+				
+				that.current_package_list = res.data.data;
+				
+				console.log('current_package_list ===>>> ', that.current_package_list);
+				
+				
+				
+				
+				
+				
+				
+				
+						
+				
+		    },
+		    fail: function (e) {
+				uni.showToast({
+					title: '网络异常！',
+					duration: 2000
+				});
+		    },
+		});
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	},
 	onShow:function(){
 		console.log('call onShow function (/pages/index/index)');
