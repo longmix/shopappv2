@@ -9,9 +9,9 @@
 		<view>
 			
 			
-			<view  v-for="(current_card_item,index) in current_card_list" style="float: left;">
+			<view  v-for="(current_card_item, index) in current_card_list" style="float: left;">
 				<view class="card_detail_kapai_imgwidth">
-					<image class="card_detail_kapai_border" :src="current_package_item.cover_img_url"></image>
+					<image :src="current_card_item.cover_img_url" class="card_detail_kapai_border"></image>
 				</view>
 				<view class="card_list_kaipai_xinxi">
 					<view>{{current_card_item.card_name}}</view>
@@ -19,30 +19,6 @@
 				</view>
 			</view>
 			
-			
-			
-			
-			<view style="float: left;">
-				<view class="card_detail_kapai_imgwidth">
-					<image class="card_detail_kapai_border" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/nft_card_detail.jpeg"></image>
-				</view>
-				<view class="card_list_kaipai_xinxi">
-					<view>卡牌名称</view>
-					<view class="card_list_riqi">已有100人收藏</view>
-				</view>
-			</view>
-			
-			
-			
-			<view style="float: left;">
-				<view class="card_detail_kapai_imgwidth">
-					<image class="card_detail_kapai_border" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/nft_card_detail.jpeg"></image>
-				</view>
-				<view class="card_list_kaipai_xinxi">
-					<view>卡牌名称</view>
-					<view class="card_list_riqi">已有100人收藏</view>
-				</view>
-			</view>
 			
 		</view>
 	</view>
@@ -92,9 +68,6 @@ export default {
 			return;
 		}
 		
-		
-		
-		
 		//获取卡牌列表
 		
 		that.abotapi.abotRequest({
@@ -119,15 +92,7 @@ export default {
 				that.current_card_list = res.data.data;
 				
 				console.log('current_card_list ===>>> ', that.current_card_list);
-				
-				
-				
-				
-				
-				
-				
-				
-						
+					
 				
 		    },
 		    fail: function (e) {
@@ -137,13 +102,6 @@ export default {
 				});
 		    },
 		});
-		
-		
-		
-		
-		
-		
-		
 		
 		
 		
@@ -269,17 +227,17 @@ export default {
 		justify-content: space-around;
 	}
 	.card_detail_kapai_imgwidth{
-		width: 220rpx;
+		width: 340rpx;
 		height: 350rpx;
 		overflow: hidden;
 		margin: 15rpx;
 		border-radius: 15rpx;
 	}
 	.card_detail_kapai_border{
-		width:600rpx;
-		height: 450rpx;
+		width:340rpx;
+		height: 350rpx;
 		position: relative;
-		left: -190rpx;
+		left: ;
 	}
 	.card_list_kaipai_xinxi{
 		padding-left: 20rpx;
