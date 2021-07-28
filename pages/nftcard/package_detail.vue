@@ -2,14 +2,23 @@
 	<view>
 		<!-- 封面 -->
 		<view class="infor">
-			<view class="cover">	
-				<view><image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/1.png" mode="widthFix" style="width:200rpx;"></image></view>
+			<!-- <image class="" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/1.png"></image> -->
+			
+			<view class="cover">
+				<view class="">
+					<image  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/1.png" mode="widthFix" style="width:300rpx;taxt-align:center;"></image>
+					<view>发行商：{{}}</view>
+					<view>详情：{{}}</view>
+					<view>有效期:</view>
+				</view>
 			</view>
-			<view class="cover_data">
-				<view>发行商：{{}}</view>
-				<view>详情：{{}}</view>
-			</view>
+			
 		</view>
+			<view>发行商：{{}}</view>
+			<view>详情：{{}}</view>
+			<view>有效期:</view>
+	
+	
 		<!-- 筛选 -->
 		<view class="card_button">
 				<button type="warn" size="mini" v-for="item in screen">{{item.message}}</button>
@@ -264,23 +273,27 @@ export default {
 
 <style>
 	.infor{
-		height: 300rpx;
-		display: flex;
-		background-color:#007AFF;
+		
+		filter: blur(15rpx);
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		width:100%;
+		height: 450rpx;
 	}
 	.cover{
-		margin-top: 60rpx;
-		padding-left: 30rpx;
+		
 	}
 	.cover_data{
-		margin-top: 80rpx;
-		padding-left: 20rpx;
+		
 	}
 	.card_button{
 		position: relative;
 		display: flex;
 		flexd:1;
-		margin-top: 15rpx;
+		margin-top: 200rpx;
 		margin-bottom: 20rpx;
 	}
 	.card_icon{

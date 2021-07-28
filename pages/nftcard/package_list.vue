@@ -6,19 +6,34 @@
 			<view style="font-weight:bold;font-size: large;">热度排序</view>
 		</view>
 		
-			<view class="package_picture">
-				<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/package_list_01.jpg" mode="widthFix" style="width: 300rpx;"></image>
-				<view class="package_describe">
-					<view style=" font-weight: bold;font-size: 45rpx;height: 80rpx;">卡包名称:</view>
+		
+		
+		<view class="my_package_list_style"	>
+			<view class="my_package_item"
+				v-for="(current_package_item, index) in current_package_list">
+				<image :src="current_package_item.cover_img_url" mode="widthFix" style="width: 300rpx;"></image>
+				<view class="package_describe"><!-- {{current_package_item.cover_img_url}} -->
+					<view style=" font-weight: bold;font-size: 45rpx;height: 80rpx;">{{current_package_item.title}}</view>
 					<view>
-						<view style="height: 50rpx;">发行商:</view>
-						<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/trademark.png" mode="widthFix" style="width: 40rpx; float: right; bottom: 50rpx; right: 50rpx;"></image>
+						<view style="height: 50rpx;">发行商：{{current_package_item.publish_name}}</view>
+						<image :src="current_package_item.publish_icon" mode="widthFix" class="package_cover_img"></image>
 					</view>
-					<view>描述:</view>
-				</view>	
+					<view>简介：{{current_package_item.brief}}</view>
+				</view>
+				
+				<view class="collect_num">已有1000人收藏</view>
+				
+				
+				
 			</view>
-			<view class="collect_num">已有1000人收藏</view>
-			<view class="package_picture">
+			
+		</view>	
+			
+			
+			
+			
+			
+			<view class="my_package_item">
 				<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/package_list_02.jpg" mode="widthFix" style="width: 300rpx;"></image>
 				<view class="package_describe">
 					<view style=" font-weight: bold;font-size: 45rpx;height: 80rpx;">卡包名称:</view>
@@ -30,7 +45,7 @@
 				</view>	
 			</view>
 			<view class="collect_num">已有1000人收藏</view>
-			<view class="package_picture">
+			<view class="my_package_item">
 				<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/package_list_03.jpg" mode="widthFix" style="width: 300rpx;"></image>
 				<view class="package_describe">
 					<view style=" font-weight: bold;font-size: 45rpx;height: 80rpx;">卡包名称:</view>
@@ -42,7 +57,7 @@
 				</view>	
 			</view>
 			<view class="collect_num">已有1000人收藏</view>
-			<view class="package_picture">
+			<view class="my_package_item">
 				<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/slide_card_01.jpg" mode="widthFix" style="width: 300rpx;"></image>
 				<view class="package_describe">
 					<view style=" font-weight: bold;font-size: 45rpx;height: 80rpx;">卡包名称:</view>
@@ -64,7 +79,7 @@ import util from '../../common/util.js';
 export default {
 	data() {
 		return {
-			
+			current_package_list : null
 		};
 	},
 	onLoad: function (options) {
@@ -83,7 +98,54 @@ export default {
 			title : '卡包列表',
 		});
 		
-		this.abotapi.set_shop_option_data(this, this.callback_function_shop_option_data);
+		that.abotapi.set_shop_option_data(that, that.callback_function_shop_option_data);
+		
+		
+		//获取卡包列表
+		
+		that.abotapi.abotRequest({
+		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_list',
+		    method: 'post',
+		    data: {
+				sellerid:that.abotapi.globalData.default_sellerid,
+				p: 2,
+		    },
+		    success: function (res) {
+				
+				if(res.data.code != 1){
+					uni.showToast({
+						title:'卡包列表没有数据',
+						duration: 2000,
+					});
+					
+					return;
+				}
+				
+				that.current_package_list = res.data.data;
+				
+				console.log('current_package_list ===>>> ', that.current_package_list);
+				
+				
+				
+				
+				
+				
+				
+				
+						
+				
+		    },
+		    fail: function (e) {
+				uni.showToast({
+					title: '网络异常！',
+					duration: 2000
+				});
+		    },
+		});
+		
+		
+		
+		
 		
 		
 		
@@ -215,12 +277,17 @@ export default {
 		background-color: #DFDFDF;
 	}
 	
-	.package_picture{
+	.my_package_item{
 		position: relative;
 		margin: 20rpx;
 		padding: 20rpx;
 		border:2rpx solid #000000;
 	}
+	
+	.package_cover_img{
+		width: 40rpx; float: right; bottom: 50rpx; right: 50rpx;
+	}
+	
 	.package_describe{
 		position: absolute;
 		top: 120rpx;
