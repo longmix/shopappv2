@@ -7,15 +7,20 @@
 		</view>
 		<!-- 卡牌 -->
 		<view>
-			<view style="float: left;">
+			
+			
+			<view  v-for="(current_card_item,index) in current_card_list" style="float: left;">
 				<view class="card_detail_kapai_imgwidth">
-					<image class="card_detail_kapai_border" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/nft_card_detail.jpeg"></image>
+					<image class="card_detail_kapai_border" :src="current_package_item.cover_img_url"></image>
 				</view>
 				<view class="card_list_kaipai_xinxi">
-					<view>卡牌名称</view>
-					<view class="card_list_riqi">收藏日期</view>
+					<view>{{current_card_item.card_name}}</view>
+					<view class="card_list_riqi">已有100人收藏</view>
 				</view>
 			</view>
+			
+			
+			
 			
 			<view style="float: left;">
 				<view class="card_detail_kapai_imgwidth">
@@ -23,9 +28,11 @@
 				</view>
 				<view class="card_list_kaipai_xinxi">
 					<view>卡牌名称</view>
-					<view class="card_list_riqi">收藏日期</view>
+					<view class="card_list_riqi">已有100人收藏</view>
 				</view>
 			</view>
+			
+			
 			
 			<view style="float: left;">
 				<view class="card_detail_kapai_imgwidth">
@@ -33,7 +40,7 @@
 				</view>
 				<view class="card_list_kaipai_xinxi">
 					<view>卡牌名称</view>
-					<view class="card_list_riqi">收藏日期</view>
+					<view class="card_list_riqi">已有100人收藏</view>
 				</view>
 			</view>
 			
@@ -48,6 +55,8 @@
 export default {
 	data() {
 		return {
+			current_card_list:null,
+			current_packageid:0
 		};
 	},
 	onLoad: function (options) {
@@ -66,7 +75,73 @@ export default {
 			title : '卡牌列表'
 		});
 		
-		this.abotapi.set_shop_option_data(this, this.callback_function_shop_option_data);
+		that.abotapi.set_shop_option_data(that, that.callback_function_shop_option_data);
+		
+		
+		that.current_packageid = options.packageid;
+		
+		console.log('that.current_packageid ===》》 ', that.current_packageid);
+		
+		if(!that.current_packageid){
+			uni.showModal({
+				title:'',
+				content:',',
+				showCancel:false
+			});
+			
+			return;
+		}
+		
+		
+		
+		
+		//获取卡牌列表
+		
+		that.abotapi.abotRequest({
+		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_list',
+		    method: 'post',
+		    data: {
+				sellerid:that.abotapi.globalData.default_sellerid,
+				//packageid:that.abotapi.globalData.default_packageid,
+				packageid:that.current_packageid,
+		    },
+		    success: function (res) {
+				
+				if(res.data.code != 1){
+					uni.showToast({
+						title:'卡包列表没有数据',
+						duration: 2000,
+					});
+					
+					return;
+				}
+				
+				that.current_card_list = res.data.data;
+				
+				console.log('current_card_list ===>>> ', that.current_card_list);
+				
+				
+				
+				
+				
+				
+				
+				
+						
+				
+		    },
+		    fail: function (e) {
+				uni.showToast({
+					title: '网络异常！',
+					duration: 2000
+				});
+		    },
+		});
+		
+		
+		
+		
+		
 		
 		
 		

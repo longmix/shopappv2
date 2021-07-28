@@ -59,7 +59,10 @@
 
 	export default {
 		data() {
-			return {};
+			return {
+				current_packageid:0,
+				current_cardid:0
+			};
 		},
 		onLoad: function(options) {
 

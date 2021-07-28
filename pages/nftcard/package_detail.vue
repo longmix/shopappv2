@@ -126,6 +126,8 @@ import util from '../../common/util.js';
 export default {
 	data() {
 		return {
+			current_packageid:0,
+			
 			screen:[
 				{message:"全部卡牌"},
 				{message:"珍藏卡"},

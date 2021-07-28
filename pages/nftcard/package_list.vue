@@ -18,7 +18,7 @@
 						<view style="height: 50rpx;">发行商：{{current_package_item.publish_name}}</view>
 						<image :src="current_package_item.publish_icon" mode="widthFix" class="package_cover_img"></image>
 					</view>
-					<view>简介：{{current_package_item.brief}}</view>
+					<view>简介：{{current_package_item.brief}}{{current_package_item.packageid}}</view>
 				</view>
 				
 				<view class="collect_num">已有1000人收藏</view>
@@ -83,6 +83,7 @@ export default {
 		};
 	},
 	onLoad: function (options) {
+
 		
 		console.log('当前时间：' + util.formatTime( new Date() ) + ' ' + util.formatTime2( new Date() ) + ':01' );
 		
