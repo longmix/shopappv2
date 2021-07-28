@@ -5,36 +5,39 @@
 			<view>按时间排序</view>
 			<view>按热度排序</view>
 		</view>
+		<!-- 卡牌 -->
 		<view>
 			<view style="float: left;">
 				<view class="card_detail_kapai_imgwidth">
 					<image class="card_detail_kapai_border" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/nft_card_detail.jpeg"></image>
 				</view>
-				<view>卡牌名称</view>
-				<view style="font-size: 14rpx;font-weight: 100;">收藏日期</view>
+				<view class="card_list_kaipai_xinxi">
+					<view>卡牌名称</view>
+					<view class="card_list_riqi">收藏日期</view>
+				</view>
 			</view>
-			
 			
 			<view style="float: left;">
 				<view class="card_detail_kapai_imgwidth">
 					<image class="card_detail_kapai_border" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/nft_card_detail.jpeg"></image>
 				</view>
-				<view>卡牌名称</view>
-				<view style="font-size: 14rpx;font-weight: 100;">收藏日期</view>
+				<view class="card_list_kaipai_xinxi">
+					<view>卡牌名称</view>
+					<view class="card_list_riqi">收藏日期</view>
+				</view>
 			</view>
-			
 			
 			<view style="float: left;">
 				<view class="card_detail_kapai_imgwidth">
 					<image class="card_detail_kapai_border" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/nft_card_detail.jpeg"></image>
 				</view>
-				<view>卡牌名称</view>
-				<view style="font-size: 14rpx;font-weight: 100;">收藏日期</view>
+				<view class="card_list_kaipai_xinxi">
+					<view>卡牌名称</view>
+					<view class="card_list_riqi">收藏日期</view>
+				</view>
 			</view>
-			
 			
 		</view>
-		
 	</view>
 </template>
 
@@ -202,6 +205,13 @@ export default {
 		height: 450rpx;
 		position: relative;
 		left: -190rpx;
+	}
+	.card_list_kaipai_xinxi{
+		padding-left: 20rpx;
+	}
+	.card_list_riqi{
+		font-size: 14rpx;
+		font-weight: 100;
 	}
 </style>
 
