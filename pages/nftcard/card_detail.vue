@@ -6,9 +6,10 @@
 				<image style="text-align: center;" class="card_detail_image" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/nft_card_detail.jpeg"></image>
 			</view>
 			
-			<view style="float: right;">
+			<view class="card_detail_xihuan">
 				<image class="card_detail_aixin" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/aixin.png"></image>
 				<text> 1 人喜欢</text><br>
+				<view>我有 2 张</view>
 			</view>
 		</view>
 		<view style="padding: 10rpx;">
@@ -16,21 +17,24 @@
 			<image class="card_detail_kabaotoxiang" 
 			src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/nft_card_detail.jpeg"></image>
 			<view class="card_detail_kabaoxinxi">
-				<text style="font-weight: 800;">卡包名称：</text><text>嘴巴</text><br>
-				<text style="font-weight: 800;">发行商：</text><text>xxx</text>	<br>
-				<text><text style="font-weight: 800;">库存：</text>50| <text style="font-weight: 800;">发行：</text>30</text>
+				<view>卡包名称：</view>
+				<view>发行商：</view>
+				<view>库存：|发行：</view>
 			</view>
-			<br>
-			<view style="float: right;">我有 2 张</view>
-			<br><br><br><br>
+			
+			<view style="float: right;"></view>
+			
 		</view>
-			<view style="padding-left: 10rpx;">
+			<view style="padding-left: 15rpx;">
 				<h4 style="font-size: 34rpx;">卡牌描述</h4>
 				<view></view>
 				<h4 style="font-size: 34rpx;">其他卡牌</h4>
 				<view style="height: 500rpx;">
 					<view class="card_detail_kapai_imgwidth">
 						<image class="card_detail_kapai_border" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/nft_card_detail.jpeg"></image>
+					</view>
+					<view>
+						卡牌名称
 					</view>
 				</view>
 			</view>
@@ -190,7 +194,7 @@
 <style>
 	.card_detail_border {
 		background: url(http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/nft_card_detail.jpeg) no-repeat;
-		background-size: 100%;
+		background-size: 100rpx;
 		height: 550rpx;
 		background-position: center;
 		background-size: cover;
@@ -211,15 +215,20 @@
 	}
 	.card_detail_kabaotoxiang{
 		float: left;
-		width: 250rpx;
-		height: 100px;
-		border-radius: 15%;
+		width: 200rpx;
+		height: 120rpx;
+		min-height: 130rpx;
+		border-radius: 20rpx;
+	}
+	.card_detail_xihuan{
+		float: right;
+		padding: 20rpx 30rpx;
+		text-align: right;
+		line-height: 50rpx;
 	}
 	.card_detail_kabaoxinxi{
-		float: left;
-		line-height: 50rpx;
-		padding-left: 10rpx;
 		padding-left: 20rpx;
+		line-height: 48rpx;
 	}
 	.card_detail_aixin{
 		width: 35rpx;

@@ -669,6 +669,15 @@
             }            
         },
 		{
+		    "path" : "pages/nftcard/card_list",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": true
+		    }            
+		
+		},
+		{
             "path" : "pages/nftcard/package_detail",
             "style" :                                                                                    
             {

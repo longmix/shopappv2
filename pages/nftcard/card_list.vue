@@ -1,8 +1,40 @@
 <template>
 	<view>
-		<view>
-			<image src=""></image>
+		<view class="view-flex">
+			<view>智能排序</view>
+			<view>按时间排序</view>
+			<view>按热度排序</view>
 		</view>
+		<view>
+			<view style="float: left;">
+				<view class="card_detail_kapai_imgwidth">
+					<image class="card_detail_kapai_border" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/nft_card_detail.jpeg"></image>
+				</view>
+				<view>卡牌名称</view>
+				<view style="font-size: 14rpx;font-weight: 100;">收藏日期</view>
+			</view>
+			
+			
+			<view style="float: left;">
+				<view class="card_detail_kapai_imgwidth">
+					<image class="card_detail_kapai_border" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/nft_card_detail.jpeg"></image>
+				</view>
+				<view>卡牌名称</view>
+				<view style="font-size: 14rpx;font-weight: 100;">收藏日期</view>
+			</view>
+			
+			
+			<view style="float: left;">
+				<view class="card_detail_kapai_imgwidth">
+					<image class="card_detail_kapai_border" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/nft_card_detail.jpeg"></image>
+				</view>
+				<view>卡牌名称</view>
+				<view style="font-size: 14rpx;font-weight: 100;">收藏日期</view>
+			</view>
+			
+			
+		</view>
+		
 	</view>
 </template>
 
@@ -153,6 +185,24 @@ export default {
 </script>
 
 <style>
+	.view-flex{
+		display: flex;
+		flex-direction:row;
+		justify-content: space-around;
+	}
+	.card_detail_kapai_imgwidth{
+		width: 220rpx;
+		height: 350rpx;
+		overflow: hidden;
+		margin: 15rpx;
+		border-radius: 15rpx;
+	}
+	.card_detail_kapai_border{
+		width:600rpx;
+		height: 450rpx;
+		position: relative;
+		left: -190rpx;
+	}
 </style>
 
  
