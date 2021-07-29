@@ -1,44 +1,57 @@
 <template>
 	<view>
+		
 		<view style="height: 550rpx;">
 			<!-- 背景模糊图片 -->
-			<view class="card_detail_border"></view>
+			<image :src="current_card_detail.cover_img_url" class="card_detail_border"></image>
 			<!-- 卡牌封面 -->
 			<view style="width: 1000rpx;text-align: center;">
-				<image style="text-align: center;" class="card_detail_image" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/nft_card_detail.jpeg"></image>
+				<image :src="current_card_detail.cover_img_url" style="text-align: center;" class="card_detail_image"></image>
 			</view>
 			<!-- 有多少人喜欢 及 有多少张重复卡牌 -->
 			<view class="card_detail_xihuan">
-				<image class="card_detail_aixin" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/aixin.png"></image>
+				<image src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/aixin.png" class="card_detail_aixin"></image>
 				10 人喜欢<br>
 				<view>我有 2 张</view>
 			</view>
 		</view>
 		<!-- 所属卡包信息 -->
-		<view style="padding: 10rpx;">
-			<h4 style="font-size: 30rpx; line-height: 60rpx;">所属卡包</h4>
-			<image class="card_detail_kabaotoxiang" 
-			src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/nft_card_detail.jpeg"></image>
-			<view class="card_detail_kabaoxinxi">
-				<view>卡包名称：</view>
-				<view>发行商：</view>
-				<view>库存：| 发行：</view>
+		<view style="padding: 15rpx;">
+			<h4 class="card_detail_h4">{{current_card_detail.card_name}}</h4>
+			<view>{{current_card_detail.description}}</view>
+			<view style="padding-top: 20rpx;padding-bottom: 10rpx;">
+				<h4 class="card_detail_h4">所属卡包</h4>
+				<image :src="current_card_detail.cover_img_url" class="card_detail_kabaotoxiang"></image>
+				<view class="card_detail_kabaoxinxi">
+					<view><text class="card_detail_weight">卡包名称：</text>{{}}</view>
+					<view><text class="card_detail_weight">发行商：</text>{{current_card_detail.publish_name}}</view>
+					<view><text class="card_detail_weight">库存：</text>|<text class="card_detail_weight">发行：</text></view>
+				</view>
+				
 			</view>
-			<view style="float: right;"></view>
+			
 			
 		</view>
 			<view style="padding-left: 15rpx;">
-				<h4 style="font-size: 30rpx;">卡牌描述</h4>
-				<view></view>
 				<!-- 其他卡牌 -->
-				<h4 style="font-size: 30rpx;">其他卡牌</h4>
-				<view style="height: 500rpx;">
-					<view class="card_detail_kapai_imgwidth">
-						<image class="card_detail_kapai_border" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/nft_card_detail.jpeg"></image>
+				<h4 class="card_detail_h4">其他卡牌</h4>
+				
+				<view v-for="">
+					<view style="height: 500rpx;">
+						<view class="card_detail_kapai_imgwidth">
+							<image :src="current_card_detail.cover_img_url" class="card_detail_kapai_border"></image>
+						</view>
+						<view>{{current_card_detail.card_name}}</view>
 					</view>
-					<view>卡牌名称</view>
 				</view>
+				
+				
+				
 			</view>
+		
+			
+			
+			
 		<view style="text-align: right;padding: 20rpx;">
 			<radio type="radio" value="" checked="checked" style="float: left;">已拥有</radio>
 			<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/收 藏.png"></image>
@@ -51,38 +64,89 @@
 			
 		</view>
 	</view>
+	<!-- <view v-else>数据获取失败</view> -->
 
 </template>
 
 <script>
-	import util from '../../common/util.js';
+import util from '../../common/util.js';
 
-	export default {
-		data() {
-			return {
-				current_packageid:0,
-				current_cardid:0
-			};
-		},
-		onLoad: function(options) {
+export default {
+	data() {
+		return {
+			current_card_detail:null,
+			current_cardid:0
+		};
+	},
+	onLoad: function(options) {
 
-			console.log('当前时间：' + util.formatTime(new Date()) + ' ' + util.formatTime2(new Date()) + ':01');
+		console.log('当前时间：' + util.formatTime(new Date()) + ' ' + util.formatTime2(new Date()) + ':01');
+		
+		console.log('pages/tabBar/index/index====>>>>', options);
+		
+		var that = this;
+		
+		uni.setNavigationBarTitle({
+			title: that.abotapi.globalData.default_shopname
+		});
 
-			console.log('pages/tabBar/index/index====>>>>', options);
+		uni.setNavigationBarTitle({
+			title: '卡牌详情'
+		});
 
-			var that = this;
+		that.abotapi.set_shop_option_data(that, that.callback_function_shop_option_data);
 
-			uni.setNavigationBarTitle({
-				title: that.abotapi.globalData.default_shopname
+		that.current_cardid = options.cardid;
+		
+		console.log('that.current_cardid ===》》 ', that.current_cardid);
+		
+		if(!that.current_cardid){
+			uni.showModal({
+				title:'没有cardid',
+				content:',',
+				showCancel:false
 			});
-
-			uni.setNavigationBarTitle({
-				title: '卡牌详情'
-			});
-
-			this.abotapi.set_shop_option_data(this, this.callback_function_shop_option_data);
-
-
+			
+			return;
+		}
+		
+		//获取卡牌详情
+		
+		that.abotapi.abotRequest({
+		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_detail',
+		    method: 'post',
+		    data: {
+				sellerid:that.abotapi.globalData.default_sellerid,
+		
+				cardid:that.current_cardid,
+				
+		    },
+		    success: function (res) {
+				
+				if(res.data.code != 1){
+					uni.showToast({
+						title:'卡牌列表没有数据',
+						duration: 2000,
+					});
+					
+					return;
+				}
+				
+				that.current_card_detail = res.data.data;
+				
+				console.log('current_card_detail ===>>> ', that.current_card_detail);
+					
+				
+		    },
+		    fail: function (e) {
+				uni.showToast({
+					title: '网络异常！',
+					duration: 2000
+				});
+		    },
+		});
+		
+		
 
 
 
@@ -199,18 +263,23 @@
 	*{
 		font-size: 25rpx;
 	}
+	.card_detail_weight{
+		font-weight: 600;
+		padding-left: 20rpx;
+}
 	.card_detail_border {
-		background: url(http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/nft_card_detail.jpeg) no-repeat;
-		background-size: 100rpx;
+		width:100%;
 		height: 550rpx;
-		background-position: center;
-		background-size: cover;
 		filter: blur(12rpx);
+	}
+	.card_detail_h4{
+		font-size: 30rpx;
+		line-height: 60rpx;
 	}
 	.card_detail_image {
 		align-items: center;
 		position: absolute;
-		left: 60rpx;
+		left: 80rpx;
 		top: 90rpx;
 		height: 450rpx;
 	}
@@ -253,6 +322,6 @@
 		width:600rpx;
 		height: 450rpx;
 		position: relative;
-		left: -180rpx;
+		left: -140rpx;
 	}
 </style>

@@ -9,7 +9,7 @@
 		<view>
 			
 			
-			<view  v-for="(current_card_item, index) in current_card_list" style="float: left;">
+			<view v-for="(current_card_item, index) in current_card_list" style="float: left;">
 				<view class="card_detail_kapai_imgwidth">
 					<image :src="current_card_item.cover_img_url" class="card_detail_kapai_border"></image>
 				</view>
@@ -60,7 +60,7 @@ export default {
 		
 		if(!that.current_packageid){
 			uni.showModal({
-				title:'',
+				title:'没有packageid',
 				content:',',
 				showCancel:false
 			});
@@ -75,8 +75,9 @@ export default {
 		    method: 'post',
 		    data: {
 				sellerid:that.abotapi.globalData.default_sellerid,
-				//packageid:that.abotapi.globalData.default_packageid,
+
 				packageid:that.current_packageid,
+				
 		    },
 		    success: function (res) {
 				
