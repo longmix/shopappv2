@@ -11,64 +11,19 @@
 		<view class="my_package_list_style"	>
 			<view class="my_package_item"
 				v-for="(current_package_item, index) in current_package_list">
-				<image :src="current_package_item.cover_img_url" mode="widthFix" style="width: 300rpx;"></image>
+				<image :src="current_package_item.cover_img_url" mode=" aspectFill" style="width: 300rpx; height: 200rpx;"></image>
 				<view class="package_describe"><!-- {{current_package_item.cover_img_url}} -->
 					<view style=" font-weight: bold;font-size: 45rpx;height: 80rpx;">{{current_package_item.title}}</view>
 					<view>
-						<view style="height: 50rpx;">发行商：{{current_package_item.publish_name}}</view>
 						<image :src="current_package_item.publish_icon" mode="widthFix" class="package_cover_img"></image>
+						<view style="height: 50rpx;">发行商：{{current_package_item.publish_name}}</view>
+						
 					</view>
 					<view>简介：{{current_package_item.brief}}{{current_package_item.packageid}}</view>
 				</view>
-				
-				<view class="collect_num">已有1000人收藏</view>
-				
-				
-				
-			</view>
-			
+				<view class="collect_num">已有1000人收藏</view>	
+			</view>	
 		</view>	
-			
-			
-			
-			
-			
-			<view class="my_package_item">
-				<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/package_list_02.jpg" mode="widthFix" style="width: 300rpx;"></image>
-				<view class="package_describe">
-					<view style=" font-weight: bold;font-size: 45rpx;height: 80rpx;">卡包名称:</view>
-					<view>
-						<view style="height: 50rpx;">发行商:</view>
-						<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/trademark.png" mode="widthFix" style="width: 40rpx; float: right; bottom: 50rpx; right: 50rpx;"></image>
-					</view>
-					<view>描述:</view>
-				</view>	
-			</view>
-			<view class="collect_num">已有1000人收藏</view>
-			<view class="my_package_item">
-				<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/package_list_03.jpg" mode="widthFix" style="width: 300rpx;"></image>
-				<view class="package_describe">
-					<view style=" font-weight: bold;font-size: 45rpx;height: 80rpx;">卡包名称:</view>
-					<view>
-						<view style="height: 50rpx;">发行商:</view>
-						<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/trademark.png" mode="widthFix" style="width: 40rpx; float: right; bottom: 50rpx;right: 50rpx;"></image>
-					</view>
-					<view>描述:</view>
-				</view>	
-			</view>
-			<view class="collect_num">已有1000人收藏</view>
-			<view class="my_package_item">
-				<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/slide_card_01.jpg" mode="widthFix" style="width: 300rpx;"></image>
-				<view class="package_describe">
-					<view style=" font-weight: bold;font-size: 45rpx;height: 80rpx;">卡包名称:</view>
-					<view>
-						<view style="height: 50rpx;">发行商:</view>
-						<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/trademark.png" mode="widthFix" style="width: 40rpx; float: right; bottom: 50rpx; right: 50rpx;"></image>
-					</view>
-					<view>描述:</view>
-				</view>	
-			</view>
-			<view class="collect_num">已有1000人收藏</view>
 	</view>
 </template>
 
@@ -96,7 +51,8 @@ export default {
 			title : that.abotapi.globalData.default_shopname
 		});
 		
-		uni.setNavigationBarTitle({
+		uni.setNavigationBar
+		({
 			title : '卡包列表',
 		});
 		
@@ -292,18 +248,18 @@ export default {
 	
 	.package_describe{
 		position: absolute;
-		top: 120rpx;
+		top: 20rpx;
 		left: 350rpx;
 		
 	}
 	.trademark{
-		float: right;
+		
 	}
 	.collect_num{
-		position: relative; 
+		position: absolute; 
 		float: right;
-		right: 50rpx;
-		top: 450rpx;
+		right: 20rpx;
+		bottom: 10rpx;
 		
 	}
 </style>

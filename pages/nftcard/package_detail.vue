@@ -1,90 +1,75 @@
 <template>
-	<view>
+	<view class="global_background">
 		<!-- 封面 -->
-		<view class="infor">
-			<!-- <image class="" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/1.png"></image> -->
-			
-			<view class="cover">
+		<view class="">
+			<view class="package_background">
+				<image class="" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/8.jpg" mode="scaleToFill" style="width: 100%; height: 500rpx;"></image>
+			</view>	
+			<view class="prospect">
+				<image class="" :src="current_package_detail.cover_img_url" mode="widthFix" style="width:400rpx;"></image>
+			</view>
+		</view>
+		
+		<!-- 卡包详情 -->
+		<view class="package_information">
+			<view style="font-weight: bold;">名称：{{current_package_detail.title}}</view>
+			<view>
+				<text style="font-weight: bold;">详情：</text>{{current_package_detail.description}}
+			</view>
+			<view>
+				<text style="font-weight: bold;">有效期：</text>
+				{{current_package_detail.createtime}}
+			</view>	
+		</view>
+		
+		<!-- 发行商 -->
+		<view class="Publish_information">
+				<image :src="current_package_detail.cover_img_url" mode="widthFix" style="width: 250rpx;"></image>
 				<view class="">
-					<image  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/1.png" mode="widthFix" style="width:300rpx;taxt-align:center;"></image>
-					<view>发行商：{{}}</view>
-					<view>详情：{{}}</view>
-					<view>有效期:</view>
+					<view>
+						<text style="font-weight: bold;">发行商：</text>
+						{{current_package_detail.pubish_name}}
+					</view>
+				
+					<view><text style="font-weight: bold;">描述：</text></view>
+					
 				</view>
+				
 			</view>
 			
-		</view>
-			<view>发行商：{{}}</view>
-			<view>详情：{{}}</view>
-			<view>有效期:</view>
+		
 	
 	
 		<!-- 筛选 -->
-		<view class="card_button">
-				<button type="warn" size="mini" v-for="item in screen">{{item.message}}</button>
+		<view class="">
+			<view class="card_button">
+				<view style="color: red;">全部</view>
+				<view >普通卡</view>
+				<view >珍藏卡</view>
+				<view >已有</view>
+				<view >未有</view>
+			</view>
+			<view class="">
 				<image class="card_icon" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/mark.png" mode="widthFix" style="width: 30rpx;"></image>
 				<view class="num">5</view>
-				<!-- <button type="warn" size="mini">普通卡</button>
-				<button type="warn" size="mini">珍藏卡</button>
-				<button type="warn" size="mini">已有</button>
-				<button type="warn" size="mini">未有</button> -->
-		</view>
-		<view class="card">
-			<view class="card_detail">
-					<view><image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/2.jpg" mode="scaleToFill" style="width: 355rpx; height: 260rpx;"></image></view>
-					<view style="float: right;">发行日期</view>
-					<view>名称</view>
-					<view>发行商：{{}}</view>
-			</view>
-			<view class="card_detail">
-					<view><image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/3.jpg" mode="aspectFill" style="width: 355rpx; height: 260rpx;"></image></view>
-					<view style="float: right;">发行日期</view>
-					<view>名称</view>
-					<view>发行商：{{}}</view>
 			</view>
 		</view>
-		<view class="card">
-			<view class="card_detail">
-					<view><image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/4.jpg" mode="widthFix" style="width: 355rpx;"></image></view>
-					<view style="float: right;">发行日期</view>
-					<view>名称</view>
-					<view>发行商：{{}}</view>
+							
+				<!-- 卡包中的卡牌 --> 
+			<view class="my_package_detail_card_list">
+				<view class="card_list"
+				v-for="(current_card_item,index) in current_card_list">
+				<view>
+					<image :src="current_card_item.cover_img_url" mode="aspectFill" style="width: 355rpx; height: 260rpx;"></image>
+				</view>
+					<view class="package_detail_card_information">
+						<view style="font-weight: bold;">卡牌名称：{{current_card_item.card_name}}</view>
+						<view>发行商：{{current_card_item.publish_name}}</view>
+						<view >发行期{{current_card_item.createtime}}</view>
+					</view>
+					
+				</view>	 
 			</view>
-			<view class="card_detail">
-					<view><image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/5.jpg" mode="widthFix" style="width: 355rpx;"></image></view>
-					<view style="float: right;">发行日期</view>
-					<view>名称</view>
-					<view>发行商：{{}}</view>
-			</view>
-		</view>	
-		<view class="card">
-			<view class="card_detail">
-					<view><image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/6.jpg" mode="aspectFill" style="width: 355rpx; height: 260rpx;"></image></view>
-					<view style="float: right;">发行日期</view>
-					<view>名称</view>
-					<view>发行商：{{}}</view>
-			</view>
-			<view class="card_detail">
-					<view><image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/7.jpg" mode="aspectFill" style="width: 355rpx; height: 260rpx;"></image></view>
-					<view style="float: right;">发行日期</view>
-					<view>名称</view>
-					<view>发行商：{{}}</view>
-			</view>
-		</view>
-		<view class="card">
-			<view class="card_detail">
-					<view><image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/8.jpg" mode="aspectFill" style="width: 355rpx; height: 260rpx;"></image></view>
-					<view style="float: right;">发行日期</view>
-					<view>名称</view>
-					<view>发行商：{{}}</view>
-			</view>
-			<view class="card_detail">
-					<view><image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/9.jpg" mode="aspectFill" style="width: 355rpx; height: 260rpx;"></image></view>
-					<view style="float: right;">发行日期</view>
-					<view>名称</view>
-					<view>发行商：{{}}</view>
-			</view>
-		</view>
 		<view class="">
 			<view clas="series_card">
 				<view style="float: right; font-size: smaller; margin: 10rpx; color: red;">>>更多卡牌>></view>
@@ -126,10 +111,12 @@ import util from '../../common/util.js';
 export default {
 	data() {
 		return {
+			current_package_detail:null,
 			current_packageid:0,
+		
 			
 			screen:[
-				{message:"全部卡牌"},
+				{message:"全部"},
 				{message:"珍藏卡"},
 				{message:"普通卡"},
 				{message:"已有"},
@@ -157,40 +144,48 @@ export default {
 		
 		
 		
+		that.current_packageid = options.packageid;
+		
+		console.log('that.current_packageid ===》》 ', that.current_packageid);
+		
+		if(!that.current_packageid){
+			uni.showModal({
+				title:'',
+				content:',',
+				showCancel:false
+			});
+			
+			return;
+		}
+		
 		
 		
 		//获取卡包列表
 		
 		that.abotapi.abotRequest({
-		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_list',
+		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_detail',
+			
 		    method: 'post',
 		    data: {
 				sellerid:that.abotapi.globalData.default_sellerid,
-				p: 2,
+				packageid:that.current_packageid,
+	
 		    },
 		    success: function (res) {
 				
 				if(res.data.code != 1){
 					uni.showToast({
-						title:'卡包列表没有数据',
+						title:'卡包详情没有数据',
 						duration: 2000,
 					});
 					
 					return;
 				}
 				
-				that.current_package_list = res.data.data;
+				that.current_package_detail = res.data.data;
 				
-				console.log('current_package_list ===>>> ', that.current_package_list);
+				console.log('current_package_detail ===>>> ', that.current_package_detail);
 				
-				
-				
-				
-				
-				
-				
-				
-						
 				
 		    },
 		    fail: function (e) {
@@ -206,7 +201,43 @@ export default {
 		
 		
 		
+		//获取卡包列表
 		
+		that.abotapi.abotRequest({
+		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_list',
+			
+		    method: 'post',
+		    data: {
+				sellerid:that.abotapi.globalData.default_sellerid,
+				packageid:that.current_packageid,
+			
+		    },
+		    success: function (res) {
+				
+				if(res.data.code != 1){
+					uni.showToast({
+						title:'卡包详情没有数据',
+						duration: 2000,
+					});
+					
+					return;
+				}
+				
+				that.current_card_list = res.data.data;
+				
+				console.log('current_card_list ===>>> ', that.current_card_list);
+				
+				
+		    },
+		    fail: function (e) {
+				uni.showToast({
+					title: '网络异常！',
+					duration: 2000
+				});
+		    },
+		});
+		
+	
 		
 		
 		
@@ -325,10 +356,12 @@ export default {
 </script>
 
 <style>
-	.infor{
-		
-		filter: blur(15rpx);
-		position: absolute;
+	.global_background{
+		background-color: #f4f4f4;
+	}
+	.package_background{
+		margin-top: 5rpx;
+		filter: blur(20rpx);
 		top: 0;
 		left: 0;
 		right: 0;
@@ -336,18 +369,34 @@ export default {
 		width:100%;
 		height: 450rpx;
 	}
-	.cover{
+	.prospect{
+		position: absolute;
+		top: -20rpx;
+		left: -20rpx;
+		transform:translate(50%,50%);
+	}
+	.package_information{
+		background-color: #FFFFFF;
+		margin:80rpx 20rpx 20rpx 10rpx;
+		padding: 0 10rpx;
 		
 	}
-	.cover_data{
+	.Publish_information{
+		background-color: #FFFFFF;
+		margin: 10rpx 10rpx;
+		padding: 10rpx;
+		display: flex;
 		
 	}
 	.card_button{
-		position: relative;
+		font-weight:bolder;
+		font-size: large;
+		
+
+		justify-content: space-between;
 		display: flex;
-		flexd:1;
-		margin-top: 200rpx;
-		margin-bottom: 20rpx;
+		margin: 10rpx 0rpx;
+		padding:10rpx 30rpx;
 	}
 	.card_icon{
 		position: absolute;
@@ -357,15 +406,23 @@ export default {
 	}
 	.num{
 		position: absolute;
-		
 		top: -17rpx;
 		right: 5rpx;
 	}
-	.card{
-		display: flex;
+	.my_package_detail_card_list{
+		background-color: #FFFFFF;
+		margin-top:10rpx ;
+		margin-left: 10rpx;
 	}
-	.card_detail{
-		margin: 10rpx;
+	.card_list{
+		display: flex;
+		padding-top: 10rpx;
+		padding-bottom: 10rpx;
+	}
+	.package_detail_card_information{
+		margin-top: 30rpx;
+		padding-top: 20rpx;
+		
 	}
 	.slide_cards{
 		display: flex;
