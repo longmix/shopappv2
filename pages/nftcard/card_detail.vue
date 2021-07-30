@@ -88,7 +88,8 @@ export default {
 		return {
 			current_card_detail:null,
 			current_cardid:0,
-			current_packageid:0
+			current_packageid:0,
+			
 		};
 	},
 	onLoad: function(options) {
@@ -130,7 +131,7 @@ export default {
 		    method: 'post',
 		    data: {
 				sellerid:that.abotapi.globalData.default_sellerid,
-		
+				packageid:that.current_packageid,
 				cardid:that.current_cardid,
 				
 		    },
@@ -158,6 +159,8 @@ export default {
 				});
 		    },
 		});
+		
+		
 		
 		
 

@@ -11,13 +11,14 @@
 		<view class="my_package_list_style"	>
 			<view class="my_package_item"
 				v-for="(current_package_item, index) in current_package_list">
-				<image :src="current_package_item.cover_img_url" mode=" aspectFill" style="width: 300rpx; height: 200rpx;"></image>
+				<view class="">
+					<image :src="current_package_item.cover_img_url" mode=" aspectFill" style="width: 300rpx; height: 250rpx;"></image>
+				</view>
 				<view class="package_describe"><!-- {{current_package_item.cover_img_url}} -->
 					<view style=" font-weight: bold;font-size: 45rpx;height: 60rpx;">{{current_package_item.title}}</view>
 					<view>
-						<image :src="current_package_item.publish_icon" mode="widthFix" class="package_cover_img"></image>
-						<view style="height: 40rpx;">发行商：{{current_package_item.supplier_name}}</view>
-						
+						<image :src="current_package_item.supplier_icon" mode="aspectFill" style="width: 40rpx; height: 40rpx;"></image>
+						发行商：{{current_package_item.supplier_name}}
 					</view>
 					<view>简介：{{current_package_item.brief}}{{current_package_item.packageid}}</view>
 				</view>
@@ -240,31 +241,20 @@ export default {
 	
 	.my_package_item{
 		background-color: #F4F4F4;
-		position: relative;
+		display: flex;
 		margin: 0rpx 20rpx 20rpx 20rpx;
 		padding: 10rpx;
 		
 	}
 	
-	.package_cover_img{
-		width: 50rpx; 
-		float: right; 
-	}
-	
+
 	.package_describe{
-		position: absolute;
-		top: 20rpx;
-		left: 350rpx;
-		
-	}
-	.trademark{
-		
+		margin-top: 20rpx;
+		margin-left: 20rpx;
 	}
 	.collect_num{
-		position: absolute; 
-		float: right;
-		right: 20rpx;
-		bottom: 10rpx;
-		
+		position:relative;
+		right: 30rpx;
+		top: 150rpx;
 	}
 </style>

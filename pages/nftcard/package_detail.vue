@@ -98,8 +98,9 @@ export default {
 	data() {
 		return {
 			current_package_detail:null,
-			current_packageid:0,
 			current_card_list:null,
+			current_packageid:0,
+			
 			current_cardid:0,
 		
 		};
