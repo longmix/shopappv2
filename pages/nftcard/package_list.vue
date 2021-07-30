@@ -51,12 +51,12 @@ export default {
 			title : that.abotapi.globalData.default_shopname
 		});
 		
-		uni.setNavigationBar
-		({
-			title : '卡包列表',
-		});
 		
 		that.abotapi.set_shop_option_data(that, that.callback_function_shop_option_data);
+		
+		uni.setNavigationBarTitle({
+			title : '卡包列表',
+		});
 		
 		
 		//获取卡包列表

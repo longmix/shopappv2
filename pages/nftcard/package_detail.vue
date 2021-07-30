@@ -3,7 +3,7 @@
 		<!-- 封面 -->
 		<view class="">
 			<view class="package_background">
-				<image class="" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/8.jpg" mode="scaleToFill" style="width: 100%; height: 500rpx;"></image>
+				<image class="" :src="current_package_detail.cover_img_url" mode="scaleToFill" style="width: 100%; height: 500rpx;"></image>
 			</view>	
 			<view class="prospect">
 				<image class="" :src="current_package_detail.cover_img_url" mode="widthFix" style="width:400rpx;"></image>
@@ -23,9 +23,9 @@
 		</view>
 		
 		<!-- 发行商 -->
-		<view class="Publish_information">
-				<image :src="current_package_detail.cover_img_url" mode="widthFix" style="width: 250rpx;"></image>
-				<view class="">
+		<view class="publish_information">
+				<image class="publish_icon" :src="current_package_detail.cover_img_url" mode="widthFix" style="width: 250rpx;"></image>
+				<view class="package_card_publish">
 					<view>
 						<text style="font-weight: bold;">发行商：</text>
 						{{current_package_detail.pubish_name}}
@@ -42,17 +42,17 @@
 	
 		<!-- 筛选 -->
 		<view class="">
-			<view class="card_button">
+			<view class="screen_card">
 				<view style="color: red;">全部</view>
 				<view >普通卡</view>
 				<view >珍藏卡</view>
 				<view >已有</view>
 				<view >未有</view>
 			</view>
-			<view class="">
+			<!-- <view class="">
 				<image class="card_icon" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/mark.png" mode="widthFix" style="width: 30rpx;"></image>
 				<view class="num">5</view>
-			</view>
+			</view> -->
 		</view>
 							
 				<!-- 卡包中的卡牌 --> 
@@ -65,24 +65,27 @@
 					<view class="package_detail_card_information">
 						<view style="font-weight: bold;">卡牌名称：{{current_card_item.card_name}}</view>
 						<view>发行商：{{current_card_item.publish_name}}</view>
-						<view >发行期{{current_card_item.createtime}}</view>
+						<view >发行期：{{current_card_item.createtime}}</view>
 					</view>
 					
 				</view>	 
 			</view>
 		<view class="">
-			<view clas="series_card">
-				<view style="float: right; font-size: smaller; margin: 10rpx; color: red;">>>更多卡牌>></view>
-				<view style="font-weight: bold; font-size: larger;">系列卡牌</view>
+			<view clas="">
+				<view class="more_card" >>>更多卡牌>></view>
+				<view class="series_card">系列卡牌</view>
 			</view>
 			<!-- 系列卡牌——左右滑动 -->
 			<scroll-view scroll-x="true">
 				<view class="slide_cards">
-					<view class="slide_cards_pic">
-						<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/slide_card_01.jpg" style="width: 355rpx;"></image>
-						<view>名称</view>
+					<view class="" v-for="(current_card_slid_item,index) in current_card_list">
+						<view class="slide_cards_pic">
+							<image :src="current_card_slid_item.cover_img_url" mode="aspectFill" style="width: 355rpx;"></image>
+							<view>名称</view>
+						</view>
 					</view>
-					<view class="slide_cards_pic">
+					
+					<!-- <view class="slide_cards_pic">
 						<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/slide_card_02.jpg" style="width: 355rpx;"></image>
 						<view>名称</view>
 					</view>
@@ -97,7 +100,7 @@
 					<view class="slide_cards_pic">
 						<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/slide_card_05.jpg" style="width: 355rpx;"></image>
 						<view>名称</view>
-					</view>	
+					</view>	 -->
 				</view>
 			</scroll-view>
 		</view>	
@@ -113,6 +116,7 @@ export default {
 		return {
 			current_package_detail:null,
 			current_packageid:0,
+			current_card_list:null,
 		
 		};
 	},
@@ -373,53 +377,64 @@ export default {
 		padding: 0 10rpx;
 		
 	}
-	.Publish_information{
+	.publish_information{
 		background-color: #FFFFFF;
-		margin: 10rpx 10rpx;
+		margin: 10rpx 20rpx 5rpx 10rpx ;
 		padding: 10rpx;
 		display: flex;
 		
 	}
-	.card_button{
+	.publish_icon{
+		border-radius: 50rpx;
+		overflow: hidden;
+	}
+	.package_card_publish{
+		margin-top: 20rpx;
+		margin-left: 20rpx;
+	}
+	.screen_card{
 		font-weight:bolder;
 		font-size: large;
-		
-
 		justify-content: space-between;
 		display: flex;
-		margin: 10rpx 0rpx;
-		padding:10rpx 30rpx;
+		margin: 5rpx 0rpx;
+		padding:5rpx 30rpx;
 	}
-	.card_icon{
-		position: absolute;
-		
-		top: -15rpx;
-		right: 0rpx;
-	}
-	.num{
-		position: absolute;
-		top: -17rpx;
-		right: 5rpx;
-	}
+	
 	.my_package_detail_card_list{
 		background-color: #FFFFFF;
-		margin-top:10rpx ;
-		margin-left: 10rpx;
+		margin:10rpx 20rpx 5rpx 10rpx;  
+		padding-left: 5rpx;
+		
 	}
 	.card_list{
 		display: flex;
-		padding-top: 10rpx;
-		padding-bottom: 10rpx;
+		margin: 5rpx;
+		padding:5rpx;
 	}
 	.package_detail_card_information{
 		margin-top: 30rpx;
 		padding-top: 20rpx;
+		margin-left: 20rpx;
 		
+	}
+	.more_card{
+		float: right;
+		font-size: smaller;
+		margin: 10rpx; 
+		color: red;
+	}
+	.series_card{
+		margin-left: 20rpx;
+		font-weight: bold; 
+		font-size: larger;
 	}
 	.slide_cards{
 		display: flex;
+		margin-left: 20rpx;
 	}
 	.slide_cards_pic{
-		margin-right: 10rpx;
+		margin:5rpx;
+		padding: 5rpx;
 	}
 </style>
