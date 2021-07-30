@@ -10,13 +10,18 @@
 			
 			
 			<view v-for="(current_card_item, index) in current_card_list" style="float: left;">
-				<view class="card_detail_kapai_imgwidth">
-					<image :src="current_card_item.cover_img_url" class="card_detail_kapai_border"></image>
+				<view class="card_list_background">
+					<view class="card_detail_kapai_imgwidth">
+						<image :src="current_card_item.cover_img_url" class="card_detail_kapai_border"></image>
+					</view>
+					<view class="card_list_kaipai_xinxi">
+						<view>{{current_card_item.card_name}}</view>
+						<view class="card_list_riqi">已有100人收藏</view>
+					</view>
+					
 				</view>
-				<view class="card_list_kaipai_xinxi">
-					<view>{{current_card_item.card_name}}</view>
-					<view class="card_list_riqi">已有100人收藏</view>
-				</view>
+				
+				
 			</view>
 			
 			
@@ -226,26 +231,35 @@ export default {
 		display: flex;
 		flex-direction:row;
 		justify-content: space-around;
+		background-color:  #f8f8f8;
+		padding: 15rpx 0rpx;
+		margin-bottom: 10rpx;
 	}
 	.card_detail_kapai_imgwidth{
-		width: 340rpx;
-		height: 350rpx;
+		width: 310rpx;
+		height: 310rpx;
 		overflow: hidden;
-		margin: 15rpx;
-		border-radius: 15rpx;
+		
+		border-radius: 30rpx;
 	}
 	.card_detail_kapai_border{
-		width:340rpx;
-		height: 350rpx;
-		position: relative;
-		left: ;
+		width:330rpx;
+		height: 310rpx;
 	}
 	.card_list_kaipai_xinxi{
 		padding-left: 20rpx;
+		padding-top: 10rpx;
+		line-height: 45rpx;
 	}
 	.card_list_riqi{
 		font-size: 14rpx;
 		font-weight: 100;
+	}
+	.card_list_background{
+		background-color: #fffbf2;
+		padding: 20rpx;
+		margin: 10rpx;
+		border-radius: 20rpx;
 	}
 </style>
 

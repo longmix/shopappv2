@@ -16,8 +16,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			<!-- 背景模糊图片 -->
 			<image :src="current_card_detail.cover_img_url" class="card_detail_border"></image>
 			<!-- 卡牌封面 -->
-			<view style="width: 1000rpx;text-align: center;">
-				<image :src="current_card_detail.cover_img_url" style="text-align: center;" class="card_detail_image"></image>
+			<view>
+				<image :src="current_card_detail.cover_img_url" class="card_detail_image"></image>
 			</view>
 			<!-- 有多少人喜欢 及 有多少张重复卡牌 -->
 			<view class="card_detail_xihuan">
@@ -27,15 +27,16 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			</view>
 		</view>
 		<!-- 所属卡包信息 -->
-		<view style="padding: 15rpx;">
+		<view class="card_detail_xinxi">
 			<h4 class="card_detail_h4">{{current_card_detail.card_name}}</h4>
+			<view>发行时间：{{current_card_detail.createtime}}</view>
 			<view>{{current_card_detail.description}}</view>
 			<view style="padding-top: 20rpx;padding-bottom: 10rpx;">
 				<h4 class="card_detail_h4">所属卡包</h4>
 				<image :src="current_card_detail.cover_img_url" class="card_detail_kabaotoxiang"></image>
 				<view class="card_detail_kabaoxinxi">
 					<view><text class="card_detail_weight">卡包名称：</text>{{}}</view>
-					<view><text class="card_detail_weight">发行商：</text>{{current_card_detail.publish_name}}</view>
+					<view><text class="card_detail_weight">发行商：</text>{{current_card_detail.supplier_name}}</view>
 					<view><text class="card_detail_weight">库存：</text>|<text class="card_detail_weight">发行：</text></view>
 				</view>
 				
@@ -48,14 +49,13 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				<h4 class="card_detail_h4">其他卡牌</h4>
 				
 				<view v-for="">
-					<view style="height: 500rpx;">
+					<view class="card_detail_background">
 						<view class="card_detail_kapai_imgwidth">
 							<image :src="current_card_detail.cover_img_url" class="card_detail_kapai_border"></image>
 						</view>
-						<view>{{current_card_detail.card_name}}</view>
+						<view style="line-height: 40rpx;">{{current_card_detail.card_name}}</view>
 					</view>
 				</view>
-				
 				
 				
 			</view>
@@ -86,7 +86,8 @@ export default {
 	data() {
 		return {
 			current_card_detail:null,
-			current_cardid:0
+			current_cardid:0,
+			current_packageid:0
 		};
 	},
 	onLoad: function(options) {
@@ -277,11 +278,11 @@ export default {
 	.card_detail_weight{
 		font-weight: 600;
 		padding-left: 20rpx;
-}
+	}
 	.card_detail_border {
 		width:100%;
 		height: 550rpx;
-		filter: blur(12rpx);
+		filter: blur(15rpx);
 	}
 	.card_detail_h4{
 		font-size: 30rpx;
@@ -293,6 +294,7 @@ export default {
 		left: 80rpx;
 		top: 90rpx;
 		height: 450rpx;
+		border-radius: 20rpx;
 	}
 	.card_detail_an{
 		width: 55rpx;
@@ -322,6 +324,10 @@ export default {
 		width: 35rpx;
 		height: 35rpx;
 	}
+	.card_detail_xinxi{
+		padding: 15rpx;
+		line-height: 40rpx;
+	}
 	.card_detail_kapai_imgwidth{
 		width: 300rpx;
 		height: 450rpx;
@@ -334,5 +340,12 @@ export default {
 		height: 450rpx;
 		position: relative;
 		left: -140rpx;
+	}
+	.card_detail_background{
+		width: 320rpx;
+		background-color: #F7F7F7;
+		margin: 10rpx;
+		padding: 10rpx;
+		border-radius: 15rpx;
 	}
 </style>
