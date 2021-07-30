@@ -1,6 +1,17 @@
 <template>
 	<view>
+<!--
+
+购买卡片的跳转路径：  
+/pages/order/pay?productid=12345&total=12.34&extraData=abcdefg
+
+参数说明：
+productid 对应的商品名称，由服务器返回，在卡牌详情中
+total 总价格，由服务器返回，在卡牌详情中
+extraData 扩展数据，由服务器返回，在卡牌详情中
+
 		
+-->		
 		<view style="height: 550rpx;">
 			<!-- 背景模糊图片 -->
 			<image :src="current_card_detail.cover_img_url" class="card_detail_border"></image>

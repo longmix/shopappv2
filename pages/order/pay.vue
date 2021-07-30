@@ -319,6 +319,9 @@
 				no_user_login:0,
 				no_user_login_ext_data_str:'',
 				
+				//2021.7.30. 扩展 extraData 字段
+				extraData:null,
+				
 			};
 		},
 		
@@ -361,7 +364,9 @@ tuansn = 参团的编号，如果没有，则代表新开团
 //2021.6.19. 不登陆直接下单
 no_user_login = 1	
 no_user_login_ext_data_str = '{}'
-		
+
+//2021.7.30. 任何附带的其他信息
+extraData = 'xxxxxxxxxxxxxxx'		
 		
 		 * 
 		 */
@@ -571,7 +576,12 @@ no_user_login_ext_data_str = '{}'
 				console.log('本次下单免登陆，参数为：'+ that.no_user_login_ext_data_str);
 			}
 			
-			
+			//2021.7.30. 扩展出 extraData字段
+			if(options.extraData){
+				that.extraData = options.extraData;
+				
+				console.log('本次下单有扩展字段：' + extraData);
+			}
 			
 			
 			
@@ -1426,6 +1436,12 @@ no_user_login_ext_data_str = '{}'
 					if(that.cuxiao_huodong){
 						data_orderAdd.cuxiao_type = that.cuxiao_huodong;
 					}
+					
+					//2021.7.30. 扩展 extraData 字段
+					if(that.extraData){
+						data_orderAdd.extraData = that.extraData;
+					}
+					
 				}
 				else if(that.order_type_001 == 'xianmaishang'){
 					if(that.addemt == 1){
