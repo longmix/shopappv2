@@ -12,26 +12,26 @@
 		
 		<!-- 卡包详情 -->
 		<view class="package_information">
-			<view style="font-weight: bold;">名称：{{current_package_detail.title}}</view>
+			<view style="font-weight: bold; font-size: 40rpx;">{{current_package_detail.title}}</view>
 			<view>
-				<text style="font-weight: bold;">详情：</text>{{current_package_detail.description}}
+				<text>详情：</text>{{current_package_detail.description}}
 			</view>
 			<view>
-				<text style="font-weight: bold;">有效期：</text>
+				<text>有效期：</text>
 				{{current_package_detail.createtime}}
 			</view>	
 		</view>
 		
 		<!-- 发行商图片及简介 -->
 		<view class="publish_information">
-				<image class="publish_icon" :src="current_package_detail.cover_img_url" mode="widthFix" style="width: 250rpx;"></image>
+				<image class="publish_icon" :src="current_package_detail.cover_img_url" mode="widthFix" style="width: 200rpx;"></image>
 				<view class="package_card_publish">
 					<view>
 						<text style="font-weight: bold;">发行商：</text>
 						{{current_package_detail.supplier_name}}
 					</view>
 				
-					<view><text style="font-weight: bold;">描述：</text></view>
+					<view>简介：</view>
 					
 				</view>
 				
@@ -63,7 +63,7 @@
 					<image :src="current_card_item.cover_img_url" mode="aspectFill" style="width: 355rpx; height: 260rpx;"></image>
 				</view>
 					<view class="package_detail_card_information">
-						<view style="font-weight: bold;">卡牌名称：{{current_card_item.card_name}}</view>
+						<view style="font-weight: bold;font-size: 50rpx;">{{current_card_item.card_name}}</view>
 						<view>发行商：{{current_card_item.supplier_name}}</view>
 						<view >发行期：{{current_card_item.createtime}}</view>
 					</view>
@@ -380,7 +380,7 @@ export default {
 		
 	}
 	.publish_icon{
-		border-radius: 50rpx;
+		border-radius: 50%;
 		overflow: hidden;
 	}
 	.package_card_publish{
@@ -396,20 +396,17 @@ export default {
 		padding:5rpx 30rpx;
 	}
 	
-	.my_package_detail_card_list{
+	.card_list{
 		background-color: #FFFFFF;
-		margin:10rpx 20rpx 5rpx 10rpx;  
-		padding-left: 5rpx;
-		
+		margin: 10rpx 20rpx 20rpx 20rpx;
+		padding: 10rpx 10rpx 5rpx 10rpx;
 	}
 	.card_list{
 		display: flex;
-		margin: 5rpx;
-		padding:5rpx;
+	
 	}
 	.package_detail_card_information{
-		margin-top: 30rpx;
-		padding-top: 20rpx;
+		
 		margin-left: 20rpx;
 		
 	}

@@ -1,9 +1,9 @@
 <template>
 	<view class="global_background">
 		<view class="sort">
-			<view style="font-weight:bold;font-size: large; color: red;">智能排序</view>
-			<view style="font-weight:bold;font-size: large;">时间排序</view>
-			<view style="font-weight:bold;font-size: large;">热度排序</view>
+			<view style="color: red;">智能排序</view>
+			<view >时间排序</view>
+			<view >热度排序</view>
 		</view>
 		
 		
@@ -16,14 +16,15 @@
 					<image :src="current_package_item.cover_img_url" mode=" aspectFill" style="width: 300rpx; height: 250rpx;"></image>
 				</view>
 				<view class="package_describe"><!-- {{current_package_item.cover_img_url}} -->
-					<view style=" font-weight: bold;font-size: 45rpx;height: 60rpx;">{{current_package_item.title}}</view>
+					<view class="package_name">{{current_package_item.title}}</view>
 					<view>
-						<image :src="current_package_item.supplier_icon" mode="aspectFill" style="width: 40rpx; height: 40rpx;"></image>
+						<!-- <image :src="current_package_item.supplier_icon" mode="aspectFill" style="width: 40rpx; height: 40rpx;"></image> -->
 						发行商：{{current_package_item.supplier_name}}
-					</view>
+					</view>	
 					<view>简介：{{current_package_item.brief}}{{current_package_item.packageid}}</view>
+					<view>发行期：{{current_package_item.updatetime}}</view>
 				</view>
-				<view class="collect_num">已有1000人收藏</view>	
+			
 			</view>	
 		</view>	
 	</view>
@@ -260,6 +261,14 @@ export default {
 	.package_describe{
 		margin-top: 20rpx;
 		margin-left: 20rpx;
+	}
+	.package_name{
+		font-weight: bold;
+		font-size: 40rpx;
+		height: 50rpx;
+		
+		white-space: nowrap;
+		
 	}
 	.collect_num{
 		position:relative;
