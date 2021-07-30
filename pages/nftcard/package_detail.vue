@@ -58,7 +58,7 @@
 				<!-- 卡包中的卡牌 --> 
 			<view class="my_package_detail_card_list">
 				<view class="card_list"
-				v-for="(current_card_item,index) in current_card_list">
+				v-for="(current_card_item,index) in current_card_list" @tap="go_to_card_detail(current_card_item.packageid, current_card_item.cardid)">
 				<view>
 					<image :src="current_card_item.cover_img_url" mode="aspectFill" style="width: 355rpx; height: 260rpx;"></image>
 				</view>
@@ -325,6 +325,15 @@ export default {
 			console.log('cb_params====', cb_params);
 		},
 		
+		
+		go_to_card_detail:function(packageid, cardid){
+			console.log('packageid===>>>' + packageid);
+			console.log('cardid===>>>' + cardid);
+			
+			uni.navigateTo({
+				url: '/pages/nftcard/card_detail?packageid='+packageid+'&cardid='+cardid,
+			})
+		}
 		
 		
 		

@@ -20,9 +20,14 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				<image :src="current_card_detail.cover_img_url" class="card_detail_image"></image>
 			</view>
 			<!-- 有多少人喜欢 及 有多少张重复卡牌 -->
-			<view class="card_detail_xihuan">
-				<image src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/aixin.png" class="card_detail_aixin"></image>
-				10 人喜欢<br>
+			<view class="card_detail_xihuan">				
+				<image src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star.png" 
+					class="card_detail_aixin" v-if="current_card_detail.is_favorite == 0" 
+					@tap="set_favorite(1)"></image>
+				<image src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png"
+					class="card_detail_aixin" v-if="current_card_detail.is_favorite == 1"
+					@tap="set_favorite(0)"></image>	
+				{{current_card_detail.favorite_counter}} 人收藏<br>
 				<view>我有 2 张</view>
 			</view>
 		</view>
@@ -126,15 +131,23 @@ export default {
 		
 		//获取卡牌详情
 		
-		that.abotapi.abotRequest({
-		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_detail',
-		    method: 'post',
-		    data: {
+		var post_data = {
 				sellerid:that.abotapi.globalData.default_sellerid,
 				packageid:that.current_packageid,
 				cardid:that.current_cardid,
 				
-		    },
+		    };
+			
+		var userInfo = that.abotapi.get_user_info();	
+		if(userInfo){
+			post_data.userid = userInfo.userid;
+			post_data.checkstr = userInfo.checkstr;
+		}
+		
+		that.abotapi.abotRequest({
+		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_detail',
+		    method: 'post',
+		    data: post_data,
 		    success: function (res) {
 				
 				if(res.data.code != 1){
@@ -206,7 +219,7 @@ export default {
 		//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
 		onReachBottom: function() {
 
-			this.get_product_list();
+			//this.get_product_list();
 
 		},
 
@@ -267,6 +280,17 @@ export default {
 				}
 
 				console.log('cb_params====', cb_params);
+			},
+			
+			set_favorite:function(value001){
+				var that = this;
+				
+				//请求服务器接口、
+				var cardid = that.current_card_detail.cardid;
+				
+				//请求成功之后，修改本地的数据
+				that.current_card_detail.is_favorite = value001;
+				
 			},
 			
 			test_goto_buy:function(){

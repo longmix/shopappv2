@@ -10,7 +10,8 @@
 		
 		<view class="my_package_list_style"	>
 			<view class="my_package_item"
-				v-for="(current_package_item, index) in current_package_list">
+				v-for="(current_package_item, index) in current_package_list"
+				 @tap="goto_package_detail(current_package_item.packageid)" >
 				<view class="">
 					<image :src="current_package_item.cover_img_url" mode=" aspectFill" style="width: 300rpx; height: 250rpx;"></image>
 				</view>
@@ -211,6 +212,14 @@ export default {
 			}
 			console.log('cb_params====', cb_params);
 		},
+		
+		goto_package_detail:function(packageid){
+			console.log('packageid===>>>' + packageid);
+			
+			uni.navigateTo({
+				url: '/pages/nftcard/package_detail?packageid='+packageid,
+			})
+		}
 		
 		
 		
