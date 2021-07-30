@@ -114,14 +114,6 @@ export default {
 			current_package_detail:null,
 			current_packageid:0,
 		
-			
-			screen:[
-				{message:"全部"},
-				{message:"珍藏卡"},
-				{message:"普通卡"},
-				{message:"已有"},
-				{message:"未有"}
-			]
 		};
 	},
 	onLoad: function (options) {
