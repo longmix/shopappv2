@@ -20,15 +20,11 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				<image :src="current_card_detail.cover_img_url" class="card_detail_image"></image>
 			</view>
 			<!-- 有多少人喜欢 及 有多少张重复卡牌 -->
-			<view class="card_detail_xihuan">				
-				<image src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star.png" 
-					class="card_detail_aixin" v-if="current_card_detail.is_favorite == 0" 
-					@tap="set_favorite(1)"></image>
+			<view class="card_detail_xihuan">
 				<image src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png"
-					class="card_detail_aixin" v-if="current_card_detail.is_favorite == 1"
-					@tap="set_favorite(0)"></image>	
+					class="card_detail_aixin"></image>	
 				{{current_card_detail.favorite_counter}} 人收藏<br>
-				<view>我有 2 张</view>
+				<view>我有 {{current_card_detail.have_counter}} 张</view>
 			</view>
 		</view>
 		<!-- 所属卡包信息 -->
@@ -40,7 +36,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				<h4 class="card_detail_h4">所属卡包</h4>
 				<image :src="current_card_detail.cover_img_url" class="card_detail_kabaotoxiang"></image>
 				<view class="card_detail_kabaoxinxi">
-					<view><text class="card_detail_weight">卡包名称：</text>{{}}</view>
+					<view><text class="card_detail_weight">卡包名称：</text>{{}}</view><!-- current_package_detail.title -->
 					<view><text class="card_detail_weight">发行商：</text>{{current_card_detail.supplier_name}}</view>
 					<view><text class="card_detail_weight">库存：</text>|<text class="card_detail_weight">发行：</text></view>
 				</view>
@@ -66,20 +62,28 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			</view>
 		
 			
+
+			<radio v-if="current_card_detail.is_buyed == 0" type="radio" disabled="disabled" checked="checked" style="float: left;">已拥有</radio>
+			<radio v-else type="radio" disabled="disabled" style="float: left;">未拥有</radio>
 			
 			
-		<view style="text-align: right;padding: 20rpx;">
-			<view @tap="test_goto_buy">购买测试</view>
-			<radio type="radio" value="" checked="checked" style="float: left;">已拥有</radio>
-			<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/收 藏.png"></image>
-			<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/赠予.png"></image>
-			<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/丢弃 .png"></image>
-			<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/分 享.png"></image>
-			<!-- <button name="button" type="button" value="购买" style="background: #007AFF;color: #FFFFFF;">购买</button> -->
-		</view>
-		<view>
-			
-		</view>
+			<view style="float: right;padding: 20rpx;display: flex;">
+				<!-- <view @tap="test_goto_buy">购买测试</view> -->
+				<button v-if="current_card_detail.is_buyed == 1" type="button" value="购买" style="background: #007AFF;color: #FFFFFF;width: 50%;">购买</button>
+				
+				<image class="card_detail_an" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star.png"
+				v-if="current_card_detail.is_favorite == 0" @tap="set_favorite(1)"></image>
+				<image class="card_detail_an" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png"
+				v-if="current_card_detail.is_favorite == 1" @tap="set_favorite(0)"></image>
+				
+				<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/赠予.png"
+				v-if="current_card_detail.is_buyed == 0"></image>
+				<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/丢弃 .png"
+				v-if="current_card_detail.is_buyed == 0"></image>
+				<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/分 享.png"></image>
+				
+			</view>
+
 	</view>
 	<!-- <view v-else>数据获取失败</view> -->
 
@@ -92,9 +96,9 @@ export default {
 	data() {
 		return {
 			current_card_detail:null,
+			current_package_detail:null,
 			current_cardid:0,
 			current_packageid:0,
-			
 		};
 	},
 	onLoad: function(options) {
@@ -148,6 +152,7 @@ export default {
 		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_detail',
 		    method: 'post',
 		    data: post_data,
+			
 		    success: function (res) {
 				
 				if(res.data.code != 1){
@@ -174,7 +179,41 @@ export default {
 		});
 		
 		
+		//获取卡包详情里的数据(null值)
 		
+		that.abotapi.abotRequest({
+		  url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_detail',
+			
+		    method: 'post',
+		    data: {
+				sellerid:that.abotapi.globalData.default_sellerid,
+				packageid:that.current_packageid,
+			
+		    },
+		    success: function (res) {
+				
+				if(res.data.code != 1){
+					uni.showToast({
+						title:'卡包详情没有数据',
+						duration: 2000,
+					});
+					
+					return;
+				}
+				
+				that.current_package_detail = res.data.data;
+				
+				console.log('current_package_detail ===>>> ', that.current_package_detail);
+				
+				
+		    },
+		    fail: function (e) {
+				uni.showToast({
+					title: '网络异常！',
+					duration: 2000
+				});
+		    },
+		});
 		
 
 
@@ -290,6 +329,16 @@ export default {
 				
 				//请求成功之后，修改本地的数据
 				that.current_card_detail.is_favorite = value001;
+				
+			},
+			set_buyed:function(value002){
+				var that = this;
+				
+				//请求服务器接口、
+				var cardid = that.current_card_detail.cardid;
+				
+				//请求成功之后，修改本地的数据
+				that.current_card_detail.is_buyed = value002;
 				
 			},
 			
