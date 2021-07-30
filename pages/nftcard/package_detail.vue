@@ -1,10 +1,10 @@
 <template>
 	<view class="global_background">
-		<!-- 封面 -->
+		<!-- 封面  模糊背景 -->
 		<view class="">
 			<view class="package_background">
 				<image class="" :src="current_package_detail.cover_img_url" mode="scaleToFill" style="width: 100%; height: 500rpx;"></image>
-			</view>	
+			</view>
 			<view class="prospect">
 				<image class="" :src="current_package_detail.cover_img_url" mode="widthFix" style="width:400rpx;"></image>
 			</view>
@@ -22,13 +22,13 @@
 			</view>	
 		</view>
 		
-		<!-- 发行商 -->
+		<!-- 发行商图片及简介 -->
 		<view class="publish_information">
 				<image class="publish_icon" :src="current_package_detail.cover_img_url" mode="widthFix" style="width: 250rpx;"></image>
 				<view class="package_card_publish">
 					<view>
 						<text style="font-weight: bold;">发行商：</text>
-						{{current_package_detail.pubish_name}}
+						{{current_package_detail.supplier_name}}
 					</view>
 				
 					<view><text style="font-weight: bold;">描述：</text></view>
@@ -40,7 +40,7 @@
 		
 	
 	
-		<!-- 筛选 -->
+		<!-- 筛选框 -->
 		<view class="">
 			<view class="screen_card">
 				<view style="color: red;">全部</view>
@@ -64,13 +64,13 @@
 				</view>
 					<view class="package_detail_card_information">
 						<view style="font-weight: bold;">卡牌名称：{{current_card_item.card_name}}</view>
-						<view>发行商：{{current_card_item.publish_name}}</view>
+						<view>发行商：{{current_card_item.supplier_name}}</view>
 						<view >发行期：{{current_card_item.createtime}}</view>
 					</view>
 					
 				</view>	 
 			</view>
-		<view class="">
+		
 			<view clas="">
 				<view class="more_card" >>>更多卡牌>></view>
 				<view class="series_card">系列卡牌</view>
@@ -81,29 +81,12 @@
 					<view class="" v-for="(current_card_slid_item,index) in current_card_list">
 						<view class="slide_cards_pic">
 							<image :src="current_card_slid_item.cover_img_url" mode="aspectFill" style="width: 355rpx;"></image>
-							<view>名称</view>
+							<view>{{current_card_slid_item.card_name}}</view>
 						</view>
 					</view>
-					
-					<!-- <view class="slide_cards_pic">
-						<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/slide_card_02.jpg" style="width: 355rpx;"></image>
-						<view>名称</view>
-					</view>
-					<view class="slide_cards_pic">
-						<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/slide_card_03.jpg" style="width: 355rpx;"></image>
-						<view>名称</view>
-					</view>
-					<view class="slide_cards_pic">
-						<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/slide_card_04.jpg" style="width: 355rpx;"></image>
-						<view>名称</view>
-					</view>
-					<view class="slide_cards_pic">
-						<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/slide_card_05.jpg" style="width: 355rpx;"></image>
-						<view>名称</view>
-					</view>	 -->
 				</view>
 			</scroll-view>
-		</view>	
+	
 	</view>
 </template>
 
@@ -117,6 +100,7 @@ export default {
 			current_package_detail:null,
 			current_packageid:0,
 			current_card_list:null,
+			current_cardid:0,
 		
 		};
 	},
@@ -159,7 +143,8 @@ export default {
 		//获取卡包列表
 		
 		that.abotapi.abotRequest({
-		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_detail',
+		  url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_detail',
+			
 			
 		    method: 'post',
 		    data: {

@@ -580,7 +580,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 			if(options.extraData){
 				that.extraData = options.extraData;
 				
-				console.log('本次下单有扩展字段：' + extraData);
+				console.log('本次下单有扩展字段：' + that.extraData);
 			}
 			
 			
@@ -956,6 +956,15 @@ extraData = 'xxxxxxxxxxxxxxx'
 								duration: 2000,
 							});
 						}
+						else if(code == -1){
+							console.log('登录超时！！！！！！！！！！！');
+							
+							that.abotapi.del_user_info();
+							
+							that.abotapi.goto_user_login(that.last_url, 'normal');
+							
+							return;
+						}
 						else {
 							uni.showModal({
 								title: '提示',
@@ -1308,7 +1317,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 			
 				uni.clearStorageSync();
 			
-				this.abotapi.goto_user_login(this.data.last_url, 'normal');
+				this.abotapi.goto_user_login(this.last_url, 'normal');
 			},
 			  
 			

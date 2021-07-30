@@ -64,6 +64,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			
 			
 		<view style="text-align: right;padding: 20rpx;">
+			<view @tap="test_goto_buy">购买测试</view>
 			<radio type="radio" value="" checked="checked" style="float: left;">已拥有</radio>
 			<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/收 藏.png"></image>
 			<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/赠予.png"></image>
@@ -263,9 +264,30 @@ export default {
 				}
 
 				console.log('cb_params====', cb_params);
-			}
+			},
+			
+			test_goto_buy:function(){
+				var that = this;
+				
+				console.log('tgggggggggggggggggg_buy');
+				
+				var productid = that.current_card_detail.productid;
+				var price = that.current_card_detail.price;
+				var extraData = that.current_card_detail.extraData;
+				
+				var new_url = '/pages/order/pay?productid='+ productid + '&total='+ price +'&extraData='+extraData;
+				
+				uni.navigateTo({
+					url:new_url
+				})
+				
+				
+			},
+			
+			
 
 		}
+		
 		
 		
 	}

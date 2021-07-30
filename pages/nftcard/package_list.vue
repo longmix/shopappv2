@@ -1,7 +1,7 @@
 <template>
-	<view>
+	<view class="global_background">
 		<view class="sort">
-			<view style="font-weight:bold;font-size: large;">智能排序</view>
+			<view style="font-weight:bold;font-size: large; color: red;">智能排序</view>
 			<view style="font-weight:bold;font-size: large;">时间排序</view>
 			<view style="font-weight:bold;font-size: large;">热度排序</view>
 		</view>
@@ -13,10 +13,10 @@
 				v-for="(current_package_item, index) in current_package_list">
 				<image :src="current_package_item.cover_img_url" mode=" aspectFill" style="width: 300rpx; height: 200rpx;"></image>
 				<view class="package_describe"><!-- {{current_package_item.cover_img_url}} -->
-					<view style=" font-weight: bold;font-size: 45rpx;height: 80rpx;">{{current_package_item.title}}</view>
+					<view style=" font-weight: bold;font-size: 45rpx;height: 60rpx;">{{current_package_item.title}}</view>
 					<view>
 						<image :src="current_package_item.publish_icon" mode="widthFix" class="package_cover_img"></image>
-						<view style="height: 50rpx;">发行商：{{current_package_item.publish_name}}</view>
+						<view style="height: 40rpx;">发行商：{{current_package_item.supplier_name}}</view>
 						
 					</view>
 					<view>简介：{{current_package_item.brief}}{{current_package_item.packageid}}</view>
@@ -35,7 +35,7 @@ export default {
 	data() {
 		return {
 			current_package_list : null,
-			
+			p:2,
 		};
 	},
 	onLoad: function (options) {
@@ -51,12 +51,12 @@ export default {
 			title : that.abotapi.globalData.default_shopname
 		});
 		
-		
-		that.abotapi.set_shop_option_data(that, that.callback_function_shop_option_data);
-		
 		uni.setNavigationBarTitle({
 			title : '卡包列表',
 		});
+		
+		that.abotapi.set_shop_option_data(that, that.callback_function_shop_option_data);
+	
 		
 		
 		//获取卡包列表
@@ -225,25 +225,30 @@ export default {
 
 
 <style>
+	.global_background{
+		background-color:#DFDFDF;
+	}
 	.sort{
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		height: 80rpx;
-		border-bottom: 5rpx red solid;
-		padding:0 20rpx;
+	
+		padding:0 30rpx;
 		background-color: #DFDFDF;
 	}
 	
 	.my_package_item{
+		background-color: #F4F4F4;
 		position: relative;
-		margin: 20rpx;
-		padding: 20rpx;
-		border:2rpx solid #000000;
+		margin: 0rpx 20rpx 20rpx 20rpx;
+		padding: 10rpx;
+		
 	}
 	
 	.package_cover_img{
-		width: 40rpx; float: right; bottom: 50rpx; right: 50rpx;
+		width: 50rpx; 
+		float: right; 
 	}
 	
 	.package_describe{
