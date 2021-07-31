@@ -20,7 +20,7 @@
 						
 						<view class="top-input-con">
 						
-							<view  class="scroll-txt" :style="'border:2rpx solid '+ wxa_shop_nav_bg_color + ';'">   
+							<view  class="scroll-txt" :style="'border:2rpx solid '+ btn_bg_color + ';'">   
 								<input type="text" v-model="search_text" :placeholder="list_search_tips" confirm-type="search" style="background: #e6e6e6;" @confirm="search()"/>
 								<icon type="search" size="15" style="margin: 0px 10rpx 0 0;position:absolute;right:30rpx;" @tap="search()"></icon>
 								<!-- <text class="scroll-ads">搜索附近商家</text> -->
@@ -114,14 +114,19 @@
 				
 				citizen_list :[], //数据
 				btn_bg_color:'', //按钮颜色
+				
+				
 				is_empty_msg_show:0,
 				is_get_user_list:0,
 				page:1,
+				
+				
 				current_params_str:'',
-				 empty_list_msg:'到底了~',
+				empty_list_msg:'到底了~',
 				 
-				 search_text:'',
-				 list_search_tips:'搜索会员'
+				search_text:'',
+				list_search_tips:'搜索会员',
+				
 			}
 		},
 		

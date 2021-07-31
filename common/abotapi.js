@@ -4,50 +4,81 @@ const isNullOrUndefined = obj=>obj===null || obj === undefined  || obj === '';
 
 const is_obj_0_or_1= (obj) => {if(obj == 0) return 0; else if(obj == 1) return 1; return -1;}
 
-const abotRequest = (params) => {
-	
-	console.log('准备请求：' + params.url);
-	
-  uni.request({
-    url: params.url,
-    method: params.method || 'POST',
-	dataType: params.dataType || 'json',
-    data: params.data || {},
-    header: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    success(res) {
-      console.log('HTTP Request to ' + params.url);
-      console.log('with data ', params.data);
-	  
-	  if(res && JSON.stringify(res.length) > 512){
-		  var res002 = JSON.stringify(res.length);
-		  console.log('get result', res002.substring(0, 500)+'......' );
-	  }
-	  else{
-		  console.log('get result', res);
-	  }
-      
-
-      if (params.success) {
-        params.success(res);
-      }
-    },
-    fail(res) {
-      if (params.fail) {
-        params.fail(res);
-      }
-    },
-    complete(res) {
-      if (params.complete) {
-        params.complete(res);
-      }
-    },
-  });
-};
+//const abotRequest ;
 
 module.exports = {
-	abotRequest,
+	abotRequest :function (params) {
+		
+		var __this = this;
+	
+		console.log('准备请求：' + params.url);
+		
+		uni.request({
+			url: params.url,
+			method: params.method || 'POST',
+			dataType: params.dataType || 'json',
+			data: params.data || {},
+			header: {
+			  'Content-Type': 'application/x-www-form-urlencoded',
+			},
+			success(res) {
+			  console.log('HTTP Request to ' + params.url);
+			  console.log('with data ', params.data);
+			  
+			  if(res && JSON.stringify(res.length) > 512){
+				  var res002 = JSON.stringify(res.length);
+				  console.log('get result', res002.substring(0, 500)+'......' );
+			  }
+			  else{
+				  console.log('get result', res);
+			  }
+			  
+			  //== 2021.7.31. 统一拦拦截超时的接口 ==
+			  if(!params.dataType || (params.dataType == 'json')){
+				  
+				  if(res.data && res.data.code && (res.data.code == -1)){
+					  
+					  
+					  console.log('检测到登录超时，需要重新登录，并登陆后返回到首页。');
+					  
+					  __this.del_user_info();
+					 
+					  uni.showModal({
+					 	title: '提示',
+					 	content:'登录超时，请重新登录',
+					 	showCancel: false,
+					 	success: function (res) {
+							
+							var last_url = '/pages/index/index';
+							
+							__this.goto_user_login(last_url, 'normal');
+						},
+					 });
+					 
+					 return; 
+				  }
+			  }
+			  //========== End ====================
+			  
+
+			  if (params.success) {
+				params.success(res);
+			  }
+			  
+			},
+			fail(res) {
+			  if (params.fail) {
+				params.fail(res);
+			  }
+			},
+			complete(res) {
+			  if (params.complete) {
+				params.complete(res);
+			  }
+			},
+		});
+	},
+	
 	isNullOrUndefined,
 
 	current_chat_gui:"",
