@@ -1,32 +1,44 @@
 <template>
 	<view class="global_background">
-		<view class="sort">
+		<view class="drop_down_menu">
+			<view class="package_drop_down_icon">热门<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/drop_down.png" mode="widthFix" style="width: 30rpx;"></image></view>
+			
+		</view>	
+				
+				<!-- <select>热门</select>
+				<select>热门</select>
+				<select>热门</select> -->
+			
+		
+		
+		
+		
+		
+		<!-- <view class="sort">
 			<view style="color: red;">智能排序</view>
 			<view >时间排序</view>
 			<view >热度排序</view>
 		</view>
-		
-		
+		 -->
 		
 		<view class="my_package_list_style"	>
-			<view class="my_package_item"
-				v-for="(current_package_item, index) in current_package_list"
-				 @tap="goto_package_detail(current_package_item.packageid)" >
-				<view class="">
-					<image :src="current_package_item.cover_img_url" mode=" aspectFill" style="width: 300rpx; height: 250rpx;"></image>
-				</view>
-				<view class="package_describe"><!-- {{current_package_item.cover_img_url}} -->
-					<view class="package_name">{{current_package_item.title}}</view>
-					<view>
-						<!-- 78468<image :src="current_package_item.supplier_icon" mode="aspectFill" style="width: 40rpx; height: 40rpx;"></image> -->
-						发行商：{{current_package_item.supplier_name}}
-					</view>	
-					<view style="font-weight: 300; font-size: 10rpx;">简介：{{current_package_item.brief}}{{current_package_item.packageid}}</view>
-					<view class="package_updatetime" >发行期：{{current_package_item.updatetime}}</view>
-					<view class="collect_num" style="font-weight: 300; font-size: 10rpx;">收藏人数</view>
-				</view>
+			<view class="my_package_list">
+				<view class="my_package_item"
+					v-for="(current_package_item, index) in current_package_list"
+					 @tap="goto_package_detail(current_package_item.packageid)" >
+					<view class="">
+						<image class="package_list_loop" :src="current_package_item.cover_img_url" mode=" aspectFill" ></image>
+					</view>
+					<view class="package_describe"><!-- {{current_package_item.cover_img_url}} -->
+						<view class="package_name">{{current_package_item.title}}</view>
+					
+						<view class="package_brief">简介：{{current_package_item.brief}}{{current_package_item.packageid}}</view>
+						
+					</view>
+				
+				</view>	
+			</view>
 			
-			</view>	
 		</view>	
 	</view>
 </template>
@@ -238,9 +250,22 @@ export default {
 
 <style>
 	.global_background{
-		background-color:#F4F4F4;
+		background-color:#eceeef;
+
 	}
-	.sort{
+	.drop_down_menu{
+		display: flex;
+		padding: 60rpx 0rpx 10rpx 40rpx;
+		height: 45rpx;
+	}
+	.package_drop_down_icon{
+		background-color: #FFFFFF;
+		border-radius: 20rpx;
+		overflow: hidden;
+		padding-left: 20rpx;
+		
+	}
+	/* .sort{
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -248,27 +273,53 @@ export default {
 	
 		padding:0 30rpx;
 		
-	}
+	}*/
+.my_package_list_style{
 	
-	.my_package_item{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+.my_package_list{
+	width: 700rpx;
+	background-color: #e1e3e4;
+	margin-top: 30rpx;
+}
+.my_package_item{
+
 		background-color: #FFFFFF;
-		display: flex;
-		margin: 0rpx 20rpx 20rpx 20rpx;
-		padding: 10rpx;
+		width: 700rpx;
+		margin-bottom: 30rpx;
+		border-radius: 30rpx;
+		overflow: hidden;
+		
+	} 
+	.package_list_loop{
+		width: 100%;
+		height: 390rpx;
 		
 	}
-	.package_describe{
+	 .package_describe{
 		width: 100%;
 		margin-top: 20rpx;
-		margin-left: 20rpx;
+		margin-left: 30rpx;
 		white-space: nowrap;
 		overflow: hidden;
+		
 	}
 	.package_name{
 		font-weight: bold;
+		margin-bottom: 20rpx;
 		font-size: 40rpx;
 		height: 50rpx;
 	}
+	.package_brief{
+		 font-weight: 300; 
+		 font-size: 10rpx;
+		 margin-bottom: 20rpx;
+	}
+	/*
 	.package_updatetime{
 	background-color: ;
 	font-weight: 300;
@@ -281,5 +332,5 @@ export default {
 		position:relative;
 		float: right;
 		bottom: -40rpx;
-	}
+	} */
 </style>

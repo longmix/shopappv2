@@ -69,14 +69,15 @@
 						<view style="font-weight: bold;font-size: 50rpx;">{{current_card_item.card_name}}</view>
 						<view>发行商：{{current_card_item.supplier_name}}</view>
 						<view style="font-weight: 300; font-size: 10rpx;">发行期：{{current_card_item.createtime}}</view>
+						<view class="" style="font-weight: 300; font-size: 10rpx;">收藏人数</view>
 					</view>
 					
 				</view>	 
 			</view>
 		
 			<view clas="">
-				<view class="more_card" >>>更多卡牌>></view>
-				<view class="series_card">系列卡牌</view>
+				<view class="more_card" >>>更多卡包>></view>
+				<view class="series_card">系列卡包</view>
 			</view>
 			<!-- 系列卡牌——左右滑动 -->
 			<scroll-view scroll-x="true">
