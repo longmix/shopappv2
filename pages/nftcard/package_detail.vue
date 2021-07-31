@@ -12,12 +12,15 @@
 		
 		<!-- 卡包详情 -->
 		<view class="package_information">
-			<view style="font-weight: bold; font-size: 40rpx;">{{current_package_detail.title}}</view>
-			<view>
-				<text>详情：</text>{{current_package_detail.description}}
+			<view style="font-weight: bold; font-size: 40rpx; white-space: nowrap;">{{current_package_detail.title}}</view>
+			<view style="font-weight: 300; font-size: 10rpx;">
+				详情：{{current_package_detail.description}}
 			</view>
-			<view>
-				<text>有效期：</text>
+			<view class="">
+				
+			</view>
+			<view style="font-weight: 300; font-size: 10rpx; color: red;">
+				有效期：
 				{{current_package_detail.createtime}}
 			</view>	
 		</view>
@@ -31,7 +34,7 @@
 						{{current_package_detail.supplier_name}}
 					</view>
 				
-					<view>简介：</view>
+					<view style="font-weight: 300; font-size: 10rpx;">简介：</view>
 					
 				</view>
 				
@@ -65,7 +68,7 @@
 					<view class="package_detail_card_information">
 						<view style="font-weight: bold;font-size: 50rpx;">{{current_card_item.card_name}}</view>
 						<view>发行商：{{current_card_item.supplier_name}}</view>
-						<view >发行期：{{current_card_item.createtime}}</view>
+						<view style="font-weight: 300; font-size: 10rpx;">发行期：{{current_card_item.createtime}}</view>
 					</view>
 					
 				</view>	 
@@ -364,7 +367,7 @@ export default {
 		position: absolute;
 		top: -20rpx;
 		left: -20rpx;
-		transform:translate(50%,50%);
+		transform:translate(50%,20%);
 	}
 	.package_information{
 		background-color: #FFFFFF;
@@ -406,9 +409,10 @@ export default {
 	
 	}
 	.package_detail_card_information{
-		
+		width: 100%;
 		margin-left: 20rpx;
-		
+		white-space: nowrap;
+		overflow: hidden;
 	}
 	.more_card{
 		float: right;

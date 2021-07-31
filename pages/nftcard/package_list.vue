@@ -21,8 +21,9 @@
 						<!-- <image :src="current_package_item.supplier_icon" mode="aspectFill" style="width: 40rpx; height: 40rpx;"></image> -->
 						发行商：{{current_package_item.supplier_name}}
 					</view>	
-					<view>简介：{{current_package_item.brief}}{{current_package_item.packageid}}</view>
-					<view>发行期：{{current_package_item.updatetime}}</view>
+					<view style="font-weight: 300; font-size: 10rpx;">简介：{{current_package_item.brief}}{{current_package_item.packageid}}</view>
+					<view class="package_updatetime" >发行期：{{current_package_item.updatetime}}</view>
+					<view class="collect_num" style="font-weight: 300; font-size: 10rpx;">收藏人数</view>
 				</view>
 			
 			</view>	
@@ -246,33 +247,39 @@ export default {
 		height: 80rpx;
 	
 		padding:0 30rpx;
-		background-color: #DFDFDF;
+		
 	}
 	
 	.my_package_item{
-		background-color: #F4F4F4;
+		background-color: #FFFFFF;
 		display: flex;
 		margin: 0rpx 20rpx 20rpx 20rpx;
 		padding: 10rpx;
 		
 	}
-	
-
 	.package_describe{
+		width: 100%;
 		margin-top: 20rpx;
 		margin-left: 20rpx;
+		white-space: nowrap;
+		overflow: hidden;
 	}
 	.package_name{
 		font-weight: bold;
 		font-size: 40rpx;
 		height: 50rpx;
-		
-		white-space: nowrap;
-		
+	}
+	.package_updatetime{
+	background-color: ;
+	font-weight: 300;
+	font-size: 10rpx; 
+	color:red;
+	position: relative;
+	top: 20rpx;
 	}
 	.collect_num{
 		position:relative;
-		right: 30rpx;
-		top: 150rpx;
+		float: right;
+		bottom: -40rpx;
 	}
 </style>
