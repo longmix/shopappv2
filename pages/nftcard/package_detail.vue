@@ -25,7 +25,7 @@
 			</view>	
 		</view>
 		
-		<!-- 发行商图片及简介 -->
+		<!-- 发行商图片及简介 12324-->
 		<view class="publish_information">
 				<image class="publish_icon" :src="current_package_detail.cover_img_url" mode="widthFix" style="width: 200rpx;"></image>
 				<view class="package_card_publish">

@@ -18,7 +18,7 @@
 				<view class="package_describe"><!-- {{current_package_item.cover_img_url}} -->
 					<view class="package_name">{{current_package_item.title}}</view>
 					<view>
-						<!-- <image :src="current_package_item.supplier_icon" mode="aspectFill" style="width: 40rpx; height: 40rpx;"></image> -->
+						<!-- 78468<image :src="current_package_item.supplier_icon" mode="aspectFill" style="width: 40rpx; height: 40rpx;"></image> -->
 						发行商：{{current_package_item.supplier_name}}
 					</view>	
 					<view style="font-weight: 300; font-size: 10rpx;">简介：{{current_package_item.brief}}{{current_package_item.packageid}}</view>
