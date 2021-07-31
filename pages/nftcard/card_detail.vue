@@ -32,54 +32,69 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			<h4 class="card_detail_h4">{{current_card_detail.card_name}}</h4>
 			<view>发行时间：{{current_card_detail.createtime}}</view>
 			<view>{{current_card_detail.description}}</view>
-			<view style="padding-top: 20rpx;padding-bottom: 10rpx;">
-				<h4 class="card_detail_h4">所属卡包</h4>
-				<image :src="current_card_detail.cover_img_url" class="card_detail_kabaotoxiang"></image>
-				<view class="card_detail_kabaoxinxi">
-					<view><text class="card_detail_weight">卡包名称：</text>{{}}</view><!-- current_package_detail.title -->
-					<view><text class="card_detail_weight">发行商：</text>{{current_card_detail.supplier_name}}</view>
-					<view><text class="card_detail_weight">库存：</text>|<text class="card_detail_weight">发行：</text></view>
+			<h4 class="card_detail_h4">所属卡包</h4>
+			<view style="display: flex;">
+				<view>
+					<image :src="current_card_detail.cover_img_url"
+					@tap="go_to_card_list(current_card_detail.packageid, current_card_detail.cardid)" 
+					class="card_detail_kabaotoxiang"></image>
+				</view>
+				
+				<view class="card_detail_kabaoxinxi" 
+				@tap="go_to_card_list(current_card_detail.packageid, current_card_detail.cardid)">
+					<view><text class="card_detail_weight card_package_name">{{current_card_detail.package_title}}</text></view>
+					<view>
+						<text class="card_detail_weight">{{current_card_detail.supplier_name}}</text>
+						<image :src="current_card_detail.package_img" style="width: 35rpx; height: 35rpx; border-radius: 50%;" ></image>
+					</view>
+					
+					<view><text class="card_detail_weight">库存：</text>{{current_card_detail.kucun_counter}}|
+					<text class="card_detail_weight">发行：</text>{{current_card_detail.faxing_counter}}</view>
 				</view>
 				
 			</view>
+			
 			
 			
 		</view>
-			<view style="padding-left: 15rpx;">
+			<view>
 				<!-- 其他卡牌 -->
-				<h4 class="card_detail_h4">其他卡牌</h4>
+				<h4 class="card_detail_h4" style="padding-left: 15rpx;">其他卡牌</h4>
 				
-				<view v-for="">
-					<view class="card_detail_background">
-						<view class="card_detail_kapai_imgwidth">
-							<image :src="current_card_detail.cover_img_url" class="card_detail_kapai_border"></image>
+				<scroll-view scroll-x="true">
+					<view class="slide_cards">
+						<view v-for="(current_card_list_item,index) in current_card_list"
+						@tap="go_to_card_detail(current_card_list_item.packageid, current_card_list_item.cardid)">
+							<view class="slide_cards_pic">
+								
+								<image :src="current_card_list_item.cover_img_url" mode="aspectFill" class="card_detail_img_border" style="border-radius: 20rpx;"></image>
+								
+								<view>{{current_card_list_item.card_name}}</view>
+							</view>
 						</view>
-						<view style="line-height: 40rpx;">{{current_card_detail.card_name}}</view>
 					</view>
-				</view>
-				
+				</scroll-view>
 				
 			</view>
 		
-			
-
-			<radio v-if="current_card_detail.is_buyed == 0" type="radio" disabled="disabled" checked="checked" style="float: left;">已拥有</radio>
-			<radio v-else type="radio" disabled="disabled" style="float: left;">未拥有</radio>
-			
+			<radio v-if="current_card_detail.is_buyed == 0" disabled="disabled" checked="checked" class="card_detail_radio">已拥有</radio>
+			<radio v-else disabled="disabled" class="card_detail_radio">未拥有</radio>
 			
 			<view style="float: right;padding: 20rpx;display: flex;">
 				<!-- <view @tap="test_goto_buy">购买测试</view> -->
 				<button v-if="current_card_detail.is_buyed == 1" type="button" value="购买" style="background: #007AFF;color: #FFFFFF;width: 50%;">购买</button>
-				
+				<!-- 收藏 -->
 				<image class="card_detail_an" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star.png"
 				v-if="current_card_detail.is_favorite == 0" @tap="set_favorite(1)"></image>
-				<image class="card_detail_an" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png"
+				<image class="card_detail_an" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png" 
 				v-if="current_card_detail.is_favorite == 1" @tap="set_favorite(0)"></image>
-				
+				<!-- 赠予 -->
 				<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/赠予.png"
 				v-if="current_card_detail.is_buyed == 0"></image>
+				<!-- 丢弃 -->
 				<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/丢弃 .png"
 				v-if="current_card_detail.is_buyed == 0"></image>
+				<!-- 分享 -->
 				<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/分 享.png"></image>
 				
 			</view>
@@ -99,8 +114,7 @@ export default {
 			current_package_detail:null,
 			current_cardid:0,
 			current_packageid:0,
-
-			current_package_detail:null,
+			current_userid:0,
 		};
 	},
 	onLoad: function(options) {
@@ -182,16 +196,16 @@ export default {
 		});
 		
 		
-		//获取卡包详情里的数据(null值)
 		
+		//获取卡牌列表
 		that.abotapi.abotRequest({
-		  url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_detail',
+		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_list',
 			
 		    method: 'post',
 		    data: {
 				sellerid:that.abotapi.globalData.default_sellerid,
 				packageid:that.current_packageid,
-			
+				cardid:that.current_cardid,
 		    },
 		    success: function (res) {
 				
@@ -204,9 +218,45 @@ export default {
 					return;
 				}
 				
-				that.current_package_detail = res.data.data;
+				that.current_card_list = res.data.data;
 				
-				console.log('current_package_detail ===>>> ', that.current_package_detail);
+				console.log('current_card_list ===>>> ', that.current_card_list);
+				
+				
+		    },
+		    fail: function (e) {
+				uni.showToast({
+					title: '网络异常！',
+					duration: 2000
+				});
+		    },
+		});
+
+		//添加收藏
+		that.abotapi.abotRequest({
+		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/add_card_favorite',
+			
+		    method: 'post',
+		    data: {
+				sellerid:that.abotapi.globalData.default_sellerid,
+				packageid:that.current_packageid,
+				cardid:that.current_cardid,
+				userid:that.current_userid,
+		    },
+		    success: function (res) {
+				
+				if(res.data.code != 1){
+					uni.showToast({
+						title:'收藏失败',
+						duration: 2000,
+					});
+					
+					return;
+				}
+				
+				that.current_userid = res.data.data;
+				
+				console.log('current_userid  ===>>> ', that.current_userid);
 				
 				
 		    },
@@ -219,8 +269,8 @@ export default {
 		});
 		
 		
-
-
+		
+		
 
 		},
 		onShow: function() {
@@ -295,9 +345,17 @@ export default {
 				imageUrl: share_img,
 				success: function(res) {
 					// 分享成功
+					uni.showToast({
+						title: '分享成功！',
+						duration: 2000
+					});
 				},
 				fail: function(res) {
 					// 分享失败
+					uni.showToast({
+						title: '分享失败！',
+						duration: 2000
+					});
 				}
 			}
 		},
@@ -364,7 +422,23 @@ export default {
 				
 			},
 			
+			go_to_card_list:function(packageid, cardid){
+				console.log('packageid===>>>' + packageid);
+				console.log('cardid===>>>' + cardid);
+				
+				uni.navigateTo({
+					url: '/pages/nftcard/card_list?packageid='+packageid+'&cardid='+cardid,
+				})
+			},
 			
+			go_to_card_detail:function(packageid, cardid){
+				console.log('packageid===>>>' + packageid);
+				console.log('cardid===>>>' + cardid);
+				
+				uni.navigateTo({
+					url: '/pages/nftcard/card_detail?packageid='+packageid+'&cardid='+cardid,
+				})
+			}
 
 		}
 		
@@ -379,7 +453,6 @@ export default {
 	}
 	.card_detail_weight{
 		font-weight: 600;
-		padding-left: 20rpx;
 	}
 	.card_detail_border {
 		width:100%;
@@ -405,7 +478,7 @@ export default {
 		padding-right: 20rpx;
 	}
 	.card_detail_kabaotoxiang{
-		float: left;
+		display: flex;
 		width: 170rpx;
 		height: 130rpx;
 		min-height: 140rpx;
@@ -413,13 +486,11 @@ export default {
 		margin-right: 15rpx;
 	}
 	.card_detail_xihuan{
-		float: right;
 		padding: 20rpx 30rpx;
 		text-align: right;
 		line-height: 50rpx;
 	}
 	.card_detail_kabaoxinxi{
-		padding-left: 20rpx;
 		line-height: 47rpx;
 	}
 	.card_detail_aixin{
@@ -430,24 +501,26 @@ export default {
 		padding: 15rpx;
 		line-height: 40rpx;
 	}
-	.card_detail_kapai_imgwidth{
-		width: 300rpx;
-		height: 450rpx;
-		overflow: hidden;
-		margin: 10rpx;
-		border-radius: 15rpx;
+	.slide_cards{
+		display: flex;
+		margin-left: 20rpx;
 	}
-	.card_detail_kapai_border{
-		width:600rpx;
-		height: 450rpx;
-		position: relative;
-		left: -140rpx;
+	.slide_cards_pic{
+		margin:5rpx;
+		padding: 5rpx;
 	}
-	.card_detail_background{
-		width: 320rpx;
-		background-color: #F7F7F7;
-		margin: 10rpx;
+	.card_package_name{
+		font-weight: bold;
+		font-size: 40rpx;
+		height: 50rpx;
+		white-space: nowrap;
+	}
+	.card_detail_img_border{
+		width: 340rpx;
 		padding: 10rpx;
-		border-radius: 15rpx;
+	}
+	.card_detail_radio{
+		float: left;
+		padding-left: 10rpx;
 	}
 </style>

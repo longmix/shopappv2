@@ -18,10 +18,7 @@
 						<view>{{current_card_item.card_name}}</view>
 						<view class="card_list_riqi">已有{{current_card_item.favorite_counter}}人收藏</view>
 					</view>
-					
 				</view>
-				
-				
 			</view>
 			
 			
