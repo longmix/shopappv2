@@ -237,7 +237,7 @@ export default {
 
 <style>
 	.global_background{
-		background-color:#DFDFDF;
+		background-color:#F4F4F4;
 	}
 	.sort{
 		display: flex;

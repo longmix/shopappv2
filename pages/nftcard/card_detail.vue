@@ -99,6 +99,8 @@ export default {
 			current_package_detail:null,
 			current_cardid:0,
 			current_packageid:0,
+
+			current_package_detail:null,
 		};
 	},
 	onLoad: function(options) {
@@ -120,6 +122,7 @@ export default {
 		that.abotapi.set_shop_option_data(that, that.callback_function_shop_option_data);
 
 		that.current_cardid = options.cardid;
+		that.current_packageid = options.packageid;
 		
 		console.log('that.current_cardid ===》》 ', that.current_cardid);
 		
@@ -214,6 +217,7 @@ export default {
 				});
 		    },
 		});
+		
 		
 
 
