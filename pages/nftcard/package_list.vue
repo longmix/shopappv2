@@ -1,18 +1,17 @@
 <template>
 	<view class="global_background">
 		<view class="drop_down_menu">
-			<view class="package_drop_down_icon">热门<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/drop_down.png" mode="widthFix" style="width: 30rpx;"></image></view>
-			
+	
+			<button size="mini">智能排序<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/drop_down.png" mode="widthFix" style="width: 30rpx; left: 10rpx; top: 5rpx;"></image></button>
 		</view>	
+	<!-- 	<view style="position: fixed; top: 0; bottom: 0; right: 0; left: 0;display: flex;align-items:flex-end;align-content: center;"> 
+			<view class="" style="width: 100%;">
+				<button catchtap="">智能排序</button>
+				<button catchtap> 热度排序</button>
+				<button catchtap>时间排序</button>
+			</view>
+		</view> -->
 				
-				<!-- <select>热门</select>
-				<select>热门</select>
-				<select>热门</select> -->
-			
-		
-		
-		
-		
 		
 		<!-- <view class="sort">
 			<view style="color: red;">智能排序</view>
@@ -32,8 +31,11 @@
 					<view class="package_describe"><!-- {{current_package_item.cover_img_url}} -->
 						<view class="package_name">{{current_package_item.title}}</view>
 					
-						<view class="package_brief">简介：{{current_package_item.brief}}{{current_package_item.packageid}}</view>
-						
+						<view class="package_brief">{{current_package_item.brief}}{{current_package_item.packageid}}</view>
+						<view class="">
+							<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/like.png" mode="widthFix" style="width: 30rpx;float: left;"></image>	
+							11人喜欢
+						</view>
 					</view>
 				
 				</view>	
@@ -52,8 +54,11 @@ export default {
 		return {
 			current_package_list : null,
 			p:2,
+			
+
 		};
 	},
+
 	onLoad: function (options) {
 
 		
@@ -254,16 +259,16 @@ export default {
 
 	}
 	.drop_down_menu{
-		display: flex;
-		padding: 60rpx 0rpx 10rpx 40rpx;
-		height: 45rpx;
-	}
-	.package_drop_down_icon{
-		background-color: #FFFFFF;
-		border-radius: 20rpx;
-		overflow: hidden;
-		padding-left: 20rpx;
 		
+		padding: 60rpx 0rpx 10rpx 50rpx;		
+		
+	}
+
+	.package_drop_down_icon{
+	background-color: #FFFFFF;
+	border-radius: 20rpx;
+	overflow: hidden;
+	padding-left: 20rpx;
 	}
 	/* .sort{
 		display: flex;
@@ -297,7 +302,7 @@ export default {
 	} 
 	.package_list_loop{
 		width: 100%;
-		height: 390rpx;
+		height: 420rpx;
 		
 	}
 	 .package_describe{

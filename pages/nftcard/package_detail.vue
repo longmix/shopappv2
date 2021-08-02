@@ -16,13 +16,18 @@
 			<view style="font-weight: 300; font-size: 10rpx;">
 				详情：{{current_package_detail.description}}
 			</view>
-			<view class="">
-				
+		
+			<view class="" style="float: right;font-weight: 100; font-size: 30rpx;">
+				<image src="http://yanyubao_server/Tpl/static/nft_card/package_example/like.png" mode="widthFix" style="width: 30rpx;" 
+					v-if="current_package_detail.is_like == 0" @tap="set_like(1)"></image>
+				<image src="http://yanyubao_server/Tpl/static/nft_card/package_example/already_like.png" mode="widthFix" style="width: 30rpx;" 
+					v-if="current_package_detail.is_like == 1" @tap="set_like(0)"></image>
+				11人喜欢
 			</view>
 			<view style="font-weight: 300; font-size: 10rpx; color: red;">
-				有效期：
-				{{current_package_detail.createtime}}
-			</view>	
+				有效期：{{current_package_detail.createtime}}
+			</view>
+				
 		</view>
 		
 		<!-- 发行商图片及简介 12324-->
@@ -35,7 +40,9 @@
 					</view>
 				
 					<view style="font-weight: 300; font-size: 10rpx;">简介：</view>
-					
+					<view class="" style="float: right;">
+						<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/follow.png" mode="widthFix" style="width: 120rpx;"></image>
+					</view>
 				</view>
 				
 			</view>
@@ -44,43 +51,67 @@
 	
 	
 		<!-- 筛选框 -->
-		<view class="">
-			<view class="screen_card">
-				<view style="color: red;">全部</view>
-				<view >普通卡</view>
-				<view >珍藏卡</view>
-				<view >已有</view>
-				<view >未有</view>
+	<scroll-view scroll-x="true">
+		<view class="scroll_button">
+			<view class="scroll_items">
+				<button size="mini">全部</button>
+			</view>	
+			<view class="scroll_items">
+				<button size="mini">普通卡</button>
 			</view>
+			<view class="scroll_items">
+				<button size="mini">珍藏卡</button>
+			</view>	
+			<view class="scroll_items">
+				<button size="mini">已有</button>
+			</view>		
+			<view class="scroll_items">
+				<button size="mini">未有</button>
+			</view>
+		</view>
+		
+						
+	</scroll-view>
+		
 			<!-- <view class="">
 				<image class="card_icon" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/mark.png" mode="widthFix" style="width: 30rpx;"></image>
 				<view class="num">5</view>
 			</view> -->
-		</view>
+
 							
 				<!-- 卡包中的卡牌 --> 
-			<view class="my_package_detail_card_list">
-				<view class="card_list"
-				v-for="(current_card_item,index) in current_card_list" @tap="go_to_card_detail(current_card_item.packageid, current_card_item.cardid)">
-				<view>
-					<image :src="current_card_item.cover_img_url" mode="aspectFill" style="width: 355rpx; height: 260rpx;"></image>
-				</view>
-					<view class="package_detail_card_information">
-						<view style="font-weight: bold;font-size: 50rpx;">{{current_card_item.card_name}}</view>
-						<view>发行商：{{current_card_item.supplier_name}}</view>
-						<view style="font-weight: 300; font-size: 10rpx;">发行期：{{current_card_item.createtime}}</view>
-						<view class="" style="font-weight: 300; font-size: 10rpx;">收藏人数</view>
+				<view class="card_list_background">
+					<view class="my_package_detail_card_list">
+						<view class="card_list"
+						v-for="(current_card_item,index) in current_card_list" @tap="go_to_card_detail(current_card_item.packageid, current_card_item.cardid)">
+						<view class="">
+							<image :src="current_card_item.cover_img_url" mode="aspectFill" style="width: 355rpx; height: 260rpx;"></image>
+							
+								<!-- <view class="package_detail_card_information"> -->
+							<view style="font-weight: bold;font-size: 40rpx;">{{current_card_item.card_name}}</view>
+									<!-- <view style=" font-weight: 100; font-size: 10rpx;">发行商：{{current_card_item.supplier_name}}</view> -->
+								
+							<view class="" style=" font-weight: 300; font-size: 10rpx;">
+								{{current_card_item.description}}
+									
+							</view>
+							<view class="" style="font-weight: 300; font-size: 10rpx; float: right;">
+								<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/collect.png" mode="widthFix" style="width: 30rpx;"></image>
+								收藏人数
+							</view>
+							<view style="font-weight: 300; font-size: 10rpx;">{{current_card_item.createtime}}</view>
+						
+						</view>
+							
+							
+						</view>	 
 					</view>
-					
-				</view>	 
-			</view>
-		
-			<view clas="">
-				<view class="more_card" >>>更多卡包>></view>
-				<view class="series_card">系列卡包</view>
-			</view>
+							
+				</view>
+			
+			
 			<!-- 系列卡牌——左右滑动 -->
-			<scroll-view scroll-x="true">
+		<!-- 	<scroll-view scroll-x="true">
 				<view class="slide_cards">
 					<view class="" v-for="(current_card_slid_item,index) in current_card_list">
 						<view class="slide_cards_pic">
@@ -89,7 +120,7 @@
 						</view>
 					</view>
 				</view>
-			</scroll-view>
+			</scroll-view> -->
 	
 	</view>
 </template>
@@ -105,7 +136,7 @@ export default {
 			current_card_list:null,
 			current_packageid:0,
 			current_cardid:0,
-		
+			current_userid:0,
 		};
 	},
 	onLoad: function (options) {
@@ -145,6 +176,22 @@ export default {
 		
 		
 		//获取卡包列表
+		
+		var post_data = {
+				sellerid:that.abotapi.globalData.default_sellerid,
+				packageid:that.current_packageid,
+				cardid:that.current_cardid,
+				
+		    };
+			
+		var userInfo = that.abotapi.get_user_info();	
+		if(userInfo){
+			post_data.userid = userInfo.userid;
+			post_data.checkstr = userInfo.checkstr;
+		}
+		
+		
+		
 		
 		that.abotapi.abotRequest({
 		  url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_detail',
@@ -186,7 +233,11 @@ export default {
 		
 		
 		
-		//获取卡包列表
+		//获取卡牌列表
+		
+		
+		
+		
 		
 		that.abotapi.abotRequest({
 		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_list',
@@ -222,6 +273,50 @@ export default {
 		    },
 		});
 		
+	
+	
+	
+	
+	
+	
+	
+	
+	//添加喜欢
+	that.abotapi.abotRequest({
+	    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/add_package_like',
+		
+	    method: 'post',
+	    data: {
+			sellerid:that.abotapi.globalData.default_sellerid,
+			packageid:that.current_packageid,
+			
+			userid:that.current_userid,
+	    },
+	    success: function (res) {
+			
+			if(res.data.code != 1){
+				uni.showToast({
+					title:'收藏失败',
+					duration: 2000,
+				});
+				
+				return;
+			}
+			
+			that.current_userid = res.data.data;
+			
+			console.log('current_userid  ===>>> ', that.current_userid);
+			
+			
+	    },
+	    fail: function (e) {
+			uni.showToast({
+				title: '网络异常！',
+				duration: 2000
+			});
+	    },
+	});
+	
 	
 		
 		
@@ -315,6 +410,22 @@ export default {
 	methods: {
 		share_return: function() {
 			var that = this;
+			
+			
+		
+		
+		
+		},
+		
+		set_like:function(value001){
+			var that = this;
+			
+			
+			//请求服务器接口、
+			var packageid = that.current_package_detail.packageid;
+			
+			//请求成功之后，修改本地的数据
+			that.current_package_detail.is_like = value001;
 		},
 		
 		callback_function_shop_option_data:function(that, cb_params){
@@ -351,7 +462,7 @@ export default {
 
 <style>
 	.global_background{
-		background-color: #f4f4f4;
+		background-color:#eceeef;
 	}
 	.package_background{
 		margin-top: 5rpx;
@@ -390,37 +501,47 @@ export default {
 		margin-top: 20rpx;
 		margin-left: 20rpx;
 	}
-	.screen_card{
-		font-weight:bolder;
-		font-size: large;
+	.scroll_button{
+		display: flex;
+		white-space: nowrap;
 		justify-content: space-between;
-		display: flex;
-		margin: 5rpx 0rpx;
-		padding:5rpx 30rpx;
-	}
 	
+	}
+	.scroll_items{
+		padding: 30rpx 30rpx;
+		margin-left: 20rpx;
+	}
+
+	.card_list_background{
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+	.my_package_detail_card_list{
+		
+		background-color: #e2e4e4;
+		width: 730rpx;
+	
+	}
 	.card_list{
+		display: flex;
+		float: left;
 		background-color: #FFFFFF;
-		margin: 10rpx 20rpx 20rpx 20rpx;
-		padding: 10rpx 10rpx 5rpx 10rpx;
+		width: 350rpx;
+		margin:5rpx 8rpx 10rpx 6rpx;
+		border-radius: 10rpx;
+		overflow: hidden;
 	}
-	.card_list{
-		display: flex;
-	
-	}
-	.package_detail_card_information{
+
+/* 	.package_detail_card_information{
 		width: 100%;
 		margin-left: 20rpx;
 		white-space: nowrap;
 		overflow: hidden;
-	}
-	.more_card{
-		float: right;
-		font-size: smaller;
-		margin: 10rpx; 
-		color: red;
-	}
-	.series_card{
+	} */
+	
+/* 	.series_card{
 		margin-left: 20rpx;
 		font-weight: bold; 
 		font-size: larger;
@@ -432,5 +553,5 @@ export default {
 	.slide_cards_pic{
 		margin:5rpx;
 		padding: 5rpx;
-	}
+	} */
 </style>
