@@ -6,17 +6,16 @@
 			</view>
 		</picker>
 		<view v-for="(current_card_item, index) in current_card_list" @tap="go_to_detail(current_card_item.packageid, current_card_item.cardid)">
-			<!-- <view style="display: flex;">
-				
-			</view> -->
-			<view style="">
+			
+			
+			<view style="display: flex;">
 				<view style="padding: 15rpx;">
 					<view class="card_list_background_color">
 						<view class="card_detail_kapai_borderwidth">
 							<image :src="current_card_item.cover_img_url" class="card_detail_kapai_imgwidth"></image>
 						</view>
 						<view class="card_list_title" style="width: 260rpx;">{{current_card_item.card_name}}</view>
-						<view class="card_list_right">{{current_card_item.favorite_counter}}人收藏</view>
+						<view class="card_list_right">{{current_card_item.favorite_count}}人收藏</view>
 					</view>
 				</view>
 			</view>
@@ -110,15 +109,6 @@ export default {
 					duration: 2000
 				});
 		    },
-			
-			
-			// //下拉框
-			// bindPickerChange: function(e) {		//改变的事件名
-			// 	//console.log('picker发送选择改变，携带值为', e.target.value)   //用于输出改变索引值
-			// 	this.index = e.target.value			//将数组改变索引赋给定义的index变量
-			// 	this.jg=this.array[this.index]		//将array【改变索引】的值赋给定义的jg变量
-			// 	console.log(this.jg)		//输出获取的籍贯值，例如：中国
-			// },
 			
 			
 			//下拉框
