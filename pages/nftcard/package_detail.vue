@@ -18,10 +18,10 @@
 			</view>
 		
 			<view class="" style="float: right;font-weight: 100; font-size: 30rpx;">
-				<image src="http://yanyubao_server/Tpl/static/nft_card/package_example/like.png" mode="widthFix" style="width: 30rpx;" 
-					v-if="current_package_detail.is_like == 0" @tap="set_like(1)"></image>
-				<image src="http://yanyubao_server/Tpl/static/nft_card/package_example/already_like.png" mode="widthFix" style="width: 30rpx;" 
+				<image src="http://192.168.0.86/yanyubao_server/Tpl/static/nft_card/package_example/like.png" mode="widthFix" style="width: 30rpx;" 
 					v-if="current_package_detail.is_like == 1" @tap="set_like(0)"></image>
+				<image src="http://192.168.0.86/yanyubao_server/Tpl/static/nft_card/package_example/already_like.png" mode="widthFix" style="width: 30rpx;" 
+					v-if="current_package_detail.is_like == 0" @tap="set_like(1)"></image>
 				11人喜欢
 			</view>
 			<view style="font-weight: 300; font-size: 10rpx; color: red;">
@@ -417,16 +417,18 @@ export default {
 		
 		},
 		
+		
 		set_like:function(value001){
 			var that = this;
-			
 			
 			//请求服务器接口、
 			var packageid = that.current_package_detail.packageid;
 			
 			//请求成功之后，修改本地的数据
 			that.current_package_detail.is_like = value001;
+			
 		},
+		
 		
 		callback_function_shop_option_data:function(that, cb_params){
 			
