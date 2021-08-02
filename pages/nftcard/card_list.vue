@@ -1,29 +1,33 @@
 <template>
-	<view>
-		<view class="view-flex">
-			<view>智能排序</view>
-			<view>按时间排序</view>
-			<view>按热度排序</view>
-		</view>
-		<!-- 卡牌 -->
-		<view>
-			
-			
-			<view v-for="(current_card_item, index) in current_card_list" @tap="go_to_detail(current_card_item.packageid, current_card_item.cardid)" style="float: left;">
-				<view class="card_list_background">
-					<view class="card_detail_kapai_imgwidth">
-						<image :src="current_card_item.cover_img_url" class="card_detail_kapai_border"></image>
-					</view>
-					<view class="card_list_kaipai_xinxi">
-						<view>{{current_card_item.card_name}}</view>
-						<view class="card_list_riqi">已有{{current_card_item.favorite_counter}}人收藏</view>
+	<view class="card_background">
+		<picker @change="bindPickerChange" :value="index" :range="array" style="padding: 20rpx;">
+			<view class="card_list_picker">{{array[index]}}
+				<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/drop_down.png" mode="widthFix" style="width: 30rpx;"></image>
+			</view>
+		</picker>
+		<view v-for="(current_card_item, index) in current_card_list" @tap="go_to_detail(current_card_item.packageid, current_card_item.cardid)">
+			<!-- <view style="display: flex;">
+				
+			</view> -->
+			<view style="">
+				<view style="padding: 15rpx;">
+					<view class="card_list_background_color">
+						<view class="card_detail_kapai_borderwidth">
+							<image :src="current_card_item.cover_img_url" class="card_detail_kapai_imgwidth"></image>
+						</view>
+						<view class="card_list_title" style="width: 260rpx;">{{current_card_item.card_name}}</view>
+						<view class="card_list_right">{{current_card_item.favorite_counter}}人收藏</view>
 					</view>
 				</view>
 			</view>
 			
 			
 		</view>
+		
+		
+		
 	</view>
+
 </template>
 
 <script>
@@ -33,6 +37,8 @@
 export default {
 	data() {
 		return {
+			array:['智能排序','按时间排序','按热度排序'],
+			index:0,
 			current_card_list:null,
 			current_packageid:0
 		};
@@ -104,11 +110,32 @@ export default {
 					duration: 2000
 				});
 		    },
+			
+			
+			// //下拉框
+			// bindPickerChange: function(e) {		//改变的事件名
+			// 	//console.log('picker发送选择改变，携带值为', e.target.value)   //用于输出改变索引值
+			// 	this.index = e.target.value			//将数组改变索引赋给定义的index变量
+			// 	this.jg=this.array[this.index]		//将array【改变索引】的值赋给定义的jg变量
+			// 	console.log(this.jg)		//输出获取的籍贯值，例如：中国
+			// },
+			
+			
+			//下拉框
+			bindPickerChange :function (e) {		//改变的事件名
+				//console.log('picker发送选择改变，携带值为', e.target.value)   //用于输出改变索引值
+				this.index = e.target.value			//将数组改变索引赋给定义的index变量
+				this.jg=this.array[this.index]		//将array【改变索引】的值赋给定义的jg变量
+				console.log(this.jg)		//输出获取的值
+			},
+			
+			
 		});
 		
 		
 		
 	},
+	
 	onShow:function(){
 		console.log('call onShow function (/pages/index/index)');
 	},
@@ -231,39 +258,50 @@ export default {
 </script>
 
 <style>
-	.view-flex{
-		display: flex;
-		flex-direction:row;
-		justify-content: space-around;
-		background-color:  #f8f8f8;
-		padding: 15rpx 0rpx;
-		margin-bottom: 10rpx;
+	.card_background{
+		background-color: #F0F0F0;
+		margin: 0rpx;
+		padding: 0rpx;
 	}
-	.card_detail_kapai_imgwidth{
-		width: 310rpx;
-		height: 310rpx;
-		overflow: hidden;
-		
+	.card_list_picker{
+		width: 175rpx;
+		padding: 10rpx;
+		padding-left: 20rpx; 
+		background-color: #FFFFFF; 
 		border-radius: 30rpx;
 	}
-	.card_detail_kapai_border{
-		width:330rpx;
-		height: 310rpx;
+	.card_list_background_color{
+		background: #FFFFFF;
+		width: 280rpx;
+		height: 480rpx;
+		border-radius: 25rpx;
+		padding: 25rpx;
 	}
-	.card_list_kaipai_xinxi{
-		padding-left: 20rpx;
-		padding-top: 10rpx;
+	.card_detail_kapai_borderwidth{
+		width: 280rpx;
+		height: 400rpx;
+		overflow: hidden;
+		border-radius: 25rpx;
+	}
+	.card_detail_kapai_imgwidth{
+		width: 450rpx;
+		height: 400rpx;
+		right: 30%;
+	}
+	.card_list_title{
+		font-size: 30rpx;
+		font-weight: bold;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		padding-left: 15rpx;
+	}
+	.card_list_right{
+		text-align: right;
+		padding-right: 15rpx;
+		font-size: 25rpx;
+		color: #8F8F8F;
 		line-height: 45rpx;
-	}
-	.card_list_riqi{
-		font-size: 14rpx;
-		font-weight: 100;
-	}
-	.card_list_background{
-		background-color: #fffbf2;
-		padding: 20rpx;
-		margin: 10rpx;
-		border-radius: 20rpx;
 	}
 </style>
 

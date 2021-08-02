@@ -19,19 +19,19 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			<view>
 				<image :src="current_card_detail.cover_img_url" class="card_detail_image"></image>
 			</view>
-			<!-- 有多少人喜欢 及 有多少张重复卡牌 -->
-			<view class="card_detail_xihuan">
-				<image src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png"
-					class="card_detail_aixin"></image>	
-				{{current_card_detail.favorite_counter}} 人收藏<br>
-				<view>我有 {{current_card_detail.have_counter}} 张</view>
-			</view>
+			
 		</view>
 		<!-- 所属卡包信息 -->
 		<view class="card_detail_xinxi">
-			<h4 class="card_detail_h4">{{current_card_detail.card_name}}</h4>
-			<view>发行时间：{{current_card_detail.createtime}}</view>
-			<view>{{current_card_detail.description}}</view>
+			<h4 class="card_detail_title" style="padding: 15rpx 0rpx;width: 95%;">{{current_card_detail.card_name}}</h4>
+			<view style="color: #868686;">发行时间：{{current_card_detail.createtime}}
+				<!-- 有多少人收藏 -->
+				<view class="card_detail_xihuan">
+					<image class="card_detail_aixin" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png">{{current_card_detail.favorite_counter}} 人收藏</image>
+					<view>我有 {{current_card_detail.have_counter}} 张</view>
+				</view>
+			</view>
+			<view style="color: #868686;">{{current_card_detail.description}}</view>
 			<h4 class="card_detail_h4">所属卡包</h4>
 			<view style="display: flex;">
 				<view>
@@ -42,13 +42,13 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				<view class="card_detail_kabaoxinxi" 
 				@tap="go_to_card_list(current_card_detail.packageid, current_card_detail.cardid)">
-					<view><text class="card_detail_weight card_package_name">{{current_card_detail.package_title}}</text></view>
-					<view>
+					<view class="card_detail_title" style="width: 550rpx;">{{current_card_detail.package_title}}</view>
+					<view style="color: #868686;">
 						<text class="card_detail_weight">{{current_card_detail.supplier_name}}</text>
 						<image :src="current_card_detail.package_img" style="width: 35rpx; height: 35rpx; border-radius: 50%;" ></image>
 					</view>
 					
-					<view><text class="card_detail_weight">库存：</text>{{current_card_detail.kucun_counter}}|
+					<view style="color: #868686;"><text class="card_detail_weight">库存：</text>{{current_card_detail.kucun_counter}}|
 					<text class="card_detail_weight">发行：</text>{{current_card_detail.faxing_counter}}</view>
 				</view>
 				
@@ -66,10 +66,10 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 						<view v-for="(current_card_list_item,index) in current_card_list"
 						@tap="go_to_card_detail(current_card_list_item.packageid, current_card_list_item.cardid)">
 							<view class="slide_cards_pic">
-								
-								<image :src="current_card_list_item.cover_img_url" mode="aspectFill" class="card_detail_img_border" style="border-radius: 20rpx;"></image>
-								
-								<view>{{current_card_list_item.card_name}}</view>
+								<view class="card_detail_title" style="width: 340rpx;border-radius: 20rpx;">
+									<image :src="current_card_list_item.cover_img_url" mode="aspectFill" class="card_detail_img_border"></image>
+									<view>{{current_card_list_item.card_name}}</view>
+								</view>
 							</view>
 						</view>
 					</view>
@@ -239,7 +239,6 @@ export default {
 		    method: 'post',
 		    data: {
 				sellerid:that.abotapi.globalData.default_sellerid,
-				packageid:that.current_packageid,
 				cardid:that.current_cardid,
 				userid:that.current_userid,
 		    },
@@ -247,7 +246,15 @@ export default {
 				
 				if(res.data.code != 1){
 					uni.showToast({
-						title:'收藏失败',
+						title:' ',
+						duration: 2000,
+					});
+					
+					return;
+				}
+				else{
+					uni.showToast({
+						title:'加载成功',
 						duration: 2000,
 					});
 					
@@ -273,6 +280,7 @@ export default {
 		
 
 		},
+		
 		onShow: function() {
 			console.log('call onShow function (/pages/index/index)');
 		},
@@ -485,13 +493,12 @@ export default {
 		border-radius: 20rpx;
 		margin-right: 15rpx;
 	}
-	.card_detail_xihuan{
-		padding: 20rpx 30rpx;
-		text-align: right;
-		line-height: 50rpx;
-	}
 	.card_detail_kabaoxinxi{
 		line-height: 47rpx;
+	}
+	.card_detail_xihuan{
+		float: right;
+		text-align: right;
 	}
 	.card_detail_aixin{
 		width: 35rpx;
@@ -501,19 +508,20 @@ export default {
 		padding: 15rpx;
 		line-height: 40rpx;
 	}
+	.card_detail_title{
+		font-size: 37rpx;
+		font-weight: bold;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
 	.slide_cards{
 		display: flex;
-		margin-left: 20rpx;
+		margin-left: 10rpx;
 	}
 	.slide_cards_pic{
 		margin:5rpx;
 		padding: 5rpx;
-	}
-	.card_package_name{
-		font-weight: bold;
-		font-size: 40rpx;
-		height: 50rpx;
-		white-space: nowrap;
 	}
 	.card_detail_img_border{
 		width: 340rpx;
