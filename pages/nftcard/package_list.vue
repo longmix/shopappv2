@@ -1,25 +1,19 @@
 <template>
-	<view class="global_background">
+	<view class="global_background">	
 		<view class="drop_down_menu">
-	
-			<button size="mini">智能排序<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/drop_down.png" mode="widthFix" style="width: 30rpx; left: 10rpx; top: 5rpx;"></image></button>
-		</view>	
-	<!-- 	<view style="position: fixed; top: 0; bottom: 0; right: 0; left: 0;display: flex;align-items:flex-end;align-content: center;"> 
-			<view class="" style="width: 100%;">
-				<button catchtap="">智能排序</button>
-				<button catchtap> 热度排序</button>
-				<button catchtap>时间排序</button>
-			</view>
-		</view> -->
-				
-		
-		<!-- <view class="sort">
-			<view style="color: red;">智能排序</view>
-			<view >时间排序</view>
-			<view >热度排序</view>
+			<picker @change="bindPickerChange" :value="index" :range="array">
+				<view class="picker" style="background-color: #FFFFFF;width: 150rpx;">
+					{{array[index]}}
+					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/drop_down.png"
+					mode="widthFix" style="width: 30rpx; left: 0rpx; top: 6rpx;"></image>
+				</view>
+			</picker>
 		</view>
-		 -->
-		
+				
+				
+				
+				
+				
 		<view class="my_package_list_style"	>
 			<view class="my_package_list">
 				<view class="my_package_item"
@@ -29,13 +23,15 @@
 						<image class="package_list_loop" :src="current_package_item.cover_img_url" mode=" aspectFill" ></image>
 					</view>
 					<view class="package_describe"><!-- {{current_package_item.cover_img_url}} -->
+						<view class="" style="font-weight: 100; font-size: 30rpx; width: 150rpx; float: right;margin-right:50rpx;">
+							<!-- <image  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/like.png" mode="widthFix" style="width: 30rpx;float: left;"></image>	 -->
+							<image  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/already_like.png" mode="aspectFill" style="width: 30rpx;height:30rpx;"></image>
+							{{current_package_item.like_count}}人喜欢
+						</view>
 						<view class="package_name">{{current_package_item.title}}</view>
 					
 						<view class="package_brief">{{current_package_item.brief}}{{current_package_item.packageid}}</view>
-						<view class="">
-							<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/like.png" mode="widthFix" style="width: 30rpx;float: left;"></image>	
-							11人喜欢
-						</view>
+						
 					</view>
 				
 				</view>	
@@ -55,8 +51,9 @@ export default {
 			current_package_list : null,
 			p:2,
 			
-
-		};
+			index:0,
+			array:['智能排序','热度排序','时间排序']
+		}
 	},
 
 	onLoad: function (options) {
@@ -238,9 +235,12 @@ export default {
 			uni.navigateTo({
 				url: '/pages/nftcard/package_detail?packageid='+packageid,
 			})
+		},
+		
+		
+		bindPickerChange(e){
+			console.log(e)
 		}
-		
-		
 		
 		
 		
@@ -263,35 +263,32 @@ export default {
 		padding: 60rpx 0rpx 10rpx 50rpx;		
 		
 	}
-
+	.picker{
+		border-radius: 10rpx;
+		overflow: hidden;
+		font-weight: 100;
+		font-size: 30rpx;
+	}
 	.package_drop_down_icon{
 	background-color: #FFFFFF;
 	border-radius: 20rpx;
 	overflow: hidden;
 	padding-left: 20rpx;
 	}
-	/* .sort{
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		height: 80rpx;
-	
-		padding:0 30rpx;
-		
-	}*/
-.my_package_list_style{
+
+	.my_package_list_style{
 	
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-}
-.my_package_list{
+	}
+	.my_package_list{
 	width: 700rpx;
 	background-color: #e1e3e4;
 	margin-top: 30rpx;
-}
-.my_package_item{
+	}
+	.my_package_item{
 
 		background-color: #FFFFFF;
 		width: 700rpx;
@@ -309,8 +306,6 @@ export default {
 		width: 100%;
 		margin-top: 20rpx;
 		margin-left: 30rpx;
-		white-space: nowrap;
-		overflow: hidden;
 		
 	}
 	.package_name{
@@ -318,6 +313,9 @@ export default {
 		margin-bottom: 20rpx;
 		font-size: 40rpx;
 		height: 50rpx;
+		white-space: nowrap;
+		overflow: hidden;
+		
 	}
 	.package_brief{
 		 font-weight: 300; 

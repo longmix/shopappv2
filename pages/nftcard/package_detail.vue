@@ -6,7 +6,7 @@
 				<image class="" :src="current_package_detail.cover_img_url" mode="scaleToFill" style="width: 100%; height: 500rpx;"></image>
 			</view>
 			<view class="prospect">
-				<image class="" :src="current_package_detail.cover_img_url" mode="widthFix" style="width:400rpx;"></image>
+				<image class="" :src="current_package_detail.cover_img_url" mode="aspectFill" style="width:400rpx; height: 400rpx;"></image>
 			</view>
 		</view>
 		
@@ -17,12 +17,10 @@
 				详情：{{current_package_detail.description}}
 			</view>
 		
-			<view class="" style="float: right;font-weight: 100; font-size: 30rpx;">
-				<image src="http://192.168.0.86/yanyubao_server/Tpl/static/nft_card/package_example/like.png" mode="widthFix" style="width: 30rpx;" 
-					v-if="current_package_detail.is_like == 1" @tap="set_like(0)"></image>
-				<image src="http://192.168.0.86/yanyubao_server/Tpl/static/nft_card/package_example/already_like.png" mode="widthFix" style="width: 30rpx;" 
-					v-if="current_package_detail.is_like == 0" @tap="set_like(1)"></image>
-				11人喜欢
+			<view class="like_number">
+				<image v-if="current_package_detail.is_like == 0"  @tap="set_like(1)" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/like.png" mode="widthFix" style="width: 30rpx; " ></image>
+				<image v-if="current_package_detail.is_like == 1" @tap="set_like(0)"  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/already_like.png" mode="widthFix" style="width: 30rpx;" ></image>
+				<view style="font-weight: 100; font-size: 10rpx;float: right;"> {{current_package_detail.like_count}}人喜欢</view>
 			</view>
 			<view style="font-weight: 300; font-size: 10rpx; color: red;">
 				有效期：{{current_package_detail.createtime}}
@@ -85,7 +83,7 @@
 						<view class="card_list"
 						v-for="(current_card_item,index) in current_card_list" @tap="go_to_card_detail(current_card_item.packageid, current_card_item.cardid)">
 						<view class="">
-							<image :src="current_card_item.cover_img_url" mode="aspectFill" style="width: 355rpx; height: 260rpx;"></image>
+							<image :src="current_card_item.cover_img_url" mode=" aspectFill" style="width: 350rpx; height: 500rpx;"></image>
 							
 								<!-- <view class="package_detail_card_information"> -->
 							<view style="font-weight: bold;font-size: 40rpx;">{{current_card_item.card_name}}</view>
@@ -97,7 +95,7 @@
 							</view>
 							<view class="" style="font-weight: 300; font-size: 10rpx; float: right;">
 								<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/collect.png" mode="widthFix" style="width: 30rpx;"></image>
-								收藏人数
+								{{current_card_item.favorite_count}}人收藏
 							</view>
 							<view style="font-weight: 300; font-size: 10rpx;">{{current_card_item.createtime}}</view>
 						
@@ -109,18 +107,6 @@
 							
 				</view>
 			
-			
-			<!-- 系列卡牌——左右滑动 -->
-		<!-- 	<scroll-view scroll-x="true">
-				<view class="slide_cards">
-					<view class="" v-for="(current_card_slid_item,index) in current_card_list">
-						<view class="slide_cards_pic">
-							<image :src="current_card_slid_item.cover_img_url" mode="aspectFill" style="width: 355rpx;"></image>
-							<view>{{current_card_slid_item.card_name}}</view>
-						</view>
-					</view>
-				</view>
-			</scroll-view> -->
 	
 	</view>
 </template>
@@ -137,6 +123,8 @@ export default {
 			current_packageid:0,
 			current_cardid:0,
 			current_userid:0,
+			
+	
 		};
 	},
 	onLoad: function (options) {
@@ -283,7 +271,7 @@ export default {
 	
 	//添加喜欢
 	that.abotapi.abotRequest({
-	    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/add_package_like',
+	    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/package_like_add',
 		
 	    method: 'post',
 	    data: {
@@ -418,16 +406,6 @@ export default {
 		},
 		
 		
-		set_like:function(value001){
-			var that = this;
-			
-			//请求服务器接口、
-			var packageid = that.current_package_detail.packageid;
-			
-			//请求成功之后，修改本地的数据
-			that.current_package_detail.is_like = value001;
-			
-		},
 		
 		
 		callback_function_shop_option_data:function(that, cb_params){
@@ -449,11 +427,21 @@ export default {
 			uni.navigateTo({
 				url: '/pages/nftcard/card_detail?packageid='+packageid+'&cardid='+cardid,
 			})
-		}
+		},
 		
 		
 		
 		
+		set_like:function(value001){
+			var that = this;
+		
+			//请求服务器接口、
+			var packageid = that.current_package_detail.packageid;
+			
+			//请求成功之后，修改本地的数据
+			that.current_package_detail.is_like = value001;
+			
+		},
 		
 	}
 	
@@ -484,24 +472,38 @@ export default {
 	}
 	.package_information{
 		background-color: #FFFFFF;
-		margin:80rpx 20rpx 20rpx 10rpx;
+		margin:100rpx 20rpx 20rpx 20rpx;
 		padding: 0 10rpx;
+		border-radius: 20rpx;
+		overflow: hidden;
+		
+	}
+	.like_number{
+		display: flex;
+		float: right;
+		width: 180rpx;
+		height: 30rpx;
 		
 	}
 	.publish_information{
 		background-color: #FFFFFF;
-		margin: 10rpx 20rpx 5rpx 10rpx ;
+		margin: 10rpx 20rpx 5rpx 20rpx ;
 		padding: 10rpx;
 		display: flex;
-		
+		border-radius: 20rpx;
+		overflow: hidden;
 	}
 	.publish_icon{
 		border-radius: 50%;
 		overflow: hidden;
+		margin-top: 20rpx;
 	}
 	.package_card_publish{
+		width: 100%;
 		margin-top: 20rpx;
-		margin-left: 20rpx;
+		margin-left:30rpx;
+		
+		
 	}
 	.scroll_button{
 		display: flex;
