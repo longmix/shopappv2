@@ -114,6 +114,8 @@ import util from '../../common/util.js';
 export default {
 	data() {
 		return {
+			current_params_str:'',	//网址参数
+			
 			current_card_detail:null,
 			current_package_detail:null,
 			current_cardid:0,
@@ -138,6 +140,20 @@ export default {
 		});
 
 		that.abotapi.set_shop_option_data(that, that.callback_function_shop_option_data);
+		
+		
+		//=== 参数拼接 ====
+		this.current_params_str = null;
+		
+		for(var key in options){
+		  this.current_params_str += key+'='+options[key]+'&';
+		}			
+		if(this.current_params_str){
+			this.current_params_str = this.current_params_str.substr(0, this.current_params_str.length-1);
+		}
+		//======== End ============
+		
+		
 
 		that.current_cardid = options.cardid;
 		that.current_packageid = options.packageid;
@@ -238,7 +254,7 @@ export default {
 
 		//添加收藏
 		that.abotapi.abotRequest({
-		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/add_card_favorite',
+		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/card_favorite',
 			
 		    method: 'post',
 		    data: {
@@ -397,6 +413,22 @@ export default {
 			
 			set_favorite:function(value001){
 				var that = this;
+				
+				
+				//======= 判断用户是否登录 ============
+				var last_url = '/pages/nftcard/package_detail?'+ that.current_params_str;
+				
+				var userInfo = that.abotapi.get_user_info();
+				if (!userInfo) {
+					that.abotapi.goto_user_login(last_url);
+				
+					return;
+				}
+				//============= End ================
+				
+				
+				
+				
 				
 				//请求服务器接口、
 				var cardid = that.current_card_detail.cardid;

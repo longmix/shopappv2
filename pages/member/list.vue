@@ -138,6 +138,17 @@
 			})
 			
 			
+			//=== 参数拼接 ====
+			this.current_params_str = null;
+			
+			for(var key in options){
+			  this.current_params_str += key+'='+options[key]+'&';
+			}			
+			if(this.current_params_str){
+				this.current_params_str = this.current_params_str.substr(0, this.current_params_str.length-1);
+			}
+			//======== End ============
+			
 			//检查用户是否登录
 			var userInfo = this.abotapi.get_user_info();
 			if (!userInfo) {
@@ -159,10 +170,7 @@
 			  return;
 			}		
 			
-			//参数拼接
-			for(var key in options){
-			  this.current_params_str += key+'='+options[key]+'&';
-			}
+			
 			
 			
 			//如果带了data_url 参数就会覆盖data 的data_url

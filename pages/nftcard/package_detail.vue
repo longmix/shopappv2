@@ -1,18 +1,17 @@
 <template>
 	<view class="global_background">
 		<!-- 封面  模糊背景 -->
-		<view class="">
-			<view class="package_background">
-				<image class="" :src="current_package_detail.cover_img_url" mode="scaleToFill" style="width: 100%; height: 500rpx;"></image>
-			</view>
-			<view class="prospect">
-				<image class="" :src="current_package_detail.cover_img_url" mode="aspectFill" style="width:400rpx; height: 400rpx;"></image>
+		<view class="" style="height: 550rpx;">
+			
+				<image class="package_background" :src="current_package_detail.cover_img_url" ></image>
+			<view class="package_image">
+				<image class="package_image" :src="current_package_detail.cover_img_url" ></image>
 			</view>
 		</view>
 		
 		<!-- 卡包详情 -->
 		<view class="package_information">
-			<view style="font-weight: bold; font-size: 40rpx; white-space: nowrap;">{{current_package_detail.title}}</view>
+			<view class="package_title">{{current_package_detail.title}}</view>
 			<view style="font-weight: 300; font-size: 10rpx;">
 				详情：{{current_package_detail.description}}
 			</view>
@@ -118,6 +117,8 @@ import util from '../../common/util.js';
 export default {
 	data() {
 		return {
+			current_params_str:'',	//网址参数
+			
 			current_package_detail:null,
 			current_card_list:null,
 			current_packageid:0,
@@ -145,6 +146,17 @@ export default {
 		
 		this.abotapi.set_shop_option_data(this, this.callback_function_shop_option_data);
 		
+		
+		//=== 参数拼接 ====
+		this.current_params_str = null;
+		
+		for(var key in options){
+		  this.current_params_str += key+'='+options[key]+'&';
+		}			
+		if(this.current_params_str){
+			this.current_params_str = this.current_params_str.substr(0, this.current_params_str.length-1);
+		}
+		//======== End ============
 		
 		
 		that.current_packageid = options.packageid;
@@ -180,7 +192,7 @@ export default {
 		
 		
 		
-		
+		//xxxxxxxxxxxxxxxxx
 		that.abotapi.abotRequest({
 		  url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_detail',
 			
@@ -223,10 +235,6 @@ export default {
 		
 		//获取卡牌列表
 		
-		
-		
-		
-		
 		that.abotapi.abotRequest({
 		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_list',
 			
@@ -268,42 +276,6 @@ export default {
 	
 	
 	
-	
-	//添加喜欢
-	that.abotapi.abotRequest({
-	    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/package_like_add',
-		
-	    method: 'post',
-	    data: {
-			sellerid:that.abotapi.globalData.default_sellerid,
-			packageid:that.current_packageid,
-			
-			userid:that.current_userid,
-	    },
-	    success: function (res) {
-			
-			if(res.data.code != 1){
-				uni.showToast({
-					title:'收藏失败',
-					duration: 2000,
-				});
-				
-				return;
-			}
-			
-			that.current_userid = res.data.data;
-			
-			console.log('current_userid  ===>>> ', that.current_userid);
-			
-			
-	    },
-	    fail: function (e) {
-			uni.showToast({
-				title: '网络异常！',
-				duration: 2000
-			});
-	    },
-	});
 	
 	
 		
@@ -434,12 +406,82 @@ export default {
 		
 		set_like:function(value001){
 			var that = this;
+			
+			//======= 判断用户是否登录 ============
+			var last_url = '/pages/nftcard/package_detail?'+ that.current_params_str;
+			
+			var userInfo = that.abotapi.get_user_info();
+			if (!userInfo) {
+				that.abotapi.goto_user_login(last_url);
+			
+				return;
+			}
+			//============= End ================
+			
 		
 			//请求服务器接口、
 			var packageid = that.current_package_detail.packageid;
 			
-			//请求成功之后，修改本地的数据
-			that.current_package_detail.is_like = value001;
+			
+			
+			
+			//添加喜欢
+			that.abotapi.abotRequest({
+			    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/package_like_add',
+				
+			    method: 'post',
+			    data: {
+					sellerid:that.abotapi.globalData.default_sellerid,
+					packageid:that.current_packageid,
+					
+					userid:that.current_userid,
+			    },
+			    success: function (res) {
+					
+					if(res.data.code != 1){
+						uni.showToast({
+							title:'收藏失败',
+							duration: 2000,
+						});
+						
+						return;
+					}
+					
+					that.current_userid = res.data.data;
+					
+					console.log('current_userid  ===>>> ', that.current_userid);
+					
+					
+					
+					//请求成功之后，修改本地的数据
+					that.current_package_detail.is_like = value001;
+					
+					
+					
+					
+					
+					
+			    },
+			    fail: function (e) {
+					uni.showToast({
+						title: '网络异常！',
+						duration: 2000
+					});
+			    },
+			});
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			
 		},
 		
@@ -457,18 +499,24 @@ export default {
 	.package_background{
 		margin-top: 5rpx;
 		filter: blur(20rpx);
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		width:100%;
-		height: 450rpx;
+		width: 100%;
+		height: 550rpx;
 	}
-	.prospect{
-		position: absolute;
+	.package_image{
+		/* position: absolute;
 		top: -20rpx;
 		left: -20rpx;
-		transform:translate(50%,20%);
+		transform:translate(50%,20%); */
+		
+		align-items: center;
+		position: absolute;
+		left: 7%;
+		top: 5%;
+		height: 450rpx;
+		border-radius: 20rpx;
+		border: #F0F0F0 solid 1rpx;
+		box-shadow: 0rpx 0rpx 20rpx #F0F0F0;
+		background-color: #FFFFFF;
 	}
 	.package_information{
 		background-color: #FFFFFF;
@@ -476,6 +524,15 @@ export default {
 		padding: 0 10rpx;
 		border-radius: 20rpx;
 		overflow: hidden;
+		
+	}
+	.package_title{
+		 font-weight: bold;
+		 font-size: 40rpx; 
+		 white-space: nowrap;
+		 overflow: hidden;
+		 text-overflow: ellipsis;
+		 width: 500rpx; 
 		
 	}
 	.like_number{
