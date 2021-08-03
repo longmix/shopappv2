@@ -371,7 +371,7 @@ export default {
 				
 				
 				//======= 判断用户是否登录 ============
-				var last_url = '/pages/nftcard/package_detail?'+ that.current_params_str;
+				var last_url = '/pages/nftcard/card_detail?'+ that.current_params_str;
 				
 				var userInfo = that.abotapi.get_user_info();
 				if (!userInfo) {
