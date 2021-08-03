@@ -5,28 +5,24 @@
 				<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/drop_down.png" mode="widthFix" style="width: 30rpx;"></image>
 			</view>
 		</picker>
-		<view v-for="(current_card_item, index) in current_card_list" @tap="go_to_detail(current_card_item.packageid, current_card_item.cardid)">
-			
-			
-			<view style="display: flex;">
+		<view style="display: flex;flex-wrap: wrap;">
+			<view v-for="(current_card_item, index) in current_card_list" 
+			@tap="go_to_detail(current_card_item.packageid, current_card_item.cardid)">
 				<view style="padding: 15rpx;">
 					<view class="card_list_background_color">
 						<view class="card_detail_kapai_borderwidth">
 							<image :src="current_card_item.cover_img_url" class="card_detail_kapai_imgwidth"></image>
 						</view>
 						<view class="card_list_title" style="width: 260rpx;">{{current_card_item.card_name}}</view>
-						<view class="card_list_right">{{current_card_item.favorite_count}}人收藏</view>
+						<view class="card_list_right">
+							<image src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png" 
+							class="card_list_images"></image>{{current_card_item.favorite_count}}
+						</view>
 					</view>
 				</view>
 			</view>
-			
-			
 		</view>
-		
-		
-		
 	</view>
-
 </template>
 
 <script>
@@ -257,8 +253,9 @@ export default {
 		width: 175rpx;
 		padding: 10rpx;
 		padding-left: 20rpx; 
-		background-color: #FFFFFF; 
+		background-color: #FFFFFF;
 		border-radius: 30rpx;
+		border: 1rpx solid #dedede;
 	}
 	.card_list_background_color{
 		background: #FFFFFF;
@@ -266,6 +263,7 @@ export default {
 		height: 480rpx;
 		border-radius: 25rpx;
 		padding: 25rpx;
+		border: #d5d5c9 3rpx solid;
 	}
 	.card_detail_kapai_borderwidth{
 		width: 280rpx;
@@ -274,9 +272,9 @@ export default {
 		border-radius: 25rpx;
 	}
 	.card_detail_kapai_imgwidth{
-		width: 450rpx;
+		width: 550rpx;
 		height: 400rpx;
-		right: 30%;
+		right: 50%;
 	}
 	.card_list_title{
 		font-size: 30rpx;
@@ -292,6 +290,11 @@ export default {
 		font-size: 25rpx;
 		color: #8F8F8F;
 		line-height: 45rpx;
+	}
+	.card_list_images{
+		width: 25rpx;
+		height: 25rpx;
+		padding-top: 15rpx;
 	}
 </style>
 

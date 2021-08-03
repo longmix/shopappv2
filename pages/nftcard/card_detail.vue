@@ -24,15 +24,18 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		<!-- 所属卡包信息 -->
 		<view class="card_detail_xinxi">
 			<h4 class="card_detail_title" style="padding: 15rpx 0rpx;width: 95%;">{{current_card_detail.card_name}}</h4>
-			<view style="color: #868686;">发行时间：{{current_card_detail.createtime}}
+			<view style="color: #868686;">
+			
+			{{current_card_detail.createtime}}
 				<!-- 有多少人收藏 -->
 				<view class="card_detail_xihuan">
-					<image class="card_detail_aixin" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png">{{current_card_detail.favorite_counter}} 人收藏</image>
+					<!-- <image class="card_detail_aixin" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png">{{current_card_detail.favorite_counter}} 人收藏</image> -->
+					<view>{{current_card_detail.favorite_counter}} 人收藏</view>
 					<view>我有 {{current_card_detail.have_counter}} 张</view>
 				</view>
 			</view>
 			<view style="color: #868686;">{{current_card_detail.description}}</view>
-			<h4 class="card_detail_h4">所属卡包</h4>
+			<h4 class="card_detail_h4" style="padding: 15rpx 0rpx;">所属卡包</h4>
 			<view style="display: flex;">
 				<view>
 					<image :src="current_card_detail.cover_img_url"
@@ -42,14 +45,12 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				<view class="card_detail_kabaoxinxi" 
 				@tap="go_to_card_list(current_card_detail.packageid, current_card_detail.cardid)">
-					<view class="card_detail_title" style="width: 550rpx;">{{current_card_detail.package_title}}</view>
-					<view style="color: #868686;">
-						<text class="card_detail_weight">{{current_card_detail.supplier_name}}</text>
-						<image :src="current_card_detail.package_img" style="width: 35rpx; height: 35rpx; border-radius: 50%;" ></image>
+					<view class="card_packages_title" style="width: 550rpx;">{{current_card_detail.package_title}}</view>
+					<view style="color: #868686;font-size: 35rpx;">
+						<text>{{current_card_detail.supplier_name}}</text>
 					</view>
 					
-					<view style="color: #868686;"><text class="card_detail_weight">库存：</text>{{current_card_detail.kucun_counter}}|
-					<text class="card_detail_weight">发行：</text>{{current_card_detail.faxing_counter}}</view>
+					<view style="color: #868686;">库存 {{current_card_detail.kucun_counter}}&nbsp;&nbsp;发行 {{current_card_detail.faxing_counter}}</view>
 				</view>
 				
 			</view>
@@ -59,16 +60,18 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		</view>
 			<view>
 				<!-- 其他卡牌 -->
-				<h4 class="card_detail_h4" style="padding-left: 15rpx;">其他卡牌</h4>
+				<h4 class="card_detail_h4" style="padding-left: 20rpx;">其他卡牌</h4>
 				
 				<scroll-view scroll-x="true">
 					<view class="slide_cards">
 						<view v-for="(current_card_list_item,index) in current_card_list"
 						@tap="go_to_card_detail(current_card_list_item.packageid, current_card_list_item.cardid)">
 							<view class="slide_cards_pic">
-								<view class="card_detail_title" style="width: 340rpx;border-radius: 20rpx;">
-									<image :src="current_card_list_item.cover_img_url" mode="aspectFill" class="card_detail_img_border"></image>
-									<view>{{current_card_list_item.card_name}}</view>
+								<view class="card_detail_background">
+									<view class="card_detail_title" style="width: 225rpx; ">
+										<image :src="current_card_list_item.cover_img_url" mode="aspectFill" class="card_detail_img_border"></image>
+										<view class="card_detail_kapai_title">{{current_card_list_item.card_name}}</view>
+									</view>
 								</view>
 							</view>
 						</view>
@@ -76,13 +79,12 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				</scroll-view>
 				
 			</view>
-		
+			<!-- 按钮 -->
 			<radio v-if="current_card_detail.is_buyed == 0" disabled="disabled" checked="checked" class="card_detail_radio">已拥有</radio>
 			<radio v-else disabled="disabled" class="card_detail_radio">未拥有</radio>
-			
-			<view style="float: right;padding: 20rpx;display: flex;">
+			<view style="float: right; padding: 20rpx;display: flex;">
 				<!-- <view @tap="test_goto_buy">购买测试</view> -->
-				<button v-if="current_card_detail.is_buyed == 1" type="button" value="购买" style="background: #007AFF;color: #FFFFFF;width: 50%;">购买</button>
+				<button v-if="current_card_detail.is_buyed == 1" type="button" value="购买" style="background: #007AFF;color: #FFFFFF;width: 40%;">购买</button>
 				<!-- 收藏 -->
 				<image class="card_detail_an" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star.png"
 				v-if="current_card_detail.is_favorite == 0" @tap="set_favorite(1)"></image>
@@ -96,8 +98,10 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				v-if="current_card_detail.is_buyed == 0"></image>
 				<!-- 分享 -->
 				<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/分 享.png"></image>
-				
 			</view>
+		</view>
+			
+			
 
 	</view>
 	<!-- <view v-else>数据获取失败</view> -->
@@ -130,7 +134,7 @@ export default {
 		});
 
 		uni.setNavigationBarTitle({
-			title: '卡牌详情'
+			title: '卡牌详情',
 		});
 
 		that.abotapi.set_shop_option_data(that, that.callback_function_shop_option_data);
@@ -457,10 +461,7 @@ export default {
 
 <style>
 	*{
-		font-size: 25rpx;
-	}
-	.card_detail_weight{
-		font-weight: 600;
+		font-size: 30rpx;
 	}
 	.card_detail_border {
 		width:100%;
@@ -474,10 +475,13 @@ export default {
 	.card_detail_image {
 		align-items: center;
 		position: absolute;
-		left: 80rpx;
-		top: 90rpx;
+		left: 7%;
+		top: 5%;
 		height: 450rpx;
 		border-radius: 20rpx;
+		border: #F0F0F0 solid 1rpx;
+		box-shadow: 0rpx 0rpx 20rpx #F0F0F0;
+		background-color: #FFFFFF;
 	}
 	.card_detail_an{
 		width: 55rpx;
@@ -500,13 +504,9 @@ export default {
 		float: right;
 		text-align: right;
 	}
-	.card_detail_aixin{
-		width: 35rpx;
-		height: 35rpx;
-	}
 	.card_detail_xinxi{
-		padding: 15rpx;
-		line-height: 40rpx;
+		padding: 15rpx 20rpx;
+		line-height: 55rpx;
 	}
 	.card_detail_title{
 		font-size: 37rpx;
@@ -515,20 +515,44 @@ export default {
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
+	.card_packages_title{
+		font-size: 30rpx;
+		font-weight: bold;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
 	.slide_cards{
 		display: flex;
-		margin-left: 10rpx;
+	}
+	.card_detail_background{
+		background: #FFFFFF;
+		width: 195rpx;
+		height: 350rpx;
+		border-radius: 25rpx;
+		padding: 15rpx;
+		border: #d5d5c9 3rpx solid;
 	}
 	.slide_cards_pic{
-		margin:5rpx;
-		padding: 5rpx;
+		padding-left: 20rpx;
+		padding-top: 20rpx;
+		padding-bottom: 20rpx;
 	}
 	.card_detail_img_border{
-		width: 340rpx;
-		padding: 10rpx;
+		width: 195rpx;
+		height: 305rpx;
+		border-radius: 20rpx;
+	}
+	.card_detail_kapai_title{
+		width: 195rpx;
+		font-size: 30rpx;
+		font-weight: bold;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 	.card_detail_radio{
 		float: left;
-		padding-left: 10rpx;
+		padding-left: 20rpx;
 	}
 </style>
