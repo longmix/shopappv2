@@ -17,7 +17,7 @@
 				</b>
 				<view class="cata_name">
 					<!-- 分类名称 -->
-					<view style="font-size: 25upx;line-height: 40upx;">{{wz_text.classname}}</view>
+					<view style="font-size: 25rpx;line-height: 40rpx;">{{wz_text.classname}}</view>
 				</view>
 			</view>
 		</view>
@@ -59,28 +59,61 @@
 				</view>
 				
 				<!-- 自定义属性 -->
-				<view class="wenzhang_meihua" v-for="(value_item,index) in wz_text.value_list" :key="index" >
-					<block v-if="value_item.fieldvalue" >
-					<view class="wenzhang_meihua_name">{{value_item.displayname}}</view>：
+				<block  v-for="(value_item,index) in wz_text.value_list" :key="index">
+					<view class="wenzhang_meihua" 
+						v-if="value_item.fieldvalue && (value_item.fieldname != 'user_detail_nickname')
+						 && (value_item.fieldname != 'user_detail_headimgurl')">
 					
-					<text v-if="value_item.fieldname == 'mobile'" @click="call_mobile(value_item.fieldvalue)">{{value_item.fieldvalue}}</text>
-					<image v-if="value_item.fieldname == 'mobile'" @click="call_mobile(value_item.fieldvalue)" style="margin-left: 10rpx;width: 30rpx;height: 30rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_phone.png"></image>
-					<text v-else>{{value_item.fieldvalue}}</text>
-					</block>
+						<view class="wenzhang_meihua_name">{{value_item.displayname}}</view>：
+						
+						<text v-if="value_item.fieldname == 'mobile'" @click="call_mobile(value_item.fieldvalue)">{{value_item.fieldvalue}}</text>
+						<image v-if="value_item.fieldname == 'mobile'" @click="call_mobile(value_item.fieldvalue)" style="margin-left: 10rpx;width: 30rpx;height: 30rpx;" 
+							src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_phone.png"></image>
+						<text v-else>{{value_item.fieldvalue}}</text>
+					
+					
+					</view>
+				</block>
+				
+				<!-- 收藏和分享 -->
+				<view class="article_bottom" v-if="1">
+					<view style="color:#bfbfbf;">
+						<image class="comment_img comment_right_img"
+							:src="isShoucang==true ?  '../../static/img/help/star_on.png': '../../static/img/help/star_off.png'" @tap='shoucang' ></image>
+					</view>
+					
+					<view style="display: flex;">
+						
+						
+						<button  class="share" open-type="share"></button>
+						<!-- #ifdef MP -->
+						<image class="comment_img comment_right_img" src="../../static/img/help/share.png" open-type="share"></image>
+						<!-- #endif -->
+						<!-- #ifdef APP-PLUS -->
+						<image class="comment_img comment_right_img" src="../../static/img/help/share.png" @click="is_show"></image>
+						<!-- #endif -->
+						<!-- #ifdef H5 -->
+						<image class="comment_img comment_right_img" src="../../static/img/help/share.png" @tap="share_publish"></image>
+						<!-- #endif -->
+						
+						
+					</view>
+					
 				</view>
 				
-				<view class="article_bottom" v-if="hidden_remark != 1">
+				
+				<view class="article_bottom" v-if="1">
 					<view style="color:#bfbfbf;">阅读 {{wz_text.click}}</view>
 					<!-- 点赞 -->
 					<view style="display: flex;">
-						<view @tap='doArticleDianzan' :data-zantype="1" style='margin-right: 20upx;'>
+						<view @tap='doArticleDianzan' :data-zantype="1" style='margin-right: 20rpx;'>
 							<image style="width:30rpx;height:30rpx;margin-right:15rpx"  :src="dianzan_status == 0 || dianzan_status == 2 ? '../../static/img/help/dianzan_grey.png':'../../static/img/help/dianzan_red.png'"></image>
-							<text style="font-size:30upx">{{wz_text.dianzan_num}}</text>
+							<text style="font-size:30rpx">{{wz_text.dianzan_num}}</text>
 						</view>
 						
 						<view @tap='doArticleDianzan' :data-zantype="2">
 							<image style="width:30rpx;height:30rpx;margin-right:15rpx"  :src="dianzan_status == 0 || dianzan_status == 1 ? '../../static/img/help/dianzan02_grey.png':'../../static/img/help/dianzan02_red.png'"></image>
-							<text style="font-size:30upx">{{wz_text.dianzan_num2}}</text>
+							<text style="font-size:30rpx">{{wz_text.dianzan_num2}}</text>
 						</view>
 					</view>
 					
@@ -90,7 +123,7 @@
 			
 			<!-- 评论 -->
 			<view class="comment_list" id="the-id"  v-if="hidden_remark != 1">
-				<view :style="{'border-left': 6 +'upx' + 'solid' + theme_color_wenku}"  style="padding-left:20rpx;margin-top:36rpx;margin-bottom:36rpx;font-size:26rpx;color:#999">热门评论</view>
+				<view :style="{'border-left': 6 +'rpx' + 'solid' + theme_color_wenku}"  style="padding-left:20rpx;margin-top:36rpx;margin-bottom:36rpx;font-size:26rpx;color:#999">热门评论</view>
 				<view class="comment_list_aa" v-if="remarkList.length" v-for="(items,index) in remarkList" :key="index">
 					<image class="comment_list_user_icon" :src="items.headimgurl" mode="widthFix"></image>
 					<view style="width:97%;">
@@ -132,19 +165,10 @@
 		        
 		        <image class="comment_img comment_right_img" src="../../static/img/help/comment.png" @tap='toReamrkList'  ></image><!--  @click="get_input_focus()" -->
 		        <view class="comment_num" :hidden="!comment_num">{{comment_num}}</view>
-		        <image class="comment_img comment_right_img" :style="comment_num ? 'margin-left:0':''" :src="isShoucang==true ?  '../../static/img/help/star_on.png': '../../static/img/help/star_off.png'" @tap='shoucang' ></image>
-		        <button  class="share" open-type="share"></button>
-				<!-- #ifdef MP -->
-				<image class="comment_img comment_right_img" src="../../static/img/help/share.png" open-type="share"></image>
-				<!-- #endif -->
-				<!-- #ifdef APP-PLUS -->
-				<image class="comment_img comment_right_img" src="../../static/img/help/share.png" @click="is_show"></image>
-				<!-- #endif -->
-		        <!-- #ifdef H5 -->
-		        <image class="comment_img comment_right_img" src="../../static/img/help/share.png" @tap="share_publish"></image>
-		        <!-- #endif -->
+		        
 				
-		        <image class="comment_img comment_right_img" @tap="toHomePage" src="../../static/img/help/home_page.png"></image>
+		        <image class="comment_img comment_right_img"  :style="comment_num ? 'margin-left:0':''"
+						@tap="toHomePage" src="../../static/img/help/home_page.png"></image>
 				<!-- <image class="comment_img comment_right_img" src="../../../static/img/help/friends.png"></image> -->
 		     </view>
 		</view>
@@ -251,6 +275,8 @@
 			}
 			
 			
+			
+			
 			console.log(options);
 			console.log("商户头条id:"+options.id);
 			console.log("sellerid:" + options.sellerid);
@@ -339,6 +365,8 @@
 					that.hidden_remark = option_list.publish_hiddend_btn_for_write; //是否显示发帖按钮
 				}
 				
+				//临时测试，打开评论开关
+				//that.hidden_remark = 0;
 				
 			},
 			__get_img_from_weiduke: function (imgid, that){
@@ -349,13 +377,20 @@
 				//   action:'detail'
 				// };
 				var url = this.abotapi.globalData.weiduke_server_url + 'openapi/ArticleImgApi/article_detail';
-				var data = {
+				var post_data = {
 					token: this.current_cms_token,
-					id: imgid,
-					openid: this.abotapi.get_current_openid(),
+					id: imgid,					
 					sellerid:this.abotapi.globalData.default_sellerid,
 				};
 				
+				if(this.abotapi.get_current_openid()){
+					post_data.openid = this.abotapi.get_current_openid();
+				}
+				
+				var userInfo = this.abotapi.get_user_info();
+				if(userInfo){
+					post_data.userid = userInfo.userid;
+				}
 				
 				var cbSuccess = function (res) {
 					if (res.data.code == 1) {
@@ -424,7 +459,7 @@
 				var cbError = function (res) {
 				
 				};
-				this.abotapi.httpPost(url, data, cbSuccess, cbError);
+				this.abotapi.httpPost(url, post_data, cbSuccess, cbError);
 					//========End====================
 			},
 			
@@ -580,10 +615,12 @@
 				}
 					
 				var wz_id = that.wz_text.id;
+				
 				console.log(wz_id);
+				
 				var isShoucang = !this.isShoucang;
 				
-			    that.isShoucang = isShoucang
+			    that.isShoucang = isShoucang;
 				
 				var url = this.abotapi.globalData.weiduke_server_url + 'index.php/openapi/ArticleImgApi/collect_my_update';
 				var data = {
@@ -1292,7 +1329,7 @@
 	  border-radius:50rpx;
 	  padding-left:78rpx;
 	  margin-left:32rpx;
-	  width:276rpx;
+	  width:416rpx;
 	}
 	
 	.comment_write_img{
@@ -1402,32 +1439,34 @@
 		align-items: center;
 	}
 	.head_img{
-		margin: 20upx;
+		margin: 20rpx;
 	}
 	.head_img image{
-		width: 100upx;
-		height: 100upx;
-		border-radius:5upx;
+		width: 100rpx;
+		height: 100rpx;
+		border-radius:5rpx;
 	}
 	.nickname{
 		color:#515151;
-		font-size: 28upx;
+		font-size: 28rpx;
 	}
 	.cata_name{
-		margin-top: 10upx;
+		margin-top: 10rpx;
 		background-color: #18dba6;
 		color: #fff;
-		border-radius:6upx;
+		border-radius:6rpx;
 		padding: 2rpx 6rpx;
 		text-align: center;
 	}
 	.wenzhang_meihua{
-		font-size: 30upx;
-		margin-top: 10upx;
+		font-size: 30rpx;
+		margin-top: 10rpx;
 		margin: auto;
-		padding-bottom: 10upx;
-		padding-top: 10upx;
-		border-top: 1upx solid #eee;
+		padding-bottom: 10rpx;
+		padding-top: 10rpx;
+		border-top: 1rpx solid #eee;
+		height: 100rpx;
+		line-height: 100rpx;
 	}
 	.wenzhang_meihua_name{
 		font-weight: bold;

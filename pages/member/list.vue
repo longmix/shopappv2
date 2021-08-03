@@ -127,17 +127,30 @@
 				search_text:'',
 				list_search_tips:'搜索会员',
 				
+				option_title: null
+				
 			}
 		},
 		
 		onLoad(options) {
 			console.log('options===>',options);
 			
-			uni.setNavigationBarTitle({
-				title:'会员列表'
-			})
+			if(options.title){
+				//如果带有title参数，则使用
+				this.option_title = options.title;
+				
+				uni.setNavigationBarTitle({
+					title: options.title
+				})
+			}
+			else{
+				uni.setNavigationBarTitle({
+					title:'会员列表'
+				})
+			}
 			
 			
+
 			//=== 参数拼接 ====
 			this.current_params_str = null;
 			
@@ -149,6 +162,7 @@
 			}
 			//======== End ============
 			
+
 			//检查用户是否登录
 			var userInfo = this.abotapi.get_user_info();
 			if (!userInfo) {
@@ -298,7 +312,8 @@
 						
 						uni.hideLoading();
 										
-						if(res.data.list_title){
+						//如果没有设定标题，且服务器返回了新标题
+						if(!that.option_title && res.data.list_title){
 							uni.setNavigationBarTitle({
 								title: res.data.list_title
 							})
