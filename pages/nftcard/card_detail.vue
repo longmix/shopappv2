@@ -25,15 +25,15 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		<view class="card_detail_xinxi">
 			<h4 class="card_detail_title" style="padding: 15rpx 0rpx;width: 95%;">{{current_card_detail.card_name}}</h4>
 			<view style="color: #868686;">
-			
-			{{current_card_detail.createtime}}
+				<!-- 发行时间 -->
+				<text>{{current_card_detail.createtime}}</text>
 				<!-- 有多少人收藏 -->
 				<view class="card_detail_xihuan">
-					<!-- <image class="card_detail_aixin" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png">{{current_card_detail.favorite_counter}} 人收藏</image> -->
 					<view>{{current_card_detail.favorite_counter}} 人收藏</view>
 					<view>我有 {{current_card_detail.have_counter}} 张</view>
 				</view>
 			</view>
+			<!-- 卡牌详情 -->
 			<view style="color: #868686;">{{current_card_detail.description}}</view>
 			<h4 class="card_detail_h4" style="padding: 15rpx 0rpx;">所属卡包</h4>
 			<view style="display: flex;">
@@ -157,6 +157,7 @@ export default {
 
 		that.current_cardid = options.cardid;
 		that.current_packageid = options.packageid;
+		// that.data.current_card_detail.createTime = that.data.current_card_detail.createtime.substring(0,10);
 		
 		console.log('that.current_cardid ===》》 ', that.current_cardid);
 		
@@ -252,52 +253,6 @@ export default {
 		    },
 		});
 
-		//添加收藏
-		that.abotapi.abotRequest({
-		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/card_favorite',
-			
-		    method: 'post',
-		    data: {
-				sellerid:that.abotapi.globalData.default_sellerid,
-				cardid:that.current_cardid,
-				userid:that.current_userid,
-		    },
-		    success: function (res) {
-				
-				if(res.data.code != 1){
-					uni.showToast({
-						title:' ',
-						duration: 2000,
-					});
-					
-					return;
-				}
-				else{
-					uni.showToast({
-						title:'加载成功',
-						duration: 2000,
-					});
-					
-					return;
-				}
-				
-				that.current_userid = res.data.data;
-				
-				console.log('current_userid  ===>>> ', that.current_userid);
-				
-				
-		    },
-		    fail: function (e) {
-				uni.showToast({
-					title: '网络异常！',
-					duration: 2000
-				});
-		    },
-		});
-		
-		
-		
-		
 
 		},
 		
@@ -433,10 +388,69 @@ export default {
 				//请求服务器接口、
 				var cardid = that.current_card_detail.cardid;
 				
-				//请求成功之后，修改本地的数据
-				that.current_card_detail.is_favorite = value001;
 				
-			},
+				
+				
+				
+				//添加收藏
+				that.abotapi.abotRequest({
+				    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/card_favorite',
+					
+				    method: 'post',
+				    data: {
+						sellerid:that.abotapi.globalData.default_sellerid,
+						cardid:that.current_cardid,
+						userid:that.current_userid,
+				    },
+				    success: function (res) {
+						
+						if(res.data.code != 1){
+							uni.showToast({
+								title:' ',
+								duration: 2000,
+							});
+							
+							return;
+						}
+						else{
+							uni.showToast({
+								title:'加载成功',
+								duration: 2000,
+							});
+							
+							return;
+						}
+						
+						that.current_userid = res.data.data;
+						
+						console.log('current_userid  ===>>> ', that.current_userid);
+						
+						
+						
+						
+						
+							
+							//请求成功之后，修改本地的数据
+							that.current_card_detail.is_favorite = value001;
+							
+						},
+						
+				    
+				    fail: function (e) {
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+				    },
+				});
+				
+				
+				
+			},	
+				
+				
+				
+				
 			set_buyed:function(value002){
 				var that = this;
 				
