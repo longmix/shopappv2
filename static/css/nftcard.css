@@ -1,0 +1,28 @@
+	.global_background{
+		background-color:#eceeef;
+	}
+	.package_background{
+		margin-top: 5rpx;
+		filter: blur(20rpx);
+		width: 100%;
+		height: 550rpx;
+	}
+	
+	
+	.package_label{
+		
+		display: flex;
+	}
+	.package_lable_list{
+		background-color: #f3f5f6;
+		color: #15c5ce;
+		margin: 10rpx;
+		padding: 5rpx 10rpx;
+		border-radius: 5rpx;
+		overflow: hidden;
+		font-size: 10rpx;
+		text-align: center;
+		border:2rpx solid #666666;
+	}
+	
+	

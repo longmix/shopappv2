@@ -27,11 +27,11 @@
 					<view class="package_describe"><!-- {{current_package_item.cover_img_url}} -->
 						<view class="" style="font-weight: 100; font-size: 30rpx; width: 150rpx; float: right;margin-right:50rpx;">
 							<!-- <image  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/like.png" mode="widthFix" style="width: 30rpx;float: left;"></image>	 -->
-							<image  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/already_like.png" mode="aspectFill" style="width: 30rpx;height:30rpx;"></image>
-							{{current_package_item.like_count}}人喜欢
+							<image  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/like.png" mode="aspectFill" style="width: 30rpx;height:30rpx;"></image>
+							<span style="color:#666;margin-left: 10rpx;">{{current_package_item.like_count}}</span>
 						</view>
 						<view class="package_label">
-							<view class="package_lable_list" v-for="(item,index) in current_package_item.tag_list">{{item}}</view>
+							<view  class="package_lable_list" v-for="(item,index) in current_package_item.tag_list">{{item}}</view>
 						</view>
 						
 						<view class="package_name">{{current_package_item.title}}</view>
@@ -263,10 +263,7 @@ export default {
 	
 	@import "/static/css/nftcard.css";
 	
-	.global_background{
-		background-color:#eceeef;
 
-	}
 	.drop_down_menu{
 		
 		padding: 60rpx 0rpx 10rpx 50rpx;		
@@ -278,6 +275,7 @@ export default {
 		font-weight: 100;
 		font-size: 30rpx;
 	}
+	
 	.package_drop_down_icon{
 	background-color: #FFFFFF;
 	border-radius: 20rpx;
@@ -318,21 +316,7 @@ export default {
 		
 	}
 		
-	.package_label{
-		
-		display: flex;
-	}
-	.package_lable_list{
-		background-color: #f3f5f6;
-		color: #15c5ce;
-		margin: 5rpx;
-		
-		width: 150rpx;
-		border-radius: 20rpx;
-		overflow: hidden;
-		font-size: 10rpx;
-		text-align: center;
-	}
+	
 	.package_name{
 		font-weight: bold;
 		margin-bottom: 20rpx;
