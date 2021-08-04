@@ -84,12 +84,12 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			<radio v-else disabled="disabled" class="card_detail_radio">未拥有</radio>
 			<view style="float: right; padding: 20rpx;display: flex;">
 				<!-- <view @tap="test_goto_buy">购买测试</view> -->
-				<button v-if="current_card_detail.is_buyed == 1" type="button" value="购买" style="background: #007AFF;color: #FFFFFF;width: 40%;">购买</button>
+				<!-- <button type="button" value="购买" style="background: #007AFF;color: #FFFFFF;width: 40%;">购买</button> -->
 				<!-- 收藏 -->
 				<image class="card_detail_an" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star.png"
-				v-if="current_card_detail.is_favorite == 0" @tap="set_favorite(1)"></image>
-				<image class="card_detail_an" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png" 
 				v-if="current_card_detail.is_favorite == 1" @tap="set_favorite(0)"></image>
+				<image class="card_detail_an" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png" 
+				v-if="current_card_detail.is_favorite == 0" @tap="set_favorite(1)"></image>
 				<!-- 赠予 -->
 				<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/赠予.png"
 				v-if="current_card_detail.is_buyed == 0"></image>
@@ -171,8 +171,7 @@ export default {
 			return;
 		}
 		
-		//获取卡牌详情
-		
+		//获取卡牌详情		
 		var post_data = {
 				sellerid:that.abotapi.globalData.default_sellerid,
 				packageid:that.current_packageid,
@@ -190,7 +189,6 @@ export default {
 		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_detail',
 		    method: 'post',
 		    data: post_data,
-			
 		    success: function (res) {
 				
 				if(res.data.code != 1){
@@ -383,38 +381,39 @@ export default {
 				
 				
 				
-				
-				
-				//请求服务器接口、
-				var cardid = that.current_card_detail.cardid;
-				
-				
-				
+				//请求服务器接口、收藏卡牌
+				var post_data = {
+						sellerid:that.abotapi.globalData.default_sellerid,
+						packageid:that.current_packageid,
+						cardid:that.current_card_detail.cardid,
+						
+				    };
+					
+				var userInfo = that.abotapi.get_user_info();	
+				if(userInfo){
+					post_data.userid = userInfo.userid;
+					post_data.checkstr = userInfo.checkstr;
+				}
 				
 				
 				//添加收藏
 				that.abotapi.abotRequest({
 				    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/card_favorite_add',
-					
-				    method: 'post',
-				    data: {
-						sellerid:that.abotapi.globalData.default_sellerid,
-						cardid:that.current_cardid,
-						userid:that.current_userid,
-				    },
+				    method: 'post',					
+				    data: post_data,
 				    success: function (res) {
 						
 						if(res.data.code != 1){
 							uni.showToast({
-								title:' ',
+								title:'已取消收藏 ',
 								duration: 2000,
 							});
 							
 							return;
 						}
-						else{
+						else if(res.data.code != 0){
 							uni.showToast({
-								title:'加载成功',
+								title:'已添加收藏',
 								duration: 2000,
 							});
 							
@@ -429,9 +428,9 @@ export default {
 						
 						
 						
-							
 							//请求成功之后，修改本地的数据
 							that.current_card_detail.is_favorite = value001;
+							
 							
 						},
 						
@@ -451,16 +450,16 @@ export default {
 				
 				
 				
-			set_buyed:function(value002){
-				var that = this;
+			// set_buyed:function(value002){
+			// 	var that = this;
 				
-				//请求服务器接口、
-				var cardid = that.current_card_detail.cardid;
+			// 	//请求服务器接口、
+			// 	var cardid = that.current_card_detail.cardid;
 				
-				//请求成功之后，修改本地的数据
-				that.current_card_detail.is_buyed = value002;
+			// 	//请求成功之后，修改本地的数据
+			// 	that.current_card_detail.is_buyed = value002;
 				
-			},
+			// },
 			
 			test_goto_buy:function(){
 				var that = this;

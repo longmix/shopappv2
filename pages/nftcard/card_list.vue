@@ -16,7 +16,7 @@
 						<view class="card_list_title" style="width: 260rpx;">{{current_card_item.card_name}}</view>
 						<view class="card_list_right">
 							<image src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png" 
-							class="card_list_images"></image>{{current_card_item.favorite_count}}
+							class="card_list_images"></image>{{current_card_item.favorite_counter}}
 						</view>
 					</view>
 				</view>

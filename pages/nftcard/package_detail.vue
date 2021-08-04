@@ -176,17 +176,21 @@ export default {
 		
 		
 		//获取卡包列表
+		var post_data = {
+				sellerid:that.abotapi.globalData.default_sellerid,
+				packageid:that.current_package_detail.packageid,					
+			};
+			
+		var userInfo = that.abotapi.get_user_info();	
+		if(userInfo){
+			post_data.userid = userInfo.userid;
+			post_data.checkstr = userInfo.checkstr;
+		}
 	
 		that.abotapi.abotRequest({
-		  url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_detail',
-			
-			
-		    method: 'post',
-		    data: {
-				sellerid:that.abotapi.globalData.default_sellerid,
-				packageid:that.current_packageid,
-	
-		    },
+			url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_detail',
+			method: 'post',
+		    data: post_data,
 		    success: function (res) {
 				
 				if(res.data.code != 1){
@@ -404,13 +408,10 @@ export default {
 		
 			
 			
-			//请求服务器接口、
-			var packageid = that.current_package_detail.packageid;
-			
-			
+			//请求服务器接口、喜欢或取消喜欢卡包
 			var post_data = {
 					sellerid:that.abotapi.globalData.default_sellerid,
-					packageid:that.current_packageid,					
+					packageid:that.current_package_detail.packageid,					
 				};
 				
 			var userInfo = that.abotapi.get_user_info();	
