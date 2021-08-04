@@ -2,7 +2,7 @@
 	<view>
 		<view class="aui-flexView">
 			
-			<!-- #ifdef H5 --> 
+			<!-- #ifdef H5AAAA --> 
 			<view class="aui-navBar aui-navBar-fixed b-line">
 				<a href="javascript:;" class="aui-navBar-item">
 					<i class="icon icon-return"></i>
@@ -21,7 +21,8 @@
 						<view class="top-input-con">
 						
 							<view  class="scroll-txt" :style="'border:2rpx solid '+ btn_bg_color + ';'">   
-								<input type="text" v-model="search_text" :placeholder="list_search_tips" confirm-type="search" style="background: #e6e6e6;" @confirm="search()"/>
+								<input type="text" v-model="search_text" :placeholder="list_search_tips" 
+									confirm-type="search" style="background: #e6e6e6;" @confirm="search()"/>
 								<icon type="search" size="15" style="margin: 0px 10rpx 0 0;position:absolute;right:30rpx;" @tap="search()"></icon>
 								<!-- <text class="scroll-ads">搜索附近商家</text> -->
 							</view>
@@ -125,7 +126,7 @@
 				empty_list_msg:'到底了~',
 				 
 				search_text:'',
-				list_search_tips:'搜索会员',
+				list_search_tips:'搜索会员手机号',
 				
 				option_title: null
 				
@@ -496,7 +497,7 @@
 	
 	.divHeight {
 	    width: 100%;
-	    height: 10px;
+	    height: 20rpx;
 	    background: #f5f5f5;
 	    position: relative;
 	    overflow: hidden;
@@ -513,7 +514,7 @@
 	    top: 0;
 	    right: 0;
 	    height: 100%;
-	    border-right: 1px solid #D9D9D9;
+	    border-right: 2rpx solid #D9D9D9;
 	    -webkit-transform: scaleX(0.5);
 	    transform: scaleX(0.5);
 	    -webkit-transform-origin: 100% 0;
@@ -531,8 +532,8 @@
 	    bottom: 0;
 	    left: 0;
 	    width: 100%;
-	    height: 1px;
-	    border-bottom: 1px solid #e2e2e2;
+	    height: 2rpx;
+	    border-bottom: 2rpx solid #e2e2e2;
 	    -webkit-transform: scaleY(0.5);
 	    transform: scaleY(0.5);
 	    -webkit-transform-origin: 0 100%;
@@ -546,9 +547,9 @@
 	    -webkit-box-align: center;
 	    -webkit-align-items: center;
 	    align-items: center;
-	    padding: 15px;
+	    padding: 30rpx;
 	    position: relative;
-		border-bottom: 1px dashed #D9D9D9;
+		border-bottom: 2rpx dashed #D9D9D9;
 	}
 	
 	.aui-flex-box {
@@ -590,7 +591,7 @@
 	}
 	
 	.aui-navBar {
-	    height: 44px;
+	    height: 88rpx;
 	    position: relative;
 	    display: -webkit-box;
 	    display: -webkit-flex;
@@ -601,7 +602,7 @@
 	}
 	
 	.aui-navBar-item {
-	    height: 44px;
+	    height: 88rpx;
 	    min-width: 25%;
 	    -webkit-box-flex: 0;
 	    -webkit-flex: 0 0 25%;
@@ -661,7 +662,7 @@
 	    -webkit-align-items: center;
 	    -ms-flex-align: center;
 	    align-items: center;
-	    height: 44px;
+	    height: 88rpx;
 	    width: 50%;
 	    margin-left: 25%;
 	}
@@ -679,12 +680,12 @@
 	}
 	
 	.icon {
-	    width: 20px;
-	    height: 20px;
+	    width: 40rpx;
+	    height: 40rpx;
 	    display: block;
 	    border: none;
 	    float: left;
-	    background-size: 20px;
+	    background-size: 40rpx;
 	    background-repeat: no-repeat;
 	}
 	
@@ -693,8 +694,8 @@
 	}
 	
 	.aui-palace {
-	    border-top: 1px dashed #D9D9D9;
-	    padding: 0.5rem 0 0 0;
+	    border-top: 2rpx dashed #D9D9D9;
+	    padding: 20rpx 0 0 0;
 	    position: relative;
 	    overflow: hidden;
 	}
@@ -702,10 +703,10 @@
 	.aui-flex-pic:after {
 	    content: '';
 	    position: absolute;
-	    bottom: -10px;
-	    left: -8px;
-	    width: 15px;
-	    height: 15px;
+	    bottom: -20rpx;
+	    left: -16rpx;
+	    width: 30rpx;
+	    height: 30rpx;
 	    background: #f0f0f0;
 	    border-radius: 100%;
 	    z-index: 10;
@@ -714,10 +715,10 @@
 	.aui-flex-pic:before {
 	    content: '';
 	    position: absolute;
-	    bottom: -10px;
-	    right: -8px;
-	    width: 15px;
-	    height: 15px;
+	    bottom: -20rpx;
+	    right: -16rpx;
+	    width: 30rpx;
+	    height: 30rpx;
 	    background: #f0f0f0;
 	    border-radius: 100%;
 	    z-index: 10;
@@ -728,7 +729,7 @@
 	    float: left;
 	    width: 33%;
 	    box-sizing: border-box;
-	    margin-bottom: 15px;
+	    margin-bottom: 30rpx;
 	    text-align: center;
 	}
 	
@@ -739,7 +740,7 @@
 	    top: 0;
 	    right: 0;
 	    height: 100%;
-	    border-right: 1px solid #D9D9D9;
+	    border-right: 2rpx solid #D9D9D9;
 	    -webkit-transform: scaleX(0.5);
 	    transform: scaleX(0.5);
 	    -webkit-transform-origin: 100% 0;
@@ -747,8 +748,8 @@
 	}
 	
 	.aui-palace-grid-icon {
-	    width: 30px;
-	    height: 30px;
+	    width: 60rpx;
+	    height: 60rpx;
 	    margin: 0 auto;
 	}
 	
@@ -763,16 +764,16 @@
 	    display: block;
 	    text-align: center;
 	    color: #333;
-	    font-size: 0.85rem;
+	    font-size: 35rpx;
 	    white-space: nowrap;
 	    text-overflow: ellipsis;
 	    overflow: hidden;
-	    padding-top: 0.2rem;
+	    padding-top: 20rpx;
 	}
 	
 	.aui-palace-grid-text h2 {
-	    font-size: 0.95rem;
-	    margin-bottom: 0.2rem;
+	    font-size: 40rpx;
+	    margin-bottom: 20rpx;
 	    color: #333333;
 	}
 	
@@ -781,31 +782,31 @@
 	}
 	
 	.aui-palace-grid-text p {
-	    font-size: 0.85rem;
+	    font-size: 30rpx;
 	    color: #999;
 	}
 	
 	.aui-extreme {
-	    padding: 10px 15px 0 15px;
+	    padding: 20rpx 30rpx 0 30rpx;
 	}
 	
 	.aui-extreme-item {
 	    display: block;
 	    background: #fff;
-	    border-radius: 5px;
-	    margin-bottom: 15px;
+	    border-radius: 10rpx;
+	    margin-bottom: 30rpx;
 		padding: 10rpx;
 	}
 	
 	.aui-flex-eme {
-	    width: 50px;
-	    height: 50px;
-	    margin-right: 0.8rem;
+	    width: 100rpx;
+	    height: 100rpx;
+	    margin-right: 40rpx;
 	}
 	
 	.aui-flex-eme image {
-	    width: 50px;
-	    height: 50px;
+	    width: 100rpx;
+	    height: 100rpx;
 	    display: block;
 	    border: none;
 	}
@@ -814,31 +815,31 @@
 	    position: absolute;
 	    right: 0;
 	    top: 0;
-	    width: 35px;
-	    height: 35px;
-	    border-radius: 0 5px 0 0;
+	    width: 70rpx;
+	    height: 70rpx;
+	    border-radius: 0 10rpx 0 0;
 	    overflow: hidden;
 	}
 	
 	.aui-hot image {
-	    width: 35px;
-	    height: 35px;
+	    width: 70rpx;
+	    height: 70rpx;
 	    display: block;
 	    border: none;
 	}
 	
 	.aui-flex-box h2 {
-	    font-size: 1rem;
-	    margin-bottom: 0.2rem;
+	    font-size: 40rpx;
+	    margin-bottom: 8rpx;
 	}
 	
 	.aui-flex-box p {
 	    color: #999999;
-	    font-size: 0.85rem;
+	    font-size: 35rpx;
 	}
 	
 	.aui-extreme-item .aui-flex {
-	    padding: 10px 15px;
+	    padding: 20rpx 30rpx;
 	}
 	.server_btn_list{
 		color:#fff;
@@ -852,7 +853,7 @@
 		border-radius: 6rpx;
 		background:#EC652F;
 		float: left;
-		height: 60rpx;
+		height: 70rpx;
 		line-height: 60rpx;
 		padding: 5rpx 20rpx;
 	}
@@ -879,7 +880,7 @@
 		display: flex;
 		align-items: center;
 		border-radius: 10rpx;
-		height: 50rpx;
+		height: 80rpx;
 		width: 100%;
 	
 	}

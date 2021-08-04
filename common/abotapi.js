@@ -1494,9 +1494,10 @@ module.exports = {
 			}
 			else{
 				
-				console.log('url=====不是switchTab，使用 redirectTo 跳转>>>>>>>'+url);
+				//console.log('url=====不是switchTab，使用 redirectTo 跳转>>>>>>>'+url);
+				console.log('url=====不是switchTab，使用 navigateTo 跳转>>>>>>>'+url);
 				
-				uni.redirectTo({
+				uni.navigateTo({				
 					url:url
 				})
 			}

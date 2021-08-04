@@ -260,6 +260,9 @@ export default {
 
 
 <style>
+	
+	@import "/static/css/nftcard.css";
+	
 	.global_background{
 		background-color:#eceeef;
 
