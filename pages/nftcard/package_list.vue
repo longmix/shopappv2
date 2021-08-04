@@ -1,5 +1,7 @@
 <template>
 	<view class="global_background">	
+	
+				<!-- 排序 -->
 		<view class="drop_down_menu">
 			<picker @change="bindPickerChange" :value="index" :range="array">
 				<view class="picker" style="background-color: #FFFFFF;width: 150rpx;">
@@ -12,7 +14,7 @@
 				
 				
 				
-				
+				<!-- 卡包列表及详情 -->
 				
 		<view class="my_package_list_style"	>
 			<view class="my_package_list">
@@ -28,6 +30,7 @@
 							<image  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/already_like.png" mode="aspectFill" style="width: 30rpx;height:30rpx;"></image>
 							{{current_package_item.like_count}}人喜欢
 						</view>
+						<view v-for="(item,index) in current_package_item.tag_list" style="display:flex;width: 150rpx;float: left; ">{{item}}</view>
 						<view class="package_name">{{current_package_item.title}}</view>
 					
 						<view class="package_brief">{{current_package_item.brief}}{{current_package_item.packageid}}</view>

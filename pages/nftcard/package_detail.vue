@@ -85,16 +85,19 @@
 							<image :src="current_card_item.cover_img_url" mode=" aspectFill" style="width: 350rpx; height: 500rpx;"></image>
 							
 								<!-- <view class="package_detail_card_information"> -->
-							<view style="font-weight: bold;font-size: 40rpx;">{{current_card_item.card_name}}</view>
-									<!-- <view style=" font-weight: 100; font-size: 10rpx;">发行商：{{current_card_item.supplier_name}}</view> -->
-								
-							<view class="" style=" font-weight: 300; font-size: 10rpx;">
-								{{current_card_item.description}}
+							<view class="">
+								<view class="package_card_name" >{{current_card_item.card_name}}</view>
+										<!-- <view style=" font-weight: 100; font-size: 10rpx;">发行商：{{current_card_item.supplier_name}}</view> -->
 									
+								<view class="package_card_description" >
+									{{current_card_item.description}}
+										
+								</view>
 							</view>
+							
 							<view class="" style="font-weight: 300; font-size: 10rpx; float: right;">
 								<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/collect.png" mode="widthFix" style="width: 30rpx;"></image>
-								{{current_card_item.favorite_count}}人收藏
+								{{current_card_item.favorite_counter}}人收藏
 							</view>
 							<view style="font-weight: 300; font-size: 10rpx;">{{current_card_item.createtime}}</view>
 						
@@ -174,7 +177,7 @@ export default {
 		}
 		
 		
-		that.current_package_detail = {'title':'卡牌名称'};
+		that.current_package_detail = {'title':''};
 		that.current_package_detail.cover_img_url = 'http://192.168.0.205/yanyubao_server/uploads/2021/08/03/610895dcc87bc.jpg';
 		that.current_package_detail.description = '';
 		that.current_package_detail.cover_img_url = 'http://192.168.0.205/yanyubao_server/uploads/2021/08/03/610895dcc87bc.jpg';
@@ -525,8 +528,8 @@ export default {
 		 white-space: nowrap;
 		 overflow: hidden;
 		 text-overflow: ellipsis;
-		 width: 500rpx; 
-		
+		 width: 550rpx; 
+		 
 	}
 	.like_number{
 		display: flex;
@@ -586,26 +589,24 @@ export default {
 		margin:5rpx 8rpx 10rpx 6rpx;
 		border-radius: 10rpx;
 		overflow: hidden;
+		
 	}
 
-/* 	.package_detail_card_information{
-		width: 100%;
-		margin-left: 20rpx;
+	.package_card_name{
+		width: 350rpx;
+		font-weight: bold;
+		font-size: 40rpx;
 		white-space: nowrap;
 		overflow: hidden;
-	} */
-	
-/* 	.series_card{
-		margin-left: 20rpx;
-		font-weight: bold; 
-		font-size: larger;
+		text-overflow: ellipsis;
+		
 	}
-	.slide_cards{
-		display: flex;
-		margin-left: 20rpx;
+	.package_card_description{
+		font-weight: 300; 
+		font-size: 10rpx;
+		width: 350rpx;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
-	.slide_cards_pic{
-		margin:5rpx;
-		padding: 5rpx;
-	} */
 </style>
