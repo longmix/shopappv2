@@ -122,7 +122,7 @@ export default {
 			current_package_detail:null,
 			current_card_list:null,
 			current_packageid:0,
-			current_cardid:0,
+			current_cardid:0, 
 			current_userid:0,
 			
 	
@@ -174,11 +174,18 @@ export default {
 		}
 		
 		
+		that.current_package_detail = {'title':'卡牌名称'};
+		that.current_package_detail.cover_img_url = 'http://192.168.0.205/yanyubao_server/uploads/2021/08/03/610895dcc87bc.jpg';
+		that.current_package_detail.description = '';
+		that.current_package_detail.cover_img_url = 'http://192.168.0.205/yanyubao_server/uploads/2021/08/03/610895dcc87bc.jpg';
+		that.current_package_detail.cover_img_url = 'http://192.168.0.205/yanyubao_server/uploads/2021/08/03/610895dcc87bc.jpg';
 		
-		//获取卡包列表
+		
+		
+		//获取卡包详情
 		var post_data = {
 				sellerid:that.abotapi.globalData.default_sellerid,
-				packageid:that.current_package_detail.packageid,					
+				packageid:that.current_packageid,
 			};
 			
 		var userInfo = that.abotapi.get_user_info();	
@@ -186,13 +193,16 @@ export default {
 			post_data.userid = userInfo.userid;
 			post_data.checkstr = userInfo.checkstr;
 		}
+		
+		console.log('=========>>>>>>>>>>>');
+		console.log(post_data);
 	
 		that.abotapi.abotRequest({
 			url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_detail',
 			method: 'post',
 		    data: post_data,
 		    success: function (res) {
-				
+			
 				if(res.data.code != 1){
 					uni.showToast({
 						title:'卡包详情没有数据',
@@ -225,7 +235,6 @@ export default {
 		
 		that.abotapi.abotRequest({
 		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_list',
-			
 		    method: 'post',
 		    data: {
 				sellerid:that.abotapi.globalData.default_sellerid,
@@ -388,7 +397,7 @@ export default {
 				url: '/pages/nftcard/card_detail?packageid='+packageid+'&cardid='+cardid,
 			})
 		},
-		
+		 
 		
 		
 		
