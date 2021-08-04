@@ -36,7 +36,7 @@
 		<view class="publish_information">
 				<image class="publish_icon" :src="current_package_detail.cover_img_url" mode="widthFix" style="width: 200rpx;"></image>
 				<view class="package_card_publish">
-					<view class="" style="float: right;">
+					<view class="" style="float: right; margin-right: 20rpx;">
 						<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/follow.png" mode="widthFix" style="width: 120rpx;"></image>
 					</view>
 					<view>
