@@ -24,20 +24,28 @@
 					<view class="">
 						<image class="package_list_loop" :src="current_package_item.cover_img_url" mode=" aspectFill" ></image>
 					</view>
-					<view class="package_describe"><!-- {{current_package_item.cover_img_url}} -->
-						<view class="" style="font-weight: 100; font-size: 30rpx; width: 150rpx; float: right;margin-right:50rpx;">
-							<!-- <image  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/like.png" mode="widthFix" style="width: 30rpx;float: left;"></image>	 -->
-							<image  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/like.png" mode="aspectFill" style="width: 30rpx;height:30rpx;"></image>
-							<span style="color:#666;margin-left: 10rpx;">{{current_package_item.like_count}}</span>
-						</view>
-						<view class="package_label">
-							<view  class="package_lable_list" v-for="(item,index) in current_package_item.tag_list">{{item}}</view>
-						</view>
-						
-						<view class="package_name">{{current_package_item.title}}</view>
 					
-						<view class="package_brief">{{current_package_item.brief}}{{current_package_item.packageid}}</view>
+					
+					
+					<view class=""><!-- {{current_package_item.cover_img_url}} -->
 						
+						<!-- 卡包标签--------icon喜欢图标----------喜欢人数 -->
+						<view class="package_icon_like_num">
+							<view class="package_like_icon" >
+								<!-- <image  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/like.png" mode="widthFix" style="width: 30rpx;float: left;"></image>	 -->
+								<image  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/like.png" mode="aspectFill" style="width: 30rpx;height:30rpx;"></image>
+								{{current_package_item.like_count}}
+							</view>
+							
+							<!-- 标签 -->
+							<view class="package_label">
+								<view  class="package_lable_list" v-for="(item,index) in current_package_item.tag_list">{{item}}</view>
+							</view>
+						</view>
+						
+						<!-- 卡包名称---------卡包简介 -->
+						<view class="package_name">{{current_package_item.title}}</view>
+						<view class="package_brief">{{current_package_item.brief}}</view>
 					</view>
 				
 				</view>	
@@ -309,14 +317,21 @@ export default {
 		height: 420rpx;
 		
 	}
-	 .package_describe{
-		width: 100%;
-		margin-top: 20rpx;
-		margin-left: 30rpx;
+
+	
+	.package_icon_like_num{
+		
+		display: flex;
+	
 		
 	}
+	.package_like_icon{
+		font-weight: 100;
+		font-size: 30rpx; 
 		
-	
+		float: right;
+		margin-right:10rpx;
+	}
 	.package_name{
 		font-weight: bold;
 		margin-bottom: 20rpx;
