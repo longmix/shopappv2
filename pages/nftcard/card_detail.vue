@@ -40,12 +40,12 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			<view style="display: flex;">
 				<view>
 					<image :src="current_card_detail.cover_img_url"
-					@tap="go_to_card_list(current_card_detail.packageid, current_card_detail.cardid)" 
+					@tap="go_to_card_package(current_package_detail.packageid)" 
 					class="card_detail_kabaotoxiang"></image>
 				</view>
 				
 				<view class="card_detail_kabaoxinxi" 
-				@tap="go_to_card_list(current_card_detail.packageid, current_card_detail.cardid)">
+				@tap="go_to_card_package(current_package_detail.packageid)">
 					<view class="card_packages_title" style="width: 550rpx;">{{current_card_detail.package_title}}</view>
 					<view style="color: #868686;font-size: 35rpx;">
 						<text>{{current_card_detail.supplier_name}}</text>
@@ -203,11 +203,11 @@ export default {
 		}
 		
 		
-		that.that.current_card_detail = {'title':''};
-		that.that.current_card_detail.cover_img_url = 'http://192.168.0.205/yanyubao_server/uploads/2021/08/03/610895dcc87bc.jpg';
-		that.that.current_card_detail.description = '';
-		that.that.current_card_detail.cover_img_url = 'http://192.168.0.205/yanyubao_server/uploads/2021/08/03/610895dcc87bc.jpg';
-		that.that.current_card_detail.cover_img_url = 'http://192.168.0.205/yanyubao_server/uploads/2021/08/03/610895dcc87bc.jpg';
+		that.current_card_detail = {'title':''};
+		that.current_card_detail.cover_img_url = 'http://192.168.0.205/yanyubao_server/uploads/2021/08/03/610895dcc87bc.jpg';
+		that.current_card_detail.description = '';
+		that.current_card_detail.cover_img_url = 'http://192.168.0.205/yanyubao_server/uploads/2021/08/03/610895dcc87bc.jpg';
+		that.current_card_detail.cover_img_url = 'http://192.168.0.205/yanyubao_server/uploads/2021/08/03/610895dcc87bc.jpg';
 		
 		
 		
@@ -285,6 +285,40 @@ export default {
 		    },
 		});
 		
+		
+		//获取卡包详情
+		that.abotapi.abotRequest({
+		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_detail',
+			
+		    method: 'post',
+		    data: {
+				sellerid:that.abotapi.globalData.default_sellerid,
+				packageid:that.current_packageid,
+		    },
+		    success: function (res) {
+				
+				if(res.data.code != 1){
+					uni.showToast({
+						title:'卡包详情没有数据',
+						duration: 2000,
+					});
+					
+					return;
+				}
+				
+				that.current_package_detail = res.data.data;
+				
+				console.log('current_package_detail ===>>> ', that.current_package_detail);
+				
+				
+		    },
+		    fail: function (e) {
+				uni.showToast({
+					title: '网络异常！',
+					duration: 2000
+				});
+		    },
+		});
 		
 		
 		//获取卡牌列表
@@ -545,12 +579,11 @@ export default {
 			
 		},
 		
-		go_to_card_list:function(packageid, cardid){
+		go_to_card_package:function(packageid){
 			console.log('packageid===>>>' + packageid);
-			console.log('cardid===>>>' + cardid);
 			
 			uni.navigateTo({
-				url: '/pages/nftcard/card_list?packageid='+packageid+'&cardid='+cardid,
+				url: '/pages/nftcard/package_detail?packageid='+packageid,
 			})
 		},
 		
