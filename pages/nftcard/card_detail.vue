@@ -394,7 +394,7 @@ export default {
 				
 				//添加收藏
 				that.abotapi.abotRequest({
-				    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/card_favorite',
+				    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/card_favorite_add',
 					
 				    method: 'post',
 				    data: {

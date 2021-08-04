@@ -152,12 +152,12 @@
 			
 
 			//=== 参数拼接 ====
-			this.current_params_str = null;
+			this.current_params_str = '';
 			
 			for(var key in options){
 			  this.current_params_str += key+'='+options[key]+'&';
 			}			
-			if(this.current_params_str){
+			if(this.current_params_str != ''){
 				this.current_params_str = this.current_params_str.substr(0, this.current_params_str.length-1);
 			}
 			//======== End ============

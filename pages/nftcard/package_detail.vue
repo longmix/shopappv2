@@ -148,12 +148,12 @@ export default {
 		
 		
 		//=== 参数拼接 ====
-		this.current_params_str = null;
+		this.current_params_str = '';
 		
 		for(var key in options){
 		  this.current_params_str += key+'='+options[key]+'&';
 		}			
-		if(this.current_params_str){
+		if(this.current_params_str != ''){
 			this.current_params_str = this.current_params_str.substr(0, this.current_params_str.length-1);
 		}
 		//======== End ============
@@ -176,23 +176,7 @@ export default {
 		
 		
 		//获取卡包列表
-		
-		var post_data = {
-				sellerid:that.abotapi.globalData.default_sellerid,
-				packageid:that.current_packageid,
-				cardid:that.current_cardid,
-				
-		    };
-			
-		var userInfo = that.abotapi.get_user_info();	
-		if(userInfo){
-			post_data.userid = userInfo.userid;
-			post_data.checkstr = userInfo.checkstr;
-		}
-		
-		
-		
-		//xxxxxxxxxxxxxxxxx
+	
 		that.abotapi.abotRequest({
 		  url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_detail',
 			
@@ -417,25 +401,30 @@ export default {
 				return;
 			}
 			//============= End ================
-			
 		
+			
+			
 			//请求服务器接口、
 			var packageid = that.current_package_detail.packageid;
 			
 			
+			var post_data = {
+					sellerid:that.abotapi.globalData.default_sellerid,
+					packageid:that.current_packageid,					
+				};
+				
+			var userInfo = that.abotapi.get_user_info();	
+			if(userInfo){
+				post_data.userid = userInfo.userid;
+				post_data.checkstr = userInfo.checkstr;
+			}
+
 			
-			
-			//添加喜欢
+			//添加喜欢XXXXXXXXXXXXXXXXXX
 			that.abotapi.abotRequest({
 			    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/package_like_add',
-				
 			    method: 'post',
-			    data: {
-					sellerid:that.abotapi.globalData.default_sellerid,
-					packageid:that.current_packageid,
-					
-					userid:that.current_userid,
-			    },
+			    data: post_data,
 			    success: function (res) {
 					
 					if(res.data.code != 1){
@@ -450,6 +439,8 @@ export default {
 					that.current_userid = res.data.data;
 					
 					console.log('current_userid  ===>>> ', that.current_userid);
+					
+					
 					
 					
 					
@@ -472,13 +463,7 @@ export default {
 			
 			
 			
-			
-			
-			
-			
-			
-			
-			
+				
 			
 			
 			
@@ -503,18 +488,16 @@ export default {
 		height: 550rpx;
 	}
 	.package_image{
-		/* position: absolute;
-		top: -20rpx;
-		left: -20rpx;
-		transform:translate(50%,20%); */
+		position: absolute;
+		
 		
 		align-items: center;
-		position: absolute;
-		left: 7%;
-		top: 5%;
+		left: -10rpx;
+		top: -20rpx;
+		transform:translate(10%,10%);
 		height: 450rpx;
 		border-radius: 20rpx;
-		border: #F0F0F0 solid 1rpx;
+		border: #F0F0F0 solid 2rpx;
 		box-shadow: 0rpx 0rpx 20rpx #F0F0F0;
 		background-color: #FFFFFF;
 	}
