@@ -30,7 +30,10 @@
 							<image  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/already_like.png" mode="aspectFill" style="width: 30rpx;height:30rpx;"></image>
 							{{current_package_item.like_count}}人喜欢
 						</view>
-						<view v-for="(item,index) in current_package_item.tag_list" style="display:flex;width: 150rpx;float: left; ">{{item}}</view>
+						<view class="package_label">
+							<view class="package_lable_list" v-for="(item,index) in current_package_item.tag_list">{{item}}</view>
+						</view>
+						
 						<view class="package_name">{{current_package_item.title}}</view>
 					
 						<view class="package_brief">{{current_package_item.brief}}{{current_package_item.packageid}}</view>
@@ -310,6 +313,22 @@ export default {
 		margin-top: 20rpx;
 		margin-left: 30rpx;
 		
+	}
+		
+	.package_label{
+		
+		display: flex;
+	}
+	.package_lable_list{
+		background-color: #f3f5f6;
+		color: #15c5ce;
+		margin: 5rpx;
+		
+		width: 150rpx;
+		border-radius: 20rpx;
+		overflow: hidden;
+		font-size: 10rpx;
+		text-align: center;
 	}
 	.package_name{
 		font-weight: bold;

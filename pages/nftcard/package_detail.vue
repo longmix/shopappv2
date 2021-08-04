@@ -11,19 +11,24 @@
 		
 		<!-- 卡包详情 -->
 		<view class="package_information">
+			<view class="package_information_label">
+				<view class="package_lable_list" v-for="(item,index) in current_package_detail.tag_list">{{item}}</view>
+			</view>
 			<view class="package_title">{{current_package_detail.title}}</view>
 			<view style="font-weight: 300; font-size: 10rpx;">
-				详情：{{current_package_detail.description}}
+				{{current_package_detail.brief}}
 			</view>
+			
+				<view class="like_number">
+					<image v-if="current_package_detail.is_like == 0"  @tap="set_like(1)" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/like.png" mode="widthFix" style="width: 30rpx; " ></image>
+					<image v-if="current_package_detail.is_like == 1" @tap="set_like(0)"  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/already_like.png" mode="widthFix" style="width: 30rpx;" ></image>
+					<view style="font-weight: 100; font-size: 10rpx;float: right;"> {{current_package_detail.like_count}}人喜欢</view>
+				</view>
+				<view style="font-weight: 300; font-size: 10rpx; color: red;">
+					{{current_package_detail.createtime}}
+				</view>
 		
-			<view class="like_number">
-				<image v-if="current_package_detail.is_like == 0"  @tap="set_like(1)" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/like.png" mode="widthFix" style="width: 30rpx; " ></image>
-				<image v-if="current_package_detail.is_like == 1" @tap="set_like(0)"  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/already_like.png" mode="widthFix" style="width: 30rpx;" ></image>
-				<view style="font-weight: 100; font-size: 10rpx;float: right;"> {{current_package_detail.like_count}}人喜欢</view>
-			</view>
-			<view style="font-weight: 300; font-size: 10rpx; color: red;">
-				有效期：{{current_package_detail.createtime}}
-			</view>
+			
 				
 		</view>
 		
@@ -31,15 +36,16 @@
 		<view class="publish_information">
 				<image class="publish_icon" :src="current_package_detail.cover_img_url" mode="widthFix" style="width: 200rpx;"></image>
 				<view class="package_card_publish">
-					<view>
-						<text style="font-weight: bold;">发行商：</text>
-						{{current_package_detail.supplier_name}}
-					</view>
-				
-					<view style="font-weight: 300; font-size: 10rpx;">简介：</view>
 					<view class="" style="float: right;">
 						<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/follow.png" mode="widthFix" style="width: 120rpx;"></image>
 					</view>
+					<view>
+						<text style="font-weight: bold;"></text>
+						{{current_package_detail.supplier_name}}
+					</view>
+				
+					<view style="font-weight: 300; font-size: 10rpx;">{{current_package_detail.supplier_brief}}</view>
+					
 				</view>
 				
 			</view>
@@ -70,11 +76,6 @@
 						
 	</scroll-view>
 		
-			<!-- <view class="">
-				<image class="card_icon" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/mark.png" mode="widthFix" style="width: 30rpx;"></image>
-				<view class="num">5</view>
-			</view> -->
-
 							
 		<!-- 卡包中的卡牌 --> 
 		<view class="card_list_background">
@@ -82,10 +83,10 @@
 				<view class="card_list"
 				v-for="(current_card_item,index) in current_card_list" @tap="go_to_card_detail(current_card_item.packageid, current_card_item.cardid)">
 				<view class="">
-					<image :src="current_card_item.cover_img_url" mode=" aspectFill" style="width: 350rpx; height: 500rpx;"></image>
+					<image :src="current_card_item.cover_img_url" style="width: 340rpx; height: 500rpx;margin: 5rpx;"></image>
 					
 						<!-- <view class="package_detail_card_information"> -->
-					<view class="">
+					<view class="package_card_name_brief">
 						<view class="package_card_name" >{{current_card_item.card_name}}</view>
 								<!-- <view style=" font-weight: 100; font-size: 10rpx;">发行商：{{current_card_item.supplier_name}}</view> -->
 							
@@ -585,7 +586,6 @@ export default {
 	.package_image{
 		position: absolute;
 		
-		
 		align-items: center;
 		left: -10rpx;
 		top: -20rpx;
@@ -598,12 +598,36 @@ export default {
 	}
 	.package_information{
 		background-color: #FFFFFF;
-		margin:100rpx 20rpx 20rpx 20rpx;
+		margin:50rpx 20rpx 20rpx 20rpx;
 		padding: 0 10rpx;
 		border-radius: 20rpx;
 		overflow: hidden;
 		
 	}
+	.package_information_label{
+		
+		display: flex;
+		margin-top: 10rpx;
+		margin-bottom: 5rpx;
+	}
+	.package_lable_list{
+		background-color: #f3f5f6;
+		color: #15c5ce;
+		margin: 5rpx;
+		
+		width: 150rpx;
+		border-radius: 20rpx;
+		overflow: hidden;
+		font-size: 10rpx;
+		text-align: center;
+	}
+	
+	
+	
+	
+	
+	
+	
 	.package_title{
 		 font-weight: bold;
 		 font-size: 40rpx; 
@@ -673,7 +697,9 @@ export default {
 		overflow: hidden;
 		
 	}
-
+	.package_card_name_brief{
+		margin-left: 10rpx;
+	}
 	.package_card_name{
 		width: 350rpx;
 		font-weight: bold;
