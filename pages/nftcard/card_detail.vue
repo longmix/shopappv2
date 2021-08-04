@@ -22,7 +22,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			</view>
 			
 		</view>
-		<!-- 所属卡包信息 -->
+		<!-- 卡牌信息 -->
 		<view class="card_detail_xinxi">
 			<h4 class="card_detail_title" style="padding: 15rpx 0rpx;width: 95%;">{{current_card_detail.card_name}}</h4>
 			<view style="color: #868686;">
@@ -30,11 +30,13 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				<text>{{current_card_detail.createtime}}</text>
 				<!-- 有多少人收藏 -->
 				<view class="card_detail_xihuan">
-					<view>{{current_card_detail.favorite_counter}} 人收藏</view>
-					<view>我有 {{current_card_detail.have_counter}} 张</view>
+					<image class="card_detail_xing" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png">
+						{{current_card_detail.favorite_counter}}
+					</image>
 				</view>
+				<view>总共 还剩</view>
 			</view>
-			<!-- 卡牌详情 -->
+			<!-- 所属卡包信息-->
 			<view style="color: #868686;">{{current_card_detail.brief}}</view>
 			<h4 class="card_detail_h4" style="padding: 15rpx 0rpx;">所属卡包</h4>
 			<view style="display: flex;">
@@ -46,12 +48,12 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				<view class="card_detail_kabaoxinxi" 
 				@tap="go_to_card_package(current_package_detail.packageid)">
-					<view class="card_packages_title" style="width: 550rpx;">{{current_card_detail.package_title}}</view>
+					<view class="card_packages_title" style="width: 480rpx;">{{current_card_detail.package_title}}</view>
 					<view style="color: #868686;font-size: 35rpx;">
 						<text>{{current_card_detail.supplier_name}}</text>
 					</view>
 					
-					<view style="color: #868686;">库存 {{current_card_detail.kucun_counter}}&nbsp;&nbsp;发行 {{current_card_detail.faxing_counter}}</view>
+					
 				</view>
 				
 			</view>
@@ -101,25 +103,32 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	<!-- 底部 -->
 	<view class="card_detail_footer">
 		<view style="display: flex;">
-			<radio v-if="current_card_detail.is_buyed == 1" disabled="disabled" checked="checked" class="card_detail_radio">已拥有</radio>
-			<radio v-else disabled="disabled" class="card_detail_radio">未拥有</radio>
-			<view style="float: right; padding: 20rpx;display: flex;width: 70%;">
+			<!-- <radio v-if="current_card_detail.is_buyed == 1" disabled="disabled" checked="checked" class="card_detail_radio">*{{current_card_detail.have_counter}}</radio>
+			<radio v-else disabled="disabled" class="card_detail_radio">*{{current_card_detail.have_counter}}</radio> -->
+			
+			<view class="card_detail_radio">
+				<image src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/乘.png" style="width: 50rpx; height: 50rpx;"></image>
+				<view>{{current_card_detail.have_counter}}</view>
+			</view>
+			
+			<view style="float: right; padding: 20rpx;display: flex;width: 60%;">
 				<!-- <view @tap="test_goto_buy">购买测试</view> -->
 				<button type="button" value="购买" style="background: #007AFF;color: #FFFFFF;width: 60%;" 
 				v-if="current_card_detail.is_buyed == 0" @tap="test_goto_buy">购买</button>
 				<!-- 收藏 -->
 				<image class="card_detail_an" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png"
 				v-if="current_card_detail.is_favorite == 1" @tap="set_favorite(0)"></image>
+				
 				<image class="card_detail_an" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star.png" 
 				v-if="current_card_detail.is_favorite == 0" @tap="set_favorite(1)"></image>
 				<!-- 赠予 -->
-				<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/赠予.png"
+				<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/basesalessendSet.png"
 				v-if="current_card_detail.is_buyed == 1"></image>
 				<!-- 丢弃 -->
-				<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/丢弃 .png"
+				<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/tubiao19_fuzhi.png"
 				v-if="current_card_detail.is_buyed == 1"></image>
 				<!-- 分享 -->
-				<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/分 享.png"></image>
+				<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/fenxiang_1.png"></image>
 			</view>
 		</view>
 	</view>
@@ -640,9 +649,13 @@ export default {
 
 <style>
 	*{
-		font-size: 30rpx;
+		/* font-size: 30rpx; */
 	}
-	
+	.card_detail_xing{
+		width: 25rpx;
+		height: 25rpx;
+		padding-right: 8rpx;
+	}
 	.main_body {
 		margin-bottom: 200rpx;
 		padding-bottom: 200rpx;
