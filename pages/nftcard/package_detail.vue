@@ -76,38 +76,54 @@
 			</view> -->
 
 							
-				<!-- 卡包中的卡牌 --> 
-				<view class="card_list_background">
-					<view class="my_package_detail_card_list">
-						<view class="card_list"
-						v-for="(current_card_item,index) in current_card_list" @tap="go_to_card_detail(current_card_item.packageid, current_card_item.cardid)">
-						<view class="">
-							<image :src="current_card_item.cover_img_url" mode=" aspectFill" style="width: 350rpx; height: 500rpx;"></image>
+		<!-- 卡包中的卡牌 --> 
+		<view class="card_list_background">
+			<view class="my_package_detail_card_list">
+				<view class="card_list"
+				v-for="(current_card_item,index) in current_card_list" @tap="go_to_card_detail(current_card_item.packageid, current_card_item.cardid)">
+				<view class="">
+					<image :src="current_card_item.cover_img_url" mode=" aspectFill" style="width: 350rpx; height: 500rpx;"></image>
+					
+						<!-- <view class="package_detail_card_information"> -->
+					<view class="">
+						<view class="package_card_name" >{{current_card_item.card_name}}</view>
+								<!-- <view style=" font-weight: 100; font-size: 10rpx;">发行商：{{current_card_item.supplier_name}}</view> -->
 							
-								<!-- <view class="package_detail_card_information"> -->
-							<view class="">
-								<view class="package_card_name" >{{current_card_item.card_name}}</view>
-										<!-- <view style=" font-weight: 100; font-size: 10rpx;">发行商：{{current_card_item.supplier_name}}</view> -->
-									
-								<view class="package_card_description" >
-									{{current_card_item.description}}
-										
-								</view>
-							</view>
-							
-							<view class="" style="font-weight: 300; font-size: 10rpx; float: right;">
-								<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/collect.png" mode="widthFix" style="width: 30rpx;"></image>
-								{{current_card_item.favorite_counter}}人收藏
-							</view>
-							<view style="font-weight: 300; font-size: 10rpx;">{{current_card_item.createtime}}</view>
-						
+						<view class="package_card_description" >
+							{{current_card_item.description}}
+								
 						</view>
-							
-							
-						</view>	 
 					</view>
-							
+					
+					<view class="" style="font-weight: 300; font-size: 10rpx; float: right;">
+						<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/collect.png" mode="widthFix" style="width: 30rpx;"></image>
+						{{current_card_item.favorite_counter}}人收藏
+					</view>
+					<view style="font-weight: 300; font-size: 10rpx;">{{current_card_item.createtime}}</view>
+				
 				</view>
+					
+					
+				</view>	 
+			</view>
+					
+		</view>
+		
+		
+		<!-- 富媒体文本展示卡牌详情 -->
+		<view class="description001">
+			<view class="content">
+				<!-- #ifdef MP-ALIPAY -->
+				<rich-text :nodes="card_description"></rich-text>
+				<!-- #endif -->
+				<!-- #ifndef MP-ALIPAY -->
+				<rich-text :nodes="card_description|formatRichText"></rich-text>
+				<!-- #endif -->
+			
+			
+			</view>
+			
+		</view>
 			
 	
 	</view>
@@ -116,6 +132,11 @@
 <script>
 	
 import util from '../../common/util.js';
+
+// #ifdef MP-ALIPAY
+import parseHtml from "../../common/html-parser.js"
+// #endif
+	
 	
 export default {
 	data() {
@@ -128,7 +149,7 @@ export default {
 			current_cardid:0, 
 			current_userid:0,
 			
-	
+			card_description:'',  //卡包的富媒体描述
 		};
 	},
 	onLoad: function (options) {
@@ -218,6 +239,32 @@ export default {
 				that.current_package_detail = res.data.data;
 				
 				console.log('current_package_detail ===>>> ', that.current_package_detail);
+				
+				
+				//处理商品详情
+				that.card_description = that.current_package_detail.description;
+				
+				
+				// #ifdef MP-ALIPAY		
+				
+					const filter = that.$options.filters["formatRichText"];
+					that.card_description = filter(that.card_description);
+				
+					//console.log('that.card_description====>>>>', that.card_description);
+				
+					let data001 = that.card_description;
+					let newArr = [];
+					let arr = parseHtml(data001);
+					arr.forEach((item, index) => {
+						newArr.push(item);
+					});
+				
+					//console.log('arr arr arr====>>>>', arr);
+					//console.log('newArr newArr newArr====>>>>', newArr);
+				
+					that.card_description = newArr;
+				
+				// #endif	
 				
 				
 		    },
@@ -483,6 +530,41 @@ export default {
 			
 		},
 		
+	},
+	filters: {
+		/**
+		 * 处理富文本里的图片宽度自适应
+		 * 1.去掉img标签里的style、width、height属性
+		 * 2.img标签添加style属性：max-width:100%;height:auto
+		 * 3.修改所有style里的width属性为max-width:100%
+		 * 4.去掉<br/>标签
+		 * @param html
+		 * @returns {void|string|*}
+		 */
+		formatRichText(html) { //控制小程序中图片大小
+	
+			let newContent = html.replace(/<img[^>]*>/gi, function(match, capture) {
+				match = match.replace(/style="[^"]+"/gi, '').replace(/style='[^']+'/gi, '');
+				match = match.replace(/width="[^"]+"/gi, '').replace(/width='[^']+'/gi, '');
+				match = match.replace(/height="[^"]+"/gi, '').replace(/height='[^']+'/gi, '');
+				return match;
+			});
+			newContent = newContent.replace(/style="[^"]+"/gi, function(match, capture) {
+				match = match.replace(/width:[^;]+;/gi, 'max-width:100%;').replace(/width:[^;]+;/gi, 'max-width:100%;');
+				return match;
+			});
+			//newContent = newContent.replace(/<br[^>]*\/>/gi, '');
+	
+			newContent = newContent.replace(/<p[^>]*>/gi, '<p style="margin:10px;">');
+	
+			newContent = newContent.replace(/\<img/gi,
+				'<img style="max-width:100%;height:auto;display:inline-block;margin:10rpx auto;vertical-align: middle;"');
+	
+			newContent = newContent.replace(/<h1[^>]*>/gi, '<h1 class="wxParse-h1">');
+			newContent = newContent.replace(/<h2[^>]*>/gi, '<h2 class="wxParse-h2">');
+	
+			return newContent;
+		}
 	}
 	
 }
