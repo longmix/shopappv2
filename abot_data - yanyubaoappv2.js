@@ -60,6 +60,9 @@ const globalData = {
 		//2021.1.13. 关于订单支付的特殊设置（对于没有申请微信和支付宝的APP通道有用）
 		//将支付订单页面强制跳转到小程序中，需要设置 xiaochengxu_account 和 weixin_open_platform_appid 在同一个微信开放平台账号下面
 		order_buy_payment_to_mp_weixin:1,
+		
+		//2021.8.5. 重新定义商家列表为supplier列表 /pages/shopList/shopList
+		xianmai_shang_list_switch_to_supplier_list:0,
 	};
 
 module.exports = {
