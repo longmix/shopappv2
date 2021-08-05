@@ -1,7 +1,7 @@
 <template>
 	<view>
 		
-		<view>
+		<view style="margin-bottom: 50rpx; padding-bottom: 50rpx;">
 			<view class='wenzhang_detail'>
 			    <image style="width: 100%;" v-if="form_logourl"
 					:src="form_logourl" mode="widthFix"></image>
@@ -39,30 +39,32 @@
 					<block v-for="item in input_field_list" :key="item.fieldname">
 						<!-- 帖子的固定字段开始 -->
 						<block v-if="form_type == 3">
-							<view class="input_flex" v-if="item.fieldname == 'imgimg_title'" style="overflow: auto;padding:35upx 40upx 20upx 40upx;background-color: #FFFFFF;border-bottom: 1upx solid #EEEEEE;">
+							<view class="input_flex" v-if="item.fieldname == 'imgimg_title'" style="overflow: auto;padding:35rpx 40rpx 20rpx 40rpx;background-color: #FFFFFF;border-bottom: 1rpx solid #EEEEEE;">
 								<view class="input-flex-label w60" style="float: left;">标题<label class="FH">*</label></view>
-								<input style="float: left;width: 70%;margin-top: -4upx;" name="imgimg_title" maxlength="40" placeholder-style="color:#c3c3c3" placeholder="请输入标题" />
+								<input style="float: left;width: 70%;margin-top: -4rpx;" name="imgimg_title" maxlength="40" placeholder-style="color:#c3c3c3" placeholder="请输入标题" />
 							</view>
 							
-							<view class="uni-textarea" style="" v-if="item.fieldname == 'imgimg_content'">
-								<view style="padding: 16rpx 34rpx;font-size: 32upx;background-color: #FFFFFF;">{{item.displayname}}</view>
-								<textarea style="padding: 16rpx 34rpx;" :name="item.fieldname" placeholder='请在此填写详细说明' /><!-- placeholder-style="color:#D3D3D3;font-size:15px;" -->
+							<view class="uni-textarea002" style="" v-if="item.fieldname == 'imgimg_content'">
+								<view style="padding: 16rpx 34rpx;font-size: 32rpx;background-color: #FFFFFF;">{{item.displayname}}</view>
+								<textarea style="padding: 16rpx 34rpx;" :name="item.fieldname" 
+									maxlength="-1"
+									placeholder='请在此填写详细说明' /><!-- placeholder-style="color:#D3D3D3;font-size:15px;" -->
 							</view>
 							
 							<view style="" v-if="item.fieldname == 'imgimg_picture_list'">
 								<!-- 上传图片 -->
 								<view style="display: flex;flex-wrap:wrap;">
 									<!-- 放上传的图片 -->
-									<view style="width: 32%;height: 250upx;position: relative;" v-for="(items,index) in imgArray" :key="items">
+									<view style="width: 32%;height: 250rpx;position: relative;" v-for="(items,index) in imgArray" :key="items">
 										<view style="width: 100%;position: absolute;z-index: 1;">
-											<image @tap="delectImg(index)"  style="width: 50upx;height: 50upx;position: absolute;right:0" src="../../static/img/delete_red.png"></image>
+											<image @tap="delectImg(index)"  style="width: 50rpx;height: 50rpx;position: absolute;right:0" src="../../static/img/delete_red.png"></image>
 										</view>
 										
 										<image style="width: 100%;height: 100%;" mode="aspectFit" :src="items" ></image>
 									</view>
 									
 									
-									<view style="margin: 2px 10px 2px 17px;width: 250upx;height: 250upx;position: relative;" @tap="uploading_img()">
+									<view style="margin: 2px 10px 2px 17px;width: 250rpx;height: 250rpx;position: relative;" @tap="uploading_img()">
 										<image style="width: 100%;height: 100%;border: 1px solid #eee;" src="../../static/img/add.png"></image>
 									</view>
 									
@@ -71,6 +73,13 @@
 							</view>
 						</block>
 						<!-- 帖子的固定字段结束 -->
+						
+						<view class="box_1" v-if="item.inputtype == 'text'">
+							<view class="input-flex-label w60" style="float: left;">{{item.displayname}}
+								<label class="FH" v-if="item.require == 1">*</label>
+							</view>
+							<input style="float: left;width: 70%;margin-top: -4rpx;" :name="item.fieldname" maxlength="40" placeholder-style="color:#c3c3c3" :placeholder="item.errortip" />
+						</view>
 						
 						<view class="box_1" v-if="item.inputtype == 'select'">
 							<picker @change="bindPickerChange" :value="index" :range="item.options" :data-fieldname="item.fieldname">
@@ -81,7 +90,7 @@
 									<view class="box_3">
 										<text class="box_text">{{item.options[item.index]}}</text>
 										<image v-if="!item.options[item.index]" 
-											style="width: 40upx;" mode="widthFix" src="../../static/img/x_right.png"></image>
+											style="width: 40rpx;" mode="widthFix" src="../../static/img/x_right.png"></image>
 									</view>
 								</view>
 							</picker>
@@ -90,14 +99,14 @@
 						
 						<view class="box_1" v-if="item.inputtype == 'checkbox'">
 							<checkbox-group @change="checkboxChange" :name="item.fieldname" :data-name="item.fieldname">
-								<view style="overflow: auto;margin-bottom:40upx;">
+								<view style="overflow: auto;margin-bottom:40rpx;">
 									<view class="box_2">
 										<text>{{item.displayname}}</text>
 										<label class="FH" v-if="item.require == 1">*</label>
 									</view>
 								</view>
 								<label v-for="(item02,index) in item.options" :key="item02.value">
-									<view style="margin-left: 34upx;float: left;">
+									<view style="margin-left: 34rpx;float: left;">
 										<checkbox :value="item02">
 											<view>{{item02}}</view>
 										</checkbox>
@@ -153,7 +162,7 @@
 							:value="time_start_end[item.fieldname]">
 						</view>						
 						
-						<!-- <view class="input-flex" style="overflow: auto;border-bottom: #DDDDDD 1upx solid;padding:17px 20px 10px" v-if="item.inputtype== 'date' || item.inputtype== 'text' && item.fieldname != 'imgimg_title'">
+						<!-- <view class="input-flex" style="overflow: auto;border-bottom: #DDDDDD 1rpx solid;padding:17px 20px 10px" v-if="item.inputtype== 'date' || item.inputtype== 'text' && item.fieldname != 'imgimg_title'">
 							<view class="input-flex-label w60" style="float: left;">{{item.displayname}}<label class="FH" v-if="item.require == 1">*</label></view>
 								<input :type='item.inputtype'  
 									:name="item.fieldname" 
@@ -161,7 +170,7 @@
 									placeholder="点此输入" 
 									value="" 
 									v-if="item.inputtype== 'text'"/>
-								  <picker mode="date" :value="date" :start="startDate" style="margin-left: 55%;margin-top: 6upx;" :type='item.inputtype' :end="endDate" @change="bindDateChange"  :data-fieldname='item.fieldname' v-if="item.inputtype== 'date'">
+								  <picker mode="date" :value="date" :start="startDate" style="margin-left: 55%;margin-top: 6rpx;" :type='item.inputtype' :end="endDate" @change="bindDateChange"  :data-fieldname='item.fieldname' v-if="item.inputtype== 'date'">
 									<view class="uni-input">{{date}}</view>
 								</picker> 
 							
@@ -171,9 +180,14 @@
 						--> 
 						
 						
-						<view class="uni-textarea" style="padding: 0upx 40upx;" v-if="item.fieldname != 'imgimg_content' && item.inputtype == 'textarea'">
-							<view style="font-size: 32upx;border-bottom: 1upx solid #EEEEEE;background-color: #FFFFFF;padding: 20upx 0upx;">{{item.displayname}}</view>
-							<textarea :name="item.fieldname" placeholder='请在此填写详细说明' /><!-- placeholder-style="color:#D3D3D3;font-size:15px;" -->
+						<view class="uni-textarea002" style="padding: 0rpx 40rpx;" 
+							v-if="item.fieldname != 'imgimg_content' && item.inputtype == 'textarea'">
+							<view class="box_2" style="float:left;background-color: #FFFFFF;padding: 20rpx 0rpx;">{{item.displayname}}</view>
+							<view style="float:left;clear:both;width: 100%;padding: 5rpx;">
+								<textarea :name="item.fieldname" :placeholder="item.errortip" 
+									maxlength="-1"
+									style="border: 1px solid #eee;" /><!-- placeholder-style="color:#D3D3D3;font-size:15px;" -->
+							</view>
 						</view>
 						
 						
@@ -204,7 +218,7 @@
 				    <scroll-view scrollY class="kcrzxybd" style="height: 600rpx;">
 				        <textarea :value="publish_write_fabu_xuzhi" 
 							disabled="disabled"
-							style="width: 100%;" 
+							style="width: 100%;font-size:26rpx;" 
 							auto-height='true' 
 							maxlength="-1"></textarea>
 				    </scroll-view>
@@ -777,9 +791,9 @@
 							that.input_field_list = list;
 							
 								
-							}
-										
 						}
+										
+					}
 
 				});
 			},
@@ -1101,6 +1115,9 @@
 		margin-top: 40rpx;
 		margin-bottom: 40rpx;
 		padding-left: 34rpx;
+		padding-top: 50rpx;
+		clear: both;
+		
 	}
 	
 	.btn-row-submit{
@@ -1119,7 +1136,7 @@
 	.input-flex-label{
 	    width: 26%;
 	    line-height: 43rpx;
-	    font-size: 32rpx;
+	    font-size: 30rpx;
 	}
 	.bk888888{
 		color: #333;
@@ -1128,18 +1145,19 @@
 	}
 	
 	.textarea_flex{
-		padding: 40upx;
+		padding: 40rpx;
 		border-bottom: 1px solid #FFFFFF;
 	}
 	.box_1{
 		overflow: auto;
-		font-size: 32upx;
-		padding: 20upx 40upx;
+		font-size: 30rpx;
+		padding: 20rpx 40rpx;
 		border-bottom: 1px solid #EEEEEE;
 		background: #FFFFFF;
 	}
 	.box_2{
 		float: left;
+		font-size: 30rpx;
 	}
 	.box_3{
 		float: right;
@@ -1150,14 +1168,15 @@
 		/* top: -8rpx; */
 		color: #007AFF;
 	}
-	.uni-textarea{
+	.uni-textarea002{
 		background: #FFFFFF;
 		border-bottom: 1px solid #EEEEEE;
 	}
 	
-	.uni-textarea textarea{
-		padding: 8upx 8upx 0upx 0upx;
-		font-size: 35upx;
+	.uni-textarea002 textarea{
+		padding: 8rpx;
+		font-size: 30rpx;
+		width: 100%;
 		
 	}
 	.input-flex{
