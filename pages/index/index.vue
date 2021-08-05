@@ -1409,8 +1409,16 @@ export default {
 				//that.set_paixu_shanglist();
 			}
 			else{
+				var post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/XianmaiShangData/get_shang_all_jingwei';
+				
+				//2021.8.5. 如果读取supplier的列表
+				if(that.abotapi.globalData.xianmai_shang_list_switch_to_supplier_list == 1){
+					post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/NftcardData/supplier_all_jingwei';
+				}
+				
+				
 				this.abotapi.abotRequest({
-				    url: this.abotapi.globalData.yanyubao_server_url + '/openapi/XianmaiShangData/get_shang_all_jingwei',
+				    url: post_url,
 				    method: 'post',
 				    data: {
 						sellerid:this.abotapi.globalData.default_sellerid,

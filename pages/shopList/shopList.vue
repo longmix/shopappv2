@@ -171,7 +171,7 @@
 		
 		onLoad(options) {
 			var that = this;
-			console.log('options',options);
+			console.log('shopList / options', options);
 			
 			uni.getSystemInfo({
 			    success: function (res) {
@@ -354,19 +354,30 @@
 				
 				var star = (page - 1) * shang_num;
 				var end = page * shang_num;
+				
 				console.log('star',star);
 				console.log('end',end);
+				
 				var threeArr = shang_list.slice(star, end); //返回特定的数组
+				
 				console.log('888888888888',threeArr);
 				console.log(threeArr);
+				
 				var shangid_str = '';
+				
 				for(var i = 0;i <  threeArr.length;i++){
 					shangid_str = shangid_str + threeArr[i]['xianmai_shangid'] + '|';
 				}
 				
+				var post_url = that.abotapi.globalData.yanyubao_server_url + '/openapi/XianmaiShangData/get_shang_list';
+				
+				//2021.8.5. 如果读取supplier的列表
+				if(that.abotapi.globalData.xianmai_shang_list_switch_to_supplier_list == 1){
+					post_url = that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/supplier_list';
+				}
 				
 				that.abotapi.abotRequest({
-				    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/XianmaiShangData/get_shang_list',
+				    url: post_url,
 				    method: 'post',
 				    data: {
 						sellerid:that.abotapi.globalData.default_sellerid,
@@ -449,7 +460,7 @@
 			},
 			
 			//重新排序（重新获取经纬度）
-			cx_paixu_shang_list:function(that,locationData){
+			cx_paixu_shang_list:function(that, locationData){
 				
 				console.log('重新排序开始============>>>>>>',locationData);
 				var that = this;
@@ -470,12 +481,19 @@
 				var that = this;
 				var arr = uni.getStorageSync('all_shang_jingwei_list'); //获取商家经纬度
 				var search_shang_all_jingwei = uni.getStorageSync("search_shang_all_jingwei");  //获取搜索之后的缓存
-				console.log('arr',arr);
+				
+				
+				console.log('商家、经纬度、举例列表：', arr);
+				
+				var shop_location_list = null;
+				
 				if(search_shang_all_jingwei){
 					console.log('进入搜索缓存排序');
-					var shop_location_list = that.jisuan_juli(search_shang_all_jingwei);
+					
+					shop_location_list = that.jisuan_juli(search_shang_all_jingwei);
+					
 				}else{
-					var shop_location_list = that.jisuan_juli(arr);
+					shop_location_list = that.jisuan_juli(arr);
 				}
 				
 				
@@ -503,11 +521,16 @@
 					return 0;
 				  }*/
 				}
-				console.log('进入搜索缓存排序计算完毕',paixu_shanglist);
+				
+				console.log('进入搜索缓存排序计算完毕', paixu_shanglist);
+				
 				if(search_shang_all_jingwei){
+					
 					uni.setStorageSync("search_shop_location_list", paixu_shanglist);
 					that.search_shang_list = paixu_shanglist;
-				}else{
+					
+				}
+				else{
 					uni.setStorageSync("shop_location_list", paixu_shanglist);
 					that.shang_list = uni.getStorageSync("shop_location_list");
 				}

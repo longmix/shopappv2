@@ -924,10 +924,18 @@
 					post_data.userid = userInfo.userid;
 					post_data.checkstr = userInfo.checkstr;
 				}
-
-
+				
+				
+				
+				var post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/XianmaiShangData/get_shang_detail';
+				
+				//2021.8.5. 如果读取supplier的列表
+				if(that.abotapi.globalData.xianmai_shang_list_switch_to_supplier_list == 1){
+					post_url = that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/supplier_detail';
+				}
+				
 				this.abotapi.abotRequest({
-					url: this.abotapi.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/get_shang_detail',
+					url: post_url,
 					data: post_data,
 					success: function(res) {
 						console.log('xiangqing', res);
