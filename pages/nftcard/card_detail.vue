@@ -101,35 +101,64 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	
 	
 	<!-- 底部 -->
-	<view class="card_detail_footer">
-		<view class="card_detail_radio" style="position: fixed;">
+	<!-- <view class="card_detail_footer"> -->
+		<!-- <view class="card_detail_radio" style="position: fixed;">
 			<image src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/乘.png" style="width: 45rpx; height: 45rpx;"></image>
 			<text class="card_detail_family" style="font-size: 50rpx;">{{current_card_detail.have_counter}}</text>
-		</view>
-		<view style="float: right; padding: 20rpx;display: flex;width: 60%;">
+		</view> -->
+		<!-- <view style="float: right; padding: 20rpx;display: flex;width: 60%;"> -->
 			<!-- <view @tap="test_goto_buy">购买测试</view> -->
-			<button type="button" value="购买" style="background: #007AFF;color: #FFFFFF;width: 60%;" 
-			v-if="current_card_detail.is_buyed == 0" @tap="test_goto_buy">购买</button>
+			<!-- <button type="button" value="购买" style="background: #007AFF;color: #FFFFFF;width: 60%;" 
+			v-if="current_card_detail.is_buyed == 0" @tap="test_goto_buy">购买</button> -->
 			<!-- 收藏 -->
-			<image class="card_detail_an" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png"
+			<!-- <image class="card_detail_an" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png"
 			v-if="current_card_detail.is_favorite == 1" @tap="set_favorite(0)"></image>
-			
-			<image class="card_detail_an" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star.png" 
-			v-if="current_card_detail.is_favorite == 0" @tap="set_favorite(1)"></image>
+			 -->
+			<!-- <image class="card_detail_an" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star.png" -->
+			<!-- v-if="current_card_detail.is_favorite == 0" @tap="set_favorite(1)"></image> -->
 			<!-- 赠予 -->
-			<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/basesalessendSet.png"
-			v-if="current_card_detail.is_buyed == 1"></image>
+			<!-- <image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/basesalessendSet.png" -->
+			<!-- v-if="current_card_detail.is_buyed == 1"></image> -->
 			<!-- 丢弃 -->
-			<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/tubiao19_fuzhi.png"
-			v-if="current_card_detail.is_buyed == 1"></image>
+			<!-- <image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/tubiao19_fuzhi.png" -->
+			<!-- v-if="current_card_detail.is_buyed == 1"></image> -->
 			<!-- 分享 -->
-			<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/fenxiang_1.png"></image>
-		</view>
-	</view>
+			<!-- <image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/fenxiang_1.png"></image> -->
+		<!-- </view> -->
+	<!-- </view> -->
 		
-
+		<!-- <view class="card_detail_footer" style="margin-bottom: 70rpx;">
+			<view class="card_detail_radio" style="position: fixed;margin-bottom: 70rpx;">
+				<button type="button" value="购买" style="background: #007AFF;color: #FFFFFF;">购买</button>
+			</view>
 			
-			
+			<view>
+				<view style="float: right;" @tap="card_detail_list(0)">
+					<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/huodongliebiao.png"></image>
+				</view>
+				<view style="position: absolute;" @tap="card_detail_list(1)">
+					<image style="left: 180rpx;" class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/详情.png"></image>
+					<!-- 分享 -->
+					<!-- <image style="left: 160rpx;" class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/fenxiang_1.png"></image> -->
+					<!-- 赠予 -->
+					<!-- <image style="left: 150rpx;" class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/basesalessendSet.png"></image> -->
+					<!-- 丢弃 -->
+					<!-- <image style="left: 130rpx;height: 70rpx;padding-bottom: 10rpx;" class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/tubiao19_fuzhi.png"></image> -->
+				<!-- </view>
+			</view>
+		</view> -->
+		
+		
+	
+	<view class="card_detail_footer">
+		<view class="card_detail_liebiao" @tap="">
+			<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/liebiao.png"></image>
+		</view>
+		<button style="width: 110rpx;font-size: 27rpx;padding-top: 10rpx; height: 100rpx; background: #ff0004;border-radius: 50%; color: #FFFFFF;">购买</button>
+		
+	</view>
+	
+		
 
 </view>
 
@@ -146,6 +175,8 @@ import parseHtml from "../../common/html-parser.js"
 export default {
 	data() {
 		return {
+			x: 0,
+			y:0,
 			current_params_str:'',	//网址参数
 			
 			current_card_detail:null,
@@ -564,6 +595,9 @@ export default {
 			
 		// },
 		
+		
+		
+		
 		test_goto_buy:function(){
 			var that = this;
 			
@@ -675,11 +709,17 @@ export default {
 		box-shadow: 0rpx 0rpx 20rpx #F0F0F0;
 		background-color: #FFFFFF;
 	}
+	.card_detail_liebiao{
+		background-color: #d8d8d8;
+		width: 100rpx;
+		height: 100rpx; 
+		border-radius: 50%;
+		margin: 10rpx;
+	}
 	.card_detail_an{
-		width: 55rpx;
-		height: 55rpx;
-		padding-left: 20rpx;
-		padding-right: 20rpx;
+		width: 60rpx;
+		height: 60rpx;
+		padding: 20rpx;
 	}
 	.card_detail_kabaotoxiang{
 		display: flex;
@@ -754,12 +794,9 @@ export default {
 	}
 	.card_detail_footer {
 		position: fixed;
-		bottom: 0rpx;
-		width: 100%;
-		background-color: #FFFFFF;
-		
+		bottom: 20rpx;
+		right: 20rpx;
 	}
-	
 	.description001 {
 		.title {
 			width: 100%;
