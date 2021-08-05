@@ -23,8 +23,8 @@
 				
 				
 				<!-- 标签 -->
-				<view class="package_information_label">
-					<view class="package_lable_item" v-for="(item,index) in current_package_detail.tag_list">{{item}}</view>
+				<view class="package_label">
+					<view class="package_lable_list" v-for="(item,index) in current_package_detail.tag_list">{{item}}</view>
 				</view>
 			</view>
 			
@@ -37,7 +37,7 @@
 			
 		
 			<!-- 开始时间~~~结束时间 -->
-			<view style="font-weight: 300; font-size: 10rpx; color: red">
+			<view class="begin_end_time" >
 				{{current_package_detail.time_begin}}~{{current_package_detail.time_end}}
 			</view>		
 		</view>
@@ -100,18 +100,27 @@
 				<view class="">
 					<image :src="current_card_item.cover_img_url" style="width: 340rpx; height: 510rpx;margin: 5rpx;"></image>
 					
-					<view class="card_like_num" >
-						<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/collect.png" mode="widthFix" style="width: 25rpx;"></image>
-						{{current_card_item.favorite_counter}}
+					
+					<!-- icon喜欢图标和喜欢人数-----------已有卡牌/已发售卡牌 -->
+					<view class="already_sold_card_icon_like">
+						<view class="card_like_num" >
+							<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/collect.png" mode="widthFix" style="width: 25rpx;"></image>
+							{{current_card_item.favorite_counter}}
+						</view>
+						<view class="sold_card">
+							（8/10）
+						</view>
+						
 					</view>
+					
 									
-						<!-- <view class="package_detail_card_information"> -->
+						<!-- 卡牌名称-----卡牌简介 -->
 					<view class="package_card_name_brief">
 						<view class="package_card_name" >{{current_card_item.card_name}}</view>
 								<!-- <view style=" font-weight: 100; font-size: 10rpx;">发行商：{{current_card_item.supplier_name}}</view> -->
 							
 						<view class="package_card_description" >
-							{{current_card_item.description}}
+							{{current_card_item.description}}{{current_card_item.brief}}
 								
 						</view>
 					</view>
@@ -612,29 +621,19 @@ export default {
 	}
 	.label_like_number{
 		width: 100%;
-		margin-top: 30rpx;
+		height: 50rpx;
+		margin-top: 20rpx;
+		margin-bottom: 10rpx;
 	}
 	.like_number{
 		float: right;
 		display: flex;
 		margin-right: 10rpx;
-		margin-top: 10rpx;
+		margin-top: 15rpx;
 	}
-	.package_information_label{
-		display: flex;
-	}
-
-	.package_lable_item{
-		background-color: #f3f5f6;
-		color: #15c5ce;
-		margin: 10rpx;
-		border-radius: 5rpx;
-		overflow: hidden;
-		font-size: 5rpx;
-	}
-	
 	.package_title{
 		 width: 90%; 
+		 margin: 10rpx;
 		 font-weight: bold;
 		 font-size: 40rpx; 
 		 white-space: nowrap;
@@ -645,10 +644,21 @@ export default {
 	}
 	.package_detail_brief{
 		width: 90%;
+		margin: 5rpx 10rpx;
 		font-weight: 300; 
 		font-size: 10rpx;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
-	
+	.begin_end_time{
+		margin-bottom:5rpx;
+		margin-left:10rpx;
+		font-weight: 300; 
+		font-size: 10rpx; 
+		color: red;
+		
+	}
 	.publish_information{
 		background-color: #FFFFFF;
 		margin: 10rpx 20rpx 5rpx 20rpx ;
@@ -702,11 +712,20 @@ export default {
 		overflow: hidden;
 		
 	}
+	.already_sold_card_icon_like{
+		width: 100%;
+	}
 	.card_like_num{
-		font-weight: 300;
-		font-size: 10rpx; 
+		font-weight:100;
+		font-size: 20rpx; 
 		float: right;
 		margin-right: 10rpx;
+	
+	}
+	.sold_card{
+		font-weight: 100;
+		font-size: 20rpx;
+		margin-left: 10rpx;
 	}
 	.package_card_name_brief{
 		margin-left: 10rpx;
@@ -725,6 +744,7 @@ export default {
 		font-weight: 300; 
 		font-size: 10rpx;
 		margin-top: 10rpx;
+		margin-bottom: 10rpx;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;

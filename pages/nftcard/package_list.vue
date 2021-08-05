@@ -1,13 +1,21 @@
 <template>
 	<view class="global_background">	
 	
+	<!-- 搜索框 -->
+	
+		<view class="package_search" >
+			<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/search.png"
+				mode="widthFix" style="width: 30rpx; width: 30rpx;margin-top: 5rpx;"></image>
+			<input type="text" value="搜索" />
+		</view>
+	
 				<!-- 排序 -->
 		<view class="drop_down_menu">
 			<picker @change="bindPickerChange" :value="index" :range="array">
 				<view class="picker" style="background-color: #FFFFFF;width: 150rpx;">
 					{{array[index]}}
 					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/drop_down.png"
-					mode="widthFix" style="width: 30rpx; left: 0rpx; top: 6rpx;"></image>
+						mode="widthFix" style="width: 30rpx; left: 0rpx; top: 6rpx;"></image>
 				</view>
 			</picker>
 		</view>
@@ -45,6 +53,11 @@
 						
 						<!-- 卡包名称---------卡包简介 -->
 						<view class="package_name">{{current_package_item.title}}</view>
+						<view class="rackage_rare_total" >
+							<view class="card_quantity">稀有卡22张</view>
+							<view class="card_quantity">|</view>
+							<view class="card_quantity">总卡22张</view>
+						</view>
 						<view class="package_brief">{{current_package_item.brief}}</view>
 					</view>
 				
@@ -271,17 +284,23 @@ export default {
 	
 	@import "/static/css/nftcard.css";
 	
-
+	.package_search{
+		display: flex;
+		width: 600rpx;
+		
+		background-color: #FFFFFF;
+		border-radius: 30rpx;
+		overflow: hidden;
+	}
 	.drop_down_menu{
-		
-		padding: 60rpx 0rpx 10rpx 50rpx;		
-		
+		margin: 30rpx 10rpx 20rpx 40rpx;
 	}
 	.picker{
 		border-radius: 10rpx;
 		overflow: hidden;
 		font-weight: 100;
 		font-size: 30rpx;
+		
 	}
 	
 	.package_drop_down_icon{
@@ -308,7 +327,7 @@ export default {
 		background-color: #FFFFFF;
 		width: 700rpx;
 		margin-bottom: 30rpx;
-		border-radius: 30rpx;
+		border-radius: 20rpx;
 		overflow: hidden;
 		
 	} 
@@ -317,34 +336,45 @@ export default {
 		height: 420rpx;
 		
 	}
-
-	
 	.package_icon_like_num{
-		
-		display: flex;
-	
-		
+		height: 50rpx;
+		margin: 20rpx 10rpx 10rpx 10rpx;
 	}
 	.package_like_icon{
 		font-weight: 100;
 		font-size: 30rpx; 
-		
 		float: right;
 		margin-right:10rpx;
+		margin-top: 20rpx;
 	}
 	.package_name{
+		margin-left: 20rpx;
 		font-weight: bold;
-		margin-bottom: 20rpx;
-		font-size: 40rpx;
-		height: 50rpx;
+		margin: 20rpx;
+		font-size: 36rpx;
+		width: 90%;
 		white-space: nowrap;
 		overflow: hidden;
-		
+		text-overflow: ellipsis;
+	}
+	.rackage_rare_total{
+		display: flex;
+		margin: 10rpx
+	
+	}
+	.card_quantity{
+		font-weight: 100;
+		font-size: 10rpx;
+		margin: 5rpx 20rpx;
 	}
 	.package_brief{
-		 font-weight: 300; 
-		 font-size: 10rpx;
-		 margin-bottom: 20rpx;
+		margin-left: 20rpx;
+		font-weight: 100; 
+		font-size: 10rpx;
+		margin-bottom: 20rpx;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 	/*
 	.package_updatetime{
