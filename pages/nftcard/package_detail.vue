@@ -4,9 +4,9 @@
 		<view class="" style="height: 550rpx;">
 			
 				<image class="package_background" :src="current_package_detail.cover_img_url" ></image>
-			<view class="">
+			<!-- <view class="">
 				<image class="package_image" :src="current_package_detail.cover_img_url" ></image>
-			</view>
+			</view> -->
 		</view>
 		
 		<!-- 卡包详情 -->
@@ -57,8 +57,8 @@
 				
 				
 				<!-- 发行商名字----详情 -->
-				<view>{{current_package_detail.supplier_name}}</view>
-				<view style="font-weight: 300; font-size: 10rpx;">{{current_package_detail.supplier_brief}}</view>
+				<view class="publish_name">{{current_package_detail.supplier_name}}</view>
+				<view class="publish_brief" style="font-weight: 300; font-size: 10rpx;">{{current_package_detail.supplier_brief}}</view>
 					
 			</view>
 				
@@ -600,6 +600,17 @@ export default {
 <style>
 	@import "/static/css/nftcard.css";
 	
+	
+	
+	
+	
+	.package_background{
+		
+		width: 100%;
+		height: 550rpx;
+	}
+	
+	
 	.package_image{
 		position: absolute;
 		left: 20rpx;
@@ -614,8 +625,8 @@ export default {
 	}
 	.package_information{
 		background-color: #FFFFFF;
-		margin:50rpx 20rpx 20rpx 20rpx;
-		padding: 0 10rpx;
+		margin:10rpx;
+		padding: 0 20rpx;
 		border-radius: 20rpx;
 		overflow: hidden;
 	}
@@ -633,7 +644,6 @@ export default {
 	}
 	.package_title{
 		 width: 90%; 
-		 margin: 10rpx;
 		 font-weight: bold;
 		 font-size: 40rpx; 
 		 white-space: nowrap;
@@ -644,25 +654,18 @@ export default {
 	}
 	.package_detail_brief{
 		width: 90%;
-		margin: 5rpx 10rpx;
+		margin-top: 5rpx;
 		font-weight: 300; 
 		font-size: 10rpx;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
-	.begin_end_time{
-		margin-bottom:5rpx;
-		margin-left:10rpx;
-		font-weight: 300; 
-		font-size: 10rpx; 
-		color: red;
-		
-	}
+
 	.publish_information{
 		background-color: #FFFFFF;
-		margin: 10rpx 20rpx 5rpx 20rpx ;
-		padding: 10rpx;
+		margin: 10rpx ;
+	
 		display: flex;
 		border-radius: 20rpx;
 		overflow: hidden;
@@ -670,14 +673,21 @@ export default {
 	.publish_icon{
 		border-radius: 50%;
 		overflow: hidden;
-		margin-top: 20rpx;
+	
 	}
 	.package_card_publish{
 		width: 100%;
-		margin-top: 20rpx;
-		margin-left:30rpx;
+		margin-top: 25rpx;
+		margin-left:40rpx;
 		
 		
+	}
+	.publish_name{
+		margin-bottom: 5rpx;
+		width: 60%;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 	.scroll_button{
 		display: flex;

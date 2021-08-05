@@ -53,12 +53,20 @@
 						
 						<!-- 卡包名称---------卡包简介 -->
 						<view class="package_name">{{current_package_item.title}}</view>
-						<view class="rackage_rare_total" >
-							<view class="card_quantity">稀有卡22张</view>
-							<view class="card_quantity">|</view>
-							<view class="card_quantity">总卡22张</view>
-						</view>
+						
 						<view class="package_brief">{{current_package_item.brief}}</view>
+						<view class="package_rare_total_time">
+							<view class="package_rare_total" >
+								<view class="card_quantity">稀有卡22张</view>
+								<view class="card_quantity">|</view>
+								<view class="card_quantity">总卡22张</view>
+							</view>
+							<view class="begin_end_time">
+								{{current_package_item.time_begin}}~{{current_package_item.time_end}}
+							</view>
+						</view>
+						
+						
 					</view>
 				
 				</view>	
@@ -334,6 +342,7 @@ export default {
 	.package_list_loop{
 		width: 100%;
 		height: 420rpx;
+	
 		
 	}
 	.package_icon_like_num{
@@ -350,32 +359,39 @@ export default {
 	.package_name{
 		margin-left: 20rpx;
 		font-weight: bold;
-		margin: 20rpx;
+		margin: 15rpx 20rpx;
 		font-size: 36rpx;
 		width: 90%;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
-	.rackage_rare_total{
+	.package_rare_total_time{
+		margin-left: 20rpx;
+	}
+	.package_rare_total{
+		float: right;
 		display: flex;
-		margin: 10rpx
+		margin-right: 10rpx;
+		
 	
 	}
 	.card_quantity{
 		font-weight: 100;
 		font-size: 10rpx;
-		margin: 5rpx 20rpx;
+		margin: 0rpx 10rpx;
 	}
 	.package_brief{
 		margin-left: 20rpx;
 		font-weight: 100; 
 		font-size: 10rpx;
-		margin-bottom: 20rpx;
+		margin-bottom: 5rpx;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
+		
+	
 	/*
 	.package_updatetime{
 	background-color: ;

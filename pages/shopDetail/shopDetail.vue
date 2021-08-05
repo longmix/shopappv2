@@ -104,6 +104,7 @@
 
 		</view>
 		
+		
 		<!-- 关联的超级会员卡 Begin -->
 		<view style="border-bottom:6px solid #eee;"  v-if="vip_card_list">
 			<view class="icon-title2">
@@ -128,6 +129,70 @@
 			</view>
 		</view>
 		<!-- 关联的超级会员卡 End -->
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<!-- =====-发行商详情接口==================supplier_detail -->
+		
+		<!-- NFT卡包卡牌功能模块 Begin -->
+		<view style="border-bottom:6px solid #eee;"  v-if="1">
+			<view class="icon-title2">
+				<image src="https://yanyubao.tseo.cn/Tpl/static/images/ecard.png" mode="widthFix"></image>
+				<view class='biaoti'>发行的卡包列表</view>
+			</view><!-- nft_package_list -->
+			
+			<!-- 发型商发行的卡包 -->
+			<view class="nft_issue_package_list">
+				<view class="nft_package_list" v-for="(item,index) in current_package_list" :key='index'>
+					<view class="nft_package" >
+						<img class="" :src="item.cover_img_url" style="width: 700rpx;height: 450rpx;">
+						<view class="nft_package_title">{{item.title}}</view>
+					</view>
+					
+					<view v-if="item.huiyuan_status == 1" class="banka_btn" style="margin-top: 20rpx;" @tap="go_detail_huiyuan(item.userid)">
+						<view>
+							<view class="banka_ft">查看卡片</view>
+						</view>
+					</view>
+					<view v-else class="banka_btn" style="margin-top: 20rpx;"  @tap="become_huiyuan(item.userid)">
+						<view>
+							<view class="banka_ft">我要领卡</view>
+						</view>
+					</view>
+				</view>
+			</view>
+			
+		</view>
+		<!-- NFT卡包卡牌功能模块 End -->
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
 		<!-- 功能按钮-->
 		<view>
@@ -476,6 +541,9 @@
 				vip_card_list:'',
 				
 				default_copyright_text:'',
+				
+				//2021.8.4. NFT卡包卡牌相关的
+				nft_package_list: null
 			};
 		},
 		
@@ -880,7 +948,111 @@
 					fail: function(e) {
 				
 					},
-				})
+				});
+				
+				
+				
+				
+				//========= 2021.8.4. XXXXXXXXXXXXXXXXXXXXX ===============
+				
+				
+				that.nft_package_list = null;
+				
+				
+				
+				//获取卡牌列表
+				
+				that.abotapi.abotRequest({
+				    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/supplier_detailt',
+				    method: 'post',
+				    data: {
+						sellerid:that.abotapi.globalData.default_sellerid,
+						packageid:that.current_packageid,
+						
+					
+				    },
+				    success: function (res) {
+						
+						if(res.data.code != 1){
+							uni.showToast({
+								title:'卡包详情没有数据',
+								duration: 2000,
+							});
+							
+							return;
+						}
+						
+						that.current_card_list = res.data.data;
+						
+						console.log('current_card_list ===>>> ', that.current_card_list);
+						
+						
+				    },
+				    fail: function (e) {
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+				    },
+				});
+				
+					
+					
+					
+					//获取卡包列表
+					
+					that.abotapi.abotRequest({
+					    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_list',
+					    method: 'post',
+					    data: {
+							sellerid:that.abotapi.globalData.default_sellerid,
+							p: 2,
+					    },
+					    success: function (res) {
+							
+							if(res.data.code != 1){
+								uni.showToast({
+									title:'卡包列表没有数据',
+									duration: 2000,
+								});
+								
+								return;
+							}
+							
+							that.current_package_list = res.data.data;
+							
+							console.log('current_package_list ===>>> ', that.current_package_list);
+							
+							
+							
+							
+							
+							
+							
+							
+									
+							
+					    },
+					    fail: function (e) {
+							uni.showToast({
+								title: '网络异常！',
+								duration: 2000
+							});
+					    },
+					});
+					
+					
+					
+					
+					
+					
+					
+					
+					
+				
+				//====================== End ================================
+				
+				
 				
 				
 			},
@@ -2314,5 +2486,34 @@
 		border: 1rpx dotted #666;
 		margin: 20rpx auto;		
 		border-radius: 5rpx;
+	}
+	
+	
+	
+	
+	
+	// 2021.8.5发行商详情的css
+	.nft_issue_package_list{
+		
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+	.nft_package_list{
+		background-color: #e1e3e4;
+		width: 700rpx;
+		margin-bottom: 30rpx;
+		border-radius: 20rpx;
+		overflow: hidden;
+		
+	}
+	.nft_package{
+		
+	}
+	.nft_package_title{
+		font-weight: bold;
+		font-size: 30rpx;
+		margin-left: 20rpx;
 	}
 </style>
