@@ -27,7 +27,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			<h4 class="card_detail_title" style="padding: 15rpx 0rpx;width: 95%;">{{current_card_detail.card_name}}</h4>
 			<view style="color: #868686;">
 				<!-- 发行时间 -->
-				<text>{{current_card_detail.createtime}}</text>
+				<text id="card_detail_mystr">{{current_card_detail.createtime}}</text>
 				<!-- 有多少人收藏 -->
 				<view class="card_detail_xihuan">
 					<image class="card_detail_xing" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png">
@@ -102,34 +102,28 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	
 	<!-- 底部 -->
 	<view class="card_detail_footer">
-		<view style="display: flex;">
-			<!-- <radio v-if="current_card_detail.is_buyed == 1" disabled="disabled" checked="checked" class="card_detail_radio">*{{current_card_detail.have_counter}}</radio>
-			<radio v-else disabled="disabled" class="card_detail_radio">*{{current_card_detail.have_counter}}</radio> -->
+		<view class="card_detail_radio" style="position: fixed;">
+			<image src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/乘.png" style="width: 45rpx; height: 45rpx;"></image>
+			<text class="card_detail_family" style="font-size: 50rpx;">{{current_card_detail.have_counter}}</text>
+		</view>
+		<view style="float: right; padding: 20rpx;display: flex;width: 60%;">
+			<!-- <view @tap="test_goto_buy">购买测试</view> -->
+			<button type="button" value="购买" style="background: #007AFF;color: #FFFFFF;width: 60%;" 
+			v-if="current_card_detail.is_buyed == 0" @tap="test_goto_buy">购买</button>
+			<!-- 收藏 -->
+			<image class="card_detail_an" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png"
+			v-if="current_card_detail.is_favorite == 1" @tap="set_favorite(0)"></image>
 			
-			<view class="card_detail_radio">
-				<image src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/乘.png" style="width: 50rpx; height: 50rpx;"></image>
-				<view>{{current_card_detail.have_counter}}</view>
-			</view>
-			
-			<view style="float: right; padding: 20rpx;display: flex;width: 60%;">
-				<!-- <view @tap="test_goto_buy">购买测试</view> -->
-				<button type="button" value="购买" style="background: #007AFF;color: #FFFFFF;width: 60%;" 
-				v-if="current_card_detail.is_buyed == 0" @tap="test_goto_buy">购买</button>
-				<!-- 收藏 -->
-				<image class="card_detail_an" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png"
-				v-if="current_card_detail.is_favorite == 1" @tap="set_favorite(0)"></image>
-				
-				<image class="card_detail_an" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star.png" 
-				v-if="current_card_detail.is_favorite == 0" @tap="set_favorite(1)"></image>
-				<!-- 赠予 -->
-				<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/basesalessendSet.png"
-				v-if="current_card_detail.is_buyed == 1"></image>
-				<!-- 丢弃 -->
-				<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/tubiao19_fuzhi.png"
-				v-if="current_card_detail.is_buyed == 1"></image>
-				<!-- 分享 -->
-				<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/fenxiang_1.png"></image>
-			</view>
+			<image class="card_detail_an" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star.png" 
+			v-if="current_card_detail.is_favorite == 0" @tap="set_favorite(1)"></image>
+			<!-- 赠予 -->
+			<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/basesalessendSet.png"
+			v-if="current_card_detail.is_buyed == 1"></image>
+			<!-- 丢弃 -->
+			<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/tubiao19_fuzhi.png"
+			v-if="current_card_detail.is_buyed == 1"></image>
+			<!-- 分享 -->
+			<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/fenxiang_1.png"></image>
 		</view>
 	</view>
 		
@@ -603,7 +597,8 @@ export default {
 			uni.navigateTo({
 				url: '/pages/nftcard/card_detail?packageid='+packageid+'&cardid='+cardid,
 			})
-		}
+		},
+		
 
 	},
 	filters: {
@@ -752,6 +747,10 @@ export default {
 		float: left;
 		padding-left: 20rpx;
 		padding-top: 25rpx;
+	}
+	.card_detail_family{
+		font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+		
 	}
 	.card_detail_footer {
 		position: fixed;
