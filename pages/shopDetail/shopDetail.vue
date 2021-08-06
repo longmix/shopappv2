@@ -158,20 +158,28 @@
 			<view class="nft_issue_package_list">
 				<view class="nft_package_list" v-for="(item,index) in current_package_list" :key='index'>
 					<view class="nft_package" >
-						<img class="" :src="item.cover_img_url" style="width: 700rpx;height: 450rpx;">
-						<view class="nft_package_title">{{item.title}}</view>
+						<view class="">
+							<img class="supplier_package_list" :src="item.cover_img_url"  >
+						</view>
+						
+						<view class="supplier_image_description">
+							<view class="nft_package_title">{{item.title}}</view>
+							<view class="nft_package_brief">{{item.brief}}</view>
+							<view class=""></view>
+						</view>
+						
 					</view>
 					
-					<view v-if="item.huiyuan_status == 1" class="banka_btn" style="margin-top: 20rpx;" @tap="go_detail_huiyuan(item.userid)">
+					<!-- <view v-if="item.huiyuan_status == 1" class="banka_btn" style="margin-top: 20rpx;" @tap="go_detail_huiyuan(item.userid)">
 						<view>
 							<view class="banka_ft">查看卡片</view>
 						</view>
 					</view>
 					<view v-else class="banka_btn" style="margin-top: 20rpx;"  @tap="become_huiyuan(item.userid)">
 						<view>
-							<view class="banka_ft">我要领卡</view>
+							<view class="banka_">我要领卡</view>
 						</view>
-					</view>
+					</view> -->
 				</view>
 			</view>
 			
@@ -192,12 +200,11 @@
 		
 		
 		
-		
 
 		<!-- 功能按钮-->
 		<view>
 			<!-- 按钮1 -->
-			<view class="paidui-con" v-if="shop_product_btn_show == 1">
+			<view class="paidui-con" v-if="shop_product_btn_show == 0">
 				<image class="icon-a" :src="user_console_setting.shop_product_icon"></image>
 				<view class="paidui-a">
 					<view class="icon-title">
@@ -218,7 +225,7 @@
 			<!-- 按钮1   end -->
 
 			<!-- 按钮2 -->
-			<view class="paidui-con" v-if="waimai_product_btn_show == 1">
+			<view class="paidui-con" v-if="waimai_product_btn_show == 0">
 				<image style="height: 85upx;" class="icon-a" :src="user_console_setting.waimai_product_icon"></image>
 				<view class="paidui-a">
 					<view class="icon-title">
@@ -543,7 +550,8 @@
 				default_copyright_text:'',
 				
 				//2021.8.4. NFT卡包卡牌相关的
-				nft_package_list: null
+				nft_package_list: null,
+			
 			};
 		},
 		
@@ -953,52 +961,21 @@
 				
 				
 				
+				
+				
+				
+				
+				
+				
+				
+				
+				
 				//========= 2021.8.4. XXXXXXXXXXXXXXXXXXXXX ===============
 				
 				
 				that.nft_package_list = null;
 				
 				
-				
-				//获取卡牌列表
-				
-				that.abotapi.abotRequest({
-				    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/supplier_detailt',
-				    method: 'post',
-				    data: {
-						sellerid:that.abotapi.globalData.default_sellerid,
-						packageid:that.current_packageid,
-						
-					
-				    },
-				    success: function (res) {
-						
-						if(res.data.code != 1){
-							uni.showToast({
-								title:'卡包详情没有数据',
-								duration: 2000,
-							});
-							
-							return;
-						}
-						
-						that.current_card_list = res.data.data;
-						
-						console.log('current_card_list ===>>> ', that.current_card_list);
-						
-						
-				    },
-				    fail: function (e) {
-						uni.showToast({
-							title: '网络异常！',
-							duration: 2000
-						});
-				    },
-				});
-				
-					
-					
-					
 					//获取卡包列表
 					
 					that.abotapi.abotRequest({
@@ -1181,23 +1158,10 @@
 						
 						
 						
-						
-						
-						
-						
-						
-						
-						
-						
 						// var latitude_longitude = {
 						//   latitude : data.latitude,
 						//   longitude : data.longitude,
 						// };
-						
-						
-						
-						
-						
 						
 						
 
@@ -2504,16 +2468,41 @@
 		background-color: #e1e3e4;
 		width: 700rpx;
 		margin-bottom: 30rpx;
-		border-radius: 20rpx;
+		border-radius: 10rpx;
 		overflow: hidden;
 		
 	}
 	.nft_package{
+		display: flex;
+	}
+	.supplier_image_description{
+		width: 400rpx;
+		margin: 50rpx 10rpx 10rpx 20rpx;
 		
 	}
 	.nft_package_title{
 		font-weight: bold;
 		font-size: 30rpx;
-		margin-left: 20rpx;
+		width: 80%;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
+	.nft_package_brief{
+		font-weight: 100;
+		font-size: 10rpx;
+		margin-top: 10rpx;
+		width: 90%;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.supplier_package_list{
+		width: 200rpx;
+		height: 200rpx;
+		margin: 20rpx;
+		border-radius: 10rpx;
+		overflow: hidden;
+	}
+
 </style>

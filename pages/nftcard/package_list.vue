@@ -4,9 +4,10 @@
 	<!-- 搜索框 -->
 	
 		<view class="package_search" >
+			
+			<input style="width: 570rpx;height: 60rpx;margin-left: 20rpx;" type="text" value="搜索" />
 			<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/search.png"
-				mode="widthFix" style="width: 30rpx; width: 30rpx;margin-top: 5rpx;"></image>
-			<input type="text" value="搜索" />
+				mode="widthFix" style="width: 45rpx; margin-top: 8rpx;"></image>
 		</view>
 	
 				<!-- 排序 -->
@@ -57,9 +58,9 @@
 						<view class="package_brief">{{current_package_item.brief}}</view>
 						<view class="package_rare_total_time">
 							<view class="package_rare_total" >
-								<view class="card_quantity">稀有卡22张</view>
+								<view class="card_quantity">稀有卡1张</view>
 								<view class="card_quantity">|</view>
-								<view class="card_quantity">总卡22张</view>
+								<view class="card_quantity">总卡{{current_package_item.packageid_card_count}}张</view>
 							</view>
 							<view class="begin_end_time">
 								{{current_package_item.time_begin}}~{{current_package_item.time_end}}
@@ -294,7 +295,11 @@ export default {
 	
 	.package_search{
 		display: flex;
-		width: 600rpx;
+		position:relative;
+		top: 10px;
+		margin-bottom: 50rpx;
+		margin-left: 40rpx;
+		width: 650rpx;
 		
 		background-color: #FFFFFF;
 		border-radius: 30rpx;
@@ -320,18 +325,17 @@ export default {
 
 	.my_package_list_style{
 	
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
 	}
 	.my_package_list{
-	width: 700rpx;
-	background-color: #e1e3e4;
-	margin-top: 30rpx;
+		width: 700rpx;
+		background-color: #e1e3e4;
+		margin-top: 30rpx;
 	}
 	.my_package_item{
-
 		background-color: #FFFFFF;
 		width: 700rpx;
 		margin-bottom: 30rpx;
@@ -354,7 +358,7 @@ export default {
 		font-size: 30rpx; 
 		float: right;
 		margin-right:10rpx;
-		margin-top: 20rpx;
+		margin-top: 15rpx;
 	}
 	.package_name{
 		margin-left: 20rpx;

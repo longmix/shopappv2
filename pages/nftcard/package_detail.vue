@@ -7,6 +7,20 @@
 			<!-- <view class="">
 				<image class="package_image" :src="current_package_detail.cover_img_url" ></image>
 			</view> -->
+			<!-- icon喜欢图标-----喜欢人数------ -->
+			<view class="like_number" >
+				<image v-if="current_package_detail.is_like == 0"  @tap="set_like(1)" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/like.jpg"
+					mode="widthFix" style="width: 70rpx; margin-top: 10rpx;margin-left: 5rpx; " ></image>
+				<image v-if="current_package_detail.is_like == 1" @tap="set_like(0)"  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/already_like.jpg" 
+					mode="widthFix" style="width: 76rpx; margin-top: 7rpx; margin-left: 3rpx;"  ></image>
+				<!-- <view style="font-weight: 100; font-size: 10rpx;"> {{current_package_detail.like_count}}</view> -->
+			</view>
+			
+			
+			<view class="package_ps">
+				<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/ps.jpg"
+					mode="widthFix" style="width: 70rpx;margin-top: 5rpx;margin-left: 5rpx;"></image>
+			</view>
 		</view>
 		
 		<!-- 卡包详情 -->
@@ -14,12 +28,7 @@
 			
 			<view class="label_like_number" >
 				
-				<!-- icon喜欢图标-----喜欢人数------ -->
-				<view class="like_number">
-					<image v-if="current_package_detail.is_like == 0"  @tap="set_like(1)" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/like.png" mode="widthFix" style="width: 30rpx; " ></image>
-					<image v-if="current_package_detail.is_like == 1" @tap="set_like(0)"  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/already_like.png" mode="widthFix" style="width: 30rpx;" ></image>
-					<view style="font-weight: 100; font-size: 10rpx;"> {{current_package_detail.like_count}}</view>
-				</view>
+			
 				
 				
 				<!-- 标签 -->
@@ -44,7 +53,7 @@
 	
 	
 		<!-- 发行商图片及简介 12324-->
-		<view class="publish_information">
+		<view class="publish_information" @tap="go_to_supplier_detail()">
 			<image class="publish_icon" :src="current_package_detail.supplier_icon" 
 				mode="widthFix" style="width: 150rpx;height:150rpx ;"></image>
 			<view class="package_card_publish">
@@ -98,17 +107,17 @@
 					v-for="(current_card_item,index) in current_card_list"
 					@tap="go_to_card_detail(current_card_item.packageid, current_card_item.cardid)">
 				<view class="">
-					<image :src="current_card_item.cover_img_url" style="width: 340rpx; height: 510rpx;margin: 5rpx;"></image>
+					<image class="package_card_img" :src="current_card_item.cover_img_url"></image>
 					
 					
 					<!-- icon喜欢图标和喜欢人数-----------已有卡牌/已发售卡牌 -->
 					<view class="already_sold_card_icon_like">
 						<view class="card_like_num" >
-							<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/collect.png" mode="widthFix" style="width: 25rpx;"></image>
+							<image class="card_img" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/collect.png" mode="widthFix" style="width: 25rpx;"></image>
 							{{current_card_item.favorite_counter}}
 						</view>
 						<view class="sold_card">
-							（8/10）
+							（{{current_card_item.userid_card_publish_count}}/{{current_card_item.cardid_card_publish_count}}）
 						</view>
 						
 					</view>
@@ -133,6 +142,29 @@
 			</view>
 					
 		</view>
+		
+		
+		<!-- 系列卡包 -->
+		<view class="" style="margin: 20rpx;">
+			<view style="font-weight: 100;font-size: 10rpx;float: right;color: red;margin-top: 5rpx;" 
+			@tap="go_to_package_list()">>>更多卡包>></view>
+			<view class="" style="font-weight: bold;">系列卡包</view>
+		</view>
+		<scroll-view scroll-x="true">
+			<view class="series_package" style="display: flex;">
+				<view class="" style="margin-left: 20rpx;margin-bottom: 30rpx;" v-for="(current_card_item,index) in current_card_list"
+						@tap="go_to_card_detail(current_card_item.packageid, current_card_item.cardid)">
+					<image :src="current_card_item.cover_img_url" mode=""
+						style="width: 340rpx;border-radius: 10rpx;overflow: hidden;"></image>
+					<view style="font-weight: bold;margin-left: 5rpx;">{{current_card_item.card_name}}</view>
+				</view>	
+			</view>
+					
+		</scroll-view>
+			
+		
+		
+		
 		
 		
 		<!-- 富媒体文本展示卡牌详情 -->
@@ -173,6 +205,8 @@ export default {
 			current_packageid:0,
 			current_cardid:0, 
 			current_userid:0,
+			
+			current_supplier_detail:null,
 			
 			card_description:'',  //卡包的富媒体描述
 		};
@@ -344,8 +378,46 @@ export default {
 	
 	
 	
-	
-	
+		//获取发行商详情
+		
+		that.abotapi.abotRequest({
+		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/supplier_detail',
+		    method: 'post',
+		    data: {
+				sellerid:that.abotapi.globalData.default_sellerid,
+				packageid:that.current_packageid,
+		
+			
+		    },
+		    success: function (res) {
+				
+				if(res.data.code != 1){
+					uni.showToast({
+						title:'发行商没有数据',
+						duration: 2000,
+					});
+					
+					return;
+				}
+				
+				that.current_supplier_detail = res.data.data;
+				
+				console.log('current_supplier_detail ===>>> ', that.current_supplier_detail);
+				
+				
+		    },
+		    fail: function (e) {
+				uni.showToast({
+					title: '网络异常！',
+					duration: 2000
+				});
+		    },
+		});
+		
+			
+			
+			
+			
 	
 	
 	
@@ -473,6 +545,31 @@ export default {
 			})
 		},
 		 
+		 
+		 go_to_package_list:function(packageid, cardid){
+			 console.log('packageid===>>>' + packageid);
+			 console.log('cardid===>>>' + cardid);
+			 
+			 uni.navigateTo({
+			 	url: '/pages/nftcard/package_list?packageid='+packageid+'&cardid='+cardid,
+			 })
+		 },
+		 
+		
+		 
+		 
+		 
+		 
+		 
+		 go_to_supplier_detail:function(shangid){
+		 	
+		 	console.log('shangid===>>>' + shangid);
+		 	
+		 	uni.navigateTo({
+		 		url: '/pages/shopDetail/shopDetail?shangid='+shangid,
+		 	})
+		 },
+		  
 		
 		
 		
@@ -605,24 +702,24 @@ export default {
 	
 	
 	.package_background{
-		
+		position: absolute;
 		width: 100%;
 		height: 550rpx;
 	}
 	
 	
-	.package_image{
+/* 	.package_image{
 		position: absolute;
 		left: 20rpx;
 		top: 10rpx;
 		transform:translate(30%,10%);
 		width: 450rpx;
 		height: 450rpx;
-	/* 	border-radius: 20rpx;
+		border-radius: 20rpx;
 		border: #F0F0F0 solid 2rpx;
 		box-shadow: 0rpx 0rpx 20rpx #F0F0F0;
-		background-color: #FFFFFF; */
-	}
+		background-color: #FFFFFF; 
+	}*/
 	.package_information{
 		background-color: #FFFFFF;
 		margin:10rpx;
@@ -638,9 +735,25 @@ export default {
 	}
 	.like_number{
 		float: right;
-		display: flex;
-		margin-right: 10rpx;
-		margin-top: 15rpx;
+		position:relative;
+		margin-right: 60rpx;
+		margin-top: 80rpx; 
+		width: 80rpx; 
+		height: 80rpx; 
+		background-color: #c2bdbd;
+		border-radius: 20rpx;
+		overflow: hidden;
+	}
+	.package_ps{
+		float: right;
+		position: relative;
+		margin-right:-80rpx;
+		margin-top: 250rpx;
+		width: 80rpx; 
+		height: 80rpx; 
+		background-color: #c2bdbd;
+		border-radius: 20rpx;
+		overflow: hidden;
 	}
 	.package_title{
 		 width: 90%; 
@@ -722,6 +835,14 @@ export default {
 		overflow: hidden;
 		
 	}
+	.package_card_img{
+		border-radius: 10rpx;
+		overflow: hidden;
+		width: 335rpx; 
+		height: 510rpx;
+		margin: 8rpx;
+		border: #a7c1c3 solid 2rpx;			
+	}
 	.already_sold_card_icon_like{
 		width: 100%;
 	}
@@ -731,6 +852,11 @@ export default {
 		float: right;
 		margin-right: 10rpx;
 	
+	}
+	.card_img{
+	/* 	border: #e2e4e4 solid 2rpx;
+		box-shadow: 0rpx 0rpx 20rpx #F0F0F0;
+		background-color: #FFFFFF; */
 	}
 	.sold_card{
 		font-weight: 100;
