@@ -28,3 +28,20 @@
 		font-size: 10rpx; 
 	
 	}
+	
+	/* 富媒体文本 */
+	.description001 {
+		.title {
+			width: 100%;
+			height: 80upx;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: 26upx;
+			color: #999;
+			position: relative;
+		}
+		.content {
+			padding-bottom: 50rpx;
+		}
+	}
