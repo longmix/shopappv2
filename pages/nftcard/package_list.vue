@@ -321,6 +321,7 @@ export default {
 	border-radius: 20rpx;
 	overflow: hidden;
 	padding-left: 20rpx;
+	box-shadow: 10rpx 4rpx 10rpx #000000;
 	}
 
 	.my_package_list_style{
@@ -346,7 +347,7 @@ export default {
 	.package_list_loop{
 		width: 100%;
 		height: 420rpx;
-	
+		box-shadow: 10rpx 4rpx 12rpx #000000;
 		
 	}
 	.package_icon_like_num{
