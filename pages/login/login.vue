@@ -1130,6 +1130,9 @@ input::-moz-placeholder{
 	color: #999999;
 }
 
-
+.btn-row-submit {
+	height:100rpx;
+	line-height: 100rpx;
+}
 
 </style>

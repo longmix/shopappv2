@@ -552,6 +552,11 @@ extraData = 'xxxxxxxxxxxxxxx'
 			
 			if(options.action){
 				that.action = options.action;
+				
+				console.log('指定order_queren的action：===>>>'+that.action);
+			}
+			else{
+				console.log('使用默认order_queren的action：===>>>'+that.action);
 			}
 			
 			
@@ -941,6 +946,12 @@ extraData = 'xxxxxxxxxxxxxxx'
 							console.log('wwwwwwwwwwwwwww',that.balance);
 							
 							that.balance_zengsong = res.data.balance_zengsong;
+							
+							
+							//2021.8.7. 订单是否不需要填写收货地址
+							if(res.data.hide_address && (res.data.hide_address == 1)){
+								that.wxa_order_queren_hide_address = 1;
+							}
 							
 												
 							

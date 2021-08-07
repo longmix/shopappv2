@@ -1007,7 +1007,7 @@
 	}
 
 	.logo-img {
-		margin-top: 22px;
+		margin-top: 44rpx;
 	}
 
 	.logo {

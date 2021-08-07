@@ -296,7 +296,7 @@
 				
 				//存回data
 				uni.navigateTo({ 
-					url: '/pages/order/pay?productid=' + encodeURIComponent(JSON.stringify(proId)),
+					url: '/pages/order/pay?action=from_cart&productid=' + encodeURIComponent(JSON.stringify(proId)),
 				})
 			},
 			//删除商品

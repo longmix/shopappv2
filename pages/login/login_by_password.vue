@@ -796,7 +796,11 @@
 .home-p image{
 		width: 50%;
 		height: 50%;
-	}
+}
 
+.btn-row-submit {
+	height:100rpx;
+	line-height: 100rpx;
+}
 
 </style>
