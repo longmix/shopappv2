@@ -13,19 +13,19 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		
 -->
 		<view class="main_body">
-			<view style="text-align: center;">
+			<view>
 				<!-- 背景模糊图片 -->
 				<image :src="current_card_detail.cover_img_url"  @load="imageLoad" class="card_detail_border"></image>
 				<!-- 卡牌封面 -->
-				<!-- <view>
+				<view style="text-align: center;">
 					<image :src="current_card_detail.cover_img_url" class="card_detail_image"></image>
-				</view> -->
-				
-				
-				
-				<view>
-					<image :src="current_card_detail.cover_img_url" @load="imageLoad" class="card_detail_image"></image>
 				</view>
+				
+				
+				
+				<!-- <view>
+					<image :src="current_card_detail.cover_img_url" @load="imageLoad" class="card_detail_image"></image>
+				</view> -->
 				
 				
 				
@@ -33,7 +33,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				
 				<!-- 2021.08.06收藏 -->
-				<view style="position: absolute;right: 11%; top: 10%;">
+				<view style="position: absolute;right: 8%; top: 5%;">
 					<image class="card_detail_schang" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png"
 						v-if="current_card_detail.is_favorite == 1" @tap="set_favorite(0)"></image>
 						
@@ -41,7 +41,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					v-if="current_card_detail.is_favorite == 0" @tap="set_favorite(1)"></image>
 				</view>
 				<!-- 2021.08.06相机 -->
-				<view style="position: absolute;right: 11%; top: 18%;">
+				<view style="position: absolute;right: 8%; top: 12%;">
 					<image class="card_detail_schang" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/paizhao.png"></image>
 				</view>
 				
@@ -75,7 +75,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				<h4 class="card_detail_h4" style="padding: 15rpx 0rpx;">所属卡包</h4>
 				<view style="display: flex;">
 					<view>
-						<image :src="current_card_detail.cover_img_url"
+						<image :src="current_package_detail.cover_img_url"
 							@tap="go_to_card_package(current_package_detail.packageid)"
 							class="card_detail_kabaotoxiang"></image>
 					</view>
@@ -136,7 +136,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		</view>
 
 
-		<!-- 底部 -->
+		<!-- 悬浮 -->
 		<view class="card_detail_footer">
 			<view class="card_detail_liebiao">
 				<image class="card_detail_an" 
@@ -664,10 +664,10 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			    console.log(imgwidth, imgheight)
 				
 			    //计算的高度值  
-			    var imgheight = (this.windowWidth * 0.92)/ ratio;
+			    var imgheight = (this.windowWidth * 0.8)/ ratio;
 				
 				console.log('imageLoad id===>>> '+e.target.dataset.id +'显示大小：');
-				console.log(this.windowWidth * 0.92, imgheight)
+				console.log(this.windowWidth * 0.8, imgheight)
 				
 			    var imgheights = this.swiper_img_heights;
 				
@@ -735,10 +735,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 </script>
 
 <style>
-	* {
-		/* font-size: 30rpx; */
-	}
-
 	.card_detail_xing {
 		width: 25rpx;
 		height: 25rpx;
@@ -747,14 +743,13 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 
 	.main_body {
 		width: 100%;
-		
 		margin-bottom: 200rpx;
 		padding-bottom: 200rpx;
 	}
 
 	.card_detail_border {
 		position:absolute;
-		
+		width: 100%;
 		filter: blur(15rpx);
 	}
 
@@ -764,8 +759,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	}
 
 	.card_detail_image {
-		
-		margin-top: 50rpx;
+		margin-top: 70rpx;
 		justify-content: center;
 		border-radius: 20rpx;
 		border: #b1b1b1 solid 1rpx;
@@ -893,21 +887,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
-
-	.card_detail_radio {
-		float: left;
-		padding-left: 20rpx;
-		padding-top: 25rpx;
-	}
-
-	.card_detail_family {
-		font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-
-	}
-
 	.card_detail_footer {
 		position: fixed;
-		bottom: 20rpx;
-		right: 20rpx;
+		bottom: 0rpx;
+		right: 0rpx;
 	}
 </style>
