@@ -838,7 +838,20 @@
 					
 					if(!that.abotapi.globalData.current_alipay_user_id){
 						that.abotapi.globalData.current_alipay_user_id = uni.getStorageSync('current_alipay_user_id');
-					}					
+					}
+					if(!that.abotapi.globalData.current_alipay_user_id){
+						uni.showModal({
+							title:'错误',
+							content:'请先完成支付宝授权后再支付',
+							showCancel:false,
+							success:function(rrr){
+								
+							}
+						});
+						
+						return;
+					}
+					
 					post_data.alipay_buyer_user_pid = that.abotapi.globalData.current_alipay_user_id;
 					
 					//post_data.is_mp_alipay_xianmai = 1;

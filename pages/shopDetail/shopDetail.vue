@@ -148,15 +148,16 @@
 		<!-- =====-发行商详情接口==================supplier_detail -->
 		
 		<!-- NFT卡包卡牌功能模块 Begin -->
-		<view style="border-bottom:6px solid #eee;"  v-if="1">
+		<view style="border-bottom:6px solid #eee;"  v-if="nft_package_list_show_flag == 1">
 			<view class="icon-title2">
 				<image src="https://yanyubao.tseo.cn/Tpl/static/images/ecard.png" mode="widthFix"></image>
 				<view class='biaoti'>发行的卡包列表</view>
+				<view class='biaoti' @tap="goto_supplier_all_package_list">所有卡包</view>
 			</view><!-- nft_package_list -->
 			
 			<!-- 发型商发行的卡包 -->
 			<view class="nft_issue_package_list">
-				<view class="nft_package_list" v-for="(item,index) in current_package_list" :key='index'>
+				<view class="nft_package_list" v-for="(item,index) in current_nft_package_list" :key='index'>
 					<view class="nft_package" >
 						<view class="">
 							<img class="supplier_package_list" :src="item.cover_img_url"  >
@@ -550,7 +551,8 @@
 				default_copyright_text:'',
 				
 				//2021.8.4. NFT卡包卡牌相关的
-				nft_package_list: null,
+				current_nft_package_list: null,
+				nft_package_list_show_flag:0,	// 0 不展示NFT卡包列表  1  展示
 			
 			};
 		},
@@ -599,6 +601,13 @@
 				that.default_copyright_text = that.abotapi.globalData.default_copyright_text;
 				
 			});
+			
+			
+			//2021.8.5. 如果读取supplier的列表
+			if(that.abotapi.globalData.xianmai_shang_list_switch_to_supplier_list == 1){
+				that.nft_package_list_show_flag = 1;
+			}
+			
 			
 			this.get_merchant_basic_data();
 			
@@ -913,8 +922,8 @@
 				
 				// 获取本地商家自己设置的一些选项，包括是否显示外卖 堂吃按钮等。
 				var post_data = {
-					sellerid: this.abotapi.globalData.default_sellerid,
-					xianmai_shangid: this.current_xianmai_shangid,
+					sellerid: that.abotapi.globalData.default_sellerid,
+					xianmai_shangid: that.current_xianmai_shangid,
 				}
 				
 				this.abotapi.abotRequest({
@@ -970,20 +979,21 @@
 				
 				
 				
-				//========= 2021.8.4. XXXXXXXXXXXXXXXXXXXXX ===============
-				
-				
-				that.nft_package_list = null;
-				
+				//========= 2021.8.4. 如果定义了 xianmai_shang_list_switch_to_supplier_list，则打开了开关 nft_package_list_show_flag ===============				
+				if(that.nft_package_list_show_flag == 1){
 				
 					//获取卡包列表
-					
+					//将 xianmai_shangid 转为 supplierid，因为传入进来的就是supplierid (xianmai_shang_list_switch_to_supplier_list == 1)
+					//如果 xianmai_shang_list_switch_to_supplier_list != 1，目前还没有应用场景
+					// that.abotapi.globalData.default_sellerid  ===>>> that.current_xianmai_shangid
 					that.abotapi.abotRequest({
 					    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_list',
 					    method: 'post',
 					    data: {
-							sellerid:that.abotapi.globalData.default_sellerid,
-							p: 2,
+							sellerid: that.abotapi.globalData.default_sellerid,
+							nft_supplierid : that.current_xianmai_shangid,
+							page_num: 1,
+							page_size: 10,
 					    },
 					    success: function (res) {
 							
@@ -996,9 +1006,9 @@
 								return;
 							}
 							
-							that.current_package_list = res.data.data;
+							that.current_nft_package_list = res.data.data;
 							
-							console.log('current_package_list ===>>> ', that.current_package_list);
+							console.log('current_nft_package_list ===>>> ', that.current_nft_package_list);
 							
 							
 							
@@ -1019,7 +1029,7 @@
 					});
 					
 					
-					
+				}//	
 					
 					
 					
@@ -1153,7 +1163,7 @@
 						}
 						
 						
-						console.log('8888888888888',that.vip_card_list);
+						console.log('超级会员卡 vip_card_list的拥有情况：', that.vip_card_list);
 						
 						
 						
@@ -1559,8 +1569,13 @@
 				uni.navigateTo({
 					url: '/pages/myecard/myecard?kazhu_userid=' + kazhu_userid + '&ecard_data_type=' + 'super_vip_card'
 				});
+			},
+			
+			//跳转到卡包列表页面
+			goto_supplier_all_package_list:function(){
+				var new_url = '/pages/nftcard/package_list?nft_supplierid='+this.current_xianmai_shangid;
 			}
-					
+				
 			
 		}
 	};

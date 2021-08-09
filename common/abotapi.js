@@ -760,7 +760,7 @@ module.exports = {
  
 		if ((!userInfo) || (!userInfo.userid)) {
  
-			return uni.showModal({
+			uni.showModal({
 				title: '提示',
 				content:'请先登录',
 				showCancel: false,
@@ -780,13 +780,19 @@ module.exports = {
 						uni.setStorageSync('login_var_list', var_list);
 						uni.setStorageSync('login_ret_page', ret_page);
 					}
-			
+					/*
 					uni.redirectTo({
 						 url: '/pages/login/login',
-					})
+					});*/
+					
+					uni.navigateTo({
+						 url: '/pages/login/login',
+					});
 			
 				}
 			})
+			
+			return ;
 			
 		}; 
 		
@@ -1470,6 +1476,14 @@ module.exports = {
 				
 				uni.switchTab({
 					url: url,
+					success: (res) => {
+						console.log('success ==>>');
+						console.log(res);
+					},
+					fail: (res) => {
+						console.log('fail ==>>');
+						console.log(res);
+					}
 				})
 			}
 			else if((url == '/pages/publish/publish_index') && (this.globalData.is_publish_index_in_tabbar == 1)){
@@ -1654,6 +1668,8 @@ module.exports = {
 				url: url
 			})
 		}
+		
+		console.log('call_h5browser_or_other_goto_url 执行完毕');
    
 	},
 	

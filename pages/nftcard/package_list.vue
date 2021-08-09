@@ -88,7 +88,9 @@ export default {
 			p:2,
 			
 			index:0,
-			array:['智能排序','热度排序','时间排序']
+			array:['智能排序','热度排序','时间排序'],
+			
+			current_nft_supplierid:0,
 		}
 	},
 
@@ -109,6 +111,15 @@ export default {
 			title : '卡包列表',
 		});
 		
+		//当前卡包所属的supplierid
+		if(options.nft_supplierid){
+			that.current_nft_supplierid = options.nft_supplierid;
+		}
+		else{
+			that.current_nft_supplierid = that.abotapi.globalData.default_sellerid;
+		}
+		
+		
 		that.abotapi.set_shop_option_data(that, that.callback_function_shop_option_data);
 	
 		
@@ -120,7 +131,9 @@ export default {
 		    method: 'post',
 		    data: {
 				sellerid:that.abotapi.globalData.default_sellerid,
-				p: 2,
+				nft_supplierid : that.current_nft_supplierid,
+				page_num: 1,
+				page_size: 50,
 		    },
 		    success: function (res) {
 				
