@@ -1,8 +1,8 @@
 {	
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
-		"navigationBarTitleText" : "延誉电商",
-		"navigationBarBackgroundColor" : "#f37404",
+		"navigationBarTitleText" : "卡扑",
+		"navigationBarBackgroundColor" : "#30c478",
 		"backgroundColor" : "#ffffff",
 		"backgroundColorTop":"#ffffff",
 		"backgroundColorBottom":"#ffffff"
@@ -19,16 +19,10 @@
 				"text": "首页"
 			},
 			{
-				"pagePath": "pages/publish/publish_list",
-				"iconPath": "static/img/tabBar/imglist.png",
-				"selectedIconPath": "static/img/tabBar/imglist-on.png",
-				"text": "创业与开业"
-			},
-			{
 				"pagePath": "pages/shopList/shopList",
 				"iconPath": "static/img/tabBar/category.png",
 				"selectedIconPath": "static/img/tabBar/category-on.png",
-				"text": "城市合伙人"
+				"text": "发现"
 			},
 			{
 				"pagePath": "pages/user/user",

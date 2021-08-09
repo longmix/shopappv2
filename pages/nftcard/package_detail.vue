@@ -9,10 +9,10 @@
 			</view> -->
 			<!-- icon喜欢图标-----喜欢人数------ -->
 			<view class="like_number" >
-				<image v-if="current_package_detail.is_like == 0"  @tap="set_like(1)" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/like_01.png"
-					mode="widthFix" style="width: 70rpx; margin-top: 10rpx;margin-left: 5rpx;" ></image>
-				<image v-if="current_package_detail.is_like == 1" @tap="set_like(0)"  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/aixin.png" 
-					mode="widthFix" style="width: 80rpx; margin-top: 4rpx;"  ></image>
+				<image v-if="current_package_detail.is_like == 0"  @tap="set_like(1)" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/xin01.png"
+					mode="widthFix" style="width: 50rpx;height: 50rpx; margin-top: 10rpx;margin-left: 10rpx;" ></image>
+				<image v-if="current_package_detail.is_like == 1" @tap="set_like(0)"  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/xin.png" 
+					mode="widthFix" style="width: 56rpx;height:56rpx;margin-top: 10rpx;margin-left: 9.5rpx;"  ></image>
 				<!-- <view style="font-weight: 100; font-size: 10rpx;"> {{current_package_detail.like_count}}</view> -->
 			</view>
 			
@@ -339,43 +339,12 @@ export default {
 		
 		
 		
-		
+		console.log('导航栏背景颜色：' + that.abotapi.globalData.navigationBar_bg_color);
 		
 		
 		//获取卡牌列表
+		that.__get_card_list();
 		
-		that.abotapi.abotRequest({
-		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_list',
-		    method: 'post',
-		    data: {
-				sellerid:that.abotapi.globalData.default_sellerid,
-				packageid:that.current_packageid,
-			
-		    },
-		    success: function (res) {
-				
-				if(res.data.code != 1){
-					uni.showToast({
-						title:'卡包详情没有数据',
-						duration: 2000,
-					});
-					
-					return;
-				}
-				
-				that.current_card_list = res.data.data;
-				
-				console.log('current_card_list ===>>> ', that.current_card_list);
-				
-				
-		    },
-		    fail: function (e) {
-				uni.showToast({
-					title: '网络异常！',
-					duration: 2000
-				});
-		    },
-		});
 		
 	
 	
@@ -534,6 +503,8 @@ export default {
 			if(!cb_params){
 				return;
 			}
+			
+			
 			console.log('cb_params====', cb_params);
 		},
 		
@@ -654,6 +625,72 @@ export default {
 			
 		},
 		
+		__get_card_list:function(filter_flag=0){
+			var that = this;
+			
+			var post_data = {
+					sellerid:that.abotapi.globalData.default_sellerid,
+					packageid:that.current_packageid,
+			};
+			
+			if(filter_flag == 1){
+				//典藏卡
+				
+			}
+			else if(filter_flag == 2){
+				//典藏卡
+				
+			}
+			else if(filter_flag == 3){
+				//典藏卡
+				
+			}
+			else if(filter_flag == 4){
+				//典藏卡
+				
+			}
+			else{
+				
+			}
+			
+			post_data.filter_flag = filter_flag;
+			
+			
+			that.abotapi.abotRequest({
+			    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_list',
+			    method: 'post',
+			    data: post_data,
+			    success: function (res) {
+					
+					if(res.data.code != 1){
+						uni.showToast({
+							title:'卡包详情没有数据',
+							duration: 2000,
+						});
+						
+						return;
+					}
+					
+					that.current_card_list = res.data.data;
+					
+					console.log('current_card_list ===>>> ', that.current_card_list);
+					
+					
+			    },
+			    fail: function (e) {
+					uni.showToast({
+						title: '网络异常！',
+						duration: 2000
+					});
+			    },
+			});
+			
+			
+			
+			
+			
+		}
+		
 	},
 	filters: {
 		/**
@@ -738,13 +775,14 @@ export default {
 	.like_number{
 		float: right;
 		position:relative;
-		margin-right: 60rpx;
-		margin-top: 80rpx; 
-		width: 80rpx; 
-		height: 80rpx;
-		background-color: #e6e6e6; 
-		/* opacity: 0.5; */
-		border-radius: 20rpx;
+		margin-right: 40rpx;
+		margin-top:430rpx; 
+		width: 75rpx; 
+		height: 75rpx;
+		/* background-color: #FFFFFF; */ 
+		/* opacity: 0.5rpc; */
+		background: rgb(0, 0, 0,0.7);
+		border-radius: 50%;
 		overflow: hidden;
 	}
 	.package_ps{
@@ -755,8 +793,8 @@ export default {
 		width: 80rpx; 
 		height: 80rpx; 
 		background-color: #e6e6e6;
-	/* 	opacity: 0.5; */
-		border-radius: 20rpx;
+	/* 	opacity: 0.5;*/
+		border-radius: 50%;
 		overflow: hidden;
 	}
 	.package_title{
@@ -810,11 +848,12 @@ export default {
 		display: flex;
 		white-space: nowrap;
 		justify-content: space-between;
+		margin:20rpx 0;
 	
 	}
 	.scroll_items{
-		padding: 30rpx 30rpx;
-		margin-left: 20rpx;
+		padding: 8rpx;
+		margin-left: 0rpx;
 	}
 
 	.card_list_background{
@@ -837,7 +876,7 @@ export default {
 		margin:5rpx 8rpx 10rpx 6rpx;
 		border-radius: 10rpx;
 		overflow: hidden;
-		box-shadow: 4rpx 5rpx 15rpx #000;
+		/* box-shadow: 4rpx 5rpx 15rpx #000; */
 		
 	}
 	.package_card_img{

@@ -33,7 +33,10 @@
 					<view class="">
 						<image class="package_list_loop" :src="current_package_item.cover_img_url" mode=" aspectFill" ></image>
 					</view>
-					
+					<!-- 标签 -->
+					<view class="package_label">
+						<view  class="package_lable_list" v-for="(item,index) in current_package_item.tag_list">{{item}}</view>
+					</view>
 					
 					
 					<view class=""><!-- {{current_package_item.cover_img_url}} -->
@@ -46,10 +49,7 @@
 								{{current_package_item.like_count}}
 							</view>
 							
-							<!-- 标签 -->
-							<view class="package_label">
-								<view  class="package_lable_list" v-for="(item,index) in current_package_item.tag_list">{{item}}</view>
-							</view>
+							
 						</view>
 						
 						<!-- 卡包名称---------卡包简介 -->
@@ -116,7 +116,7 @@ export default {
 			that.current_nft_supplierid = options.nft_supplierid;
 		}
 		else{
-			that.current_nft_supplierid = that.abotapi.globalData.default_sellerid;
+			//that.current_nft_supplierid = that.abotapi.globalData.default_sellerid;
 		}
 		
 		
@@ -359,15 +359,16 @@ export default {
 		
 	} 
 	.package_list_loop{
+		
 		width: 100%;
 		height: 420rpx;
 		box-shadow: 5rpx 5rpx 15rpx #8a8a8a;
 		
 	}
-	.package_icon_like_num{
+	/* .package_icon_like_num{
 		height: 50rpx;
 		margin: 20rpx 10rpx 10rpx 10rpx;
-	}
+	} */
 	.package_like_icon{
 		font-weight: 100;
 		font-size: 30rpx; 
