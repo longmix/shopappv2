@@ -10,7 +10,7 @@
 			<!-- icon喜欢图标-----喜欢人数------ -->
 			<view class="like_number" >
 				<image v-if="current_package_detail.is_like == 0"  @tap="set_like(1)" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/like_01.png"
-					mode="widthFix" style="width: 70rpx; margin-top: 10rpx;margin-left: 5rpx; " ></image>
+					mode="widthFix" style="width: 70rpx; margin-top: 10rpx;margin-left: 5rpx;" ></image>
 				<image v-if="current_package_detail.is_like == 1" @tap="set_like(0)"  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/aixin.png" 
 					mode="widthFix" style="width: 80rpx; margin-top: 4rpx;"  ></image>
 				<!-- <view style="font-weight: 100; font-size: 10rpx;"> {{current_package_detail.like_count}}</view> -->
@@ -201,12 +201,14 @@ export default {
 			current_params_str:'',	//网址参数
 			
 			current_package_detail:null,
+			current_supplier_detail:null,
 			current_card_list:null,
+
 			current_packageid:0,
 			current_cardid:0, 
 			current_userid:0,
 			
-			current_supplier_detail:null,
+			
 			
 			card_description:'',  //卡包的富媒体描述
 		};
@@ -739,8 +741,9 @@ export default {
 		margin-right: 60rpx;
 		margin-top: 80rpx; 
 		width: 80rpx; 
-		height: 80rpx; 
-		background-color: #e6e6e6;
+		height: 80rpx;
+		background-color: #e6e6e6; 
+		/* opacity: 0.5; */
 		border-radius: 20rpx;
 		overflow: hidden;
 	}
@@ -752,6 +755,7 @@ export default {
 		width: 80rpx; 
 		height: 80rpx; 
 		background-color: #e6e6e6;
+	/* 	opacity: 0.5; */
 		border-radius: 20rpx;
 		overflow: hidden;
 	}
