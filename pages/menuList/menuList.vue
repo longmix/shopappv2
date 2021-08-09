@@ -201,6 +201,8 @@ export default {
 			
 			current_alipay_user_id:null,
 			
+			spec_business_type:null,
+			
 		};
 	},
 	/**
@@ -255,12 +257,14 @@ export default {
 				}
 				
 				if(searchParams.get('is_waimai')){
-					options.is_waimai = searchParams.get('is_waimai');				
+					options.is_waimai = searchParams.get('is_waimai');
 				}
 				
 				if(searchParams.get('scan_qrcode_no')){
 					options.scan_qrcode_no = searchParams.get('scan_qrcode_no');
 				}
+				
+				this.spec_business_type = 'alipay_saoma_diancan';
 			}		
 			//================= End ==========================		
 			//===== 2021.6.19. 普通的  支付宝小程序带参二维码，也是从 App 的 onLaunch函数中加载进来的
@@ -288,6 +292,8 @@ export default {
 				if(this.abotapi.globalData.mp_alipay_query.scan_qrcode_no){
 					options.scan_qrcode_no = this.abotapi.globalData.mp_alipay_query.scan_qrcode_no;				
 				}
+				
+				this.spec_business_type = 'alipay_saoma_diancan';
 			}
 			//================= End ==========================
 		// #endif
@@ -1292,16 +1298,27 @@ export default {
 			//--------------------- End ------------------------
 			
 			
+			//特殊的业务类型，用于服务器端的订单自动处理机
+			if( that.spec_business_type ){
+				//options.spec_business_type = 'alipay_saoma_diancan';
+				buy_url += '&spec_business_type=' + that.spec_business_type;
+			}
+			
 			//，以及扫码的编号等
-			var scan_qrcode_no = uni.getStorageInfoSync('current_scan_qrcode_no');
+			var scan_qrcode_no = uni.getStorageSync('current_scan_qrcode_no');
 			if(scan_qrcode_no){
+				console.log('有扫码的编号：' + scan_qrcode_no);
+				
 				buy_url += '&scan_qrcode_no=' + scan_qrcode_no;
 			}
 			
 			
 			//餐桌编号
-			var desk_no = uni.getStorageInfoSync('current_desk_no');
+			var desk_no = uni.getStorageSync('current_desk_no');
 			if(desk_no){
+				console.log('有餐桌的编号：' + desk_no);
+				
+				
 				buy_url += '&desk_no=' + desk_no;
 			}
 			

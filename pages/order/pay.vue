@@ -465,6 +465,9 @@ extraData = 'xxxxxxxxxxxxxxx'
 				if(options.scan_qrcode_no){
 					that.order_type_001_xianmaishang_data.scan_qrcode_no = options.scan_qrcode_no;
 				}
+				if(options.spec_business_type){
+					that.order_type_001_xianmaishang_data.spec_business_type = options.spec_business_type;
+				}
 			}
 			
 			
@@ -1642,6 +1645,10 @@ extraData = 'xxxxxxxxxxxxxxx'
 				  order_add_new_option_by_key_value.push({"key":"xianmai_scan_qrcode_no", "value":that.order_type_001_xianmaishang_data.scan_qrcode_no});
 				}
 			
+				//特殊业务类型
+				if(that.order_type_001_xianmaishang_data.spec_business_type){
+				  order_add_new_option_by_key_value.push({"key":"spec_business_type", "value":that.order_type_001_xianmaishang_data.spec_business_type});
+				}
 			
 			    var order_add_new_option_by_key_value_str = encodeURIComponent(JSON.stringify(order_add_new_option_by_key_value));
 			

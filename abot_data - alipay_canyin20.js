@@ -4,8 +4,8 @@ const globalData = {
 		o2owaimai_server_url: 'https://app.tseo.cn/o2owaimai/index.php/',
 		socket_server: 'https://socketio.tseo.cn',
 		
-		version_number:'Ver 2.0.1 Build 290',
-		version_code:290,
+		version_number:'Ver 2.0.3 Build 295',
+		version_code:295,
 		
 		force_sellerid:0,
 	
@@ -18,7 +18,7 @@ const globalData = {
 		alipay_user_pid:'2088201901872325',			//上海延誉信息技术有限公司的支付宝ID，2088开头的（小程序所有者）
 		
 		//设置特定的模板标志（目前仅有点餐小程序）
-		//current_template_name : 'canyin20_qrcode_diancan',
+		current_template_name : 'canyin20_qrcode_diancan',
 		
 		
 		//通版商城
