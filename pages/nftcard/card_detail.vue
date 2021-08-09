@@ -13,42 +13,47 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		
 -->
 		<view class="main_body">
-			<view>
+			<view :style="{width: card_bg_img_width+'rpx', height: card_bg_img_height+'rpx'}">
 				<!-- 背景模糊图片 -->
-				<image :src="current_card_detail.cover_img_url"  @load="imageLoad" class="card_detail_border"></image>
+				<image :src="current_card_detail.cover_img_url"  @load="imageLoad" 
+					class="card_detail_border"
+					:style="{width: card_bg_img_width+'rpx', height: card_bg_img_height+'rpx'}" ></image>
 				<!-- 卡牌封面 -->
-				<view style="text-align: center;">
-					<image :src="current_card_detail.cover_img_url" class="card_detail_image"></image>
+				<view :style="{textAlign: 'center', paddingTop: (card_bg_img_height*0.25)+'rpx'}">
+					<image :src="current_card_detail.cover_img_url" 
+						class="card_detail_image"
+						:style="{width: (card_bg_img_width*0.8)+'rpx', height: (card_bg_img_height*0.8)+'rpx'}"></image>
+						
 				</view>
-				
-				
-				
-				<!-- <view>
-					<image :src="current_card_detail.cover_img_url" @load="imageLoad" class="card_detail_image"></image>
-				</view> -->
-				
-				
-				
-				
-				
-				
-				<!-- 2021.08.06收藏 -->
-				<view style="position: absolute;right: 8%; top: 5%;">
-					<image class="card_detail_schang" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png"
+				<!-- 2021.08.09收藏 -->
+				<view style="width: 73rpx;height: 73rpx;padding-right: 6rpx; background-color: #FFFFFF;border-radius: 50%;background: rgb(0, 0, 0,0.7);position: absolute;"
+					:style="{top:(card_bg_img_height*0.28)+'rpx', right:(card_bg_img_width*0.13)+'rpx'}">
+					<image class="card_detail_schang" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/xingxing.png" 
 						v-if="current_card_detail.is_favorite == 1" @tap="set_favorite(0)"></image>
 						
-					<image class="card_detail_schang" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star.png"
+					<image class="card_detail_schang" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/xingxing01.png"
 					v-if="current_card_detail.is_favorite == 0" @tap="set_favorite(1)"></image>
 				</view>
+				
+				
+				
+				
+				
 				<!-- 2021.08.06相机 -->
-				<view style="position: absolute;right: 8%; top: 12%;">
-					<image class="card_detail_schang" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/paizhao.png"></image>
-				</view>
+				<!-- <view style="position: absolute;right: 8%; top: 12%;background-color: #FFFFFF; border-radius: 50%;
+		background: rgb(0, 0, 0,0.7);">
+					<image class="card_detail_schang" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/photograph.png"></image>
+				</view> -->
 				
 			</view>
+			
+			
+			
+			
+			
 			<!-- 卡牌信息 -->
 			<view class="card_detail_xinxi">
-				<h4 class="card_detail_title" style="padding: 15rpx 25%;width: 50%;">{{current_card_detail.card_name}}
+				<h4 class="card_detail_title" style="padding-top: 70rpx;padding-bottom: 15rpx;width: 93%;">{{current_card_detail.card_name}}
 				</h4>
 				<view style="color: #868686;">
 					<!-- 发行时间 -->
@@ -60,11 +65,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 								src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png">
 								{{current_card_detail.favorite_counter}}
 							</image>
-						</view>
-						<view>
-							<!-- 分享 -->
-							<image class="card_detail_fenxiang"
-								src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/fenxiang_1.png"></image>
 						</view>
 					</view>
 					<view>总共{{current_card_detail.faxing_counter}} 还剩{{current_card_detail.kucun_counter}} </view>
@@ -81,10 +81,10 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					</view>
 
 					<view class="card_detail_kabaoxinxi" @tap="go_to_card_package(current_package_detail.packageid)">
-						<view class="card_packages_title" style="width: 480rpx;">{{current_card_detail.package_title}}
+						<view class="card_packages_title">{{current_card_detail.package_title}}
 						</view>
-						<view style="color: #868686;font-size: 35rpx;">
-							<text>{{current_card_detail.supplier_name}}</text>
+						<view style="color: #868686;font-size: 22rpx;">
+							{{current_card_detail.supplier_name}}
 						</view>
 
 
@@ -139,9 +139,15 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		<!-- 悬浮 -->
 		<view class="card_detail_footer">
 			<view class="card_detail_liebiao">
-				<image class="card_detail_an" 
+				<!-- 分享 -->
+				<image class="card_detail_an"
+					src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/fenxiang_1.png"></image>
+			</view>
+			<view class="card_detail_liebiao">
+				<image class="card_detail_an"
 				src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/xiangqing.png"></image>
 			</view>
+			
 			<view v-if="current_card_detail.is_buyed == 1">
 				<view class="card_detail_liebiao">
 					<!-- 2021.08.06赠予 -->
@@ -154,6 +160,11 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 						src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/tubiao19_fuzhi.png"></image>
 				</view>
 			</view>
+			<view class="card_detail_liebiao">
+				<!-- 2021.08.09 列表按钮 -->
+				<image class="card_detail_an"
+					src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/liebiao.png"></image>
+			</view>
 			<!-- 2021.08.06购买 -->
 			<view class="card_detail_goumai1" v-if="current_card_detail.is_buyed == 0" @tap="test_goto_buy">
 				<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/goumai.png"
@@ -163,7 +174,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			<view class="card_detail_goumai2" v-if="current_card_detail.is_buyed == 1">
 				<image class="card_detail_items" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/乘.png"
 				></image>
-				<view style="font-size: 40rpx;padding-top: 20rpx;padding-right: 5rpx;">
+				<view style="font-size: 35rpx;padding-top: 20rpx;padding-right: 5rpx;">
 					{{current_card_detail.have_counter}}
 				</view>
 			</view>
@@ -186,8 +197,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	export default {
 		data() {
 			return {
-				x: 0,
-				y: 0,
 				current_params_str: '', //网址参数
 
 				current_card_detail: null,
@@ -197,6 +206,13 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				current_userid: 0,
 
 				card_description: '',
+				
+				//屏幕的宽度和高度
+				windowHeight: 0,
+				windowWidth: 0,
+				
+				card_bg_img_width:'750',
+				card_bg_img_height:'100',
 			};
 		},
 		onLoad: function(options) {
@@ -214,6 +230,16 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			uni.setNavigationBarTitle({
 				title: '卡牌详情',
 			});
+			
+			//========== 获取屏幕的宽度和高度 =====
+			/*var system_info = uni.getSystemInfoSync();
+			
+			console.log('getSystemInfo==>>>system_info==>>>', system_info)
+			console.log('getSystemInfo==>>>system_info==>>>', system_info.windowWidth)
+			that.windowWidth = system_info.windowWidth;
+			that.windowHeight = system_info.windowHeight;*/
+			//========== End =============
+			
 
 			that.abotapi.set_shop_option_data(that, that.callback_function_shop_option_data);
 
@@ -247,7 +273,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				return;
 			}
 
-
+			// 页面加载默认界面
 			that.current_card_detail = {
 				'title': ''
 			};
@@ -258,8 +284,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				'http://192.168.0.205/yanyubao_server/uploads/2021/08/03/610895dcc87bc.jpg';
 			that.current_card_detail.cover_img_url =
 				'http://192.168.0.205/yanyubao_server/uploads/2021/08/03/610895dcc87bc.jpg';
-
-
 
 
 			//获取卡牌详情		
@@ -652,36 +676,29 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			
 			
 			
-			// 2021.08.06获取卡牌封面的真实宽度
+			// 2021.08.09获取卡牌封面的真实宽度
 			imageLoad: function (e) {
-					
+				var that = this;
+				
+				//图片的宽度和高度
 			    var imgwidth = e.detail.width;
 			    var imgheight = e.detail.height;
-			      //宽高比  
+				
+			    //宽高比  
 			    var ratio = imgwidth / imgheight;
 				
-				console.log('imageLoad id===>>> '+e.target.dataset.id +'实际大小：');
+				console.log('imageLoad id===>>> '+e.target.dataset.id +'图片实际大小：');
 			    console.log(imgwidth, imgheight)
 				
+				that.windowWidth = 750;
+				
+				console.log('窗体的宽度：' + that.windowWidth);
+				
 			    //计算的高度值  
-			    var imgheight = (this.windowWidth * 0.8)/ ratio;
+				that.card_bg_img_width = that.windowWidth;
+				that.card_bg_img_height = that.card_bg_img_width / ratio;
 				
-				console.log('imageLoad id===>>> '+e.target.dataset.id +'显示大小：');
-				console.log(this.windowWidth * 0.8, imgheight)
 				
-			    var imgheights = this.swiper_img_heights;
-				
-				console.log('sdhsdshjdsk',imgheights);
-				
-			    //把每一张图片的对应的高度记录到数组里  
-			    //imgheights[e.target.dataset.id] = uni.upx2px(imgheight);
-				imgheights[e.target.dataset.id] = imgheight;
-				
-				this.swiper_box_height = imgheight;
-				
-			    console.log('imageLoad id===>>> '+e.target.dataset.id +", imgheights====>>>", imgheights);		
-				
-			    this.swiper_img_heights = imgheights
 			   
 			  },
 			
@@ -738,7 +755,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	.card_detail_xing {
 		width: 25rpx;
 		height: 25rpx;
-		padding-right: 8rpx;
+		/* padding-right: 8rpx; */
 	}
 
 	.main_body {
@@ -756,63 +773,58 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	.card_detail_h4 {
 		font-size: 30rpx;
 		line-height: 60rpx;
+		color: #515151;
 	}
 
 	.card_detail_image {
-		margin-top: 70rpx;
 		justify-content: center;
 		border-radius: 20rpx;
-		border: #b1b1b1 solid 1rpx;
+		border: #ffffff solid 1rpx;
 		box-shadow: 0rpx 0rpx 20rpx #8a8a8a;
 		background-color: #FFFFFF;
 	}
 /* 收藏按钮 */
 	.card_detail_schang {
-		width: 70rpx;
-		height: 70rpx;
-		padding: 20rpx;
+		width: 56rpx;
+		height: 50rpx;
+		margin: 13rpx;
 	}
 	.card_detail_fenxiang {
 		width: 50rpx;
 		height: 50rpx;
-		padding: 10rpx;
-		padding-right: 20rpx;
 	}
 	.card_detail_liebiao {
-		background-color: #d8d8d8;
-		width: 110rpx;
-		height: 100rpx;
+		background-color: #FFFFFF;
+		width: 80rpx;
+		height: 80rpx;
 		border-radius: 50%;
 		margin: 20rpx;
 	}
 
 	.card_detail_an {
-		width: 60rpx;
-		height: 60rpx;
-		padding-left: 25rpx;
+		width: 40rpx;
+		height: 40rpx;
 		padding-top: 20rpx;
+		padding-left: 20rpx;
 	}
 	.card_detail_items {
-		width: 50rpx;
-		height: 50rpx;
-		padding-left: 5rpx;
+		width: 40rpx;
+		height: 40rpx;
 		padding-top: 20rpx;
 	}
 	.card_detail_goumai1{
-		width: 100rpx;
-		height: 90rpx;
+		width: 80rpx;
+		height: 80rpx;
 		font-size: 27rpx;
 		background: #ff0004;
 		border-radius: 100%;
-		color: #FFFFFF;
-		padding-right: 10rpx;
 		margin-bottom: 100rpx;
 		margin: 20rpx;
 	}
 	.card_detail_goumai2{
-		width: 100rpx;
-		height: 90rpx;
-		background: #d8d8d8;
+		width: 80rpx;
+		height: 80rpx;
+		background: #FFFFFF;
 		border-radius: 100%;
 		color: #000000;
 		display: flex;
@@ -847,7 +859,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	}
 
 	.card_packages_title {
-		font-size: 30rpx;
+		width: 480rpx;
+		font-size: 32rpx;
+		color: #464646;
 		font-weight: bold;
 		overflow: hidden;
 		text-overflow: ellipsis;
