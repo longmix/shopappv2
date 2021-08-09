@@ -9,16 +9,16 @@
 			</view> -->
 			<!-- icon喜欢图标-----喜欢人数------ -->
 			<view class="like_number" >
-				<image v-if="current_package_detail.is_like == 0"  @tap="set_like(1)" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/like.jpg"
+				<image v-if="current_package_detail.is_like == 0"  @tap="set_like(1)" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/like_01.png"
 					mode="widthFix" style="width: 70rpx; margin-top: 10rpx;margin-left: 5rpx; " ></image>
-				<image v-if="current_package_detail.is_like == 1" @tap="set_like(0)"  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/already_like.jpg" 
-					mode="widthFix" style="width: 76rpx; margin-top: 7rpx; margin-left: 3rpx;"  ></image>
+				<image v-if="current_package_detail.is_like == 1" @tap="set_like(0)"  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/aixin.png" 
+					mode="widthFix" style="width: 80rpx; margin-top: 4rpx;"  ></image>
 				<!-- <view style="font-weight: 100; font-size: 10rpx;"> {{current_package_detail.like_count}}</view> -->
 			</view>
 			
 			
 			<view class="package_ps">
-				<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/ps.jpg"
+				<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/photograph.png"
 					mode="widthFix" style="width: 70rpx;margin-top: 5rpx;margin-left: 5rpx;"></image>
 			</view>
 		</view>
@@ -117,7 +117,7 @@
 							{{current_card_item.favorite_counter}}
 						</view>
 						<view class="sold_card">
-							（{{current_card_item.userid_card_publish_count}}/{{current_card_item.cardid_card_publish_count}}）
+							（{{current_card_item.buy_counter}}/{{current_card_item.publish_counter}}）
 						</view>
 						
 					</view>
@@ -740,7 +740,7 @@ export default {
 		margin-top: 80rpx; 
 		width: 80rpx; 
 		height: 80rpx; 
-		background-color: #c2bdbd;
+		background-color: #e6e6e6;
 		border-radius: 20rpx;
 		overflow: hidden;
 	}
@@ -751,7 +751,7 @@ export default {
 		margin-top: 250rpx;
 		width: 80rpx; 
 		height: 80rpx; 
-		background-color: #c2bdbd;
+		background-color: #e6e6e6;
 		border-radius: 20rpx;
 		overflow: hidden;
 	}
@@ -821,27 +821,29 @@ export default {
 	}
 	.my_package_detail_card_list{
 		
-		background-color: #e2e4e4;
+
 		width: 730rpx;
 	
 	}
 	.card_list{
 		display: flex;
 		float: left;
-		background-color: #FFFFFF;
+ 		background-color: #FFFFFF; 
 		width: 350rpx;
 		margin:5rpx 8rpx 10rpx 6rpx;
 		border-radius: 10rpx;
 		overflow: hidden;
+		box-shadow: 4rpx 5rpx 15rpx #000;
 		
 	}
 	.package_card_img{
 		border-radius: 10rpx;
 		overflow: hidden;
-		width: 335rpx; 
+		width: 340rpx; 
 		height: 510rpx;
-		margin: 8rpx;
-		border: #a7c1c3 solid 2rpx;			
+		margin: 5rpx;
+	
+		/* border: #a7c1c3 solid 2rpx;	 */		
 	}
 	.already_sold_card_icon_like{
 		width: 100%;

@@ -333,7 +333,7 @@ export default {
 	}
 	.my_package_list{
 		width: 700rpx;
-		background-color: #e1e3e4;
+	
 		margin-top: 30rpx;
 	}
 	.my_package_item{
@@ -342,12 +342,13 @@ export default {
 		margin-bottom: 30rpx;
 		border-radius: 20rpx;
 		overflow: hidden;
+		box-shadow: 4rpx 5rpx 20rpx #8a8a8a;
 		
 	} 
 	.package_list_loop{
 		width: 100%;
 		height: 420rpx;
-		box-shadow: 10rpx 4rpx 12rpx #000000;
+		box-shadow: 5rpx 5rpx 15rpx #8a8a8a;
 		
 	}
 	.package_icon_like_num{
