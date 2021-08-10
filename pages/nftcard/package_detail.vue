@@ -79,9 +79,9 @@
 		<!-- 筛选框 -->
 		<view class="">
 			<view class="list_box">
-				<view v-for="(item,index) in list" :key="index" @tap="choice(index)" 
-					:class="[item.selected?'selde':'noselde']">
-				{{item.selected?item.title:item.title}}	
+				<view v-for="(item, tag_item_index) in package_tag_item_list" :key="tag_item_index" @tap="package_tag_item_click(tag_item_index)" 
+					:class="[item.selected?'tag_item_selected':'tag_item_unselected']">
+						{{item.selected?item.title:item.title}}	
 				</view>
 			</view>
 			
@@ -225,14 +225,14 @@ export default {
 			
 			card_description:'',  //卡包的富媒体描述
 			
-			list:[
-				{selected:true,title:'全部卡牌'},
-				{selected:false,title:'典藏卡'},
-				{selected:false,title:'珍藏卡'},
-				{selected:false,title:'已有'},
-				{selected:false,title:'未有'},
+			package_tag_item_list:[
+				{tag_id:1, selected:true, title:'全部卡牌'},
+				{tag_id:2, selected:false, title:'典藏卡'},
+				{tag_id:3, selected:false, title:'珍藏卡'},
+				{tag_id:4, selected:false, title:'已有'},
+				{tag_id:5, selected:false, title:'未有'},
 			],
-			selectId:[],
+			package_tag_item_selected_seq_list:[],
 		
 		};
 	},
@@ -508,20 +508,106 @@ export default {
 			var that = this;
 		
 		},
-	
-		choice(index){
-			if(this.list[index].selected == true ){
-				this.list[index].selected = false;
-				for (var i=0;i< this.selectId.length;i++){
-					if(this.selectId[i] === this.list[index].counrse_id){
-						this.selectId.splice(i,1);
+/**
+ * @param {Object} tag_item_index
+ * 			package_tag_item_list:[
+				{tag_id:1, selected:true, title:'全部卡牌'},
+				{tag_id:2, selected:false, title:'典藏卡'},  免费
+				{tag_id:3, selected:false, title:'珍藏卡'},  收费
+				{tag_id:4, selected:false, title:'已有'},
+				{tag_id:5, selected:false, title:'未有'},
+			],
+ */	
+		package_tag_item_click(tag_item_index){
+			
+			var filter_price_type = -1;   // 1 免费  2  收费
+			var filter_userid_type = -1;  // 1 已有  2  未有
+			
+			var click_tag_id = -1;
+			click_tag_id = this.package_tag_item_list[tag_item_index].tag_id;
+			
+			//1，控制界面变化
+			if(this.package_tag_item_list[tag_item_index].selected == true ){
+				
+				this.package_tag_item_list[tag_item_index].selected = false;
+				
+				/*
+				for (var i=0; i< this.package_tag_item_selected_seq_list.length; i++){
+					if(this.package_tag_item_selected_seq_list[i] == click_tag_id){
+						this.package_tag_item_selected_seq_list.splice(i, 1);
+					}
+					
+				}*/
+			}
+			else{
+				
+				this.package_tag_item_list[tag_item_index].selected = true;
+				
+				//this.package_tag_item_selected_seq_list.push(this.package_tag_item_list[tag_item_index].tag_id);
+				
+				//如果选择的  全部
+				if(click_tag_id == 1){
+					
+					for (var i=0; i< this.package_tag_item_list.length; i++){
+						if(this.package_tag_item_list[i].selected && (this.package_tag_item_list[i].tag_id != 1)){
+							this.package_tag_item_list[i].selected = false;
+						}
+						
 					}
 				}
-				console.log()
-			}else{
-				this.list[index].selected = true;
-				this.selectId.push(this.list[index].course_id)
+				else{
+					for (var i=0; i< this.package_tag_item_list.length; i++){
+						if(this.package_tag_item_list[i].selected && (this.package_tag_item_list[i].tag_id == 1)){
+							this.package_tag_item_list[i].selected = false;
+						}
+						
+					}
+				}
+				
 			}
+			
+			
+			//2，计算那些被选中了
+			var tag_id001 = this.package_tag_item_list[0].selected;
+			var tag_id002 = this.package_tag_item_list[1].selected;
+			var tag_id003 = this.package_tag_item_list[2].selected;
+			var tag_id004 = this.package_tag_item_list[3].selected;
+			var tag_id005 = this.package_tag_item_list[4].selected;
+			
+			if(tag_id001){
+				
+			}
+			else{
+				if(tag_id002 && tag_id003){
+					
+				}
+				else if(tag_id002){
+					//免费的卡牌
+					filter_price_type = 1;
+				}
+				else if(tag_id003){
+					//收费的卡牌
+					filter_price_type = 2;
+				}
+				
+				if(tag_id004 && tag_id005){
+					
+				}
+				else if(tag_id004){
+					//已有的卡牌
+					filter_userid_type = 1;
+				}
+				else if(tag_id005){
+					//还没有的卡牌
+					filter_userid_type = 2;
+				}
+				
+			}
+			
+			//获取卡牌的列表
+			this.__get_card_list(filter_price_type, filter_userid_type);
+			
+			
 		},
 		
 		
@@ -662,7 +748,7 @@ export default {
 			
 		},
 		
-		__get_card_list:function(filter_flag=0){
+		__get_card_list:function(filter_price_type=-1, filter_userid_type=-1){
 			var that = this;
 			
 			var post_data = {
@@ -670,27 +756,15 @@ export default {
 					packageid:that.current_packageid,
 			};
 			
-			if(filter_flag == 1){
+			if(filter_price_type != -1){
 				//典藏卡
-				
-			}
-			else if(filter_flag == 2){
-				//珍藏卡
-				
-			}
-			else if(filter_flag == 3){
-				//已有
-				
-			}
-			else if(filter_flag == 4){
-				//未有
-				
-			}
-			else{
-				
+				post_data.filter_price_type = filter_price_type;
 			}
 			
-			post_data.filter_flag = filter_flag;
+			if(filter_userid_type != -1){
+				//典藏卡
+				post_data.filter_userid_type = filter_userid_type;
+			}
 			
 			
 			that.abotapi.abotRequest({
@@ -984,11 +1058,11 @@ export default {
 			display: flex;
 			white-space: nowrap;
 			justify-content: space-between;
-			margin:20rpx 0;
+			margin:20rpx 15rpx;
 	    }
 	
 	    /* 已选择 */
-	    .selde {
+	    .tag_item_selected {
 			text-align: center;
 			width: 130rpx;
 	        border: 1px solid #959595;
@@ -999,7 +1073,7 @@ export default {
 	    }
 	
 	    /* 未选择 */
-	    .noselde {
+	    .tag_item_unselected {
 			text-align: center;
 			width: 130rpx;
 	        border: 1px solid #959595;
