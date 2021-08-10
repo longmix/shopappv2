@@ -1,5 +1,6 @@
 <template>
 	<view class="global_background">
+		
 		<!-- 封面  模糊背景 -->
 		<view class="" style="height: 550rpx;">
 			
@@ -7,36 +8,26 @@
 			<!-- <view class="">
 				<image class="package_image" :src="current_package_detail.cover_img_url" ></image>
 			</view> -->
-			<!-- icon喜欢图标-----喜欢人数------ -->
+			
+			
+			<!-- icon喜欢图标--------- -->
 			<view class="like_number" >
-				<image v-if="current_package_detail.is_like == 0"  @tap="set_like(1)" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/xin01.png"
-					mode="widthFix" style="width: 50rpx;height: 50rpx; margin-top: 10rpx;margin-left: 10rpx;" ></image>
+				<image v-if="current_package_detail.is_like == 0"  @tap="set_like(1)" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/xin02.png"
+					mode="widthFix" style="width: 50rpx;height: 50rpx; margin-top: 15rpx;margin-left: 11rpx;" ></image>
 				<image v-if="current_package_detail.is_like == 1" @tap="set_like(0)"  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/xin.png" 
 					mode="widthFix" style="width: 56rpx;height:56rpx;margin-top: 10rpx;margin-left: 9.5rpx;"  ></image>
 				<!-- <view style="font-weight: 100; font-size: 10rpx;"> {{current_package_detail.like_count}}</view> -->
 			</view>
 			
-			
+			<!-- 截图按钮 -->
 			<view class="package_ps">
 				<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/ps.png"
-					mode="widthFix" style="width: 50rpx;margin-top: 13rpx;margin-left: 15rpx;"></image>
+					mode="widthFix" style="width: 45rpx;margin-top: 17rpx;margin-left: 18rpx;"></image>
 			</view>
 		</view>
 		
 		<!-- 卡包详情 -->
 		<view class="package_information">
-			
-			<view class="label_like_number" >
-				
-			
-				
-				
-				<!-- 标签 -->
-				<view class="package_label">
-					<view class="package_lable_list" v-for="(item,index) in current_package_detail.tag_list">{{item}}</view>
-				</view>
-			</view>
-			
 			
 			<!-- 卡包名字---简介 -->
 			<view class="package_title">{{current_package_detail.title}}</view>
@@ -50,6 +41,17 @@
 				{{current_package_detail.time_begin}}~{{current_package_detail.time_end}}
 			</view>		
 		</view>
+		
+		
+		<!-- 标签属性 -->
+		<view class="package_detail_lable_attribute" >
+			<view class="package_detail_lable">标签</view>
+			
+			<view class="package_label" style="margin-top: 10rpx;margin-left: 10rpx;">
+				<view class="package_detail_lable_list" v-for="(item,index) in current_package_detail.tag_list">{{item}}</view>
+			</view>
+		</view>
+		
 	
 	
 		<!-- 发行商图片及简介 12324-->
@@ -59,9 +61,10 @@
 			<view class="package_card_publish">
 				
 				<!-- icon关注图标 -->
-				<view class="" style="float: right; margin-right: 20rpx;">
-					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/follow.png" 
-						mode="widthFix" style="width: 120rpx;"></image>
+				<view class="publish_icon_follow" >
+					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/follow01.png" 
+						mode="widthFix" style="width: 45rpx; margin-top: 8rpx; "></image>
+						<view style="color: #30c478;margin-right:10rpx;">关注</view>
 				</view>
 				
 				
@@ -81,10 +84,11 @@
 			<view class="list_box">
 				<view v-for="(item, tag_item_index) in package_tag_item_list" :key="tag_item_index" @tap="package_tag_item_click(tag_item_index)" 
 					:class="[item.selected?'tag_item_selected':'tag_item_unselected']">
-						{{item.selected?item.title:item.title}}	
+						{{item.selected?item.title:item.title}}
+						
 				</view>
 			</view>
-			
+
 		</view>
 
 
@@ -117,40 +121,34 @@
 		<view class="card_list_background">
 			<view class="my_package_detail_card_list">
 				<view class="card_list"
-					v-for="(current_card_item,index) in current_card_list"
-					@tap="go_to_card_detail(current_card_item.packageid, current_card_item.cardid)">
-				<view class="">
-					<image class="package_card_img" :src="current_card_item.cover_img_url"></image>
+						v-for="(current_card_item,index) in current_card_list"
+						@tap="go_to_card_detail(current_card_item.packageid, current_card_item.cardid)">
+					<view class="">
+						<image class="package_card_img" :src="current_card_item.cover_img_url"></image>
 					
 					
-					<!-- icon喜欢图标和喜欢人数-----------已有卡牌/已发售卡牌 -->
-					<view class="already_sold_card_icon_like">
-						<view class="card_like_num" >
-							<image class="card_img" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/collect.png" mode="widthFix" style="width: 25rpx;"></image>
-							{{current_card_item.favorite_counter}}
+						<!-- icon喜欢图标和喜欢人数-----------已有卡牌/已发售卡牌 -->
+						<view class="already_sold_card_icon_like">
+							<view class="card_like_num" >
+								<image class="card_img" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/collect.png" mode="widthFix" style="width: 25rpx;"></image>
+								{{current_card_item.favorite_counter}}
+							</view>
+							<view class="sold_card">
+								（{{current_card_item.buy_counter}}/{{current_card_item.publish_counter}}）
+							</view>
 						</view>
-						<view class="sold_card">
-							（{{current_card_item.buy_counter}}/{{current_card_item.publish_counter}}）
-						</view>
-						
-					</view>
-					
+							
 									
 						<!-- 卡牌名称-----卡牌简介 -->
-					<view class="package_card_name_brief">
-						<view class="package_card_name" >{{current_card_item.card_name}}</view>
+						<view class="package_card_name_brief">
+							<view class="package_card_name" >{{current_card_item.card_name}}</view>
 								<!-- <view style=" font-weight: 100; font-size: 10rpx;">发行商：{{current_card_item.supplier_name}}</view> -->
 							
-						<view class="package_card_description" >
-							{{current_card_item.description}}{{current_card_item.brief}}
-								
+							<view class="package_card_description" >
+								{{current_card_item.description}}{{current_card_item.brief}}	
+							</view>
 						</view>
 					</view>
-					
-					
-				</view>
-					
-					
 				</view>	 
 			</view>
 					
@@ -164,12 +162,12 @@
 			<view class="" style="font-weight: bold;">系列卡包</view>
 		</view>
 		<scroll-view scroll-x="true">
-			<view class="series_package" style="display: flex;">
+			<view class="" style="display: flex;">
 				<view class="" style="margin-left: 20rpx;margin-bottom: 30rpx;" v-for="(current_card_item,index) in current_card_list"
 						@tap="go_to_card_detail(current_card_item.packageid, current_card_item.cardid)">
 					<image :src="current_card_item.cover_img_url" mode=""
 						style="width: 340rpx;border-radius: 10rpx;overflow: hidden;"></image>
-					<view style="font-weight: bold;margin-left: 5rpx;">{{current_card_item.card_name}}</view>
+					<view class="series_package" style="font-weight: bold;margin-left: 5rpx;">{{current_card_item.card_name}}</view>
 				</view>	
 			</view>
 					
@@ -216,11 +214,12 @@ export default {
 			current_package_detail:null,
 			current_supplier_detail:null,
 			current_card_list:null,
-
 			current_packageid:0,
 			current_cardid:0, 
 			current_userid:0,
-			
+
+			current_xianmai_shangid:0,
+		
 			
 			
 			card_description:'',  //卡包的富媒体描述
@@ -378,10 +377,9 @@ export default {
 		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/supplier_detail',
 		    method: 'post',
 		    data: {
-				sellerid:that.abotapi.globalData.default_sellerid,
-				packageid:that.current_packageid,
-		
-			
+				sellerid:that.abotapi.globalData.default_sellerid,			
+				xianmai_shangid:that.current_xianmai_shangid,
+				
 		    },
 		    success: function (res) {
 				
@@ -658,9 +656,8 @@ export default {
 		 
 		 
 		 go_to_supplier_detail:function(shangid){
-		 	
-		 	console.log('shangid===>>>' + shangid);
-		 	
+		 	console.log()
+		
 		 	uni.navigateTo({
 		 		url: '/pages/shopDetail/shopDetail?shangid='+shangid,
 		 	})
@@ -872,7 +869,7 @@ export default {
 	}*/
 	.package_information{
 		background-color: #FFFFFF;
-		margin:10rpx;
+		margin:20rpx 10rpx;
 		padding: 0 20rpx;
 		border-radius: 20rpx;
 		overflow: hidden;
@@ -890,8 +887,6 @@ export default {
 		margin-top:430rpx; 
 		width: 75rpx; 
 		height: 75rpx;
-		/* background-color: #FFFFFF; */ 
-		/* opacity: 0.5rpc; */
 		background: rgb(0, 0, 0,0.7);
 		border-radius: 50%;
 		overflow: hidden;
@@ -899,24 +894,23 @@ export default {
 	.package_ps{
 		float: right;
 		position: relative;
-		margin-right:-80rpx;
-		margin-top: 250rpx;
+		margin-right:-70rpx;
+		margin-top: 45rpx;
 		width: 80rpx; 
 		height: 80rpx; 
 		background: rgb(0, 0, 0,0.7);
-	/* 	opacity: 0.5;*/
 		border-radius: 50%;
 		overflow: hidden;
 	}
 	.package_title{
-		 width: 90%; 
-		 font-weight: bold;
-		 font-size: 40rpx; 
-		 white-space: nowrap;
-		 overflow: hidden;
-		 text-overflow: ellipsis;
+		width: 90%; 
+		margin-top: 10rpx;
+		font-weight: bold;
+		font-size: 40rpx; 
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 		
-		 
 	}
 	.package_detail_brief{
 		width: 90%;
@@ -927,6 +921,33 @@ export default {
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
+	.package_detail_lable_attribute{
+		background-color: #ffffff;
+		width: 730rpx;
+		height: 120rpx;
+		margin-left: 10rpx;
+		border-radius: 20rpx;
+		overflow: hidden;
+		margin-bottom: 30rpx;
+	}
+	.package_detail_lable{
+		padding-left: 20rpx;
+		margin-top: 10rpx;
+		height: 40rpx;
+
+	}
+	.package_detail_lable_list{
+		
+		border: #15c5ce solid 2rpx;
+		color: #15c5ce;
+		margin: 5rpx 10rpx;
+		padding: 5rpx 10rpx;
+		border-radius: 6rpx;
+		overflow: hidden;
+		font-size: 10rpx;
+		
+		
+	} 
 
 	.publish_information{
 		background-color: #FFFFFF;
@@ -945,8 +966,16 @@ export default {
 		width: 100%;
 		margin-top: 25rpx;
 		margin-left:40rpx;
-		
-		
+	
+	}
+	.publish_icon_follow{
+		display: flex;
+		float: right; 
+		margin-right: 20rpx;
+		background-color:#ffffff; 
+		border-radius: 10rpx;
+		overflow: hidden;
+		border: #30c478 2rpx solid;
 	}
 	.publish_name{
 		margin-bottom: 5rpx;
@@ -980,32 +1009,28 @@ export default {
 		justify-content: center;
 	}
 	.my_package_detail_card_list{
-		
-
 		width: 730rpx;
-	
 	}
 	.card_list{
 		display: flex;
 		float: left;
  		background-color: #FFFFFF; 
 		width: 350rpx;
-		margin:5rpx 8rpx 10rpx 6rpx;
+		margin:5rpx 7rpx 15rpx 8rpx;
 		border-radius: 10rpx;
 		overflow: hidden;
-		/* box-shadow: 4rpx 5rpx 15rpx #000; */
+		box-shadow: 3rpx 6rpx 15rpx #707070;
 		
 	}
 	.package_card_img{
 		border-radius: 10rpx;
 		overflow: hidden;
-		width: 340rpx; 
+		width: 350rpx; 
 		height: 510rpx;
-		margin: 5rpx;
-	
-		/* border: #a7c1c3 solid 2rpx;	 */		
+
 	}
 	.already_sold_card_icon_like{
+		margin-top: -5rpx;
 		width: 100%;
 	}
 	.card_like_num{
@@ -1016,9 +1041,8 @@ export default {
 	
 	}
 	.card_img{
-	/* 	border: #e2e4e4 solid 2rpx;
-		box-shadow: 0rpx 0rpx 20rpx #F0F0F0;
-		background-color: #FFFFFF; */
+		
+		background-color: #FFFFFF; 
 	}
 	.sold_card{
 		font-weight: 100;
@@ -1026,10 +1050,11 @@ export default {
 		margin-left: 10rpx;
 	}
 	.package_card_name_brief{
+		width: 340rpx;
 		margin-left: 10rpx;
 	}
 	.package_card_name{
-		width: 90%;
+		width: 80%;
 		font-weight: bold;
 		font-size: 40rpx;
 		white-space: nowrap;
@@ -1046,27 +1071,26 @@ export default {
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
+		
 	}
-/* 	.buttons{
-		color:#FFFFFF;
-		background-color: #30c478;
-	}
-	 */
+
 	
-	 .list_box {
-	        
+	 .list_box {  
 			display: flex;
-			white-space: nowrap;
 			justify-content: space-between;
-			margin:20rpx 15rpx;
+			margin: 20rpx 20rpx 0rpx 20rpx;
+		
 	    }
 	
 	    /* 已选择 */
 	    .tag_item_selected {
-			height: 48rpx;
+			
+			margin-top: 10rpx;
+			height: 57rpx;
 			text-align: center;
-			width: 130rpx;
-	        border: 1px solid #959595;
+			line-height: 57rpx;
+			width: 134rpx;
+			margin-left:5rpx ;
 	        background: #30c478;
 	        color: #FFFFFF;
 	        border-radius: 10rpx;
@@ -1075,13 +1099,21 @@ export default {
 	
 	    /* 未选择 */
 	    .tag_item_unselected {
-			font-size: 12;
+			margin-top: 10rpx;
+			height: 55rpx;
 			text-align: center;
 			width: 130rpx;
-	        border: 1px solid #959595;
-	        background: #FFFFFF;
-	        
+			line-height: 57rpx;
+	        border: 1px solid #30c478;
+	        background: #e6e6e6;
+	        margin-left:5rpx ;
 	        border-radius: 10rpx;
 	        font-size: 30rpx;
 	    }
+		.series_package{
+			width:340rpx;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
 </style>

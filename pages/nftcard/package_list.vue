@@ -13,10 +13,10 @@
 				<!-- 排序 -->
 		<view class="drop_down_menu">
 			<picker @change="bindPickerChange" :value="index" :range="array">
-				<view class="picker" style="background-color: #FFFFFF;width: 150rpx;">
+				<view class="picker" >
 					{{array[index]}}
 					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/drop_down.png"
-						mode="widthFix" style="width: 30rpx; left: 0rpx; top: 6rpx;"></image>
+						mode="widthFix" style="width: 25rpx; left: 10rpx;top: 2rpx;"></image>
 				</view>
 			</picker>
 		</view>
@@ -38,7 +38,7 @@
 						
 						<image class="package_list_loop" :src="current_package_item.cover_img_url" mode=" aspectFill" ></image>
 						<view class="package_label" style="position: absolute;z-index: 2; left: 20rpx; top: 30rpx;">
-							<view   class="package_lable_list" v-for="(item,index) in current_package_item.tag_list">{{item}}</view>
+							<view class="package_lable_list" v-for="(item,index) in current_package_item.tag_of_editor">{{item}}</view>
 						</view>
 					</view>
 				
@@ -327,11 +327,16 @@ export default {
 		margin: 30rpx 10rpx 20rpx 40rpx;
 	}
 	.picker{
-		border-radius: 10rpx;
+	
+		width: 160rpx; 
+		height: 50rpx;
+		border-radius: 15rpx;
 		overflow: hidden;
-		font-weight: 100;
 		font-size: 30rpx;
-		
+		line-height: 50rpx;
+		background-color: #FFFFFF;
+		border: 1px solid #30c478;
+		color: #30c478;
 	}
 	
 	.package_drop_down_icon{
@@ -391,7 +396,7 @@ export default {
 		font-weight: bold;
 		margin: 15rpx 20rpx;
 		font-size: 36rpx;
-		width: 90%;
+		width: 75%;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
