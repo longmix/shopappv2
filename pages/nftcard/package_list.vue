@@ -30,13 +30,18 @@
 				<view class="my_package_item"
 					v-for="(current_package_item, index) in current_package_list"
 					 @tap="goto_package_detail(current_package_item.packageid)" >
-					<view class="">
-						<image class="package_list_loop" :src="current_package_item.cover_img_url" mode=" aspectFill" ></image>
-					</view>
 					<!-- 标签 -->
-					<view class="package_label">
-						<view  class="package_lable_list" v-for="(item,index) in current_package_item.tag_list">{{item}}</view>
+					
+					
+					
+					<view class="package_detail_label" style="position: relative;">
+						
+						<image class="package_list_loop" :src="current_package_item.cover_img_url" mode=" aspectFill" ></image>
+						<view class="package_label" style="position: absolute;z-index: 2; left: 20rpx; top: 30rpx;">
+							<view   class="package_lable_list" v-for="(item,index) in current_package_item.tag_list">{{item}}</view>
+						</view>
 					</view>
+				
 					
 					
 					<view class=""><!-- {{current_package_item.cover_img_url}} -->
@@ -345,6 +350,7 @@ export default {
 		justify-content: center;
 	}
 	.my_package_list{
+		position: relative;
 		width: 700rpx;
 	
 		margin-top: 30rpx;
@@ -358,12 +364,16 @@ export default {
 		box-shadow: 4rpx 5rpx 20rpx #8a8a8a;
 		
 	} 
-	.package_list_loop{
 		
+	.package_detail_label{
+		position: relative;
+	
+	}
+	.package_list_loop{
+		position: relative;
 		width: 100%;
 		height: 420rpx;
-		box-shadow: 5rpx 5rpx 15rpx #8a8a8a;
-		
+	
 	}
 	/* .package_icon_like_num{
 		height: 50rpx;

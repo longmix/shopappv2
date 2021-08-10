@@ -18,8 +18,8 @@
 			
 			
 			<view class="package_ps">
-				<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/photograph.png"
-					mode="widthFix" style="width: 70rpx;margin-top: 5rpx;margin-left: 5rpx;"></image>
+				<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/ps.png"
+					mode="widthFix" style="width: 50rpx;margin-top: 13rpx;margin-left: 15rpx;"></image>
 			</view>
 		</view>
 		
@@ -80,25 +80,31 @@
 	<scroll-view scroll-x="true">
 		<view class="scroll_button">
 			<view class="scroll_items">
-				<button size="mini">全部</button>
-			</view>	
-			<view class="scroll_items">
-				<button size="mini">典藏卡</button>
-			</view>
-			<view class="scroll_items">
-				<button size="mini">珍藏卡</button>
-			</view>	
-			<view class="scroll_items">
-				<button size="mini">已有</button>
+				<button size="mini" id="clicl_0" @tap="info()" class='checked?"checked_button":"normal_button"'>全部</button>
+			</view>	                                    
+			<view class="scroll_items">                 
+				<button size="mini" id="click_1" @tap="info()" class='checked?"checked_button":"normal_button"'>典藏卡</button>
+			</view>                                     
+			<view class="scroll_items">                 
+				<button size="mini" id="clicl_2" @tap="info()" class='checked?"checked_button":"normal_button"'>珍藏卡</button>
+			</view>	                                    
+			<view class="scroll_items">                 
+				<button size="mini" id="click_3" @tap="info()" class='checked?"checked_button":"normal_button"'>已有</button>
 			</view>		
 			<view class="scroll_items">
-				<button size="mini">未有</button>
+				<button size="mini" id="click_4" @tap="" class='checked?"checked_button":"normal_button"'>未有</button>
 			</view>
 		</view>
 		
 						
 	</scroll-view>
-		
+	
+		<view class="">
+			<button size="mini" :class="{'buttons':rSelect.indexOf(index !=-1)}" 
+			v-for="(value,index) in infoArr" :key="index" @tap="tapInfo(index)">{{value.name}}</button>
+		</view>
+
+
 							
 		<!-- 卡包中的卡牌 --> 
 		<view class="card_list_background">
@@ -211,6 +217,8 @@ export default {
 			
 			
 			card_description:'',  //卡包的富媒体描述
+			
+		
 		};
 	},
 	onLoad: function (options) {
@@ -386,9 +394,7 @@ export default {
 		});
 		
 			
-			
-			
-			
+		
 	
 	
 	
@@ -485,15 +491,9 @@ export default {
 	methods: {
 		share_return: function() {
 			var that = this;
-			
-			
-		
-		
 		
 		},
-		
-		
-		
+	
 		
 		callback_function_shop_option_data:function(that, cb_params){
 			
@@ -575,7 +575,7 @@ export default {
 			}
 
 			
-			//添加喜欢XXXXXXXXXXXXXXXXXX
+			//添加喜欢   请求喜欢接口
 			that.abotapi.abotRequest({
 			    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/package_like_add',
 			    method: 'post',
@@ -638,15 +638,15 @@ export default {
 				
 			}
 			else if(filter_flag == 2){
-				//典藏卡
+				//珍藏卡
 				
 			}
 			else if(filter_flag == 3){
-				//典藏卡
+				//已有
 				
 			}
 			else if(filter_flag == 4){
-				//典藏卡
+				//未有
 				
 			}
 			else{
@@ -792,7 +792,7 @@ export default {
 		margin-top: 250rpx;
 		width: 80rpx; 
 		height: 80rpx; 
-		background-color: #e6e6e6;
+		background: rgb(0, 0, 0,0.7);
 	/* 	opacity: 0.5;*/
 		border-radius: 50%;
 		overflow: hidden;
@@ -855,7 +855,13 @@ export default {
 		padding: 8rpx;
 		margin-left: 0rpx;
 	}
-
+	.normal_buttom{
+		
+	}
+	.checked_button{
+		background: #30c478;
+		color: #FFFFFF;
+		}
 	.card_list_background{
 		display: flex;
 		flex-direction: column;
@@ -929,5 +935,9 @@ export default {
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
+	}
+	.buttons{
+		color:#FFFFFF;
+		background-color: #30c478;
 	}
 </style>
