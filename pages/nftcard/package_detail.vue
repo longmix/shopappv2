@@ -1063,6 +1063,7 @@ export default {
 	
 	    /* 已选择 */
 	    .tag_item_selected {
+			height: 48rpx;
 			text-align: center;
 			width: 130rpx;
 	        border: 1px solid #959595;
@@ -1074,6 +1075,7 @@ export default {
 	
 	    /* 未选择 */
 	    .tag_item_unselected {
+			font-size: 12;
 			text-align: center;
 			width: 130rpx;
 	        border: 1px solid #959595;
