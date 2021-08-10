@@ -77,33 +77,40 @@
 	
 	
 		<!-- 筛选框 -->
-	<scroll-view scroll-x="true">
-		<view class="scroll_button">
-			<view class="scroll_items">
-				<button size="mini" id="clicl_0" @tap="info()" class='checked?"checked_button":"normal_button"'>全部</button>
-			</view>	                                    
-			<view class="scroll_items">                 
-				<button size="mini" id="click_1" @tap="info()" class='checked?"checked_button":"normal_button"'>典藏卡</button>
-			</view>                                     
-			<view class="scroll_items">                 
-				<button size="mini" id="clicl_2" @tap="info()" class='checked?"checked_button":"normal_button"'>珍藏卡</button>
-			</view>	                                    
-			<view class="scroll_items">                 
-				<button size="mini" id="click_3" @tap="info()" class='checked?"checked_button":"normal_button"'>已有</button>
-			</view>		
-			<view class="scroll_items">
-				<button size="mini" id="click_4" @tap="" class='checked?"checked_button":"normal_button"'>未有</button>
-			</view>
-		</view>
-		
-						
-	</scroll-view>
-	
 		<view class="">
-			<button size="mini" :class="{'buttons':rSelect.indexOf(index !=-1)}" 
-			v-for="(value,index) in infoArr" :key="index" @tap="tapInfo(index)">{{value.name}}</button>
+			<view class="list_box">
+				<view v-for="(item,index) in list" :key="index" @tap="choice(index)" 
+					:class="[item.selected?'selde':'noselde']">
+				{{item.selected?item.title:item.title}}	
+				</view>
+			</view>
+			
 		</view>
 
+
+
+
+		<view class="scroll_button">
+			
+			<!-- <view class="scroll_items">                 
+				<button size="mini" id="clicl_0">全部</button>
+			</view>
+			<view class="scroll_items">                 
+				<button size="mini" id="click_1" >典藏卡</button>
+			</view>                                     
+			<view class="scroll_items">                 
+				<button size="mini" id="clicl_2">珍藏卡</button>
+			</view>	                                    
+			<view class="scroll_items">                 
+				<button size="mini" id="click_3" >已有</button>
+			</view>		
+			<view class="scroll_items">
+				<button size="mini" id="click_4">未有</button>
+			</view> -->
+		</view>
+		
+
+	
 
 							
 		<!-- 卡包中的卡牌 --> 
@@ -218,6 +225,14 @@ export default {
 			
 			card_description:'',  //卡包的富媒体描述
 			
+			list:[
+				{selected:true,title:'全部卡牌'},
+				{selected:false,title:'典藏卡'},
+				{selected:false,title:'珍藏卡'},
+				{selected:false,title:'已有'},
+				{selected:false,title:'未有'},
+			],
+			selectId:[],
 		
 		};
 	},
@@ -494,6 +509,28 @@ export default {
 		
 		},
 	
+		choice(index){
+			if(this.list[index].selected == true ){
+				this.list[index].selected = false;
+				for (var i=0;i< this.selectId.length;i++){
+					if(this.selectId[i] === this.list[index].counrse_id){
+						this.selectId.splice(i,1);
+					}
+				}
+				console.log()
+			}else{
+				this.list[index].selected = true;
+				this.selectId.push(this.list[index].course_id)
+			}
+		},
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		callback_function_shop_option_data:function(that, cb_params){
 			
@@ -936,8 +973,39 @@ export default {
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
-	.buttons{
+/* 	.buttons{
 		color:#FFFFFF;
 		background-color: #30c478;
 	}
+	 */
+	
+	 .list_box {
+	        
+			display: flex;
+			white-space: nowrap;
+			justify-content: space-between;
+			margin:20rpx 0;
+	    }
+	
+	    /* 已选择 */
+	    .selde {
+			text-align: center;
+			width: 130rpx;
+	        border: 1px solid #959595;
+	        background: #30c478;
+	        color: #FFFFFF;
+	        border-radius: 10rpx;
+	        font-size: 30rpx;
+	    }
+	
+	    /* 未选择 */
+	    .noselde {
+			text-align: center;
+			width: 130rpx;
+	        border: 1px solid #959595;
+	        background: #FFFFFF;
+	        
+	        border-radius: 10rpx;
+	        font-size: 30rpx;
+	    }
 </style>
