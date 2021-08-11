@@ -15,16 +15,40 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		<view class="main_body">
 			<view :style="{width: card_bg_img_width+'rpx', height: card_bg_img_height+'rpx'}">
 				<!-- 背景模糊图片 -->
-				<image :src="current_card_detail.cover_img_url"  @load="imageLoad" 
+				<image :src="current_card_detail.cover_img_url_2x3"  @load="imageLoad" 
 					class="card_detail_border"
 					:style="{width: card_bg_img_width+'rpx', height: (card_bg_img_height*0.8)+'rpx'}" ></image>
 				<!-- 卡牌封面 -->
-				<view :style="{textAlign: 'center', paddingTop: (card_bg_img_height*0.15)+'rpx'}">
+				<!-- <view :style="{textAlign: 'center', paddingTop: (card_bg_img_height*0.15)+'rpx'}">
 					<image :src="current_card_detail.cover_img_url" 
 						class="card_detail_image"
 						:style="{width: (card_bg_img_width*0.8)+'rpx', height: (card_bg_img_height*0.8)+'rpx'}"></image>
 						
+				</view> -->
+				
+				<!-- 2021.08.11卡牌封面 ==> 模态框 -->
+				<view>
+					<view class="mask" v-if="showModal1" @click="showModal1=false"></view>
+					<view class="pop" v-if="showModal1" :style="{textAlign: 'center', paddingTop: (card_bg_img_height*0.15)+'rpx'}">
+						<image :src="current_card_detail.cover_img_url_2x3" 
+							class="card_detail_image" @click="showModal1=false"
+							:style="{width: (card_bg_img_width*0.96)+'rpx', height: (card_bg_img_height*0.96)+'rpx'}"></image>
+							
+					</view>
+					
+					<view @click="showModal1=true" :style="{textAlign: 'center', paddingTop: (card_bg_img_height*0.15)+'rpx'}">
+						<image :src="current_card_detail.cover_img_url_2x3" 
+							class="card_detail_image" 
+							:style="{width: (card_bg_img_width*0.8)+'rpx', height: (card_bg_img_height*0.8)+'rpx'}"></image>
+							
+					</view>
 				</view>
+				
+				
+				
+				
+				
+				
 				<!-- 2021.08.09收藏 -->
 				<view class="card_detail_schang_boder"
 					:style="{top:(card_bg_img_height*0.20)+'rpx', right:(card_bg_img_width*0.14)+'rpx'}">
@@ -117,7 +141,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 							<view class="slide_cards_pic">
 								<view class="card_detail_background">
 									<view class="card_detail_title" style="width: 190rpx; ">
-										<image :src="current_card_list_item.cover_img_url" mode="aspectFill"
+										<image :src="current_card_list_item.cover_img_url_2x3" mode="aspectFill"
 											class="card_detail_img_border"></image>
 										<view class="card_detail_kapai_title">{{current_card_list_item.card_name}}
 										</view>
@@ -213,6 +237,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	export default {
 		data() {
 			return {
+				showModal1: false,//模态框
+				
 				current_params_str: '', //网址参数
 
 				current_card_detail: null,
@@ -523,17 +549,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				imageUrl: share_img,
 				success: function(res) {
 					// 分享成功
-					uni.showToast({
-						title: '分享成功！',
-						duration: 2000
-					});
 				},
 				fail: function(res) {
 					// 分享失败
-					uni.showToast({
-						title: '分享失败！',
-						duration: 2000
-					});
 				}
 			}
 		},
@@ -817,12 +835,31 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		margin: 15rpx;
 		border-radius: 15rpx;
 	}
-
+	.mask{
+		background-color: #000;
+		opacity: 0.7;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 1;
+	}
+	.pop{
+		position: fixed;
+		top: 35%;
+		left: 2%;
+		z-index: 2;
+	}
 	.card_detail_image {
 		justify-content: center;
 		border-radius: 20rpx;
 		box-shadow: 0rpx 0rpx 20rpx #000000;
 		background-color: #FFFFFF;
+	}
+	.card_detail_modal{
+		position: relative;
+		background: rgb(0,0,0,0.6);
 	}
 /* 收藏按钮 */
 	.card_detail_schang_boder{
