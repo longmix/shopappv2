@@ -2,7 +2,7 @@
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText" : "卡扑",
-		"navigationBarBackgroundColor" : "#30c478",
+		"navigationBarBackgroundColor" : "#30C478",
 		"backgroundColor" : "#ffffff",
 		"backgroundColorTop":"#ffffff",
 		"backgroundColorBottom":"#ffffff"
@@ -681,6 +681,14 @@
         },
 		{
 			"path":"pages/nftcard/package_list",
+			"style":
+			{
+				"navigationBarTitleText":"",
+				"enablePullDownRefresh":true
+			}
+		},
+		{
+			"path":"pages/nftcard/my_card",
 			"style":
 			{
 				"navigationBarTitleText":"",

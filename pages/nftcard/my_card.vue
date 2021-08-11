@@ -169,13 +169,15 @@ export default {
 
 <style>
 	.card_list{
-		display: block;
+		display: inline-block;
+		vertical-align: top;
 		width: 100%;
 		float: left;
 		margin-top: 0rpx;
 	}
 	.card_item{
-		display: block;
+		display: inline-block;
+		vertical-align: top;
 		width: 45%;
 		float: left;
 		margin: 2%;
