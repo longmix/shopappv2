@@ -5,9 +5,14 @@
 			<view class="my_package_like_list" v-for="(current_package_list_item,index) in current_package_list"
 				@tap="goto_package_detail(current_package_list_item.packageid)">
 				<view><image :src="current_package_list_item.cover_img_url" mode="" style="width: 300rpx;height: 200rpx;"></image></view>
-				<view class="" style="margin-top: 20rpx;margin-left: 20rpx;">
+				<view class="" style="margin-top: 20rpx;margin-left: 20rpx;width:400rpx;">
 					<view style="font-weight: bold;font-size: 40rpx;">{{current_package_list_item.title}}</view>
-					<view style="font-weight: 100;font-size: 10rpx;margin-top: 10rpx;">{{current_package_list_item.brief}}</view>
+					<view>
+						<image :src="current_package_list_item.supplier_icon" mode="widthFix" style="width: 25rpx;height: 25rpx;"></image>
+						{{current_package_list_item.supplier_name}}
+					</view>
+					<view class="my_package_brief" >{{current_package_list_item.brief}}</view>
+					<view style="font-size: 10rpx;font-weight: 100;">{{current_package_list_item.time_begin}}</view>
 				</view>
 				
 			</view>
@@ -257,5 +262,14 @@ export default {
 		background-color: #FFFFFF;
 		border-radius: 20rpx;
 		overflow: hidden;
+	}
+	.my_package_brief{
+		width: 80%;
+		font-weight: 100;
+		font-size: 10rpx;
+		margin-top: 10rpx;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 </style>
