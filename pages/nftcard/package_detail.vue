@@ -67,7 +67,7 @@
 				<view class="publish_icon_follow" >
 					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/follow01.png" 
 						mode="widthFix" style="width: 60rpx; margin-top: 8rpx; "></image>
-						<view style="color: #30c478;margin-right:10rpx;font-size: 35rpx;">关注</view>
+						<view style="color: #30c478;margin-left:10rpx; margin-top: 5rpx; font-size: 30rpx;">关注</view>
 				</view>
 				
 				
@@ -954,7 +954,7 @@ export default {
 
 	.publish_information{
 		background-color: #FFFFFF;
-		margin: 10rpx ;
+		margin: 30rpx 10rpx 20rpx 10rpx;
 	
 		display: flex;
 		border-radius: 20rpx;
@@ -976,6 +976,7 @@ export default {
 		height: 50rpx;
 		display: flex;
 		float: right; 
+		margin-top: 25rpx;
 		margin-right: 20rpx;
 		background-color:#ffffff; 
 		border-radius: 10rpx;
@@ -1011,17 +1012,18 @@ export default {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		justify-content: center;
+		
 	}
 	.my_package_detail_card_list{
+		margin-top: -20rpx;
 		width: 730rpx;
 	}
 	.card_list{
-		display: flex;
+
 		float: left;
  		background-color: #FFFFFF; 
 		width: 350rpx;
-		margin:5rpx 7rpx 15rpx 8rpx;
+		margin:10rpx 7rpx 15rpx 8rpx;
 		border-radius: 10rpx;
 		overflow: hidden;
 		box-shadow: 3rpx 6rpx 15rpx #707070;
@@ -1084,8 +1086,8 @@ export default {
 	 .list_box {  
 			display: flex;
 			justify-content: space-between;
-			margin: 20rpx 20rpx 0rpx 20rpx;
-		
+			margin: 10rpx 20rpx 0rpx 20rpx;
+					
 	    }
 	
 	    /* 已选择 */

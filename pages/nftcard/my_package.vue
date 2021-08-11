@@ -1,9 +1,15 @@
 <template>
 	<view class="global_background">
-		<view class="">
-			<view class="" v-for="(current_package_list_item,index) in current_package_list">
-				<view><image :src="current_package_list_item.cover_img_url" mode="widthFix" style="width: 350rpx;"></image></view>
-				<view>{{current_package_list_item.title}}</view>
+		<view class="" style="width: 750rpx;height: 20rpx;"></view>
+		<view class="" >
+			<view class="my_package_like_list" v-for="(current_package_list_item,index) in current_package_list"
+				@tap="goto_package_detail(current_package_list_item.packageid)">
+				<view><image :src="current_package_list_item.cover_img_url" mode="" style="width: 300rpx;height: 200rpx;"></image></view>
+				<view class="" style="margin-top: 20rpx;margin-left: 20rpx;">
+					<view style="font-weight: bold;font-size: 40rpx;">{{current_package_list_item.title}}</view>
+					<view style="font-weight: 100;font-size: 10rpx;margin-top: 10rpx;">{{current_package_list_item.brief}}</view>
+				</view>
+				
 			</view>
 		</view>
 	</view>
@@ -40,50 +46,62 @@ export default {
 			title : '喜欢的卡包',
 		});
 		
+		
+		//判断用户是否登录
+		
+		var userInfo = that.abotapi.get_user_info();
+		if ((!userInfo) || (!userInfo.userid)) {
+			that.abotapi.call_h5browser_or_other_goto_url('/pages/login/login');
+			return;
+		}
+		
+		
+		
 	
 	
-	//获取卡包列表
-	
-	that.abotapi.abotRequest({
-	    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_list',
-	    method: 'post',
-	    data: {
-			sellerid:that.abotapi.globalData.default_sellerid,
-			userid:that.current_userid,
-			
-	    },
-	    success: function (res) {
-			
-			if(res.data.code != 1){
-				uni.showToast({
-					title:'卡包列表没有数据',
-					duration: 2000,
-				});
+		//获取卡包列表
+		
+		that.abotapi.abotRequest({
+			url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_list',
+			method: 'post',
+			data: {
+				sellerid:that.abotapi.globalData.default_sellerid,
+				checkstr:userInfo.checkstr,
+				userid:userInfo.userid,
+				action: 'my_like_list'
+			},
+			success: function (res) {
 				
-				return;
-			}
-			
-			that.current_package_list = res.data.data;
-			
-			console.log('current_package_list ===>>> ', that.current_package_list);
-			
-			
-			
-			
-			
-			
-			
-			
+				if(res.data.code != 1){
+					uni.showToast({
+						title:'卡包列表没有数据',
+						duration: 2000,
+					});
 					
-			
-	    },
-	    fail: function (e) {
-			uni.showToast({
-				title: '网络异常！',
-				duration: 2000
-			});
-	    },
-	});
+					return;
+				}
+				
+				that.current_package_list = res.data.data;
+				
+				console.log('current_package_list ===>>> ', that.current_package_list);
+				
+				
+				
+				
+				
+				
+				
+				
+						
+				
+			},
+			fail: function (e) {
+				uni.showToast({
+					title: '网络异常！',
+					duration: 2000
+				});
+			},
+		});
 	
 	
 	
@@ -203,7 +221,26 @@ export default {
 				return;
 			}
 			console.log('cb_params====', cb_params);
-		}
+		},
+		
+		
+		goto_package_detail:function(packageid){
+			console.log('packageid===>>>' + packageid);
+			
+			uni.navigateTo({
+				url: '/pages/nftcard/package_detail?packageid='+packageid,
+			})
+		},
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	}	
 }
 </script>
@@ -211,5 +248,14 @@ export default {
 <style>
 	@import "/static/css/nftcard.css";
 	
-	
+	.my_package_like_list{
+		
+		display: flex;
+		width: 720rpx;
+		height: 200rpx;
+		margin: 20rpx 15rpx;
+		background-color: #FFFFFF;
+		border-radius: 20rpx;
+		overflow: hidden;
+	}
 </style>
