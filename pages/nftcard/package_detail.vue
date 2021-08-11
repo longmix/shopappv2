@@ -40,18 +40,21 @@
 			<view class="begin_end_time" >
 				{{current_package_detail.time_begin}}~{{current_package_detail.time_end}}
 			</view>		
-		</view>
-		
-		
-		<!-- 标签属性 -->
-		<view class="package_detail_lable_attribute" >
-			<view class="package_detail_lable">标签</view>
 			
-			<view class="package_label" style="margin-top: 10rpx;margin-left: 10rpx;">
-				<view class="package_detail_lable_list" v-for="(item,index) in current_package_detail.tag_list">{{item}}</view>
+			
+			<!-- 标签属性 -->
+			<view class="package_detail_lable_attribute" >
+				<view class="package_detail_lable">标签</view>
+				
+				<view class="package_label" style="margin-top: 10rpx;">
+					<view class="package_detail_lable_list" v-for="(item,index) in current_package_detail.tag_list">{{item}}</view>
+				</view>
 			</view>
+			
 		</view>
 		
+		
+	
 	
 	
 		<!-- 发行商图片及简介 12324-->
@@ -63,8 +66,8 @@
 				<!-- icon关注图标 -->
 				<view class="publish_icon_follow" >
 					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/follow01.png" 
-						mode="widthFix" style="width: 45rpx; margin-top: 8rpx; "></image>
-						<view style="color: #30c478;margin-right:10rpx;">关注</view>
+						mode="widthFix" style="width: 60rpx; margin-top: 8rpx; "></image>
+						<view style="color: #30c478;margin-right:10rpx;font-size: 35rpx;">关注</view>
 				</view>
 				
 				
@@ -133,9 +136,9 @@
 								<image class="card_img" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/collect.png" mode="widthFix" style="width: 25rpx;"></image>
 								{{current_card_item.favorite_counter}}
 							</view>
-							<view class="sold_card">
+							<!-- <view class="sold_card">
 								（{{current_card_item.buy_counter}}/{{current_card_item.publish_counter}}）
-							</view>
+							</view> -->
 						</view>
 							
 									
@@ -921,7 +924,7 @@ export default {
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
-	.package_detail_lable_attribute{
+/* 	.package_detail_lable_attribute{
 		background-color: #ffffff;
 		width: 730rpx;
 		height: 120rpx;
@@ -929,9 +932,9 @@ export default {
 		border-radius: 20rpx;
 		overflow: hidden;
 		margin-bottom: 30rpx;
-	}
+	} */
 	.package_detail_lable{
-		padding-left: 20rpx;
+		
 		margin-top: 10rpx;
 		height: 40rpx;
 
@@ -940,8 +943,8 @@ export default {
 		
 		border: #15c5ce solid 2rpx;
 		color: #15c5ce;
-		margin: 5rpx 10rpx;
-		padding: 5rpx 10rpx;
+		margin: 10rpx 20rpx 10rpx 0rpx;
+		
 		border-radius: 6rpx;
 		overflow: hidden;
 		font-size: 10rpx;
@@ -969,6 +972,8 @@ export default {
 	
 	}
 	.publish_icon_follow{
+		width: 150rpx;
+		height: 50rpx;
 		display: flex;
 		float: right; 
 		margin-right: 20rpx;
@@ -1038,23 +1043,24 @@ export default {
 		font-size: 20rpx; 
 		float: right;
 		margin-right: 10rpx;
+		margin-top:20rpx;
 	
 	}
 	.card_img{
 		
 		background-color: #FFFFFF; 
 	}
-	.sold_card{
+/* 	.sold_card{
 		font-weight: 100;
 		font-size: 20rpx;
 		margin-left: 10rpx;
-	}
+	} */
 	.package_card_name_brief{
 		width: 340rpx;
 		margin-left: 10rpx;
 	}
 	.package_card_name{
-		width: 80%;
+		width: 60%;
 		font-weight: bold;
 		font-size: 40rpx;
 		white-space: nowrap;
@@ -1104,8 +1110,8 @@ export default {
 			text-align: center;
 			width: 130rpx;
 			line-height: 57rpx;
-	        border: 1px solid #30c478;
-	        background: #e6e6e6;
+/* 	        border: 1px solid #30c478; */
+	        background: #FFFFFF;
 	        margin-left:5rpx ;
 	        border-radius: 10rpx;
 	        font-size: 30rpx;

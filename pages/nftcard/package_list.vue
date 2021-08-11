@@ -5,7 +5,7 @@
 	
 		<view class="package_search" >
 			
-			<input style="width: 570rpx;height: 60rpx;margin-left: 20rpx;" type="text" value="搜索" />
+			<input style="width: 570rpx;height: 60rpx;margin-left: 20rpx;font-weight: 100;" type="text" value="提示卡包" />
 			<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/search.png"
 				mode="widthFix" style="width: 45rpx; margin-top: 8rpx;"></image>
 		</view>
@@ -290,7 +290,7 @@ export default {
 				url: '/pages/nftcard/package_detail?packageid='+packageid,
 			})
 		},
-		
+		 
 		
 		bindPickerChange(e){
 			console.log(e)
@@ -316,7 +316,7 @@ export default {
 		position:relative;
 		top: 10px;
 		margin-bottom: 50rpx;
-		margin-left: 40rpx;
+		margin-left: 50rpx;
 		width: 650rpx;
 		
 		background-color: #FFFFFF;

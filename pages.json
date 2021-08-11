@@ -686,6 +686,14 @@
 				"navigationBarTitleText":"",
 				"enablePullDownRefresh":true
 			}
+		},
+		{
+			"path":"pages/nftcard/my_package",
+			"style":
+			{
+				"navigationBarTitleText":"",
+				"enablePullDownRefresh":true
+			}
 		}
 		//======= NFT卡包卡牌相关 Begin  ====
 		
