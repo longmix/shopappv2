@@ -102,7 +102,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			<!-- 所属卡包信息-->
 			<view class="card_detail_suoshukabao">
 				<h4 class="card_detail_h4" :style="{color: wxa_shop_nav_bg_color, borderBottom: wxa_shop_nav_bg_color+' 2rpx solid'}">
-					<image style="width: 35rpx;height: 35rpx;padding-right: 18rpx;margin-bottom: -5rpx;padding-left: 3rpx;" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/所属卡包.png"></image>所属卡包
+					<image class="card_detail_tubiao" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/suoshukabaotubiao.png"></image>所属卡包
 				</h4>
 				
 				<view style="display: flex;">
@@ -130,7 +130,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			<view class="card_detail_tong">
 				<h4 class="card_detail_h5" style="margin-left: 20rpx;"
 					:style="{color: wxa_shop_nav_bg_color, borderBottom: wxa_shop_nav_bg_color+' 2rpx solid'}" >
-					<image style="width: 35rpx;height: 35rpx;padding-right: 20rpx;margin-top: 10rpx;" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/同系列卡牌.png"></image>同系列卡牌
+					<image class="card_detail_tubiao" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/tongxilitubiao.png"></image>同系列卡牌
 				
 				</h4>
 			
@@ -177,15 +177,21 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 
 		<!-- 悬浮 -->
 		<view class="card_detail_footer">
-			<view class="card_detail_liebiao">
-				
-				<image class="card_detail_fenxiang"
-					src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/感叹号.png"></image>
+			<view @click="layOut">
+				<view v-if="lay_type" class="card_detail_liebiao">
+					
+					<image class="card_detail_xiaoxi1"
+						src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/tips.png"></image>				
+				</view>
+				<view v-else class="card_detail_liebiao_xiaoxi">
+					<image class="card_detail_xiaoxi2"
+						src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/tips2.png"></image>
+				</view>
 			</view>
 			<view class="card_detail_liebiao">
 				<!-- 分享 -->
 				<image class="card_detail_fenxiang"
-					src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/分享2.png"></image>
+					src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/fenxiang02.png"></image>
 			</view>
 			<!-- <view class="card_detail_liebiao">
 				<image class="card_detail_an"
@@ -196,23 +202,23 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				<view class="card_detail_liebiao">
 					<!-- 2021.08.06赠予 -->
 					<image class="card_detail_an"
-						src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/赠送.png"></image>
+						src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/zengsong.png"></image>
 				</view>
 				<view class="card_detail_liebiao">
 					<!-- 2021.08.06丢弃 -->
 					<image class="card_detail_an"
-						src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/销毁.png"></image>
+						src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/xiaohui.png"></image>
 				</view>
 			</view>
 			<!-- 2021.08.06购买 -->
 			<view class="card_detail_goumai1" :style="{backgroundColor:wxa_shop_nav_bg_color}"
 				v-if="current_card_detail.is_buyed == 0" @tap="test_goto_buy">
-				<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/购买-大额存单.png"
+				<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/goumai.png"
 				></image>
 			</view>
 			<!-- 2021.08.06卡牌持有的数量 -->
 			<view class="card_detail_goumai2" v-if="current_card_detail.is_buyed == 1">
-				<image class="card_detail_items" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/乘.png"
+				<image class="card_detail_items" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/cheng.png"
 				></image>
 				<view style="font-size: 35rpx;padding-top: 20rpx;padding-right: 5rpx;">
 					{{current_card_detail.have_counter}}
@@ -235,8 +241,11 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	// #endif
 
 	export default {
+		name:"sortstick",
 		data() {
 			return {
+				lay_type:0,
+				
 				showModal1: false,//模态框
 				
 				current_params_str: '', //网址参数
@@ -563,6 +572,15 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			return this.share_return();
 		},
 		methods: {
+			
+			layOut(){
+			      if(this.lay_type == 0){
+			        this.lay_type = 1
+			      }else{
+			         this.lay_type = 0
+			      }
+			    },
+			
 			share_return: function() {
 				var that = this;
 			},
@@ -819,6 +837,13 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		text-align: center;
 		margin-bottom: 20rpx;
 	}
+	.card_detail_tubiao{
+		width: 35rpx;
+		height: 35rpx;
+		padding-right: 18rpx;
+		margin-bottom: -5rpx;
+		padding-left: 3rpx;
+	}
 	.card_detail_h5 {
 		font-size: 30rpx;
 		line-height: 60rpx;
@@ -877,6 +902,27 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		height: 39rpx;
 		margin-top: 7rpx;
 		margin-left: 11rpx;
+	}
+	.card_detail_xiaoxi1 {
+		width: 60rpx;
+		height: 60rpx;
+		padding-top: 14rpx;
+		padding-left: 15rpx;
+	}
+	.card_detail_liebiao_xiaoxi{
+		background-color: #f4ea2a;
+		width: 90rpx;
+		height: 90rpx;
+		border-radius: 50%;
+		margin: 15rpx;
+		margin-right: 23rpx;
+		border: #aeb8ab 3rpx solid;
+	}
+	.card_detail_xiaoxi2 {
+		width: 60rpx;
+		height: 60rpx;
+		padding-top: 14rpx;
+		padding-left: 15rpx;
 	}
 	.card_detail_fenxiang {
 		width: 50rpx;

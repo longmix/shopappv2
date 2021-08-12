@@ -1,16 +1,24 @@
 <template>
-	
-	
 	<view class="content">
+		<view class="tabs">
+		    <block v-for="(tab,index) in tabBars" :key="tab.id">
+				<view class="uni-tab-item" :class="{'uni-tab-item-title-active' :tabIndex==index}" @tap="tabtap(index)">
+					<view class="uni-tab-item-title" :class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{tab.name}}</view>
+				</view>
+		    </block>
+		</view>
+		
+		
+		
 	    <waterfallsFlow :list="current_card_list">
 			<!--  #ifdef  MP-WEIXIN -->
 			<!-- 微信小程序自定义内容 -->
-			<!-- <view v-for="(item, index) of list" :key="index" slot="slot{{index}}">
+			<view v-for="(item, index) of list" :key="index" slot="slot{{index}}">
 				<view class="cnt">
 				<view class="title">{{ item.title }}</view>
 					<view class="text">{{ item.text }}</view>
 				</view>
-			</view> -->
+			</view>
 			<!--  #endif -->
 				
 			<!-- #ifndef  MP-WEIXIN -->
@@ -45,48 +53,12 @@ export default {
 			
 			action_data_type:'my_favorite_list',
 			
-			/*list: [
-			        {
-			          id: 1,
-			          image_url:
-			            "http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/package_example/2.jpg",
-			          title: "卡牌名称",
-			          text:
-			            "2021-02-09",
-			        },
-			        {
-			          id: 2,
-			          image_url:
-			            "http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/package_example/3.jpg",
-			          title: "卡牌名称",
-			          text:
-			            "2021-02-09",
-			        },
-			        {
-			          id: 3,
-			          image_url:
-			            "http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/package_example/Fenglin _volcano_01.jpg",
-			          title: "卡牌名称",
-			          text:
-			            "2021-02-09",
-			        },
-			        {
-			          id: 5,
-			          image_url:
-			            "http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/package_example/tupian.jpg",
-			          title: "卡牌名称",
-			          text:
-			            "2021-02-09",
-			        },
-			        {
-			          id: 6,
-			          image_url:
-			            "http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/package_example/7.jpg",
-			          title: "卡牌名称",
-			          text:
-			            "2021-02-09",
-			        },
-			      ],*/
+			
+			tabIndex:0,
+			    tabBars:[
+			        { name:"典藏卡",id:"diancang"},
+			        { name:"珍藏卡",id:"zhencang"},
+			    ]
 		};
 	},
 	/**
@@ -137,7 +109,7 @@ export default {
 			return;
 		}
 		
-		//获取收藏的
+		//获取收藏的卡牌列表
 		
 		that.abotapi.abotRequest({
 		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_list',
@@ -148,15 +120,12 @@ export default {
 				userid:userInfo.userid,
 				action: that.action_data_type,
 				
-		
-				//packageid:that.current_packageid,
-				
 		    },
 		    success: function (res) {
 				
 				if((res.data.code != 1) || (!res.data.data) ){
 					uni.showToast({
-						title:'卡包列表没有数据',
+						title:'',
 						duration: 2000,
 					});
 					
@@ -173,9 +142,10 @@ export default {
 					var card_item = card_list[i];
 					
 					console.log(card_item);
-					
+					//转换为对象数组
 					var new_card_item = {};
 					new_card_item.id = card_item.cardid;
+					// new_card_item.image_url = card_item.cover_img_url;
 					new_card_item.image_url = card_item.cover_img_url_2x3;
 					new_card_item.title = card_item.card_name;
 					new_card_item.text = card_item.brief;
@@ -299,6 +269,15 @@ export default {
 			console.log('cb_params====', cb_params);
 		},
 		
+		tabtap(index){
+			this.tabIndex=index;
+			uni.showToast({
+				title: ' ',
+				duration: 2000,
+			});
+						
+			return;
+		}
 		
 	}
 	
@@ -307,43 +286,74 @@ export default {
 	
 </script>
 
+
 <style>
+	.tabs {
+		margin-top: 20rpx;
+		margin-bottom: 40rpx;
+	}
+	
+	.uni-tab-item {
+	    display: inline-block;
+		margin-right: 20rpx;
+	}
+	
+	.uni-tab-item-title {
+	    color: #555;
+	    font-size: 30rpx;
+	    line-height: 55rpx;
+		background-color: #FFFFFF;
+		border-radius: 15rpx;
+	    padding-left: 20rpx;
+	    padding-right: 20rpx;
+		
+	}
+	
+	.uni-tab-item-title-active {
+	    color: #FFFFFF;
+		background-color: #30C478;
+		border-radius: 15rpx;
+		/* border-bottom: #30C478 2rpx solid; */
+	}
 	
 	
-	.my_card_title_size{
-		padding-left: 22rpx;
-		font-size: 32rpx;
-		width: 44%;
-		font-weight: bold;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-	}
-	.my_card_font_size{
-		padding-left: 22rpx;
-		font-size: 26rpx;
-		padding-top: 10rpx;
-		color: #7d7d7d;
-	}
-</style>
-<style>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 page {
   background-color: #eee;
 }
 </style>
 <style lang="scss" scoped>
 .content {
-  padding: 10px;
-  .cnt {
-    padding: 10px;
-    .title {
-      font-size: 16px;
-    }
-    .text {
-      font-size: 14px;
-      margin-top: 5px;
-    }
+	padding: 10px;
+	.cnt {
+		padding: 10px;
+		.title {
+			font-size: 16px;
+			font-weight: bold;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+		.text {
+			font-size: 12px;
+			margin-top: 5px;
+			color: #7a7a7a;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
   }
 }
+
+
 </style>
  
