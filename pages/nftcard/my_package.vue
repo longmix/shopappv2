@@ -8,7 +8,7 @@
 				<view class="" style="margin-top: 20rpx;margin-left: 20rpx;width:400rpx;">
 					<view style="font-weight: bold;font-size: 40rpx;">{{current_package_list_item.title}}</view>
 					<view>
-						<image :src="current_package_list_item.supplier_icon" mode="widthFix" style="width: 25rpx;height: 25rpx;"></image>
+						<image :src="current_package_list_item.supplier_icon" mode="" style="width: 25rpx;height: 25rpx;"></image>
 						{{current_package_list_item.supplier_name}}
 					</view>
 					<view class="my_package_brief" >{{current_package_list_item.brief}}</view>
@@ -71,9 +71,16 @@ export default {
 			method: 'post',
 			data: {
 				sellerid:that.abotapi.globalData.default_sellerid,
+				
+				
+				
 				checkstr:userInfo.checkstr,
 				userid:userInfo.userid,
-				action: 'my_like_list'
+				action: 'my_like_list',
+				
+				
+				
+				
 			},
 			success: function (res) {
 				
@@ -111,14 +118,6 @@ export default {
 	
 	
 	
-	
-	
-
-	
-	
-	
-	
-		
 		
 		
 		

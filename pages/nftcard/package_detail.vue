@@ -60,7 +60,7 @@
 		<!-- 发行商图片及简介 12324-->
 		<view class="publish_information" @tap="go_to_supplier_detail()">
 			<image class="publish_icon" :src="current_package_detail.supplier_icon" 
-				mode="widthFix" style="width: 150rpx;height:150rpx ;"></image>
+				mode="" ></image>
 			<view class="package_card_publish">
 				
 				<!-- icon关注图标 -->
@@ -97,7 +97,6 @@
 
 
 
-		<view class="scroll_button">
 			
 			<!-- <view class="scroll_items">                 
 				<button size="mini" id="clicl_0">全部</button>
@@ -114,10 +113,7 @@
 			<view class="scroll_items">
 				<button size="mini" id="click_4">未有</button>
 			</view> -->
-		</view>
-		
 
-	
 
 							
 		<!-- 卡包中的卡牌 --> 
@@ -373,44 +369,6 @@ export default {
 		
 	
 	
-	
-		//获取发行商详情
-		
-		that.abotapi.abotRequest({
-		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/supplier_detail',
-		    method: 'post',
-		    data: {
-				sellerid:that.abotapi.globalData.default_sellerid,			
-				xianmai_shangid:that.current_xianmai_shangid,
-				
-		    },
-		    success: function (res) {
-				
-				if(res.data.code != 1){
-					uni.showToast({
-						title:'发行商没有数据',
-						duration: 2000,
-					});
-					
-					return;
-				}
-				
-				that.current_supplier_detail = res.data.data;
-				
-				console.log('current_supplier_detail ===>>> ', that.current_supplier_detail);
-				
-				
-		    },
-		    fail: function (e) {
-				uni.showToast({
-					title: '网络异常！',
-					duration: 2000
-				});
-		    },
-		});
-		
-			
-		
 	
 	
 	
@@ -952,17 +910,21 @@ export default {
 		
 	} 
 
-	.publish_information{
+	.publish_information{	
+		height: 150rpx;
 		background-color: #FFFFFF;
 		margin: 30rpx 10rpx 20rpx 10rpx;
-	
+		
 		display: flex;
 		border-radius: 20rpx;
 		overflow: hidden;
 	}
 	.publish_icon{
+		margin: 25rpx 10rpx 20rpx 20rpx;
 		border-radius: 50%;
 		overflow: hidden;
+		width: 100rpx;
+		height:100rpx ;
 	
 	}
 	.package_card_publish{
@@ -990,24 +952,22 @@ export default {
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
-	.scroll_button{
+/* 	.scroll_button{
 		display: flex;
 		white-space: nowrap;
 		justify-content: space-between;
 		margin:20rpx 0;
 	
-	}
-	.scroll_items{
+	} */
+	/* .scroll_items{
 		padding: 8rpx;
 		margin-left: 0rpx;
-	}
-	.normal_buttom{
-		
-	}
-	.checked_button{
+	} */
+	
+/* 	.checked_button{
 		background: #30c478;
 		color: #FFFFFF;
-		}
+		} */
 	.card_list_background{
 		display: flex;
 		flex-direction: column;
@@ -1086,7 +1046,7 @@ export default {
 	 .list_box {  
 			display: flex;
 			justify-content: space-between;
-			margin: 10rpx 20rpx 0rpx 20rpx;
+			margin: 10rpx 20rpx 40rpx 20rpx;
 					
 	    }
 	
