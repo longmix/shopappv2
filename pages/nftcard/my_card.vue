@@ -1,37 +1,89 @@
 <template>
-	<view>
-		<view class="card_list">
-			<view class="card_item">
-				<image class="my_card_border" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/nft_card_detail.jpeg" mode="widthFix"></image>
-			</view>
-			<view class="card_item">
-				<image class="my_card_border" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/package_example/2.jpg" mode="widthFix"></image>
-			</view>
-			<view class="card_item">
-				<image class="my_card_border" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/package_example/Fenglin _volcano_03.jpg" mode="widthFix"></image>
-			</view>
-			<view class="card_item">
-				<image class="my_card_border" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/package_example/3.jpg" mode="widthFix"></image>
-			</view>
-			<!-- <view>
-				<view class="my_card_title_size">卡牌名称卡牌名称卡牌名称</view>
-				<view class="my_card_font_size">有效时间</view>
+	
+	
+	<view class="content">
+	    <waterfallsFlow :list="list">
+			<!--  #ifdef  MP-WEIXIN -->
+			<!-- 微信小程序自定义内容 -->
+			<!-- <view v-for="(item, index) of list" :key="index" slot="slot{{index}}">
+				<view class="cnt">
+				<view class="title">{{ item.title }}</view>
+					<view class="text">{{ item.text }}</view>
+				</view>
 			</view> -->
-		</view>
-		
+			<!--  #endif -->
+				
+			<!-- #ifndef  MP-WEIXIN -->
+			<!-- app、h5 自定义内容 -->
+			<template v-slot:default="item">
+				<view class="cnt">
+					<view class="title">{{ item.title }}</view>
+					<view class="text">{{ item.text }}</view>
+				</view>
+			</template>
+	    </waterfallsFlow>
+	    <!-- #endif -->
 	</view>
+	
+	
+	
 </template>
 
 
 
 <script>
-	
 import util from '../../common/util.js';
+
+import waterfallsFlow from "@/components/maramlee-waterfalls-flow/maramlee-waterfalls-flow.vue";
 	
 export default {
+	components: { waterfallsFlow },
 	data() {
 		return {
-			
+			current_card_list:null,
+			current_packageid:0,
+			list: [
+			        {
+			          id: 1,
+			          image_url:
+			            "http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/package_example/2.jpg",
+			          title: "卡牌名称",
+			          text:
+			            "2021-02-09",
+			        },
+			        {
+			          id: 2,
+			          image_url:
+			            "http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/package_example/3.jpg",
+			          title: "卡牌名称",
+			          text:
+			            "2021-02-09",
+			        },
+			        {
+			          id: 3,
+			          image_url:
+			            "http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/package_example/Fenglin _volcano_01.jpg",
+			          title: "卡牌名称",
+			          text:
+			            "2021-02-09",
+			        },
+			        {
+			          id: 5,
+			          image_url:
+			            "http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/package_example/tupian.jpg",
+			          title: "卡牌名称",
+			          text:
+			            "2021-02-09",
+			        },
+			        {
+			          id: 6,
+			          image_url:
+			            "http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/package_example/7.jpg",
+			          title: "卡牌名称",
+			          text:
+			            "2021-02-09",
+			        },
+			      ],
 		};
 	},
 	onLoad: function (options) {
@@ -53,8 +105,42 @@ export default {
 		this.abotapi.set_shop_option_data(this, this.callback_function_shop_option_data);
 		
 		
+		//获取收藏的
 		
+		that.abotapi.abotRequest({
+		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_list',
+		    method: 'post',
+		    data: {
+				sellerid:that.abotapi.globalData.default_sellerid,
 		
+				packageid:that.current_packageid,
+				
+		    },
+		    success: function (res) {
+				
+				if(res.data.code != 1){
+					uni.showToast({
+						title:'卡包列表没有数据',
+						duration: 2000,
+					});
+					
+					return;
+				}
+				
+				that.current_card_list = res.data.data;
+				
+				console.log('current_card_list ===>>> ', that.current_card_list);
+					
+				
+		    },
+		    fail: function (e) {
+				uni.showToast({
+					title: '网络异常！',
+					duration: 2000
+				});
+		    },
+			
+		});
 		
 	},
 	onShow:function(){
@@ -168,29 +254,6 @@ export default {
 </script>
 
 <style>
-	.card_list{
-		display: inline-block;
-		vertical-align: top;
-		width: 100%;
-		float: left;
-		margin-top: 0rpx;
-	}
-	.card_item{
-		display: inline-block;
-		vertical-align: top;
-		width: 45%;
-		float: left;
-		margin: 2%;
-	}
-	
-	.my_card_border{
-		width: 100%;
-		float: left;
-	}
-	
-	.favorite_cards_images_height{
-		
-	}
 	
 	
 	.my_card_title_size{
@@ -209,5 +272,24 @@ export default {
 		color: #7d7d7d;
 	}
 </style>
-
+<style>
+page {
+  background-color: #eee;
+}
+</style>
+<style lang="scss" scoped>
+.content {
+  padding: 10px;
+  .cnt {
+    padding: 10px;
+    .title {
+      font-size: 16px;
+    }
+    .text {
+      font-size: 14px;
+      margin-top: 5px;
+    }
+  }
+}
+</style>
  
