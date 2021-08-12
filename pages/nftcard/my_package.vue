@@ -1,18 +1,46 @@
 <template>
 	<view class="global_background">
 		<view class="" style="width: 750rpx;height: 20rpx;"></view>
+		<!-- 全部筛选   有效   无效-->
+		<view style="display: flex;margin: 20rpx 0rpx;">
+			<view class="my_package_screen" style="background-color: #30c478;color: #FFFFFF;">全部卡包</view>
+			<view class="my_package_screen" >正在发售</view>
+			<view class="my_package_screen" >过期卡包</view>
+		</view>
+		
+		<!-- 喜欢的卡包列表 -->
 		<view class="" >
 			<view class="my_package_like_list" v-for="(current_package_list_item,index) in current_package_list"
 				@tap="goto_package_detail(current_package_list_item.packageid)">
-				<view><image :src="current_package_list_item.cover_img_url" mode="" style="width: 300rpx;height: 200rpx;"></image></view>
-				<view class="" style="margin-top: 20rpx;margin-left: 20rpx;width:400rpx;">
-					<view style="font-weight: bold;font-size: 40rpx;">{{current_package_list_item.title}}</view>
-					<view>
-						<image :src="current_package_list_item.supplier_icon" mode="" style="width: 25rpx;height: 25rpx;"></image>
-						{{current_package_list_item.supplier_name}}
+				
+				<!--卡包的图片 -->
+				<view><image :src="current_package_list_item.cover_img_url" mode="" style="width:345rpx;height:100%;border-radius: 20rpx;"></image></view>
+				
+				<!-- 卡包详情 -->
+				<view class="my_package_detail" >
+					<view class="my_package_name" >{{current_package_list_item.title}}</view>
+					
+					<!-- 发行商icon图标  名字 -->
+					<view style="margin-top: 10rpx; width: 350rpx;display: flex;">
+						<image :src="current_package_list_item.supplier_icon" mode=""
+							style="width: 35rpx;height: 35rpx;top: 5rpx;"></image>
+						<view style="margin-left: 15rpx;">{{current_package_list_item.supplier_name}}</view>
 					</view>
-					<view class="my_package_brief" >{{current_package_list_item.brief}}</view>
-					<view style="font-size: 10rpx;font-weight: 100;">{{current_package_list_item.time_begin}}</view>
+					
+					<!-- 进度条 -->
+					<view class="uni-padding-wrap uni-common-mt">
+					 	<view class="progress-box">
+							<progress percent="50" active="" stroke-width="3" 
+								show-info="" backgroundColor="red" font-size="5"></progress>
+						</view>
+					</view>
+					
+					<!-- 喜欢卡包的简介  发行时间 -->
+					<view class="" style="margin-top: 10rpx;">
+						<view class="my_package_brief" >{{current_package_list_item.brief}}</view>
+						<view style="font-size: 10rpx;font-weight: 100;">{{current_package_list_item.time_begin}}</view>
+					</view>
+					
 				</view>
 				
 			</view>
@@ -252,15 +280,39 @@ export default {
 <style>
 	@import "/static/css/nftcard.css";
 	
+	.my_package_screen{
+		background-color: #FFFFFF;
+		margin: 10rpx 20rpx;
+		width: 150rpx;
+		height: 50rpx;
+		line-height: 50rpx;
+		border-radius: 15rpx;
+		overflow: hidden;
+		text-align: center;
+	}
+	
 	.my_package_like_list{
 		
 		display: flex;
 		width: 720rpx;
-		height: 200rpx;
+		height: 230rpx;
 		margin: 20rpx 15rpx;
 		background-color: #FFFFFF;
 		border-radius: 20rpx;
 		overflow: hidden;
+	}
+	.my_package_detail{
+		margin-top: 5rpx;
+		margin-left: 30rpx;
+		width:345rpx;
+	}
+	.my_package_name{
+		width: 80%;
+		font-weight: bold;
+		font-size: 40rpx;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 	.my_package_brief{
 		width: 80%;

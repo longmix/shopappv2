@@ -27,24 +27,24 @@
 				
 		<view class="my_package_list_style"	>
 			<view class="my_package_list">
-				<view class="my_package_item"
+				<view class="my_package_item" 
 					v-for="(current_package_item, index) in current_package_list"
 					 @tap="goto_package_detail(current_package_item.packageid)" >
+					
+					
 					<!-- 标签 -->
-					
-					
-					
+
 					<view class="package_detail_label" style="position: relative;">
 						
 						<image class="package_list_loop" :src="current_package_item.cover_img_url" mode=" aspectFill" ></image>
-						<view class="package_label" style="position: absolute;z-index: 2; left: 20rpx; top: 30rpx;">
+						<view class="package_label" style="position: absolute; z-index: 2; left: 20rpx; top: 30rpx;">
 							<view class="package_lable_list" v-for="(item,index) in current_package_item.tag_of_editor">{{item}}</view>
 						</view>
 					</view>
 				
 					
 					
-					<view class=""><!-- {{current_package_item.cover_img_url}} -->
+					<view class="" style="{'background-color': current_package_item.theme_color}"><!-- {{current_package_item.cover_img_url}} -->
 						
 						<!-- 卡包标签--------icon喜欢图标----------喜欢人数 -->
 						<view class="package_icon_like_num">

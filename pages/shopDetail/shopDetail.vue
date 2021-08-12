@@ -157,6 +157,7 @@
 			
 			<!-- 发型商发行的卡包 -->
 			<view class="nft_issue_package_list">
+				<view style="height: 20rpx;"></view>
 				<view class="nft_package_list" v-for="(item,index) in current_nft_package_list" :key='index' 
 					@tap="goto_surrlier_package_detail(item.packageid)">
 					<view class="nft_package" >
@@ -167,7 +168,7 @@
 						<view class="supplier_image_description">
 							<view class="nft_package_title">{{item.title}}</view>
 							<view class="nft_package_brief">{{item.brief}}</view>
-							<view class=""></view>
+							<view class="" style="font-size: 30rpx; font-weight: 100;">{{item.updatetime}}</view>
 						</view>
 						
 					</view>
@@ -206,7 +207,7 @@
 		<!-- 功能按钮-->
 		<view>
 			<!-- 按钮1 -->
-			<view class="paidui-con" v-if="shop_product_btn_show == 0">
+			<view class="paidui-con" v-if="shop_product_btn_show == 1">
 				<image class="icon-a" :src="user_console_setting.shop_product_icon"></image>
 				<view class="paidui-a">
 					<view class="icon-title">
@@ -227,7 +228,7 @@
 			<!-- 按钮1   end -->
 
 			<!-- 按钮2 -->
-			<view class="paidui-con" v-if="waimai_product_btn_show == 0">
+			<view class="paidui-con" v-if="waimai_product_btn_show == 1">
 				<image style="height: 85upx;" class="icon-a" :src="user_console_setting.waimai_product_icon"></image>
 				<view class="paidui-a">
 					<view class="icon-title">
@@ -2484,26 +2485,28 @@
 	
 	// 2021.8.5发行商详情的css
 	.nft_issue_package_list{
-		
+		background-color: #eceeef;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 	}
 	.nft_package_list{
-		background-color: #e1e3e4;
-		width: 700rpx;
+		background-color: #FFFFFF;
+		width: 730rpx;
+		height: 230rpx;
 		margin-bottom: 30rpx;
-		border-radius: 10rpx;
+		border-radius: 20rpx;
 		overflow: hidden;
 		
 	}
 	.nft_package{
 		display: flex;
+		
 	}
 	.supplier_image_description{
 		width: 400rpx;
-		margin: 50rpx 10rpx 10rpx 20rpx;
+		margin: 40rpx 10rpx 10rpx 20rpx;
 		
 	}
 	.nft_package_title{
@@ -2524,10 +2527,9 @@
 		text-overflow: ellipsis;
 	}
 	.supplier_package_list{
-		width: 200rpx;
-		height: 200rpx;
-		margin: 20rpx;
-		border-radius: 10rpx;
+		width: 340rpx;
+		height: 230rpx;
+		border-radius: 20rpx;
 		overflow: hidden;
 	}
 

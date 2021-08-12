@@ -41,6 +41,16 @@
 				{{current_package_detail.time_begin}}~{{current_package_detail.time_end}}
 			</view>		
 			
+		
+			<!-- 进度条 -->
+		 	<view class="uni-padding-wrap uni-common-mt">
+			 	<view class="progress-box">
+					<progress percent="50" active="" stroke-width="4" 
+						show-info="" backgroundColor="red" font-size="5"></progress>
+				</view>
+			</view>
+			
+			
 			
 			<!-- 标签属性 -->
 			<view class="package_detail_lable_attribute" >
@@ -58,7 +68,7 @@
 	
 	
 		<!-- 发行商图片及简介 12324-->
-		<view class="publish_information" @tap="go_to_supplier_detail()">
+		<view class="publish_information" @tap="goto_supplier_detail(shangid)">
 			<image class="publish_icon" :src="current_package_detail.supplier_icon" 
 				mode="" ></image>
 			<view class="package_card_publish">
@@ -216,9 +226,7 @@ export default {
 			current_packageid:0,
 			current_cardid:0, 
 			current_userid:0,
-
-			current_xianmai_shangid:0,
-		
+			shangid:0,
 			
 			
 			card_description:'',  //卡包的富媒体描述
@@ -616,11 +624,11 @@ export default {
 		 
 		 
 		 
-		 go_to_supplier_detail:function(shangid){
-		 	console.log()
+		 goto_supplier_detail:function(shangid){
+		 	console.log('跳转到发行商详情:' + shangid);
 		
 		 	uni.navigateTo({
-		 		url: '/pages/shopDetail/shopDetail?shangid='+shangid,
+		 		url: '/pages/shopDetail/shopDetail?shangid='+shangid+'',
 		 	})
 		 },
 		  
