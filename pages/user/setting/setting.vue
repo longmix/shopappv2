@@ -110,9 +110,9 @@
 			that.version_number = that.abotapi.globalData.version_number;
 			var userInfo = that.abotapi.get_user_info();
 			if ((!userInfo) || (!userInfo.userid)) {
-				uni.redirectTo({
-					url: '../../login/login',
-				})
+				
+				that.abotapi.call_h5browser_or_other_goto_url('/pages/login/login');
+				
 				return;
 			}
 			

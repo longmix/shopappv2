@@ -157,7 +157,8 @@
 			
 			<!-- 发型商发行的卡包 -->
 			<view class="nft_issue_package_list">
-				<view class="nft_package_list" v-for="(item,index) in current_nft_package_list" :key='index'>
+				<view class="nft_package_list" v-for="(item,index) in current_nft_package_list" :key='index' 
+					@tap="goto_surrlier_package_detail(item.packageid)">
 					<view class="nft_package" >
 						<view class="">
 							<img class="supplier_package_list" :src="item.cover_img_url"  >
@@ -553,7 +554,7 @@
 				//2021.8.4. NFT卡包卡牌相关的
 				current_nft_package_list: null,
 				nft_package_list_show_flag:0,	// 0 不展示NFT卡包列表  1  展示
-			
+				current_packageid:0,
 			};
 		},
 		
@@ -1574,8 +1575,18 @@
 			//跳转到卡包列表页面
 			goto_supplier_all_package_list:function(){
 				var new_url = '/pages/nftcard/package_list?nft_supplierid='+this.current_xianmai_shangid;
-			}
+			},
 				
+			goto_surrlier_package_detail:function(packageid){
+				console.log('准备跳转到卡包详情：' + packageid);
+				
+				uni.navigateTo({
+					url:'/pages/nftcard/package_detail?packageid='+ packageid +'',
+				});
+			},
+			
+			
+			
 			
 		}
 	};

@@ -2,7 +2,7 @@
 	
 	
 	<view class="content">
-	    <waterfallsFlow :list="list">
+	    <waterfallsFlow :list="current_card_list">
 			<!--  #ifdef  MP-WEIXIN -->
 			<!-- 微信小程序自定义内容 -->
 			<!-- <view v-for="(item, index) of list" :key="index" slot="slot{{index}}">
@@ -42,7 +42,10 @@ export default {
 		return {
 			current_card_list:null,
 			current_packageid:0,
-			list: [
+			
+			action_data_type:'my_favorite_list',
+			
+			/*list: [
 			        {
 			          id: 1,
 			          image_url:
@@ -83,9 +86,19 @@ export default {
 			          text:
 			            "2021-02-09",
 			        },
-			      ],
+			      ],*/
 		};
 	},
+	/**
+	 * @param {Object} options
+	 * 
+	 * 跳转的路径、
+	 * /pages/nftcard/my_card   默认打开  我收藏的卡牌
+	 * 我收藏的卡牌  /pages/nftcard/my_card?action_data_type=my_favorite_list
+	 * 我购买的卡牌  /pages/nftcard/my_card?action_data_type=my_buy_card_list
+	 * 
+	 * 
+	 */
 	onLoad: function (options) {
 		
 		console.log('当前时间：' + util.formatTime( new Date() ) + ' ' + util.formatTime2( new Date() ) + ':01' );
@@ -98,12 +111,31 @@ export default {
 			title : that.abotapi.globalData.default_shopname
 		});
 		
-		uni.setNavigationBarTitle({
-			title : '我收藏的卡牌'
-		});
+		if(options.action_data_type){
+			that.action_data_type = options.action_data_type;
+		}
+		
+		if(that.action_data_type == 'my_favorite_list'){
+			uni.setNavigationBarTitle({
+				title : '我收藏的卡牌'
+			});
+		}
+		else if(that.action_data_type == 'my_buy_card_list'){
+			uni.setNavigationBarTitle({
+				title : '我购买的卡牌'
+			});
+			
+		}
 		
 		this.abotapi.set_shop_option_data(this, this.callback_function_shop_option_data);
 		
+		//判断用户是否登录
+		
+		var userInfo = that.abotapi.get_user_info();
+		if ((!userInfo) || (!userInfo.userid)) {
+			that.abotapi.call_h5browser_or_other_goto_url('/pages/login/login');
+			return;
+		}
 		
 		//获取收藏的
 		
@@ -112,13 +144,17 @@ export default {
 		    method: 'post',
 		    data: {
 				sellerid:that.abotapi.globalData.default_sellerid,
+				checkstr:userInfo.checkstr,
+				userid:userInfo.userid,
+				action: that.action_data_type,
+				
 		
-				packageid:that.current_packageid,
+				//packageid:that.current_packageid,
 				
 		    },
 		    success: function (res) {
 				
-				if(res.data.code != 1){
+				if((res.data.code != 1) || (!res.data.data) ){
 					uni.showToast({
 						title:'卡包列表没有数据',
 						duration: 2000,
@@ -127,7 +163,25 @@ export default {
 					return;
 				}
 				
-				that.current_card_list = res.data.data;
+				
+				
+				var card_list = res.data.data;
+				
+				that.current_card_list = [];
+				
+				for(var i=0; i<card_list.length; i++){
+					var card_item = card_list[i];
+					
+					console.log(card_item);
+					
+					var new_card_item = {};
+					new_card_item.id = card_item.cardid;
+					new_card_item.image_url = card_item.cover_img_url_2x3;
+					new_card_item.title = card_item.card_name;
+					new_card_item.text = card_item.brief;
+					
+					that.current_card_list.push(new_card_item);
+				}
 				
 				console.log('current_card_list ===>>> ', that.current_card_list);
 					
