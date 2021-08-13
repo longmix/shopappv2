@@ -223,7 +223,9 @@ export default {
 			current_package_detail:null,
 			current_supplier_detail:null,
 			current_card_list:null,
+			current_supplier_fans_add:null,
 			current_packageid:0,
+			current_nft_supplierid:0,
 			current_cardid:0, 
 			current_userid:0,
 			shangid:0,
@@ -378,6 +380,73 @@ export default {
 	
 	
 	
+	
+	var post_data = {
+				sellerid:that.abotapi.globalData.default_sellerid,
+				
+				nft_supplierid:that.current_nft_supplierid,
+				userid:that.current_userid,
+			};
+			
+	var userInfo = that.abotapi.get_user_info();
+		if(userInfo){
+				post_data.userid = userInfo.userid;
+				post_data.checkstr = userInfo.checkstr;
+			}
+			
+			console.log('=========>>>>>>>>>>>');
+			console.log(post_data);
+	//获取粉丝接口
+	that.abotapi.abotRequest({
+		url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/supplier_fans_add',
+		method: 'post',
+	    data: post_data,
+	    success: function (res) {
+		
+			if(res.data.code != 1){
+				uni.showToast({
+					title:'卡包详情没有数据',
+					duration: 2000,
+				});
+				
+				return;
+			}
+			
+			that.current_supplier_fans_add = res.data.data;
+			
+			console.log('current_supplier_fans_add ===>>> ', that.current_supplier_fans_add);
+			
+		
+		// 	// #ifdef MP-ALIPAY		
+			
+		// 		const filter = that.$options.filters["formatRichText"];
+		// 		that.card_description = filter(that.card_description);
+			
+		// 		//console.log('that.card_description====>>>>', that.card_description);
+			
+		// 		let data001 = that.card_description;
+		// 		let newArr = [];
+		// 		let arr = parseHtml(data001);
+		// 		arr.forEach((item, index) => {
+		// 			newArr.push(item);
+		// 		});
+			
+		// 		//console.log('arr arr arr====>>>>', arr);
+		// 		//console.log('newArr newArr newArr====>>>>', newArr);
+			
+		// 		that.card_description = newArr;
+			
+		// 	// #endif	
+			
+			
+	    },
+	    fail: function (e) {
+			uni.showToast({
+				title: '网络异常！',
+				duration: 2000
+			});
+	    },
+	});
 	
 	
 	

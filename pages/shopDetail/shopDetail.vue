@@ -28,6 +28,10 @@
 				</view>
 			</view>
 		</view>
+		
+		
+		
+		<block v-if="shop_header_style == 'default'">
 		<view class="welcome_image">
 			<view v-if="current_shang_detail.mendian_image">
 				<image @load="imageLoad($event)" :data-id='index' mode="widthFix" style="width: 100%;" :src="current_shang_detail.mendian_image"></image>
@@ -102,7 +106,36 @@
 			</view>
 			<!-- 营业时间 地址结束 -->
 
-		</view>
+		</view>		
+		</block>
+		
+		
+		
+		
+		
+		
+		
+		
+		<!--NTF卡包卡牌  头部显示======begin  -->
+		<block v-else-if="shop_header_style == 'style001'">
+			
+			<!--放行商封面  -->
+			<view style="" >
+				<image :src="current_shang_detail.mendian_image" mode="widthFix" style="width: 100%;position: absolute; "></image>
+			
+			
+			<!-- 发行商头像和名称 -->
+			<view style="text-align: center;position: relative;top: 300rpx;">
+				<image :src="current_shang_detail.icon_image" mode="widthFix" style="width: 200rpx;"></image>
+				<view style="margin-left: 0rpx;">{{current_shang_detail.name}}</view>
+			</view>
+			</view>
+		</block>
+		
+		
+		
+		
+		
 		
 		
 		<!-- 关联的超级会员卡 Begin -->
@@ -149,10 +182,10 @@
 		
 		<!-- NFT卡包卡牌功能模块 Begin -->
 		<view style="border-bottom:6px solid #eee;"  v-if="nft_package_list_show_flag == 1">
-			<view class="icon-title2">
+			<view class="supplier_icon-title2">
 				<image src="https://yanyubao.tseo.cn/Tpl/static/images/ecard.png" mode="widthFix"></image>
-				<view class='biaoti'>发行的卡包列表</view>
-				<view class='biaoti' @tap="goto_supplier_all_package_list">所有卡包</view>
+				<view class='supplier_biaoti'>发行的卡包列表</view>
+				<view class='supplier_biaoti' @tap="goto_supplier_all_package_list">所有卡包</view>
 			</view><!-- nft_package_list -->
 			
 			<!-- 发型商发行的卡包 -->
@@ -556,6 +589,9 @@
 				current_nft_package_list: null,
 				nft_package_list_show_flag:0,	// 0 不展示NFT卡包列表  1  展示
 				current_packageid:0,
+				
+				//2021.8.13. 控制头部风格
+				shop_header_style: 'default',
 			};
 		},
 		
@@ -773,6 +809,14 @@
 					this.shang_shop_wxa_qrcode_url += this.current_xianmai_shangid;
 				}
 				
+				//控制头部风格										
+				if(user_console_setting.shop_header_style){
+					//that.shop_header_style = 'style001';
+					this.shop_header_style = user_console_setting.shop_header_style;
+				}
+				
+				console.log('this.shop_header_style ====>>>>>> ', this.shop_header_style);
+				
 				
 				this.get_shang_detail();
 				
@@ -958,6 +1002,7 @@
 						else{
 							that.waimai_product_btn_show = 0;
 						}
+						
 						
 						
 						that.abotapi.get_xianmaishang_setting_list(that.callback_func_for_xianmaishang_setting_list);
@@ -2532,5 +2577,24 @@
 		border-radius: 20rpx;
 		overflow: hidden;
 	}
-
+	//8.13
+	.supplier_biaoti {
+		
+		font-size: 17px;
+		color: #6EB8F2;
+		padding-left: 8px;
+	}
+	.supplier_icon-title2 {
+		margin-top: 350rpx;
+		display: flex;
+		align-items: center;
+		border-bottom: 1px solid #eee;
+		padding: 14rpx 26rpx;
+	}
+	
+	.supplier_icon-title2 image {
+		width: 40rpx;
+		height: 40rpx;
+	}
+	
 </style>
