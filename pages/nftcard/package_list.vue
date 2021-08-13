@@ -36,6 +36,7 @@
 
 					<view class="package_detail_label" style="position: relative;">
 						
+						
 						<image class="package_list_loop" :src="current_package_item.cover_img_url" mode=" aspectFill" ></image>
 						<view class="package_label" style="position: absolute; z-index: 2; left: 20rpx; top: 30rpx;">
 							<view class="package_lable_list" v-for="(item,index) in current_package_item.tag_of_editor">{{item}}</view>
@@ -50,7 +51,7 @@
 						<view class="package_icon_like_num">
 							<view class="package_like_icon" >
 								<!-- <image  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/like.png" mode="widthFix" style="width: 30rpx;float: left;"></image>	 -->
-								<image  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/like.png" mode="aspectFill" style="width: 30rpx;height:30rpx;"></image>
+								<image  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/xin.png" mode="widthFix" style="width: 30rpx;"></image>
 								{{current_package_item.like_count}}
 							</view>
 							
@@ -68,7 +69,7 @@
 								<view class="card_quantity">总卡{{current_package_item.packageid_card_count}}张</view>
 							</view>
 							<view class="begin_end_time">
-								{{current_package_item.time_begin}}~{{current_package_item.time_end}}
+								{{current_package_item.time_begin_str}}~{{current_package_item.time_end_str}}
 							</view>
 						</view>
 						
@@ -324,7 +325,7 @@ export default {
 		overflow: hidden;
 	}
 	.drop_down_menu{
-		margin: 30rpx 10rpx 20rpx 40rpx;
+		margin: 30rpx 10rpx 10rpx 40rpx;
 	}
 	.picker{
 	
@@ -380,16 +381,16 @@ export default {
 		height: 420rpx;
 	
 	}
-	/* .package_icon_like_num{
-		height: 50rpx;
+	 .package_icon_like_num{
+		
 		margin: 20rpx 10rpx 10rpx 10rpx;
-	} */
+	} 
 	.package_like_icon{
 		font-weight: 100;
 		font-size: 30rpx; 
 		float: right;
 		margin-right:10rpx;
-		margin-top: 15rpx;
+	
 	}
 	.package_name{
 		margin-left: 20rpx;

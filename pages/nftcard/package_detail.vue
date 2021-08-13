@@ -13,9 +13,9 @@
 			<!-- icon喜欢图标--------- -->
 			<view class="like_number" >
 				<image v-if="current_package_detail.is_like == 0"  @tap="set_like(1)" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/xin02.png"
-					mode="widthFix" style="width: 50rpx;height: 50rpx; margin-top: 15rpx;margin-left: 11rpx;" ></image>
+					mode="widthFix" style="width: 50rpx;height: 50rpx; margin-top: 15rpx;margin-left: 12rpx;" ></image>
 				<image v-if="current_package_detail.is_like == 1" @tap="set_like(0)"  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/xin.png" 
-					mode="widthFix" style="width: 56rpx;height:56rpx;margin-top: 10rpx;margin-left: 9.5rpx;"  ></image>
+					mode="widthFix" style="width: 60rpx;height:56rpx;margin-top: 11rpx;margin-left: 8rpx;"  ></image>
 				<!-- <view style="font-weight: 100; font-size: 10rpx;"> {{current_package_detail.like_count}}</view> -->
 			</view>
 			
@@ -28,24 +28,37 @@
 		
 		<!-- 卡包详情 -->
 		<view class="package_information">
+			<view class="">
+				<view style="float: right;display: flex;">
+					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/xin.png" mode="widthFix" style="width: 40rpx;margin-top: 10rpx;"></image>
+					<view style="margin-top: 10rpx;margin-right: 20rpx;">{{current_package_detail.like_count}}</view>
+				</view>
+				<!-- 卡包名字---简介 -->
+				<view class="package_title">{{current_package_detail.title}}</view>
+				
+			</view>
 			
-			<!-- 卡包名字---简介 -->
-			<view class="package_title">{{current_package_detail.title}}</view>
 			<view class="package_detail_brief">
 				{{current_package_detail.brief}}
 			</view>
 			
 		
 			<!-- 开始时间~~~结束时间 -->
-			<view class="begin_end_time" >
-				{{current_package_detail.time_begin}}~{{current_package_detail.time_end}}
-			</view>		
+			<view class="" style="display: flex;">
+				<view class="begin_end_time" >
+					{{current_package_detail.time_begin_str}}~{{current_package_detail.time_end_str}}
+				</view>	
+				<view v-if="is_package_time_expire ==false" style="width:150rpx; border-radius:10rpx;background-color: #30c478; text-align: center; color: #FFFFFF; height: 45rpx;">{{current_package_detail.status_str}}</view>
+				<view v-else="is_package_time_expire ==true" style="width:150rpx; border-radius:10rpx;background-color:red; text-align: center; color: #FFFFFF;" >已下架</view>
+				
+			</view>
+			
 			
 		
 			<!-- 进度条 -->
 		 	<view class="uni-padding-wrap uni-common-mt">
-			 	<view class="progress-box">
-					<progress percent="50" active="" stroke-width="4" 
+			 	<view class="progress-box">收集进度：（1/2）
+					<progress percent="50" activeColor="#30C478" stroke-width="4" 
 						show-info="" backgroundColor="red" font-size="5"></progress>
 				</view>
 			</view>
@@ -64,31 +77,40 @@
 		</view>
 		
 		
-	
-	
-	
-		<!-- 发行商图片及简介 12324-->
-		<view class="publish_information" @tap="goto_supplier_detail(shangid)">
-			<image class="publish_icon" :src="current_package_detail.supplier_icon" 
-				mode="" ></image>
-			<view class="package_card_publish">
-				
+		
+		<view class="publish_information" style="">
+			
+			<view class="" style="float: right;">
 				<!-- icon关注图标 -->
-				<view class="publish_icon_follow" >
-					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/follow01.png" 
+				<view class="publish_icon_follow" v-if="current_package_detail.is_fans ==0" @tap="set_fans(1)">
+					<image  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/follow01.png" 
 						mode="widthFix" style="width: 60rpx; margin-top: 8rpx; "></image>
-						<view style="color: #30c478;margin-left:10rpx; margin-top: 5rpx; font-size: 30rpx;">关注</view>
+					<view style="color: #30c478;margin-left:10rpx; margin-top: 5rpx; font-size: 30rpx;">关注</view>
 				</view>
-				
-				
-				<!-- 发行商名字----详情 -->
-				<view class="publish_name">{{current_package_detail.supplier_name}}</view>
-				<view class="publish_brief" style="font-weight: 300; font-size: 10rpx;">{{current_package_detail.supplier_brief}}</view>
+				<view class="publish_icon_follow01" v-if="current_package_detail.is_fans ==1" @tap="set_fans(0)">
+					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/follow02.png" 
+						mode="widthFix" style="width: 50rpx;height: 30rpx;margin-top:8rpx ;"></image>
+					<view style="color: #FFFFFF;margin-left:0rpx; margin-top: 5rpx; font-size: 30rpx;">已关注</view>
+				</view>
+			</view>
+			
+			<!-- 发行商图片及简介 12324-->
+			<view class="" style="display: flex;" @tap="goto_supplier_detail(shangid)">
+				<image class="publish_icon" :src="current_package_detail.supplier_icon" 
+					mode="" ></image>
+				<view class="package_card_publish">
+					
+					<!-- 发行商名字----详情 -->
+					<view class="publish_name">{{current_package_detail.supplier_name}}</view>
+					<view class="publish_brief" style="font-weight: 300; font-size: 10rpx;">{{current_package_detail.supplier_brief}}</view>
+						
+						
+				</view>
 					
 			</view>
 				
-		</view>
 			
+		</view>
 		
 	
 	
@@ -225,11 +247,12 @@ export default {
 			current_card_list:null,
 			current_supplier_fans_add:null,
 			current_packageid:0,
-			current_nft_supplierid:0,
+			current_nft_supplierid:1,
 			current_cardid:0, 
 			current_userid:0,
-			shangid:0,
 			
+			shangid:0,
+		
 			
 			card_description:'',  //卡包的富媒体描述
 			
@@ -241,12 +264,18 @@ export default {
 				{tag_id:5, selected:false, title:'未有'},
 			],
 			package_tag_item_selected_seq_list:[],
+			
+			//卡包是否已经过期
+			is_package_time_expire: false,
 		
 		};
 	},
 	onLoad: function (options) {
 		
 		console.log('当前时间：' + util.formatTime( new Date() ) + ' ' + util.formatTime2( new Date() ) + ':01' );
+		
+		console.log('newDate====>>>>>>', util.get_time_stamp() );
+		
 		
 		console.log('pages/tabBar/index/index====>>>>', options);
 		
@@ -321,7 +350,7 @@ export default {
 			
 				if(res.data.code != 1){
 					uni.showToast({
-						title:'卡包详情没有数据',
+						title:'卡包详情没数据',
 						duration: 2000,
 					});
 					
@@ -331,6 +360,11 @@ export default {
 				that.current_package_detail = res.data.data;
 				
 				console.log('current_package_detail ===>>> ', that.current_package_detail);
+				
+				//检查卡包是否已经过期
+				if(that.current_package_detail.time_end < util.get_time_stamp()){
+					that.is_package_time_expire = true;
+				}
 				
 				
 				//处理商品详情
@@ -379,79 +413,6 @@ export default {
 		
 	
 	
-	
-	
-	var post_data = {
-				sellerid:that.abotapi.globalData.default_sellerid,
-				
-				nft_supplierid:that.current_nft_supplierid,
-				userid:that.current_userid,
-			};
-			
-	var userInfo = that.abotapi.get_user_info();
-		if(userInfo){
-				post_data.userid = userInfo.userid;
-				post_data.checkstr = userInfo.checkstr;
-			}
-			
-			console.log('=========>>>>>>>>>>>');
-			console.log(post_data);
-	//获取粉丝接口
-	that.abotapi.abotRequest({
-		url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/supplier_fans_add',
-		method: 'post',
-	    data: post_data,
-	    success: function (res) {
-		
-			if(res.data.code != 1){
-				uni.showToast({
-					title:'卡包详情没有数据',
-					duration: 2000,
-				});
-				
-				return;
-			}
-			
-			that.current_supplier_fans_add = res.data.data;
-			
-			console.log('current_supplier_fans_add ===>>> ', that.current_supplier_fans_add);
-			
-		
-		// 	// #ifdef MP-ALIPAY		
-			
-		// 		const filter = that.$options.filters["formatRichText"];
-		// 		that.card_description = filter(that.card_description);
-			
-		// 		//console.log('that.card_description====>>>>', that.card_description);
-			
-		// 		let data001 = that.card_description;
-		// 		let newArr = [];
-		// 		let arr = parseHtml(data001);
-		// 		arr.forEach((item, index) => {
-		// 			newArr.push(item);
-		// 		});
-			
-		// 		//console.log('arr arr arr====>>>>', arr);
-		// 		//console.log('newArr newArr newArr====>>>>', newArr);
-			
-		// 		that.card_description = newArr;
-			
-		// 	// #endif	
-			
-			
-	    },
-	    fail: function (e) {
-			uni.showToast({
-				title: '网络异常！',
-				duration: 2000
-			});
-	    },
-	});
-	
-	
-	
-		
-		
 		
 	},
 	onShow:function(){
@@ -774,10 +735,84 @@ export default {
 			    },
 			});
 			
-			
+		},	
 			
 				
+		set_fans:function(value002){
+			var that = this;
 			
+			//======= 判断用户是否登录 ============
+			var last_url = '/pages/nftcard/package_detail?'+ that.current_params_str;
+			
+			var userInfo = that.abotapi.get_user_info();
+			if (!userInfo) {
+				that.abotapi.goto_user_login(last_url);
+			
+				return;
+			}
+			//============= End ================
+		
+			
+			
+		
+			
+			//请求服务器接口、关注 已关注
+			var post_data = {
+					sellerid:that.abotapi.globalData.default_sellerid,
+					
+					nft_supplierid:that.current_nft_supplierid,
+					userid:that.current_userid,			
+				};
+				
+			var userInfo = that.abotapi.get_user_info();	
+			if(userInfo){
+				post_data.userid = userInfo.userid;
+				post_data.checkstr = userInfo.checkstr;
+			}
+
+			
+			//添加关注   请求粉丝接口 
+			that.abotapi.abotRequest({
+			    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/supplier_fans_add',
+			    method: 'post',
+			    data: post_data,
+			    success: function (res) {
+					
+					if(res.data.code != 1){
+						uni.showToast({
+							title:'关注失败',
+							duration: 2000,
+						});
+						
+						return;
+					}
+					
+					that.current_supplierid = res.data.data;
+					
+					console.log('current_supplierid  ===>>> ', that.current_supplierid);
+					
+					
+					
+					
+					
+					//请求成功之后，修改本地的数据
+					that.current_package_detail.is_fans = value002;
+					
+					
+					
+					
+					
+					
+			    },
+			    fail: function (e) {
+					uni.showToast({
+						title: '网络异常！',
+						duration: 2000
+					});
+			    },
+			});
+			
+		
 			
 			
 			
@@ -921,7 +956,7 @@ export default {
 	.like_number{
 		float: right;
 		position:relative;
-		margin-right: 40rpx;
+		margin-right: 45rpx;
 		margin-top:430rpx; 
 		width: 75rpx; 
 		height: 75rpx;
@@ -932,7 +967,7 @@ export default {
 	.package_ps{
 		float: right;
 		position: relative;
-		margin-right:-70rpx;
+		margin-right:-75rpx;
 		margin-top: 45rpx;
 		width: 80rpx; 
 		height: 80rpx; 
@@ -941,7 +976,7 @@ export default {
 		overflow: hidden;
 	}
 	.package_title{
-		width: 90%; 
+		width: 80%; 
 		margin-top: 10rpx;
 		font-weight: bold;
 		font-size: 40rpx; 
@@ -992,16 +1027,15 @@ export default {
 		background-color: #FFFFFF;
 		margin: 30rpx 10rpx 20rpx 10rpx;
 		
-		display: flex;
 		border-radius: 20rpx;
 		overflow: hidden;
 	}
 	.publish_icon{
-		margin: 25rpx 10rpx 20rpx 20rpx;
-		border-radius: 50%;
+		margin: 10rpx 20rpx;
+		border-radius: 50%; 
 		overflow: hidden;
-		width: 100rpx;
-		height:100rpx ;
+		width: 200rpx;
+		height:130rpx ;
 	
 	}
 	.package_card_publish{
@@ -1015,12 +1049,23 @@ export default {
 		height: 50rpx;
 		display: flex;
 		float: right; 
-		margin-top: 25rpx;
+		margin-top: 50rpx;
 		margin-right: 20rpx;
 		background-color:#ffffff; 
 		border-radius: 10rpx;
 		overflow: hidden;
 		border: #30c478 2rpx solid;
+	}
+	.publish_icon_follow01{
+		width: 150rpx;
+		height: 50rpx;
+		display: flex;
+		float: right; 
+		margin-top: 50rpx;
+		margin-right: 20rpx;
+		background-color:#30c478; 
+		border-radius: 10rpx;
+		overflow: hidden;
 	}
 	.publish_name{
 		margin-bottom: 5rpx;

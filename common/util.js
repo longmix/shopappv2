@@ -3,6 +3,9 @@
 module.exports = {
   formatTime: formatTime,
   formatTime2: formatTime2,
+  
+  get_time_stamp:get_time_stamp,
+  
   sprintf: sprintf,
   bezier: bezier,
   formatNumber: formatNumber,
@@ -55,6 +58,13 @@ function formatTime2(date) {
 function formatNumber(n) {
   n = n.toString()
   return n[1] ? n : '0' + n
+}
+
+/**
+ * 获取当前的时间戳（1970开始的秒数）
+ */
+function get_time_stamp(){
+	return parseInt( (new Date())/1000 );
 }
 
 function checkStringEmpty(data){

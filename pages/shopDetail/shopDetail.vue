@@ -122,14 +122,13 @@
 			<!--放行商封面  -->
 			<view style="" >
 				<image :src="current_shang_detail.mendian_image" mode="widthFix" style="width: 100%;position: absolute; "></image>
-			
-			
+			</view>
 			<!-- 发行商头像和名称 -->
 			<view style="text-align: center;position: relative;top: 300rpx;">
 				<image :src="current_shang_detail.icon_image" mode="widthFix" style="width: 200rpx;"></image>
 				<view style="margin-left: 0rpx;">{{current_shang_detail.name}}</view>
 			</view>
-			</view>
+			
 		</block>
 		
 		

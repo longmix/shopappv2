@@ -30,7 +30,7 @@
 					<!-- 进度条 -->
 					<view class="uni-padding-wrap uni-common-mt">
 					 	<view class="progress-box">
-							<progress percent="50" active="" stroke-width="3" 
+							<progress percent="50" activeColor="#30C478" stroke-width="3" 
 								show-info="" backgroundColor="red" font-size="5"></progress>
 						</view>
 					</view>
@@ -38,7 +38,7 @@
 					<!-- 喜欢卡包的简介  发行时间 -->
 					<view class="" style="margin-top: 10rpx;">
 						<view class="my_package_brief" >{{current_package_list_item.brief}}</view>
-						<view style="font-size: 10rpx;font-weight: 100;">{{current_package_list_item.time_begin}}</view>
+						<view style="font-size: 10rpx;font-weight: 100;">{{current_package_list_item.time_begin_str}}</view>
 					</view>
 					
 				</view>
