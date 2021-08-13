@@ -13,7 +13,7 @@
 	    <waterfallsFlow :list="current_card_list">
 			<!--  #ifdef  MP-WEIXIN -->
 			<!-- 微信小程序自定义内容 -->
-			<view v-for="(item, index) of list" :key="index" slot="slot{{index}}">
+			<view v-for="(item, index) of list" :key="index" slot="slot{{index}}" @tap="go_to_my_detail(current_card_list.packageid,current_card_list.cardid)">
 				<view class="cnt">
 				<view class="title">{{ item.title }}</view>
 					<view class="text">{{ item.text }}</view>
@@ -24,7 +24,7 @@
 			<!-- #ifndef  MP-WEIXIN -->
 			<!-- app、h5 自定义内容 -->
 			<template v-slot:default="item">
-				<view class="cnt">
+				<view class="cnt" @tap="go_to_my_detail(current_card_list.packageid,current_card_list.cardid)">
 					<view class="title">{{ item.title }}</view>
 					<view class="text">{{ item.text }}</view>
 				</view>
@@ -101,6 +101,10 @@ export default {
 		
 		this.abotapi.set_shop_option_data(this, this.callback_function_shop_option_data);
 		
+		that.current_packageid = options.packageid;
+		
+		console.log('that.current_packageid ===》》 ', that.current_packageid);
+		
 		//判断用户是否登录
 		
 		var userInfo = that.abotapi.get_user_info();
@@ -119,7 +123,6 @@ export default {
 				checkstr:userInfo.checkstr,
 				userid:userInfo.userid,
 				action: that.action_data_type,
-				
 		    },
 		    success: function (res) {
 				
@@ -277,7 +280,18 @@ export default {
 			});
 						
 			return;
-		}
+		},
+		
+		
+		go_to_my_detail:function(packageid,cardid){
+			console.log('packageid===>>>' + packageid);
+			console.log('cardid===>>>' + cardid);
+			
+			uni.navigateTo({
+				url: '/pages/nftcard/card_detail?packageid='+packageid+'&cardid='+cardid,
+			})
+		},
+		
 		
 	}
 	
