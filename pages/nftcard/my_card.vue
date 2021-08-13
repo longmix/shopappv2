@@ -29,8 +29,8 @@
 					<view class="text">{{ item.text }}</view>
 				</view>
 			</template>
-	    </waterfallsFlow>
 	    <!-- #endif -->
+	    </waterfallsFlow>
 	</view>
 	
 	
