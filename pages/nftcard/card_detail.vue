@@ -167,19 +167,19 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			
 
 			<!-- 富媒体文本展示卡牌详情 -->
-			<view class="description001">
-				<view class="content">
-					<!-- #ifdef MP-ALIPAY -->
-					<rich-text :nodes="card_description"></rich-text>
-					<!-- #endif -->
-					<!-- #ifndef MP-ALIPAY -->
-					<rich-text :nodes="card_description|formatRichText"></rich-text>
-					<!-- #endif -->
-
-
+			<view style="background-color: #FFFFFF;margin: 15rpx;border-radius: 15rpx;padding: 15rpx;">
+				<view class="description001">
+					<view class="content">
+						<!-- #ifdef MP-ALIPAY -->
+						<rich-text :nodes="card_description"></rich-text>
+						<!-- #endif -->
+						<!-- #ifndef MP-ALIPAY -->
+						<rich-text :nodes="card_description|formatRichText"></rich-text>
+						<!-- #endif -->
+					</view>
 				</view>
-
 			</view>
+			
 		</view>
 
 
