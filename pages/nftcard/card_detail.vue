@@ -970,7 +970,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		width: 90rpx;
 		height: 90rpx;
 		border-radius: 50%;
-		margin: 15rpx;
+		/* margin: 15rpx; */
 		margin-right: 23rpx;
 		border: #aeb8ab 3rpx solid;
 	}
@@ -1100,9 +1100,12 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		right: 0rpx;
 	}
 	.card_detail_xiangqing{
+		width: 100%;
+		word-wrap:break-word;  
+		word-break:break-all;
 		background-color: #FFFFFF;
-		margin: 15rpx;
 		border-radius: 15rpx;
 		padding: 15rpx;
+		margin: 15rpx;
 	}
 </style>
