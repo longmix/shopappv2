@@ -158,7 +158,7 @@
                     },
                     "storyboard" : "D:/延誉电商APP/苹果开发者证书/CustomStoryboard.zip"
                 },
-                "iosStyle" : "storyboard"
+                "iosStyle" : "common"
             }
         },
         "uniStatistics" : {

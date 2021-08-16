@@ -1,6 +1,6 @@
 {
   "extEnable": true,
-  "extAppid": "wxfa86f96b2b9a54b4",
+  "extAppid": "wxd4ab638ad39a3fe4",
   "directCommit": true,
   "ext": {
     "name": "wechat",
@@ -11,20 +11,19 @@
         "user_2"
       ]
     },
-    "xiaochengxu_appid": "wxfa86f96b2b9a54b4",
+    "xiaochengxu_appid": "wxd4ab638ad39a3fe4",
     "force_sellerid_flag": 1,
-    "force_sellerid_value": "fSmyUPkjj",
-    "shop_name": "安全熊",
-    "version_number": "Ver 1.7.2 Build 219",
+    "force_sellerid_value": "pQNNmSkaq",  
+    "shop_name": "卡乐卡特ColleCult",
+    "version_number": "Ver 1.6.3 Build 150",
     "navigationBarBackgroundColor_fixed": 1,
-	"navigationBar_font_color":"#ffffff",
-    "navigationBar_bg_color":"#ff8040",
-	
+    "navigationBar_font_color":"#ffffff",
+    "navigationBar_bg_color":"#30C478",
     "kefu_telephone": "",
     "kefu_qq": "",
     "kefu_website": "",
     "kefu_gongzhonghao": "",
-    "default_copyright_text": "安全熊信息科技有限公司 @ 版权所有"
+    "default_copyright_text": "延誉宝 @ 版权所有"
   },
   "extPages": {
     "pages/publish/publish_list": {
@@ -35,7 +34,7 @@
     }
   },
   "tabBar": {
-    "color": "#333333",
+    "color": "#515151",
     "selectedColor": "#d81e06",
     "borderStyle": "black",
     "backgroundColor": "#ffffff",
@@ -45,18 +44,12 @@
         "iconPath": "static/img/tabBar/home.png",
         "selectedIconPath": "static/img/tabBar/home-on.png",
         "text": "首页"
-      },      
+      },
       {
         "pagePath": "pages/shopList/shopList",
         "iconPath": "static/img/tabBar/category.png",
         "selectedIconPath": "static/img/tabBar/category-on.png",
-        "text": "附近"
-      },
-      {
-        "pagePath": "cms/discover/discover",
-        "iconPath": "static/img/tabBar/imglist.png",
-        "selectedIconPath": "static/img/tabBar/imglist-on.png",
-        "text": "随拍"
+        "text": "发现"
       },
       {
         "pagePath": "pages/user/user",
@@ -68,8 +61,8 @@
   },
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#ff8040",
-    "navigationBarTitleText": "安全熊",
+    "navigationBarBackgroundColor": "#30C478",
+    "navigationBarTitleText": "卡乐卡特ColleCult",
     "navigationBarTextStyle": "white"
   },
   "networkTimeout": {

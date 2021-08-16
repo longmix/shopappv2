@@ -15,7 +15,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		<view class="main_body">
 			<view :style="{width: card_bg_img_width+'rpx', height: card_bg_img_height+'rpx'}">
 				<!-- 背景模糊图片 -->
-				<image :src="current_card_detail.cover_img_url_2x3"  @load="imageLoad" 
+				<image :src="current_card_detail.cover_img_url_2x3"  @load="imageLoad"
 					class="card_detail_border"
 					:style="{width: card_bg_img_width+'rpx', height: (card_bg_img_height*0.8)+'rpx'}" ></image>
 				<!-- 卡牌封面 -->
@@ -29,21 +29,21 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				<!-- 2021.08.11卡牌封面 ==> 模态框 -->
 				<view>
 					<view class="mask" v-if="showModal1" @click="showModal1=false"></view>
-					<view class="pop" v-if="showModal1" :style="{textAlign: 'center', paddingTop: (card_bg_img_height*0.15)+'rpx'}">
-						<image :src="current_card_detail.cover_img_url_2x3" 
-							class="card_detail_image" @click="showModal1=false"
-							:style="{width: (card_bg_img_width*0.96)+'rpx', height: (card_bg_img_height*0.96)+'rpx'}"></image>
+					<view class="pop" v-if="showModal1" @click="showModal1=false" :style="{ paddingTop: (card_bg_img_height*0.3)+'rpx'}">
+						<image :src="current_card_detail.cover_img_url_2x3"
+							class="card_detail_image"
+							:style="{width: (card_bg_img_width*1)+'rpx', height: (card_bg_img_height*1)+'rpx'}"></image>
 							
 					</view>
 					
-					<view @click="showModal1=true" :style="{textAlign: 'center', paddingTop: (card_bg_img_height*0.15)+'rpx'}">
+					<view @click="showModal1=true" :style="{paddingTop: (card_bg_img_height*0.15)+'rpx',paddingLeft: (card_bg_img_width*0.1)+'rpx'}">
 						<image :src="current_card_detail.cover_img_url_2x3" 
 							class="card_detail_image" 
 							:style="{width: (card_bg_img_width*0.8)+'rpx', height: (card_bg_img_height*0.8)+'rpx'}"></image>
 							
 					</view>
 				</view>
-				
+			
 				
 				
 				
@@ -51,7 +51,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				<!-- 2021.08.09收藏 -->
 				<view class="card_detail_schang_boder"
-					:style="{top:(card_bg_img_height*0.20)+'rpx', right:(card_bg_img_width*0.14)+'rpx'}">
+					:style="{top:(card_bg_img_height*0.20)+'rpx', right:(card_bg_img_width*0.14)+'rpx'}"
+					 v-if="current_card_detail">
 					<image class="card_detail_schang" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/xingxing.png" 
 						v-if="current_card_detail.is_favorite == 1" @tap="set_favorite(0)"></image>
 						
@@ -76,12 +77,12 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			
 			
 			<!-- 卡牌信息 -->
-			<view class="card_detail_xinxi">
-				<h4 class="card_detail_title" style="padding-bottom: 15rpx;width: 90%;">{{current_card_detail.card_name}}
+			<view class="card_detail_xinxi" v-if="current_card_detail">
+				<h4 class="card_detail_title" style="padding-bottom: 15rpx;width: 90%;" v-if="current_card_detail">{{current_card_detail.card_name}}
 				</h4>
-				<view style="color: #868686;">
+				<view style="color: #868686;font-size: 30rpx;">
 					<!-- 发行时间 -->
-					<text id="card_detail_mystr">{{current_card_detail.createtime}}</text>
+					<text id="card_detail_mystr" v-if="current_card_detail">{{current_card_detail.createtime}}</text>
 					<!-- 有多少人收藏 -->
 					<view style="float: right;">
 						<view>
@@ -91,9 +92,18 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 							</image>
 						</view>
 					</view>
-					<view>总共{{current_card_detail.faxing_counter}} 还剩{{current_card_detail.kucun_counter}} </view>
+					<!-- <view >总共{{current_card_detail.faxing_counter}} 还剩{{current_card_detail.kucun_counter}} </view> -->
+					<view style="font-size: 30rpx;">领取进度</view>
 					
-					<!-- <view style="color: #868686;">{{current_card_detail.brief}}</view> -->
+					
+					<!-- 进度条 -->
+					<view v-if="">
+						<progress :percent="addPercent(50)" stroke-width="4" show-info="true" activeColor="#30C478"
+						 backgroundColor="red" font-size="14" active="true" active-mode="forwards"></progress>
+					</view>
+					
+					
+					
 				</view>
 			</view>
 			
@@ -105,7 +115,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					<image class="card_detail_tubiao" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/suoshukabaotubiao.png"></image>所属卡包
 				</h4>
 				
-				<view style="display: flex;">
+				<view style="display: flex;" v-if="current_card_detail">
 					<view>
 						<image :src="current_package_detail.cover_img_url"
 							@tap="go_to_card_package(current_package_detail.packageid)"
@@ -135,17 +145,14 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				</h4>
 			
 				<scroll-view scroll-x="true">
-					<view class="slide_cards">
+					<view style="display: flex;">
 						<view v-for="(current_card_list_item,index) in current_card_list"
 							@tap="go_to_card_detail(current_card_list_item.packageid, current_card_list_item.cardid)">
+							
 							<view class="slide_cards_pic">
-								<view class="card_detail_background">
-									<view class="card_detail_title" style="width: 190rpx; ">
-										<image :src="current_card_list_item.cover_img_url_2x3" mode="aspectFill"
-											class="card_detail_img_border"></image>
-										<view class="card_detail_kapai_title">{{current_card_list_item.card_name}}
-										</view>
-									</view>
+								<image :src="current_card_list_item.cover_img_url_2x3" mode="aspectFill"
+									class="card_detail_img_border"></image>
+								<view class="card_detail_kapai_title">{{current_card_list_item.card_name}}
 								</view>
 							</view>
 						</view>
@@ -177,9 +184,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 
 		<!-- 悬浮 -->
 		<view class="card_detail_footer">
+			<!-- 详情 -->
 			<view @click="layOut">
 				<view v-if="lay_type" class="card_detail_liebiao">
-					
 					<image class="card_detail_xiaoxi1"
 						src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/tips.png"></image>				
 				</view>
@@ -244,13 +251,14 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		name:"sortstick",
 		data() {
 			return {
-				lay_type:0,
+				lay_type:1,
 				
 				showModal1: false,//模态框
 				
 				current_params_str: '', //网址参数
 
 				current_card_detail: null,
+				current_card_list: null,
 				current_package_detail: null,
 				current_cardid: 0,
 				current_packageid: 0,
@@ -269,12 +277,38 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			};
 		},
 		onLoad: function(options) {
+			this.addPercent();
 
 			console.log('当前时间：' + util.formatTime(new Date()) + ' ' + util.formatTime2(new Date()) + ':01');
 
 			console.log('pages/tabBar/index/index====>>>>', options);
 
 			var that = this;
+			
+			// 页面加载默认界面
+			that.current_card_detail = {
+				'title': ' '
+			};
+			that.current_card_detail.cover_img_url = 'http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/tu.jpeg';
+			that.current_card_detail.description = '';
+			that.current_card_detail.cover_img_url_2x3 = 'http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/tu.jpeg';
+			that.current_card_detail.is_favorite = 0;
+			that.current_card_detail.card_name = '';
+			that.current_card_detail.createtime = '';
+			that.current_card_detail.favorite_counter = 0;
+			that.current_card_detail.faxing_counter = 0;
+			that.current_card_detail.kucun_counter = 0;
+			that.current_card_detail.package_title = '';
+			that.current_card_detail.supplier_name = '';
+			that.current_card_detail.is_buyed = 0;
+			that.current_card_detail.have_counter = 0;
+
+			uni.showModal({
+				title: '数据正在加载中',
+				content: '',
+				showCancel: false
+			});
+			
 
 			uni.setNavigationBarTitle({
 				title: that.abotapi.globalData.default_shopname
@@ -326,17 +360,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				return;
 			}
 
-			// 页面加载默认界面
-			that.current_card_detail = {
-				'title': ''
-			};
-			that.current_card_detail.cover_img_url =
-				'http://192.168.0.205/yanyubao_server/uploads/2021/08/03/610895dcc87bc.jpg';
-			that.current_card_detail.description = '';
-			that.current_card_detail.cover_img_url =
-				'http://192.168.0.205/yanyubao_server/uploads/2021/08/03/610895dcc87bc.jpg';
-			that.current_card_detail.cover_img_url =
-				'http://192.168.0.205/yanyubao_server/uploads/2021/08/03/610895dcc87bc.jpg';
+			
+			
+			
 
 
 			//获取卡牌详情		
@@ -367,6 +393,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 
 						return;
 					}
+					//断开连接
+					// return;
 
 					that.current_card_detail = res.data.data;
 
@@ -572,7 +600,15 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			return this.share_return();
 		},
 		methods: {
-			
+			addPercent:function(e){
+			     var that = this;
+			    if(that.percent < 100){
+			        that.percent = that.percent + 2
+			        setTimeout(function(){
+			            that.addPercent()
+			        },220);
+			    }
+			},
 			layOut(){
 			      if(this.lay_type == 0){
 			        this.lay_type = 1
@@ -811,9 +847,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 
 <style>
 	.card_detail_xing {
-		width: 25rpx;
-		height: 25rpx;
-		/* padding-right: 8rpx; */
+		width: 30rpx;
+		height: 30rpx;
 	}
 
 	.main_body {
@@ -823,11 +858,16 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	}
 
 	.card_detail_border {
-		position:absolute;
+		position: absolute;
 		width: 100%;
 		filter: blur(15rpx);
 	}
 
+	.card_detail_image {
+		position: relative;
+		border-radius: 20rpx;
+		box-shadow: 0rpx 0rpx 20rpx #000000;
+	}
 	.card_detail_h4 {
 		font-size: 30rpx;
 		line-height: 60rpx;
@@ -872,15 +912,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	}
 	.pop{
 		position: fixed;
-		top: 35%;
-		left: 2%;
+		
 		z-index: 2;
-	}
-	.card_detail_image {
-		justify-content: center;
-		border-radius: 20rpx;
-		box-shadow: 0rpx 0rpx 20rpx #000000;
-		background-color: #FFFFFF;
 	}
 	.card_detail_modal{
 		position: relative;
@@ -1016,14 +1049,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
-	.slide_cards {
-		display: flex;
-	}
-	.card_detail_background {
-		border-radius: 25rpx;
-		padding: 1rpx;
-	}
 	.slide_cards_pic {
+		width: 190rpx;
 		padding-left: 20rpx;
 		padding-top: 20rpx;
 		padding-bottom: 20rpx;
@@ -1032,8 +1059,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		width: 190rpx;
 		height: 295rpx;
 		border-radius: 20rpx;
-		box-shadow: #000000 2rpx 1rpx 10rpx;
-		/* brightness:1rpx; */
+		box-shadow: #000000 1rpx 1rpx 12rpx;
 	}
 
 	.card_detail_kapai_title {

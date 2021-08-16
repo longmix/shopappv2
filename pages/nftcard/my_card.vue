@@ -13,18 +13,18 @@
 	    <waterfallsFlow :list="current_card_list">
 			<!--  #ifdef  MP-WEIXIN -->
 			<!-- 微信小程序自定义内容 -->
-			<view v-for="(item, index) of list" :key="index" slot="slot{{index}}" @tap="go_to_my_detail(current_card_list.packageid,current_card_list.cardid)">
+			<view v-for="(item, index) of list" :key="index" slot="slot{{index}}">
 				<view class="cnt">
-				<view class="title">{{ item.title }}</view>
+					<view class="title">{{ item.title }}</view>
 					<view class="text">{{ item.text }}</view>
 				</view>
 			</view>
 			<!--  #endif -->
 				
 			<!-- #ifndef  MP-WEIXIN -->
-			<!-- app、h5 自定义内容 -->
+			<!-- app、h5 自定义内容 --> 
 			<template v-slot:default="item">
-				<view class="cnt" @tap="go_to_my_detail(current_card_list.packageid,current_card_list.cardid)">
+				<view class="cnt">
 					<view class="title">{{ item.title }}</view>
 					<view class="text">{{ item.text }}</view>
 				</view>
@@ -56,6 +56,7 @@ export default {
 			
 			tabIndex:0,
 			    tabBars:[
+					{ name:"全部卡牌",id:"quanbu"},
 			        { name:"典藏卡",id:"diancang"},
 			        { name:"珍藏卡",id:"zhencang"},
 			    ]
@@ -283,14 +284,14 @@ export default {
 		},
 		
 		
-		go_to_my_detail:function(packageid,cardid){
-			console.log('packageid===>>>' + packageid);
-			console.log('cardid===>>>' + cardid);
+		// go_to_my_detail:function(packageid,cardid){
+		// 	console.log('packageid===>>>' + packageid);
+		// 	console.log('cardid===>>>' + cardid);
 			
-			uni.navigateTo({
-				url: '/pages/nftcard/card_detail?packageid='+packageid+'&cardid='+cardid,
-			})
-		},
+		// 	uni.navigateTo({
+		// 		url: '/pages/nftcard/card_detail?packageid='+packageid+'&cardid='+cardid,
+		// 	})
+		// },
 		
 		
 	}
@@ -350,6 +351,7 @@ page {
 	padding: 10px;
 	.cnt {
 		padding: 10px;
+		background-color: #FFFFFF;
 		.title {
 			font-size: 16px;
 			font-weight: bold;
