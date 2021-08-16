@@ -95,7 +95,7 @@
 			</view>
 			
 			<!-- 发行商图片及简介 12324-->
-			<view class="" style="display: flex;" @tap="goto_supplier_detail(shangid)">
+			<view class="" style="display: flex;" @tap="goto_supplier_detail()">
 				<image class="publish_icon" :src="current_package_detail.supplier_icon" 
 					mode="" ></image>
 				<view class="package_card_publish">
@@ -250,8 +250,6 @@ export default {
 			current_nft_supplierid:1,
 			current_cardid:0, 
 			current_userid:0,
-			
-			shangid:0,
 		
 			
 			card_description:'',  //卡包的富媒体描述
@@ -658,7 +656,7 @@ export default {
 		 	console.log('跳转到发行商详情:' + shangid);
 		
 		 	uni.navigateTo({
-		 		url: '/pages/shopDetail/shopDetail?shangid='+shangid+'',
+		 		url: '/pages/shopDetail/shopDetail?shangid='+this.current_package_detail.sellerid,
 		 	})
 		 },
 		  

@@ -3,6 +3,7 @@
 	
 	<!-- 搜索框 -->
 	
+
 		<view class="package_search" >
 			
 			<input style="width: 570rpx;height: 60rpx;margin-left: 20rpx;font-weight: 100;" type="text" value="提示卡包" />
@@ -21,7 +22,11 @@
 			</picker>
 		</view>
 				
-				
+
+					<view v-if="current_package_list ==''" style="text-align : center;">
+						<image src="" mode=""></image>
+						<view>空空如也</view>
+					</view>
 				
 				<!-- 卡包列表及详情 -->
 				
@@ -30,6 +35,10 @@
 				<view class="my_package_item" 
 					v-for="(current_package_item, index) in current_package_list"
 					 @tap="goto_package_detail(current_package_item.packageid)" >
+					
+					
+					
+
 					
 					
 					<!-- 标签 -->

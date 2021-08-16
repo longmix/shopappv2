@@ -121,14 +121,15 @@
 			
 			<!--放行商封面  -->
 			<view style="" >
-				<image :src="current_shang_detail.mendian_image" mode="widthFix" style="width: 100%;position: absolute; "></image>
+				<image :src="current_shang_detail.mendian_image" mode="" style="width: 100%; height: 400rpx; position: absolute; "></image>
 			</view>
 			<!-- 发行商头像和名称 -->
 			<view style="text-align: center;position: relative;top: 300rpx;">
 				<image :src="current_shang_detail.icon_image" mode="widthFix" style="width: 200rpx;"></image>
 				<view style="margin-left: 0rpx;">{{current_shang_detail.name}}</view>
+				
 			</view>
-			
+			<view class="" style="float: right;margin-top: 200rpx;margin-right: 80rpx;background-color: #007AFF;">{{current_shang_detail.supplier_fans_count}}</view>
 		</block>
 		
 		
@@ -239,7 +240,7 @@
 		<!-- 功能按钮-->
 		<view>
 			<!-- 按钮1 -->
-			<view class="paidui-con" v-if="shop_product_btn_show == 0">
+			<view class="paidui-con" v-if="shop_product_btn_show == 1">
 				<image class="icon-a" :src="user_console_setting.shop_product_icon"></image>
 				<view class="paidui-a">
 					<view class="icon-title">
@@ -260,7 +261,7 @@
 			<!-- 按钮1   end -->
 
 			<!-- 按钮2 -->
-			<view class="paidui-con" v-if="waimai_product_btn_show == 0">
+			<view class="paidui-con" v-if="waimai_product_btn_show == 1">
 				<image style="height: 85upx;" class="icon-a" :src="user_console_setting.waimai_product_icon"></image>
 				<view class="paidui-a">
 					<view class="icon-title">
@@ -989,17 +990,17 @@
 						
 						//根据商户的设置，觉得是否展示堂食和外卖 ！！！！！！
 						if(data.show_diancan_button && (data.show_diancan_button == 1)){
-							that.shop_product_btn_show = 1;
+							that.shop_product_btn_show = 0;
 						}
 						else{
-							that.shop_product_btn_show = 0;
+							that.shop_product_btn_show = 1;
 						}
 						
 						if(data.show_waimai_button && (data.show_waimai_button == 1)){
-							that.waimai_product_btn_show = 1;
+							that.waimai_product_btn_show = 0;
 						}
 						else{
-							that.waimai_product_btn_show = 0;
+							that.waimai_product_btn_show = 1;
 						}
 						
 						
