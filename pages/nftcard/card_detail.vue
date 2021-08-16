@@ -28,8 +28,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				<!-- 2021.08.11卡牌封面 ==> 模态框 -->
 				<view>
-					<view class="mask" v-if="showModal1" @click="showModal1=false"></view>
-					<view class="pop" v-if="showModal1" @click="showModal1=false" :style="{ paddingTop: (card_bg_img_height*0.3)+'rpx'}">
+					<view class="show_modal_mask" v-if="showModal1" @click="showModal1=false"></view>
+					
+					<view class="show_modal_pop" v-if="showModal1"  :style="{ paddingTop: (card_bg_img_height*0.3)+'rpx'}">
 						<image :src="current_card_detail.cover_img_url_2x3"
 							class="card_detail_image"
 							:style="{width: (card_bg_img_width*1)+'rpx', height: (card_bg_img_height*1)+'rpx'}"></image>
@@ -96,9 +97,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					<view style="font-size: 30rpx;">领取进度</view>
 					
 					
-					<!-- 进度条 -->
-					<view v-if="">
-						<progress :percent="addPercent(50)" stroke-width="4" show-info="true" activeColor="#30C478"
+					<!-- 进度条  转换为对象数组 -->
+					<view v-if="current_card_detail">
+						<progress :percent="current_card_detail.sale_percent" stroke-width="4" show-info="true" activeColor="#30C478"
 						 backgroundColor="red" font-size="14" active="true" active-mode="forwards"></progress>
 					</view>
 					
@@ -277,7 +278,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			};
 		},
 		onLoad: function(options) {
-			this.addPercent();
+			// this.addPercent();
 
 			console.log('当前时间：' + util.formatTime(new Date()) + ' ' + util.formatTime2(new Date()) + ':01');
 
@@ -302,12 +303,16 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			that.current_card_detail.supplier_name = '';
 			that.current_card_detail.is_buyed = 0;
 			that.current_card_detail.have_counter = 0;
+			that.current_card_detail.sale_percent = 50;
 
-			uni.showModal({
-				title: '数据正在加载中',
-				content: '',
-				showCancel: false
+			uni.showLoading({
+				title:'数据加载中...',
+				
 			});
+			
+			setTimeout(function(){
+				uni.hideLoading();
+			}, 2000);
 			
 
 			uni.setNavigationBarTitle({
@@ -351,6 +356,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			console.log('that.current_cardid ===》》 ', that.current_cardid);
 
 			if (!that.current_cardid) {
+				
+				uni.hideLoading();
+				
 				uni.showModal({
 					title: '没有cardid',
 					content: ',',
@@ -384,6 +392,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				method: 'post',
 				data: post_data,
 				success: function(res) {
+					
+					uni.hideLoading();
 
 					if (res.data.code != 1) {
 						uni.showToast({
@@ -397,8 +407,22 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					// return;
 
 					that.current_card_detail = res.data.data;
+					
 
 					console.log('current_card_detail ===>>> ', that.current_card_detail);
+					
+					//计算已经售出的备份比
+					that.current_card_detail.sale_percent = 50;
+					
+					if(that.current_card_detail.faxing_counter == 0){
+						that.current_card_detail.sale_percent = 99.99;
+					}
+					else{
+						that.current_card_detail.sale_percent = parseInt((that.current_card_detail.faxing_counter - that.current_card_detail.kucun_counter)/that.current_card_detail.faxing_counter*100);
+					}
+					
+					
+					
 
 
 					//处理商品详情
@@ -522,8 +546,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			this.headerPosition = e.scrollTop >= 0 ? "fixed" : "absolute";
 			this.headerTop = e.scrollTop >= 0 ? null : 0;
 			this.statusTop = e.scrollTop >= 0 ? null : -this.statusHeight + 'px';
-
-
+			
 
 		},
 
@@ -600,15 +623,15 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			return this.share_return();
 		},
 		methods: {
-			addPercent:function(e){
-			     var that = this;
-			    if(that.percent < 100){
-			        that.percent = that.percent + 2
-			        setTimeout(function(){
-			            that.addPercent()
-			        },220);
-			    }
-			},
+			// addPercent:function(e){
+			//      var that = this;
+			//     if(that.percent < 100){
+			//         that.percent = that.percent + 2
+			//         setTimeout(function(){
+			//             that.addPercent()
+			//         },220);
+			//     }
+			// },
 			layOut(){
 			      if(this.lay_type == 0){
 			        this.lay_type = 1
@@ -900,7 +923,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		margin: 15rpx;
 		border-radius: 15rpx;
 	}
-	.mask{
+	.show_modal_mask{
 		background-color: #000;
 		opacity: 0.7;
 		position: fixed;
@@ -910,7 +933,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		height: 100%;
 		z-index: 1;
 	}
-	.pop{
+	.show_modal_pop{
 		position: fixed;
 		
 		z-index: 2;

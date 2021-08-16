@@ -1,5 +1,6 @@
 <template>
 	<view class="content">
+		<!-- 全部及典藏珍藏卡牌按钮 -->
 		<view class="tabs">
 		    <block v-for="(tab,index) in tabBars" :key="tab.id">
 				<view class="uni-tab-item" :class="{'uni-tab-item-title-active' :tabIndex==index}" @tap="tabtap(index)">
@@ -149,7 +150,6 @@ export default {
 					//转换为对象数组
 					var new_card_item = {};
 					new_card_item.id = card_item.cardid;
-					// new_card_item.image_url = card_item.cover_img_url;
 					new_card_item.image_url = card_item.cover_img_url_2x3;
 					new_card_item.title = card_item.card_name;
 					new_card_item.text = card_item.brief;
