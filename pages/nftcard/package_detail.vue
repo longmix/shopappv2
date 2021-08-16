@@ -80,7 +80,6 @@
 		
 		<view class="publish_information" style="">
 			
-			<view class="" style="float: right;">
 				<!-- icon关注图标 -->
 				<view class="publish_icon_follow" v-if="current_package_detail.is_fans ==0" @tap="set_fans(1)">
 					<image  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/follow01.png" 
@@ -92,7 +91,7 @@
 						mode="widthFix" style="width: 50rpx;height: 30rpx;margin-top:8rpx ;"></image>
 					<view style="color: #FFFFFF;margin-left:0rpx; margin-top: 5rpx; font-size: 30rpx;">已关注</view>
 				</view>
-			</view>
+		
 			
 			<!-- 发行商图片及简介 12324-->
 			<view class="" style="display: flex;" @tap="goto_supplier_detail()">
@@ -155,7 +154,7 @@
 						v-for="(current_card_item,index) in current_card_list"
 						@tap="go_to_card_detail(current_card_item.packageid, current_card_item.cardid)">
 					<view class="">
-						<image class="package_card_img" :src="current_card_item.cover_img_url"></image>
+						<image class="package_card_img" :src="current_card_item.cover_img_url_2x3_stand" mode=""></image>
 					
 					
 						<!-- icon喜欢图标和喜欢人数-----------已有卡牌/已发售卡牌 -->
@@ -193,11 +192,11 @@
 			<view class="" style="font-weight: bold;">系列卡包</view>
 		</view>
 		<scroll-view scroll-x="true">
-			<view class="" style="display: flex;">
-				<view class="" style="margin-left: 20rpx;margin-bottom: 30rpx;" v-for="(current_card_item,index) in current_card_list"
+			<view class="" style="display: flex;margin-left: 20rpx;">
+				<view class="" style="margin-bottom: 30rpx;" v-for="(current_card_item,index) in current_card_list"
 						@tap="go_to_card_detail(current_card_item.packageid, current_card_item.cardid)">
-					<image :src="current_card_item.cover_img_url" mode=""
-						style="width: 340rpx;border-radius: 10rpx;overflow: hidden;"></image>
+					<image :src="current_card_item.cover_img_url_2x3_stand" mode="widthFix"
+						style="width: 300rpx;border-radius: 10rpx;overflow: hidden;"></image>
 					<view class="series_package" style="font-weight: bold;margin-left: 5rpx;">{{current_card_item.card_name}}</view>
 				</view>	
 			</view>
@@ -210,19 +209,22 @@
 		
 		
 		<!-- 富媒体文本展示卡牌详情 -->
-		<view class="description001">
-			<view class="content">
-				<!-- #ifdef MP-ALIPAY -->
-				<rich-text :nodes="card_description"></rich-text>
-				<!-- #endif -->
-				<!-- #ifndef MP-ALIPAY -->
-				<rich-text :nodes="card_description|formatRichText"></rich-text>
-				<!-- #endif -->
-			
-			
+		<view class="" style="background-color: #FFFFFF;">
+			<view class="description001">
+				<view class="content">
+					<!-- #ifdef MP-ALIPAY -->
+					<rich-text :nodes="card_description"></rich-text>
+					<!-- #endif -->
+					<!-- #ifndef MP-ALIPAY -->
+					<rich-text :nodes="card_description|formatRichText"></rich-text>
+					<!-- #endif -->
+				
+				
+				</view>
+				
 			</view>
-			
 		</view>
+		
 			
 	
 	</view>
