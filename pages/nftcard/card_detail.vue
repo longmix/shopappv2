@@ -29,14 +29,14 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				<!-- 2021.08.11卡牌封面 ==> 模态框 -->
 				<view>
 					<view class="show_modal_mask" v-if="showModal1" @click="showModal1=false"></view>
-					
-					<view class="show_modal_pop" v-if="showModal1"  :style="{ paddingTop: (card_bg_img_height*0.3)+'rpx'}">
+					<!-- 模态框 -->
+					<view :animation="animationData" class="show_modal_pop" v-if="showModal1"  :style="{ paddingTop: (card_bg_img_height*0.5)+'rpx'}">
 						<image :src="current_card_detail.cover_img_url_2x3"
 							class="card_detail_image"
 							:style="{width: (card_bg_img_width*1)+'rpx', height: (card_bg_img_height*1)+'rpx'}"></image>
 							
 					</view>
-					
+					<!-- 卡牌封面 -->
 					<view @click="showModal1=true" :style="{paddingTop: (card_bg_img_height*0.15)+'rpx',paddingLeft: (card_bg_img_width*0.1)+'rpx'}">
 						<image :src="current_card_detail.cover_img_url_2x3" 
 							class="card_detail_image" 
@@ -97,7 +97,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					<view style="font-size: 30rpx;">领取进度</view>
 					
 					
-					<!-- 进度条  转换为对象数组 -->
+					<!-- 进度条 -->
 					<view v-if="current_card_detail">
 						<progress :percent="current_card_detail.sale_percent" stroke-width="4" show-info="true" activeColor="#30C478"
 						 backgroundColor="red" font-size="14" active="true" active-mode="forwards"></progress>
@@ -252,6 +252,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		name:"sortstick",
 		data() {
 			return {
+				
+				animationData: {},
+				
 				lay_type:1,
 				
 				showModal1: false,//模态框
@@ -540,6 +543,23 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 
 		onShow: function() {
 			console.log('call onShow function (/pages/index/index)');
+			
+			
+			var animation = uni.createAnimation({
+				duration: 1000,
+				timingFunction: 'ease',
+			})
+			this.animation = animation;
+			animation.rotateZ(360).step();
+			this.animationData = animation.export()
+
+			setTimeout(function() {
+			  animation.translate(0).step()
+			  this.animationData = animation.export()
+			}.bind(this), 900)
+			
+			
+			
 		},
 		onPageScroll: function(e) {
 			//兼容iOS端下拉时顶部漂移
@@ -623,15 +643,26 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			return this.share_return();
 		},
 		methods: {
-			// addPercent:function(e){
-			//      var that = this;
-			//     if(that.percent < 100){
-			//         that.percent = that.percent + 2
-			//         setTimeout(function(){
-			//             that.addPercent()
-			//         },220);
-			//     }
-			// },
+			
+			rotateAndScale: function () {
+				// 旋转
+				this.animation.rotate(45).rotate(45).step()
+				this.animationData = this.animation.export()
+			},
+			rotateThenScale: function () {
+				// 先旋转后放大
+				this.animation.rotate(45).step()
+				this.animationData = this.animation.export()
+			},
+			rotateAndScaleThenTranslate: function () {
+				// 先旋转同时放大，然后平移
+				this.animation.rotate(45).step()
+				this.animation.translate(100, 100).step({ duration: 1000 })
+				this.animationData = this.animation.export()
+			},
+			
+			
+			
 			layOut(){
 			      if(this.lay_type == 0){
 			        this.lay_type = 1
@@ -867,7 +898,55 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 
 	}
 </script>
-
+<style lang="scss">
+	#try{
+		.rollbox{
+			position: relative;
+			perspective: 1000px;
+			width:200px;
+			height: 400px;
+			margin:100px auto;
+	 
+	    &_front,
+	    &_behind{
+	   transform-style: preserve-3d; //表示所有子元素在3D空间中呈现
+	       backface-visibility: hidden;  //元素背面向屏幕时是否可见
+	        transition-duration:.5s;
+	     transition-timing-function:'ease-in';
+		background:#008080;
+		.contentbox{
+			width:200px;
+			height: 400px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			>img{
+			width:100px;
+	    }
+	   }
+	    }
+	    &_behind{
+	      transform: rotateY(180deg);
+	      visibility:hidden;  //元素不可见，但占据空间
+	      position: absolute;
+	      top:0;
+	      bottom:0;
+	      right: 0;
+	      left: 0;
+	    }
+	 }
+	 .box_rolling{
+	    .rollbox_front{
+	      transform: rotateY(180deg);
+	      visibility:hidden;
+	    }
+	    .rollbox_behind{
+	      transform: rotateY(360deg);
+	      visibility:visible;
+	    }
+	  }
+	}
+</style>
 <style>
 	.card_detail_xing {
 		width: 30rpx;
@@ -1100,7 +1179,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		right: 0rpx;
 	}
 	.card_detail_xiangqing{
-		width: 100%;
 		word-wrap:break-word;  
 		word-break:break-all;
 		background-color: #FFFFFF;
