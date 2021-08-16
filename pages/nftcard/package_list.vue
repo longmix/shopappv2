@@ -14,9 +14,9 @@
 		<view class="drop_down_menu">
 			<picker @change="bindPickerChange" :value="index" :range="array">
 				<view class="picker" >
-					{{array[index]}}
+					<view style="margin-left: 5rpx;">{{array[index]}}</view>
 					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/drop_down.png"
-						mode="widthFix" style="width: 25rpx; left: 10rpx;top: 2rpx;"></image>
+						mode="widthFix" style="width: 25rpx;margin-left: 6rpx; margin-top: 15rpx;"></image>
 				</view>
 			</picker>
 		</view>
@@ -61,7 +61,7 @@
 						<!-- 卡包名称---------卡包简介 -->
 						<view class="package_name">{{current_package_item.title}}</view>
 						
-						<view class="package_brief">{{current_package_item.brief}}</view>
+						<view class="package_brief" style="margin-left: 20rpx;">{{current_package_item.brief}}</view>
 						<view class="package_rare_total_time">
 							<view class="package_rare_total" >
 								<view class="card_quantity">稀有卡1张</view>
@@ -328,9 +328,10 @@ export default {
 		margin: 30rpx 10rpx 10rpx 40rpx;
 	}
 	.picker{
-	
+		display: flex;
 		width: 160rpx; 
 		height: 50rpx;
+		
 		border-radius: 15rpx;
 		overflow: hidden;
 		font-size: 30rpx;
@@ -414,18 +415,10 @@ export default {
 	}
 	.card_quantity{
 		font-weight: 100;
-		font-size: 10rpx;
+		font-size: 20rpx;
 		margin: 0rpx 10rpx;
 	}
-	.package_brief{
-		margin-left: 20rpx;
-		font-weight: 100; 
-		font-size: 10rpx;
-		margin-bottom: 5rpx;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
+	
 		
 	
 	/*

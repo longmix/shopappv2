@@ -239,7 +239,7 @@
 		<!-- 功能按钮-->
 		<view>
 			<!-- 按钮1 -->
-			<view class="paidui-con" v-if="shop_product_btn_show == 1">
+			<view class="paidui-con" v-if="shop_product_btn_show == 0">
 				<image class="icon-a" :src="user_console_setting.shop_product_icon"></image>
 				<view class="paidui-a">
 					<view class="icon-title">
@@ -260,7 +260,7 @@
 			<!-- 按钮1   end -->
 
 			<!-- 按钮2 -->
-			<view class="paidui-con" v-if="waimai_product_btn_show == 1">
+			<view class="paidui-con" v-if="waimai_product_btn_show == 0">
 				<image style="height: 85upx;" class="icon-a" :src="user_console_setting.waimai_product_icon"></image>
 				<view class="paidui-a">
 					<view class="icon-title">
@@ -400,7 +400,7 @@
 		</view>
 		
 		
-		<view v-if="user_console_setting.user_console_quick_button_position == 'bottom'" class='footer' >
+		<view v-if="user_console_setting.user_console_quick_button_position == 'left'" class='footer' >
 			<view @tap="isShoucang==1?Shoucang('del'):Shoucang('add')" class="shoucang_box">
 				<image v-if="isShoucang == 0" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star.png"></image>
 				<image v-if="isShoucang == 1" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png"></image>收藏

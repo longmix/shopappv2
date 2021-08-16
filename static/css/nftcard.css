@@ -19,17 +19,27 @@
 		color: #FFFFFF;
 		margin: 5rpx 10rpx;
 		padding: 5rpx 10rpx;
-		border-radius: 5rpx;
+		border-radius: 10rpx;
 		overflow: hidden;
-		font-size: 10rpx;
+		font-size: 30rpx;
 		text-align: center;
 		
 	} 
+	.package_brief{
+		width: 90%;
+		
+		font-weight: 100; 
+		font-size: 25rpx;
+		margin-bottom: 5rpx;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
 
 	.begin_end_time{
 		margin-bottom: 5rpx;
 		font-weight: 300; 
-		font-size: 10rpx; 
+		font-size: 20rpx; 
 		width: 80%;
 	
 	}

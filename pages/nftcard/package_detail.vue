@@ -38,7 +38,7 @@
 				
 			</view>
 			
-			<view class="package_detail_brief">
+			<view class="package_brief">
 				{{current_package_detail.brief}}
 			</view>
 			
@@ -985,15 +985,7 @@ export default {
 		text-overflow: ellipsis;
 		
 	}
-	.package_detail_brief{
-		width: 90%;
-		margin-top: 5rpx;
-		font-weight: 300; 
-		font-size: 10rpx;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
+	
 /* 	.package_detail_lable_attribute{
 		background-color: #ffffff;
 		width: 730rpx;
@@ -1005,7 +997,7 @@ export default {
 	} */
 	.package_detail_lable{
 		
-		margin-top: 10rpx;
+		margin-top: 5rpx;
 		height: 40rpx;
 
 	}
@@ -1013,11 +1005,11 @@ export default {
 		
 		border: #15c5ce solid 2rpx;
 		color: #15c5ce;
-		margin: 10rpx 20rpx 10rpx 0rpx;
+		margin: 0rpx 20rpx 10rpx 0rpx;
 		
 		border-radius: 6rpx;
 		overflow: hidden;
-		font-size: 10rpx;
+		font-size: 20rpx;
 		
 		
 	} 
