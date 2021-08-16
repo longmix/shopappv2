@@ -167,7 +167,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			
 
 			<!-- 富媒体文本展示卡牌详情 -->
-			<view style="background-color: #FFFFFF;margin: 15rpx;border-radius: 15rpx;padding: 15rpx;">
+			<view class="card_detail_xiangqing">
 				<view class="description001">
 					<view class="content">
 						<!-- #ifdef MP-ALIPAY -->
@@ -181,7 +181,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			</view>
 			
 		</view>
-
+		
 
 		<!-- 悬浮 -->
 		<view class="card_detail_footer">
@@ -1098,5 +1098,11 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		position: fixed;
 		bottom: 0rpx;
 		right: 0rpx;
+	}
+	.card_detail_xiangqing{
+		background-color: #FFFFFF;
+		margin: 15rpx;
+		border-radius: 15rpx;
+		padding: 15rpx;
 	}
 </style>
