@@ -31,14 +31,14 @@
 					<view class="uni-padding-wrap uni-common-mt">
 					 	<view class="progress-box">
 							<progress percent="50" activeColor="#30C478" stroke-width="3" 
-								show-info="" backgroundColor="red" font-size="5"></progress>
+								show-info="" backgroundColor="red" font-size="15"></progress>
 						</view>
 					</view>
 					
 					<!-- 喜欢卡包的简介  发行时间 -->
 					<view class="" style="margin-top: 10rpx;">
 						<view class="my_package_brief" >{{current_package_list_item.brief}}</view>
-						<view style="font-size: 10rpx;font-weight: 100;">{{current_package_list_item.time_begin_str}}</view>
+						<view style="font-size: 25rpx;font-weight: 100;">{{current_package_list_item.time_begin_str}}</view>
 					</view>
 					
 				</view>
@@ -101,11 +101,9 @@ export default {
 				sellerid:that.abotapi.globalData.default_sellerid,
 				
 				
-				
 				checkstr:userInfo.checkstr,
 				userid:userInfo.userid,
 				action: 'my_like_list',
-				
 				
 				
 				
@@ -317,7 +315,7 @@ export default {
 	.my_package_brief{
 		width: 80%;
 		font-weight: 100;
-		font-size: 10rpx;
+		font-size: 25rpx;
 		margin-top: 10rpx;
 		white-space: nowrap;
 		overflow: hidden;

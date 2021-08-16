@@ -46,7 +46,7 @@
 			<!-- 开始时间~~~结束时间 -->
 			<view class="" style="display: flex;">
 				<view class="begin_end_time" >
-					{{current_package_detail.time_begin_str}}~{{current_package_detail.time_end_str}}
+					有效期：{{current_package_detail.time_begin_str}}~{{current_package_detail.time_end_str}}
 				</view>	
 				<view v-if="is_package_time_expire ==false" style="width:150rpx; border-radius:10rpx;background-color: #30c478; text-align: center; color: #FFFFFF; height: 45rpx;">{{current_package_detail.status_str}}</view>
 				<view v-else="is_package_time_expire ==true" style="width:150rpx; border-radius:10rpx;background-color:red; text-align: center; color: #FFFFFF;" >已下架</view>
@@ -102,7 +102,7 @@
 					
 					<!-- 发行商名字----详情 -->
 					<view class="publish_name">{{current_package_detail.supplier_name}}</view>
-					<view class="publish_brief" style="font-weight: 300; font-size: 10rpx;">{{current_package_detail.supplier_brief}}</view>
+					<view class="publish_brief" style="font-weight: 300; font-size: 20rpx;">{{current_package_detail.supplier_brief}}</view>
 						
 						
 				</view>
