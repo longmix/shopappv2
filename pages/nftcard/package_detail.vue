@@ -57,8 +57,8 @@
 		
 			<!-- 进度条 -->
 		 	<view class="uni-padding-wrap uni-common-mt">
-			 	<view class="progress-box">收集进度：（{{current_package_detail.buy_counter}}/{{current_package_detail.packageid_card_count}}）
-					<progress percent="50" activeColor="#30C478" stroke-width="4" 
+			 	<view class="progress-box">收集进度：（{{current_package_detail.packageid_card_user_buy_count}}/{{current_package_detail.packageid_card_count}}）
+					<progress :percent="current_package_detail.sale_percent" activeColor="#30C478" stroke-width="4" 
 						show-info="" backgroundColor="red" font-size="5"></progress>
 				</view>
 			</view>
@@ -253,7 +253,7 @@ export default {
 			current_cardid:0, 
 			current_userid:0,
 		
-			
+		
 			card_description:'',  //卡包的富媒体描述
 			
 			package_tag_item_list:[
@@ -324,7 +324,7 @@ export default {
 		that.current_package_detail.description = '';
 		that.current_package_detail.cover_img_url = 'http://192.168.0.205/yanyubao_server/uploads/2021/08/03/610895dcc87bc.jpg';
 		that.current_package_detail.cover_img_url = 'http://192.168.0.205/yanyubao_server/uploads/2021/08/03/610895dcc87bc.jpg';
-		
+
 		
 		
 		//获取卡包详情
@@ -360,6 +360,23 @@ export default {
 				that.current_package_detail = res.data.data;
 				
 				console.log('current_package_detail ===>>> ', that.current_package_detail);
+				
+				
+				//计算已经售出的备份比
+				
+				if(that.current_package_detail.packageid_card_count == 0){
+					that.current_package_detail.sale_percent = 100;
+				}
+				else{
+					console.log('fenmu===========>',that.current_package_detail.packageid_card_count);
+					console.log('fenzi===========>',that.current_package_detail.packageid_card_user_buy_count);
+					console.log('fenshu===========>',that.current_package_detail.sale_percent);
+					
+					
+					
+					that.current_package_detail.sale_percent = parseInt(that.current_package_detail.packageid_card_user_buy_count/that.current_card_detail.packageid_card_count*100);
+				}
+				
 				
 				//检查卡包是否已经过期
 				if(that.current_package_detail.time_end < util.get_time_stamp()){
