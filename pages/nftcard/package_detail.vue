@@ -57,7 +57,7 @@
 		
 			<!-- 进度条 -->
 		 	<view class="uni-padding-wrap uni-common-mt">
-			 	<view class="progress-box">收集进度：（1/2）
+			 	<view class="progress-box">收集进度：（{{current_package_detail.buy_counter}}/{{current_package_detail.packageid_card_count}}）
 					<progress percent="50" activeColor="#30C478" stroke-width="4" 
 						show-info="" backgroundColor="red" font-size="5"></progress>
 				</view>
