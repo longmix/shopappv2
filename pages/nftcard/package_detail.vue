@@ -254,6 +254,7 @@ export default {
 			current_userid:0,
 		
 		
+
 			card_description:'',  //卡包的富媒体描述
 			
 			package_tag_item_list:[
@@ -324,7 +325,7 @@ export default {
 		that.current_package_detail.description = '';
 		that.current_package_detail.cover_img_url = 'http://192.168.0.205/yanyubao_server/uploads/2021/08/03/610895dcc87bc.jpg';
 		that.current_package_detail.cover_img_url = 'http://192.168.0.205/yanyubao_server/uploads/2021/08/03/610895dcc87bc.jpg';
-
+		
 		
 		
 		//获取卡包详情
@@ -363,18 +364,19 @@ export default {
 				
 				
 				//计算已经售出的备份比
-				
+				that.current_package_detail.sale_percent = 0;
 				if(that.current_package_detail.packageid_card_count == 0){
-					that.current_package_detail.sale_percent = 100;
+					that.current_package_detail.sale_percent = 99.99;
 				}
 				else{
 					console.log('fenmu===========>',that.current_package_detail.packageid_card_count);
 					console.log('fenzi===========>',that.current_package_detail.packageid_card_user_buy_count);
-					console.log('fenshu===========>',that.current_package_detail.sale_percent);
+					console.log('===========>',that.current_package_detail.sale_percent);
 					
 					
 					
-					that.current_package_detail.sale_percent = parseInt(that.current_package_detail.packageid_card_user_buy_count/that.current_card_detail.packageid_card_count*100);
+					that.current_package_detail.sale_percent =
+						parseInt(that.current_package_detail.packageid_card_user_buy_count/that.current_package_detail.packageid_card_count*100);
 				}
 				
 				
