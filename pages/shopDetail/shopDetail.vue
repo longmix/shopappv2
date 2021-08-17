@@ -125,7 +125,7 @@
 				</view>
 				<!-- 发行商头像和名称 -->
 				<view style="text-align: center;position: relative;top: 350rpx;">
-					<image :src="current_shang_detail.icon_image" mode="widthFix" style="width: 200rpx;"></image>
+					<image :src="current_shang_detail.icon_image" mode="" style="width: 200rpx;height: 200rpx; border-radius: 50%;"></image>
 					<view style="margin-left: 0rpx;">{{current_shang_detail.name}}</view>
 					
 				</view>
@@ -249,6 +249,7 @@
 		<view style="border-bottom:6px solid #eceeef;"  v-if="nft_package_list_show_flag == 1">
 			<view class="">
 				<view class="supplier_icon-title3">
+					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/rocket.png" mode="widthFix" style="width: 20rpx;"></image>
 					<view class='nft_supplier_biaoti' >热门卡牌</view>	
 				</view>
 				
