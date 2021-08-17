@@ -170,7 +170,7 @@
 		<!--商家简介-->
 		<view style="border-bottom:6px solid #eee;" v-if="current_shang_detail.brief != ''">
 			<view class="supplier_icon-title3">
-				<!-- <image :src="user_console_setting.user_console_icon_jianjie" mode="widthFix"></image> -->
+			<!-- 	<image :src="user_console_setting.user_console_icon_jianjie" mode="widthFix" style="width: 50rpx;"></image> -->
 				<view class='nft_supplier_biaoti'>商家简介</view>
 			</view>
 			<block v-if="current_shang_detail.brief == ''">
@@ -181,7 +181,7 @@
 			</block>
 		
 			<block v-if="current_shang_detail.brief != ''">
-				<view style="padding-top:5px;padding-bottom: 24rpx;color: #666;width: 94%;margin: 0 auto;font-size:14px;text-indent: 54rpx;">
+				<view style="padding-top:0px;padding-bottom: 20rpx;color: #666;width: 94%;font-size:14px;">
 					<view class="supplier_brief">
 						
 						<view class="info">
@@ -247,13 +247,13 @@
 		
 		<!-- NFT卡包卡牌功能模块 Begin -->
 		<view style="border-bottom:6px solid #eceeef;"  v-if="nft_package_list_show_flag == 1">
-			<view class="" style="padding-top: 10rpx;">
+			<view class="">
 				<view class="supplier_icon-title3">
 					<view class='nft_supplier_biaoti' >热门卡牌</view>	
 				</view>
 				
-					<scroll-view scroll-x="true" style="background-color: #eceeef;padding-top: 10rpx;">
-						<view class="" style="display: flex;">
+					<scroll-view scroll-x="true" style="background-color: #eceeef;">
+						<view class="" style="display: flex;height: 390rpx;">
 							<view class="" style="margin-left: 20rpx;margin-bottom: 30rpx;" v-for="(current_card_item,index) in current_nft_card_list"
 									@tap="go_to_card_detail(current_card_item.packageid, current_card_item.cardid)">
 								<view class="slide_cards_pic"style="height: 350rpx;">
@@ -2826,10 +2826,12 @@
 		font-size: 17px;
 		color: #30C478;
 		padding-left: 10px;
+		margin-top: 10rpx;
+		margin-bottom: 10rpx;
 	}
 	.supplier_icon-title3{
 		margin-top: 10rpx 20rpx;
-		
+		display: flex;
 		margin-top: 0rpx;
 		align-items: center;
 		border-bottom: 1px solid #eee;
