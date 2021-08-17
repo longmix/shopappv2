@@ -30,12 +30,12 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				<view>
 					<view class="show_modal_mask" v-if="showModal1" @click="showModal1=false"></view>
 					<!-- 模态框 -->
-					<view id="try" class="show_modal_pop" v-if="showModal1"  :style="{ paddingTop: (card_bg_img_height*0.5)+'rpx'}">
+					<view id="try" class="show_modal_pop" v-if="showModal1"  :style="{paddingTop: (card_bg_img_height*0.6)+'rpx'}">
 						
 							
-							<!-- box_rolling下执行正面翻转动画   -->
+						<!-- box_rolling下执行正面翻转动画   -->
 						<div class="rollbox" :class="{'box_rolling':isRolling}" @click="isRolling = !isRolling">
-							<!-- 前面div -->
+							<!-- 卡牌正面 -->
 							<div class="rollbox_front">
 								<div class="contentbox">
 									<image :src="current_card_detail.cover_img_url_2x3"
@@ -43,7 +43,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 										:style="{width: (card_bg_img_width*1)+'rpx', height: (card_bg_img_height*1)+'rpx'}"></image>
 								</div>
 							</div>
-							<!-- 后面div -->
+							<!-- 卡牌反面 -->
 							<div class="rollbox_behind">
 								<div class="contentbox">
 									<image src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/tu.jpeg"
@@ -268,15 +268,12 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	// #endif
 
 	export default {
-		name:"sortstick",
-		// name:'try',
+		name:'try',
 		data() {
-			return {
-				isRolling:false,
+			return {				
+				isRolling:false,//模态框图片翻转
 				
-				animationData: {},
-				
-				lay_type:1,
+				lay_type:1,//详情隐藏控件
 				
 				showModal1: false,//模态框
 				
@@ -488,7 +485,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				},
 			});
 
-
 			//获取卡包详情
 			that.abotapi.abotRequest({
 				url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_detail',
@@ -564,20 +560,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 
 		onShow: function() {
 			console.log('call onShow function (/pages/index/index)');
-			
-			
-			var animation = uni.createAnimation({
-				duration: 1000,
-				timingFunction: 'ease',
-			})
-			this.animation = animation;
-			animation.rotateZ(360).step();
-			this.animationData = animation.export()
-
-			setTimeout(function() {
-			  animation.translate(0).step()
-			  this.animationData = animation.export()
-			}.bind(this), 900)
 			
 			
 			
@@ -664,26 +646,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			return this.share_return();
 		},
 		methods: {
-			
-			rotateAndScale: function () {
-				// 旋转
-				this.animation.rotate(45).rotate(45).step()
-				this.animationData = this.animation.export()
-			},
-			rotateThenScale: function () {
-				// 先旋转后放大
-				this.animation.rotate(45).step()
-				this.animationData = this.animation.export()
-			},
-			rotateAndScaleThenTranslate: function () {
-				// 先旋转同时放大，然后平移
-				this.animation.rotate(45).step()
-				this.animation.translate(100, 100).step({ duration: 1000 })
-				this.animationData = this.animation.export()
-			},
-			
-			
-			
 			layOut(){
 			      if(this.lay_type == 0){
 			        this.lay_type = 1
@@ -924,6 +886,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		.rollbox{
 			position: relative;
 			perspective: 1000px;
+			text-align: center;
 	    &_front,
 		&_behind{
 			transform-style: preserve-3d; //表示所有子元素在3D空间中呈现
@@ -1026,7 +989,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	}
 	.show_modal_pop{
 		position: fixed;
-		
 		z-index: 2;
 	}
 	.card_detail_modal{
@@ -1061,7 +1023,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		width: 90rpx;
 		height: 90rpx;
 		border-radius: 50%;
-		/* margin: 15rpx; */
+		margin: 15rpx;
 		margin-right: 23rpx;
 		border: #aeb8ab 3rpx solid;
 	}
