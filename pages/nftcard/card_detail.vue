@@ -30,10 +30,29 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				<view>
 					<view class="show_modal_mask" v-if="showModal1" @click="showModal1=false"></view>
 					<!-- 模态框 -->
-					<view :animation="animationData" class="show_modal_pop" v-if="showModal1"  :style="{ paddingTop: (card_bg_img_height*0.5)+'rpx'}">
-						<image :src="current_card_detail.cover_img_url_2x3"
-							class="card_detail_image"
-							:style="{width: (card_bg_img_width*1)+'rpx', height: (card_bg_img_height*1)+'rpx'}"></image>
+					<view id="try" class="show_modal_pop" v-if="showModal1"  :style="{ paddingTop: (card_bg_img_height*0.5)+'rpx'}">
+						
+							
+							<!-- box_rolling下执行正面翻转动画   -->
+						<div class="rollbox" :class="{'box_rolling':isRolling}" @click="isRolling = !isRolling">
+							<!-- 前面div -->
+							<div class="rollbox_front">
+								<div class="contentbox">
+									<image :src="current_card_detail.cover_img_url_2x3"
+										class="card_detail_image"
+										:style="{width: (card_bg_img_width*1)+'rpx', height: (card_bg_img_height*1)+'rpx'}"></image>
+								</div>
+							</div>
+							<!-- 后面div -->
+							<div class="rollbox_behind">
+								<div class="contentbox">
+									<image src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/tu.jpeg"
+										class="card_detail_image"
+										:style="{width: (card_bg_img_width*1)+'rpx', height: (card_bg_img_height*1)+'rpx'}"></image>
+								</div>
+							</div>
+						</div>
+							
 							
 					</view>
 					<!-- 卡牌封面 -->
@@ -250,8 +269,10 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 
 	export default {
 		name:"sortstick",
+		// name:'try',
 		data() {
 			return {
+				isRolling:false,
 				
 				animationData: {},
 				
@@ -903,27 +924,18 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		.rollbox{
 			position: relative;
 			perspective: 1000px;
-			width:200px;
-			height: 400px;
-			margin:100px auto;
-	 
 	    &_front,
-	    &_behind{
-	   transform-style: preserve-3d; //表示所有子元素在3D空间中呈现
-	       backface-visibility: hidden;  //元素背面向屏幕时是否可见
-	        transition-duration:.5s;
-	     transition-timing-function:'ease-in';
-		background:#008080;
-		.contentbox{
-			width:200px;
-			height: 400px;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			>img{
-			width:100px;
-	    }
-	   }
+		&_behind{
+			transform-style: preserve-3d; //表示所有子元素在3D空间中呈现
+			backface-visibility: hidden;  //元素背面向屏幕时是否可见
+	        transition-duration:0.5s;
+			transition-timing-function:'ease-in';
+			.contentbox{
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				
+			}
 	    }
 	    &_behind{
 	      transform: rotateY(180deg);
