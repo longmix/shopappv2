@@ -102,7 +102,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				</h4>
 				<view style="color: #868686;font-size: 30rpx;">
 					<!-- 发行时间 -->
-					<text id="card_detail_mystr" v-if="current_card_detail">{{current_card_detail.createtime}}</text>
+					<text id="card_detail_mystr" v-if="current_card_detail">{{current_card_detail.time_begin}}</text>
 					<!-- 有多少人收藏 -->
 					<view style="float: right;">
 						<view>
@@ -238,17 +238,31 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				</view>
 			</view>
 			<!-- 2021.08.06购买 -->
-			<view class="card_detail_goumai1" :style="{backgroundColor:wxa_shop_nav_bg_color}"
-				v-if="current_card_detail.is_buyed == 0" @tap="test_goto_buy">
-				<image class="card_detail_an" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/goumai.png"
+			<view v-if="current_card_detail.is_buy_limit != -1" class="card_detail_goumai1" 
+				:style="{backgroundColor:wxa_shop_nav_bg_color}" 
+				@tap="test_goto_buy">
+				<image 
+					class="card_detail_an" 
+					src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/goumai.png"
+				></image>
+				
+			</view>
+			<view v-else class="card_detail_goumai1" style="background-color: #7f7f7f;"
+				:style="{backgroundColor:wxa_shop_nav_bg_color}" 
+				@tap="test_goto_buy">
+				
+				<image 
+					class="card_detail_an" 
+					src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/goumai.png"
 				></image>
 			</view>
+
 			<!-- 2021.08.06卡牌持有的数量 -->
-			<view class="card_detail_goumai2" v-if="current_card_detail.is_buyed == 1">
+			<view class="card_detail_goumai2">
 				<image class="card_detail_items" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/cheng.png"
 				></image>
 				<view style="font-size: 35rpx;padding-top: 20rpx;padding-right: 5rpx;">
-					{{current_card_detail.have_counter}}
+					{{current_card_detail.user_have_counter}}
 				</view>
 			</view>
 		</view>
@@ -318,13 +332,16 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			that.current_card_detail.card_name = '';
 			that.current_card_detail.createtime = '';
 			that.current_card_detail.favorite_counter = 0;
-			that.current_card_detail.faxing_counter = 0;
-			that.current_card_detail.kucun_counter = 0;
+
 			that.current_card_detail.package_title = '';
 			that.current_card_detail.supplier_name = '';
 			that.current_card_detail.is_buyed = 0;
-			that.current_card_detail.have_counter = 0;
+			
+			that.current_card_detail.user_have_counter = 0;
+			
 			that.current_card_detail.sale_percent = 50;
+			that.current_card_detail.sale_counter = 0;		//售出的数量
+			that.current_card_detail.publish_counter = 0;		//发售的数量
 
 			uni.showLoading({
 				title:'数据加载中...',
@@ -435,11 +452,11 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					//计算已经售出的备份比
 					that.current_card_detail.sale_percent = 50;
 					
-					if(that.current_card_detail.faxing_counter == 0){
+					if(that.current_card_detail.publish_counter == 0){
 						that.current_card_detail.sale_percent = 99.99;
 					}
 					else{
-						that.current_card_detail.sale_percent = parseInt((that.current_card_detail.faxing_counter - that.current_card_detail.kucun_counter)/that.current_card_detail.faxing_counter*100);
+						that.current_card_detail.sale_percent = parseInt((that.current_card_detail.sale_counter)/that.current_card_detail.publish_counter*100);
 					}
 					
 					
@@ -773,6 +790,16 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				var that = this;
 
 				console.log('tgggggggggggggggggg_buy');
+				
+				if(that.current_card_detail.is_buy_limit == -1){
+					uni.showModal({
+						title:'提示',
+						content:'超过购买数量限制',
+						showCancel:false
+					})
+					
+					return;
+				}
 
 				var productid = that.current_card_detail.productid;
 				var price = that.current_card_detail.price;
@@ -882,6 +909,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	}
 </script>
 <style lang="scss">
+	
+	
+	
 	#try{
 		.rollbox{
 			position: relative;
@@ -923,6 +953,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	}
 </style>
 <style>
+	@import "/static/css/nftcard.css";	
+	
 	.card_detail_xing {
 		width: 30rpx;
 		height: 30rpx;
@@ -1009,8 +1041,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	.card_detail_schang {
 		width: 39rpx;
 		height: 39rpx;
-		margin-top: 7rpx;
-		margin-left: 11rpx;
+		margin-top: 6rpx;
+		margin-left: 10rpx;
 	}
 	.card_detail_xiaoxi1 {
 		width: 60rpx;
@@ -1054,6 +1086,16 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		height: 45rpx;
 		padding-top: 22rpx;
 		padding-left: 24rpx;
+	}
+	.card_detail_lvjing{
+		width: 90rpx;
+		height: 90rpx;
+		font-size: 27rpx;
+		background-color: #8a9487;
+		border-radius: 100%;
+		margin: 15rpx;
+		margin-right: 23rpx;
+		border: #aeb8ab 3rpx solid;
 	}
 	.card_detail_items {
 		width: 40rpx;
