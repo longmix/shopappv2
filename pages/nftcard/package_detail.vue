@@ -12,16 +12,16 @@
 			
 			<!-- icon喜欢图标--------- -->
 			<view class="like_number" >
-				<image v-if="current_package_detail.is_like == 0"  @tap="set_like(1)" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/xin02.png"
+				<image v-if="current_package_detail.is_like == 0"  @tap="set_like(1)" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xin02.png"
 					mode="widthFix" style="width: 50rpx;height: 50rpx; margin-top: 15rpx;margin-left: 12rpx;" ></image>
-				<image v-if="current_package_detail.is_like == 1" @tap="set_like(0)"  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/xin.png" 
+				<image v-if="current_package_detail.is_like == 1" @tap="set_like(0)"  src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xin.png" 
 					mode="widthFix" style="width: 60rpx;height:56rpx;margin-top: 11rpx;margin-left: 8rpx;"  ></image>
 				<!-- <view style="font-weight: 100; font-size: 10rpx;"> {{current_package_detail.like_count}}</view> -->
 			</view>
 			
 			<!-- 截图按钮 -->
 			<view class="package_ps">
-				<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/ps.png"
+				<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/ps.png"
 					mode="widthFix" style="width: 45rpx;margin-top: 17rpx;margin-left: 18rpx;"></image>
 			</view>
 		</view>
@@ -30,7 +30,7 @@
 		<view class="package_information">
 			<view class="">
 				<view style="float: right;display: flex;">
-					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/xin.png" mode="widthFix" style="width: 40rpx;margin-top: 10rpx;"></image>
+					<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xin.png" mode="widthFix" style="width: 40rpx;margin-top: 10rpx;"></image>
 					<view style="margin-top: 10rpx;margin-right: 20rpx;">{{current_package_detail.like_count}}</view>
 				</view>
 				<!-- 卡包名字---简介 -->
@@ -82,12 +82,12 @@
 			
 				<!-- icon关注图标 -->
 				<view class="publish_icon_follow" v-if="current_package_detail.is_fans ==0" @tap="set_fans(1)">
-					<image  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/follow01.png" 
+					<image  src="https://yanyubao.tseo.cn/Tpl/static/nft_card/follow01.png" 
 						mode="widthFix" style="width: 60rpx; margin-top: 8rpx; "></image>
 					<view style="color: #30c478;margin-left:10rpx; margin-top: 5rpx; font-size: 30rpx;">关注</view>
 				</view>
 				<view class="publish_icon_follow01" v-if="current_package_detail.is_fans ==1" @tap="set_fans(0)">
-					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/follow02.png" 
+					<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/follow02.png" 
 						mode="widthFix" style="width: 50rpx;height: 30rpx;margin-top:8rpx ;"></image>
 					<view style="color: #FFFFFF;margin-left:0rpx; margin-top: 5rpx; font-size: 30rpx;">已关注</view>
 				</view>
@@ -160,7 +160,7 @@
 						<!-- icon喜欢图标和喜欢人数-----------已有卡牌/已发售卡牌 -->
 						<view class="already_sold_card_icon_like">
 							<view class="card_like_num" >
-								<image class="card_img" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/collect.png" mode="widthFix" style="width: 25rpx;"></image>
+								<image class="card_img" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/collect.png" mode="widthFix" style="width: 25rpx;"></image>
 								{{current_card_item.favorite_counter}}
 							</view>
 							<!-- <view class="sold_card">
@@ -321,7 +321,7 @@ export default {
 		
 		
 		that.current_package_detail = {'title':''};
-		that.current_package_detail.cover_img_url = 'http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/default_package_cover.png';
+		that.current_package_detail.cover_img_url = 'https://yanyubao.tseo.cn/Tpl/static/nft_card/default_package_cover.png';
 		that.current_package_detail.description = '';
 		
 		

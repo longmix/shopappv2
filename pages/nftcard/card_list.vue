@@ -2,7 +2,7 @@
 	<view class="card_background">
 		<picker @change="bindPickerChange" :value="index" :range="array" style="padding: 20rpx;">
 			<view class="card_list_picker">{{array[index]}}
-				<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/drop_down.png" mode="widthFix" style="width: 30rpx;"></image>
+				<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/drop_down.png" mode="widthFix" style="width: 30rpx;"></image>
 			</view>
 		</picker>
 		<view style="display: flex;flex-wrap: wrap;">

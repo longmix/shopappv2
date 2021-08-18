@@ -129,46 +129,44 @@
 					<view style="margin-left: 0rpx;">{{current_shang_detail.name}}</view>
 					
 				</view>
-				
+				<view class="supplier_follow_num_icon01" style="">
+					
+					<!-- icon关注图标 -->
+					<view class="publish_icon_follow" v-if="current_shang_detail.is_fans ==0" @tap="set_fans(1)">
+						<image  src="https://yanyubao.tseo.cn/Tpl/static/nft_card/follow01.png" 
+							mode="widthFix" style="width: 60rpx; margin-top: 8rpx; "></image>
+						<view style="color: #30c478;margin-left:10rpx; margin-top: 5rpx; font-size: 30rpx;">关注</view>
+					</view>
+					<view class="publish_icon_follow01" v-if="current_shang_detail.is_fans ==1" @tap="set_fans(0)">
+						<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/follow02.png" 
+							mode="widthFix" style="width: 50rpx;height: 30rpx;margin-top:8rpx ;"></image>
+						<view style="color: #FFFFFF;margin-left:0rpx; margin-top: 5rpx; font-size: 30rpx;">已关注</view>
+					</view>
+				</view>
 				<view class="supplier_follow_num_icon">
 					<!-- 关注人数====粉丝数量 -->
 					<view class="supplier_follow_num" >
-						关注：{{current_shang_detail.supplier_fans_count}}99999
-					</view>
-					<view class="" style="">
-						
-						<!-- icon关注图标 -->
-						<view class="publish_icon_follow" v-if="current_shang_detail.is_fans ==0" @tap="set_fans(1)">
-							<image  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/follow01.png" 
-								mode="widthFix" style="width: 60rpx; margin-top: 8rpx; "></image>
-							<view style="color: #30c478;margin-left:10rpx; margin-top: 5rpx; font-size: 30rpx;">关注</view>
-						</view>
-						<view class="publish_icon_follow01" v-if="current_shang_detail.is_fans ==1" @tap="set_fans(0)">
-							<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/follow02.png" 
-								mode="widthFix" style="width: 50rpx;height: 30rpx;margin-top:8rpx ;"></image>
-							<view style="color: #FFFFFF;margin-left:0rpx; margin-top: 5rpx; font-size: 30rpx;">已关注</view>
-						</view>
+						<view>关注：</view>
+						<view>{{current_shang_detail.supplier_fans_count}}1.2k</view>
 					</view>
 				</view>
-				
-				
-				<view class="supplier_package_num" >卡包：{{current_shang_detail.package_count}}</view>
-				<view class="supplier_package_num01">卡牌：{{current_shang_detail.card_count}}</view>
-				<!-- 运营时间和发行商地址 -->
-				<view class=""style="background-color: #eceeef;height: 100rpx;margin-top: 430rpx;">
-					<view class="" style="width: 700rpx;margin-left: 20rpx;background-color: #FFFFFF;top: 50rpx;">
-						<view style="margin-left: 20rpx;">运营时间：{{current_shang_detail.yingyeshijian}}</view>				
-						<view style="margin-left: 20rpx;">地址：{{current_shang_detail.address}}</view>
-					</view>
 					
+				
+				<view class="supplier_package_num" >
+					<view>卡包：</view>
+					<view>{{current_shang_detail.package_count}}</view>
 				</view>
-			
+				<view class="supplier_package_num01">
+					<view>卡牌：</view>
+					<view>{{current_shang_detail.card_count}}</view>
+				</view>
+				
 			</view>
 			
 		</block>
 		
 		<!--商家简介-->
-		<view style="border-bottom:6px solid #eee;" v-if="current_shang_detail.brief != ''">
+		<view style="border-bottom:6px solid #eee;background-color: #eceeef; padding-top: 450rpx;" v-if="current_shang_detail.brief != ''">
 			<view class="supplier_icon-title3">
 			<!-- 	<image :src="user_console_setting.user_console_icon_jianjie" mode="widthFix" style="width: 50rpx;"></image> -->
 				<view class='nft_supplier_biaoti'>商家简介</view>
@@ -181,10 +179,14 @@
 			</block>
 		
 			<block v-if="current_shang_detail.brief != ''">
-				<view style="padding-top:0px;padding-bottom: 20rpx;color: #666;width: 94%;font-size:14px;">
+				<view style="padding-bottom: 20rpx;color: #666;width: 100%;font-size:14px;">
 					<view class="supplier_brief">
+					
+						<!-- 运营时间和发行商地址 -->
 						
 						<view class="info">
+							<view >运营时间：{{current_shang_detail.yingyeshijian}}</view>
+							<view>地址：{{current_shang_detail.address}}</view>
 							<view :class="{hide:!iSinfo}" >
 								{{current_shang_detail.brief}}
 							</view>
@@ -249,7 +251,7 @@
 		<view style="border-bottom:6px solid #eceeef;"  v-if="nft_package_list_show_flag == 1">
 			<view class="">
 				<view class="supplier_icon-title3">
-					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/rocket.png" mode="widthFix" style="width: 20rpx;"></image>
+					<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/rocket.png" mode="widthFix" style="width: 40rpx;margin-left: 10rpx;"></image>
 					<view class='nft_supplier_biaoti' >热门卡牌</view>	
 				</view>
 				
@@ -2839,16 +2841,17 @@
 	.nft_supplier_biaoti{
 		font-size: 17px;
 		color: #30C478;
-		padding-left: 10px;
+		padding-left: 5px;
 		margin-top: 10rpx;
 		margin-bottom: 10rpx;
 	}
 	.supplier_icon-title3{
+		background-color: #FFFFFF;
 		margin-top: 10rpx 20rpx;
 		display: flex;
 		margin-top: 0rpx;
 		align-items: center;
-		border-bottom: 1px solid #eee;
+		border-bottom: 1px solid #30C478;
 	
 	}
 	.series_package{
@@ -2862,11 +2865,18 @@
 	.supplier_follow_num_icon{
 		 float: right;
 		 margin-top: 250rpx;
-		 margin-right: 80rpx;
+		 margin-right: 20rpx;
+	}
+	.supplier_follow_num_icon01{
+		float: right;
+		margin-top: 220rpx;
+		margin-right: 10rpx;
+		
 	}
 	.supplier_follow_num{
 		background-color: #FFFFFF;
-		height: 50rpx;
+		width: 100rpx;
+		height: 100rpx;
 		line-height: 50rpx;
 		
 		border-radius: 10rpx;
@@ -2898,7 +2908,7 @@
 	.supplier_package_num{
 		float:left ;
 		
-		height: 50rpx;
+		height: 100rpx;
 		line-height: 50rpx;
 		margin-top: 250rpx;
 		margin-left: 20rpx; 
@@ -2910,7 +2920,7 @@
 	.supplier_package_num01{
 		float:left ;
 	
-		height: 50rpx;
+		height: 100rpx;
 		line-height: 50rpx;
 		margin-top: 250rpx;
 		margin-left: 20rpx; 
@@ -2924,13 +2934,12 @@
 		
 		flex-direction: column;
 		background-color: #FFFFFF;
-		padding: 5rpx 50rpx 10rpx 0rpx;
+		padding: 5rpx 80rpx 10rpx 0rpx;
 		
-		margin-left: 20rpx;
-		top: 20rpx;
 		position:relative;
 		border-radius: 10rpx;
 		.info{
+			margin-left: 10rpx;
 			display: flex;
 			flex-direction: column;
 			view{

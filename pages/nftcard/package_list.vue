@@ -7,7 +7,7 @@
 		<view class="package_search" >
 			
 			<input style="width: 570rpx;height: 60rpx;margin-left: 20rpx;font-weight: 100;" type="text" value="提示卡包" />
-			<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/search.png"
+			<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/search.png"
 				mode="widthFix" style="width: 45rpx; margin-top: 8rpx;"></image>
 		</view>
 	
@@ -16,7 +16,7 @@
 			<picker @change="bindPickerChange" :value="index" :range="array">
 				<view class="picker" >
 					<view style="margin-left: 5rpx;">{{array[index]}}</view>
-					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/drop_down.png"
+					<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/drop_down.png"
 						mode="widthFix" style="width: 25rpx;margin-left: 6rpx; margin-top: 15rpx;"></image>
 				</view>
 			</picker>
@@ -59,8 +59,8 @@
 						<!-- 卡包标签--------icon喜欢图标----------喜欢人数 -->
 						<view class="package_icon_like_num">
 							<view class="package_like_icon" >
-								<!-- <image  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/like.png" mode="widthFix" style="width: 30rpx;float: left;"></image>	 -->
-								<image  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/xin.png" mode="widthFix" style="width: 30rpx;"></image>
+								<!-- <image  src="https://yanyubao.tseo.cn/Tpl/static/nft_card/package_example/like.png" mode="widthFix" style="width: 30rpx;float: left;"></image>	 -->
+								<image  src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xin.png" mode="widthFix" style="width: 30rpx;"></image>
 								{{current_package_item.like_count}}
 							</view>
 							

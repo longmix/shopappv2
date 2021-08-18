@@ -46,7 +46,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 							<!-- 卡牌反面 -->
 							<div class="rollbox_behind">
 								<div class="contentbox">
-									<image src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/tu.jpeg"
+									<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/tu.jpeg"
 										class="card_detail_image"
 										:style="{width: (card_bg_img_width*1)+'rpx', height: (card_bg_img_height*1)+'rpx'}"></image>
 								</div>
@@ -73,10 +73,10 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				<view class="card_detail_schang_boder"
 					:style="{top:(card_bg_img_height*0.20)+'rpx', right:(card_bg_img_width*0.14)+'rpx'}"
 					 v-if="current_card_detail">
-					<image class="card_detail_schang" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/xingxing.png" 
+					<image class="card_detail_schang" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xingxing.png" 
 						v-if="current_card_detail.is_favorite == 1" @tap="set_favorite(0)"></image>
 						
-					<image class="card_detail_schang" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/xingxing01.png"
+					<image class="card_detail_schang" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xingxing01.png"
 					v-if="current_card_detail.is_favorite == 0" @tap="set_favorite(1)"></image>
 				</view>
 				
@@ -87,7 +87,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				<!-- 2021.08.06相机 -->
 				<!-- <view style="position: absolute;right: 8%; top: 12%;background-color: #FFFFFF; border-radius: 50%;
 		background: rgb(0, 0, 0,0.7);">
-					<image class="card_detail_schang" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/photograph.png"></image>
+					<image class="card_detail_schang" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/photograph.png"></image>
 				</view> -->
 				
 			</view>
@@ -132,7 +132,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			<!-- 所属卡包信息-->
 			<view class="card_detail_suoshukabao">
 				<h4 class="card_detail_h4" :style="{color: wxa_shop_nav_bg_color, borderBottom: wxa_shop_nav_bg_color+' 2rpx solid'}">
-					<image class="card_detail_tubiao" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/suoshukabaotubiao.png"></image>所属卡包
+					<image class="card_detail_tubiao" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/suoshukabaotubiao.png"></image>所属卡包
 				</h4>
 				
 				<view style="display: flex;" v-if="current_card_detail">
@@ -160,7 +160,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			<view class="card_detail_tong">
 				<h4 class="card_detail_h5" style="margin-left: 20rpx;"
 					:style="{color: wxa_shop_nav_bg_color, borderBottom: wxa_shop_nav_bg_color+' 2rpx solid'}" >
-					<image class="card_detail_tubiao" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/tongxilitubiao.png"></image>同系列卡牌
+					<image class="card_detail_tubiao" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/tongxilitubiao.png"></image>同系列卡牌
 				
 				</h4>
 			
@@ -208,33 +208,33 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			<view @click="layOut">
 				<view v-if="lay_type" class="card_detail_liebiao">
 					<image class="card_detail_xiaoxi1"
-						src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/tips.png"></image>				
+						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/tips.png"></image>				
 				</view>
 				<view v-else class="card_detail_liebiao_xiaoxi">
 					<image class="card_detail_xiaoxi2"
-						src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/tips2.png"></image>
+						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/tips2.png"></image>
 				</view>
 			</view>
 			<view class="card_detail_liebiao">
 				<!-- 分享 -->
 				<image class="card_detail_fenxiang"
-					src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/fenxiang02.png"></image>
+					src="https://yanyubao.tseo.cn/Tpl/static/nft_card/fenxiang02.png"></image>
 			</view>
 			<!-- <view class="card_detail_liebiao">
 				<image class="card_detail_an"
-				src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/xiangqing.png"></image>
+				src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xiangqing.png"></image>
 			</view> -->
 			
 			<view v-if="current_card_detail.is_buyed == 1">
 				<view class="card_detail_liebiao">
 					<!-- 2021.08.06赠予 -->
 					<image class="card_detail_an"
-						src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/zengsong.png"></image>
+						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/zengsong.png"></image>
 				</view>
 				<view class="card_detail_liebiao">
 					<!-- 2021.08.06丢弃 -->
 					<image class="card_detail_an"
-						src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/xiaohui.png"></image>
+						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xiaohui.png"></image>
 				</view>
 			</view>
 			<!-- 2021.08.06购买 -->
@@ -243,7 +243,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				@tap="test_goto_buy">
 				<image 
 					class="card_detail_an" 
-					src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/goumai.png"
+					src="https://yanyubao.tseo.cn/Tpl/static/nft_card/goumai.png"
 				></image>
 				
 			</view>
@@ -253,13 +253,13 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				<image 
 					class="card_detail_an" 
-					src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/goumai.png"
+					src="https://yanyubao.tseo.cn/Tpl/static/nft_card/goumai.png"
 				></image>
 			</view>
 
 			<!-- 2021.08.06卡牌持有的数量 -->
 			<view class="card_detail_goumai2">
-				<image class="card_detail_items" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/cheng.png"
+				<image class="card_detail_items" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/cheng.png"
 				></image>
 				<view style="font-size: 35rpx;padding-top: 20rpx;padding-right: 5rpx;">
 					{{current_card_detail.user_have_counter}}
@@ -325,9 +325,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			that.current_card_detail = {
 				'title': ' '
 			};
-			that.current_card_detail.cover_img_url = 'http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/default_card_cover.png';
+			that.current_card_detail.cover_img_url = 'https://yanyubao.tseo.cn/Tpl/static/nft_card/default_card_cover.png';
 			that.current_card_detail.description = '';
-			that.current_card_detail.cover_img_url_2x3 = 'http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/default_card_cover.png';
+			that.current_card_detail.cover_img_url_2x3 = 'https://yanyubao.tseo.cn/Tpl/static/nft_card/default_card_cover.png';
 			that.current_card_detail.is_favorite = 0;
 			that.current_card_detail.card_name = '';
 			that.current_card_detail.createtime = '';

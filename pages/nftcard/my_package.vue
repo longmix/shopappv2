@@ -30,7 +30,7 @@
 					<!-- 进度条 -->
 					<view class="uni-padding-wrap uni-common-mt">
 					 	<view class="progress-box">
-							<progress percent="50" activeColor="#30C478" stroke-width="3" 
+							<progress :percent="current_package_list_item.sale_percent" activeColor="#30C478" stroke-width="3" 
 								show-info="" backgroundColor="red" font-size="15"></progress>
 						</view>
 					</view>
@@ -80,6 +80,7 @@ export default {
 		});
 		
 		
+		
 		//判断用户是否登录
 		
 		var userInfo = that.abotapi.get_user_info();
@@ -123,8 +124,24 @@ export default {
 				
 				console.log('current_package_list ===>>> ', that.current_package_list);
 				
-				
-				
+				for(var i=0; i<that.current_package_list.length; i++){					
+					
+					//计算已经售出的备份比
+					that.current_package_list[i].sale_percent = 0;
+					if(that.current_package_list[i].packageid_card_count == 0){
+						that.current_package_list[i].sale_percent = 99.99;
+					}
+					else{
+						console.log('fenmu===========>',that.current_package_list[i].packageid_card_count);
+						console.log('fenzi===========>',that.current_package_list[i].packageid_card_user_buy_count);
+						console.log('===========>',that.current_package_list[i].sale_percent);
+						
+						
+						
+						that.current_package_list[i].sale_percent =
+							parseInt(that.current_package_list[i].packageid_card_user_buy_count/that.current_package_list[i].packageid_card_count*100);
+					}
+				}
 				
 				
 				
