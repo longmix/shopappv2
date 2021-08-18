@@ -30,25 +30,27 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				<view>
 					<view class="show_modal_mask" v-if="showModal1" @click="showModal1=false"></view>
 					<!-- 模态框 -->
-					<view id="try" class="show_modal_pop" v-if="showModal1"  :style="{paddingTop: (card_bg_img_height*0.6)+'rpx'}">
-						
+					<!-- <view id="try" class="show_modal_pop" v-if="showModal1"  :style="{paddingTop: (card_bg_img_height*0.6)+'rpx'}"> -->
+					<view id="try" class="show_modal_pop" v-if="showModal1" style="position: absolute;top: 50%;transform: translateY(-50%);">
 							
 						<!-- box_rolling下执行正面翻转动画   -->
-						<div class="rollbox" :class="{'box_rolling':isRolling}" @click="isRolling = !isRolling">
+						<div class="rollbox" style="vertical-align:center;" :class="{'box_rolling':isRolling}" @click="isRolling = !isRolling">
 							<!-- 卡牌正面 -->
 							<div class="rollbox_front">
 								<div class="contentbox">
 									<image :src="current_card_detail.cover_img_url_2x3"
 										class="card_detail_image"
 										:style="{width: (card_bg_img_width*1)+'rpx', height: (card_bg_img_height*1)+'rpx'}"></image>
+									<view style="display:inline-block; height:100%; vertical-align:middle;"></view>
 								</div>
 							</div>
 							<!-- 卡牌反面 -->
 							<div class="rollbox_behind">
 								<div class="contentbox">
-									<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/tu.jpeg"
+									<image :src="current_card_detail.cover_img_back_url"
 										class="card_detail_image"
 										:style="{width: (card_bg_img_width*1)+'rpx', height: (card_bg_img_height*1)+'rpx'}"></image>
+									<view style="display:inline-block; height:100%; vertical-align:middle;"></view>
 								</div>
 							</div>
 						</div>
@@ -205,16 +207,59 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		<!-- 悬浮 -->
 		<view class="card_detail_footer">
 			<!-- 详情 -->
-			<view @click="layOut">
-				<view v-if="lay_type" class="card_detail_liebiao">
+			<!-- <view @click="layOut">
+				<view @click="showModal2=true" v-if="lay_type" class="card_detail_liebiao">
 					<image class="card_detail_xiaoxi1"
 						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/tips.png"></image>				
 				</view>
 				<view v-else class="card_detail_liebiao_xiaoxi">
-					<image class="card_detail_xiaoxi2"
+					<image v-if="showModal2" @click="showModal2=false" class="card_detail_xiaoxi2"
 						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/tips2.png"></image>
 				</view>
-			</view>
+				
+			</view> -->
+			
+			
+			
+			
+			<view>
+				<view @click="layOut">
+					<view @click="showModal2=true" v-if="lay_type" class="card_detail_liebiao">
+						<image class="card_detail_xiaoxi1"
+							src="https://yanyubao.tseo.cn/Tpl/static/nft_card/tips.png"></image>				
+					</view>
+					
+				</view>
+				<view class="show_modal_mask" v-if="showModal2" @click="showModal2=false"></view>
+					<!-- 模态框 -->
+					<!-- <view id="try" class="show_modal_pop" v-if="showModal1"  :style="{paddingTop: (card_bg_img_height*0.6)+'rpx'}"> -->
+				<view class="">
+					<view class="show_modal_pop" style=" background-color: #FFFFFF;top: 50%;left: 50%;transform: translateX(-50%);" v-if="showModal2">
+						线索 线索 线索 线索 线索 线索
+							
+					</view>
+					<view v-if="lay_type" class="card_detail_liebiao">
+						<image class="card_detail_xiaoxi2"
+							src="https://yanyubao.tseo.cn/Tpl/static/nft_card/tips2.png"></image>				
+					</view>
+				</view>
+					
+					<!-- 卡牌封面 -->
+					<!-- <view v-if="lay_type==0" @click="showModal2=true" :style="{paddingTop: (card_bg_img_height*0.15)+'rpx',paddingLeft: (card_bg_img_width*0.1)+'rpx'}">
+						
+						
+						<view  class="card_detail_liebiao_xiaoxi">
+							<image v-if="showModal2" @click="showModal2=false" class="card_detail_xiaoxi2"
+								src="https://yanyubao.tseo.cn/Tpl/static/nft_card/tips2.png"></image>
+						</view>
+					</view> -->
+				</view>
+			
+			
+			
+			
+			
+			
 			<view class="card_detail_liebiao">
 				<!-- 分享 -->
 				<image class="card_detail_fenxiang"
@@ -290,6 +335,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				lay_type:1,//详情隐藏控件
 				
 				showModal1: false,//模态框
+				
+				showModal2: false,//模态框
 				
 				current_params_str: '', //网址参数
 
@@ -663,13 +710,13 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			return this.share_return();
 		},
 		methods: {
-			layOut(){
-			      if(this.lay_type == 0){
-			        this.lay_type = 1
-			      }else{
-			         this.lay_type = 0
-			      }
-			    },
+			// layOut(){
+			//       if(this.lay_type == 0){
+			//         this.lay_type = 1
+			//       }else{
+			//          this.lay_type = 0
+			//       }
+			//     },
 			
 			share_return: function() {
 				var that = this;
@@ -959,7 +1006,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		width: 30rpx;
 		height: 30rpx;
 	}
-
+	.contentbox image{
+		vertical-align: middle;
+	}
 	.main_body {
 		width: 100%;
 		margin-bottom: 200rpx;
@@ -1020,13 +1069,29 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		z-index: 1;
 	}
 	.show_modal_pop{
+		
 		position: fixed;
+		
+		/* transform: translateY(50%); */
 		z-index: 2;
 	}
-	.card_detail_modal{
-		position: relative;
-		background: rgb(0,0,0,0.6);
+	.show_modal_mask2{
+		text-align: center;
+		background-color: #000;
+		opacity: 0.7;
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		z-index: 1;
 	}
+	.show_modal_pop2{
+		position: fixed;
+		/* transform: translateY(50%); */
+		z-index: 2;
+	}
+	
+	
+	
 /* 收藏按钮 */
 	.card_detail_schang_boder{
 		width: 47rpx;
@@ -1045,6 +1110,15 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		margin-left: 10rpx;
 	}
 	.card_detail_xiaoxi1 {
+		width: 60rpx;
+		height: 60rpx;
+		padding-top: 14rpx;
+		padding-left: 15rpx;
+	}
+	.card_detail_xiaoxi2 {
+		position: fixed;
+		/* transform: translateY(50%); */
+		z-index: 2;
 		width: 60rpx;
 		height: 60rpx;
 		padding-top: 14rpx;
