@@ -696,6 +696,13 @@
 
 			var xianmai_shangid = 0;
 			
+			
+			that.current_card_detail = {
+				'title': ' '
+			};
+			that.current_shang_detail.supplier_fans_count='';
+			that.current_shang_detail.brief ='';
+			
 			//如果传了商户编号 sellerid （suppliersn），则保存
 			if(options.sellerid){
 				var new_sellerid_to_save = options.sellerid;
@@ -734,6 +741,10 @@
 			
 			
 			
+			
+			
+	
+			
 		
 			
 			
@@ -743,6 +754,8 @@
 				that.nft_package_list_show_flag = 1;
 			}
 			
+			
+		
 			
 			this.get_merchant_basic_data();
 			

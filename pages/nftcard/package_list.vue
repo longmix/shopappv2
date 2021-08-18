@@ -134,7 +134,7 @@ export default {
 			//that.current_nft_supplierid = that.abotapi.globalData.default_sellerid;
 		}
 		
-		
+	
 		that.abotapi.set_shop_option_data(that, that.callback_function_shop_option_data);
 	
 		
@@ -160,7 +160,7 @@ export default {
 					
 					return;
 				}
-				
+		
 				that.current_package_list = res.data.data;
 				
 				console.log('current_package_list ===>>> ', that.current_package_list);
