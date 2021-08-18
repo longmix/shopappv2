@@ -321,10 +321,8 @@ export default {
 		
 		
 		that.current_package_detail = {'title':''};
-		that.current_package_detail.cover_img_url = 'http://192.168.0.205/yanyubao_server/uploads/2021/08/03/610895dcc87bc.jpg';
+		that.current_package_detail.cover_img_url = 'http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/default_package_cover.png';
 		that.current_package_detail.description = '';
-		that.current_package_detail.cover_img_url = 'http://192.168.0.205/yanyubao_server/uploads/2021/08/03/610895dcc87bc.jpg';
-		that.current_package_detail.cover_img_url = 'http://192.168.0.205/yanyubao_server/uploads/2021/08/03/610895dcc87bc.jpg';
 		
 		
 		
@@ -357,7 +355,7 @@ export default {
 					
 					return;
 				}
-				
+		
 				that.current_package_detail = res.data.data;
 				
 				console.log('current_package_detail ===>>> ', that.current_package_detail);

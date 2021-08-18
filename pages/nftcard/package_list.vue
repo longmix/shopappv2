@@ -7,7 +7,7 @@
 		<view class="package_search" >
 			
 			<input style="width: 570rpx;height: 60rpx;margin-left: 20rpx;font-weight: 100;" type="text" value="提示卡包" />
-			<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/package_example/search.png"
+			<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/search.png"
 				mode="widthFix" style="width: 45rpx; margin-top: 8rpx;"></image>
 		</view>
 	

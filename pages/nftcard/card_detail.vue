@@ -325,9 +325,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			that.current_card_detail = {
 				'title': ' '
 			};
-			that.current_card_detail.cover_img_url = 'http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/tu.jpeg';
+			that.current_card_detail.cover_img_url = 'http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/default_card_cover.png';
 			that.current_card_detail.description = '';
-			that.current_card_detail.cover_img_url_2x3 = 'http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/tu.jpeg';
+			that.current_card_detail.cover_img_url_2x3 = 'http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/default_card_cover.png';
 			that.current_card_detail.is_favorite = 0;
 			that.current_card_detail.card_name = '';
 			that.current_card_detail.createtime = '';
