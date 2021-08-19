@@ -245,40 +245,33 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			</view>
 			
 			<!-- 分享 -->
-			<!-- <view class="card_detail_liebiao" >
+			<view>
 				<view class="show_modal_mask" v-if="showModal_fenxiang" @click="showModal_fenxiang=false"></view>
-				<view class="show_modal_pop" v-if="showModal_fenxiang" @click="showModal_fenxiang=false">
-					<image class="card_detail_fenxiang"
-						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/fenxiang02.png"></image>
+				<view class="show_modal_pop card_detail_showmodal_fenxaingjilv" v-if="showModal_fenxiang">
+					<view>分享式样</view>
 				</view>
 				<view @click="showModal_fenxiang=true">
-					<view v-if="showModal_fenxiang">
-						<view></view>
+					<view class="card_detail_liebiao" >
+						<image class="card_detail_fenxiang"
+							src="https://yanyubao.tseo.cn/Tpl/static/nft_card/fenxiang02.png"></image>
 					</view>
+					
 				</view>
-				
-				
-			</view> -->
-			
-			
-			<view class="card_detail_liebiao" >
-				<image class="card_detail_fenxiang"
-					src="https://yanyubao.tseo.cn/Tpl/static/nft_card/fenxiang02.png"></image>
 			</view>
 			
 			<!-- 未购买时不显示赠予和丢弃 -->
-			<view v-if="current_card_detail.is_buyed == 1">
+			<!-- <view v-if="current_card_detail.is_buyed == 1"> -->
 				<!-- 2021.08.06赠予 -->
-				<view class="card_detail_liebiao">
+				<!-- <view class="card_detail_liebiao">
 					<image class="card_detail_an"
 						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/zengsong.png"></image>
-				</view>
+				</view> -->
 					<!-- 2021.08.06丢弃 -->
-				<view class="card_detail_liebiao">
+				<!-- <view class="card_detail_liebiao">
 					<image class="card_detail_an"
 						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xiaohui.png"></image>
-				</view>
-			</view>
+				</view> -->
+			<!-- </view> -->
 			<!-- 2021.08.06购买 -->
 			<view v-if="current_card_detail.is_buy_limit != -1" class="card_detail_goumai1" 
 				:style="{backgroundColor:wxa_shop_nav_bg_color}" 
@@ -300,13 +293,78 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			</view>
 
 			<!-- 2021.08.06卡牌持有的数量 -->
-			<view class="card_detail_goumai2">
-				<image class="card_detail_items" 
+			
+			<!-- <view class="card_detail_goumai2">
+				<image class="card_detail_items"
 				src="https://yanyubao.tseo.cn/Tpl/static/nft_card/cheng.png"></image>
 				<view style="font-size: 35rpx;padding-top: 20rpx;padding-right: 5rpx;">
 					{{current_card_detail.user_have_counter}}
 				</view>
+			</view> -->
+			
+			
+			<view>
+				<view class="show_modal_mask" v-if="showModal_liuzhuanjilv" @click="showModal_liuzhuanjilv=false"></view>
+				<view class="show_modal_pop card_detail_showmodal_fenxaingjilv" 
+				v-if="showModal_liuzhuanjilv">
+					<view style="font-size: 38rpx;line-height: 60rpx;">卡牌明细</view>
+					
+					<view>
+						<view class="show_modal_mask" v-if="showModal_liuzhuanjilv_zengsong" @click="showModal_liuzhuanjilv_zengsong=false"></view>
+						<view class="show_modal_pop card_detail_showmodal_kapaimingxi" 
+						v-if="showModal_liuzhuanjilv_zengsong">
+							<view>
+								记录记录记录记录记录
+							</view>
+							<!-- <view style="width: 500rpx;height: 200rpx;background-color: #FFFFFF;position: absolute;left: -500rpx;transform: translateY(-600rpx);padding: 20rpx;">
+								
+							</view> -->
+						</view>
+						<view @click="showModal_liuzhuanjilv_zengsong=true">
+							<view style="line-height: 50rpx;">
+								<view>
+									<view>20210819183630</view>
+									<view>序号：1</view>
+									<view>2021-08-19</view>
+									<!-- <button type="default"
+									style="width: 100rpx;font-size: 25rpx;margin-right: 0rpx;">丢弃</button> -->
+									
+								</view>
+								<!-- 未购买时不显示赠予和丢弃 -->
+								<view v-if="current_card_detail.is_buyed == 1" style="float: right;margin-top: -160rpx;">
+									<!-- 2021.08.06赠予 -->
+									<view class="card_detail_showmodal_zengsong">
+										<image class="card_detail_showmodal_tupian"
+											src="https://yanyubao.tseo.cn/Tpl/static/nft_card/zengsong.png"></image>
+									</view>
+										<!-- 2021.08.06丢弃 -->
+									<view class="card_detail_showmodal_zengsong">
+										<image class="card_detail_showmodal_tupian"
+											src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xiaohui.png"></image>
+									</view>
+								</view>
+							</view>
+							
+						</view>
+						
+						
+						
+					</view>
+					
+					
+				</view>
+				<view @click="showModal_liuzhuanjilv=true">
+					<view class="card_detail_goumai2">
+						<image class="card_detail_items"
+						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/cheng.png"></image>
+						<view style="font-size: 35rpx;padding-top: 20rpx;padding-right: 5rpx;">
+							{{current_card_detail.user_have_counter}}
+						</view>
+					</view>
+					
+				</view>
 			</view>
+			
 		</view>
 
 		
@@ -336,6 +394,10 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				showModal_xiansuo: false,//线索模态框
 				
 				showModal_fenxiang: false,//分享模态框
+				
+				showModal_liuzhuanjilv: false,//流转模态框
+				
+				showModal_liuzhuanjilv_zengsong:false,//流转里的模态框
 				
 				current_params_str: '', //网址参数
 
@@ -1179,7 +1241,30 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		margin-right: 23rpx;
 		border: #aeb8ab 3rpx solid;
 	}
-
+	.card_detail_showmodal_tupian {
+		width: 35rpx;
+		height: 35rpx;
+		padding-top: 19rpx;
+		padding-left: 19rpx;
+	}
+	.card_detail_showmodal_zengsong {
+		background-color: #F0F0F0;
+		width: 70rpx;
+		height: 70rpx;
+		border-radius: 50%;
+		margin: 10rpx;
+		margin-right: 20rpx;
+		border: #aeb8ab 3rpx solid;
+	}
+	.card_detail_showmodal_fenxaingjilv{
+		background-color: #FFFFFF;
+		top: 15%;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 500rpx;
+		height: 1000rpx;
+		padding: 20rpx;
+	}
 	.card_detail_an {
 		width: 45rpx;
 		height: 45rpx;
