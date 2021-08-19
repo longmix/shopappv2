@@ -238,27 +238,34 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				<!-- 线索模态框 -->
 				<view @click="showModal_xiansuo=false">
 					<view class="show_modal_pop card_detail_xiansuo" v-if="showModal_xiansuo">
-						<view v-if="current_card_detail.clue">{{current_card_detail.clue}}</view>
-						<view v-else>还没有线索~</view>
+						<view v-if="current_card_detail.clue" class="tree">{{current_card_detail.clue}}</view>
+						<view v-else class="tree">还没有线索~</view>
 					</view>
 				</view>
 			</view>
 			
 			<!-- 分享 -->
-			<view class="card_detail_liebiao" >
-				<view class="show_modal_mask" v-if="showModal_xiansuo" @click="showModal_xiansuo=true"></view>
-				<view v-if="showModal_fenxiang" @click="showModal_xiansuo=true">
+			<!-- <view class="card_detail_liebiao" >
+				<view class="show_modal_mask" v-if="showModal_fenxiang" @click="showModal_fenxiang=false"></view>
+				<view class="show_modal_pop" v-if="showModal_fenxiang" @click="showModal_fenxiang=false">
 					<image class="card_detail_fenxiang"
 						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/fenxiang02.png"></image>
 				</view>
-				<view class="show_modal_pop" @click="showModal_fenxiang=false">
+				<view @click="showModal_fenxiang=true">
 					<view v-if="showModal_fenxiang">
 						<view></view>
 					</view>
 				</view>
 				
 				
+			</view> -->
+			
+			
+			<view class="card_detail_liebiao" >
+				<image class="card_detail_fenxiang"
+					src="https://yanyubao.tseo.cn/Tpl/static/nft_card/fenxiang02.png"></image>
 			</view>
+			
 			<!-- 未购买时不显示赠予和丢弃 -->
 			<view v-if="current_card_detail.is_buyed == 1">
 				<!-- 2021.08.06赠予 -->
@@ -1010,6 +1017,25 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	    }
 	  }
 	}
+	
+	.card_detail_xiansuo{
+		background-color: #FFFFFF;
+		top: 40%;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 450rpx;
+		height: 200rpx;
+		padding: 35rpx;
+		border-radius: 80rpx;
+		border: 5rpx #c3c3c3 solid;
+		background-color: #e2d281;
+		overflow: hidden;
+		.tree{
+			width: 100%;
+			height: 100%;
+			overflow-y: scroll;
+		}
+	}
 </style>
 <style>
 	@import "/static/css/nftcard.css";	
@@ -1086,18 +1112,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		
 		/* transform: translateY(50%); */
 		z-index: 2;
-	}
-	.card_detail_xiansuo{
-		background-color: #FFFFFF;
-		top: 50%;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 65%;
-		height: 200rpx;
-		padding: 35rpx;
-		border-radius: 80rpx;
-		border: 5rpx #000000 solid;
-		background-color: #e2d281;
 	}
 	
 	
