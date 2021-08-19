@@ -19,11 +19,26 @@
 				<!-- <view style="font-weight: 100; font-size: 10rpx;"> {{current_package_detail.like_count}}</view> -->
 			</view>
 			
-			<!-- 截图按钮 -->
-			<view class="package_ps">
-				<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/ps.png"
-					mode="widthFix" style="width: 45rpx;margin-top: 17rpx;margin-left: 18rpx;"></image>
+			
+			
+			<view class="">
+				<!-- 截图按钮 -->
+				<view class="package_ps"  @tap="showModal=true">
+					<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/ps.png"
+						mode="widthFix" style="width: 45rpx;margin-top: 17rpx;margin-left: 18rpx;"></image>
+				</view>
+				
+				<view class="show_modal_mask" v-if="showModal" @tap="showModal=false"></view>
+				<view class="show_modal_pop" v-if="showModal">
+					<view class="" style="width: 600rpx;height: 600rpx;background-color: #FFFFFF;">
+							<image src="" mode=""></image>	
+							<button type="default">保存至相册</button>
+					</view>
+						
+				</view>	
 			</view>
+			
+		
 		</view>
 		
 		<!-- 卡包详情 -->
@@ -243,7 +258,7 @@ export default {
 	data() {
 		return {
 			current_params_str:'',	//网址参数
-			
+			current_nftcard_poster:null,
 			current_package_detail:null,
 			current_supplier_detail:null,
 			current_card_list:null,
@@ -254,7 +269,9 @@ export default {
 			current_userid:0,
 		
 		
-
+			showModal: false,
+			
+			
 			card_description:'',  //卡包的富媒体描述
 			
 			package_tag_item_list:[
@@ -421,6 +438,57 @@ export default {
 		
 		
 		
+		
+		that.abotapi.abotRequest({
+		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_nftcard_poster',
+		    method: 'post',
+		    data: {
+				sellerid:that.abotapi.globalData.default_sellerid,
+				packageid:that.current_packageid,
+				data_type:'package',
+				
+		    },
+		    success: function (res) {
+				
+				if(res.data.code != 1){
+					uni.showToast({
+						title:'没数据',
+						duration: 2000,
+					});
+					
+					return;
+				}
+		
+				that.current_nftcard_poster = res.data.data;
+				
+				console.log('current_nftcard_poster ===>>> ', that.current_nftcard_poster);
+				
+				
+				
+				
+				
+				
+				
+				
+						
+				
+		    },
+		    fail: function (e) {
+				uni.showToast({
+					title: '网络异常！',
+					duration: 2000
+				});
+		    },
+		});
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		console.log('导航栏背景颜色：' + that.abotapi.globalData.navigationBar_bg_color);
 		
 		
@@ -510,10 +578,11 @@ export default {
 			}
 		}
 	},
-	
+	// 
 	onShareTimeline: function () {
 		return this.share_return();
 	},
+	
 	onAddToFavorites: function () {
 		return this.share_return();
 	},
@@ -521,6 +590,35 @@ export default {
 		share_return: function() {
 			var that = this;
 		
+		
+			
+			var option_list = this.abotapi.globalData.option_list;
+			
+			var share_title = option_list.wxa_share_title;
+			if (share_title.length > 22) {
+				share_title = share_title.substr(0, 20) + '...';
+			}
+			
+			var share_path = 'sellerid=' + this.abotapi.get_sellerid();
+			
+			var userInfo = this.abotapi.get_user_info();
+			
+			if (userInfo && userInfo.userid) {
+				share_path += '&userid=' + userInfo.userid;
+			}
+			
+			var share_img = option_list.wxa_share_img;
+			if(!share_img){
+				share_img = option_list.wxa_shop_operation_logo_url;
+			}			
+			
+			return {
+				title: share_title,
+				query: share_path,
+				imageUrl: share_img,
+			}
+			
+			
 		},
 /**
  * @param {Object} tag_item_index
@@ -991,6 +1089,24 @@ export default {
 		background: rgb(0, 0, 0,0.7);
 		border-radius: 50%;
 		overflow: hidden;
+	}
+	.show_modal_mask{
+		background-color: #000;
+		opacity: 0.7;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 999;
+	}
+	.show_modal_pop{
+		position: fixed;
+		z-index: 999;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%,-50%);
+		
 	}
 	.package_title{
 		width: 80%; 
