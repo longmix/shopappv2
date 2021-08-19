@@ -46,7 +46,7 @@
 			<view class="">
 				<view style="float: right;display: flex;">
 					<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xin.png" mode="widthFix" style="width: 40rpx;margin-top: 10rpx;"></image>
-					<view style="margin-top: 10rpx;margin-right: 20rpx;">{{current_package_detail.like_count}}</view>
+					<view style="margin-top: 10rpx;margin-right: 20rpx;font-size: 35rpx;">{{current_package_detail.like_count}}</view>
 				</view>
 				<!-- 卡包名字---简介 -->
 				<view class="package_title">{{current_package_detail.title}}</view>
@@ -59,12 +59,19 @@
 			
 		
 			<!-- 开始时间~~~结束时间 -->
-			<view class="" style="display: flex;">
+			<view class="" style="display: flex;height: 60rpx;line-height: 60rpx;">
 				<view class="begin_end_time" >
 					有效期：{{current_package_detail.time_begin_str}}~{{current_package_detail.time_end_str}}
 				</view>	
-				<view v-if="is_package_time_expire ==false" style="width:150rpx; border-radius:10rpx;background-color: #30c478; text-align: center; color: #FFFFFF; height: 45rpx;">{{current_package_detail.status_str}}</view>
-				<view v-else="is_package_time_expire ==true" style="width:150rpx; border-radius:10rpx;background-color:red; text-align: center; color: #FFFFFF;" >已下架</view>
+				<!-- 卡包状态  发行===下架  -->
+				<view v-if="is_package_time_expire ==false" style="width:150rpx; border-radius:10rpx;background-color: #30c478; text-align: center; color: #FFFFFF; height: 45rpx;margin-left: 50rpx;line-height: 45rpx;margin-top: 10rpx;">{{current_package_detail.status_str}}</view>
+				<view v-else="is_package_time_expire ==true" style="width:150rpx; border-radius:10rpx;background-color:red; text-align: center; color: #FFFFFF;margin-left: 40rpx;" >已下架</view>
+				
+				<!-- 分享 -->
+				
+				<view class="package_share" >
+					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/share.png" mode="widthFix" style="width: 45rpx;margin-top: 8rpx;margin-left: 7rpx;"></image>
+				</view>
 				
 			</view>
 			
@@ -85,7 +92,7 @@
 				<view class="package_detail_lable">标签</view>
 				
 				<view class="package_label" style="margin-top: 10rpx;">
-					<view class="package_detail_lable_list" v-for="(item,index) in current_package_detail.tag_list">{{item}}</view>
+					<view class="package_detail_lable_list" v-for="(item,index) in current_package_detail.tag_list" style="font-size: 20rpx;"><view style="margin-left: 5rpx;margin-right: 5rpx;">{{item}}</view></view>
 				</view>
 			</view>
 			
@@ -548,12 +555,12 @@ export default {
 		
 		var option_list = this.abotapi.globalData.option_list;
 		
-		var share_title = option_list.wxa_share_title;
+		var share_title = current_package_detail.title;
 		if (share_title.length > 22) {
 			share_title = share_title.substr(0, 20) + '...';
 		}
 		
-		var share_path = '/pages/index/index?sellerid=' + this.abotapi.get_sellerid();
+		var share_path = '/pages/nftcard/package_detail?sellerid=' + this.abotapi.get_sellerid()+'packageid='+that.current_packageid;
 		
 		var userInfo = this.abotapi.get_user_info();
 		
@@ -561,7 +568,7 @@ export default {
 			share_path += '&userid=' + userInfo.userid;
 		}
 		
-		var share_img = option_list.wxa_share_img;
+		var share_img = current_package_detail.cover_img_url;
 		if(!share_img){
 			share_img = option_list.wxa_shop_operation_logo_url;
 		}
@@ -1110,6 +1117,7 @@ export default {
 	}
 	.package_title{
 		width: 80%; 
+		margin-bottom: 20rpx;
 		margin-top: 10rpx;
 		font-weight: bold;
 		font-size: 40rpx; 
@@ -1118,7 +1126,12 @@ export default {
 		text-overflow: ellipsis;
 		
 	}
-	
+	.package_share{
+		margin-left: 40rpx;
+		width: 60rpx; 
+		height: 60rpx; 
+		
+	}
 /* 	.package_detail_lable_attribute{
 		background-color: #ffffff;
 		width: 730rpx;

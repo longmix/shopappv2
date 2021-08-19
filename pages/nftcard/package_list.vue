@@ -6,7 +6,8 @@
 
 		<view class="package_search" >
 			
-			<input style="width: 570rpx;height: 60rpx;margin-left: 20rpx;font-weight: 100;" type="text" value="提示卡包" />
+			<input placeholder="提示卡包" style="width: 570rpx;height: 60rpx;margin-left: 20rpx;font-weight: 100;"
+			 confirm-type="search"  />
 			<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/search.png"
 				mode="widthFix" style="width: 45rpx; margin-top: 8rpx;"></image>
 		</view>
@@ -73,7 +74,7 @@
 						<view class="package_brief" style="margin-left: 20rpx;">{{current_package_item.brief}}</view>
 						<view class="package_rare_total_time">
 							<view class="package_rare_total" >
-								<view class="card_quantity">稀有卡1张</view>
+								<view class="card_quantity">典藏卡1张</view>
 								<view class="card_quantity">|</view>
 								<view class="card_quantity">总卡{{current_package_item.packageid_card_count}}张</view>
 							</view>

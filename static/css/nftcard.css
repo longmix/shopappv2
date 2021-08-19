@@ -28,7 +28,7 @@
 	.package_brief{
 		width: 90%;
 		
-		font-weight: 100; 
+		font-weight: 400; 
 		font-size: 25rpx;
 		margin-bottom: 5rpx;
 		white-space: nowrap;
@@ -37,10 +37,11 @@
 	}
 
 	.begin_end_time{
+		margin-top: 5rpx;
 		margin-bottom: 5rpx;
 		font-weight: 300; 
 		font-size: 20rpx; 
-		width: 80%;
+		width: 55%;
 	
 	}
 	
