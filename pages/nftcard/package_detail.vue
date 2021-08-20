@@ -71,7 +71,7 @@
 				
 				<!-- 分享 -->
 				
-				<view class="package_share" @click="publish_share">
+				<view class="package_share" @click="">
 					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/share.png" mode="widthFix" style="width: 45rpx;margin-top: 8rpx;margin-left: 7rpx;"></image>
 				</view>
 				 
@@ -558,8 +558,6 @@ export default {
 	onShareAppMessage: function () {
 		var that = this;
 		
-		var option_list = this.abotapi.globalData.option_list;
-		
 		var share_title = current_package_detail.title;
 		if (share_title.length > 22) {
 			share_title = share_title.substr(0, 20) + '...';
@@ -567,16 +565,13 @@ export default {
 		
 		var share_path = '/pages/nftcard/package_detail?sellerid=' +that.abotapi.globalData.default_sellerid+'packageid='+that.current_packageid;
 		
-		var userInfo = that.abotapi.get_user_info();
+		var userInfo = this.abotapi.get_user_info();
 		
 		if (userInfo && userInfo.userid) {
 			share_path += '&userid=' + userInfo.userid;
 		}
 		
-		var share_img = current_package_detail.cover_img_url;
-		if(!share_img){
-			share_img = current_package_detail.cover_img_url;
-		}
+		var share_img = current_package_detail.cover_img_url_stand;
 		
 		return {
 			title: share_title,
@@ -612,16 +607,13 @@ export default {
 		share_return: function() {
 			var that = this;
 		
-		
-			
-			var option_list = this.abotapi.globalData.option_list;
-			
-			var share_title = option_list.wxa_share_title;
+
+			var share_title = current_package_detail.title;
 			if (share_title.length > 22) {
 				share_title = share_title.substr(0, 20) + '...';
 			}
 			
-			var share_path = 'sellerid=' + this.abotapi.get_sellerid();
+			var share_path = '/pages/nftcard/package_detail?sellerid=' +that.abotapi.globalData.default_sellerid+'packageid='+that.current_packageid;
 			
 			var userInfo = this.abotapi.get_user_info();
 			
@@ -630,9 +622,6 @@ export default {
 			}
 			
 			var share_img = option_list.wxa_share_img;
-			if(!share_img){
-				share_img = option_list.wxa_shop_operation_logo_url;
-			}			
 			
 			return {
 				title: share_title,
@@ -643,10 +632,7 @@ export default {
 			
 		},
 		
-		
-		publish_share:function(){
-			this.onShareAppMessage();
-		},
+	
 /**
  * @param {Object} tag_item_index
  * 			package_tag_item_list:[
