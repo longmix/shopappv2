@@ -1267,7 +1267,7 @@
 					data: {
 						sellerid:that.abotapi.globalData.default_sellerid,
 						nft_supplierid:that.current_xianmai_shangid,
-						packageid:that.current_packageid,
+						packageid: that.current_packageid,
 						action:'card_hot_list'
 						
 						
@@ -1275,11 +1275,11 @@
 					success: function (res) {
 						
 						if(res.data.code != 1){
-							/*uni.showToast({
+							uni.showToast({
 								title:'卡牌列表没有数据',
 								duration: 2000,
 							});
-							*/
+							
 							return;
 						}
 						
