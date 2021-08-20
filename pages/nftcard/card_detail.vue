@@ -246,7 +246,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			
 			<!-- 分享 -->
 			<view>
-				<view class="show_modal_mask" v-if="showModal_fenxiang" @click="showModal_fenxiang=false"></view>
+				<!-- <view class="show_modal_mask" v-if="showModal_fenxiang" @click="showModal_fenxiang=false"></view>
 				<view class="show_modal_pop card_detail_showmodal_fenxaingjilv" v-if="showModal_fenxiang">
 					<view>分享式样</view>
 				</view>
@@ -256,7 +256,47 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 							src="https://yanyubao.tseo.cn/Tpl/static/nft_card/fenxiang02.png"></image>
 					</view>
 					
+				</view> -->
+				
+				
+				<!-- #ifdef MP -->
+				
+				<button class="box share-btn" open-type="share" style="background: none;outline: none;border: none;">
+					<view class="card_detail_liebiao" >
+						<image class="card_detail_fenxiang"
+							src="https://yanyubao.tseo.cn/Tpl/static/nft_card/fenxiang02.png"></image>
+					</view>
+				</button>
+				<!-- <button style="padding-left: 0;padding-right: 0;" open-type="share">分享</button> -->
+				<!-- #endif -->
+				
+				<!-- #ifdef APP-PLUS -->
+				
+				<button class="box share-btn" @click="is_show">
+					
+					<view class="card_detail_liebiao" >
+						<image class="card_detail_fenxiang"
+							src="https://yanyubao.tseo.cn/Tpl/static/nft_card/fenxiang02.png"></image>
+					</view>
+					
+					<!-- <view class="icon fenxiang"></view>
+					<view class="text">分享</view> -->
+					<!-- <button class="text" open-type="share">分享</button> -->
+				</button>
+				<!-- <button style="padding-left: 0;padding-right: 0;" open-type="share">分享</button> -->
+				<!-- #endif -->
+				
+				
+				<!-- #ifdef H5 -->
+				<view class="box" @tap="share_shang_detail">
+					<view class="card_detail_liebiao" >
+						<image class="card_detail_fenxiang"
+							src="https://yanyubao.tseo.cn/Tpl/static/nft_card/fenxiang02.png"></image>
+					</view>
 				</view>
+				<!-- #endif -->
+				
+				
 			</view>
 			
 			<!-- 未购买时不显示赠予和丢弃 -->
@@ -775,8 +815,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			return this.share_return();
 		},
 		methods: {
-			
-			
 			share_return: function() {
 				var that = this;
 				
@@ -812,6 +850,22 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			      }else{
 			         this.lay_type = 0
 			      }
+			},
+
+			//h5点击分享触发
+			share_shang_detail: function() {
+				console.log('==================>>>h5');
+				uni.showModal({
+					title: '请点击浏览器菜单中的分享按钮',
+					showCancel: false,
+				})
+			
+				return;
+			},
+			
+			//app  分享点击
+			click_wxa_share: function() {
+				abotsharejs.click_wxa_share(this.share_href, this.share_titles, this.share_summary, this.share_imageUrl);
 			},
 
 			callback_function_shop_option_data: function(that, cb_params) {

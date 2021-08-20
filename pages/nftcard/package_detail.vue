@@ -71,9 +71,44 @@
 				
 				<!-- 分享 -->
 				
-				<view class="package_share" @click="">
-					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/share.png" mode="widthFix" style="width: 45rpx;margin-top: 8rpx;margin-left: 7rpx;"></image>
+				
+				
+				<view>
+					<!-- #ifdef MP -->
+					
+					<button class="box share-btn" open-type="share" style="background: none;outline: none;border: none;">
+						<view class="package_share">
+							<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/share.png" mode="widthFix" style="width: 45rpx;margin-top: 8rpx;margin-left: 7rpx;"></image>
+						</view>
+					</button>
+					<!-- <button style="padding-left: 0;padding-right: 0;" open-type="share">分享</button> -->
+					<!-- #endif -->
+					
+					<!-- #ifdef APP-PLUS -->
+					
+					<button class="box share-btn" @click="is_show">
+						
+						<view class="package_share">
+							<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/share.png" mode="widthFix" style="width: 45rpx;margin-top: 8rpx;margin-left: 7rpx;"></image>
+						</view>
+						
+						<!-- <view class="icon fenxiang"></view>
+						<view class="text">分享</view> -->
+						<!-- <button class="text" open-type="share">分享</button> -->
+					</button>
+					<!-- <button style="padding-left: 0;padding-right: 0;" open-type="share">分享</button> -->
+					<!-- #endif -->
+					
+					
+					<!-- #ifdef H5 -->
+					<view class="box" @tap="share_shang_detail">
+						<view class="package_share">
+							<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/share.png" mode="widthFix" style="width: 45rpx;margin-top: 8rpx;margin-left: 7rpx;"></image>
+						</view>
+					</view>
+					<!-- #endif -->
 				</view>
+				
 				 
 			</view>
 			
@@ -781,12 +816,25 @@ export default {
 			 	url: '/pages/nftcard/package_list?packageid='+packageid+'&cardid='+cardid,
 			 })
 		 },
+		
+		
+		//h5点击分享触发
+		share_shang_detail: function() {
+			console.log('==================>>>h5');
+			uni.showModal({
+				title: '请点击浏览器菜单中的分享按钮',
+				showCancel: false,
+			})
+		
+			return;
+		},
+		
+		//app  分享点击
+		click_wxa_share: function() {
+			abotsharejs.click_wxa_share(this.share_href, this.share_titles, this.share_summary, this.share_imageUrl);
+		},
 		 
 		
-		 
-		 
-		 
-		 
 		 
 		 goto_supplier_detail:function(shangid){
 		 	console.log('跳转到发行商详情:' + shangid);
