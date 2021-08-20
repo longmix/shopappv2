@@ -302,26 +302,17 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				</view>
 			</view> -->
 			
-			
+			<!-- 卡牌明细 模态框 -->
 			<view>
-				<view class="show_modal_mask" v-if="showModal_liuzhuanjilv" @click="showModal_liuzhuanjilv=false"></view>
+				<view class="show_modal_mask" v-if="showModal_liuzhuanjilv" 
+				@click="showModal_liuzhuanjilv=false"></view>
 				<view class="show_modal_pop card_detail_showmodal_fenxaingjilv" 
-				v-if="showModal_liuzhuanjilv">
+				v-if="showModal_liuzhuanjilv" style="background-color: #e1e1e1;">
 					<view style="font-size: 38rpx;line-height: 60rpx;">卡牌明细</view>
 					
-					<view>
-						<view class="show_modal_mask" v-if="showModal_liuzhuanjilv_zengsong" @click="showModal_liuzhuanjilv_zengsong=false"></view>
-						<view class="show_modal_pop card_detail_showmodal_kapaimingxi" 
-						v-if="showModal_liuzhuanjilv_zengsong">
-							<view>
-								记录记录记录记录记录
-							</view>
-							<!-- <view style="width: 500rpx;height: 200rpx;background-color: #FFFFFF;position: absolute;left: -500rpx;transform: translateY(-600rpx);padding: 20rpx;">
-								
-							</view> -->
-						</view>
+					<view v-if="current_card_detail.is_buyed == 1" v-for="">
 						<view @click="showModal_liuzhuanjilv_zengsong=true">
-							<view style="line-height: 50rpx;">
+							<view style="line-height: 50rpx;background-color: #FFFFFF;padding: 15rpx;">
 								<view>
 									<view>20210819183630</view>
 									<view>序号：1</view>
@@ -330,14 +321,34 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 									style="width: 100rpx;font-size: 25rpx;margin-right: 0rpx;">丢弃</button> -->
 									
 								</view>
-								<!-- 未购买时不显示赠予和丢弃 -->
-								<view v-if="current_card_detail.is_buyed == 1" style="float: right;margin-top: -160rpx;">
-									<!-- 2021.08.06赠予 -->
-									<view class="card_detail_showmodal_zengsong">
+								
+								<view style="float: right;margin-top: -160rpx;">
+									<!-- 2021.08.20赠予 -->
+									<view @click="showModal_zengyu=true" class="card_detail_showmodal_zengsong">
 										<image class="card_detail_showmodal_tupian"
 											src="https://yanyubao.tseo.cn/Tpl/static/nft_card/zengsong.png"></image>
 									</view>
-										<!-- 2021.08.06丢弃 -->
+									
+									<!-- 2 -->
+									<!-- <view class="show_modal_mask" v-if="showModal_liuzhuanjilv_zengsong" 
+									@click="showModal_liuzhuanjilv_zengsong=false"></view>
+									<view class="show_modal_pop card_detail_showmodal_kapaimingxi" 
+									v-if="showModal_liuzhuanjilv_zengsong">
+										<view>
+											记录记录记录记录记录
+										</view>
+										
+									</view> -->
+									<view class="show_modal_mask" v-if="showModal_zengyu"
+									@click="showModal_zengyu=false"></view>
+									<view class="show_modal_pop" 
+									v-if="showModal_zengyu" style="background-color: #e1e1e1;">
+										111111
+									</view>
+									
+									
+									
+										<!-- 2021.08.20丢弃 -->
 									<view class="card_detail_showmodal_zengsong">
 										<image class="card_detail_showmodal_tupian"
 											src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xiaohui.png"></image>
@@ -349,9 +360,11 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 						
 						
 						
+						
+						
 					</view>
-					
-					
+					<view v-else>您还没有购买记录哦~</view>
+					<!--   -->
 				</view>
 				<view @click="showModal_liuzhuanjilv=true">
 					<view class="card_detail_goumai2">
@@ -398,6 +411,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				showModal_liuzhuanjilv: false,//流转模态框
 				
 				showModal_liuzhuanjilv_zengsong:false,//流转里的模态框
+				
+				showModal_zengyu:false,//赠予模态框
 				
 				current_params_str: '', //网址参数
 
@@ -723,25 +738,22 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		onShareAppMessage: function() {
 			var that = this;
 
-			var option_list = this.abotapi.globalData.option_list;
-
-			var share_title = option_list.wxa_share_title;
+			var share_title = that.current_card_detail.card_name;
 			if (share_title.length > 22) {
 				share_title = share_title.substr(0, 20) + '...';
 			}
 
-			var share_path = '/pages/index/index?sellerid=' + this.abotapi.get_sellerid();
+			var share_path = 'pages/nftcard/card_detail?sellerid=' + that.abotapi.globalData.default_sellerid;
+			share_path += '&packageid='+that.current_packageid;
+			share_path += '&cardid='+that.current_cardid;
 
+			//如果登录了，则带上分享者的userid
 			var userInfo = this.abotapi.get_user_info();
-
 			if (userInfo && userInfo.userid) {
 				share_path += '&userid=' + userInfo.userid;
 			}
 
-			var share_img = option_list.wxa_share_img;
-			if (!share_img) {
-				share_img = option_list.wxa_shop_operation_logo_url;
-			}
+			var share_img = that.current_card_detail.cover_img_url_stand;
 
 			return {
 				title: share_title,
@@ -763,37 +775,27 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			return this.share_return();
 		},
 		methods: {
-			//详情按钮显示隐藏
-			layOut(){
-			      if(this.lay_type == 0){
-			        this.lay_type = 1
-			      }else{
-			         this.lay_type = 0
-			      }
-			    },
+			
 			
 			share_return: function() {
 				var that = this;
 				
-				var option_list = this.abotapi.globalData.option_list;
-				
-				var share_title = option_list.wxa_share_title;
+				var share_title = that.current_card_detail.card_name;
 				if (share_title.length > 22) {
 					share_title = share_title.substr(0, 20) + '...';
 				}
 				
-				var share_path = 'sellerid=' + this.abotapi.get_sellerid();
+				var share_path = 'sellerid=' + that.abotapi.globalData.default_sellerid;
+				share_path += '&packageid='+that.current_packageid;
+				share_path += '&cardid='+that.current_cardid;
 				
+				//如果登录了，则带上分享者的userid
 				var userInfo = this.abotapi.get_user_info();
-				var share_path = 'packageid=' + this.abotapi.get_sellerid();
 				if (userInfo && userInfo.userid) {
 					share_path += '&userid=' + userInfo.userid;
 				}
 				
-				var share_img = option_list.wxa_share_img;
-				if(!share_img){
-					share_img = option_list.wxa_shop_operation_logo_url;
-				}			
+				var share_img = that.current_card_detail.cover_img_url_stand;		
 				
 				return {
 					title: share_title,
@@ -801,6 +803,15 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					imageUrl: share_img,
 				}
 				
+			},
+			
+			//详情按钮显示隐藏
+			layOut(){
+			      if(this.lay_type == 0){
+			        this.lay_type = 1
+			      }else{
+			         this.lay_type = 0
+			      }
 			},
 
 			callback_function_shop_option_data: function(that, cb_params) {
@@ -1175,7 +1186,15 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		/* transform: translateY(50%); */
 		z-index: 2;
 	}
-	
+	.card_detail_showmodal_kapaimingxi{
+		background-color: #FFFFFF;
+		top: 1%;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 500rpx;
+		height: 1000rpx;
+		padding: 20rpx;
+	}
 	
 /* 收藏按钮 */
 	.card_detail_schang_boder{
@@ -1262,7 +1281,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		left: 50%;
 		transform: translateX(-50%);
 		width: 500rpx;
-		height: 1000rpx;
 		padding: 20rpx;
 	}
 	.card_detail_an {
