@@ -1165,6 +1165,10 @@ export default {
 	
 	
 	
+	button:after{ 
+	  display:none;
+	 }
+	
 	
 	
 	.package_background{
