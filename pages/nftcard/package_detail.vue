@@ -213,7 +213,7 @@
 						v-for="(current_card_item,index) in current_card_list"
 						@tap="go_to_card_detail(current_card_item.packageid, current_card_item.cardid)">
 					<view class="">
-						<image class="package_card_img" :src="current_card_item.cover_img_url_2x3_stand" mode=""></image>
+						<image class="package_card_img" :src="current_card_item.cover_img_url_2x3_stand" mode="widthFix"></image>
 					
 					
 						<!-- icon喜欢图标和喜欢人数-----------已有卡牌/已发售卡牌 -->
@@ -252,11 +252,11 @@
 		</view>
 		<scroll-view scroll-x="true">
 			<view class="" style="display: flex;margin-left: 20rpx;">
-				<view class="" style="margin-bottom: 30rpx;" v-for="(current_card_item,index) in current_card_list"
-						@tap="go_to_card_detail(current_card_item.packageid, current_card_item.cardid)">
-					<image :src="current_card_item.cover_img_url_2x3_stand" mode="widthFix"
+				<view class="" style="margin-bottom: 30rpx;" v-for="(current_package_item,index) in current_package_list"
+						@tap="goto_package_detail(current_package_item.packageid)">
+					<image :src="current_package_item.cover_img_url_3x2_stand" mode="widthFix"
 						style="width: 300rpx;border-radius: 10rpx;overflow: hidden;"></image>
-					<view class="series_package" style="font-weight: bold;margin-left: 5rpx;">{{current_card_item.card_name}}</view>
+					<view class="series_package" style="font-weight: bold;margin-left: 5rpx;">{{current_package_item.title}}</view>
 				</view>	
 			</view>
 					
@@ -305,13 +305,14 @@ export default {
 			current_nftcard_poster:null,
 			current_package_detail:null,
 			current_supplier_detail:null,
+			current_package_list:null,
 			current_card_list:null,
 			current_supplier_fans_add:null,
 			current_packageid:0,
-			current_nft_supplierid:1,
+			
 			current_cardid:0, 
 			current_userid:0,
-		
+			current_nft_supplierid:0,
 		
 			showModal: false,
 			
@@ -400,6 +401,8 @@ export default {
 		var post_data = {
 				sellerid:that.abotapi.globalData.default_sellerid,
 				packageid:that.current_packageid,
+				nft_supplierid : that.current_nft_supplierid,
+				
 			};
 			
 		var userInfo = that.abotapi.get_user_info();	
@@ -536,6 +539,61 @@ export default {
 		
 		
 		
+		
+		
+		//当前卡包所属的supplierid
+		if(options.nft_supplierid){
+			that.current_nft_supplierid = options.nft_supplierid;
+		}
+		else{
+			//that.current_nft_supplierid = that.abotapi.globalData.default_sellerid;
+		}
+		
+			
+		that.abotapi.set_shop_option_data(that, that.callback_function_shop_option_data);
+			
+		
+		
+		that.abotapi.abotRequest({
+		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_list',
+		    method: 'post',
+		    data: {
+				sellerid:that.abotapi.globalData.default_sellerid,
+				nft_supplierid : that.current_nft_supplierid,
+				
+		    },
+		    success: function (res) {
+				
+				if(res.data.code != 1){
+					uni.showToast({
+						title:'卡包列表没数据',
+						duration: 2000,
+					});
+					
+					return;
+				}
+		
+				that.current_package_list = res.data.data;
+				
+				console.log('current_package_list ===>>> ', that.current_package_list);
+				
+				
+				
+				
+				
+				
+				
+				
+						
+				
+		    },
+		    fail: function (e) {
+				uni.showToast({
+					title: '网络异常！',
+					duration: 2000
+				});
+		    },
+		});
 		
 		
 		
@@ -804,6 +862,12 @@ export default {
 			
 			uni.navigateTo({
 				url: '/pages/nftcard/card_detail?packageid='+packageid+'&cardid='+cardid,
+			})
+		},
+		
+		goto_package_detail:function(packageid){
+			uni.navigateTo({
+				url:'/pages/nftcard/package_detail?packageid='+packageid,
 			})
 		},
 		 

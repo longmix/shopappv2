@@ -132,10 +132,6 @@ export default {
 						that.current_package_list[i].sale_percent = 99.99;
 					}
 					else{
-						console.log('fenmu===========>',that.current_package_list[i].packageid_card_count);
-						console.log('fenzi===========>',that.current_package_list[i].packageid_card_user_buy_count);
-						console.log('===========>',that.current_package_list[i].sale_percent);
-						
 						
 						
 						that.current_package_list[i].sale_percent =

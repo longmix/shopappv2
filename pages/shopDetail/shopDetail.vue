@@ -30,8 +30,69 @@
 		</view>
 		
 		
+		<!--NTF卡包卡牌  头部显示======begin  -->
+		<block v-if="use_theme_nft_package == 1">
+			<view class="" style="background-color: #eceeef; margin-bottom: 400rpx;">
+				<!--放行商封面  -->
+				<view style="" >
+					<image :src="current_shang_detail.mendian_image" mode="" style="width: 100%; height: 450rpx; position: absolute; "></image>
+				</view>
+				<!-- 发行商头像和名称 -->
+				<view style="margin-left: 20rpx; position: relative;top: 350rpx;">
+					<view class="supplier_follow_num_icon01" >
+						<!-- icon关注图标 -->
+						<view class="publish_icon_follow"  :style="{background:wxa_shop_nav_bg_color}" v-if="current_shang_detail.is_fans ==0" @tap="set_fans(1)">
+							<image  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/follow04.png" 
+								mode="widthFix" style="width: 35rpx; margin-top: 10rpx;"></image>
+							<view style="color: #FFFFFF;margin-left:10rpx; margin-top: 5rpx; font-size: 30rpx;">关注</view>
+						</view>
+						<view class="publish_icon_follow01" v-if="current_shang_detail.is_fans ==1" @tap="set_fans(0)">
+							<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/follow02.png" 
+								mode="widthFix" style="width: 50rpx;height: 30rpx;margin-top:8rpx ; position: relative;"></image>
+							<view style="color: #FFFFFF;margin-left:0rpx; margin-top: 5rpx; font-size: 30rpx;">已关注</view>
+						</view>
+					</view>
+					<image :src="current_shang_detail.icon_image" mode="" style="width: 200rpx;height: 200rpx; border-radius: 50%;"></image>
+						
+						<view style="width: 500rpx;display: flex;margin-left: 40rpx;">
+							<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/authentication.png"
+								mode="widthFix" style="width: 30rpx;top: 5rpx;"></image>
+							<view style="margin-left: 5rpx;"> {{current_shang_detail.name}}</view>
+						</view>
+						
+					
+				</view>
+			
+					
+				
+				
+				
+				<view class="supplier_follow_num_icon">
+					<!-- 关注人数====粉丝数量 -->
+					<view class="supplier_follow_num" >
+						<view style="font-size: 20rpx;font-weight: 100;text-align: center;">粉丝</view>
+						<view style="font-size: 40rpx;font-weight: bold;text-align: center;">{{current_shang_detail.supplier_fans_count}}1.2k</view>
+					</view>
+				</view>
+					
+				
+				<view class="supplier_package_num" >
+					<view style="font-size: 20rpx;font-weight: 100;">卡包</view>
+					<view style="font-size: 40rpx;font-weight: bold;">{{current_shang_detail.package_count}}</view>
+				</view>
+				<view class="supplier_package_num01">
+					<view style="font-size: 20rpx;font-weight: 100;">卡牌</view>
+					<view style="font-size: 40rpx;font-weight: bold;">{{current_shang_detail.card_count}}</view>
+				</view>
+				
+				
+				
+				
+			</view>
+			
+		</block>
 		
-		<block v-if="shop_header_style == 'default'">
+		<block v-else>
 		<view class="welcome_image">
 			<view v-if="current_shang_detail.mendian_image">
 				<image @load="imageLoad($event)" :data-id='index' mode="widthFix" style="width: 100%;" :src="current_shang_detail.mendian_image"></image>
@@ -116,70 +177,10 @@
 		
 		
 		
-		<!--NTF卡包卡牌  头部显示======begin  -->
-		<block v-else-if="shop_header_style == 'style001'">
-			<view class="" style="background-color: #eceeef;">
-				<!--放行商封面  -->
-				<view style="" >
-					<image :src="current_shang_detail.mendian_image" mode="" style="width: 100%; height: 450rpx; position: absolute; "></image>
-				</view>
-				<!-- 发行商头像和名称 -->
-				<view style="margin-left: 20rpx; position: relative;top: 350rpx;">
-					<view class="supplier_follow_num_icon01" >
-						<!-- icon关注图标 -->
-						<view class="publish_icon_follow"  :style="{background:wxa_shop_nav_bg_color}" v-if="current_shang_detail.is_fans ==0" @tap="set_fans(1)">
-							<image  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/follow04.png" 
-								mode="widthFix" style="width: 35rpx; margin-top: 10rpx;"></image>
-							<view style="color: #FFFFFF;margin-left:10rpx; margin-top: 5rpx; font-size: 30rpx;">关注</view>
-						</view>
-						<view class="publish_icon_follow01" v-if="current_shang_detail.is_fans ==1" @tap="set_fans(0)">
-							<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/follow02.png" 
-								mode="widthFix" style="width: 50rpx;height: 30rpx;margin-top:8rpx ; position: relative;"></image>
-							<view style="color: #FFFFFF;margin-left:0rpx; margin-top: 5rpx; font-size: 30rpx;">已关注</view>
-						</view>
-					</view>
-					<image :src="current_shang_detail.icon_image" mode="" style="width: 200rpx;height: 200rpx; border-radius: 50%;"></image>
-						
-						<view style="width: 500rpx;display: flex;margin-left: 40rpx;">
-							<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/authentication.png"
-								mode="widthFix" style="width: 30rpx;margin-left: 30dpx;top: 5rpx;"></image>
-							<view style="margin-left: 5rpx;"> {{current_shang_detail.name}}</view>
-						</view>
-						
-					
-				</view>
-			
-					
-				
-				
-				
-				<view class="supplier_follow_num_icon">
-					<!-- 关注人数====粉丝数量 -->
-					<view class="supplier_follow_num" >
-						<view style="font-size: 10rpx;font-weight: 100;text-align: center;">粉丝</view>
-						<view style="font-size: 40rpx;font-weight: bold;text-align: center;">{{current_shang_detail.supplier_fans_count}}1.2k</view>
-					</view>
-				</view>
-					
-				
-				<view class="supplier_package_num" >
-					<view style="font-size: 10rpx;font-weight: 100;">卡包</view>
-					<view style="font-size: 40rpx;font-weight: bold;">{{current_shang_detail.package_count}}</view>
-				</view>
-				<view class="supplier_package_num01">
-					<view style="font-size: 10rpx;font-weight: 100;">卡牌</view>
-					<view style="font-size: 40rpx;font-weight: bold;">{{current_shang_detail.card_count}}</view>
-				</view>
-				
-				
-				
-				
-			</view>
-			
-		</block>
+		
 		
 		<!--商家简介-->
-		<view style="border-bottom:6px solid #eee;background-color: #eceeef; padding-top: 400rpx;padding-left: 10rpx;" v-if="current_shang_detail.brief != ''">
+		<view style="border-bottom:6px solid #eee;background-color: #eceeef; padding-left: 10rpx;" >
 			<view class="supplier_icon-title3" style="">
 				<view class="supplier_icon-title4" :style="{borderBottom:wxa_shop_nav_bg_color+' 2rpx solid'}">
 				<!-- 	<image :src="user_console_setting.user_console_icon_jianjie" mode="widthFix" style="width: 50rpx;"></image> -->
@@ -465,26 +466,6 @@
 			</block>
 		</view>
 		
-		<!--商家简介-->
-		<view style="border-bottom:6px solid #eee;">
-			<view class="icon-title2">
-				<image :src="user_console_setting.user_console_icon_jianjie" mode="widthFix"></image>
-				<view class='biaoti'>商家简介</view>
-			</view>
-			<block v-if="current_shang_detail.brief == ''">
-				<view style="text-align: center;color:#ccc;font-size:16px;">暂无简介</view>
-				<view style="padding-bottom: 21px;color: red;width: 94%;margin-left: 13px;">
-					<text style="width:20px;"></text>
-				</view>
-			</block>
-
-			<block v-else>
-				<view style="padding-top:5px;padding-bottom: 24rpx;color: #666;width: 94%;margin: 0 auto;font-size:14px;text-indent: 54rpx;">
-					<text>{{current_shang_detail.brief}}</text>
-				</view>
-			</block>
-		</view>
-		
 		<!-- 小程序码 -->
 		<!-- #ifdef MP-WEIXIN -->
 		<view class="wxa_qrcode_block">
@@ -730,8 +711,9 @@
 				nft_package_list_show_flag:0,	// 0 不展示NFT卡包列表  1  展示
 				current_packageid:0,
 				current_nft_supplierid:1,
-				//2021.8.13. 控制头部风格
-				shop_header_style: 'default',
+				
+				//2021.8.13. 控制头部风格是否为NFT 卡包
+				use_theme_nft_package: 0,
 				
 				current_nft_card_list:null,
 				
@@ -977,12 +959,12 @@
 				}
 				
 				//控制头部风格										
-				if(user_console_setting.shop_header_style){
+				if(user_console_setting.use_theme_nft_package){
 					//that.shop_header_style = 'style001';
-					this.shop_header_style = user_console_setting.shop_header_style;
+					this.use_theme_nft_package = user_console_setting.use_theme_nft_package;
 				}
 				
-				console.log('this.shop_header_style ====>>>>>> ', this.shop_header_style);
+				console.log('this.use_theme_nft_package ====>>>>>> ', this.use_theme_nft_package);
 				
 				
 				this.get_shang_detail();
@@ -1228,14 +1210,14 @@
 							for(var i=0; i<that.current_package_list.length; i++){
 								
 								//计算已经售出的备份比
-								that.current_package_list[i].sale_percent = 0;
-								if(that.current_package_list[i].packageid_card_count == 0){
-									that.current_package_list[i].sale_percent = 99.99;
+								that.current_nft_package_list[i].sale_percent = 0;
+								if(that.current_nft_package_list[i].packageid_card_count == 0){
+									that.current_nft_package_list[i].sale_percent = 99.99;
 								}
 								else{
 									
-									that.current_package_list[i].sale_percent =
-										parseInt(that.current_package_list[i].packageid_card_user_buy_count/that.current_package_list[i].packageid_card_count*100);
+									that.current_nft_package_list[i].sale_percent =
+										parseInt(that.current_nft_package_list[i].packageid_card_user_buy_count/that.current_package_list[i].packageid_card_count*100);
 								}
 							}
 							
