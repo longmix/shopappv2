@@ -132,6 +132,7 @@ export default {
 						that.current_package_list[i].sale_percent = 99.99;
 					}
 					else{
+					
 						
 						
 						that.current_package_list[i].sale_percent =
