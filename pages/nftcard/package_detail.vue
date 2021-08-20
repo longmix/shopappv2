@@ -352,7 +352,13 @@ export default {
 		that.current_package_detail = {'title':''};
 		that.current_package_detail.cover_img_url = 'https://yanyubao.tseo.cn/Tpl/static/nft_card/default_package_cover.png';
 		that.current_package_detail.description = '';
-		
+		that.current_package_detail.title ='';
+		that.current_package_detail.brief = '';
+		that.current_package_detail.time_begin_str = '';
+		that.current_package_detail.time_end_str = '';
+		that.current_package_detail.supplier_name = '';
+		that.current_package_detail.packageid_card_user_buy_count='';
+		that.current_package_detail.packageid_card_count = '';
 		
 		
 		//获取卡包详情
@@ -1310,7 +1316,7 @@ export default {
 	.package_card_description{
 		width: 90%;
 		font-weight: 300; 
-		font-size: 10rpx;
+		font-size: 20rpx;
 		margin-top: 10rpx;
 		margin-bottom: 10rpx;
 		white-space: nowrap;
