@@ -466,10 +466,10 @@
 		</view>
 		
 		<!--商家简介-->
-		<view style="border-bottom:6px solid #eee;" v-if="current_shang_detail.brief == ''">
+		<view style="border-bottom:6px solid #eee;">
 			<view class="icon-title2">
 				<image :src="user_console_setting.user_console_icon_jianjie" mode="widthFix"></image>
-				<view class='biaoti'>发行商简介</view>
+				<view class='biaoti'>商家简介</view>
 			</view>
 			<block v-if="current_shang_detail.brief == ''">
 				<view style="text-align: center;color:#ccc;font-size:16px;">暂无简介</view>
@@ -478,7 +478,7 @@
 				</view>
 			</block>
 
-			<block v-if="current_shang_detail.brief != ''">
+			<block v-else>
 				<view style="padding-top:5px;padding-bottom: 24rpx;color: #666;width: 94%;margin: 0 auto;font-size:14px;text-indent: 54rpx;">
 					<text>{{current_shang_detail.brief}}</text>
 				</view>
@@ -500,7 +500,8 @@
 			{{default_copyright_text}}
 		</view>
 		
-		<view v-if="user_console_setting.user_console_quick_button_position == 'buttom' || !user_console_setting.user_console_quick_button_position">
+		<!--  || !user_console_setting.user_console_quick_button_position -->
+		<view v-if="user_console_setting.user_console_quick_button_position == 'left'">
 			<view @tap="isShoucang==1?Shoucang('del'):Shoucang('add')" class="home-p">
 				<image v-if="isShoucang == 0" src="../../static/img/help/star_off.png"></image>
 				<image v-if="isShoucang == 1" src="../../static/img/help/star_on.png"></image>
@@ -540,7 +541,7 @@
 		</view>
 		
 		
-		<view v-if="user_console_setting.user_console_quick_button_position == 'buttom'" class='footer' >
+		<view v-if="user_console_setting.user_console_quick_button_position == 'bottom'" class='footer' >
 			<view @tap="isShoucang==1?Shoucang('del'):Shoucang('add')" class="shoucang_box">
 				<image v-if="isShoucang == 0" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star.png"></image>
 				<image v-if="isShoucang == 1" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png"></image>收藏
@@ -1156,17 +1157,17 @@
 						
 						//根据商户的设置，觉得是否展示堂食和外卖 ！！！！！！
 						if(data.show_diancan_button && (data.show_diancan_button == 1)){
-							that.shop_product_btn_show = 0;
+							that.shop_product_btn_show = 1;
 						}
 						else{
-							that.shop_product_btn_show = 1;
+							that.shop_product_btn_show = 0;
 						}
 						
 						if(data.show_waimai_button && (data.show_waimai_button == 1)){
-							that.waimai_product_btn_show = 0;
+							that.waimai_product_btn_show = 1;
 						}
 						else{
-							that.waimai_product_btn_show = 1;
+							that.waimai_product_btn_show = 0;
 						}
 						
 						
@@ -1266,7 +1267,7 @@
 					data: {
 						sellerid:that.abotapi.globalData.default_sellerid,
 						nft_supplierid:that.current_xianmai_shangid,
-						
+						packageid:that.current_packageid,
 						action:'card_hot_list'
 						
 						
@@ -1274,11 +1275,11 @@
 					success: function (res) {
 						
 						if(res.data.code != 1){
-							uni.showToast({
+							/*uni.showToast({
 								title:'卡牌列表没有数据',
 								duration: 2000,
 							});
-							
+							*/
 							return;
 						}
 						
