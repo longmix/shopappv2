@@ -102,6 +102,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			<view class="card_detail_xinxi" v-if="current_card_detail">
 				<h4 class="card_detail_title" style="padding-bottom: 15rpx;width: 90%;" v-if="current_card_detail">{{current_card_detail.card_name}}
 				</h4>
+				<!-- 显示第几张 -->
+				<view>#{{card_publish_list.cplseq}}</view>
 				<view style="color: #868686;font-size: 30rpx;">
 					<!-- 发行时间 -->
 					<text id="card_detail_mystr" v-if="current_card_detail">{{current_card_detail.time_begin}}</text>
@@ -250,7 +252,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			<view>
 				<!-- #ifdef MP -->
 				
-				<button open-type="share" 
+				<button class="box share-btn" open-type="share" 
 				style="background: none;outline: none;border: none;border: 0rpx; padding-left: 15rpx;">
 					 <!-- class="card_detail_liebiao" -->
 					<view class="card_detail_liebiao" style="padding: 0rpx; margin: 0rpx;" >
@@ -263,7 +265,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				<!-- #ifdef APP-PLUS -->
 				
-				<button @click="is_show">
+				<button class="box share-btn" @click="is_show">
 					
 					<view class="card_detail_liebiao" >
 						<image class="card_detail_fenxiang"
@@ -279,7 +281,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				
 				<!-- #ifdef H5 -->
-				<view @tap="share_shang_detail">
+				<view class="box" @tap="share_shang_detail">
 					<view class="card_detail_liebiao" >
 						<image class="card_detail_fenxiang"
 							src="https://yanyubao.tseo.cn/Tpl/static/nft_card/fenxiang02.png"></image>
@@ -347,10 +349,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 								@click="showModal_liuzhuanjilv_zengsong=true">
 									<view class="tree1">
 										<view>{{card_publish_list_item.cplno}}</view>
-										<view>序号：{{card_publish_list_item.cplseq}}</view>
 										<view>{{card_publish_list_item.updatetime}}</view>
 									</view>
-									<view style="float: right;margin-top: -160rpx;">
+									<view style="float: right;margin-top: -115rpx;">
 										<!-- 2021.08.20赠予 -->
 										<view @click="showModal_zengyu=true" class="card_detail_showmodal_zengsong">
 											<image class="card_detail_showmodal_tupian"
@@ -486,7 +487,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			that.current_card_detail.is_buyed = 0;
 			that.current_card_detail.clue = '';
 			that.current_card_detail.user_have_counter=0;//购买卡的次数
-			that.current_card_detail.user_have_counter = 0;
+			// that.card_publish_list.cplseq=0;
 			
 			that.current_card_detail.sale_percent = 50;
 			that.current_card_detail.sale_counter = 0;		//售出的数量
@@ -1222,8 +1223,20 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	}
 </style>
 <style>
-	@import "/static/css/nftcard.css";	
+	@import "/static/css/nftcard.css";
 	
+	.box {
+		justify-content: center;
+		flex-wrap: wrap;
+	}
+	.share-btn {
+		line-height: normal;
+		background-color: transparent;
+		padding: 0,
+	}
+	button:after{
+		display:none;
+	}
 	.card_detail_xing {
 		width: 30rpx;
 		height: 30rpx;
@@ -1371,15 +1384,15 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		border: #aeb8ab 3rpx solid;
 	}
 	.card_detail_showmodal_tupian {
-		width: 35rpx;
-		height: 35rpx;
-		padding-top: 19rpx;
-		padding-left: 19rpx;
+		width: 27rpx;
+		height: 27rpx;
+		padding-top: 13rpx;
+		padding-left: 13rpx;
 	}
 	.card_detail_showmodal_zengsong {
 		background-color: #F0F0F0;
-		width: 70rpx;
-		height: 70rpx;
+		width: 50rpx;
+		height: 50rpx;
 		border-radius: 50%;
 		margin: 10rpx;
 		margin-right: 20rpx;
