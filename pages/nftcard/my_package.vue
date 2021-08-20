@@ -129,7 +129,7 @@ export default {
 					//计算已经售出的备份比
 					that.current_package_list[i].sale_percent = 0;
 					if(that.current_package_list[i].packageid_card_count == 0){
-						that.current_package_list[i].sale_percent = 99.99;
+						that.current_package_list[i].sale_percent = 100;
 					}
 					else{
 					

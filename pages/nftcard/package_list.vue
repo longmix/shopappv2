@@ -76,9 +76,10 @@
 							<view class="package_rare_total" >
 								<view class="card_quantity">典藏卡1张</view>
 								<view class="card_quantity">|</view>
-								<view class="card_quantity">总卡{{current_package_item.packageid_card_count}}张</view>
+								<view class="card_quantity">珍藏卡1张</view>
 							</view>
-							<view class="begin_end_time">
+							<view class="begin_end_time" style="display: flex;">
+								<view style="font-size: 20rpx;">有效期：</view>
 								{{current_package_item.time_begin_str}}~{{current_package_item.time_end_str}}
 							</view>
 						</view>

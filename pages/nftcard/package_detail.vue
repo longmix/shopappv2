@@ -12,9 +12,9 @@
 			
 			<!-- icon喜欢图标--------- -->
 			<view class="like_number" >
-				<image v-if="current_package_detail.is_like == 0"  @tap="set_like(1)" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xin02.png"
+				<image v-if="current_package_detail.is_like == 1"  @tap="set_like(0)" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xin02.png"
 					mode="widthFix" style="width: 50rpx;height: 50rpx; margin-top: 15rpx;margin-left: 12rpx;" ></image>
-				<image v-if="current_package_detail.is_like == 1" @tap="set_like(0)"  src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xin.png" 
+				<image v-if="current_package_detail.is_like == 0" @tap="set_like(1)"  src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xin.png" 
 					mode="widthFix" style="width: 60rpx;height:56rpx;margin-top: 11rpx;margin-left: 8rpx;"  ></image>
 				<!-- <view style="font-weight: 100; font-size: 10rpx;"> {{current_package_detail.like_count}}</view> -->
 			</view>
@@ -244,17 +244,17 @@
 		
 		<!-- 系列卡包 -->
 		<view class="" style="margin: 20rpx;">
-			<view style="font-weight: 100;font-size: 10rpx;float: right;color: red;margin-top: 5rpx;" 
+			<view style="font-weight: 100;font-size: 10rpx;float: right;color: red;margin-top: 10rpx;" 
 			@tap="go_to_package_list()">>>更多卡包>></view>
-			<view class="" style="font-weight: bold;">系列卡包</view>
+			<view class="" style="font-weight: bold;">推荐卡包</view>
 		</view>
 		<scroll-view scroll-x="true">
-			<view class="" style="display: flex;margin-left: 20rpx;">
+			<view class="" style="display: flex;margin-left: 20rpx;margin-right: 20rpx;">
 				<view class="" style="margin-bottom: 30rpx;" v-for="(current_package_item,index) in current_package_list"
 						@tap="goto_package_detail(current_package_item.packageid)">
-					<image :src="current_package_item.cover_img_url_3x2_stand" mode="widthFix"
-						style="width: 300rpx;border-radius: 10rpx;overflow: hidden;"></image>
-					<view class="series_package" style="font-weight: bold;margin-left: 5rpx;">{{current_package_item.title}}</view>
+					<image :src="current_package_item.cover_img_url" mode=""
+						style="width: 200rpx;height: 200rpx; border-radius: 10rpx;overflow: hidden;margin-right: 20rpx;"></image>
+					<view class="series_package" style="font-weight: bold;margin-left: 5rpx;width: 200rpx;word-wrap: break-word;">{{current_package_item.title}}</view>
 				</view>	
 			</view>
 					
@@ -437,7 +437,7 @@ export default {
 				//计算已经售出的备份比
 				that.current_package_detail.sale_percent = 0;
 				if(that.current_package_detail.packageid_card_count == 0){
-					that.current_package_detail.sale_percent = 99.99;
+					that.current_package_detail.sale_percent = 100;
 				}
 				else{
 					console.log('fenmu===========>',that.current_package_detail.packageid_card_count);
@@ -1474,9 +1474,13 @@ export default {
 	        font-size: 30rpx;
 	    }
 		.series_package{
-			width:340rpx;
-			white-space: nowrap;
+			word-break: break-word;
 			overflow: hidden;
 			text-overflow: ellipsis;
+			display: -webkit-box;
+			-webkit-line-clamp:2;
+			-webkit-box-orient:vertical;
+				
+		
 		}
 </style>

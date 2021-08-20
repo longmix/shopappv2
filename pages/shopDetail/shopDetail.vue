@@ -76,7 +76,7 @@
 				</view>
 					
 				
-				<view class="supplier_package_num" >
+				<view class="supplier_package_num">
 					<view style="font-size: 20rpx;font-weight: 100;">卡包</view>
 					<view style="font-size: 40rpx;font-weight: bold;">{{current_shang_detail.package_count}}</view>
 				</view>
@@ -84,8 +84,6 @@
 					<view style="font-size: 20rpx;font-weight: 100;">卡牌</view>
 					<view style="font-size: 40rpx;font-weight: bold;">{{current_shang_detail.card_count}}</view>
 				</view>
-				
-				
 				
 				
 			</view>
@@ -1212,7 +1210,7 @@
 								//计算已经售出的备份比
 								that.current_nft_package_list[i].sale_percent = 0;
 								if(that.current_nft_package_list[i].packageid_card_count == 0){
-									that.current_nft_package_list[i].sale_percent = 99.99;
+									that.current_nft_package_list[i].sale_percent = 100;
 								}
 								else{
 									
