@@ -223,13 +223,15 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			<!-- 线索按钮 -->
 			<view @click="layOut">
 				<!-- 线索未亮按钮 -->
-				<view @click="showModal_xiansuo=true" v-if="lay_type" class="card_detail_liebiao">
+				<view @click="showModal_xiansuo=true" v-if="lay_type" 
+				class="card_detail_liebiao">
 					<image class="card_detail_xiaoxi1"
 						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/tips.png"></image>				
 				</view>
 				<view class="show_modal_mask" v-if="showModal_xiansuo" @click="showModal_xiansuo=false"></view>
 				<!-- 线索点亮按钮 -->
-				<view style="padding-bottom: 115rpx;" v-if="showModal_xiansuo" @click="showModal_xiansuo=false">
+				<view style="padding-bottom: 115rpx;" v-if="showModal_xiansuo" 
+				@click="showModal_xiansuo=false">
 					<view class="card_detail_liebiao_xiaoxi">
 						<image class="card_detail_xiaoxi2"
 							src="https://yanyubao.tseo.cn/Tpl/static/nft_card/tips2.png"></image>
@@ -246,24 +248,13 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			
 			<!-- 分享 -->
 			<view>
-				<!-- <view class="show_modal_mask" v-if="showModal_fenxiang" @click="showModal_fenxiang=false"></view>
-				<view class="show_modal_pop card_detail_showmodal_fenxaingjilv" v-if="showModal_fenxiang">
-					<view>分享式样</view>
-				</view>
-				<view @click="showModal_fenxiang=true">
-					<view class="card_detail_liebiao" >
-						<image class="card_detail_fenxiang"
-							src="https://yanyubao.tseo.cn/Tpl/static/nft_card/fenxiang02.png"></image>
-					</view>
-					
-				</view> -->
-				
-				
 				<!-- #ifdef MP -->
 				
-				<button class="box share-btn" open-type="share" style="background: none;outline: none;border: none;">
-					<view class="card_detail_liebiao" >
-						<image class="card_detail_fenxiang"
+				<button open-type="share" 
+				style="background: none;outline: none;border: none;border: 0rpx; padding-left: 15rpx;">
+					 <!-- class="card_detail_liebiao" -->
+					<view class="card_detail_liebiao" style="padding: 0rpx; margin: 0rpx;" >
+						<image class="card_detail_fenxiang" style="padding-left: 7rpx;"
 							src="https://yanyubao.tseo.cn/Tpl/static/nft_card/fenxiang02.png"></image>
 					</view>
 				</button>
@@ -272,7 +263,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				<!-- #ifdef APP-PLUS -->
 				
-				<button class="box share-btn" @click="is_show">
+				<button @click="is_show">
 					
 					<view class="card_detail_liebiao" >
 						<image class="card_detail_fenxiang"
@@ -288,7 +279,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				
 				<!-- #ifdef H5 -->
-				<view class="box" @tap="share_shang_detail">
+				<view @tap="share_shang_detail">
 					<view class="card_detail_liebiao" >
 						<image class="card_detail_fenxiang"
 							src="https://yanyubao.tseo.cn/Tpl/static/nft_card/fenxiang02.png"></image>
@@ -347,64 +338,58 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				<view class="show_modal_mask" v-if="showModal_liuzhuanjilv" 
 				@click="showModal_liuzhuanjilv=false"></view>
 				<view class="show_modal_pop card_detail_showmodal_fenxaingjilv" 
-				v-if="showModal_liuzhuanjilv" style="background-color: #e1e1e1;">
+				v-if="showModal_liuzhuanjilv">
 					<view style="font-size: 38rpx;line-height: 60rpx;">卡牌明细</view>
-					
-					<view v-if="current_card_detail.is_buyed == 1" v-for="">
-						<view @click="showModal_liuzhuanjilv_zengsong=true">
-							<view style="line-height: 50rpx;background-color: #FFFFFF;padding: 15rpx;">
-								<view>
-									<view>20210819183630</view>
-									<view>序号：1</view>
-									<view>2021-08-19</view>
-									<!-- <button type="default"
-									style="width: 100rpx;font-size: 25rpx;margin-right: 0rpx;">丢弃</button> -->
-									
-								</view>
-								
-								<view style="float: right;margin-top: -160rpx;">
-									<!-- 2021.08.20赠予 -->
-									<view @click="showModal_zengyu=true" class="card_detail_showmodal_zengsong">
-										<image class="card_detail_showmodal_tupian"
-											src="https://yanyubao.tseo.cn/Tpl/static/nft_card/zengsong.png"></image>
+					<view>
+						<view v-if="current_card_detail.is_buyed == 1">
+							<view v-for="(card_publish_list_item,index) in card_publish_list">
+								<view class="card_detail_goumaijilv" 
+								@click="showModal_liuzhuanjilv_zengsong=true">
+									<view class="tree1">
+										<view>{{card_publish_list_item.cplno}}</view>
+										<view>序号：{{card_publish_list_item.cplseq}}</view>
+										<view>{{card_publish_list_item.updatetime}}</view>
 									</view>
-									
-									<!-- 2 -->
-									<!-- <view class="show_modal_mask" v-if="showModal_liuzhuanjilv_zengsong" 
-									@click="showModal_liuzhuanjilv_zengsong=false"></view>
-									<view class="show_modal_pop card_detail_showmodal_kapaimingxi" 
-									v-if="showModal_liuzhuanjilv_zengsong">
-										<view>
-											记录记录记录记录记录
+									<view style="float: right;margin-top: -160rpx;">
+										<!-- 2021.08.20赠予 -->
+										<view @click="showModal_zengyu=true" class="card_detail_showmodal_zengsong">
+											<image class="card_detail_showmodal_tupian"
+												src="https://yanyubao.tseo.cn/Tpl/static/nft_card/zengsong.png"></image>
 										</view>
 										
-									</view> -->
-									<view class="show_modal_mask" v-if="showModal_zengyu"
-									@click="showModal_zengyu=false"></view>
-									<view class="show_modal_pop" 
-									v-if="showModal_zengyu" style="background-color: #e1e1e1;">
-										111111
-									</view>
-									
-									
-									
-										<!-- 2021.08.20丢弃 -->
-									<view class="card_detail_showmodal_zengsong">
-										<image class="card_detail_showmodal_tupian"
-											src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xiaohui.png"></image>
+										<!-- 2 -->
+										<!-- <view class="show_modal_mask" v-if="showModal_liuzhuanjilv_zengsong" 
+										@click="showModal_liuzhuanjilv_zengsong=false"></view>
+										<view class="show_modal_pop card_detail_showmodal_kapaimingxi" 
+										v-if="showModal_liuzhuanjilv_zengsong">
+											<view>
+												记录记录记录记录记录
+											</view>
+											
+										</view> -->
+										<view class="show_modal_mask" v-if="showModal_zengyu"
+										@click="showModal_zengyu=false"></view>
+										<view class="show_modal_pop" 
+										v-if="showModal_zengyu" style="background-color: #e1e1e1;">
+											111111
+										</view>
+										
+											<!-- 2021.08.20丢弃 -->
+										<view class="card_detail_showmodal_zengsong">
+											<image class="card_detail_showmodal_tupian"
+												src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xiaohui.png"></image>
+										</view>
 									</view>
 								</view>
+								
 							</view>
-							
 						</view>
-						
-						
-						
-						
-						
+						<view v-else>您还没有购买记录哦~</view>
 					</view>
-					<view v-else>您还没有购买记录哦~</view>
-					<!--   -->
+					
+					
+					
+					
 				</view>
 				<view @click="showModal_liuzhuanjilv=true">
 					<view class="card_detail_goumai2">
@@ -459,9 +444,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				current_card_detail: null,
 				current_card_list: null,
 				current_package_detail: null,
+				card_publish_list: null,//获取单张卡牌的购买记录
 				current_cardid: 0,
 				current_packageid: 0,
-				current_userid: 0,
 
 				card_description: '',
 				
@@ -500,6 +485,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			that.current_card_detail.supplier_name = '';
 			that.current_card_detail.is_buyed = 0;
 			that.current_card_detail.clue = '';
+			that.current_card_detail.user_have_counter=0;//购买卡的次数
 			that.current_card_detail.user_have_counter = 0;
 			
 			that.current_card_detail.sale_percent = 50;
@@ -579,7 +565,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				sellerid: that.abotapi.globalData.default_sellerid,
 				packageid: that.current_packageid,
 				cardid: that.current_cardid,
-
 			};
 
 			var userInfo = that.abotapi.get_user_info();
@@ -726,7 +711,56 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					});
 				},
 			});
+			
+			if(!userInfo){
+				return;
+			}
+			
+			//以下数据需要登陆后再发请求
+			
+			//获取单张卡牌的购买记录列表
+			post_data = {
+				sellerid: that.abotapi.globalData.default_sellerid,
+				cardid: that.current_cardid,
+			};
+			
+			if (!userInfo) {
+				return;
+				
+			}
+			
+			post_data.userid = userInfo.userid;
+			post_data.checkstr = userInfo.checkstr;
+			
+			
+			that.abotapi.abotRequest({
+				url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_publish_list',
+				method: 'post',
+				data: post_data,
+				success: function(res) {
 
+					if (res.data.code != 1) {
+						uni.showToast({
+							title: '数据加载完成',
+							duration: 2000,
+						});
+
+						return;
+					}
+
+					that.card_publish_list = res.data.data;
+
+					console.log('card_publish_list ===>>> ', that.card_publish_list);
+
+
+				},
+				fail: function(e) {
+					uni.showToast({
+						title: '网络异常！',
+						duration: 2000
+					});
+				},
+			});
 
 		},
 
@@ -1151,13 +1185,36 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		left: 50%;
 		transform: translateX(-50%);
 		width: 450rpx;
-		height: 200rpx;
 		padding: 35rpx;
 		border-radius: 80rpx;
 		border: 5rpx #c3c3c3 solid;
 		background-color: #e2d281;
 		overflow: hidden;
 		.tree{
+			width: 100%;
+			height: 100%;
+			overflow-y: scroll;
+		}
+	}
+	.card_detail_goumaijilv{
+		line-height: 50rpx;
+		padding: 15rpx;
+		margin-bottom:15rpx ;
+		background-color: #FFFFFF;
+		top: 40%;
+		left: 50%;
+		width: 470rpx;
+	}
+	.card_detail_showmodal_fenxaingjilv{
+		top: 15%;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 500rpx;
+		height: 600rpx;
+		background-color: #e1e1e1;
+		padding: 20rpx;
+		overflow: hidden;
+		.tree1{
 			width: 100%;
 			height: 100%;
 			overflow-y: scroll;
@@ -1311,7 +1368,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		height: 90rpx;
 		border-radius: 50%;
 		margin: 15rpx;
-		margin-right: 23rpx;
 		border: #aeb8ab 3rpx solid;
 	}
 	.card_detail_showmodal_tupian {
@@ -1328,14 +1384,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		margin: 10rpx;
 		margin-right: 20rpx;
 		border: #aeb8ab 3rpx solid;
-	}
-	.card_detail_showmodal_fenxaingjilv{
-		background-color: #FFFFFF;
-		top: 15%;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 500rpx;
-		padding: 20rpx;
 	}
 	.card_detail_an {
 		width: 45rpx;

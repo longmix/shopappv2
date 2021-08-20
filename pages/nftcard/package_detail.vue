@@ -70,9 +70,6 @@
 				<view class="package_state" v-else="is_package_time_expire ==true" style="background-color:red;" >已下架</view>
 				
 				<!-- 分享 -->
-				
-				
-				
 				<view>
 					<!-- #ifdef MP -->
 					
