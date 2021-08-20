@@ -71,7 +71,7 @@
 					<!-- 关注人数====粉丝数量 -->
 					<view class="supplier_follow_num" >
 						<view style="font-size: 20rpx;font-weight: 100;text-align: center;">粉丝</view>
-						<view style="font-size: 40rpx;font-weight: bold;text-align: center;">{{current_shang_detail.supplier_fans_count}}1.2k</view>
+						<view style="font-size: 40rpx;font-weight: bold;text-align: center;">{{current_shang_detail.supplier_fans_count}}</view>
 					</view>
 				</view>
 					
