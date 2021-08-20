@@ -32,7 +32,7 @@
 		
 		<!--NTF卡包卡牌  头部显示======begin  -->
 		<block v-if="use_theme_nft_package == 1">
-			<view class="" style="background-color: #eceeef; margin-bottom: 400rpx;">
+			<view class="" style="background-color: #eceeef; padding-bottom: 400rpx;">
 				<!--放行商封面  -->
 				<view style="" >
 					<image :src="current_shang_detail.mendian_image" mode="" style="width: 100%; height: 450rpx; position: absolute; "></image>
@@ -180,7 +180,7 @@
 		
 		
 		<!--商家简介-->
-		<view style="border-bottom:6px solid #eee;background-color: #eceeef; padding-left: 10rpx;" >
+		<view class="supplier_detail_brief"  >
 			<view class="supplier_icon-title3" style="">
 				<view class="supplier_icon-title4" :style="{borderBottom:wxa_shop_nav_bg_color+' 2rpx solid'}">
 				<!-- 	<image :src="user_console_setting.user_console_icon_jianjie" mode="widthFix" style="width: 50rpx;"></image> -->
@@ -273,8 +273,8 @@
 				<view class="" style="width:100%;background-color: #eceeef;">
 					<view class="supplier_icon-title3" style="margin-left: 10rpx;">
 						<view class="supplier_icon-title4" :style="{borderBottom:wxa_shop_nav_bg_color+' 2rpx solid'}">
-							<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/rocket.png" mode="widthFix" style="width: 40rpx;margin-left: 10rpx;margin-top: 15rpx;"></image>
-							<view class='nft_supplier_biaoti'  :style="{color:wxa_shop_nav_bg_color}" >热门卡牌</view>	
+							<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/rocket.png" mode="widthFix" style="width: 45rpx;margin-left: 10rpx;margin-top: 8rpx;"></image>
+							<view class='nft_supplier_biaoti'  :style="{color:wxa_shop_nav_bg_color}"  >热门卡牌</view>	
 							
 						</view>
 						
@@ -303,7 +303,7 @@
 				<view class="" style="background-color: #eceeef;">
 					<view class="supplier_icon-title3" style="margin-left: 10rpx;">
 						<view class="supplier_icon-title2" :style="{borderBottom:wxa_shop_nav_bg_color+' 2rpx solid'}">
-							<image class="card_detail_tubiao" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/suoshukabaotubiao.png"></image>
+							<image class="card_detail_tubiao" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/suoshukabaotubiao.png" style="margin-left: 5rpx;"></image>
 							<view class='nft_supplier_biaoti'  :style="{color:wxa_shop_nav_bg_color}">已发行卡包</view>
 							<view class='nft_supplier_biaoti' @tap="goto_supplier_all_package_list"></view>
 						
@@ -2892,7 +2892,8 @@
 	.supplier_icon-title2 {
 		display: flex;
 		margin-top: 10rpx 20rpx;
-
+		height: 60rpx;
+		line-height: 60rpx;
 		align-items: center;
 		border-bottom: 1px solid #eee;
 		
@@ -2906,8 +2907,12 @@
 		font-weight: bold;
 		font-size: 15px;
 		padding-left: 5px;
-		margin-top: 10rpx;
-		margin-bottom: 10rpx;
+		
+	}
+	.supplier_detail_brief{
+		border-bottom:6px solid #eee;
+		background-color: #eceeef; 
+		padding-left: 10rpx;
 	}
 	.supplier_icon-title3{
 		width: 730rpx;
@@ -2926,6 +2931,8 @@
 	}
 	.supplier_icon-title4{
 		display: flex;
+		height: 60rpx;
+		line-height: 60rpx;
 	}
 	.series_package{
 		width:340rpx;

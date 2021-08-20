@@ -76,7 +76,7 @@
 				<view>
 					<!-- #ifdef MP -->
 					
-					<button class="box share-btn" open-type="share" style="background: none;outline: none;border: none;">
+					<button class="box share-btn" open-type="share" style="background-color:#ffffff;outline: none;border: none;">
 						<view class="package_share">
 							<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/share.png" mode="widthFix" style="width: 45rpx;margin-top: 8rpx;margin-left: 7rpx;"></image>
 						</view>
@@ -116,9 +116,10 @@
 		
 			<!-- 进度条 -->
 		 	<view class="uni-padding-wrap uni-common-mt">
-			 	<view class="progress-box">收集进度：（{{current_package_detail.packageid_card_user_buy_count}}/{{current_package_detail.packageid_card_count}}）
+			 	<view class="progress-box">
+					<view style="display: flex;">收集进度：（<view >{{current_package_detail.packageid_card_user_buy_count}}</view>/{{current_package_detail.packageid_card_count}}）</view>
 					<progress :percent="current_package_detail.sale_percent" activeColor="#30C478" stroke-width="4" 
-						show-info="" backgroundColor="red" font-size="5"></progress>
+						show-info="" backgroundColor="red" font-size="15"></progress>
 				</view>
 			</view>
 			
@@ -137,7 +138,7 @@
 		
 		
 		
-		<view class="publish_information" style="">
+		<view class="publish_information">
 			
 				<!-- icon关注图标 -->
 				<view class="publish_icon_follow" v-if="current_package_detail.is_fans ==0" @tap="set_fans(1)">
@@ -309,7 +310,7 @@ export default {
 			current_card_list:null,
 			current_supplier_fans_add:null,
 			current_packageid:0,
-			
+	
 			current_cardid:0, 
 			current_userid:0,
 			current_nft_supplierid:0,
@@ -390,11 +391,14 @@ export default {
 		that.current_package_detail.description = '';
 		that.current_package_detail.title ='';
 		that.current_package_detail.brief = '';
-		that.current_package_detail.time_begin_str = '';
-		that.current_package_detail.time_end_str = '';
+		that.current_package_detail.time_begin_str = 0;
+		that.current_package_detail.time_end_str = 0;
 		that.current_package_detail.supplier_name = '';
-		that.current_package_detail.packageid_card_user_buy_count='';
-		that.current_package_detail.packageid_card_count = '';
+		that.current_package_detail.packageid_card_user_buy_count=0;
+		that.current_package_detail.packageid_card_count = 0;
+		that.current_package_detail.status_str = '';
+		that.current_package_detail.sale_percent = 0;
+		that.current_package_detail.tag_list = '';
 		
 		
 		//获取卡包详情
@@ -432,7 +436,6 @@ export default {
 				that.current_package_detail = res.data.data;
 				
 				console.log('current_package_detail ===>>> ', that.current_package_detail);
-				
 				
 				//计算已经售出的备份比
 				that.current_package_detail.sale_percent = 0;
