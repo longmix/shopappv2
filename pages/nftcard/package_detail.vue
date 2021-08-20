@@ -64,15 +64,17 @@
 					有效期：{{current_package_detail.time_begin_str}}~{{current_package_detail.time_end_str}}
 				</view>	
 				<!-- 卡包状态  发行===下架  -->
-				<view v-if="is_package_time_expire ==false" style="width:150rpx; border-radius:10rpx;background-color: #30c478; text-align: center; color: #FFFFFF; height: 45rpx;margin-left: 50rpx;line-height: 45rpx;margin-top: 10rpx;">{{current_package_detail.status_str}}</view>
-				<view v-else="is_package_time_expire ==true" style="width:150rpx; border-radius:10rpx;background-color:red; text-align: center; color: #FFFFFF;margin-left: 40rpx;" >已下架</view>
+				<view class="package_state" v-if="is_package_time_expire ==false" style="background-color: #30c478;">
+					{{current_package_detail.status_str}}
+				</view>
+				<view class="package_state" v-else="is_package_time_expire ==true" style="background-color:red;" >已下架</view>
 				
 				<!-- 分享 -->
 				
-				<view class="package_share" >
+				<view class="package_share" @click="publish_share">
 					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/share.png" mode="widthFix" style="width: 45rpx;margin-top: 8rpx;margin-left: 7rpx;"></image>
 				</view>
-				
+				 
 			</view>
 			
 			
@@ -293,6 +295,9 @@ export default {
 			//卡包是否已经过期
 			is_package_time_expire: false,
 		
+		
+		
+			wxa_shop_nav_bg_color: '#30C478',
 		};
 	},
 	onLoad: function (options) {
@@ -560,9 +565,9 @@ export default {
 			share_title = share_title.substr(0, 20) + '...';
 		}
 		
-		var share_path = '/pages/nftcard/package_detail?sellerid=' + this.abotapi.get_sellerid()+'packageid='+that.current_packageid;
+		var share_path = '/pages/nftcard/package_detail?sellerid=' +that.abotapi.globalData.default_sellerid+'packageid='+that.current_packageid;
 		
-		var userInfo = this.abotapi.get_user_info();
+		var userInfo = that.abotapi.get_user_info();
 		
 		if (userInfo && userInfo.userid) {
 			share_path += '&userid=' + userInfo.userid;
@@ -570,7 +575,7 @@ export default {
 		
 		var share_img = current_package_detail.cover_img_url;
 		if(!share_img){
-			share_img = option_list.wxa_shop_operation_logo_url;
+			share_img = current_package_detail.cover_img_url;
 		}
 		
 		return {
@@ -579,9 +584,19 @@ export default {
 			imageUrl: share_img,
 			success: function(res) {
 				// 分享成功
+				uni.showToast({
+					title: '转发成功',
+					icon: 'success',
+					duration: 2000
+				})
 			},
 			fail: function(res) {
 				// 分享失败
+				uni.showToast({
+					title: '转发失败',
+					icon: 'success',
+					duration: 2000
+				})
 			}
 		}
 	},
@@ -626,6 +641,11 @@ export default {
 			}
 			
 			
+		},
+		
+		
+		publish_share:function(){
+			this.onShareAppMessage();
 		},
 /**
  * @param {Object} tag_item_index
@@ -1125,6 +1145,17 @@ export default {
 		overflow: hidden;
 		text-overflow: ellipsis;
 		
+	}
+	.package_state{
+		width:150rpx; 
+		border-radius:10rpx;
+		
+		text-align: center; 
+		color: #FFFFFF;
+		height: 45rpx;
+		margin-left: 50rpx;
+		line-height: 45rpx;
+		margin-top: 10rpx;
 	}
 	.package_share{
 		margin-left: 40rpx;
