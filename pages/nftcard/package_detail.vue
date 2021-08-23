@@ -12,9 +12,9 @@
 			
 			<!-- icon喜欢图标--------- -->
 			<view class="like_number" >
-				<image v-if="current_package_detail.is_like == 1"  @tap="set_like(0)" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xin02.png"
+				<image v-if="current_package_detail.is_like == 0"  @tap="set_like(1)" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xin02.png"
 					mode="widthFix" style="width: 50rpx;height: 50rpx; margin-top: 15rpx;margin-left: 12rpx;" ></image>
-				<image v-if="current_package_detail.is_like == 0" @tap="set_like(1)"  src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xin.png" 
+				<image v-if="current_package_detail.is_like == 1" @tap="set_like(0)"  src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xin.png" 
 					mode="widthFix" style="width: 60rpx;height:56rpx;margin-top: 11rpx;margin-left: 8rpx;"  ></image>
 				<!-- <view style="font-weight: 100; font-size: 10rpx;"> {{current_package_detail.like_count}}</view> -->
 			</view>
@@ -46,7 +46,8 @@
 			<view class="">
 				<view style="float: right;display: flex;">
 					<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xin.png" mode="widthFix" style="width: 40rpx;margin-top: 10rpx;"></image>
-					<view style="margin-top: 10rpx;margin-right: 20rpx;font-size: 35rpx;">{{current_package_detail.like_count}}</view>
+					<view style="margin-top: 10rpx;margin-right: 20rpx;font-size: 35rpx;" >{{current_package_detail.like_count}}</view>
+				
 				</view>
 				<!-- 卡包名字---简介 -->
 				<view class="package_title">{{current_package_detail.title}}</view>
@@ -152,13 +153,16 @@
 			
 			<!-- 发行商图片及简介 12324-->
 			<view class="" style="display: flex;" @tap="goto_supplier_detail()">
-				<image class="publish_icon" :src="current_package_detail.supplier_icon" 
-					mode="" ></image>
+				<view class="">
+					<image class="" :src="current_package_detail.supplier_item.icon_image"
+						mode="" style="width: 120rpx;height: 120rpx;border-radius: 50%;margin: 15rpx;"></image>
+				</view>
+				
 				<view class="package_card_publish">
 					
 					<!-- 发行商名字----详情 -->
-					<view class="publish_name">{{current_package_detail.supplier_name}}</view>
-					<view class="publish_brief" style="font-weight: 300; font-size: 20rpx;">{{current_package_detail.supplier_brief}}</view>
+					<view class="publish_name">{{current_package_detail.supplier_item.name}}</view>
+					<view class="publish_brief" style="font-weight: 300; font-size: 20rpx;">{{current_package_detail.supplier_item.brief}}</view>
 						
 						
 				</view>
@@ -244,8 +248,8 @@
 		
 		<!-- 系列卡包 -->
 		<view class="" style="margin: 20rpx;">
-			<view style="font-weight: 100;font-size: 10rpx;float: right;color: red;margin-top: 10rpx;" 
-			@tap="go_to_package_list()">>>更多卡包>></view>
+			<!-- <view style="font-weight: 100;font-size: 10rpx;float: right;color: red;margin-top: 10rpx;" 
+			@tap="go_to_package_list()">>>更多卡包>></view> -->
 			<view class="" style="font-weight: bold;">推荐卡包</view>
 		</view>
 		<scroll-view scroll-x="true">
@@ -872,14 +876,14 @@ export default {
 		},
 		 
 		 
-		 go_to_package_list:function(packageid, cardid){
-			 console.log('packageid===>>>' + packageid);
-			 console.log('cardid===>>>' + cardid);
+		//  go_to_package_list:function(packageid, cardid){
+		// 	 console.log('packageid===>>>' + packageid);
+		// 	 console.log('cardid===>>>' + cardid);
 			 
-			 uni.navigateTo({
-			 	url: '/pages/nftcard/package_list?packageid='+packageid+'&cardid='+cardid,
-			 })
-		 },
+		// 	 uni.navigateTo({
+		// 	 	url: '/pages/nftcard/package_list?packageid='+packageid+'&cardid='+cardid,
+		// 	 })
+		//  },
 		
 		
 		//h5点击分享触发
@@ -953,7 +957,7 @@ export default {
 							duration: 2000,
 						});
 						
-						return;
+				
 					}
 					
 					that.current_userid = res.data.data;
@@ -967,7 +971,11 @@ export default {
 					//请求成功之后，修改本地的数据
 					that.current_package_detail.is_like = value001;
 					
-					
+					if (value001 == 1) {
+						that.current_package_detail.like_count++;
+					} else {
+						that.current_package_detail.like_count--;
+					}
 					
 					
 					
@@ -1006,7 +1014,7 @@ export default {
 			var post_data = {
 					sellerid:that.abotapi.globalData.default_sellerid,
 					
-					nft_supplierid:that.current_nft_supplierid,
+					nft_supplierid:that.current_package_detail.sellerid,
 					userid:that.current_userid,			
 				};
 				
@@ -1307,14 +1315,7 @@ export default {
 		border-radius: 20rpx;
 		overflow: hidden;
 	}
-	.publish_icon{
-		margin: 10rpx 20rpx;
-		border-radius: 50%; 
-		overflow: hidden;
-		width: 200rpx;
-		height:130rpx ;
 	
-	}
 	.package_card_publish{
 		width: 100%;
 		margin-top: 25rpx;
