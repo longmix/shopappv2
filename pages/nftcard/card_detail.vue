@@ -100,22 +100,27 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			
 			<!-- 卡牌信息 -->
 			<view class="card_detail_xinxi" v-if="current_card_detail">
+				<!-- 有多少人收藏 -->
+				<view style="float: right;">
+					<view>
+						<image class="card_detail_xing"
+							src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png">
+							{{current_card_detail.favorite_counter}}
+						</image>
+					</view>
+				</view>
 				<h4 class="card_detail_title" style="padding-bottom: 15rpx;width: 90%;" v-if="current_card_detail">{{current_card_detail.card_name}}
 				</h4>
-				<!-- 显示第几张 -->
-				<view>#{{card_publish_list.cplseq}}</view>
+				
+				
 				<view style="color: #868686;font-size: 30rpx;">
-					<!-- 发行时间 -->
-					<text id="card_detail_mystr" v-if="current_card_detail">{{current_card_detail.time_begin}}</text>
-					<!-- 有多少人收藏 -->
-					<view style="float: right;">
-						<view>
-							<image class="card_detail_xing"
-								src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png">
-								{{current_card_detail.favorite_counter}}
-							</image>
-						</view>
+					<view>
+						#{{current_card_detail.publish_card_list.cplseq}}
 					</view>
+					<!-- <text>限购：{{current_card_detail.buy_limit}}张</text> -->
+					<!-- 发行时间 -->
+					<!-- <text id="card_detail_mystr" v-if="current_card_detail">{{current_card_detail.time_begin}}</text> -->
+					
 					<!-- <view >总共{{current_card_detail.faxing_counter}} 还剩{{current_card_detail.kucun_counter}} </view> -->
 					<view style="font-size: 30rpx;">领取进度</view>
 					
@@ -149,8 +154,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					<view class="card_detail_kabaoxinxi" @tap="go_to_card_package(current_package_detail.packageid)">
 						<view class="card_packages_title">{{current_card_detail.package_title}}
 						</view>
-						<view style="color: #868686;font-size: 22rpx;">
-							{{current_card_detail.supplier_name}}
+						<view style="color: #868686;font-size: 26rpx;width: 480rpx;font-weight: bold;
+						overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+							{{current_package_detail.brief}}
 						</view>
 				
 				
@@ -242,8 +248,12 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				<!-- 线索模态框 -->
 				<view @click="showModal_xiansuo=false">
 					<view class="show_modal_pop card_detail_xiansuo" v-if="showModal_xiansuo">
-						<view v-if="current_card_detail.clue" class="tree">{{current_card_detail.clue}}</view>
-						<view v-else class="tree">还没有线索~</view>
+						<scroll-view scroll-y="true">
+							<view style="padding: 35rpx;">
+								<view v-if="current_card_detail.clue" class="tree">{{current_card_detail.clue}}</view>
+								<view v-else>还没有线索~</view>
+							</view>
+						</scroll-view>
 					</view>
 				</view>
 			</view>
@@ -251,8 +261,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			<!-- 分享 -->
 			<view>
 				<!-- #ifdef MP -->
-				
-				<button class="box share-btn" open-type="share" 
+				<button open-type="share" 
 				style="background: none;outline: none;border: none;border: 0rpx; padding-left: 15rpx;">
 					 <!-- class="card_detail_liebiao" -->
 					<view class="card_detail_liebiao" style="padding: 0rpx; margin: 0rpx;" >
@@ -265,23 +274,19 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				<!-- #ifdef APP-PLUS -->
 				
-				<button class="box share-btn" @click="is_show">
+				<button @click="is_show">
 					
 					<view class="card_detail_liebiao" >
 						<image class="card_detail_fenxiang"
 							src="https://yanyubao.tseo.cn/Tpl/static/nft_card/fenxiang02.png"></image>
 					</view>
-					
-					<!-- <view class="icon fenxiang"></view>
-					<view class="text">分享</view> -->
-					<!-- <button class="text" open-type="share">分享</button> -->
 				</button>
 				<!-- <button style="padding-left: 0;padding-right: 0;" open-type="share">分享</button> -->
 				<!-- #endif -->
 				
 				
 				<!-- #ifdef H5 -->
-				<view class="box" @tap="share_shang_detail">
+				<view @tap="share_shang_detail">
 					<view class="card_detail_liebiao" >
 						<image class="card_detail_fenxiang"
 							src="https://yanyubao.tseo.cn/Tpl/static/nft_card/fenxiang02.png"></image>
@@ -337,21 +342,59 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			
 			<!-- 卡牌明细 模态框 -->
 			<view>
+				<!-- 阴影底部*1按钮 -->
+				<view @click="showModal_liuzhuanjilv=true">
+					<view class="card_detail_goumai2">
+						<image class="card_detail_items"
+						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/cheng.png"></image>
+						<view style="font-size: 35rpx;padding-top: 20rpx;padding-right: 5rpx;">
+							{{current_card_detail.buyed_counter}}
+						</view>
+					</view>
+				</view>
+				<!-- 顶部*1按钮 -->
 				<view class="show_modal_mask" v-if="showModal_liuzhuanjilv" 
 				@click="showModal_liuzhuanjilv=false"></view>
+				<view v-if="showModal_liuzhuanjilv" @click="showModal_liuzhuanjilv=false">
+					<view class="card_goumai2_modal">
+						<image class="card_detail_items"
+						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/cheng.png"></image>
+						<view style="font-size: 35rpx;padding-top: 20rpx;padding-right: 5rpx;">
+							{{current_card_detail.buyed_counter}}
+						</view>
+					</view>
+					
+				</view>
 				<view class="show_modal_pop card_detail_showmodal_fenxaingjilv" 
 				v-if="showModal_liuzhuanjilv">
-					<view style="font-size: 38rpx;line-height: 60rpx;">卡牌明细</view>
-					<view>
 						<view v-if="current_card_detail.is_buyed == 1">
-							<view v-for="(card_publish_list_item,index) in card_publish_list">
+							
+					<scroll-view scroll-y="true">
+							<view v-for="(card_publish_item,index) in card_publish">
 								<view class="card_detail_goumaijilv" 
 								@click="showModal_liuzhuanjilv_zengsong=true">
 									<view class="tree1">
-										<view>{{card_publish_list_item.cplno}}</view>
-										<view>{{card_publish_list_item.updatetime}}</view>
+										<view style="display: flex;">
+											<view class="card_detail_modal_kapaimingxi">卡牌id：</view>
+											<b style="font-size: 34rpx;">{{card_publish_item.cplno}}</b>
+										</view>
+										<view style="display: flex;">
+											<view class="card_detail_modal_kapaimingxi">序号：</view>
+											<b style="font-size: 34rpx;">#{{card_publish_item.cplseq}}</b>
+										</view>
+										<view style="display: flex;">
+											<view class="card_detail_modal_kapaimingxi">获得时间：</view>
+											<b style="font-size: 34rpx;">{{card_publish_item.updatetime}}</b>
+										</view>
+										<view style="display: flex;">
+											<view class="card_detail_modal_kapaimingxi">获得方式：</view>
+											<b style="font-size: 34rpx;">{{card_publish_item.is_private_str}}</b>
+										</view>
 									</view>
-									<view style="float: right;margin-top: -115rpx;">
+									
+									
+									
+									<view style="float: right;margin-top: -215rpx;">
 										<!-- 2021.08.20赠予 -->
 										<view @click="showModal_zengyu=true" class="card_detail_showmodal_zengsong">
 											<image class="card_detail_showmodal_tupian"
@@ -368,40 +411,34 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 											</view>
 											
 										</view> -->
-										<view class="show_modal_mask" v-if="showModal_zengyu"
+										<!-- <view class="show_modal_mask" v-if="showModal_zengyu"
 										@click="showModal_zengyu=false"></view>
 										<view class="show_modal_pop" 
 										v-if="showModal_zengyu" style="background-color: #e1e1e1;">
 											111111
-										</view>
+										</view> -->
 										
-											<!-- 2021.08.20丢弃 -->
+										<!-- 2021.08.20销毁 -->
 										<view class="card_detail_showmodal_zengsong">
 											<image class="card_detail_showmodal_tupian"
 												src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xiaohui.png"></image>
 										</view>
+										
+										
 									</view>
 								</view>
 								
 							</view>
+					</scroll-view>
+					
+					
 						</view>
-						<view v-else>您还没有购买记录哦~</view>
-					</view>
-					
-					
-					
+						<!-- <view v-else class="card_detail_goumaijilv">您还没有获取记录哦~</view> -->
+						
 					
 				</view>
-				<view @click="showModal_liuzhuanjilv=true">
-					<view class="card_detail_goumai2">
-						<image class="card_detail_items"
-						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/cheng.png"></image>
-						<view style="font-size: 35rpx;padding-top: 20rpx;padding-right: 5rpx;">
-							{{current_card_detail.user_have_counter}}
-						</view>
-					</view>
-					
-				</view>
+				<!-- <view v-else>您还没有购买记录哦~</view> -->
+				
 			</view>
 			
 		</view>
@@ -445,7 +482,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				current_card_detail: null,
 				current_card_list: null,
 				current_package_detail: null,
-				card_publish_list: null,//获取单张卡牌的购买记录
+				card_publish: null,//获取单张卡牌的购买记录
 				current_cardid: 0,
 				current_packageid: 0,
 
@@ -486,7 +523,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			that.current_card_detail.supplier_name = '';
 			that.current_card_detail.is_buyed = 0;
 			that.current_card_detail.clue = '';
-			that.current_card_detail.user_have_counter=0;//购买卡的次数
+			that.current_card_detail.user_have_counter= 0;//购买卡的次数
 			// that.card_publish_list.cplseq=0;
 			
 			that.current_card_detail.sale_percent = 50;
@@ -598,11 +635,13 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 
 					console.log('current_card_detail ===>>> ', that.current_card_detail);
 					
+					that.current_card_detail.user_have_counter= 0;//购买卡的次数
+					
 					//计算已经售出的备份比
 					that.current_card_detail.sale_percent = 50;
 					
 					if(that.current_card_detail.publish_counter == 0){
-						that.current_card_detail.sale_percent = 99.99;
+						that.current_card_detail.sale_percent = 100;
 					}
 					else{
 						that.current_card_detail.sale_percent = parseInt((that.current_card_detail.sale_counter)/that.current_card_detail.publish_counter*100);
@@ -722,6 +761,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			//获取单张卡牌的购买记录列表
 			post_data = {
 				sellerid: that.abotapi.globalData.default_sellerid,
+				packageid: that.current_packageid,
 				cardid: that.current_cardid,
 			};
 			
@@ -735,7 +775,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			
 			
 			that.abotapi.abotRequest({
-				url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_publish_list',
+				url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_publish',
 				method: 'post',
 				data: post_data,
 				success: function(res) {
@@ -748,10 +788,10 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 
 						return;
 					}
+					
+					that.card_publish = res.data.data;
 
-					that.card_publish_list = res.data.data;
-
-					console.log('card_publish_list ===>>> ', that.card_publish_list);
+					console.log('card_publish ===>>> ', that.card_publish);
 
 
 				},
@@ -902,7 +942,25 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			click_wxa_share: function() {
 				abotsharejs.click_wxa_share(this.share_href, this.share_titles, this.share_summary, this.share_imageUrl);
 			},
-
+			
+			
+			// is_xiaohui:function(){
+			// 	uni.showModal({
+			// 		title: '',
+			// 		content: '是否确认销毁',
+			// 		cancelText: '取消',
+			// 		confirmText: '确认',
+			// 	})
+			// },
+			
+			// get_user_account_info:function(){
+			// 	var user_account_info_str = uni.getStorageSync("user_account_info");
+			// 	if(!user_account_info_str){
+			// 		return null;
+			// 	}
+			// 	return JSON.parse(user_account_info_str);
+			// },
+			
 			callback_function_shop_option_data: function(that, cb_params) {
 
 				console.log('当前调试开关22：' + this.system_debug_flag);
@@ -1182,58 +1240,54 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	
 	.card_detail_xiansuo{
 		background-color: #FFFFFF;
-		top: 40%;
-		left: 50%;
-		transform: translateX(-50%);
+		position: absolute;
 		width: 450rpx;
-		padding: 35rpx;
+		top: 50%;
+		left: 15%;
+		transform: translateY(-50%);
 		border-radius: 80rpx;
 		border: 5rpx #c3c3c3 solid;
 		background-color: #e2d281;
-		overflow: hidden;
-		.tree{
-			width: 100%;
-			height: 100%;
-			overflow-y: scroll;
-		}
+		// .tree{
+		// 	width: 100%;
+		// 	height: 100%;
+		// 	overflow-y: scroll;
+		// }
 	}
 	.card_detail_goumaijilv{
 		line-height: 50rpx;
 		padding: 15rpx;
-		margin-bottom:15rpx ;
-		background-color: #FFFFFF;
+		margin-bottom:25rpx;
 		top: 40%;
 		left: 50%;
-		width: 470rpx;
+		width: 550rpx;
+		border-radius: 30rpx;
+		border: 5rpx #c3c3c3 solid;
+		background-color: #e2d281;
 	}
 	.card_detail_showmodal_fenxaingjilv{
-		top: 15%;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 500rpx;
-		height: 600rpx;
-		background-color: #e1e1e1;
+		position: absolute;
+		top: 50%;
+		left: 8%;
+		transform: translateY(-50%);
+		width: 590rpx;
 		padding: 20rpx;
-		overflow: hidden;
-		.tree1{
-			width: 100%;
-			height: 100%;
-			overflow-y: scroll;
-		}
+		background-color: #FFFFFF;
+		// overflow: hidden;
+		// .tree1{
+		// 	width: 100%;
+		// 	height: 100%;
+		// 	overflow-y: scroll;
+		// }
+	}
+	.card_detail_modal_kapaimingxi{
+		color: #666666;
+		width: 160rpx;
+		display: flex;
 	}
 </style>
 <style>
 	@import "/static/css/nftcard.css";
-	
-	.box {
-		justify-content: center;
-		flex-wrap: wrap;
-	}
-	.share-btn {
-		line-height: normal;
-		background-color: transparent;
-		padding: 0,
-	}
 	button:after{
 		display:none;
 	}
@@ -1384,18 +1438,18 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		border: #aeb8ab 3rpx solid;
 	}
 	.card_detail_showmodal_tupian {
-		width: 27rpx;
-		height: 27rpx;
-		padding-top: 13rpx;
-		padding-left: 13rpx;
+		width: 40rpx;
+		height: 40rpx;
+		padding-top: 24rpx;
+		padding-left: 24rpx;
 	}
 	.card_detail_showmodal_zengsong {
 		background-color: #F0F0F0;
-		width: 50rpx;
-		height: 50rpx;
+		width: 90rpx;
+		height: 90rpx;
 		border-radius: 50%;
-		margin: 10rpx;
-		margin-right: 20rpx;
+		margin: 15rpx;
+		margin-right: 10rpx;
 		border: #aeb8ab 3rpx solid;
 	}
 	.card_detail_an {
@@ -1439,7 +1493,20 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		margin: 15rpx;
 		margin-right: 23rpx;
 		border: #aeb8ab 3rpx solid;
-		
+	}
+	.card_goumai2_modal{
+		position: fixed;
+		z-index: 3;
+		bottom: 0rpx;
+		right: 10rpx;
+		display: flex;
+		background-color: #F0F0F0;
+		width: 90rpx;
+		height: 90rpx;
+		border-radius: 50%;
+		margin: 15rpx;
+		margin-right: 23rpx;
+		border: #aeb8ab 3rpx solid;
 	}
 	.card_detail_kabaotoxiang {
 		display: flex;
@@ -1476,9 +1543,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		white-space: nowrap;
 	}
 	.card_packages_title {
-		width: 480rpx;
 		font-size: 32rpx;
 		color: #464646;
+		width: 480rpx;
 		font-weight: bold;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -1494,7 +1561,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		width: 190rpx;
 		height: 295rpx;
 		border-radius: 20rpx;
-		box-shadow: #000000 1rpx 1rpx 12rpx;
 	}
 
 	.card_detail_kapai_title {
