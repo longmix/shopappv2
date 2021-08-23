@@ -81,10 +81,9 @@
 					<view style="font-size: 40rpx;font-weight: bold;">{{current_shang_detail.package_count}}</view>
 				</view>
 				<view class="supplier_package_num01">
-					<view style="font-size: 20rpx;font-weight: 100;">卡牌</view>
-					<view style="font-size: 40rpx;font-weight: bold;">{{current_shang_detail.card_count}}</view>
+					<view style="font-size: 20rpx;font-weight: 100;text-align: center;">卡牌</view>
+					<view style="font-size: 40rpx;font-weight: bold;text-align: center;">{{current_shang_detail.card_count}}</view>
 				</view>
-				
 				
 			</view>
 			
@@ -1180,15 +1179,26 @@
 					//将 xianmai_shangid 转为 supplierid，因为传入进来的就是supplierid (xianmai_shang_list_switch_to_supplier_list == 1)
 					//如果 xianmai_shang_list_switch_to_supplier_list != 1，目前还没有应用场景
 					// that.abotapi.globalData.default_sellerid  ===>>> that.current_xianmai_shangid
-					that.abotapi.abotRequest({
-					    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_list',
-					    method: 'post',
-					    data: {
-							sellerid: that.abotapi.globalData.default_sellerid,
+					var post_data = {
+							sellerid:that.abotapi.globalData.default_sellerid,
+						
 							nft_supplierid : that.current_xianmai_shangid,
 							page_num: 1,
 							page_size: 10,
-					    },
+							
+						};
+						
+					var userInfo = that.abotapi.get_user_info();	
+					if(userInfo){
+						post_data.userid = userInfo.userid;
+						post_data.checkstr = userInfo.checkstr;
+					}
+				
+				
+					that.abotapi.abotRequest({
+					    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_list',
+					    method: 'post',
+					    data: post_data,
 					    success: function (res) {
 							
 							if(res.data.code != 1){
@@ -1205,17 +1215,17 @@
 							console.log('current_nft_package_list ===>>> ', that.current_nft_package_list);
 							
 							
-							for(var i=0; i<that.current_package_list.length; i++){
+							for(var i=0; i<that.current_nft_package_list.length; i++){
 								
 								//计算已经售出的备份比
-								that.current_nft_package_list[i].sale_percent = 0;
+								that.current_nft_package_list[i].sale_percent = 50;
 								if(that.current_nft_package_list[i].packageid_card_count == 0){
 									that.current_nft_package_list[i].sale_percent = 100;
 								}
 								else{
 									
 									that.current_nft_package_list[i].sale_percent =
-										parseInt(that.current_nft_package_list[i].packageid_card_user_buy_count/that.current_package_list[i].packageid_card_count*100);
+										parseInt(that.current_nft_package_list[i].packageid_card_user_buy_count/that.current_nft_package_list[i].packageid_card_count*100);
 								}
 							}
 							
@@ -1306,8 +1316,8 @@
 				//请求服务器接口、关注 已关注
 				var post_data = {
 						sellerid:that.abotapi.globalData.default_sellerid,
+						nft_supplierid:that.current_xianmai_shangid,
 						
-						nft_supplierid:that.current_nft_supplierid,
 						userid:that.current_userid,			
 					};
 					

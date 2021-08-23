@@ -35,7 +35,8 @@
 			<view class="my_package_list">
 				<view class="my_package_item" 
 					v-for="(current_package_item, index) in current_package_list"
-					 @tap="goto_package_detail(current_package_item.packageid)" >
+					 @tap="goto_package_detail(current_package_item.packageid)" 
+						:style="{background:current_package_item.theme_color}">
 					
 					
 					
@@ -45,10 +46,15 @@
 					<!-- 标签 -->
 
 					<view class="package_detail_label" style="position: relative;">
-						
-						
+						<image class="package_list_mark" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/mark02.png" mode="widthFix" ></image>
+					 	<view class="package_list_mark_num">
+							<view style="color: #cdcdcd;font-weight: bold; font-size: 35rpx;">{{current_package_item.card_count_mianfei}}</view>
+							<view style="color: #FFFFFF;">/</view>
+							<view style="color: yellow;font-weight: bold; font-size: 35rpx;">{{current_package_item.card_count_fufei}}</view>
+						</view>
+						 
 						<image class="package_list_loop" :src="current_package_item.cover_img_url" mode=" aspectFill" ></image>
-						<view class="package_label" style="position: absolute; z-index: 2; left: 20rpx; top: 30rpx;">
+						<view class="package_label" >
 							<view class="package_lable_list" v-for="(item,index) in current_package_item.tag_of_editor">{{item}}</view>
 						</view>
 					</view>
@@ -58,31 +64,34 @@
 					<view class="" style="{'background-color': current_package_item.theme_color}"><!-- {{current_package_item.cover_img_url}} -->
 						
 						<!-- 卡包标签--------icon喜欢图标----------喜欢人数 -->
-						<view class="package_icon_like_num">
+						<view class="package_icon_like_num" :style="{color:current_package_item.theme_font_color}">
 							<view class="package_like_icon" >
 								<!-- <image  src="https://yanyubao.tseo.cn/Tpl/static/nft_card/package_example/like.png" mode="widthFix" style="width: 30rpx;float: left;"></image>	 -->
 								<image  src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xin.png" mode="widthFix" style="width: 30rpx;"></image>
 								{{current_package_item.like_count}}
 							</view>
 							
+						</view>
+						
+						
+						<view class="" :style="{color:current_package_item.theme_font_color}">
+							<!-- 卡包名称---------卡包简介 -->
+							<view class="package_name">{{current_package_item.title}}</view>
 							
-						</view>
-						
-						<!-- 卡包名称---------卡包简介 -->
-						<view class="package_name">{{current_package_item.title}}</view>
-						
-						<view class="package_brief" style="margin-left: 20rpx;">{{current_package_item.brief}}</view>
-						<view class="package_rare_total_time">
-							<view class="package_rare_total" >
-								<view class="card_quantity">典藏卡{{current_package_item.card_count_mianfei}}张</view>
-								<view class="card_quantity">|</view>
-								<view class="card_quantity">珍藏卡{{current_package_item.card_count_fufei}}张</view>
-							</view>
-							<view class="begin_end_time" style="display: flex;">
-								<view style="font-size: 20rpx;">有效期：</view>
-								{{current_package_item.time_begin_str}}~{{current_package_item.time_end_str}}
+							<view class="package_brief" style="margin-left: 20rpx;">{{current_package_item.brief}}</view>
+							<view class="package_rare_total_time">
+								<!-- <view class="package_rare_total" >
+									<view class="card_quantity">典藏卡{{current_package_item.card_count_mianfei}}张</view>
+									<view class="card_quantity">|</view>
+									<view class="card_quantity">珍藏卡{{current_package_item.card_count_fufei}}张</view>
+								</view> -->
+								<view class="begin_end_time" style="display: flex;">
+									<view style="font-size: 20rpx;">有效期：</view>
+									{{current_package_item.time_begin_str}}~{{current_package_item.time_end_str}}
+								</view>
 							</view>
 						</view>
+						
 						
 						
 					</view>
@@ -105,7 +114,7 @@ export default {
 			p:2,
 			
 			index:0,
-			array:['智能排序','热度排序','时间排序'],
+			array:['智能排序','按热度排序','按到期时间排序','按卡牌数量排序'],
 			
 			current_nft_supplierid:0,
 		}
@@ -361,7 +370,7 @@ export default {
 	}
 
 	.my_package_list_style{
-	
+		
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -387,11 +396,32 @@ export default {
 		position: relative;
 	
 	}
+	.package_list_mark{
+		width: 170rpx;
+		top: 0rpx;
+		right: 0rpx;
+		position: absolute;
+		z-index: 1;
+		opacity: 0.6;
+	}
+	.package_list_mark_num{
+		display: flex;
+		position:absolute;
+		right: 10rpx;
+		top: 14rpx;
+		z-index: 2;
+	}
 	.package_list_loop{
 		position: relative;
 		width: 100%;
 		height: 420rpx;
 	
+	}
+	.package_label{
+		position: absolute; 
+		z-index: 2; 
+		left: 20rpx; 
+		top: 30rpx;
 	}
 	 .package_icon_like_num{
 		
@@ -405,10 +435,10 @@ export default {
 	
 	}
 	.package_name{
-		margin-left: 20rpx;
+		
 		font-weight: bold;
-		margin: 15rpx 20rpx;
-		font-size: 36rpx;
+		margin: -10rpx  20rpx 15rpx 20rpx;
+		font-size: 40rpx;
 		width: 75%;
 		white-space: nowrap;
 		overflow: hidden;

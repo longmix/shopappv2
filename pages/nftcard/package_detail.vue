@@ -23,12 +23,12 @@
 			
 			<view class="">
 				<!-- 截图按钮 -->
-				<view class="package_ps"  @tap="showModal=true">
+				 <view class="package_ps"  @tap="showModal=true" >
 					<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/ps.png"
 						mode="widthFix" style="width: 45rpx;margin-top: 17rpx;margin-left: 18rpx;"></image>
 				</view>
 				
-				<view class="show_modal_mask" v-if="showModal" @tap="showModal=false"></view>
+				<view class="show_modal_mask" v-if="showModal" @tap="showModal=false" @touchmove.stop.prevent="moveHandle"></view>
 				<view class="show_modal_pop" v-if="showModal">
 					<view class="" style="width: 600rpx;height: 600rpx;background-color: #FFFFFF;">
 							<image src="" mode=""></image>	
@@ -37,7 +37,7 @@
 						
 				</view>	
 			</view>
-			
+			 
 		
 		</view>
 		
@@ -46,7 +46,7 @@
 			<view class="">
 				<view style="float: right;display: flex;">
 					<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xin.png" mode="widthFix" style="width: 40rpx;margin-top: 10rpx;"></image>
-					<view style="margin-top: 10rpx;margin-right: 20rpx;font-size: 35rpx;" >{{current_package_detail.like_count}}</view>
+					<view class="package_information_like_count"  >{{current_package_detail.like_count}}</view>
 				
 				</view>
 				<!-- 卡包名字---简介 -->
@@ -54,21 +54,26 @@
 				
 			</view>
 			
-			<view class="package_brief">
+			<view class="package_detail_brief">
 				{{current_package_detail.brief}}
 			</view>
 			
 		
 			<!-- 开始时间~~~结束时间 -->
-			<view class="" style="display: flex;height: 60rpx;line-height: 60rpx;">
-				<view class="begin_end_time" >
-					有效期：{{current_package_detail.time_begin_str}}~{{current_package_detail.time_end_str}}
+			<view class="package_begin_end" >
+				<view class="begin_end_time" style="display: flex;">
+					有效期：
+					<view style="font-size: 20rpx;font-weight: 200;">{{current_package_detail.time_begin_str}}~{{current_package_detail.time_end_str}}</view>
 				</view>	
 				<!-- 卡包状态  发行===下架  -->
 				<view class="package_state" v-if="is_package_time_expire ==false" style="background-color: #30c478;">
+					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/circle.png" mode="widthFix" style="width: 25rpx;margin-right: 10rpx;margin-top: 6rpx;"></image>
 					{{current_package_detail.status_str}}
 				</view>
-				<view class="package_state" v-else="is_package_time_expire ==true" style="background-color:red;" >已下架</view>
+				<view class="package_state" v-else="is_package_time_expire ==true" style="background-color:red;display: flex;" >
+					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/down.png" mode="widthFix" style="width: 28rpx;margin-right: 10rpx;margin-top: 9rpx;margin-left: 10rpx;"></image>
+					<view>已下架</view>
+				</view>
 				
 				<!-- 分享 -->
 				<view>
@@ -76,7 +81,7 @@
 					
 					<button class="box share-btn" open-type="share" style="background-color:#ffffff;outline: none;border: none;">
 						<view class="package_share">
-							<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/share.png" mode="widthFix" style="width: 45rpx;margin-top: 8rpx;margin-left: 7rpx;"></image>
+							<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/share.png" mode="widthFix" style="width: 45rpx;margin-top: 10rpx;margin-left: 7rpx;"></image>
 						</view>
 					</button>
 					<!-- <button style="padding-left: 0;padding-right: 0;" open-type="share">分享</button> -->
@@ -115,7 +120,9 @@
 			<!-- 进度条 -->
 		 	<view class="uni-padding-wrap uni-common-mt">
 			 	<view class="progress-box">
-					<view style="display: flex;">收集进度：（<view >{{current_package_detail.packageid_card_user_buy_count}}</view>/{{current_package_detail.packageid_card_count}}）</view>
+					<view style="display: flex;">
+						<view style="font-weight: 100;">收集进度：</view>
+						（{{current_package_detail.packageid_card_user_buy_count}}/{{current_package_detail.packageid_card_count}}）</view>
 					<progress :percent="current_package_detail.sale_percent" activeColor="#30C478" stroke-width="4" 
 						show-info="" backgroundColor="red" font-size="15"></progress>
 				</view>
@@ -128,7 +135,9 @@
 				<view class="package_detail_lable">标签</view>
 				
 				<view class="package_label" style="margin-top: 10rpx;">
-					<view class="package_detail_lable_list" v-for="(item,index) in current_package_detail.tag_list" style="font-size: 20rpx;"><view style="margin-left: 5rpx;margin-right: 5rpx;">{{item}}</view></view>
+					<view class="package_detail_lable_list" v-for="(item,index) in current_package_detail.tag_list" style="font-size: 20rpx;">
+						<view style="margin-left: 5rpx;margin-right: 5rpx;">{{item}}</view>
+					</view>
 				</view>
 			</view>
 			
@@ -188,25 +197,6 @@
 
 
 
-
-			
-			<!-- <view class="scroll_items">                 
-				<button size="mini" id="clicl_0">全部</button>
-			</view>
-			<view class="scroll_items">                 
-				<button size="mini" id="click_1" >典藏卡</button>
-			</view>                                     
-			<view class="scroll_items">                 
-				<button size="mini" id="clicl_2">珍藏卡</button>
-			</view>	                                    
-			<view class="scroll_items">                 
-				<button size="mini" id="click_3" >已有</button>
-			</view>		
-			<view class="scroll_items">
-				<button size="mini" id="click_4">未有</button>
-			</view> -->
-
-
 							
 		<!-- 卡包中的卡牌 --> 
 		<view class="card_list_background">
@@ -256,8 +246,7 @@
 			<view class="" style="display: flex;margin-left: 20rpx;margin-right: 20rpx;">
 				<view class="" style="margin-bottom: 30rpx;" v-for="(current_package_item,index) in current_package_list"
 						@tap="goto_package_detail(current_package_item.packageid)">
-					<image :src="current_package_item.cover_img_url" mode=""
-						style="width: 200rpx;height: 200rpx; border-radius: 10rpx;overflow: hidden;margin-right: 20rpx;"></image>
+					<image class="package_list_recommend" :src="current_package_item.cover_img_url" mode=""></image>
 					<view class="series_package" style="font-weight: bold;margin-left: 5rpx;width: 200rpx;word-wrap: break-word;">{{current_package_item.title}}</view>
 				</view>	
 			</view>
@@ -270,7 +259,7 @@
 		
 		
 		<!-- 富媒体文本展示卡牌详情 -->
-		<view class="" style="background-color: #FFFFFF;">
+		<view class="" style="margin-left: 20rpx;width: 710rpx;background-color: #FFFFFF;">
 			<view class="description001">
 				<view class="content">
 					<!-- #ifdef MP-ALIPAY -->
@@ -408,6 +397,7 @@ export default {
 				packageid:that.current_packageid,
 				nft_supplierid : that.current_nft_supplierid,
 				
+				
 			};
 			
 		var userInfo = that.abotapi.get_user_info();	
@@ -499,50 +489,6 @@ export default {
 		
 		
 		
-		that.abotapi.abotRequest({
-		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_nftcard_poster',
-		    method: 'post',
-		    data: {
-				sellerid:that.abotapi.globalData.default_sellerid,
-				packageid:that.current_packageid,
-				data_type:'package',
-				
-		    },
-		    success: function (res) {
-				
-				if(res.data.code != 1){
-					uni.showToast({
-						title:'没数据',
-						duration: 2000,
-					});
-					
-					return;
-				}
-		
-				that.current_nftcard_poster = res.data.data;
-				
-				console.log('current_nftcard_poster ===>>> ', that.current_nftcard_poster);
-				
-				
-				
-				
-				
-				
-				
-				
-						
-				
-		    },
-		    fail: function (e) {
-				uni.showToast({
-					title: '网络异常！',
-					duration: 2000
-				});
-		    },
-		});
-		
-		
-		
 		
 		
 		//当前卡包所属的supplierid
@@ -563,8 +509,8 @@ export default {
 		    method: 'post',
 		    data: {
 				sellerid:that.abotapi.globalData.default_sellerid,
-				nft_supplierid : that.current_nft_supplierid,
-				
+				nft_supplierid:0,
+				except_supplierid:that.current_package_detail.sellerid,
 		    },
 		    success: function (res) {
 				
@@ -661,20 +607,21 @@ export default {
 	onShareAppMessage: function () {
 		var that = this;
 		
-		var share_title = current_package_detail.title;
+		var share_title = that.current_package_detail.title;
 		if (share_title.length > 22) {
 			share_title = share_title.substr(0, 20) + '...';
 		}
 		
-		var share_path = '/pages/nftcard/package_detail?sellerid=' +that.abotapi.globalData.default_sellerid+'packageid='+that.current_packageid;
+		var share_path = '/pages/nftcard/package_detail?sellerid=' +that.abotapi.globalData.default_sellerid;
+		share_path += '&packageid='+that.current_packageid;
 		
+		//如果登录了，则带上分享者的userid
 		var userInfo = this.abotapi.get_user_info();
-		
 		if (userInfo && userInfo.userid) {
 			share_path += '&userid=' + userInfo.userid;
 		}
 		
-		var share_img = current_package_detail.cover_img_url_stand;
+		var share_img = that.current_package_detail.cover_img_url_3x2;
 		
 		return {
 			title: share_title,
@@ -682,19 +629,11 @@ export default {
 			imageUrl: share_img,
 			success: function(res) {
 				// 分享成功
-				uni.showToast({
-					title: '转发成功',
-					icon: 'success',
-					duration: 2000
-				})
+				
 			},
 			fail: function(res) {
 				// 分享失败
-				uni.showToast({
-					title: '转发失败',
-					icon: 'success',
-					duration: 2000
-				})
+			
 			}
 		}
 	},
@@ -709,22 +648,23 @@ export default {
 	methods: {
 		share_return: function() {
 			var that = this;
-		
-
-			var share_title = current_package_detail.title;
+			
+			var share_title = that.current_package_detail.title;
 			if (share_title.length > 22) {
 				share_title = share_title.substr(0, 20) + '...';
 			}
 			
-			var share_path = '/pages/nftcard/package_detail?sellerid=' +that.abotapi.globalData.default_sellerid+'packageid='+that.current_packageid;
+			var share_path = '/pages/nftcard/package_detail?sellerid=' +that.abotapi.globalData.default_sellerid;
+			share_path += '&packageid='+that.current_packageid;
 			
+			//如果登录了，则带上分享者的userid
 			var userInfo = this.abotapi.get_user_info();
-			
 			if (userInfo && userInfo.userid) {
 				share_path += '&userid=' + userInfo.userid;
 			}
 			
-			var share_img = option_list.wxa_share_img;
+			var share_img = that.current_package_detail.cover_img_url_3x2;
+			
 			
 			return {
 				title: share_title,
@@ -991,6 +931,64 @@ export default {
 			
 		},	
 			
+		
+		showModal:function(){
+			var that = this;
+			
+			
+			//======= 判断用户是否登录 ============
+			var last_url = '/pages/nftcard/package_detail?'+ that.current_params_str;
+			
+			var userInfo = that.abotapi.get_user_info();
+			if (!userInfo) {
+				that.abotapi.goto_user_login(last_url);
+			
+				return;
+			}
+			//============= End ================
+					
+					
+					
+			
+			that.abotapi.abotRequest({
+			    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_nftcard_poster',
+			    method: 'post',
+			    data: {
+					sellerid:that.abotapi.globalData.default_sellerid,
+					packageid:that.current_packageid,
+					data_type:'package',
+					
+			    },
+			    success: function (res) {
+					
+					if(res.data.code != 1){
+						uni.showToast({
+							title:'没数据',
+							duration: 2000,
+						});
+						
+						return;
+					}
+			
+					that.current_nftcard_poster = res.data.data;
+					
+					console.log('current_nftcard_poster ===>>> ', that.current_nftcard_poster);
+				
+				
+				
+							
+					
+			    },
+			    fail: function (e) {
+					uni.showToast({
+						title: '网络异常！',
+						duration: 2000
+					});
+			    },
+			});
+			
+		},
+		
 				
 		set_fans:function(value002){
 			var that = this;
@@ -1205,6 +1203,11 @@ export default {
 		border-radius: 20rpx;
 		overflow: hidden;
 	}
+	.package_information_like_count{
+		margin-top: 10rpx;
+		margin-right: 20rpx;
+		font-size: 35rpx;
+	}
 	.label_like_number{
 		width: 100%;
 		height: 50rpx;
@@ -1262,6 +1265,20 @@ export default {
 		text-overflow: ellipsis;
 		
 	}
+ 	.package_detail_brief{
+		
+		width: 90%;
+		margin-bottom: 10rpx;
+		font-size: 20rpx;
+		font-weight: 400;
+		word-wrap: break-word;
+		
+	} 
+	.package_begin_end{
+		display: flex;
+		height: 60rpx;
+		line-height: 60rpx;
+	}
 	.package_state{
 		width:150rpx; 
 		border-radius:10rpx;
@@ -1271,9 +1288,11 @@ export default {
 		height: 45rpx;
 		margin-left: 50rpx;
 		line-height: 45rpx;
-		margin-top: 10rpx;
+		
+		margin-top: 12rpx;
 	}
 	.package_share{
+		margin-top: 5rpx;
 		margin-left: 40rpx;
 		width: 60rpx; 
 		height: 60rpx; 
@@ -1346,7 +1365,7 @@ export default {
 		overflow: hidden;
 	}
 	.publish_name{
-		margin-bottom: 5rpx;
+		margin-bottom: 15rpx;
 		width: 60%;
 		white-space: nowrap;
 		overflow: hidden;
@@ -1359,11 +1378,7 @@ export default {
 		margin:20rpx 0;
 	
 	} */
-	/* .scroll_items{
-		padding: 8rpx;
-		margin-left: 0rpx;
-	} */
-	
+
 /* 	.checked_button{
 		background: #30c478;
 		color: #FFFFFF;
@@ -1382,8 +1397,8 @@ export default {
 
 		float: left;
  		background-color: #FFFFFF; 
-		width: 350rpx;
-		margin:10rpx 7rpx 15rpx 8rpx;
+		width: 340rpx;
+		margin:10rpx 10rpx 15rpx 15rpx;
 		border-radius: 10rpx;
 		overflow: hidden;
 		box-shadow: 3rpx 6rpx 15rpx #707070;
@@ -1392,7 +1407,7 @@ export default {
 	.package_card_img{
 		border-radius: 10rpx;
 		overflow: hidden;
-		width: 350rpx; 
+		width: 340rpx; 
 		height: 510rpx;
 
 	}
@@ -1441,7 +1456,13 @@ export default {
 		text-overflow: ellipsis;
 		
 	}
-
+	.package_list_recommend{
+		width: 200rpx;
+		height: 200rpx; 
+		border-radius: 10rpx;
+		overflow: hidden;
+		margin-right: 20rpx;
+	}
 	
 	 .list_box {  
 			display: flex;
