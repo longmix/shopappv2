@@ -3,7 +3,7 @@
     "appid" : "__UNI__EAF2441",
     "description" : "会员.电商.SaaS云",
     "versionName" : "3.1.0",
-    "versionCode" : 895,
+    "versionCode" : 897,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true, //是否启用`自定义组件模式`，为true表示新的`自定义组件模式` ，否则为`template模板模式`   
@@ -155,12 +155,21 @@
                     },
                     "storyboard" : "unpackage/res/apple dev - yanyubaoappv2/CustomStoryboard.zip"
                 },
-                "iosStyle" : "storyboard"
+                "iosStyle" : "storyboard",
+                "useOriginalMsgbox" : true
             }
         },
         "uniStatistics" : {
             "enable" : false
-        }
+        },
+		"permissionExternalStorage": {  
+			"request": "once",  
+			"prompt": "应用保存运行状态等信息，需要获取读写手机存储（系统提示为访问设备上的照片、媒体内容和文件）权限，请允许。"  
+		},
+		"permissionPhoneState": {  
+			"request": "once",  
+			"prompt": "为保证您正常、安全地使用，需要获取设备识别码（部分手机提示为获取手机号码）使用权限，请允许。"  
+		}
     },
     /* SDK配置 */
     "quickapp" : {},
