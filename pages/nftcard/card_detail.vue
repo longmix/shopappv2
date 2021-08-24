@@ -313,20 +313,16 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			<view v-if="current_card_detail.is_buy_limit != -1" class="card_detail_goumai1" 
 				:style="{backgroundColor:wxa_shop_nav_bg_color}" 
 				@tap="test_goto_buy">
-				<image 
-					class="card_detail_an" 
-					src="https://yanyubao.tseo.cn/Tpl/static/nft_card/goumai.png"
-				></image>
+				<image class="card_detail_an" 
+					src="https://yanyubao.tseo.cn/Tpl/static/nft_card/goumai.png">
+				</image>
 				
 			</view>
 			<!-- 购买达到限制颜色变灰 -->
-			<view v-else class="card_detail_goumai1" style="background-color: #7f7f7f;"
-				:style="{backgroundColor:wxa_shop_nav_bg_color}" 
-				@tap="test_goto_buy">
-				<image 
-					class="card_detail_an" 
-					src="https://yanyubao.tseo.cn/Tpl/static/nft_card/goumai.png"
-				></image>
+			<view v-else class="card_detail_goumai_xianzi" @tap="test_goto_buy">
+				<image class="card_detail_an" 
+					src="https://yanyubao.tseo.cn/Tpl/static/nft_card/goumai.png">
+				</image>
 			</view>
 
 			<!-- 2021.08.06卡牌持有的数量 -->
@@ -1447,6 +1443,16 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		height: 90rpx;
 		font-size: 27rpx;
 		background-color: #30C478;
+		border-radius: 100%;
+		margin: 15rpx;
+		margin-right: 23rpx;
+		border: #aeb8ab 3rpx solid;
+	}
+	.card_detail_goumai_xianzi{
+		width: 90rpx;
+		height: 90rpx;
+		font-size: 27rpx;
+		background-color: #8a8a8a;
 		border-radius: 100%;
 		margin: 15rpx;
 		margin-right: 23rpx;
