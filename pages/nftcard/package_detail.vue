@@ -23,12 +23,13 @@
 			
 			<view class="">
 				<!-- 截图按钮 -->
-				 <view class="package_ps"  @tap="showModal=true" >
+				 <view class="package_ps"  @tap="package_showModal()" >
 					<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/ps.png"
 						mode="widthFix" style="width: 45rpx;margin-top: 17rpx;margin-left: 18rpx;"></image>
 				</view>
 				
-				<view class="show_modal_mask" v-if="showModal" @tap="showModal=false" @touchmove.stop.prevent="moveHandle"></view>
+				<!-- 模态框  -->
+				<view class="show_modal_mask" v-if="showModal" @tap="showModal=false"@touchmove.stop.prevent = "doNothing"></view>
 				<view class="show_modal_pop" v-if="showModal">
 					<view class="" style="width: 600rpx;height: 600rpx;background-color: #FFFFFF;">
 							<image src="" mode=""></image>	
@@ -71,7 +72,7 @@
 					{{current_package_detail.status_str}}
 				</view>
 				<view class="package_state" v-else="is_package_time_expire ==true" style="background-color:red;display: flex;" >
-					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/down.png" mode="widthFix" style="width: 28rpx;margin-right: 10rpx;margin-top: 9rpx;margin-left: 10rpx;"></image>
+					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/down.png" mode="widthFix" style="width: 28rpx;margin-right: 2rpx;margin-top: 10rpx;margin-left: 5rpx;"></image>
 					<view>已下架</view>
 				</view>
 				
@@ -81,7 +82,7 @@
 					
 					<button class="box share-btn" open-type="share" style="background-color:#ffffff;outline: none;border: none;">
 						<view class="package_share">
-							<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/share.png" mode="widthFix" style="width: 45rpx;margin-top: 10rpx;margin-left: 7rpx;"></image>
+							<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/share.png" mode="widthFix" style="width: 45rpx;margin-left: 5rpx;"></image>
 						</view>
 					</button>
 					<!-- <button style="padding-left: 0;padding-right: 0;" open-type="share">分享</button> -->
@@ -361,6 +362,10 @@ export default {
 		//======== End ============
 		
 		
+		
+		
+		
+		
 		that.current_packageid = options.packageid;
 		
 		console.log('that.current_packageid ===》》 ', that.current_packageid);
@@ -389,6 +394,16 @@ export default {
 		that.current_package_detail.status_str = '';
 		that.current_package_detail.sale_percent = 0;
 		that.current_package_detail.tag_list = '';
+		
+		
+		//当前卡包所属的supplierid
+		if(options.nft_supplierid){
+			that.current_nft_supplierid = options.nft_supplierid;
+		}
+		else{
+			that.current_nft_supplierid = that.abotapi.globalData.default_sellerid;
+		}
+		
 		
 		
 		//获取卡包详情
@@ -477,6 +492,11 @@ export default {
 				// #endif	
 				
 				
+				//获取相关卡包列表
+				
+				that.__nft_get_relate_package_list();
+				
+				
 		    },
 		    fail: function (e) {
 				uni.showToast({
@@ -491,59 +511,11 @@ export default {
 		
 		
 		
-		//当前卡包所属的supplierid
-		if(options.nft_supplierid){
-			that.current_nft_supplierid = options.nft_supplierid;
-		}
-		else{
-			//that.current_nft_supplierid = that.abotapi.globalData.default_sellerid;
-		}
 		
 			
 		that.abotapi.set_shop_option_data(that, that.callback_function_shop_option_data);
 			
 		
-		
-		that.abotapi.abotRequest({
-		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_list',
-		    method: 'post',
-		    data: {
-				sellerid:that.abotapi.globalData.default_sellerid,
-				nft_supplierid:0,
-				except_supplierid:that.current_package_detail.sellerid,
-		    },
-		    success: function (res) {
-				
-				if(res.data.code != 1){
-					uni.showToast({
-						title:'卡包列表没数据',
-						duration: 2000,
-					});
-					
-					return;
-				}
-		
-				that.current_package_list = res.data.data;
-				
-				console.log('current_package_list ===>>> ', that.current_package_list);
-				
-				
-				
-				
-				
-				
-				
-				
-						
-				
-		    },
-		    fail: function (e) {
-				uni.showToast({
-					title: '网络异常！',
-					duration: 2000
-				});
-		    },
-		});
 		
 		
 		
@@ -554,7 +526,7 @@ export default {
 		
 		
 		//获取卡牌列表
-		that.__get_card_list();
+		that.__nft_get_card_list();
 		
 		
 	
@@ -620,11 +592,12 @@ export default {
 		if (userInfo && userInfo.userid) {
 			share_path += '&userid=' + userInfo.userid;
 		}
+	
 		
 		var share_img = that.current_package_detail.cover_img_url_3x2;
 		
 		return {
-			title: share_title,
+			title:  + '向您推荐了' + share_title,
 			path: share_path,
 			imageUrl: share_img,
 			success: function(res) {
@@ -773,7 +746,7 @@ export default {
 			}
 			
 			//获取卡牌的列表
-			this.__get_card_list(filter_price_type, filter_userid_type);
+			this.__nft_get_card_list(filter_price_type, filter_userid_type);
 			
 			
 		},
@@ -932,10 +905,10 @@ export default {
 		},	
 			
 		
-		showModal:function(){
+		package_showModal:function(){
 			var that = this;
 			
-			
+			this.showModal = !this.showModal
 			//======= 判断用户是否登录 ============
 			var last_url = '/pages/nftcard/package_detail?'+ that.current_params_str;
 			
@@ -946,7 +919,6 @@ export default {
 				return;
 			}
 			//============= End ================
-					
 					
 					
 			
@@ -1070,7 +1042,7 @@ export default {
 			
 		},
 		
-		__get_card_list:function(filter_price_type=-1, filter_userid_type=-1){
+		__nft_get_card_list:function(filter_price_type=-1, filter_userid_type=-1){
 			var that = this;
 			
 			var post_data = {
@@ -1118,6 +1090,57 @@ export default {
 			    },
 			});
 			
+			
+			
+			
+			
+		},
+		
+		__nft_get_relate_package_list:function(){
+			var that = this;
+		
+			// 获取推荐卡包但不获取自己
+			that.abotapi.abotRequest({
+			    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_list',
+			    method: 'post',
+			    data: {
+					sellerid:that.abotapi.globalData.default_sellerid,
+					nft_supplierid:0,
+					//except_supplierid:that.current_package_detail.sellerid,
+					except_packageid: that.current_packageid,
+			    },
+			    success: function (res) {
+					
+					if(res.data.code != 1){
+						uni.showToast({
+							title:'卡包列表没数据',
+							duration: 2000,
+						});
+						
+						return;
+					}
+			
+					that.current_package_list = res.data.data;
+					
+					console.log('current_package_list ===>>> ', that.current_package_list);
+					
+					
+					
+					
+					
+					
+					
+					
+							
+					
+			    },
+			    fail: function (e) {
+					uni.showToast({
+						title: '网络异常！',
+						duration: 2000
+					});
+			    },
+			});
 			
 			
 			
@@ -1292,7 +1315,7 @@ export default {
 		margin-top: 12rpx;
 	}
 	.package_share{
-		margin-top: 5rpx;
+		
 		margin-left: 40rpx;
 		width: 60rpx; 
 		height: 60rpx; 
