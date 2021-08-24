@@ -111,14 +111,15 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				</view>
 				<h4 class="card_detail_title" style="padding-bottom: 15rpx;width: 90%;" v-if="current_card_detail">{{current_card_detail.card_name}}
 				</h4>
-				
+				<view style="font-size: 30rpx;">{{current_card_detail.brief}}</view>
 				
 				<view style="color: #868686;font-size: 30rpx;">
+					
 					<view v-if="current_card_detail && current_card_detail.user_have_list">
+						已获得：
 						<block v-for="(cpl_item , index001) in current_card_detail.user_have_list">
-							#{{cpl_item.cplseq}} 
+							   #{{cpl_item.cplseq}},
 						</block>
-						
 					</view>
 					<!-- <text>限购：{{current_card_detail.buy_limit}}张</text> -->
 					<!-- 发行时间 -->
@@ -252,7 +253,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					<view class="show_modal_pop card_detail_xiansuo" v-if="showModal_xiansuo">
 						<scroll-view scroll-y="true">
 							<view style="padding: 35rpx;">
-								<view v-if="current_card_detail.clue" class="tree">{{current_card_detail.clue}}</view>
+								<view v-if="current_package_detail.clue" class="tree">{{current_package_detail.clue}}</view>
 								<view v-else>还没有线索~</view>
 							</view>
 						</scroll-view>
@@ -889,6 +890,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		onShareTimeline: function() {
 			return this.share_return();
 		},
+		//截图
 		onAddToFavorites: function() {
 			return this.share_return();
 		},
@@ -1290,13 +1292,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		transform: translateY(-50%);
 		width: 590rpx;
 		padding: 20rpx;
-		background-color: #FFFFFF;
-		// overflow: hidden;
-		// .tree1{
-		// 	width: 100%;
-		// 	height: 100%;
-		// 	overflow-y: scroll;
-		// }
+		// background-color: #FFFFFF;
 	}
 	.card_detail_modal_kapaimingxi{
 		color: #666666;
@@ -1315,8 +1311,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	}
 	.main_body {
 		width: 100%;
-		margin-bottom: 200rpx;
-		padding-bottom: 200rpx;
+		/* margin-bottom: 200rpx; */
+		/* padding-bottom: 200rpx; */
 	}
 
 	.card_detail_border {
@@ -1514,6 +1510,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 
 	.card_detail_kabaoxinxi {
 		line-height: 47rpx;
+		padding-left: 15rpx;
 	}
 	.card_detail_xinxi {
 		padding: 15rpx 20rpx;
@@ -1532,7 +1529,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	}
 	.card_detail_title {
 		text-align: left;
-		font-size: 37rpx;
+		font-size: 38rpx;
 		font-weight: bold;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -1561,6 +1558,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		margin: 15rpx;
 	}
 	.scroll-Y {
-		max-height: 750rpx;
+		max-height: 760rpx;
 	}
 </style>
