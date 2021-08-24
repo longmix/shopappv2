@@ -202,7 +202,7 @@
 						v-for="(current_card_item,index) in current_card_list"
 						@tap="go_to_card_detail(current_card_item.packageid, current_card_item.cardid)">
 					<view class="" style="width: 340rpx;height: 615rpx;">
-						<image class="package_card_img" :src="current_card_item.cover_img_url_2x3_stand" mode=""></image>
+						<image class="package_card_img" :src="current_card_item.cover_img_url_2x3" mode=""></image>
 					
 					
 						<!-- icon喜欢图标和喜欢人数-----------已有卡牌/已发售卡牌 -->
