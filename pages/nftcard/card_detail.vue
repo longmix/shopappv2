@@ -114,15 +114,18 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				
 				<view style="color: #868686;font-size: 30rpx;">
-					<!-- <view>
-						#{{current_card_detail.publish_card_list.cplseq}}
-					</view> -->
+					<view v-if="current_card_detail && current_card_detail.user_have_list">
+						<block v-for="(cpl_item , index001) in current_card_detail.user_have_list">
+							#{{cpl_item.cplseq}} 
+						</block>
+						
+					</view>
 					<!-- <text>限购：{{current_card_detail.buy_limit}}张</text> -->
 					<!-- 发行时间 -->
 					<!-- <text id="card_detail_mystr" v-if="current_card_detail">{{current_card_detail.time_begin}}</text> -->
 					
 					<!-- <view >总共{{current_card_detail.faxing_counter}} 还剩{{current_card_detail.kucun_counter}} </view> -->
-					<view style="font-size: 30rpx;">领取进度</view>
+					<view style="font-size: 30rpx;">领取进度（{{current_card_detail.sale_counter}}/{{current_card_detail.publish_counter}}）</view>
 					
 					
 					<!-- 进度条 -->
@@ -464,8 +467,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				showModal_xiansuo: false,//线索模态框
 				
-				showModal_fenxiang: false,//分享模态框
-				
 				showModal_liuzhuanjilv: false,//流转模态框
 				
 				showModal_liuzhuanjilv_zengsong:false,//流转里的模态框
@@ -598,6 +599,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				sellerid: that.abotapi.globalData.default_sellerid,
 				packageid: that.current_packageid,
 				cardid: that.current_cardid,
+				
+				
 			};
 
 			var userInfo = that.abotapi.get_user_info();
@@ -864,7 +867,12 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			}
 
 			var share_img = that.current_card_detail.cover_img_url_stand;
-
+			if(!share_img){
+				share_img = that.current_card_detail.cover_img_url_2x3;
+			}
+			
+			console.log('111111111111111111111111111111'+that.current_card_detail.cover_img_url_stand);
+			
 			return {
 				title: share_title,
 				path: share_path,
@@ -904,6 +912,11 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				}
 				
 				var share_img = that.current_card_detail.cover_img_url_stand;		
+				if(!share_img){
+					share_img = that.current_card_detail.cover_img_url_2x3;
+				}
+				
+				console.log('111111111111111111111111111111'+that.current_card_detail.cover_img_url_stand);
 				
 				return {
 					title: share_title,
@@ -1076,7 +1089,15 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				var that = this;
 
 				console.log('tgggggggggggggggggg_buy');
-				
+				// if(!that.current_card_detail.publish_counter){
+				// 	uni.showModal({
+				// 		title:'提示',
+				// 		content:'已售空',
+				// 		showCancel:false
+				// 	})
+					
+				// 	return;
+				// }else 
 				if(that.current_card_detail.is_buy_limit == -1){
 					uni.showModal({
 						title:'提示',
@@ -1086,6 +1107,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					
 					return;
 				}
+				
 
 				var productid = that.current_card_detail.productid;
 				var price = that.current_card_detail.price;
@@ -1538,8 +1560,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		padding: 15rpx;
 		margin: 15rpx;
 	}
-	/* .scroll-Y {
-		width: 700rpx;
-		height: 500rpx;
-	} */
+	.scroll-Y {
+		max-height: 750rpx;
+	}
 </style>
