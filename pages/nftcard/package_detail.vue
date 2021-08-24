@@ -145,12 +145,12 @@
 		<view class="publish_information">
 			
 				<!-- icon关注图标 -->
-				<view class="publish_icon_follow" v-if="current_package_detail.is_fans ==0" @tap="set_fans(1)">
+				<view class="publish_icon_follow" :style="{border: wxa_shop_nav_bg_color+ ' 2rpx solid'}" v-if="current_package_detail.is_fans ==0" @tap="set_fans(1)">
 					<image  src="https://yanyubao.tseo.cn/Tpl/static/nft_card/follow01.png" 
 						mode="widthFix" style="width: 60rpx; margin-top: 8rpx; "></image>
 					<view style="color: #30c478;margin-left:10rpx; margin-top: 5rpx; font-size: 30rpx;">关注</view>
 				</view>
-				<view class="publish_icon_follow01" v-if="current_package_detail.is_fans ==1" @tap="set_fans(0)">
+				<view class="publish_icon_follow01" :style="{background:wxa_shop_nav_bg_color}" v-if="current_package_detail.is_fans ==1" @tap="set_fans(0)">
 					<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/follow02.png" 
 						mode="widthFix" style="width: 50rpx;height: 30rpx;margin-top:8rpx ;"></image>
 					<view style="color: #FFFFFF;margin-left:0rpx; margin-top: 5rpx; font-size: 30rpx;">已关注</view>
@@ -582,7 +582,7 @@ export default {
 				var account_info = that.abotapi.get_user_account_info();
 				console.log('昵称======>', account_info);
 				
-				share_title = account_info.nickname + '向您分享了' + share_title;
+				share_title = account_info.nickname + '向您分享了卡包' + share_title;
 			}
 		}
 		
@@ -729,6 +729,7 @@ export default {
 				if(tag_id002 && tag_id003){
 					
 				}
+			
 				else if(tag_id002){
 					//免费的卡牌
 					filter_price_type = 1;
@@ -777,6 +778,9 @@ export default {
 			
 			
 			console.log('cb_params====', cb_params);
+			
+			that.wxa_shop_nav_bg_color  = cb_params.option_list.wxa_shop_nav_bg_color;
+			
 		},
 		
 		
@@ -1383,7 +1387,7 @@ export default {
 		background-color:#ffffff; 
 		border-radius: 10rpx;
 		overflow: hidden;
-		border: #30c478 2rpx solid;
+		/* border: #30c478 2rpx solid; */
 	}
 	.publish_icon_follow01{
 		width: 150rpx;
@@ -1392,7 +1396,7 @@ export default {
 		float: right; 
 		margin-top: 50rpx;
 		margin-right: 20rpx;
-		background-color:#30c478; 
+		/* background-color:#30c478; */
 		border-radius: 10rpx;
 		overflow: hidden;
 	}
@@ -1508,8 +1512,9 @@ export default {
 			
 			margin-top: 10rpx;
 			height: 57rpx;
-			text-align: center;
 			line-height: 57rpx;
+			text-align: center;
+			
 			width: 134rpx;
 			margin-left:5rpx ;
 	        background: #30c478;
@@ -1521,10 +1526,11 @@ export default {
 	    /* 未选择 */
 	    .tag_item_unselected {
 			margin-top: 10rpx;
-			height: 55rpx;
-			text-align: center;
-			width: 130rpx;
+			height: 57rpx;
 			line-height: 57rpx;
+			text-align: center;
+			width: 134rpx;
+			
 /* 	        border: 1px solid #30c478; */
 	        background: #FFFFFF;
 	        margin-left:5rpx ;

@@ -331,10 +331,20 @@
 											<view class="">({{item.packageid_card_user_buy_count}}/{{item.packageid_card_count}})</view>
 										</view>
 										
-										<progress :percent="item.sale_percent" activeColor="#30C478" stroke-width="3" 
+										<progress style="width: 95%;" :percent="item.sale_percent" activeColor="#30C478" stroke-width="3" 
 											show-info="" backgroundColor="red" font-size="15"></progress>
 									</view>
 								</view>
+								<!-- <view style="float: right;">
+									<view class="package_state" v-if="is_package_time_expire ==false" style="background-color: #30c478;">
+										<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/circle.png" mode="widthFix" style="width: 25rpx;margin-right: 10rpx;margin-top: 10rpx;margin-left: 10rpx;"></image>
+										<view style="font-size: 25rpx;">{{current_package_detail.status_str}}</view>
+									</view>
+									<view class="package_state" v-else="is_package_time_expire ==true" style="background-color:red;" >
+										<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/down.png" mode="widthFix" style="width: 28rpx;margin-top: 10rpx;margin-left: 10rpx;"></image>
+										<view style="font-size: 25rpx;margin-left: 10rpx;">已下架</view>
+									</view>
+								</view> -->
 								<view style="font-size:20rpx ;font-weight: 100;">有效期：</view>
 								<view class="" style="font-size: 20rpx; font-weight: 100;">{{item.time_begin_str}}~{{item.time_end_str}}</view>
 							</view>
@@ -718,10 +728,14 @@
 				iSinfo:false,
 				
 				wxa_shop_nav_bg_color: '#30C478',
+				
+				
 			};
 		},
 		
 		onLoad(options) {
+			
+			
 			var that = this;
 
 			console.log('options===', options)
@@ -1227,11 +1241,13 @@
 									that.current_nft_package_list[i].sale_percent =
 										parseInt(that.current_nft_package_list[i].packageid_card_user_buy_count/that.current_nft_package_list[i].packageid_card_count*100);
 								}
+								
+								
 							}
 							
 							
 							
-							
+						
 							
 							
 									
