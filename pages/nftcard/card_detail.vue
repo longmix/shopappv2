@@ -1,5 +1,5 @@
 <template>
-	<view style="background-color: #eceeef;">
+	<view class="global_background">
 		<!--
 
 购买卡片的跳转路径：  
@@ -114,9 +114,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				
 				<view style="color: #868686;font-size: 30rpx;">
-					<view>
+					<!-- <view>
 						#{{current_card_detail.publish_card_list.cplseq}}
-					</view>
+					</view> -->
 					<!-- <text>限购：{{current_card_detail.buy_limit}}张</text> -->
 					<!-- 发行时间 -->
 					<!-- <text id="card_detail_mystr" v-if="current_card_detail">{{current_card_detail.time_begin}}</text> -->
@@ -154,8 +154,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					<view class="card_detail_kabaoxinxi" @tap="go_to_card_package(current_package_detail.packageid)">
 						<view class="card_packages_title">{{current_card_detail.package_title}}
 						</view>
-						<view style="color: #868686;font-size: 26rpx;width: 480rpx;font-weight: bold;
-						overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+						<view class="card_detail_suoshukabao_jieshao">
 							{{current_package_detail.brief}}
 						</view>
 				
@@ -352,8 +351,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 						</view>
 					</view>
 				</view>
-				<!-- 顶部*1按钮 -->
-				<view class="show_modal_mask" v-if="showModal_liuzhuanjilv" 
+				<!-- 顶部*1按钮 --><!-- @touchmove.stop.prevent="disabledScroll" -->
+				<view class="show_modal_mask" v-if="showModal_liuzhuanjilv"
 				@click="showModal_liuzhuanjilv=false"></view>
 				<view v-if="showModal_liuzhuanjilv" @click="showModal_liuzhuanjilv=false">
 					<view class="card_goumai2_modal">
@@ -369,7 +368,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				v-if="showModal_liuzhuanjilv">
 						<view v-if="current_card_detail.is_buyed == 1">
 							
-					<scroll-view scroll-y="true">
+					<scroll-view scroll-y="true" class="scroll-Y">
 							<view v-for="(card_publish_item,index) in card_publish">
 								<view class="card_detail_goumaijilv" 
 								@click="showModal_liuzhuanjilv_zengsong=true">
@@ -918,6 +917,11 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 			},
 			
+			// disabledScroll(){
+			// 	return
+			// },
+			
+			
 			//详情按钮显示隐藏
 			layOut(){
 			      if(this.lay_type == 0){
@@ -1195,9 +1199,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	}
 </script>
 <style lang="scss">
-	
-	
-	
 	#try{
 		.rollbox{
 			position: relative;
@@ -1213,7 +1214,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				display: flex;
 				justify-content: center;
 				align-items: center;
-				
 			}
 	    }
 	    &_behind{
@@ -1282,15 +1282,12 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	}
 	.card_detail_modal_kapaimingxi{
 		color: #666666;
-		width: 160rpx;
+		width: 180rpx;
 		display: flex;
 	}
 </style>
 <style>
 	@import "/static/css/nftcard.css";
-	button:after{
-		display:none;
-	}
 	.card_detail_xing {
 		width: 30rpx;
 		height: 30rpx;
@@ -1309,10 +1306,10 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		width: 100%;
 		filter: blur(15rpx);
 	}
-
 	.card_detail_image {
 		position: relative;
 		border-radius: 20rpx;
+		background-color: #FFFFFF;
 		box-shadow: 0rpx 0rpx 20rpx #000000;
 	}
 	.card_detail_h4 {
@@ -1347,23 +1344,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		margin: 15rpx;
 		border-radius: 15rpx;
 	}
-	.show_modal_mask{
-		background-color: #000;
-		opacity: 0.7;
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		z-index: 1;
-	}
-	.show_modal_pop{
-		
-		position: fixed;
-		
-		/* transform: translateY(50%); */
-		z-index: 2;
-	}
 	.card_detail_showmodal_kapaimingxi{
 		background-color: #FFFFFF;
 		top: 1%;
@@ -1391,12 +1371,14 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		margin-top: 6rpx;
 		margin-left: 10rpx;
 	}
+	/* 线索未亮按钮 */
 	.card_detail_xiaoxi1 {
 		width: 60rpx;
 		height: 60rpx;
 		padding-top: 14rpx;
 		padding-left: 15rpx;
 	}
+	/* 线索点亮模态框按钮 */
 	.card_detail_xiaoxi2 {
 		position: fixed;
 		/* transform: translateY(50%); */
@@ -1417,25 +1399,11 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		position: fixed;
 		z-index: 2;
 	}
-	.card_detail_xiaoxi2 {
-		width: 60rpx;
-		height: 60rpx;
-		padding-top: 14rpx;
-		padding-left: 15rpx;
-	}
 	.card_detail_fenxiang {
 		width: 50rpx;
 		height: 50rpx;
 		padding-top: 18rpx;
 		padding-left: 20rpx;
-	}
-	.card_detail_liebiao {
-		background-color: #F0F0F0;
-		width: 90rpx;
-		height: 90rpx;
-		border-radius: 50%;
-		margin: 15rpx;
-		border: #aeb8ab 3rpx solid;
 	}
 	.card_detail_showmodal_tupian {
 		width: 40rpx;
@@ -1551,27 +1519,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
-	.slide_cards_pic {
-		width: 190rpx;
-		padding-left: 20rpx;
-		padding-top: 20rpx;
-		padding-bottom: 20rpx;
-	}
-	.card_detail_img_border {
-		width: 190rpx;
-		height: 295rpx;
-		border-radius: 20rpx;
-	}
-
-	.card_detail_kapai_title {
-		width: 195rpx;
-		font-size: 26rpx;
-		font-weight: bold;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		text-align: center;
-	}
 	.card_detail_footer {
 		position: fixed;
 		bottom: 0rpx;
@@ -1585,4 +1532,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		padding: 15rpx;
 		margin: 15rpx;
 	}
+	/* .scroll-Y {
+		width: 700rpx;
+		height: 500rpx;
+	} */
 </style>
