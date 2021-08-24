@@ -28,14 +28,10 @@
 						mode="widthFix" style="width: 45rpx;margin-top: 17rpx;margin-left: 18rpx;"></image>
 				</view>
 				
-				<!-- 模态框  -->
+				
 				<view class="show_modal_mask" v-if="showModal" @tap="showModal=false"@touchmove.stop.prevent = "doNothing"></view>
 				<view class="show_modal_pop" v-if="showModal">
-					<view class="" style="width: 600rpx;height: 600rpx;background-color: #FFFFFF;">
-							<image src="" mode=""></image>	
-							<button type="default">保存至相册</button>
-					</view>
-						
+				
 				</view>	
 			</view>
 			 
@@ -62,27 +58,27 @@
 		
 			<!-- 开始时间~~~结束时间 -->
 			<view class="package_begin_end" >
-				<view class="begin_end_time" style="display: flex;">
-					有效期：
+				<view class="begin_end_time" style="display: flex;width: ;">
+					<view style="font-size: 20rpx;">有效期：</view>
 					<view style="font-size: 20rpx;font-weight: 200;">{{current_package_detail.time_begin_str}}~{{current_package_detail.time_end_str}}</view>
 				</view>	
 				<!-- 卡包状态  发行===下架  -->
 				<view class="package_state" v-if="is_package_time_expire ==false" style="background-color: #30c478;">
-					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/circle.png" mode="widthFix" style="width: 25rpx;margin-right: 10rpx;margin-top: 6rpx;"></image>
-					{{current_package_detail.status_str}}
+					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/circle.png" mode="widthFix" style="width: 25rpx;margin-right: 10rpx;margin-top: 10rpx;margin-left: 10rpx;"></image>
+					<view style="font-size: 25rpx;">{{current_package_detail.status_str}}</view>
 				</view>
-				<view class="package_state" v-else="is_package_time_expire ==true" style="background-color:red;display: flex;" >
-					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/down.png" mode="widthFix" style="width: 28rpx;margin-right: 2rpx;margin-top: 10rpx;margin-left: 5rpx;"></image>
-					<view>已下架</view>
+				<view class="package_state" v-else="is_package_time_expire ==true" style="background-color:red;" >
+					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/down.png" mode="widthFix" style="width: 28rpx;margin-top: 10rpx;margin-left: 10rpx;"></image>
+					<view style="font-size: 25rpx;margin-left: 10rpx;">已下架</view>
 				</view>
 				
 				<!-- 分享 -->
 				<view>
 					<!-- #ifdef MP -->
 					
-					<button class="box share-btn" open-type="share" style="background-color:#ffffff;outline: none;border: none;">
+					<button class="box share-btn" open-type="share" style="background-color:#ffffff;outline: none;border: none;width: 100rpx;">
 						<view class="package_share">
-							<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/share.png" mode="widthFix" style="width: 45rpx;margin-left: 5rpx;"></image>
+							<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/share.png" mode="widthFix" style="width: 43rpx;margin-bottom: 5rpx;margin-right: 20rpx;"></image>
 						</view>
 					</button>
 					<!-- <button style="padding-left: 0;padding-right: 0;" open-type="share">分享</button> -->
@@ -172,7 +168,7 @@
 					
 					<!-- 发行商名字----详情 -->
 					<view class="publish_name">{{current_package_detail.supplier_item.name}}</view>
-					<view class="publish_brief" style="font-weight: 300; font-size: 20rpx;">{{current_package_detail.supplier_item.brief}}</view>
+					<view class="publish_brief" style="font-weight: 300; font-size: 25rpx;">{{current_package_detail.supplier_item.brief}}</view>
 						
 						
 				</view>
@@ -205,8 +201,8 @@
 				<view class="card_list"
 						v-for="(current_card_item,index) in current_card_list"
 						@tap="go_to_card_detail(current_card_item.packageid, current_card_item.cardid)">
-					<view class="">
-						<image class="package_card_img" :src="current_card_item.cover_img_url_2x3_stand" mode="widthFix"></image>
+					<view class="" style="width: 340rpx;height: 615rpx;">
+						<image class="package_card_img" :src="current_card_item.cover_img_url_2x3_stand" mode=""></image>
 					
 					
 						<!-- icon喜欢图标和喜欢人数-----------已有卡牌/已发售卡牌 -->
@@ -580,6 +576,17 @@ export default {
 		var that = this;
 		
 		var share_title = that.current_package_detail.title;
+		
+		if(that.abotapi.get_user_info()){
+			if(that.abotapi.get_user_account_info()){
+				var account_info = that.abotapi.get_user_account_info();
+				console.log('昵称======>', account_info);
+				
+				share_title = account_info.nickname + '向您分享了' + share_title;
+			}
+		}
+		
+		
 		if (share_title.length > 22) {
 			share_title = share_title.substr(0, 20) + '...';
 		}
@@ -597,7 +604,7 @@ export default {
 		var share_img = that.current_package_detail.cover_img_url_3x2;
 		
 		return {
-			title:  + '向您推荐了' + share_title,
+			title: share_title,
 			path: share_path,
 			imageUrl: share_img,
 			success: function(res) {
@@ -1299,24 +1306,26 @@ export default {
 	} 
 	.package_begin_end{
 		display: flex;
+		width: 710rpx;
 		height: 60rpx;
 		line-height: 60rpx;
 	}
 	.package_state{
-		width:150rpx; 
+		display: flex;
+		width:140rpx; 
 		border-radius:10rpx;
-		
+		margin-right: 10rpx;
 		text-align: center; 
 		color: #FFFFFF;
 		height: 45rpx;
-		margin-left: 50rpx;
+		
 		line-height: 45rpx;
 		
 		margin-top: 12rpx;
 	}
 	.package_share{
 		
-		margin-left: 40rpx;
+		margin-right: 20rpx;
 		width: 60rpx; 
 		height: 60rpx; 
 		
@@ -1413,23 +1422,23 @@ export default {
 		
 	}
 	.my_package_detail_card_list{
+	
 		margin-top: -20rpx;
 		width: 730rpx;
 	}
 	.card_list{
-
+		
 		float: left;
  		background-color: #FFFFFF; 
 		width: 340rpx;
 		margin:10rpx 10rpx 15rpx 15rpx;
 		border-radius: 10rpx;
 		overflow: hidden;
-		box-shadow: 3rpx 6rpx 15rpx #707070;
+		
 		
 	}
 	.package_card_img{
-		border-radius: 10rpx;
-		overflow: hidden;
+		
 		width: 340rpx; 
 		height: 510rpx;
 
