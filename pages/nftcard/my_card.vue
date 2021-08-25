@@ -11,7 +11,8 @@
 		
 		
 		
-	    <waterfallsFlow :list="current_card_list">
+	    <waterfallsFlow :list="current_card_list"
+		 @tap="go_to_card_detail(current_card_list.packageid, current_card_list.cardid)">
 			<!--  #ifdef  MP-WEIXIN -->
 			<!-- 微信小程序自定义内容 -->
 			<view v-for="(item, index) of list" :key="index" slot="slot{{index}}">
@@ -53,6 +54,7 @@ export default {
 			current_packageid:0,
 			
 			action_data_type:'my_favorite_list',
+			action_data_type:'my_card_buy_list',
 			
 			
 			tabIndex:0,
@@ -69,7 +71,7 @@ export default {
 	 * 跳转的路径、
 	 * /pages/nftcard/my_card   默认打开  我收藏的卡牌
 	 * 我收藏的卡牌  /pages/nftcard/my_card?action_data_type=my_favorite_list
-	 * 我购买的卡牌  /pages/nftcard/my_card?action_data_type=my_buy_card_list
+	 * 我购买的卡牌  /pages/nftcard/my_card?action_data_type=my_card_buy_list
 	 * 
 	 * 
 	 */
@@ -94,7 +96,7 @@ export default {
 				title : '我收藏的卡牌'
 			});
 		}
-		else if(that.action_data_type == 'my_buy_card_list'){
+		else if(that.action_data_type == 'my_card_buy_list'){
 			uni.setNavigationBarTitle({
 				title : '我购买的卡牌'
 			});
@@ -122,6 +124,7 @@ export default {
 		    method: 'post',
 		    data: {
 				sellerid:that.abotapi.globalData.default_sellerid,
+				packageid:that.current_packageid,
 				checkstr:userInfo.checkstr,
 				userid:userInfo.userid,
 				action: that.action_data_type,
@@ -130,14 +133,12 @@ export default {
 				
 				if((res.data.code != 1) || (!res.data.data) ){
 					uni.showToast({
-						title:'',
+						title:'数据加载中',
 						duration: 2000,
 					});
 					
 					return;
 				}
-				
-				
 				
 				var card_list = res.data.data;
 				
@@ -149,6 +150,7 @@ export default {
 					console.log(card_item);
 					//转换为对象数组
 					var new_card_item = {};
+					new_card_item.packageid = card_item.packageid;
 					new_card_item.id = card_item.cardid;
 					new_card_item.image_url = card_item.cover_img_url_2x3;
 					new_card_item.title = card_item.card_name;
@@ -169,6 +171,8 @@ export default {
 		    },
 			
 		});
+		
+		
 		
 	},
 	onShow:function(){
@@ -283,15 +287,15 @@ export default {
 			return;
 		},
 		
+		// h5跳转不了,小程序可以点击跳转,但是点进去是一张空的卡牌
+		go_to_card_detail: function(packageid, cardid) {
+			console.log('packageid===>>>' + packageid);
+			console.log('cardid===>>>' + cardid);
 		
-		// go_to_my_detail:function(packageid,cardid){
-		// 	console.log('packageid===>>>' + packageid);
-		// 	console.log('cardid===>>>' + cardid);
-			
-		// 	uni.navigateTo({
-		// 		url: '/pages/nftcard/card_detail?packageid='+packageid+'&cardid='+cardid,
-		// 	})
-		// },
+			uni.navigateTo({
+				url: '/pages/nftcard/card_detail?packageid=' + packageid + '&cardid=' + cardid,
+			})
+		},
 		
 		
 	}
@@ -321,14 +325,12 @@ export default {
 		border-radius: 15rpx;
 	    padding-left: 20rpx;
 	    padding-right: 20rpx;
-		
 	}
 	
 	.uni-tab-item-title-active {
 	    color: #FFFFFF;
 		background-color: #30C478;
 		border-radius: 15rpx;
-		/* border-bottom: #30C478 2rpx solid; */
 	}
 	
 	
@@ -365,7 +367,9 @@ page {
 			color: #7a7a7a;
 			overflow: hidden;
 			text-overflow: ellipsis;
-			white-space: nowrap;
+			display:-webkit-box;
+			-webkit-line-clamp:3;
+			-webkit-box-orient:vertical;
 		}
   }
 }

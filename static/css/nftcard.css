@@ -59,6 +59,13 @@
 		padding-top: 20rpx;
 		padding-bottom: 10rpx;
 	}
+	.slide_cards_pic_border{
+		width: 190rpx;
+		padding-left: 20rpx;
+		padding-right: 10rpx;
+		padding-top: 20rpx;
+		padding-bottom: 10rpx;
+	}
 	.card_detail_img_border {
 		width: 190rpx;
 		height: 295rpx;
@@ -99,10 +106,9 @@
 		-webkit-box-orient:vertical;
 	}
 	.card_detail_liebiao {
-		background-color: #F0F0F0;
+		background-color: #dff3e7;
 		width: 90rpx;
 		height: 90rpx;
 		border-radius: 50%;
 		margin: 15rpx;
-		border: #aeb8ab 3rpx solid;
 	}
