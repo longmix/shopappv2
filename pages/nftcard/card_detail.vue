@@ -118,7 +118,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					<view v-if="current_card_detail && current_card_detail.user_have_list">
 						已获得：
 						<block v-for="(cpl_item , index001) in current_card_detail.user_have_list">
-							   #{{cpl_item.cplseq}},
+							#{{cpl_item.cplseq}}
+							{{index001 == current_card_detail.user_have_list.length-1 ? " ":" ,"}}
 						</block>
 					</view>
 					<!-- <text>限购：{{current_card_detail.buy_limit}}张</text> -->
@@ -126,7 +127,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					<!-- <text id="card_detail_mystr" v-if="current_card_detail">{{current_card_detail.time_begin}}</text> -->
 					
 					<!-- <view >总共{{current_card_detail.faxing_counter}} 还剩{{current_card_detail.kucun_counter}} </view> -->
-					<view style="font-size: 30rpx;">领取进度（{{current_card_detail.sale_counter}}/{{current_card_detail.publish_counter}}）</view>
+					<view style="font-size: 30rpx;">
+						分发进度（{{current_card_detail.sale_counter}}/{{current_card_detail.publish_counter}}）
+					</view>
 					
 					
 					<!-- 进度条 -->
@@ -251,9 +254,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				<!-- 线索模态框 -->
 				<view @click="showModal_xiansuo=false">
 					<view class="show_modal_pop card_detail_xiansuo" v-if="showModal_xiansuo">
-						<scroll-view scroll-y="true">
-							<view style="padding: 35rpx;">
-								<view v-if="current_package_detail.clue" class="tree">{{current_package_detail.clue}}</view>
+						<scroll-view scroll-y="true" class="scroll-Y">
+							<view>
+								<view v-if="current_package_detail.clue">{{current_package_detail.clue}}</view>
 								<view v-else>还没有线索~</view>
 							</view>
 						</scroll-view>
@@ -314,7 +317,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				</view> -->
 			<!-- </view> -->
 			<!-- 2021.08.06购买 -->
-			<view v-if="current_card_detail.is_buy_limit != -1" class="card_detail_goumai1" 
+			<view v-if="current_card_detail.is_buy_limit != -1" 
+			class="card_detail_goumai1" 
 				:style="{backgroundColor:wxa_shop_nav_bg_color}" 
 				@tap="test_goto_buy">
 				<image class="card_detail_an" 
@@ -372,7 +376,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 							<view v-for="(card_publish_item,index) in card_publish">
 								<view class="card_detail_goumaijilv" 
 								@click="showModal_liuzhuanjilv_zengsong=true">
-									<view class="tree1">
+									<view>
 										<view style="display: flex;">
 											<view class="card_detail_modal_kapaimingxi">卡牌id：</view>
 											<b style="font-size: 34rpx;">{{card_publish_item.cplno}}</b>
@@ -1091,15 +1095,15 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				var that = this;
 
 				console.log('tgggggggggggggggggg_buy');
-				// if(!that.current_card_detail.publish_counter){
-				// 	uni.showModal({
-				// 		title:'提示',
-				// 		content:'已售空',
-				// 		showCancel:false
-				// 	})
-					
-				// 	return;
-				// }else 
+				if(!that.current_card_detail.buy_limit == -1){
+					uni.showModal({
+						title:'提示',
+						content:'已售空',
+						showCancel:false
+					})
+				
+					return;
+				}
 				if(that.current_card_detail.is_buy_limit == -1){
 					uni.showModal({
 						title:'提示',
@@ -1265,14 +1269,10 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		top: 50%;
 		left: 15%;
 		transform: translateY(-50%);
-		border-radius: 80rpx;
+		border-radius: 30rpx;
+		padding: 20rpx;
 		border: 5rpx #c3c3c3 solid;
 		background-color: #e2d281;
-		// .tree{
-		// 	width: 100%;
-		// 	height: 100%;
-		// 	overflow-y: scroll;
-		// }
 	}
 	.card_detail_goumaijilv{
 		line-height: 50rpx;
@@ -1559,5 +1559,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	}
 	.scroll-Y {
 		max-height: 760rpx;
+	}
+	.tree{
+		
 	}
 </style>
