@@ -11,8 +11,7 @@
 		
 		
 		
-	    <waterfallsFlow :list="current_card_list"
-		 @tap="go_to_card_detail(current_card_list.packageid, current_card_list.cardid)">
+	    <waterfallsFlow :list="current_card_list">
 			<!--  #ifdef  MP-WEIXIN -->
 			<!-- 微信小程序自定义内容 -->
 			<view v-for="(item, index) of list" :key="index" slot="slot{{index}}">
@@ -288,14 +287,14 @@ export default {
 		},
 		
 		// h5跳转不了,小程序可以点击跳转,但是点进去是一张空的卡牌
-		go_to_card_detail: function(packageid, cardid) {
-			console.log('packageid===>>>' + packageid);
-			console.log('cardid===>>>' + cardid);
+		// go_to_card_detail: function(packageid, cardid) {
+		// 	console.log('packageid===>>>' + packageid);
+		// 	console.log('cardid===>>>' + cardid);
 		
-			uni.navigateTo({
-				url: '/pages/nftcard/card_detail?packageid=' + packageid + '&cardid=' + cardid,
-			})
-		},
+		// 	uni.navigateTo({
+		// 		url: '/pages/nftcard/card_detail?packageid=' + packageid + '&cardid=' + cardid,
+		// 	})
+		// },
 		
 		
 	}
