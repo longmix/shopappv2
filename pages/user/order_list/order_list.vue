@@ -34,10 +34,10 @@
 						</view>
 					</view>
 					<view class="shop df bordermax" v-for="(item,index) in orderList" :key="index" style='display: block;'>
-						<navigator :url="'../orderDetail/orderDetail?orderid='+item.orderid" class="borderb font_14 orderno">
+						<view @tap="goto_order_detail(item.orderid)" class="borderb font_14 orderno">
 							订单编号：{{item.orderno}}
 							<view style="float:right;color: #666;font-size: 26rpx;">{{item.status_str}}</view>
-						</navigator> 
+						</view> 
 					
 						<block v-if="item.order_option.hahading_order_product_list_length > 0">
 							<view class="df_1 borb" style='display:flex;'>
@@ -61,7 +61,11 @@
 						</block>
 						
 						<block v-else>
-							<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../../product/detail?productid='+product_item.productid"  class="df_1 borb" style='display:flex;' v-for="(product_item,index2) in item.orderProduct" :key="index2">
+							<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" 
+								:url="'../../product/detail?productid='+product_item.productid"  
+								class="df_1 borb" style='display:flex;' 
+								v-for="(product_item,index2) in item.orderProduct" 
+								:key="index2">
 								<image class="sh_slt" :src="product_item.picture"></image>             
 								<view class="sp_text">
 									<view class="sp_tit ovh1">{{product_item.name}}</view>
@@ -82,10 +86,17 @@
 							
 						</block>
 						<view class="sp_neb" v-if="item.buyer_memo != ''">备注：<view class='fl_r'>{{item.buyer_memo}}</view></view>
+						
+						<view class="borderb bordert font_14" v-if="is_shop_admin == 1">
+							<view class="font_12"><b>管理员选项</b><view class='fl_r'></view></view>
+							<view style="clear: both;"><view class="font_12">商城名称：</view><view class='fl_r'>{{item.seller_name}}</view></view>
+							<view style="clear: both;"><view class="font_12">操作说明：</view><view class='fl_r'>进入订单详情处理订单</view></view>
+							
+						</view>
+						
 						<view  class="btn_b">
-							<navigator 
-								:url="'../orderDetail/orderDetail?orderid='+item.orderid" 
-								class="btn_min fl_r mr_5" style="color: #fff;">订单详情</navigator>
+							<view @tap="goto_order_detail(item.orderid)"
+								class="btn_min fl_r mr_5" style="color: #fff;">订单详情</view>
 						</view> 
 					</view>
 				</swiper-item>
@@ -99,7 +110,7 @@
 						</view>
 					</view>
 					<view class="shop df bordermax" v-for="(item,index) in orderList0" :key="index" style='display: block;'>
-						<navigator :url="'../orderDetail/orderDetail?orderid='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator> 
+						<view @tap="goto_order_detail(item.orderid)" class="borderb font_14">订单编号：{{item.orderno}}</view> 
 						
 						<block v-if="item.order_option.hahading_order_product_list_length > 0">
 							<view class="df_1 borb" style='display:flex;'>
@@ -145,9 +156,8 @@
 						<view class="sp_neb" v-if="item.buyer_memo != ''">备注：<view class='fl_r'>{{item.buyer_memo}}</view></view>
 						
 						<view  class="btn_b">
-							<navigator 
-								:url="'../orderDetail/orderDetail?orderid='+item.orderid" 
-								class="btn_min fl_r mr_5" style="color: #fff;">订单详情</navigator>
+							<view @tap="goto_order_detail(item.orderid)" 
+								class="btn_min fl_r mr_5" style="color: #fff;">订单详情</view>
 						</view> 
 						
 						<!-- <view  class="btn_b">
@@ -166,7 +176,7 @@
 						</view>
 					</view>
 					<view class="shop df bordermax" v-for="(item,index) in orderList1" :key="index" style='display: block;'>
-						<navigator :url="'../orderDetail/orderDetail?orderid='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator> 
+						<view @tap="goto_order_detail(item.orderid)" class="borderb font_14">订单编号：{{item.orderno}}</view> 
 						
 						<block v-if="item.order_option.hahading_order_product_list_length > 0">
 							<view class="df_1 borb" style='display:flex;'>
@@ -211,10 +221,18 @@
 						</block>
 						<view class="sp_neb" v-if="item.buyer_memo != ''">备注：<view class='fl_r'>{{item.buyer_memo}}</view></view>
 						
+						
+						<view class="borderb bordert font_14" v-if="is_shop_admin == 1">
+							<view class="font_12"><b>管理员选项</b><view class='fl_r'></view></view>
+							<view style="clear: both;"><view class="font_12">商城名称：</view><view class='fl_r'>{{item.seller_name}}</view></view>
+							<view style="clear: both;"><view class="font_12">操作说明：</view><view class='fl_r'>进入订单详情处理订单</view></view>
+							
+						</view>
+						
+						
 						<view  class="btn_b">
-							<navigator 
-								:url="'../orderDetail/orderDetail?orderid='+item.orderid" 
-								class="btn_min fl_r mr_5" style="color: #fff;">订单详情</navigator>
+							<view @tap="goto_order_detail(item.orderid)"
+								class="btn_min fl_r mr_5" style="color: #fff;">订单详情</view>
 						</view> 
 						
 					</view>
@@ -230,7 +248,7 @@
 						</view>
 					</view>
 					<view class="shop df bordermax" v-for="(item,index) in orderList2" :key="index" style='display: block;'>
-						<navigator :url="'../orderDetail/orderDetail?orderid='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator>      
+						<view @tap="goto_order_detail(item.orderid)" class="borderb font_14">订单编号：{{item.orderno}}</view>      
 						
 						<block v-if="item.order_option.hahading_order_product_list_length > 0">
 							<view class="df_1 borb" style='display:flex;'>
@@ -274,17 +292,17 @@
 						</block>
 						<view class="sp_neb" v-if="item.buyer_memo != ''">备注：<view class='fl_r'>{{item.buyer_memo}}</view></view>
 						<!-- <view  class="btn_b">
-							<navigator v-if="wxa_order_hide_daishouhuo_refund_after == 0" class="font_12 btn_min fl_r" :url="'tuihuo?orderid='+item.orderid">申请退款</navigator>
+							<navigator v-if="wxa_order_hide_daishouhuo_refund_after == 0" class="font_12 btn_min fl_r" 
+								:url="'tuihuo?orderid='+item.orderid">申请退款</navigator>
 							<view class="font_12 btn_min fl_r mr_5" @tap="recOrder" :data-orderid="item.orderid">确认收货</view>
-							<navigator :url="'../orderDetail/orderDetail?orderid='+item.orderid" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
+							<view @tap="goto_order_detail(item.orderid)" class="font_12 btn_min fl_r mr_5">订单详情</navigator>
 							<view v-if="item.status=='3'" class="font_12 btn_min fl_r mr_5" @click="pingjia" :data-orderid='item.orderid' :data-xianmaishangid='item.order_option.hahading_order_xianmai_shangid'>立即评价</view>
 							
 						</view> -->
 						
 						<view  class="btn_b">
-							<navigator 
-								:url="'../orderDetail/orderDetail?orderid='+item.orderid" 
-								class="btn_min fl_r mr_5" style="color: #fff;">订单详情</navigator>
+							<view @tap="goto_order_detail(item.orderid)"
+								class="btn_min fl_r mr_5" style="color: #fff;">订单详情</view>
 						</view> 
 						
 					</view>
@@ -298,11 +316,11 @@
 						<text></text> -->
 						<view style="text-align: center;margin-top: 100upx;">
 							<image style="width: 150upx;" mode="widthFix" src="../../../static/img/search_no.png"></image>
-							<text style="display: block;color: #8a8a8a;">没有可用订单/(ㄒoㄒ)/~~</text>
+							<text style="display: block;color: #8a8a8a;">没有订单/(ㄒoㄒ)/~~</text>
 						</view> 
 					</view>
 					<view class="shop df bordermax" v-for="(item,index) in orderList3" :key="index" style='display: block;'>        
-						<navigator :url="'../orderDetail/orderDetail?orderid='+item.orderid" class="borderb font_14">订单编号：{{item.orderno}}</navigator>
+						<view @tap="goto_order_detail(item.orderid)" class="borderb font_14">订单编号：{{item.orderno}}</view>
 						
 						<block v-if="item.order_option.hahading_order_product_list_length > 0">
 							<view class="df_1 borb" style='display:flex;'>
@@ -325,7 +343,10 @@
 							
 						</block>
 						<block v-else>
-							<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../../product/detail?productid='+product_item.productid" class="df_1 borb" style='display:flex;' v-for="(product_item,index) in item.orderProduct" :key="index">
+							<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../../product/detail?productid='+product_item.productid" 
+								class="df_1 borb" style='display:flex;' 
+								v-for="(product_item,index) in item.orderProduct" 
+								:key="index">
 								<image class="sh_slt" :src="product_item.picture"></image>            
 								<view class="sp_text">
 									<view class="sp_tit ovh1">{{product_item.name}}</view>
@@ -347,9 +368,8 @@
 						<view  class="sp_neb" v-if="item.buyer_memo != ''">备注：<view class='fl_r'>{{item.buyer_memo}}</view></view>
 						
 						<view  class="btn_b">
-							<navigator 
-								:url="'../orderDetail/orderDetail?orderid='+item.orderid" 
-								class="btn_min fl_r mr_5" style="color: #fff;">订单详情</navigator>
+							<view @tap="goto_order_detail(item.orderid)"
+								class="btn_min fl_r mr_5" style="color: #fff;">订单详情</view>
 						</view> 
 						
 					</view>
@@ -368,11 +388,11 @@
 						<view class="sp_text">
 							<navigator url="../index/detail?productId={{item.pid}}" hover-class="changestyle">
 								<view class="sp_tit ovh1">{{item.name}}</view>
-							</navigator>
+							</view>
 							<view class="sp_neb">单价：¥ {{item.price_yh}} 数量：×{{item.product_num}} 产品：×{{item.pro_count}}</view>
 							<view class="sp_jg">¥：{{item.price}}</view>
 							<view class="font_12 red fl_r">{{item.desc}}</view>
-							<navigator url="../orderDetail/orderDetail?orderid={{item.id}}" class="font_12 red fl_r mr_5">订单详情</navigator>
+							<navigator url="../orderDetail/orderDetail?orderid={{item.id}}" class="font_12 red fl_r mr_5">订单详情</view>
 						</view>
 					</view>
 				</view>
@@ -434,7 +454,10 @@
 				wxa_order_hide_daishouhuo_refund:'',
 				wxa_order_hide_daishouhuo_refund_after:'',
 				wxa_shop_nav_bg_color:'',
-				order_list_filter_keywords:''
+				order_list_filter_keywords:'',
+				
+				//2021.8.18. 管理员订单
+				is_shop_admin:0
 			}
 		},
 		
@@ -477,11 +500,20 @@
 			}			
 			console.log('this.isStatus', this.isStatus);
 			
+			if(options.is_shop_admin == 1){
+				this.is_shop_admin = 1;
+			}
+			
+			
+			this.initSystemInfo();
+			
+			
+			
 			//加载订单列表
 			this.loadOrderList();
 			
 			
-			this.initSystemInfo();
+			
 			
 			
 		}, 
@@ -501,6 +533,163 @@
 			this.abotapi.call_h5browser_or_other_goto_url('/pages/user/user');
 		},
 		// #endif
+		
+		//点击加载更多
+		onReachBottom: function () {
+			var that = this;
+			var userInfo = that.abotapi.get_user_info();
+			console.log('加载更多')
+			var that = this;
+			var page = that.page;
+			
+			// next_page++;
+			
+			uni.showLoading({
+				title:'加载中'
+			}) 
+			
+			
+			that.abotapi.abotRequest({
+				url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_index',
+				method: 'post',
+				data: {
+					order_sort: that.isStatus,
+					sellerid: that.abotapi.get_sellerid(),
+					checkstr: userInfo.checkstr,
+					userid: userInfo.userid,
+					page: page + 1
+				},
+				header: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+				},
+				success: function (res) {
+					
+					uni.hideLoading();
+		
+					console.log('11111111');
+					var list = res.data.orderList;
+					
+					
+					
+					if(list){
+									
+						for (var i = 0; i < list.length; i++) {
+						  
+						  if (list[i].order_option && ('hahading_order_product_list' in list[i].order_option) && list[i].order_option.hahading_order_product_list) {
+							console.log(i, list[i].order_option.hahading_order_product_list)
+							list[i].order_option.hahading_order_product_list = JSON.parse(list[i].order_option.hahading_order_product_list)
+							
+							if(list[i].order_option.order_xianmai_shangdata){
+								list[i].order_option.order_xianmai_shangdata = JSON.parse(list[i].order_option.order_xianmai_shangdata)
+							}
+							
+							list[i].order_option.hahading_order_product_list_length = list[i].order_option.hahading_order_product_list.length;
+							
+						  }else{
+							  
+							console.log('ddd88', list[i]);
+							
+							if(!list[i].order_option){
+								list[i].order_option = {};	
+							}
+							
+							list[i].order_option.hahading_order_product_list_length = 0;
+							
+						  }
+						}
+				
+				
+						for (var i=0; i<list.length; i++){
+						  if (list[i].order_option && ('hahading_order_xianmai_shangdata' in list[i].order_option) && list[i].order_option.hahading_order_xianmai_shangdata){
+							list[i].order_option.hahading_order_xianmai_shangdata = JSON.parse(list[i].order_option.hahading_order_xianmai_shangdata)
+						  }
+						}
+					}
+					
+					
+					/*
+					var order_list = [];
+					if (list || list != null) {
+						for (var i = 0; i < list.length; i++) {
+							//var pro_list = list[i].orderProduct;
+							//console.log(pro_list);
+							order_list.push(list[i].orderProduct);
+						}
+					}
+					*/
+					console.log('that.orderList0===>>>',that.orderList0);
+					
+					if (list == null) {
+						console.log('2222222');
+						that.isHideLoadMore = true
+						return false;
+						
+					}else{
+						switch (that.currentTab) {
+							case 0:
+								console.log('3333333');
+								setTimeout(() => {
+									that.orderList = that.orderList.concat(list)
+									that.page = page + 1
+								}, 100)
+								break;
+							case 1:
+								setTimeout(() => {
+									that.orderList0 = that.orderList0.concat(list)
+									that.page = page + 1
+								}, 100)
+								break;
+							case 2:
+								setTimeout(() => {
+									that.orderList1 = that.orderList1.concat(list);
+									that.page = page + 1;
+								}, 100)
+								break;
+							case 3:
+								setTimeout(() => {
+									that.orderList2 = that.orderList2.concat(list);
+									that.page = page + 1;
+								}, 100)
+								break;
+							case 4:
+								setTimeout(() => {
+									that.orderList3 = that.orderList3.concat(list);
+									that.page = page + 1;
+								}, 100)
+								break;
+						}
+						
+						if (list && list != null && list.length > 5) {
+							var winHeight = that.winHeight;
+							
+							console.log('888888888=====',that.page);
+							
+							var Height = winHeight * (winHeight / 370) * (that.page+1);
+							
+							console.log('height====>>>>',Height);
+							
+							that.order_list_swiper_height = Height*3
+							
+							console.log('888888888=====',that.order_list_swiper_height);
+						} 
+						else  {
+							that.order_list_swiper_height = that.winHeight + 370;
+							that.isHideLoadMore = true;
+						} 
+						
+					}
+				},
+				//that.initProductData(data);
+				fail: function (e) {
+					console.log("22222");
+					uni.showToast({
+						title: '网络异常！',
+						duration: 2000
+					});
+				}
+			})
+		},
+		
 		
 		methods:{
 			callback_set_option: function (that, cb_params) {
@@ -522,6 +711,17 @@
 				console.log('wxa_order_hide_daishouhuo_refund_after==', this.wxa_order_hide_daishouhuo_refund_after)
 			},
 			
+			goto_order_detail:function(orderid){
+				var new_url = '/pages/user/orderDetail/orderDetail?orderid=' + orderid;
+				
+				if(this.is_shop_admin){
+					new_url += '&is_shop_admin=1';
+				}
+				
+				uni.navigateTo({
+					url:new_url,
+				})
+			},
 			
 			getOrderStatus:function(){
 				return this.currentTab == 0 ? 1 : this.currentTab == 2 ?2 :this.currentTab == 3 ? 3:0;
@@ -709,161 +909,6 @@
 			},
 			
 			
-			//点击加载更多
-			onReachBottom: function () {
-				var that = this;
-				var userInfo = that.abotapi.get_user_info();
-				console.log('加载更多')
-				var that = this;
-				var page = that.page;
-				
-				// next_page++;
-				
-				uni.showLoading({
-					title:'加载中'
-				}) 
-				
-				
-				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_index',
-					method: 'post',
-					data: {
-						order_sort: that.isStatus,
-						sellerid: that.abotapi.get_sellerid(),
-						checkstr: userInfo.checkstr,
-						userid: userInfo.userid,
-						page: page + 1
-					},
-					header: {
-						'Content-Type': 'application/x-www-form-urlencoded'
-					},
-					success: function (res) {
-						
-						uni.hideLoading();
-			
-						console.log('11111111');
-						var list = res.data.orderList;
-						
-						
-						
-						if(list){
-										
-							for (var i = 0; i < list.length; i++) {
-							  
-							  if (list[i].order_option && ('hahading_order_product_list' in list[i].order_option) && list[i].order_option.hahading_order_product_list) {
-								console.log(i, list[i].order_option.hahading_order_product_list)
-								list[i].order_option.hahading_order_product_list = JSON.parse(list[i].order_option.hahading_order_product_list)
-								
-								if(list[i].order_option.order_xianmai_shangdata){
-									list[i].order_option.order_xianmai_shangdata = JSON.parse(list[i].order_option.order_xianmai_shangdata)
-								}
-								
-								list[i].order_option.hahading_order_product_list_length = list[i].order_option.hahading_order_product_list.length;
-								
-							  }else{
-								  
-								console.log('ddd88', list[i]);
-								
-								if(!list[i].order_option){
-									list[i].order_option = {};	
-								}
-								
-								list[i].order_option.hahading_order_product_list_length = 0;
-								
-							  }
-							}
-					
-					
-							for (var i=0; i<list.length; i++){
-							  if (list[i].order_option && ('hahading_order_xianmai_shangdata' in list[i].order_option) && list[i].order_option.hahading_order_xianmai_shangdata){
-								list[i].order_option.hahading_order_xianmai_shangdata = JSON.parse(list[i].order_option.hahading_order_xianmai_shangdata)
-							  }
-							}
-						}
-						
-						
-						/*
-						var order_list = [];
-						if (list || list != null) {
-							for (var i = 0; i < list.length; i++) {
-								//var pro_list = list[i].orderProduct;
-								//console.log(pro_list);
-								order_list.push(list[i].orderProduct);
-							}
-						}
-						*/
-						console.log('that.orderList0===>>>',that.orderList0);
-						
-						if (list == null) {
-							console.log('2222222');
-							that.isHideLoadMore = true
-							return false;
-							
-						}else{
-							switch (that.currentTab) {
-								case 0:
-									console.log('3333333');
-									setTimeout(() => {
-										that.orderList = that.orderList.concat(list)
-										that.page = page + 1
-									}, 100)
-									break;
-								case 1:
-									setTimeout(() => {
-										that.orderList0 = that.orderList0.concat(list)
-										that.page = page + 1
-									}, 100)
-									break;
-								case 2:
-									setTimeout(() => {
-										that.orderList1 = that.orderList1.concat(list);
-										that.page = page + 1;
-									}, 100)
-									break;
-								case 3:
-									setTimeout(() => {
-										that.orderList2 = that.orderList2.concat(list);
-										that.page = page + 1;
-									}, 100)
-									break;
-								case 4:
-									setTimeout(() => {
-										that.orderList3 = that.orderList3.concat(list);
-										that.page = page + 1;
-									}, 100)
-									break;
-							}
-							
-							if (list && list != null && list.length > 5) {
-								var winHeight = that.winHeight;
-								
-								console.log('888888888=====',that.page);
-								
-								var Height = winHeight * (winHeight / 370) * (that.page+1);
-								
-								console.log('height====>>>>',Height);
-								
-								that.order_list_swiper_height = Height*3
-								
-								console.log('888888888=====',that.order_list_swiper_height);
-							} 
-							else  {
-								that.order_list_swiper_height = that.winHeight + 370;
-								that.isHideLoadMore = true;
-							} 
-							
-						}
-					},
-					//that.initProductData(data);
-					fail: function (e) {
-						console.log("22222");
-						uni.showToast({
-							title: '网络异常！',
-							duration: 2000
-						});
-					}
-				})
-			},
 			
 			
 			loadOrderList: function(){
@@ -885,6 +930,11 @@
 					post_data.order_list_filter_keywords = this.order_list_filter_keywords;
 				}
 				
+				//2021.8.18. 如果是管理员的订单
+				if(this.is_shop_admin){
+					post_data.is_shop_admin = 1;
+				}
+				
 				that.abotapi.abotRequest({
 					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_index',
 					method:'post',
@@ -897,6 +947,15 @@
 						//console.log('list_res',res);
 						
 						var code = res.data.code;
+						
+						if(code != 1){
+							uni.showToast({
+								title:res.data.msg
+							})
+							return;
+						}
+						
+						
 						var list = res.data.orderList;
 						
 						if(!list){

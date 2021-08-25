@@ -141,7 +141,7 @@
 							'&latitude=' + orderData.order_option.xianmai_order_peisongyuan_location.latitude + 
 							'&longitude=' + orderData.order_option.xianmai_order_peisongyuan_location.longitude + 
 							'&name=' + orderData.order_option.xianmai_order_peisongyuan_location.snatch_name +
-							 '&telephone=' + orderData.order_option.xianmai_order_peisongyuan_location.mobile"">
+							 '&telephone=' + orderData.order_option.xianmai_order_peisongyuan_location.mobile">
 								点击查看骑手位置
 							</navigator>
 						</view>
@@ -299,7 +299,10 @@
 				
 				xianmai_shang_order_remark:'',//订单是否评价过
 				
-				current_orderid:0
+				current_orderid:0,
+				
+				//2021.8.18. 管理员订单
+				is_shop_admin:0
 				
 			}
 		},
@@ -317,14 +320,32 @@
 		onLoad: function(options) {
 			var that = this;
 			
+			var userInfo = that.abotapi.get_user_info();
+			if(!userInfo || !userInfo.userid){
+				uni.showModal({
+					title:'错误提示',
+					content:'请登陆后再操作',
+					showCancel:false,
+					success: (res) => {
+						that.abotapi.call_h5browser_or_other_goto_url('/pages/index/index');
+					}
+				})
+				return;
+			}
+			
 			
 			that.abotapi.set_option_list_str(this, this.callback_set_option);
 			
-			this.current_orderid = options.orderid
-			this.balance_zengsong_dikou = options.balance_zengsong_dikou
-			this.balance_dikou = options.balance_dikou
+			this.current_orderid = options.orderid;
+			this.balance_zengsong_dikou = options.balance_zengsong_dikou;
+			this.balance_dikou = options.balance_dikou;
 			
 		
+			if(options.is_shop_admin == 1){
+				this.is_shop_admin = 1;
+			}
+			
+			
 			this.loadProductDetail();
 		}, 
 		onShow: function () {
@@ -369,15 +390,18 @@
 			      var userInfo = that.abotapi.get_user_info();
 			  
 			      var that = this;
+				  
 			      console.log('userid', userInfo.userid);
 			      console.log('userstr', userInfo.checkstr);
+				  
 			      that.abotapi.abotRequest({
 			        url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_xiangqing',
 			        data: {
 			          orderid: that.current_orderid,
 			          userid: userInfo.userid,
 			          checkstr: userInfo.checkstr,
-			          sellerid: that.abotapi.get_sellerid()
+			          sellerid: that.abotapi.get_sellerid(),
+					  is_shop_admin : that.is_shop_admin
 			        },
 			        success: function (res) {
 			          var code = res.data.code;
