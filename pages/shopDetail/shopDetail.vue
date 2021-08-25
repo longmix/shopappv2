@@ -309,7 +309,7 @@
 					
 				</view>		
 				
-				<!-- 发型商发行的卡包 -->
+				<!-- 发行商发行的卡包 -->
 				<view class="nft_issue_package_list">
 					<view style="height: 20rpx;"></view>
 					<view class="nft_package_list" v-for="(item,index) in current_nft_package_list" :key='index' 
@@ -317,6 +317,12 @@
 						<view class="nft_package" >
 							<view class="">
 								<img class="supplier_package_list" :src="item.cover_img_url"  >
+								<image class="package_list_mark" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/mark02.png" mode="widthFix" ></image>
+								<view class="package_list_mark_num">
+									<view style="color: #cdcdcd;font-weight: bold; font-size: 35rpx;">{{item.card_count_mianfei}}</view>
+									<view style="color: #FFFFFF;">/</view>
+									<view style="color: yellow;font-weight: bold; font-size: 35rpx;">{{item.card_count_fufei}}</view>
+								</view>
 							</view>
 							
 							<view class="supplier_image_description">
@@ -740,10 +746,10 @@
 
 			console.log('options===', options)
 
+			
 			var that = this;
 
 			var xianmai_shangid = 0;
-			
 			
 			that.current_card_detail = {
 				'title': ' '
@@ -1273,7 +1279,7 @@
 					data: {
 						sellerid:that.abotapi.globalData.default_sellerid,
 						nft_supplierid:that.current_xianmai_shangid,
-						packageid: that.current_packageid,
+						
 						action:'card_hot_list'
 						
 						
@@ -2876,6 +2882,7 @@
 	}
 	.nft_package{
 		display: flex;
+		position: relative;
 		
 	}
 	.supplier_image_description{
@@ -3076,5 +3083,20 @@
 		-webkit-line-clamp:1;
 		-webkit-box-orient:vertical;
 		
+	}
+	.package_list_mark{
+		width: 150rpx;
+		top: 0rpx;
+		left: 190rpx;
+		position: absolute;
+		z-index: 1;
+		opacity: 0.6;
+	}
+	.package_list_mark_num{
+		display: flex;
+		position:absolute;
+		left: 270rpx;
+		top: 14rpx;
+		z-index: 2;
 	}
 </style>

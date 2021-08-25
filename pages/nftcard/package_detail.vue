@@ -28,9 +28,8 @@
 						mode="widthFix" style="width: 45rpx;margin-top: 17rpx;margin-left: 18rpx;"></image>
 				</view>
 				
-				
-				<view class="show_modal_mask" v-if="showModal" @tap="showModal=false"@touchmove.stop.prevent = "doNothing"></view>
-				<view class="show_modal_pop" v-if="showModal">
+					<view class="show_modal_mask" v-if="showModal" @tap="showModal=false"@touchmove.stop.prevent = "doNothing"></view>
+					<view class="show_modal_pop" v-if="showModal">
 				
 				</view>	
 			</view>
@@ -256,7 +255,7 @@
 		
 		
 		<!-- 富媒体文本展示卡牌详情 -->
-		<view class="" style="margin-left: 20rpx;width: 710rpx;background-color: #FFFFFF;">
+		<view class="" style="margin-left: 20rpx;width: 710rpx;background-color: #FFFFFF;border-radius: 10rpx;">
 			<view class="description001">
 				<view class="content">
 					<!-- #ifdef MP-ALIPAY -->
@@ -265,7 +264,6 @@
 					<!-- #ifndef MP-ALIPAY -->
 					<rich-text :nodes="card_description|formatRichText"></rich-text>
 					<!-- #endif -->
-				
 				
 				</view>
 				
@@ -617,7 +615,8 @@ export default {
 			}
 		}
 	},
-	// 
+	
+	// 朋友圈
 	onShareTimeline: function () {
 		return this.share_return();
 	},
@@ -930,18 +929,28 @@ export default {
 				return;
 			}
 			//============= End ================
-					
-					
+			
+				
+				var post_data = {
+						sellerid:that.abotapi.globalData.default_sellerid,
+						packageid:that.current_packageid,
+						data_type:'package',
+						userid:that.current_userid,				
+					};
+				
+				
+				var userInfo = that.abotapi.get_user_info();
+				if(userInfo){
+					post_data.userid = userInfo.userid;
+					post_data.checkstr = userInfo.checkstr;
+				}
+				
+				
 			
 			that.abotapi.abotRequest({
 			    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_nftcard_poster',
-			    method: 'post',
-			    data: {
-					sellerid:that.abotapi.globalData.default_sellerid,
-					packageid:that.current_packageid,
-					data_type:'package',
-					
-			    },
+			    method: 'get',
+			    data:post_data,
 			    success: function (res) {
 					
 					if(res.data.code != 1){
