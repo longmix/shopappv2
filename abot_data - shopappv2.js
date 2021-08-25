@@ -49,6 +49,12 @@ const globalData = {
 		
 		baidu_map_ak: 'OTsGerqQhowGSFOWG8c6p86R',
 		userInfo: {},
+		
+		//2021.1.13. 关于订单支付的特殊设置
+		order_buy_payment_to_mp_weixin:0, //将微信支付订单跳转到小程序中
+		  
+		//2021.8.5. 重新定义商家列表为supplier列表 /pages/shopList/shopList
+		xianmai_shang_list_switch_to_supplier_list:0,
 	};
 
 module.exports = {

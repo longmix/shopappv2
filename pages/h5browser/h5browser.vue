@@ -111,18 +111,24 @@
 		
 				var extra_option_str = '';
 				
+				console.log('111111111111111111111======>>>>'+options.url);
+				
 				// #ifdef MP-WEIXIN
 				options.url = decodeURIComponent(options.url);
 				
 				console.log('微信小程序中做特殊判断，多加一次转换后的参数：', options);
+				console.log('111111111 decodeURIComponent======>>>>' + this.url);
+				
 				// #endif
+				
+				//console.log('111111111 decodeURIComponent======>>>>' + this.url);
 		
 		
 		        //判断分享转发的特殊参数，即带了分享转发的文字和图片
 		        Object.keys(options).forEach(function (key) {
 		
-				//console.log(key, obj[key]);
-				if (key != 'url'){
+					//console.log(key, obj[key]);
+					if (key != 'url'){
 						extra_option_str += key+'='+options[key]+'&';
 					}
 		        });
@@ -145,11 +151,11 @@
 			
 		        }
 				
-				console.log('111111111111111111111======>>>>'+options.url);
 				
-				this.url = decodeURIComponent(options.url)
 				
-				console.log('111111111 decodeURIComponent======>>>>' + this.url);
+				//this.url = decodeURIComponent(options.url)
+				
+				
 		        
 		    }
 			else {	
@@ -166,6 +172,87 @@
 			if(e.text == '首页'){
 				this.abotapi.call_h5browser_or_other_goto_url('/pages/index/index');
 			}
+		},
+		onShareAppMessage: function (options) {
+		  console.log(options);
+		  
+			var self = this;
+			var url1 = options.webViewUrl;
+			/*
+			if (url.indexOf("?") != -1) {
+				url = url.replace("?", "*");
+			}
+			*/
+		   
+			console.log(options.webViewUrl);
+	
+		  //设置分享转发的内容
+		  var share_title = this.data.current_shop_list.name;
+	
+		  var share_image = this.data.current_shop_list.icon;
+	
+		  var share_path = 'pages/h5browser/h5browser?url=' + encodeURIComponent(url1);
+	
+		  if (this.share_title) {
+			share_title = this.share_title;
+		  }
+		  if (this.share_image) {
+			share_image = this.share_image;
+		  }
+	
+		  if(this.share_path_extra_option){
+			share_path += '&' + this.share_path_extra_option;
+		  }
+	
+		  console.log("share_path==", share_path)
+	
+	
+		  var share_data = { 
+			title: share_title,
+			path: share_path,
+	
+			success: function (res) {
+			  // 转发成功
+			  
+			},
+			fail: function (res) {
+			  // 转发失败
+			}
+		  }
+	
+		  if(share_image){
+			share_data.imageUrl = share_image
+		  }
+	
+	
+		  return share_data;
+	
+	
+			
+		},
+		onShareTimeline: function () {
+		  var that = this;
+	
+		  //设置分享转发的内容
+		  var share_title = this.data.current_shop_list.name;
+		  var share_image = this.data.current_shop_list.icon;
+	
+		  if (this.data.share_title) {
+			share_title = this.data.share_title;
+		  }
+		  if (this.data.share_image) {
+			share_image = this.data.share_image;
+		  }
+	
+	
+		  return {
+			title: share_title,
+			query: that.data.current_params_str, 
+			imageUrl: share_image
+		  }
+		},
+		onAddToFavorites: function () {
+		  return this.onShareTimeline();
 		},
 		methods: {
 			
