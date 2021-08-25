@@ -4,12 +4,13 @@
 	<!-- 搜索框 -->
 	
 
-		<view class="package_search" >
+		<view class="package_search" @tap="package_list_search()">
 			
-			<input placeholder="提示卡包" style="width: 570rpx;height: 60rpx;margin-left: 20rpx;font-weight: 100;"
-			 confirm-type="search"  />
-			<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/search.png"
-				mode="widthFix" style="width: 45rpx; margin-top: 8rpx;"></image>
+			<input  placeholder="提示卡包" class="search_package" value=""
+				confirm-type="search" />
+			<button style="width: 90rpx; height: 65rpx;line-height: 80rpx;"><image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/search01.png"
+				mode="widthFix" style="width: 45rpx;"></image>
+			</button>
 		</view>
 	
 				<!-- 排序 -->
@@ -46,7 +47,7 @@
 					<!-- 标签 -->
 
 					<view class="package_detail_label" style="position: relative;">
-						<image class="package_list_mark" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/mark02.png" mode="widthFix" ></image>
+						<image class="package_list_mark" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/mark01.png" mode="widthFix" ></image>
 					 	<view class="package_list_mark_num">
 							<view style="color: #cdcdcd;font-weight: bold; font-size: 35rpx;">{{current_package_item.card_count_mianfei}}</view>
 							<view style="color: #FFFFFF;">/</view>
@@ -315,6 +316,55 @@ export default {
 		
 		bindPickerChange(e){
 			console.log(e)
+		},
+		
+		
+		package_list_search:function(){
+			var that = this;
+					
+			// 获取卡包
+			that.abotapi.abotRequest({
+			    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_list',
+			    method: 'post',
+			    data: {
+					sellerid:that.abotapi.globalData.default_sellerid,
+					nft_supplierid : that.current_nft_supplierid,
+					
+					
+			    },
+			    success: function (res) {
+					
+					if(res.data.code != 1){
+						uni.showToast({
+							title:'卡包列表没数据',
+							duration: 2000,
+						});
+						
+						return;
+					}
+			
+					that.current_package_list = res.data.data;
+					
+					console.log('current_package_list ===>>> ', that.current_package_list);
+					
+					
+					
+					
+					
+					
+					
+					
+							
+					
+			    },
+			    fail: function (e) {
+					uni.showToast({
+						title: '网络异常！',
+						duration: 2000
+					});
+			    },
+			});
+			
 		}
 		
 		
@@ -338,11 +388,18 @@ export default {
 		top: 10px;
 		margin-bottom: 50rpx;
 		margin-left: 50rpx;
-		width: 650rpx;
+		width: 660rpx;
 		
 		background-color: #FFFFFF;
 		border-radius: 30rpx;
 		overflow: hidden;
+	}
+	.search_package{
+		width: 620rpx;
+		height: 60rpx;
+		margin-top: 3rpx;
+		margin-left: 20rpx;
+		font-weight: 100;
 	}
 	.drop_down_menu{
 		margin: 30rpx 10rpx 10rpx 40rpx;

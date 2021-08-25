@@ -70,18 +70,18 @@
 				<view class="supplier_follow_num_icon">
 					<!-- 关注人数====粉丝数量 -->
 					<view class="supplier_follow_num" >
-						<view style="font-size: 20rpx;font-weight: 100;text-align: center;">粉丝</view>
+						<view style="font-size: 25rpx;font-weight: 100;text-align: center;">粉丝</view>
 						<view style="font-size: 40rpx;font-weight: bold;text-align: center;">{{current_shang_detail.supplier_fans_count}}</view>
 					</view>
 				</view>
 					
 				
 				<view class="supplier_package_num">
-					<view style="font-size: 20rpx;font-weight: 100;">卡包</view>
+					<view style="font-size: 25rpx;font-weight: 100;">卡包</view>
 					<view style="font-size: 40rpx;font-weight: bold;">{{current_shang_detail.package_count}}</view>
 				</view>
 				<view class="supplier_package_num01">
-					<view style="font-size: 20rpx;font-weight: 100;text-align: center;">卡牌</view>
+					<view style="font-size: 25rpx;font-weight: 100;text-align: center;">卡牌</view>
 					<view style="font-size: 40rpx;font-weight: bold;text-align: center;">{{current_shang_detail.card_count}}</view>
 				</view>
 				
@@ -268,7 +268,7 @@
 		<view style="border-bottom:6px solid #eceeef;"  v-if="nft_package_list_show_flag == 1">
 			<view class="">
 				<view class="" style="width:100%;background-color: #eceeef;">
-					<view class="supplier_icon-title3" style="margin-left: 10rpx;">
+					<view class="supplier_icon-title3" style="margin-left: 10rpx;border-radius: 10rpx;">
 						<view class="supplier_icon-title4" :style="{borderBottom:wxa_shop_nav_bg_color+' 2rpx solid'}">
 							<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/rocket.png" mode="widthFix" style="width: 45rpx;margin-left: 10rpx;margin-top: 8rpx;"></image>
 							<view class='nft_supplier_biaoti'  :style="{color:wxa_shop_nav_bg_color}"  >热门卡牌</view>	
@@ -280,7 +280,7 @@
 					<view class="supplier_hot_card" >
 						<scroll-view scroll-x="true" style="background-color:#FFFFFF;width: 730rpx;margin-left: 10rpx;" >
 							<view class="" style="display: flex;height: 390rpx;">
-								<view class="" style="margin-right: 20rpx ;margin-bottom: 30rpx;" v-for="(current_card_item,index) in current_nft_card_list"
+								<view class="" style="margin-bottom: 30rpx;" v-for="(current_card_item,index) in current_nft_card_list"
 										@tap="go_to_card_detail(current_card_item.packageid, current_card_item.cardid)">
 									<view class="slide_cards_pic"style="height: 350rpx;">
 										<image class="card_detail_img_border" :src="current_card_item.cover_img_url_2x3_stand" mode="widthFix"
@@ -317,7 +317,7 @@
 						<view class="nft_package" >
 							<view class="">
 								<img class="supplier_package_list" :src="item.cover_img_url"  >
-								<image class="package_list_mark" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/mark02.png" mode="widthFix" ></image>
+								<image class="package_list_mark" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/mark01.png" mode="widthFix" style="border-top-right-radius: 20rpx;"></image>
 								<view class="package_list_mark_num">
 									<view style="color: #cdcdcd;font-weight: bold; font-size: 35rpx;">{{item.card_count_mianfei}}</view>
 									<view style="color: #FFFFFF;">/</view>
@@ -2944,13 +2944,15 @@
 		border-bottom:6px solid #eee;
 		background-color: #eceeef; 
 		padding-left: 10rpx;
+	
 	}
 	.supplier_icon-title3{
 		width: 730rpx;
 		background-color: #FFFFFF;
 		margin-top: 10rpx 20rpx;
 		display: flex;
-
+		border-radius: 10rpx;
+	
 		align-items: center;
 		
 	
@@ -2958,7 +2960,7 @@
 	.supplier_hot_card{
 		background-color: #eceeef;
 		height: 400rpx;
-	
+		
 	}
 	.supplier_icon-title4{
 		display: flex;
@@ -3007,7 +3009,7 @@
 	
 		margin-top: 0rpx;
 		
-		background-color:#666666; 
+		background-color:#999999; 
 		border-radius: 10rpx;
 		overflow: hidden;
 	}
@@ -3041,7 +3043,8 @@
 		padding: 5rpx 60rpx 10rpx 0rpx;
 		
 		position:relative;
-		border-radius: 10rpx;
+		border-bottom-left-radius: 10rpx;
+		border-bottom-right-radius: 10rpx;
 		.info{
 			
 			margin-left: 10rpx;

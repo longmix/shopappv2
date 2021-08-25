@@ -30,7 +30,10 @@
 				
 					<view class="show_modal_mask" v-if="showModal" @tap="showModal=false"@touchmove.stop.prevent = "doNothing"></view>
 					<view class="show_modal_pop" v-if="showModal">
-				
+						<view class="">
+							<image :src="current_nftcard_poster.img_url" mode="widthFix" ></image>
+						</view>
+						
 				</view>	
 			</view>
 			 
@@ -200,10 +203,16 @@
 				<view class="card_list"
 						v-for="(current_card_item,index) in current_card_list"
 						@tap="go_to_card_detail(current_card_item.packageid, current_card_item.cardid)">
+						
 					<view class="" style="width: 340rpx;height: 615rpx;">
-						<image class="package_card_img" :src="current_card_item.cover_img_url_2x3" mode=""></image>
-					
-					
+						 
+					<!--是否购买  加灰透明 加水印 -->
+					 <view style="background-color: #000000;width:340rpx;height: 510rpx;">
+						<image v-if="current_card_item.is_buyed == 0" class="package_card_watermark" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/watermark01.png" mode="widthFix" ></image>
+						<image v-if="current_card_item.is_buyed == 0" class="package_card_img" :src="current_card_item.cover_img_url_2x3" mode="" style="opacity:0.7 ;"></image>
+						<image v-if="current_card_item.is_buyed == 1" class="package_card_img" :src="current_card_item.cover_img_url_2x3" mode=""></image>
+						
+					</view>
 						<!-- icon喜欢图标和喜欢人数-----------已有卡牌/已发售卡牌 -->
 						<view class="already_sold_card_icon_like">
 							<view class="card_like_num" >
@@ -231,31 +240,35 @@
 					
 		</view>
 		
-		
-		<!-- 系列卡包 -->
-		<view class="" style="margin: 20rpx;">
-			<!-- <view style="font-weight: 100;font-size: 10rpx;float: right;color: red;margin-top: 10rpx;" 
-			@tap="go_to_package_list()">>>更多卡包>></view> -->
-			<view class="" style="font-weight: bold;">推荐卡包</view>
-		</view>
-		<scroll-view scroll-x="true">
-			<view class="" style="display: flex;margin-left: 20rpx;margin-right: 20rpx;">
-				<view class="" style="margin-bottom: 30rpx;" v-for="(current_package_item,index) in current_package_list"
-						@tap="goto_package_detail(current_package_item.packageid)">
-					<image class="package_list_recommend" :src="current_package_item.cover_img_url" mode=""></image>
-					<view class="series_package" style="font-weight: bold;margin-left: 5rpx;width: 200rpx;word-wrap: break-word;">{{current_package_item.title}}</view>
-				</view>	
-			</view>
-					
-		</scroll-view>
+		<view class="package_recommend" >
+			<!-- 推荐的卡包 -->
 			
+				<view class="package_recommend1" :style="{borderBottom: wxa_shop_nav_bg_color+' 2rpx solid'}" >
+					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/suoshukabaotubiao.png" mode="widthFix" style="width: 40rpx;margin: 10rpx 10rpx 10rpx 20rpx;"></image>
+					<view class="" style="font-weight: bold;color: #30C478;">推荐卡包</view>
+				</view>
+		
+			
+			<scroll-view scroll-x="true">
+				<view class="" style="display: flex;margin-left: 20rpx;margin-right: 20rpx;">
+					<view class="" style="margin-bottom: 30rpx;" v-for="(current_package_item,index) in current_package_list"
+							@tap="goto_package_detail(current_package_item.packageid)">
+						<image class="package_list_recommend" :src="current_package_item.cover_img_url" mode=""></image>
+						<view class="series_package" style="font-weight: bold;margin-left: 5rpx;width: 200rpx;word-wrap: break-word;">{{current_package_item.title}}</view>
+					</view>	
+				</view>
+						
+			</scroll-view>
+				
+		</view>
+		
 		
 		
 		
 		
 		
 		<!-- 富媒体文本展示卡牌详情 -->
-		<view class="" style="margin-left: 20rpx;width: 710rpx;background-color: #FFFFFF;border-radius: 10rpx;">
+		<view class="" style="background-color: #FFFFFF;margin-top: 30rpx;">
 			<view class="description001">
 				<view class="content">
 					<!-- #ifdef MP-ALIPAY -->
@@ -294,6 +307,7 @@ export default {
 			current_package_list:null,
 			current_card_list:null,
 			current_supplier_fans_add:null,
+			current_nftcard_poster:null,
 			current_packageid:0,
 	
 			current_cardid:0, 
@@ -949,7 +963,7 @@ export default {
 			
 			that.abotapi.abotRequest({
 			    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_nftcard_poster',
-			    method: 'get',
+			    method: 'post',
 			    data:post_data,
 			    success: function (res) {
 					
@@ -1065,10 +1079,32 @@ export default {
 		__nft_get_card_list:function(filter_price_type=-1, filter_userid_type=-1){
 			var that = this;
 			
+			
+			//======= 判断用户是否登录 ============
+			var last_url = '/pages/nftcard/card_detail?' + that.current_params_str;
+			
+			var userInfo = that.abotapi.get_user_info();
+			if (!userInfo) {
+				that.abotapi.goto_user_login(last_url);
+			
+				return;
+			}
+			//============= End ================
+			
 			var post_data = {
 					sellerid:that.abotapi.globalData.default_sellerid,
 					packageid:that.current_packageid,
 			};
+			
+			
+			    var userInfo = that.abotapi.get_user_info();
+			    if (userInfo) {
+			    	post_data.userid = userInfo.userid;
+			    	post_data.checkstr = userInfo.checkstr;
+			   }
+			
+			
+			
 			
 			if(filter_price_type != -1){
 				//典藏卡
@@ -1079,6 +1115,7 @@ export default {
 				//典藏卡
 				post_data.filter_userid_type = filter_userid_type;
 			}
+			
 			
 			
 			that.abotapi.abotRequest({
@@ -1362,7 +1399,7 @@ export default {
 		
 		border: #15c5ce solid 2rpx;
 		color: #15c5ce;
-		margin: 0rpx 20rpx 10rpx 0rpx;
+		margin: 10rpx 20rpx 10rpx 0rpx;
 		
 		border-radius: 6rpx;
 		overflow: hidden;
@@ -1450,6 +1487,13 @@ export default {
 		
 		
 	}
+	.package_card_watermark{
+		width: 120rpx;
+		position: absolute;
+		margin-top: 200rpx;
+		margin-left: 110rpx; 
+		z-index: 1;
+	}
 	.package_card_img{
 		
 		width: 340rpx; 
@@ -1501,6 +1545,21 @@ export default {
 		text-overflow: ellipsis;
 		
 	}
+	.package_recommend{
+		background-color: #FFFFFF;
+		width: 710rpx;
+
+		border-radius: 10rpx;
+		margin: 20rpx ;
+	}
+	.package_recommend1{
+		display: flex;
+		height: 60rpx; 
+		line-height: 60rpx;
+		margin-bottom: 10rpx;
+		width: 195rpx;
+	}
+	
 	.package_list_recommend{
 		width: 200rpx;
 		height: 200rpx; 
