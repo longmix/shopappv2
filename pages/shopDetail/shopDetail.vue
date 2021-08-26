@@ -1377,9 +1377,9 @@
 						
 						
 						if (value003 == 1) {
-							that.current_shang_detail.is_fans++;
+							that.current_shang_detail.supplier_fans_count++;
 						} else {
-							that.current_shang_detail.is_fans--;
+							that.current_shang_detail.supplier_fans_count--;
 						}
 						
 						
