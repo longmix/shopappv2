@@ -182,19 +182,12 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					<image class="card_detail_tubiao" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/tongxilitubiao.png"></image>同系列卡牌
 				
 				</h4>
-				<view>
+				<view v-if="">
 					<scroll-view scroll-x="true">
 						<view style="display: flex;">
 							<view v-for="(current_card_list_item,index) in current_card_list"
 								@tap="go_to_card_detail(current_card_list_item.packageid, current_card_list_item.cardid)">
-								
-								<view v-if="current_card_detail.is_buyed == 1" class="slide_cards_pic">
-									<image :src="current_card_list_item.cover_img_url_2x3" mode="aspectFill"
-										class="card_detail_img_border"></image>
-									<view class="card_detail_kapai_title">{{current_card_list_item.card_name}}
-									</view>
-								</view>
-								<view v-else class="slide_cards_pic_border">
+								<view class="slide_cards_pic">
 									<image :src="current_card_list_item.cover_img_url_2x3" mode="aspectFill"
 										class="card_detail_img_border"></image>
 									<view class="card_detail_kapai_title">{{current_card_list_item.card_name}}
@@ -532,18 +525,40 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			that.current_card_detail.favorite_counter = 0;
 
 			that.current_card_detail.package_title = '';
-			that.current_card_detail.supplier_name = '';
+			// that.current_card_detail.supplier_name = '';
 			that.current_card_detail.is_buyed = 0;
 			that.current_card_detail.clue = '';
 			
 			that.current_card_detail.buyed_counter= 0 ;//购买卡的次数
 			
-			that.current_package_detail.brief = ''; //卡包介绍
-			// that.card_publish_list.cplseq=0;//卡牌序号
+			
 			that.current_card_detail.sale_counter = 0;//领取了多少   售出的数量
 			that.current_card_detail.publish_counter = 0; //发售的数量
 			
 			that.current_card_detail.sale_percent = 50;
+			
+			
+			
+			
+			that.current_package_detail = {
+				'title': ' '
+			};
+			
+			that.current_package_detail.brief = ''; //卡包介绍
+			
+			
+			
+			
+			
+			// that.current_package_detail = {
+			// 	'title': ' '
+			// };
+			
+			// that.current_package_detail.brief = ''; //卡包介绍
+			
+			
+			// that.card_publish_list.cplseq=0;//卡牌序号
+			
 
 			uni.showLoading({
 				title:'数据加载中...',
@@ -652,6 +667,19 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 
 					console.log('current_card_detail ===>>> ', that.current_card_detail);
 					
+					that.current_packageid = that.current_card_detail.packageid;
+					
+					//卡包详情
+					that.__get_package_detail();
+					
+					//卡牌列表
+					that.__get_card_list();
+					
+					//购买的卡牌
+					that.__get_card_publish_list();
+					
+					
+					
 					that.current_card_detail.user_have_counter= 0;//购买卡的次数
 					
 					//计算已经售出的备份比
@@ -699,75 +727,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				},
 			});
 
-			//获取卡包详情
-			that.abotapi.abotRequest({
-				url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_detail',
-
-				method: 'post',
-				data: {
-					sellerid: that.abotapi.globalData.default_sellerid,
-					packageid: that.current_packageid,
-				},
-				success: function(res) {
-
-					if (res.data.code != 1) {
-						uni.showToast({
-							title: '卡包详情没有数据',
-							duration: 2000,
-						});
-
-						return;
-					}
-
-					that.current_package_detail = res.data.data;
-
-					console.log('current_package_detail ===>>> ', that.current_package_detail);
+			//
 
 
-				},
-				fail: function(e) {
-					uni.showToast({
-						title: '网络异常！',
-						duration: 2000
-					});
-				},
-			});
-
-
-			//获取卡牌列表
-			that.abotapi.abotRequest({
-				url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_list',
-
-				method: 'post',
-				data: {
-					sellerid: that.abotapi.globalData.default_sellerid,
-					packageid: that.current_packageid,
-					cardid: that.current_cardid,
-				},
-				success: function(res) {
-
-					if (res.data.code != 1) {
-						uni.showToast({
-							title: '卡包详情没有数据',
-							duration: 2000,
-						});
-
-						return;
-					}
-
-					that.current_card_list = res.data.data;
-
-					console.log('current_card_list ===>>> ', that.current_card_list);
-
-
-				},
-				fail: function(e) {
-					uni.showToast({
-						title: '网络异常！',
-						duration: 2000
-					});
-				},
-			});
 			
 			if(!userInfo){
 				return;
@@ -775,50 +737,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			
 			//以下数据需要登陆后再发请求
 			
-			//获取单张卡牌的购买记录列表
-			post_data = {
-				sellerid: that.abotapi.globalData.default_sellerid,
-				packageid: that.current_packageid,
-				cardid: that.current_cardid,
-			};
 			
-			if (!userInfo) {
-				return;
-				
-			}
-			
-			post_data.userid = userInfo.userid;
-			post_data.checkstr = userInfo.checkstr;
-			
-			
-			that.abotapi.abotRequest({
-				url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_publish',
-				method: 'post',
-				data: post_data,
-				success: function(res) {
-
-					if (res.data.code != 1) {
-						uni.showToast({
-							title: '数据加载完成',
-							duration: 2000,
-						});
-
-						return;
-					}
-					
-					that.card_publish = res.data.data;
-
-					console.log('card_publish ===>>> ', that.card_publish);
-
-
-				},
-				fail: function(e) {
-					uni.showToast({
-						title: '网络异常！',
-						duration: 2000
-					});
-				},
-			});
 
 		},
 
@@ -1200,8 +1119,139 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				
 			   
-			  },
+			},
 			
+			__get_card_list:function(){
+				var that = this;
+				
+				//获取卡牌列表
+				that.abotapi.abotRequest({
+					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_list',
+				
+					method: 'post',
+					data: {
+						sellerid: that.abotapi.globalData.default_sellerid,
+						packageid: that.current_packageid,
+						cardid: that.current_cardid,
+					},
+					success: function(res) {
+				
+						if (res.data.code != 1) {
+							uni.showToast({
+								title: '卡包详情没有数据',
+								duration: 2000,
+							});
+				
+							return;
+						}
+				
+						that.current_card_list = res.data.data;
+				
+						console.log('current_card_list ===>>> ', that.current_card_list);
+				
+				
+					},
+					fail: function(e) {
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+					},
+				});
+				
+				
+				
+			},
+			__get_package_detail:function(){
+				var that = this;
+				
+				//获取卡包详情
+				that.abotapi.abotRequest({
+					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_detail',
+				
+					method: 'post',
+					data: {
+						sellerid: that.abotapi.globalData.default_sellerid,
+						packageid: that.current_packageid,
+					},
+					success: function(res) {
+				
+						if (res.data.code != 1) {
+							uni.showToast({
+								title: '卡包详情没有数据',
+								duration: 2000,
+							});
+				
+							return;
+						}
+				
+						that.current_package_detail = res.data.data;
+				
+						console.log('current_package_detail ===>>> ', that.current_package_detail);
+				
+				
+					},
+					fail: function(e) {
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+					},
+				});
+			},
+			
+			__get_card_publish_list:function(){
+				var that = this;
+				
+				var userInfo = that.abotapi.get_user_info();
+				
+				if (!userInfo) {
+					return;
+					
+				}
+				
+				
+				//获取单张卡牌的购买记录列表
+				var post_data = {
+					sellerid: that.abotapi.globalData.default_sellerid,
+					packageid: that.current_packageid,
+					cardid: that.current_cardid,
+				};
+				
+				
+				post_data.userid = userInfo.userid;
+				post_data.checkstr = userInfo.checkstr;
+				
+				
+				that.abotapi.abotRequest({
+					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_publish',
+					method: 'post',
+					data: post_data,
+					success: function(res) {
+				
+						if (res.data.code != 1) {
+							uni.showToast({
+								title: '数据加载完成',
+								duration: 2000,
+							});
+				
+							return;
+						}
+						
+						that.card_publish = res.data.data;
+				
+						console.log('card_publish ===>>> ', that.card_publish);
+				
+				
+					},
+					fail: function(e) {
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+					},
+				});
+			},
 			
 			
 			

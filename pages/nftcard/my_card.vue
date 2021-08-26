@@ -14,7 +14,7 @@
 	    <waterfallsFlow :list="current_card_list">
 			<!--  #ifdef  MP-WEIXIN -->
 			<!-- 微信小程序自定义内容 -->
-			<view v-for="(item, index) of list" :key="index" slot="slot{{index}}">
+			<view v-for="(item, index) of list" :key="index" slot="list{{index}}">
 				<view class="cnt">
 					<view class="title">{{ item.title }}</view>
 					<view class="text">{{ item.text }}</view>
@@ -30,7 +30,7 @@
 					<view class="text">{{ item.text }}</view>
 				</view>
 			</template>
-	    <!-- #endif -->
+			<!-- #endif -->
 	    </waterfallsFlow>
 	</view>
 	
