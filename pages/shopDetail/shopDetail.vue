@@ -1366,9 +1366,7 @@
 							return;
 						}
 						
-						that.current_supplierid = res.data.data;
-						
-						console.log('current_supplierid  ===>>> ', that.current_supplierid);
+						console.log('current_supplier_fans_add  ===>>> ', that.current_supplier_fans_add);
 						
 						
 						
@@ -1378,6 +1376,11 @@
 						that.current_shang_detail.is_fans = value003;
 						
 						
+						if (value003 == 1) {
+							that.current_shang_detail.is_fans++;
+						} else {
+							that.current_shang_detail.is_fans--;
+						}
 						
 						
 						

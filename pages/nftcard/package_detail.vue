@@ -401,6 +401,9 @@ export default {
 		that.current_package_detail.status_str = '';
 		that.current_package_detail.sale_percent = 0;
 		that.current_package_detail.tag_list = '';
+		that.current_package_detail.supplier_item = {};
+		
+		that.current_nftcard_poster = {};
 		
 		
 		//当前卡包所属的supplierid
@@ -977,7 +980,7 @@ export default {
 					
 			
 			
-					that.current_nftcard_poster = res.data.data;
+					that.current_nftcard_poster = res.data;
 					
 					console.log('current_nftcard_poster ===>>> ', that.current_nftcard_poster);
 				
