@@ -23,15 +23,15 @@
 			
 			<view class="">
 				<!-- 截图按钮 -->
-				 <view class="package_ps"  @tap="package_showModal()" >
+				 <view class="package_ps"  @tap="package_showPosterModal()" >
 					<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/ps.png"
 						mode="widthFix" style="width: 45rpx;margin-top: 17rpx;margin-left: 18rpx;"></image>
 				</view>
 				
-					<view class="show_modal_mask" v-if="showModal" @tap="showModal=false"@touchmove.stop.prevent = "doNothing"></view>
-					<view class="show_modal_pop" v-if="showModal">
-						<view class="">
-							<image :src="current_nftcard_poster.img_url" mode="widthFix" ></image>
+					<view class="show_modal_mask" v-if="showPosterModal" @tap="showPosterModal=false"@touchmove.stop.prevent = "doNothing"></view>
+					<view class="show_modal_pop" v-if="showPosterModal">
+						<view class="" style="width: 600rpx; height:600rpx ;background-color: #FFFFFF;">
+							<image :src="current_nftcard_poster.img_url" mode="widthFix" style="width: 100%;" ></image>
 						</view>
 						
 				</view>	
@@ -307,14 +307,13 @@ export default {
 			current_package_list:null,
 			current_card_list:null,
 			current_supplier_fans_add:null,
-			current_nftcard_poster:null,
+			
 			current_packageid:0,
 	
 			current_cardid:0, 
-			current_userid:0,
 			current_nft_supplierid:0,
 		
-			showModal: false,
+			showPosterModal: false,
 			
 			
 			card_description:'',  //卡包的富媒体描述
@@ -897,9 +896,7 @@ export default {
 				
 					}
 					
-					that.current_userid = res.data.data;
-					
-					console.log('current_userid  ===>>> ', that.current_userid);
+					console.log('package_like_add  ===>>> ', res.data.data);
 					
 					
 					
@@ -929,11 +926,11 @@ export default {
 		},	
 			
 		
-		package_showModal:function(){
+		package_showPosterModal:function(){
 			var that = this;
 			
-			this.showModal = !this.showModal
 			//======= 判断用户是否登录 ============
+			/*
 			var last_url = '/pages/nftcard/package_detail?'+ that.current_params_str;
 			
 			var userInfo = that.abotapi.get_user_info();
@@ -941,23 +938,22 @@ export default {
 				that.abotapi.goto_user_login(last_url);
 			
 				return;
-			}
+			}*/
 			//============= End ================
 			
 				
-				var post_data = {
-						sellerid:that.abotapi.globalData.default_sellerid,
-						packageid:that.current_packageid,
-						data_type:'package',
-						userid:that.current_userid,				
-					};
-				
-				
-				var userInfo = that.abotapi.get_user_info();
-				if(userInfo){
-					post_data.userid = userInfo.userid;
-					post_data.checkstr = userInfo.checkstr;
-				}
+			var post_data = {
+					sellerid:that.abotapi.globalData.default_sellerid,
+					packageid:that.current_packageid,
+					data_type:'package',		
+				};
+			
+			
+			var userInfo = that.abotapi.get_user_info();
+			if(userInfo){
+				post_data.userid = userInfo.userid;
+				post_data.checkstr = userInfo.checkstr;
+			}
 				
 				
 			
@@ -975,6 +971,11 @@ export default {
 						
 						return;
 					}
+			
+					
+					that.showPosterModal = !that.showPosterModal;
+					
+			
 			
 					that.current_nftcard_poster = res.data.data;
 					
@@ -1019,7 +1020,6 @@ export default {
 					sellerid:that.abotapi.globalData.default_sellerid,
 					
 					nft_supplierid:that.current_package_detail.sellerid,
-					userid:that.current_userid,			
 				};
 				
 			var userInfo = that.abotapi.get_user_info();	
