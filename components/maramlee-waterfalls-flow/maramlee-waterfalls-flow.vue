@@ -60,6 +60,88 @@
   </view>
 </template>
 <script>
+/**
+ * 
+ * https://ext.dcloud.net.cn/plugin?id=2714
+ * 
+在 script 中引用组件
+
+import waterfallsFlow from "@/components/maramlee-waterfalls-flow/maramlee-waterfalls-flow.vue";
+export default {
+  components: { waterfallsFlow },
+};
+
+在 template 中使用组件
+可以只是渲染图片，不需要其他
+
+<template>
+  <waterfallsFlow :single="true" :list="list" />
+</template>
+
+有插槽（自定义内容）的情况要分情况使用
+若只适配 app、h5 端，利用作用域插槽
+
+注意：item 包含 list 对应的数据项，可以随意搭配、自定义使用。
+
+<template>
+  <waterfallsFlow :list="list">
+    <template v-slot:default="item">
+      <!-- 此处添加插槽内容 -->
+      <!-- <view class="cnt">
+          <view class="title">{{item.title}}</view>
+          <view class="text">{{item.text}}</view>
+        </view> -->
+    </template>
+  </waterfallsFlow>
+</template>
+
+若只适配微信小程序，利用小程序插槽
+
+注意：微信小程序没有动态模板，也和 vue 的插槽使用方式不一样
+
+<template>
+  <waterfallsFlow :list="list001">
+    <view v-for="(item, index) of list001" :key="index" slot="slot{{index}}">
+      <!-- 自定义内容 -->
+      <!-- <view class="cnt">
+          <view class="title">{{item.title}}</view>
+          <view class="text">{{item.text}}</view>
+        </view> -->
+    </view>
+  </waterfallsFlow>
+</template>
+
+若需要同时兼容 app、h5、微信小程序，则需条件渲染
+
+<template>
+  <view class="content">
+    <waterfallsFlow :list="list001">
+      <!--  #ifdef  MP-WEIXIN -->
+      <!-- 微信小程序自定义内容 -->
+      <view v-for="(item, index) of list001" :key="index" slot="slot{{index}}">
+        <!-- <view class="cnt">
+          <view class="title">{{item.title}}</view>
+          <view class="text">{{item.text}}</view>
+        </view>-->
+      </view>
+      <!--  #endif -->
+
+      <!-- #ifndef  MP-WEIXIN -->
+      <!-- app、h5 自定义内容 -->
+      <template v-slot:default="item">
+        <!-- <view class="cnt">
+          <view class="title">{{item.title}}</view>
+          <view class="text">{{item.text}}</view>
+        </view> -->
+      </template>
+    </waterfallsFlow>
+    <!-- #endif -->
+  </view>
+</template>
+ * 
+ * 
+ */	
+	
 export default {
   props: {
     list: { type: Array, required: true },
