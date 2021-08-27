@@ -14,7 +14,7 @@
     "xiaochengxu_appid": "wxd4ab638ad39a3fe4",
     "force_sellerid_flag": 1,
     "force_sellerid_value": "pQNNmSkaq",  
-    "shop_name": "卡乐卡特ColleCult",
+    "shop_name": "卡扑",
     "version_number": "Ver 1.6.3 Build 150",
     "navigationBarBackgroundColor_fixed": 1,
     "navigationBar_font_color":"#ffffff",
@@ -46,10 +46,10 @@
         "text": "首页"
       },
       {
-        "pagePath": "pages/shopList/shopList",
+        "pagePath": "pages/nft_card/package_list",
         "iconPath": "static/img/tabBar/category.png",
         "selectedIconPath": "static/img/tabBar/category-on.png",
-        "text": "发现"
+        "text": "卡包"
       },
       {
         "pagePath": "pages/user/user",
@@ -62,7 +62,7 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#30C478",
-    "navigationBarTitleText": "卡乐卡特ColleCult",
+    "navigationBarTitleText": "卡扑",
     "navigationBarTextStyle": "white"
   },
   "networkTimeout": {
