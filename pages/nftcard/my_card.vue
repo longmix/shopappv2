@@ -11,10 +11,11 @@
 		
 		
 		
-	    <waterfallsFlow :list="current_card_list">
+	    <waterfallsFlow :list="current_card_list" 
+			@wapper-lick="go_to_card_detail">
 			<!--  #ifdef  MP-WEIXIN -->
 			<!-- 微信小程序自定义内容 -->
-			<view v-for="(item, index) of list" :key="index" slot="list{{index}}">
+			<view v-for="(item, index) of current_card_list" :key="index" slot="slot{{index}}">
 				<view class="cnt">
 					<view class="title">{{ item.title }}</view>
 					<view class="text">{{ item.text }}</view>
@@ -32,6 +33,10 @@
 			</template>
 			<!-- #endif -->
 	    </waterfallsFlow>
+		
+		
+		
+		
 	</view>
 	
 	
@@ -50,10 +55,10 @@ export default {
 	data() {
 		return {
 			current_card_list:null,
-			current_packageid:0,
+			// current_packageid:0,
 			
 			action_data_type:'my_favorite_list',
-			action_data_type:'my_card_buy_list',
+			//action_data_type:'my_card_buy_list',
 			
 			
 			tabIndex:0,
@@ -87,7 +92,7 @@ export default {
 		});
 		
 		if(options.action_data_type){
-			that.action_data_type = options.action_data_type;
+			that.action_data_type = options.action_data_type.trim();
 		}
 		
 		if(that.action_data_type == 'my_favorite_list'){
@@ -123,7 +128,7 @@ export default {
 		    method: 'post',
 		    data: {
 				sellerid:that.abotapi.globalData.default_sellerid,
-				packageid:that.current_packageid,
+				//packageid:that.current_packageid,
 				checkstr:userInfo.checkstr,
 				userid:userInfo.userid,
 				action: that.action_data_type,
@@ -150,6 +155,7 @@ export default {
 					//转换为对象数组
 					var new_card_item = {};
 					new_card_item.packageid = card_item.packageid;
+					new_card_item.cardid = card_item.cardid;
 					new_card_item.id = card_item.cardid;
 					new_card_item.image_url = card_item.cover_img_url_2x3;
 					new_card_item.title = card_item.card_name;
@@ -286,15 +292,22 @@ export default {
 			return;
 		},
 		
-		// h5跳转不了,小程序可以点击跳转,但是点进去是一张空的卡牌
-		// go_to_card_detail: function(packageid, cardid) {
-		// 	console.log('packageid===>>>' + packageid);
-		// 	console.log('cardid===>>>' + cardid);
 		
-		// 	uni.navigateTo({
-		// 		url: '/pages/nftcard/card_detail?packageid=' + packageid + '&cardid=' + cardid,
-		// 	})
-		// },
+		go_to_card_detail: function(cardItem) {
+			console.log('go_to_card_detail002===>>>', cardItem);
+			
+			var packageid = cardItem.packageid;
+			var cardid = cardItem.cardid;
+			
+			
+			console.log('packageid===>>>' + packageid);
+			console.log('cardid===>>>' + cardid);
+		
+			uni.navigateTo({
+				url: '/pages/nftcard/card_detail?packageid=' + packageid + '&cardid=' + cardid,
+			})
+		},
+		
 		
 		
 	}

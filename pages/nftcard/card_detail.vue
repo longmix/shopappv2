@@ -187,17 +187,39 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 						<view style="display: flex;">
 							<view v-for="(current_card_list_item,index) in current_card_list"
 								@tap="go_to_card_detail(current_card_list_item.packageid, current_card_list_item.cardid)">
+								
 								<view class="slide_cards_pic">
-									<image :src="current_card_list_item.cover_img_url_2x3" mode="aspectFill"
-										class="card_detail_img_border"></image>
+									<view style="background-color: #000000;height: 295rpx;border-radius: 20rpx;">
+										<image v-if="current_card_detail.is_buyed == 0" class="package_card_watermark" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/watermark01.png" mode="widthFix" ></image>
+										<image v-if="current_card_detail.is_buyed == 0" class="card_detail_img_border" :src="current_card_list_item.cover_img_url_2x3" mode="aspectFill" style="opacity:0.7 ;"></image>
+										<image v-if="current_card_detail.is_buyed == 1" :src="current_card_list_item.cover_img_url_2x3" mode="aspectFill"
+											class="card_detail_img_border"></image>
+									</view>
+									
 									<view class="card_detail_kapai_title">{{current_card_list_item.card_name}}
 									</view>
 								</view>
+								
 							</view>
 						</view>
 					</scroll-view>
 				</view>
-				
+				<!-- <scroll-view scroll-x="true">
+					<view style="display: flex;">
+						<view v-for="(current_card_list_item,index) in current_card_list"
+							@tap="go_to_card_detail(current_card_list_item.packageid, current_card_list_item.cardid)">
+							<view class="slide_cards_pic">
+								<image v-if="current_card_item.is_buyed == 1" 
+								:src="current_card_list_item.cover_img_url_2x3"
+								mode="aspectFill"
+								class="card_detail_img_border"></image>
+								<view class="card_detail_kapai_title">
+									{{current_card_list_item.card_name}}
+								</view>
+							</view>
+						</view>
+					</view>
+				</scroll-view> -->
 			
 			</view>
 			
@@ -320,21 +342,25 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				</view> -->
 			<!-- </view> -->
 			<!-- 2021.08.06购买 -->
-			<view v-if="current_card_detail.is_buy_limit != -1" 
-			class="card_detail_goumai1" 
-				:style="{backgroundColor:wxa_shop_nav_bg_color}" 
-				@tap="test_goto_buy">
-				<image class="card_detail_an" 
-					src="https://yanyubao.tseo.cn/Tpl/static/nft_card/goumai.png">
-				</image>
-				
-			</view>
-			<!-- 购买达到限制颜色变灰 -->
-			<view v-else class="card_detail_goumai_xianzi" @tap="test_goto_buy">
-				<image class="card_detail_an" 
-					src="https://yanyubao.tseo.cn/Tpl/static/nft_card/goumai.png">
-				</image>
-			</view>
+			<block v-if= "nft_card_hidden_buy_button != 1">
+				<view v-if="current_card_detail.is_buy_limit != -1"
+					class="card_detail_goumai1" 
+					:style="{backgroundColor:wxa_shop_nav_bg_color}" 
+					@tap="test_goto_buy">
+					<image class="card_detail_an" 
+						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/goumai.png">
+					</image>
+					
+				</view>
+				<!-- 购买达到限制颜色变灰 -->
+				<view v-else 
+					class="card_detail_goumai_xianzi" 
+					@tap="test_goto_buy">
+					<image class="card_detail_an" 
+						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/goumai.png">
+					</image>
+				</view>
+			</block>
 
 			<!-- 2021.08.06卡牌持有的数量 -->
 			
@@ -500,6 +526,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				card_bg_img_height:'100',
 				
 				wxa_shop_nav_bg_color: '#30C478',
+				
+				//控制是否显示购买按钮
+				nft_card_hidden_buy_button:0,
 			};
 		},
 		onLoad: function(options) {
@@ -936,6 +965,12 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				
 				that.wxa_shop_nav_bg_color  = cb_params.option_list.wxa_shop_nav_bg_color;
+				
+				if(cb_params.option_list.nft_card_hidden_buy_button == 1){
+					console.log('nft_card_hidden_buy_button=========>>>>', 1);
+					
+					that.nft_card_hidden_buy_button = 1;
+				}
 				
 			},
 
@@ -1636,8 +1671,5 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	}
 	.scroll-Y {
 		max-height: 760rpx;
-	}
-	.tree{
-		
 	}
 </style>

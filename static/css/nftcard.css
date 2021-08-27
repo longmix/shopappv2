@@ -112,3 +112,10 @@
 		border-radius: 50%;
 		margin: 15rpx;
 	}
+	.package_card_watermark{
+		width: 80rpx;
+		position: absolute;
+		margin-top: 100rpx;
+		margin-left: 55rpx; 
+		z-index: 1;
+	}
