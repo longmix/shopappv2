@@ -1413,7 +1413,7 @@ export default {
 				
 				//2021.8.5. 如果读取supplier的列表
 				if(that.abotapi.globalData.xianmai_shang_list_switch_to_supplier_list == 1){
-					post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/NftcardData/supplier_all_jingwei';
+					post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/supplier_all_jingwei';
 				}
 				
 				
