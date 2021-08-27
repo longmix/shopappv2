@@ -35,7 +35,7 @@ const globalData = {
 		//并确保与 navigationBarTextStyle / navigationBarBackgroundColor   保持一致
 		navigationBarBackgroundColor_fixed:1,
 		navigationBar_font_color:'#ffffff',
-		navigationBar_bg_color:'#3D9140',
+		navigationBar_bg_color:'#30C478',
 		//======================End=======================
 		
 		//======以下选项可以在服务器端修改，这里是默认值=====
@@ -43,7 +43,11 @@ const globalData = {
 		default_shang_list_count_in_front_page:0,
 		default_publish_list_count_in_front_page:0,
 		
-		
+		//2021.1.13. 关于订单支付的特殊设置
+		order_buy_payment_to_mp_weixin:1, //将微信支付订单跳转到小程序中
+		  
+		//2021.8.5. 重新定义商家列表为supplier列表 /pages/shopList/shopList
+		xianmai_shang_list_switch_to_supplier_list:1,
 		
 		
 		baidu_map_ak: 'OTsGerqQhowGSFOWG8c6p86R',

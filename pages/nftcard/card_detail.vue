@@ -179,7 +179,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			<view class="card_detail_tong">
 				<h4 class="card_detail_h5" style="margin-left: 20rpx;"
 					:style="{color: wxa_shop_nav_bg_color, borderBottom: wxa_shop_nav_bg_color+' 2rpx solid'}" >
-					<image class="card_detail_tubiao" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/tongxilitubiao.png"></image>同系列卡牌
+					<image class="card_detail_tubiao" 
+					src="https://yanyubao.tseo.cn/Tpl/static/nft_card/tongxilitubiao.png">
+					</image>同系列卡牌
 				
 				</h4>
 				<view v-if="">
@@ -189,11 +191,22 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 								@tap="go_to_card_detail(current_card_list_item.packageid, current_card_list_item.cardid)">
 								
 								<view class="slide_cards_pic">
-									<view style="background-color: #000000;height: 295rpx;border-radius: 20rpx;">
-										<image v-if="current_card_detail.is_buyed == 0" class="package_card_watermark" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/watermark01.png" mode="widthFix" ></image>
-										<image v-if="current_card_detail.is_buyed == 0" class="card_detail_img_border" :src="current_card_list_item.cover_img_url_2x3" mode="aspectFill" style="opacity:0.7 ;"></image>
-										<image v-if="current_card_detail.is_buyed == 1" :src="current_card_list_item.cover_img_url_2x3" mode="aspectFill"
-											class="card_detail_img_border"></image>
+									<view style="height: 295rpx;border-radius: 20rpx;">
+										<image v-if="current_card_detail.is_buyed == 0" 
+										class="package_card_watermark" 
+										src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/watermark01.png" 
+										mode="widthFix" >
+										</image>
+										<image v-if="current_card_detail.is_buyed == 0" 
+										class="card_detail_img_border" 
+										:src="current_card_list_item.cover_img_url_2x3" 
+										mode="aspectFill" 
+										style="background: rgb(0,0,0,0.5);">
+										</image>
+										<image v-if="current_card_detail.is_buyed == 1" 
+										:src="current_card_list_item.cover_img_url_2x3" mode="aspectFill"
+										class="card_detail_img_border">
+										</image>
 									</view>
 									
 									<view class="card_detail_kapai_title">{{current_card_list_item.card_name}}
@@ -434,15 +447,15 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 										</view>
 										
 										<!-- 2 -->
-										<!-- <view class="show_modal_mask" v-if="showModal_liuzhuanjilv_zengsong" 
+										<view class="show_modal_mask" v-if="showModal_liuzhuanjilv_zengsong" 
 										@click="showModal_liuzhuanjilv_zengsong=false"></view>
 										<view class="show_modal_pop card_detail_showmodal_kapaimingxi" 
-										v-if="showModal_liuzhuanjilv_zengsong">
+										v-if="showModal_liuzhuanjilv_zengsong" @click="showModal_liuzhuanjilv_zengsong=false">
 											<view>
 												记录记录记录记录记录
 											</view>
 											
-										</view> -->
+										</view> 
 										<!-- <view class="show_modal_mask" v-if="showModal_zengyu"
 										@click="showModal_zengyu=false"></view>
 										<view class="show_modal_pop" 
@@ -465,7 +478,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					
 					
 						</view>
-						<!-- <view v-else class="card_detail_goumaijilv">您还没有获取记录哦~</view> -->
+						<view v-else class="card_detail_goumaijilv">您还没有获取记录哦~</view>
 						
 					
 				</view>
@@ -1128,7 +1141,13 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				})
 			},
 			
-			
+			// go_to_kapaimingxi:function(){
+			// 	var userInfo = that.abotapi.get_user_info();
+			// 	if (userInfo) {
+			// 		post_data.userid = userInfo.userid;
+			// 		post_data.checkstr = userInfo.checkstr;
+			// 	}
+			// },
 			
 			// 2021.08.09获取卡牌封面的真实宽度
 			imageLoad: function (e) {
@@ -1397,6 +1416,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		border-radius: 30rpx;
 		border: 5rpx #c3c3c3 solid;
 		background-color: #e2d281;
+		z-index: 5;
 	}
 	.card_detail_showmodal_fenxaingjilv{
 		position: absolute;
@@ -1476,8 +1496,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		top: 1%;
 		left: 50%;
 		transform: translateX(-50%);
-		width: 500rpx;
-		height: 1000rpx;
+/* 		width: 200rpx;
+		height: 300rpx; */
 		padding: 20rpx;
 	}
 	
@@ -1576,7 +1596,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		border-radius: 100%;
 		margin: 15rpx;
 		margin-right: 23rpx;
-		/* border: #aeb8ab 3rpx solid; */
+		z-index: 2;
 	}
 	.card_detail_goumai_xianzi{
 		width: 90rpx;
