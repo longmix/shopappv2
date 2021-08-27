@@ -388,6 +388,8 @@ export default {
 		}
 		
 		
+		
+		
 		that.current_package_detail = {'title':''};
 		that.current_package_detail.cover_img_url = 'https://yanyubao.tseo.cn/Tpl/static/nft_card/default_package_cover.png';
 		that.current_package_detail.description = '';
@@ -424,13 +426,7 @@ export default {
 				
 				
 			};
-			
-		var userInfo = that.abotapi.get_user_info();	
-		if(userInfo){
-			post_data.userid = userInfo.userid;
-			post_data.checkstr = userInfo.checkstr;
-		}
-		
+	
 		console.log('=========>>>>>>>>>>>');
 		console.log(post_data);
 	
@@ -1084,14 +1080,14 @@ export default {
 			
 			
 			//======= 判断用户是否登录 ============
-			var last_url = '/pages/nftcard/card_detail?' + that.current_params_str;
-			
-			var userInfo = that.abotapi.get_user_info();
-			if (!userInfo) {
-				that.abotapi.goto_user_login(last_url);
-			
-				return;
-			}
+				// var last_url = '/pages/nftcard/card_detail?' + that.current_params_str;
+				
+				// var userInfo = that.abotapi.get_user_info();
+				// if (!userInfo) {
+				// 	that.abotapi.goto_user_login(last_url);
+				
+				// 	return;
+				// }
 			//============= End ================
 			
 			var post_data = {
@@ -1352,7 +1348,7 @@ export default {
 		
 		width: 90%;
 		margin-bottom: 10rpx;
-		font-size: 20rpx;
+		font-size: 25rpx;
 		font-weight: 400;
 		word-wrap: break-word;
 		

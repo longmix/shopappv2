@@ -166,6 +166,10 @@
 				show_bottom_tips:'none', // 隐藏 已经到底了~ 的提示
 				
 				wxa_shop_nav_bg_color:'',
+				
+				
+				shangid_str:'',
+				
 			};
 		},
 		
@@ -381,7 +385,7 @@
 				    method: 'post',
 				    data: {
 						sellerid:that.abotapi.globalData.default_sellerid,
-						str: shangid_str
+						str:shangid_str,
 				    },
 				    success: function (res) {
 						
