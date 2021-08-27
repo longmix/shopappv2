@@ -2,7 +2,7 @@
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText" : "卡扑",
-		"navigationBarBackgroundColor" : "#30C478",
+		"navigationBarBackgroundColor" : "#30c478",
 		"backgroundColor" : "#ffffff",
 		"backgroundColorTop":"#ffffff",
 		"backgroundColorBottom":"#ffffff"
@@ -19,10 +19,10 @@
 				"text": "首页"
 			},
 			{
-				"pagePath": "pages/shopList/shopList",
+				"pagePath": "pages/nft_card/package_list",
 				"iconPath": "static/img/tabBar/category.png",
 				"selectedIconPath": "static/img/tabBar/category-on.png",
-				"text": "发现"
+				"text": "卡包"
 			},
 			{
 				"pagePath": "pages/user/user",
