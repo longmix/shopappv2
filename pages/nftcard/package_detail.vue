@@ -30,11 +30,21 @@
 				
 					<view class="show_modal_mask" v-if="showPosterModal" @tap="showPosterModal=false"@touchmove.stop.prevent = "doNothing"></view>
 					<view class="show_modal_pop" v-if="showPosterModal">
-						<view class="" style="width: 600rpx; height:800rpx ;background-color: #FFFFFF;">
-							<image :src="current_nftcard_poster.img_url" mode="widthFix" style="width: 100%;" ></image>
-							<button type="default">保存到手机</button>
-						</view>
+						<image :src="current_nftcard_poster.img_url" mode="widthFix" style="width:600rpx;" ></image>
+					
+					<!--#ifndef MP-WEIXIN  -->
+							<button class="purple_btn btn_box" @click="saveImgToLocal" style="background-color: #30C478;text-align: center;">
+								保存到相册
+							</button>
+						<!-- #endif -->
 						
+						<!-- #ifdef MP-WEIXIN -->
+						<button v-if="openSettingBtnHidden" class="purple_btn btn_box" @click="saveEwm" style="background-color: #30C478;text-align: center;">
+							保存到相册
+						</button>
+						
+						<button v-else class="purple_btn btn_box" hover-class="none"open-type="openSetting" @opensetting='handleSellting'  >保存到相册</button>
+						<!-- #endif -->	 
 				</view>	
 			</view>
 			 
@@ -337,6 +347,8 @@ export default {
 		
 		
 			wxa_shop_nav_bg_color: '#30C478',
+			
+			openSettingBtnHidden:true,
 		};
 	},
 	onLoad: function (options) {
@@ -379,7 +391,7 @@ export default {
 		
 		that.current_packageid = options.packageid;
 		
-		console.log('that.current_packageid ===》》 ', that.current_packageid);
+		console.log('that.current_packageid ===>> ', that.current_packageid);
 		
 		if(!that.current_packageid){
 			uni.showModal({
@@ -397,14 +409,14 @@ export default {
 		that.current_package_detail = {'title':''};
 		that.current_package_detail.cover_img_url = 'https://yanyubao.tseo.cn/Tpl/static/nft_card/default_package_cover.png';
 		that.current_package_detail.description = '';
-		that.current_package_detail.title ='';
-		that.current_package_detail.brief = '';
-		that.current_package_detail.time_begin_str = 0;
+		that.current_package_detail.title ='';			//卡包名称
+		that.current_package_detail.brief = '';			//卡包简介
+		that.current_package_detail.time_begin_str = 0;	//有效期
 		that.current_package_detail.time_end_str = 0;
 		that.current_package_detail.supplier_name = '';
-		that.current_package_detail.packageid_card_user_buy_count=0;
+		that.current_package_detail.packageid_card_user_buy_count = 0;	//收集进度
 		that.current_package_detail.packageid_card_count = 0;
-		that.current_package_detail.status_str = '';
+		that.current_package_detail.status_str = '';	//发行   下架
 		that.current_package_detail.sale_percent = 0;
 		that.current_package_detail.tag_list = '';
 		that.current_package_detail.supplier_item = {};
@@ -669,6 +681,78 @@ export default {
 			
 			
 		},
+		
+		// 微信小程序保存到相册
+		// handleSetting(e){
+			
+		// 	var that = this;
+			
+		// 	if(!e.detail.authSetting['scope.writePhotosAlbum']){
+		// 		that.openSettingBtnHidden = false;
+		// 	}else{
+		// 		that.openSettingBtnHidden = true;
+		// 	}
+		// },
+		// saveEwn:function(e){
+		// 	var that = this;
+		// 	//获取相册授权
+		// 	uni.getSetting({
+		// 		success(res){
+		// 			if(!res.authSetting['scope.writePhotosAlbum']){
+		// 				uni.authorize({
+		// 					scope:'scope.writePhotosAlbum',
+		// 					success(){
+		// 						that.saveImgToLocal();
+		// 					},
+		// 					fail(){
+		// 						that.openSettingBtnHidden=false
+		// 					}
+		// 				})
+		// 			}else{
+		// 				that.saveImgToLocal();
+		// 			}
+		// 		}
+		// 	})
+		// },
+		saveImgToLocal:function(e){
+			var that = this;
+			
+			uni.showModal({
+				title:'提示',
+				content:'确认保存到相册',
+				success:function(res){
+					if(res.confirm){
+						uni.downloadFile({
+							url:that.current_nftcard_poster.img_url,
+							success:(res) =>{
+								if(res.statusCode === 200){
+									
+									uni.saveImgToPhotosAlbum({
+										filePath:res.tempFilePath,
+										success:function(){
+											uni.showToast({
+												title:"保存成功",
+												duration: 2000,
+											});
+										},
+										fail:function(){
+											uni.showToast({
+												title:"保存失败",
+												duration: 2000,
+											});
+										}
+									});
+								}	
+							}	
+						})
+					}else if (res.cancel){
+						
+					}
+				}
+			});
+		},
+		
+		
 		
 	
 /**
