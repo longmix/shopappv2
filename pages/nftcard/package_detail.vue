@@ -244,7 +244,7 @@
 			<!-- 推荐的卡包 -->
 			
 				<view class="package_recommend1" >
-					<view class="" :style="{borderBottom: wxa_shop_nav_bg_color+' 2rpx solid'}" >
+					<view class="package_recommend2" :style="{borderBottom: wxa_shop_nav_bg_color+' 2rpx solid'}" >
 						<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/suoshukabaotubiao.png" mode="widthFix" style="width: 40rpx;margin: 10rpx 10rpx 10rpx 20rpx;"></image>
 						<view class="" style="font-weight: bold;color: #30C478;">推荐卡包</view>
 					</view>
@@ -1559,9 +1559,11 @@ export default {
 		height: 60rpx; 
 		line-height: 60rpx;
 		margin-bottom: 10rpx;
-		width: 200rpx;
+		
 	}
-	
+	.package_recommend2{
+		display: flex;
+	}
 	.package_list_recommend{
 		width: 200rpx;
 		height: 200rpx; 

@@ -1,12 +1,27 @@
 <template>
 	<view class="global_background">
 		<view class="" style="width: 750rpx;height: 20rpx;"></view>
+		
+		
+		<view class="">
+			<view class="list_box">
+				<view v-for="(item, tag_item_index) in package_tag_item_list" :key="tag_item_index" @tap="package_tag_item_click(tag_item_index)" 
+					:class="[item.selected?'tag_item_selected':'tag_item_unselected']">
+						{{item.title}}
+						
+				</view>
+			</view>
+		
+		</view>
+		
 		<!-- 全部筛选   有效   无效-->
-		<view style="display: flex;margin: 20rpx 0rpx;">
+		<!-- <view style="display: flex;margin: 20rpx 0rpx;">
 			<view class="my_package_screen" style="background-color: #30c478;color: #FFFFFF;">全部卡包</view>
 			<view class="my_package_screen" >正在发售</view>
 			<view class="my_package_screen" >过期卡包</view>
-		</view>
+		</view> -->
+		
+		
 		
 		<!-- 喜欢的卡包列表 -->
 		<view class="" >
@@ -59,6 +74,14 @@ export default {
 		return {
 			current_package_list : null,
 			userid:0,
+			package_tag_item_list:[
+				{tag_id:1, selected:true, title:'全部卡牌'},
+				{tag_id:2, selected:false, title:'正在发售'},
+				{tag_id:3, selected:false, title:'已过期'},
+				
+			],
+			package_tag_item_selected_seq_list:[],
+			
 		}
 	},
 	
@@ -101,7 +124,6 @@ export default {
 			data: {
 				sellerid:that.abotapi.globalData.default_sellerid,
 				
-				
 				checkstr:userInfo.checkstr,
 				userid:userInfo.userid,
 				action: 'my_like_list',
@@ -132,7 +154,7 @@ export default {
 						that.current_package_list[i].sale_percent = 100;
 					}
 					else{
-					
+						
 						
 						
 						that.current_package_list[i].sale_percent =
@@ -277,7 +299,56 @@ export default {
 		},
 		
 		
+		package_tag_item_click(tag_item_index){
+			
+			
+			var click_tag_id = -1;
+			click_tag_id = this.package_tag_item_list[tag_item_index].tag_id;
+			
+			//1，控制界面变化
+			if(this.package_tag_item_list[tag_item_index].selected == true ){
+				
+				this.package_tag_item_list[tag_item_index].selected = false;
+				
+				/*
+				for (var i=0; i< this.package_tag_item_selected_seq_list.length; i++){
+					if(this.package_tag_item_selected_seq_list[i] == click_tag_id){
+						this.package_tag_item_selected_seq_list.splice(i, 1);
+					}
+					
+				}*/
+			}
+			else{
+				
+				this.package_tag_item_list[tag_item_index].selected =true;
+				if(click_tag_id == 1){
+					
+					for (var i=0; i< this.package_tag_item_list.length; i++){
+						if(this.package_tag_item_list[i].selected && (this.package_tag_item_list[i].tag_id != 1)){
+							this.package_tag_item_list[i].selected = false;
+						}
+						
+					}
+				}
+				else{
+					for (var i=0; i< this.package_tag_item_list.length; i++){
+						if(this.package_tag_item_list[i].selected && (this.package_tag_item_list[i].tag_id == 1)){
+							this.package_tag_item_list[i].selected = false;
+						}
+						
+					}
+				}
+				if(click_tag_id!=1 && click_tag_id!=2 && click_tag_id!=3){
+					for (var i=0; i< this.package_tag_item_list.length; i++){
+						if(this.package_tag_item_list[i].selected && (this.package_tag_item_list[i].tag_id == 1)){
+							this.package_tag_item_list[i].selected = true;
+						}
+						
+					}
+				}
+			}
 		
+		},
 		
 		
 		
@@ -313,6 +384,43 @@ export default {
 		border-radius: 20rpx;
 		overflow: hidden;
 	}
+	.list_box {
+				display: flex;
+				
+				margin: 10rpx 20rpx 40rpx 20rpx;
+						
+	   }
+	/* 已选择 */
+		    .tag_item_selected {
+				
+				margin-top: 10rpx;
+				height: 57rpx;
+				line-height: 57rpx;
+				text-align: center;
+				
+				width: 134rpx;
+				margin-left:5rpx ;
+				margin-right: 20rpx;
+		        background: #30c478;
+		        color: #FFFFFF;
+		        border-radius: 10rpx;
+		        font-size: 30rpx;
+		    }
+		
+		    /* 未选择 */
+		    .tag_item_unselected {
+				margin-top: 10rpx;
+				height: 57rpx;
+				line-height: 57rpx;
+				text-align: center;
+				width: 134rpx;
+				margin-right: 20rpx;
+	/* 	        border: 1px solid #30c478; */
+		        background: #FFFFFF;
+		        margin-left:5rpx ;
+		        border-radius: 10rpx;
+		        font-size: 30rpx;
+		    }
 	.my_package_detail{
 		margin-top: 5rpx;
 		margin-left: 30rpx;
@@ -335,4 +443,31 @@ export default {
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
+	.tabs {
+		margin-top: 20rpx;
+		margin-bottom: 40rpx;
+	}
+	
+	.uni-tab-item {
+	    display: inline-block;
+		margin-right: 20rpx;
+	}
+	
+	.uni-tab-item-title {
+	    color: #555;
+	    font-size: 30rpx;
+	    line-height: 55rpx;
+		background-color: #FFFFFF;
+		border-radius: 15rpx;
+	    padding-left: 20rpx;
+	    padding-right: 20rpx;
+	}
+	
+	.uni-tab-item-title-active {
+	    color: #FFFFFF;
+		background-color: #30C478;
+		border-radius: 15rpx;
+	}
+	
+	
 </style>
