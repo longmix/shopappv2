@@ -115,70 +115,8 @@ export default {
 		
 		
 	
-	
-		//获取卡包列表
-		
-		that.abotapi.abotRequest({
-			url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_list',
-			method: 'post',
-			data: {
-				sellerid:that.abotapi.globalData.default_sellerid,
-				
-				checkstr:userInfo.checkstr,
-				userid:userInfo.userid,
-				action: 'my_like_list',
-				
-				
-				
-			},
-			success: function (res) {
-				
-				if(res.data.code != 1){
-					uni.showToast({
-						title:'卡包列表没有数据',
-						duration: 2000,
-					});
-					
-					return;
-				}
-				
-				that.current_package_list = res.data.data;
-				
-				console.log('current_package_list ===>>> ', that.current_package_list);
-				
-				for(var i=0; i<that.current_package_list.length; i++){					
-					
-					//计算已经售出的备份比
-					that.current_package_list[i].sale_percent = 0;
-					if(that.current_package_list[i].packageid_card_count == 0){
-						that.current_package_list[i].sale_percent = 100;
-					}
-					else{
-						
-						
-						
-						that.current_package_list[i].sale_percent =
-							parseInt(that.current_package_list[i].packageid_card_user_buy_count/that.current_package_list[i].packageid_card_count*100);
-					}
-				}
-				
-				
-				
-				
-				
-						
-				
-			},
-			fail: function (e) {
-				uni.showToast({
-					title: '网络异常！',
-					duration: 2000
-				});
-			},
-		});
-	
-	
-	
+		//获取卡牌列表
+		that.__nft_get_package_list();
 	
 		
 		
@@ -299,6 +237,73 @@ export default {
 		},
 		
 		
+		__nft_get_package_list:function(filter_price_type=-1, filter_userid_type=-1){
+			var that=this;
+			//获取卡包列表
+			
+			that.abotapi.abotRequest({
+				url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_list',
+				method: 'post',
+				data: {
+					sellerid:that.abotapi.globalData.default_sellerid,
+					
+					checkstr:userInfo.checkstr,
+					userid:userInfo.userid,
+					action: 'my_like_list',
+					
+					
+					
+				},
+				success: function (res) {
+					
+					if(res.data.code != 1){
+						uni.showToast({
+							title:'卡包列表没有数据',
+							duration: 2000,
+						});
+						
+						return;
+					}
+					
+					that.current_package_list = res.data.data;
+					
+					console.log('current_package_list ===>>> ', that.current_package_list);
+					
+					for(var i=0; i<that.current_package_list.length; i++){					
+						
+						//计算已经售出的备份比
+						that.current_package_list[i].sale_percent = 0;
+						if(that.current_package_list[i].packageid_card_count == 0){
+							that.current_package_list[i].sale_percent = 100;
+						}
+						else{
+							
+							that.current_package_list[i].sale_percent =
+								parseInt(that.current_package_list[i].packageid_card_user_buy_count/that.current_package_list[i].packageid_card_count*100);
+						}
+					}
+					
+					
+					
+					
+					
+							
+					
+				},
+				fail: function (e) {
+					uni.showToast({
+						title: '网络异常！',
+						duration: 2000
+					});
+				},
+			});
+		
+		
+			},
+		
+		
+		
+		
 		package_tag_item_click(tag_item_index){
 			
 			
@@ -338,17 +343,33 @@ export default {
 						
 					}
 				}
-				if(click_tag_id!=1 && click_tag_id!=2 && click_tag_id!=3){
-					for (var i=0; i< this.package_tag_item_list.length; i++){
-						if(this.package_tag_item_list[i].selected && (this.package_tag_item_list[i].tag_id == 1)){
-							this.package_tag_item_list[i].selected = true;
-						}
-						
-					}
-				}
+				
 			}
 		
-		},
+			//2，计算那些被选中了
+			var tag_id001 = this.package_tag_item_list[0].selected;
+			var tag_id002 = this.package_tag_item_list[1].selected;
+			var tag_id003 = this.package_tag_item_list[2].selected;
+			if(tag_id001){
+				
+			}
+			else{
+				if(tag_id002 && tag_id003){
+					
+				}
+			
+				else if(tag_id002){
+					//免费的卡牌
+					filter_price_type = 1;
+				}
+				else if(tag_id003){
+					//收费的卡牌
+					filter_price_type = 2;
+				}
+			}
+			this.__nft_get_package_list(filter_price_type, filter_userid_type);
+		}
+		
 		
 		
 		

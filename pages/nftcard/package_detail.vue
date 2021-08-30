@@ -30,8 +30,9 @@
 				
 					<view class="show_modal_mask" v-if="showPosterModal" @tap="showPosterModal=false"@touchmove.stop.prevent = "doNothing"></view>
 					<view class="show_modal_pop" v-if="showPosterModal">
-						<view class="" style="width: 600rpx; height:600rpx ;background-color: #FFFFFF;">
+						<view class="" style="width: 600rpx; height:800rpx ;background-color: #FFFFFF;">
 							<image :src="current_nftcard_poster.img_url" mode="widthFix" style="width: 100%;" ></image>
+							<button type="default">保存到手机</button>
 						</view>
 						
 				</view>	
@@ -725,6 +726,7 @@ export default {
 						
 					}
 				}
+				
 				
 			}
 			
