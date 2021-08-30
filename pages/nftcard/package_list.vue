@@ -8,7 +8,7 @@
 			
 			<input  placeholder="提示卡包" class="search_package" value=""
 				confirm-type="search" />
-			<button style="width: 90rpx; height: 65rpx;line-height: 80rpx;"><image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/search01.png"
+			<button style="width: 90rpx; height: 65rpx;line-height: 80rpx;"><image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/search01.png"
 				mode="widthFix" style="width: 45rpx;"></image>
 			</button>
 		</view>
@@ -47,7 +47,7 @@
 					<!-- 标签 -->
 
 					<view class="package_detail_label" style="position: relative;">
-						<image class="package_list_mark" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/mark01.png" mode="widthFix" ></image>
+						<image class="package_list_mark" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/mark01.png" mode="widthFix" ></image>
 					 	<view class="package_list_mark_num">
 							<view style="color: #cdcdcd;font-weight: bold; font-size: 35rpx;">{{current_package_item.card_count_mianfei}}</view>
 							<view style="color: #FFFFFF;">/</view>

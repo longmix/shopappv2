@@ -42,7 +42,7 @@
 					<view class="supplier_follow_num_icon01" >
 						<!-- icon关注图标 -->
 						<view class="publish_icon_follow"  :style="{background:wxa_shop_nav_bg_color}" v-if="current_shang_detail.is_fans ==0" @tap="set_fans(1)">
-							<image  src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/follow04.png" 
+							<image  src="https://yanyubao.tseo.cn/Tpl/static/nft_card/follow04.png" 
 								mode="widthFix" style="width: 35rpx; margin-top: 10rpx;"></image>
 							<view style="color: #FFFFFF;margin-left:10rpx; margin-top: 5rpx; font-size: 30rpx;">关注</view>
 						</view>
@@ -55,7 +55,7 @@
 					<image :src="current_shang_detail.icon_image" mode="" style="width: 200rpx;height: 200rpx; border-radius: 50%;"></image>
 						
 						<view style="width: 500rpx;display: flex;margin-left: 40rpx;">
-							<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/authentication.png"
+							<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/authentication.png"
 								mode="widthFix" style="width: 30rpx;top: 5rpx;"></image>
 							<view style="margin-left: 5rpx;"> {{current_shang_detail.name}}</view>
 						</view>
@@ -181,7 +181,7 @@
 			<view class="supplier_icon-title3" style="">
 				<view class="supplier_icon-title4" :style="{borderBottom:wxa_shop_nav_bg_color+' 2rpx solid'}">
 				<!-- 	<image :src="user_console_setting.user_console_icon_jianjie" mode="widthFix" style="width: 50rpx;"></image> -->
-					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/house.png" mode="widthFix" style="width: 50rpx;margin-top: 8rpx;"></image>
+					<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/house.png" mode="widthFix" style="width: 50rpx;margin-top: 8rpx;"></image>
 					<view class='nft_supplier_biaoti' :style="{color:wxa_shop_nav_bg_color}">商家简介</view>
 				</view>
 			</view>
@@ -206,10 +206,10 @@
 								{{current_shang_detail.brief}}
 							</view>
 							<text @tap="showinfo" v-if="!iSinfo">
-								<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/arrow_down.png" mode="widthFix" style="width: 30rpx;margin-right: 20rpx;"></image></text>
+								<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/arrow_down.png" mode="widthFix" style="width: 30rpx;margin-right: 20rpx;"></image></text>
 							
 						</view>
-						<text @tap="showinfo" v-if="iSinfo" class="hidebtn" ><image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/arrow_up.png" mode="widthFix" style="width: 30rpx;margin-right: 20rpx;"></image></text>
+						<text @tap="showinfo" v-if="iSinfo" class="hidebtn" ><image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/arrow_up.png" mode="widthFix" style="width: 30rpx;margin-right: 20rpx;"></image></text>
 					</view>
 				</view>
 			</block>
@@ -317,7 +317,7 @@
 						<view class="nft_package" >
 							<view class="">
 								<img class="supplier_package_list" :src="item.cover_img_url"  >
-								<image class="package_list_mark" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/mark01.png" mode="widthFix" style="border-top-right-radius: 20rpx;"></image>
+								<image class="package_list_mark" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/mark01.png" mode="widthFix" style="border-top-right-radius: 20rpx;"></image>
 								<view class="package_list_mark_num">
 									<view style="color: #cdcdcd;font-weight: bold; font-size: 35rpx;">{{item.card_count_mianfei}}</view>
 									<view style="color: #FFFFFF;">/</view>
@@ -343,11 +343,11 @@
 								</view>
 								<!-- <view style="float: right;">
 									<view class="package_state" v-if="is_package_time_expire ==false" style="background-color: #30c478;">
-										<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/circle.png" mode="widthFix" style="width: 25rpx;margin-right: 10rpx;margin-top: 10rpx;margin-left: 10rpx;"></image>
+										<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/circle.png" mode="widthFix" style="width: 25rpx;margin-right: 10rpx;margin-top: 10rpx;margin-left: 10rpx;"></image>
 										<view style="font-size: 25rpx;">{{current_package_detail.status_str}}</view>
 									</view>
 									<view class="package_state" v-else="is_package_time_expire ==true" style="background-color:red;" >
-										<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/down.png" mode="widthFix" style="width: 28rpx;margin-top: 10rpx;margin-left: 10rpx;"></image>
+										<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/down.png" mode="widthFix" style="width: 28rpx;margin-top: 10rpx;margin-left: 10rpx;"></image>
 										<view style="font-size: 25rpx;margin-left: 10rpx;">已下架</view>
 									</view>
 								</view> -->

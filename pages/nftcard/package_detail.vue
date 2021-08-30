@@ -66,11 +66,11 @@
 				</view>	
 				<!-- 卡包状态  发行===下架  -->
 				<view class="package_state" v-if="is_package_time_expire ==false" style="background-color: #30c478;">
-					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/circle.png" mode="widthFix" style="width: 25rpx;margin-right: 10rpx;margin-top: 10rpx;margin-left: 10rpx;"></image>
+					<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/circle.png" mode="widthFix" style="width: 25rpx;margin-right: 10rpx;margin-top: 10rpx;margin-left: 10rpx;"></image>
 					<view style="font-size: 25rpx;">{{current_package_detail.status_str}}</view>
 				</view>
 				<view class="package_state" v-else="is_package_time_expire ==true" style="background-color:red;" >
-					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/down.png" mode="widthFix" style="width: 28rpx;margin-top: 10rpx;margin-left: 10rpx;"></image>
+					<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/down.png" mode="widthFix" style="width: 28rpx;margin-top: 10rpx;margin-left: 10rpx;"></image>
 					<view style="font-size: 25rpx;margin-left: 10rpx;">已下架</view>
 				</view>
 				
@@ -80,7 +80,7 @@
 					
 					<button class="box share-btn" open-type="share" style="background-color:#ffffff;outline: none;border: none;width: 100rpx;">
 						<view class="package_share">
-							<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/share.png" mode="widthFix" style="width: 43rpx;margin-bottom: 5rpx;margin-right: 20rpx;"></image>
+							<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/share.png" mode="widthFix" style="width: 43rpx;margin-bottom: 5rpx;margin-right: 20rpx;"></image>
 						</view>
 					</button>
 					<!-- <button style="padding-left: 0;padding-right: 0;" open-type="share">分享</button> -->
@@ -91,7 +91,7 @@
 					<button class="box share-btn" @click="is_show">
 						
 						<view class="package_share">
-							<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/share.png" mode="widthFix" style="width: 45rpx;margin-top: 8rpx;margin-left: 7rpx;"></image>
+							<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/share.png" mode="widthFix" style="width: 45rpx;margin-top: 8rpx;margin-left: 7rpx;"></image>
 						</view>
 						
 						<!-- <view class="icon fenxiang"></view>
@@ -105,7 +105,7 @@
 					<!-- #ifdef H5 -->
 					<view class="box" @tap="share_shang_detail">
 						<view class="package_share">
-							<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/share.png" mode="widthFix" style="width: 45rpx;margin-top: 8rpx;margin-left: 7rpx;"></image>
+							<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/share.png" mode="widthFix" style="width: 45rpx;margin-top: 8rpx;margin-left: 7rpx;"></image>
 						</view>
 					</view>
 					<!-- #endif -->
@@ -207,10 +207,10 @@
 					<view class="" style="width: 340rpx;height: 615rpx;">
 						 
 					<!--是否购买  加灰透明 加水印 -->
-					 <view style="background-color: #000000;width:340rpx;height: 510rpx;">
-						<image v-if="current_card_item.is_buyed == 0" class="package_card_watermark" src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/watermark01.png" mode="widthFix" ></image>
-						<image v-if="current_card_item.is_buyed == 0" class="package_card_img" :src="current_card_item.cover_img_url_2x3" mode="" style="opacity:0.7 ;"></image>
-						<image v-if="current_card_item.is_buyed == 1" class="package_card_img" :src="current_card_item.cover_img_url_2x3" mode=""></image>
+					 <view style="width:340rpx;height: 510rpx;">
+						<image v-if="current_card_item.is_buyed == 0" class="package_card_watermark" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/watermark01.png" mode="widthFix" ></image>
+						<image v-if="current_card_item.is_buyed == 0" class="package_card_img" :src="current_card_item.cover_img_url_2x3_stand" mode="" style="opacity:0.7 ;"></image>
+						<image v-if="current_card_item.is_buyed == 1" class="package_card_img" :src="current_card_item.cover_img_url_2x3_stand" mode=""></image>
 						
 					</view>
 						<!-- icon喜欢图标和喜欢人数-----------已有卡牌/已发售卡牌 -->
@@ -231,7 +231,7 @@
 								<!-- <view style=" font-weight: 100; font-size: 10rpx;">发行商：{{current_card_item.supplier_name}}</view> -->
 							
 							<view class="package_card_description" >
-								{{current_card_item.description}}{{current_card_item.brief}}	
+								{{current_card_item.brief}}	
 							</view>
 						</view>
 					</view>
@@ -243,9 +243,12 @@
 		<view class="package_recommend" >
 			<!-- 推荐的卡包 -->
 			
-				<view class="package_recommend1" :style="{borderBottom: wxa_shop_nav_bg_color+' 2rpx solid'}" >
-					<image src="http://192.168.0.87/yanyubao_server/Tpl/static/nft_card/suoshukabaotubiao.png" mode="widthFix" style="width: 40rpx;margin: 10rpx 10rpx 10rpx 20rpx;"></image>
-					<view class="" style="font-weight: bold;color: #30C478;">推荐卡包</view>
+				<view class="package_recommend1" >
+					<view class="" :style="{borderBottom: wxa_shop_nav_bg_color+' 2rpx solid'}" >
+						<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/suoshukabaotubiao.png" mode="widthFix" style="width: 40rpx;margin: 10rpx 10rpx 10rpx 20rpx;"></image>
+						<view class="" style="font-weight: bold;color: #30C478;">推荐卡包</view>
+					</view>
+					
 				</view>
 		
 			
@@ -1556,7 +1559,7 @@ export default {
 		height: 60rpx; 
 		line-height: 60rpx;
 		margin-bottom: 10rpx;
-		width: 195rpx;
+		width: 200rpx;
 	}
 	
 	.package_list_recommend{
