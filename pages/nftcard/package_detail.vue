@@ -207,7 +207,7 @@
 					<view class="" style="width: 340rpx;height: 615rpx;">
 						 
 					<!--是否购买  加灰透明 加水印 -->
-					 <view style="width:340rpx;height: 510rpx;">
+					 <view style="background-color: #000000; width:340rpx;height: 510rpx;">
 						<image v-if="current_card_item.is_buyed == 0" class="package_card_watermark" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/watermark01.png" mode="widthFix" ></image>
 						<image v-if="current_card_item.is_buyed == 0" class="package_card_img" :src="current_card_item.cover_img_url_2x3_stand" mode="" style="opacity:0.7 ;"></image>
 						<image v-if="current_card_item.is_buyed == 1" class="package_card_img" :src="current_card_item.cover_img_url_2x3_stand" mode=""></image>
