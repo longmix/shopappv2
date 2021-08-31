@@ -4,12 +4,15 @@
 	<!-- 搜索框 -->
 	
 
-		<view class="package_search" @tap="package_list_search()">
+		<view class="package_search">
 			
-			<input  placeholder="提示卡包" class="search_package" value=""
-				confirm-type="search" />
-			<button style="width: 90rpx; height: 65rpx;line-height: 80rpx;"><image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/search01.png"
-				mode="widthFix" style="width: 45rpx;"></image>
+			<input  placeholder="提示卡包" class="search_package" :value="searchValue"
+				confirm-type="search"
+				@input="searchValueInput()"
+				@confirm="package_list_search()"/>
+				
+			<button @tap="package_list_search()" style="width: 90rpx; height: 65rpx;line-height: 80rpx;">
+				<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/search01.png"mode="widthFix" style="width: 45rpx;"></image>
 			</button>
 		</view>
 	
@@ -28,6 +31,10 @@
 					<view v-if="current_package_list ==''" style="text-align : center;">
 						<image src="" mode=""></image>
 						<view>空空如也</view>
+					</view>
+					
+					<view v-if="!centent_show">
+						<view>没有搜索到数据</view>
 					</view>
 				
 				<!-- 卡包列表及详情 -->
@@ -118,6 +125,11 @@ export default {
 			array:['智能排序','按热度排序','按到期时间排序','按卡牌数量排序','按销售状态',],
 			
 			current_nft_supplierid:0,
+			
+			searchValue:'',
+			
+			centent_show:true,
+			
 		}
 	},
 
@@ -159,6 +171,7 @@ export default {
 		    data: {
 				sellerid:that.abotapi.globalData.default_sellerid,
 				nft_supplierid : that.current_nft_supplierid,
+				keywords: that.searchValue,
 				page_num: 1,
 				page_size: 50,
 		    },
@@ -305,6 +318,12 @@ export default {
 			console.log('cb_params====', cb_params);
 		},
 		
+		bindPickerChange(e){
+			console.log(e)
+		},
+		
+		
+		
 		goto_package_detail:function(packageid){
 			console.log('packageid===>>>' + packageid);
 			
@@ -313,13 +332,20 @@ export default {
 			})
 		},
 		 
-		
-		bindPickerChange(e){
-			console.log(e)
+		//获取用户输入的搜索值
+		searchValueInput: function (e) {
+			console.log('e',e);
+			var that = this;
+		    var value = e.detail.value;
+			that.searchValue = value,
+			that.page = 1
+			if (!value && that.current_package_list.length == 0) {
+				that.centent_show = false;
+			}
 		},
 		
 		
-		package_list_search:function(){
+		package_list_search:function(e){
 			var that = this;
 					
 			// 获取卡包
@@ -329,9 +355,12 @@ export default {
 			    data: {
 					sellerid:that.abotapi.globalData.default_sellerid,
 					nft_supplierid : that.current_nft_supplierid,
-					
-					
+					keywords: that.searchValue,
+					action:'search',
 			    },
+				header: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+				},
 			    success: function (res) {
 					
 					if(res.data.code != 1){

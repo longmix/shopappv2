@@ -36,15 +36,19 @@
 					<view class="my_package_name" >{{current_package_list_item.title}}</view>
 					
 					<!-- 发行商icon图标  名字 -->
-					<view style="margin-top: 10rpx; width: 350rpx;display: flex;">
+				<!-- 	<view style="margin-top: 10rpx; width: 350rpx;display: flex;">
 						<image :src="current_package_list_item.supplier_icon" mode=""
 							style="width: 35rpx;height: 35rpx;top: 5rpx;"></image>
 						<view style="margin-left: 15rpx;">{{current_package_list_item.supplier_name}}</view>
-					</view>
+					</view> -->
 					
 					<!-- 进度条 -->
 					<view class="uni-padding-wrap uni-common-mt">
 					 	<view class="progress-box">
+						<view class="" style="display: flex;">
+							<view style="font-size: 20rpx;margin-top: 5rpx;font-weight: 100;">收集进度：</view>
+							<view class="">({{current_package_list_item.packageid_card_user_buy_count}}/{{current_package_list_item.packageid_card_count}})</view>
+						</view>
 							<progress :percent="current_package_list_item.sale_percent" activeColor="#30C478" stroke-width="3" 
 								show-info="" backgroundColor="red" font-size="15"></progress>
 						</view>
@@ -237,23 +241,28 @@ export default {
 		},
 		
 		
-		__nft_get_package_list:function(filter_price_type=-1, filter_userid_type=-1){
+		__nft_get_package_list:function(){
 			var that=this;
 			//获取卡包列表
+			
+			var post_data = {
+					sellerid:that.abotapi.globalData.default_sellerid,
+					
+					action: 'my_like_list',
+			};
+			
+			
+			    var userInfo = that.abotapi.get_user_info();
+			    if (userInfo) {
+			    	post_data.userid = userInfo.userid;
+			    	post_data.checkstr = userInfo.checkstr;
+			   }
+			
 			
 			that.abotapi.abotRequest({
 				url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_list',
 				method: 'post',
-				data: {
-					sellerid:that.abotapi.globalData.default_sellerid,
-					
-					checkstr:userInfo.checkstr,
-					userid:userInfo.userid,
-					action: 'my_like_list',
-					
-					
-					
-				},
+				data: post_data,
 				success: function (res) {
 					
 					if(res.data.code != 1){
@@ -359,15 +368,15 @@ export default {
 				}
 			
 				else if(tag_id002){
-					//免费的卡牌
-					filter_price_type = 1;
+					//发售的卡牌
+					
 				}
 				else if(tag_id003){
-					//收费的卡牌
-					filter_price_type = 2;
+					//过期的卡牌
+					
 				}
 			}
-			this.__nft_get_package_list(filter_price_type, filter_userid_type);
+			this.__nft_get_package_list();
 		}
 		
 		
@@ -401,6 +410,7 @@ export default {
 		width: 720rpx;
 		height: 230rpx;
 		margin: 20rpx 15rpx;
+		
 		background-color: #FFFFFF;
 		border-radius: 20rpx;
 		overflow: hidden;

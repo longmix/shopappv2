@@ -421,7 +421,7 @@ export default {
 		that.current_package_detail.sale_percent = 0;
 		that.current_package_detail.tag_list = '';
 		that.current_package_detail.supplier_item = {};
-		
+		that.current_package_detail.is_like = 0;
 		that.current_nftcard_poster = {};
 		
 		
