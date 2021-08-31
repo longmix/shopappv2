@@ -89,8 +89,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 						</view>
 						<view class="show_modal_mask" v-if="showPosterModal" @tap="showPosterModal=false"@touchmove.stop.prevent = "doNothing"></view>
 						<view class="show_modal_pop" v-if="showPosterModal">
-							<view class="" style="width: 600rpx; height:600rpx ;background-color: #FFFFFF;">
-								<image :src="current_nftcard_poster.img_url" mode="widthFix" style="width: 100%;" ></image>
+							<view style="width: 600rpx;height:600rpx;transform: translateX(-90%);">
+								<image :src="current_nftcard_poster.img_url" mode="widthFix" ></image>
 							</view>
 								
 						</view>
@@ -498,6 +498,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				isRolling:false,//模态框图片翻转
 				
 				lay_type:1,//详情隐藏控件
+				
+				showPosterModal: false,
 				
 				showModal_kapaifengmian: false,//卡牌封面模态框
 				
