@@ -1327,7 +1327,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				this.__nftcard_gift_or_discard(cplid, 'gift', wish, mobile);
 			},
 			
-			__nftcard_gift_or_discard:function(cplid, current_data_type, wish='', mobile=''){
+			__nftcard_gift_or_discard:function(cplid, data_type, wish='', mobile=''){
 				var that = this;
 				
 				var post_data = {
@@ -1362,11 +1362,12 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 						}
 						
 						if (res.data.code != 1) {
-							uni.showToast({
-								title: '没有数据',
-								duration: 2000,
-							});
-				
+							uni.showModal({
+								title:'处理失败',
+								content:res.data.msg,
+								showCancel:false
+							})
+							
 							return;
 						}
 				
@@ -1375,6 +1376,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 						console.log('current_nftcard_gift_or_discard ===>>> ', that.current_nftcard_gift_or_discard);
 						
 						that.__get_card_publish_list();
+						
+						//减少卡牌的数量
+						that.current_card_detail.buyed_counter --;
 				
 				
 					},
