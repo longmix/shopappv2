@@ -89,11 +89,11 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 						</view>
 						<view class="show_modal_mask" v-if="showPosterModal" @tap="showPosterModal=false"@touchmove.stop.prevent = "doNothing"></view>
 						<view class="show_modal_pop" v-if="showPosterModal">
-							<view style="width: 600rpx;height: 600rpx; transform:translateX(-85%,);">
-								
-								<image :src="current_nftcard_poster.img_url" mode="widthFix"  ></image>
+							
+								<image :src="current_nftcard_poster.img_url" mode="widthFix" style="width:600rpx" ></image>
 								
 								<!--#ifndef MP-WEIXIN  -->
+								
 										<button class="purple_btn btn_box" @click="saveImgToLocal" :style="{background:wxa_shop_nav_bg_color}">
 											保存到相册
 										</button>
@@ -104,10 +104,10 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 										保存到相册
 									</button>
 									
-									<button v-else class="purple_btn btn_box" hover-class="none"open-type="openSetting" @opensetting='handleSetting'  >保存到相册</button>
+									<button v-else class="purple_btn btn_box" hover-class="none"open-type="openSetting" @opensetting='handleSetting'>保存到相册</button>
 									<!-- #endif -->	 
 									
-							</view>
+						
 								
 						</view>
 					</view>

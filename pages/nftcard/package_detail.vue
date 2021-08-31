@@ -1405,7 +1405,16 @@ export default {
 		border-radius: 50%;
 		overflow: hidden;
 	}
-	
+	.show_modal_mask{
+		background-color: #000;
+		opacity: 0.7;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 999;
+	}
 	.show_modal_pop{
 		position: fixed;
 		z-index: 999;
