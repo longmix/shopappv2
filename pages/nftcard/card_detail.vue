@@ -397,7 +397,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					
 				</view>
 				<view class="show_modal_pop card_detail_showmodal_fenxaingjilv" 
-				v-if="showModal_liuzhuanjilv">
+					v-if="showModal_liuzhuanjilv">
 						<view v-if="current_card_detail.is_buyed == 1">
 							
 					<scroll-view scroll-y="true" class="scroll-Y">
@@ -426,15 +426,15 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 									
 									
 									<view style="float: right;margin-top: -215rpx;">
-										<!-- 2021.08.20赠予 -->
+										<!-- 2021.08.20赠予
 										<view @click="showModal_zengyu=true" class="card_detail_showmodal_zengsong">
 											<image class="card_detail_showmodal_tupian"
 												src="https://yanyubao.tseo.cn/Tpl/static/nft_card/zengsong.png"></image>
 										</view>
 										
-										<!-- 2 -->
+										
 										<view class="show_modal_mask" v-if="showModal_liuzhuanjilv_zengsong" 
-										@click="showModal_liuzhuanjilv_zengsong=false"></view>
+											@click="showModal_liuzhuanjilv_zengsong=false"></view>
 										<view class="show_modal_pop card_detail_showmodal_kapaimingxi" 
 										v-if="showModal_liuzhuanjilv_zengsong" @click="showModal_liuzhuanjilv_zengsong=false">
 											<view style="background-color: #FFFFFF; width: 500rpx; height: 200rpx;padding: 10rpx;">
@@ -444,17 +444,14 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 											</view>
 											
 										</view> 
-										<!-- <view class="show_modal_mask" v-if="showModal_zengyu"
-										@click="showModal_zengyu=false"></view>
-										<view class="show_modal_pop" 
-										v-if="showModal_zengyu" style="background-color: #e1e1e1;">
-											111111
-										</view> -->
+										 -->
 										
-										<!-- 2021.08.20销毁 -->
+										
+										<!-- 2021.08.20销毁  丢弃 -->
 										<view class="card_detail_showmodal_zengsong">
 											<image class="card_detail_showmodal_tupian"
-												src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xiaohui.png"></image>
+												src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xiaohui.png"
+												@tap="nftcard_discard(card_publish_item.cplid)"></image>
 										</view>
 										
 										
@@ -734,9 +731,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 						
 					// }
 					
-					
-					//赠送和丢弃
-					that.__get_nftcard_gift_or_discard();
 					
 					
 					that.current_card_detail.user_have_counter= 0;//购买卡的次数
@@ -1325,27 +1319,43 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				});
 			},
 			
-			__get_nftcard_gift_or_discard:function(){
+			nftcard_discard:function(cplid){
+				this.__nftcard_gift_or_discard(cplid, 'discard');
+			},
+			nftcard_gift:function(cplid, wish, mobile){
+				this.__nftcard_gift_or_discard(cplid, 'gift', wish, mobile);
+			},
+			
+			__nftcard_gift_or_discard:function(cplid, current_data_type, wish='', mobile=''){
 				var that = this;
+				
+				var post_data = {
+						sellerid: that.abotapi.globalData.default_sellerid,
+						cplid: cplid,
+						data_type: data_type,
+						//new_user_modile: that.current_new_user_modile,
+						//sender_name: that.current_sender_name,
+						//sender_wish: that.current_sender_wish,
+					};
+				
+				
+				if(data_type == 'gift'){
+					post_data.sender_wish = wish;
+					post_data.new_user_modile = mobile;
+				}
 				
 				//赠送和丢弃
 				that.abotapi.abotRequest({
 					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/nftcard_gift_or_discard',
 				
 					method: 'post',
-					data: {
-						sellerid: that.abotapi.globalData.default_sellerid,
-						data_type: taht.current_data_type,
-						new_user_modile: that.current_new_user_modile,
-						sender_name: that.current_sender_name,
-						sender_wish: that.current_sender_wish,
-					},
+					data: post_data,
 					success: function(res) {
-						if(that.data_type == 'gift'){
+						if(data_type == 'gift'){
 							//赠予
 							console.log("赠予11111111111111111111111")
 						}
-						if(that.data_type == 'discard'){
+						if(data_type == 'discard'){
 							//丢弃
 							console.log("丢弃22222222222222222222222")
 						}

@@ -7,7 +7,7 @@
 		</picker>
 		<view style="display: flex;flex-wrap: wrap;">
 			<view v-for="(current_card_item, index) in current_card_list" 
-			@tap="go_to_detail(current_card_item.packageid, current_card_item.cardid)">
+				@tap="go_to_detail(current_card_item.packageid, current_card_item.cardid)">
 				<view style="padding: 15rpx;">
 					<view class="card_list_background_color">
 						<view class="card_detail_kapai_borderwidth">
