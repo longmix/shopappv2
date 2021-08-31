@@ -529,7 +529,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				current_card_detail: null,
 				current_card_list: null,
 				current_package_detail: null,
-				
+				current_nftcard_poster:null,
 				current_card_publish_list: null,//获取单张卡牌的购买记录
 				
 				current_nftcard_gift_or_discard: null,//赠送和购买
@@ -596,6 +596,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			
 			that.current_card_detail.sale_percent = 50;
 			
+			that.current_nftcard_poster = {};
 			
 			
 			
