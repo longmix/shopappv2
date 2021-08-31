@@ -89,8 +89,24 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 						</view>
 						<view class="show_modal_mask" v-if="showPosterModal" @tap="showPosterModal=false"@touchmove.stop.prevent = "doNothing"></view>
 						<view class="show_modal_pop" v-if="showPosterModal">
-							<view style="width: 600rpx;height:600rpx;transform: translateX(-90%);">
-								<image :src="current_nftcard_poster.img_url" mode="widthFix" ></image>
+							<view style="width: 600rpx;height: 600rpx; transform:translateX(-85%,);">
+								
+								<image :src="current_nftcard_poster.img_url" mode="widthFix"  ></image>
+								
+								<!--#ifndef MP-WEIXIN  -->
+										<button class="purple_btn btn_box" @click="saveImgToLocal" :style="{background:wxa_shop_nav_bg_color}">
+											保存到相册
+										</button>
+									<!-- #endif -->
+									
+									<!-- #ifdef MP-WEIXIN -->
+									<button v-if="openSettingBtnHidden" class="purple_btn btn_box" @click="saveEwm" :style="{background:wxa_shop_nav_bg_color}">
+										保存到相册
+									</button>
+									
+									<button v-else class="purple_btn btn_box" hover-class="none"open-type="openSetting" @opensetting='handleSetting'  >保存到相册</button>
+									<!-- #endif -->	 
+									
 							</view>
 								
 						</view>
@@ -542,6 +558,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				current_sender_name: null,
 				current_sender_wish: null,
 				
+				openSettingBtnHidden:true,
 			};
 		},
 		onLoad: function(options) {
@@ -932,6 +949,81 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			// disabledScroll(){
 			// 	return
 			// },
+			
+			
+			
+			
+			//微信小程序保存到相册
+			handleSetting(e){
+				
+				var that = this;
+				
+				if(!e.detail.authSetting['scope.writePhotosAlbum']){
+					that.openSettingBtnHidden = false;
+				}else{
+					that.openSettingBtnHidden = true;
+				}
+			},
+			saveEwm:function(e){
+				var that = this;
+				//获取相册授权
+				uni.getSetting({
+					success(res){
+						if(!res.authSetting['scope.writePhotosAlbum']){
+							uni.authorize({
+								scope:'scope.writePhotosAlbum',
+								success(){
+									that.saveImgToLocal();
+								},
+								fail(){
+									that.openSettingBtnHidden=false
+								}
+							})
+						}else{
+							that.saveImgToLocal();
+						}
+					}
+				})
+			},
+			saveImgToLocal:function(e){
+				var that = this;
+				
+				uni.showModal({
+					title:'提示',
+					content:'确认保存到相册',
+					success:function(res){
+						if(res.confirm){
+							uni.downloadFile({
+								url:that.current_nftcard_poster.img_url,
+								success:function(res) {
+									if(res.statusCode === 200){
+										
+										uni.saveImageToPhotosAlbum({
+											filePath:res.tempFilePath,
+											success:function(){
+												uni.showToast({
+													title:"保存成功",
+													duration: 2000,
+												});
+											},
+											fail:function(){
+												uni.showToast({
+													title:"保存失败",
+													duration: 2000,
+												});
+											}
+										});
+									}	
+								}	
+							})
+						}else if (res.cancel){
+							
+						}
+					}
+				});
+			},
+			
+			
 			
 			
 			//详情按钮显示隐藏
@@ -1350,7 +1442,25 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/nftcard_gift_or_discard',
 				
 					method: 'post',
+
+					data: {
+						sellerid: that.abotapi.globalData.default_sellerid,
+						data_type: that.current_data_type,
+						new_user_modile: that.current_new_user_modile,
+						sender_name: that.current_sender_name,
+						sender_wish: that.current_sender_wish,
+					},
+
+					data: {
+						sellerid: that.abotapi.globalData.default_sellerid,
+						data_type: taht.current_data_type,
+						new_user_modile: that.current_new_user_modile,
+						sender_name: that.current_sender_name,
+						sender_wish: that.current_sender_wish,
+					},
+
 					data: post_data,
+
 					success: function(res) {
 						if(data_type == 'gift'){
 							//赠予
