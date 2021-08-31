@@ -33,13 +33,13 @@
 						<image :src="current_nftcard_poster.img_url" mode="widthFix" style="width:600rpx;" ></image>
 					
 					<!--#ifndef MP-WEIXIN  -->
-							<button class="purple_btn btn_box" @click="saveImgToLocal" :style="{backgroundcolor:wxa_shop_nav_bg_color}">
+							<button class="purple_btn btn_box" @click="saveImgToLocal" :style="{background:wxa_shop_nav_bg_color}">
 								保存到相册
 							</button>
 						<!-- #endif -->
 						
 						<!-- #ifdef MP-WEIXIN -->
-						<button v-if="openSettingBtnHidden" class="purple_btn btn_box" @click="saveEwm" style="background-color: #30C478;">
+						<button v-if="openSettingBtnHidden" class="purple_btn btn_box" @click="saveEwm" :style="{background:wxa_shop_nav_bg_color}">
 							保存到相册
 						</button>
 						
@@ -725,7 +725,7 @@ export default {
 					if(res.confirm){
 						uni.downloadFile({
 							url:that.current_nftcard_poster.img_url,
-							success:(res) =>{
+							success:function(res) {
 								if(res.statusCode === 200){
 									
 									uni.saveImageToPhotosAlbum({
@@ -1405,16 +1405,7 @@ export default {
 		border-radius: 50%;
 		overflow: hidden;
 	}
-	.show_modal_mask{
-		background-color: #000;
-		opacity: 0.7;
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		z-index: 999;
-	}
+	
 	.show_modal_pop{
 		position: fixed;
 		z-index: 999;
