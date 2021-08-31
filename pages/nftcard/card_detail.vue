@@ -401,7 +401,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 						<view v-if="current_card_detail.is_buyed == 1">
 							
 					<scroll-view scroll-y="true" class="scroll-Y">
-							<view v-for="(card_publish_item,index) in card_publish">
+							<view v-for="(card_publish_item,index) in current_card_publish_list">
 								<view class="card_detail_goumaijilv" 
 								@click="showModal_liuzhuanjilv_zengsong=true">
 									<view>
@@ -513,7 +513,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				current_card_detail: null,
 				current_card_list: null,
 				current_package_detail: null,
-				card_publish: null,//获取单张卡牌的购买记录
+				
+				current_card_publish_list: null,//获取单张卡牌的购买记录
 				
 				current_nftcard_gift_or_discard: null,//赠送和购买
 				
@@ -598,7 +599,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			// that.current_package_detail.brief = ''; //卡包介绍
 			
 			
-			// that.card_publish_list.cplseq=0;//卡牌序号
+			// that.current_card_publish_list.cplseq=0;//卡牌序号
 			
 
 			uni.showLoading({
@@ -1304,9 +1305,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 							return;
 						}
 						
-						that.card_publish = res.data.data;
+						that.current_card_publish_list = res.data.data;
 				
-						console.log('card_publish ===>>> ', that.card_publish);
+						console.log('current_card_publish_list ===>>> ', that.current_card_publish_list);
 				
 				
 					},
@@ -1372,6 +1373,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 						that.current_nftcard_gift_or_discard = res.data.data;
 				
 						console.log('current_nftcard_gift_or_discard ===>>> ', that.current_nftcard_gift_or_discard);
+						
+						that.__get_card_publish_list();
 				
 				
 					},
