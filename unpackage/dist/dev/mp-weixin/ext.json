@@ -46,10 +46,10 @@
         "text": "首页"
       },
       {
-        "pagePath": "pages/shopList/shopList",
+        "pagePath": "pages/nftcard/package_list",
         "iconPath": "static/img/tabBar/category.png",
         "selectedIconPath": "static/img/tabBar/category-on.png",
-        "text": "发现"
+        "text": "卡包"
       },
       {
         "pagePath": "pages/user/user",

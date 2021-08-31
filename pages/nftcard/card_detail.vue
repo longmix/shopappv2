@@ -32,7 +32,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					<!-- 模态框 -->
 					<!-- <view id="try" class="show_modal_pop" v-if="showModal_kapaifengmian"  :style="{paddingTop: (card_bg_img_height*0.6)+'rpx'}"> -->
 					<view id="try" class="show_modal_pop" v-if="showModal_kapaifengmian" 
-					style="position: absolute;top: 50%;transform: translateY(-50%);position: fixed;">
+					>
 							
 						<!-- box_rolling下执行正面翻转动画   -->
 						<div class="rollbox" :class="{'box_rolling':isRolling}" @click="isRolling = !isRolling">
@@ -356,8 +356,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				</view> -->
 			<!-- </view> -->
 			<!-- 2021.08.06购买 -->
-			<!-- <block v-if= "nft_card_hidden_buy_button != 1"> -->
-			<block v-if= "nft_card_hidden_buy_button == 1">
+			<block v-if= "nft_card_hidden_buy_button != 1">
 				<view v-if="current_card_detail.is_buy_limit != -1"
 					class="card_detail_goumai1" 
 					:style="{backgroundColor:wxa_shop_nav_bg_color}" 
@@ -480,7 +479,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					
 						</view>
 						<!-- <view v-else class="card_detail_goumaijilv"> -->
-						<view v-else>您还没有获取记录哦~</view>
+						<view class="card_detail_xiansuo" v-else>您还没有获取记录哦~</view>
 						
 					
 				</view>
@@ -1413,9 +1412,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				});
 			},
 			
-			nftcard_discard:function(cplid){
-				this.__nftcard_gift_or_discard(cplid, 'discard');
-			},
+			nftcard_discard:function(cplid){				var that = this;								uni.showModal({					title: '',					content: '是否确认丢弃',					cancelText: '取消',					confirmText: '确认',					success: function (res){						if(res.confirm){							console.log('用户点击了确认');							that.__nftcard_gift_or_discard(cplid, 'discard');						} else if (res.cancel) {							console.log('用户点击取消');						}					}				})											},
+			
 			nftcard_gift:function(cplid, wish, mobile){
 				this.__nftcard_gift_or_discard(cplid, 'gift', wish, mobile);
 			},
@@ -1665,9 +1663,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		background-color: #FFFFFF;
 		position: absolute;
 		width: 450rpx;
-		top: 50%;
-		left: 15%;
-		transform: translateY(-50%);
 		border-radius: 30rpx;
 		padding: 20rpx;
 		border: 5rpx #c3c3c3 solid;
@@ -1812,7 +1807,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		margin: 15rpx;
 		margin-right: 23rpx;
 		position: fixed;
-		z-index: 4;
+		z-index: 999;
 	}
 	.card_detail_fenxiang {
 		width: 50rpx;
@@ -1889,7 +1884,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	}
 	.card_goumai2_modal{
 		position: fixed;
-		z-index: 4;
+		z-index: 999;
 		bottom: 0rpx;
 		right: 10rpx;
 		display: flex;
