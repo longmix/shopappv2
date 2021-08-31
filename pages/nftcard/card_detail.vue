@@ -31,8 +31,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					<view class="show_modal_mask" v-if="showModal_kapaifengmian" @click="showModal_kapaifengmian=false"></view>
 					<!-- 模态框 -->
 					<!-- <view id="try" class="show_modal_pop" v-if="showModal_kapaifengmian"  :style="{paddingTop: (card_bg_img_height*0.6)+'rpx'}"> -->
-					<view id="try" class="show_modal_pop" v-if="showModal_kapaifengmian" 
-					>
+					<view id="try" class="show_modal_pop" v-if="showModal_kapaifengmian">
 							
 						<!-- box_rolling下执行正面翻转动画   -->
 						<div class="rollbox" :class="{'box_rolling':isRolling}" @click="isRolling = !isRolling">
@@ -62,7 +61,18 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 						<image :src="current_card_detail.cover_img_url_2x3" 
 							class="card_detail_image" 
 							:style="{width: (card_bg_img_width*0.8)+'rpx', height: (card_bg_img_height*0.8)+'rpx'}"></image>
+						<!-- 价格 -->
+						<!-- <view @load="imageLoad">
 							
+							<image :style="{top:(card_bg_img_height*0.75)+'rpx', right:(card_bg_img_width*0.10)+'rpx'}"
+							class="package_list_mark" 
+							src="https://yanyubao.tseo.cn/Tpl/static/nft_card/mark01.png" mode="widthFix" ></image>
+							<view :style="{top:(card_bg_img_height*0.84)+'rpx', right:(card_bg_img_width*0.11)+'rpx'}" 
+							class="package_list_mark_num">
+								<view style="color: yellow;font-weight: bold; font-size: 35rpx;">￥{{current_card_detail.price}}</view>
+							</view>
+							
+						</view> -->
 					</view>
 				</view>
 			
@@ -116,6 +126,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				
 				
+				
 			</view>
 			
 			
@@ -131,7 +142,11 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 						<text style="color: #666666;padding-left: 6rpx;">{{current_card_detail.favorite_counter}}</text>
 					</image>
 				</view>
-				<h4 class="card_detail_title" style="padding-bottom: 15rpx;width: 90%;" v-if="current_card_detail">{{current_card_detail.card_name}}
+				<!-- 卡牌名称 -->
+				<h4 class="card_detail_title" 
+					style="padding-bottom: 15rpx;width: 90%;" 
+					v-if="current_card_detail">
+					{{current_card_detail.card_name}}
 				</h4>
 				<view style="font-size: 30rpx;">
 					<!-- 卡牌介绍 -->
@@ -356,7 +371,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				</view> -->
 			<!-- </view> -->
 			<!-- 2021.08.06购买 -->
-			<block v-if= "nft_card_hidden_buy_button != 1">
+			<block v-if= "nft_card_hidden_buy_button == 1">
 				<view v-if="current_card_detail.is_buy_limit != -1"
 					class="card_detail_goumai1" 
 					:style="{backgroundColor:wxa_shop_nav_bg_color}" 
@@ -543,7 +558,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				windowWidth: 0,
 				
 				card_bg_img_width:'750',
-				card_bg_img_height:'100',
+				card_bg_img_height:'',
 				
 				wxa_shop_nav_bg_color: '#30C478',
 				
@@ -1279,6 +1294,35 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			   
 			},
 			
+			
+			
+			// borderLoad: function (e) {
+			// 	var that = this;
+				
+			// 	//图片的宽度和高度
+			//     var imgwidth = e.detail.width;
+			//     var imgheight = e.detail.height;
+				
+			//     //宽高比  
+			//     var ratio = imgwidth / imgheight;
+				
+			// 	console.log('imageLoad id===>>> '+e.target.dataset.id +'图片实际大小：');
+			//     console.log(imgwidth, imgheight)
+				
+			// 	that.windowWidth = 750;
+				
+			// 	console.log('窗体的宽度：' + that.windowWidth);
+				
+			//     //计算的高度值  
+			// 	that.card_bg_img_width = that.windowWidth;
+			// 	that.card_bg_img_height = that.card_bg_img_width / ratio;
+				
+				
+			   
+			// },
+			
+			
+			
 			__get_card_list:function(){
 				var that = this;
 				
@@ -1383,7 +1427,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				
 				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_publish',
+					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_publish_list',
 					method: 'post',
 					data: post_data,
 					success: function(res) {
@@ -1441,22 +1485,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/nftcard_gift_or_discard',
 				
 					method: 'post',
-
-					data: {
-						sellerid: that.abotapi.globalData.default_sellerid,
-						data_type: that.current_data_type,
-						new_user_modile: that.current_new_user_modile,
-						sender_name: that.current_sender_name,
-						sender_wish: that.current_sender_wish,
-					},
-
-					data: {
-						sellerid: that.abotapi.globalData.default_sellerid,
-						data_type: taht.current_data_type,
-						new_user_modile: that.current_new_user_modile,
-						sender_name: that.current_sender_name,
-						sender_wish: that.current_sender_wish,
-					},
 
 					data: post_data,
 
@@ -1721,6 +1749,22 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		background-color: #FFFFFF;
 		box-shadow: 0rpx 0rpx 20rpx #000000;
 	}
+	.package_list_mark{
+		width: 200rpx;
+		position: absolute;
+		z-index: 1;
+		opacity: 0.6;
+		-webkit-transform:rotate(90deg);
+	}
+	.package_list_mark_num{
+		display: flex;
+		position:absolute;
+		z-index: 2;
+	}
+	
+	
+	
+	
 	.card_detail_h4 {
 		font-size: 30rpx;
 		line-height: 60rpx;
