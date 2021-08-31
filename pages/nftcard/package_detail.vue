@@ -33,17 +33,17 @@
 						<image :src="current_nftcard_poster.img_url" mode="widthFix" style="width:600rpx;" ></image>
 					
 					<!--#ifndef MP-WEIXIN  -->
-							<button class="purple_btn btn_box" @click="saveImgToLocal" style="background-color: #30C478;text-align: center;">
+							<button class="purple_btn btn_box" @click="saveImgToLocal" :style="{backgroundcolor:wxa_shop_nav_bg_color}">
 								保存到相册
 							</button>
 						<!-- #endif -->
 						
 						<!-- #ifdef MP-WEIXIN -->
-						<button v-if="openSettingBtnHidden" class="purple_btn btn_box" @click="saveEwm" style="background-color: #30C478;text-align: center;">
+						<button v-if="openSettingBtnHidden" class="purple_btn btn_box" @click="saveEwm" style="background-color: #30C478;">
 							保存到相册
 						</button>
 						
-						<button v-else class="purple_btn btn_box" hover-class="none"open-type="openSetting" @opensetting='handleSellting'  >保存到相册</button>
+						<button v-else class="purple_btn btn_box" hover-class="none"open-type="openSetting" @opensetting='handleSetting'  >保存到相册</button>
 						<!-- #endif -->	 
 				</view>	
 			</view>
@@ -310,7 +310,7 @@ import util from '../../common/util.js';
 import parseHtml from "../../common/html-parser.js"
 // #endif
 	
-	
+
 export default {
 	data() {
 		return {
@@ -349,6 +349,7 @@ export default {
 			wxa_shop_nav_bg_color: '#30C478',
 			
 			openSettingBtnHidden:true,
+			
 		};
 	},
 	onLoad: function (options) {
@@ -682,38 +683,38 @@ export default {
 			
 		},
 		
-		// 微信小程序保存到相册
-		// handleSetting(e){
+		//微信小程序保存到相册
+		handleSetting(e){
 			
-		// 	var that = this;
+			var that = this;
 			
-		// 	if(!e.detail.authSetting['scope.writePhotosAlbum']){
-		// 		that.openSettingBtnHidden = false;
-		// 	}else{
-		// 		that.openSettingBtnHidden = true;
-		// 	}
-		// },
-		// saveEwn:function(e){
-		// 	var that = this;
-		// 	//获取相册授权
-		// 	uni.getSetting({
-		// 		success(res){
-		// 			if(!res.authSetting['scope.writePhotosAlbum']){
-		// 				uni.authorize({
-		// 					scope:'scope.writePhotosAlbum',
-		// 					success(){
-		// 						that.saveImgToLocal();
-		// 					},
-		// 					fail(){
-		// 						that.openSettingBtnHidden=false
-		// 					}
-		// 				})
-		// 			}else{
-		// 				that.saveImgToLocal();
-		// 			}
-		// 		}
-		// 	})
-		// },
+			if(!e.detail.authSetting['scope.writePhotosAlbum']){
+				that.openSettingBtnHidden = false;
+			}else{
+				that.openSettingBtnHidden = true;
+			}
+		},
+		saveEwm:function(e){
+			var that = this;
+			//获取相册授权
+			uni.getSetting({
+				success(res){
+					if(!res.authSetting['scope.writePhotosAlbum']){
+						uni.authorize({
+							scope:'scope.writePhotosAlbum',
+							success(){
+								that.saveImgToLocal();
+							},
+							fail(){
+								that.openSettingBtnHidden=false
+							}
+						})
+					}else{
+						that.saveImgToLocal();
+					}
+				}
+			})
+		},
 		saveImgToLocal:function(e){
 			var that = this;
 			
@@ -727,7 +728,7 @@ export default {
 							success:(res) =>{
 								if(res.statusCode === 200){
 									
-									uni.saveImgToPhotosAlbum({
+									uni.saveImageToPhotosAlbum({
 										filePath:res.tempFilePath,
 										success:function(){
 											uni.showToast({
