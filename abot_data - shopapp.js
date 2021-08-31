@@ -14,7 +14,7 @@ const globalData = {
 		weixin_open_platform_appid: '',	//微信开放平台中登记的APP对应的appid（务必与manifest中的配置一致）
 		
 		//通版商城，目前主要是用于小程序模板的发布
-		default_shopname: '通版商城V2默认模板',
+		default_shopname: '商城V2加载中',
 		default_sellerid: 'pQNNmSkaq',
 		default_copyright_text:'技术支持：延誉宝',
 		
