@@ -3,15 +3,12 @@
 		<view class="" style="width: 750rpx;height: 20rpx;"></view>
 		
 		
-		<view class="">
-			<view class="list_box">
-				<view v-for="(item, tag_item_index) in package_tag_item_list" :key="tag_item_index" @tap="package_tag_item_click(tag_item_index)" 
-					:class="[item.selected?'tag_item_selected':'tag_item_unselected']">
-						{{item.title}}
-						
+		<view class="tabs">
+		    <block v-for="(tab,index) in tabBars" :key="tab.id">
+				<view class="uni-tab-item" :class="{'uni-tab-item-title-active' :tabIndex==index}" @tap="tabtap(index)">
+					<view class="uni-tab-item-title" :class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{tab.name}}</view>
 				</view>
-			</view>
-		
+		    </block>
 		</view>
 		
 		<!-- 全部筛选   有效   无效-->
@@ -78,13 +75,12 @@ export default {
 		return {
 			current_package_list : null,
 			userid:0,
-			package_tag_item_list:[
-				{tag_id:1, selected:true, title:'全部卡牌'},
-				{tag_id:2, selected:false, title:'正在发售'},
-				{tag_id:3, selected:false, title:'已过期'},
-				
-			],
-			package_tag_item_selected_seq_list:[],
+			tabIndex:0,
+			    tabBars:[
+					{ name:"全部卡牌",id:"quanbu"},
+			        { name:"正在发售",id:"diancang"},
+			        { name:"已过期",id:"zhencang"},
+			    ]
 			
 		}
 	},
@@ -231,6 +227,17 @@ export default {
 			console.log('cb_params====', cb_params);
 		},
 		
+		tabtap(index){
+			this.tabIndex=index;
+			uni.showToast({
+				title: ' ',
+				duration: 2000,
+			});
+						
+			return;
+		},
+		
+		
 		
 		goto_package_detail:function(packageid){
 			console.log('packageid===>>>' + packageid);
@@ -247,7 +254,7 @@ export default {
 			
 			var post_data = {
 					sellerid:that.abotapi.globalData.default_sellerid,
-					
+					action02:'expire_list',
 					action: 'my_like_list',
 			};
 			
@@ -499,6 +506,31 @@ export default {
 		background-color: #30C478;
 		border-radius: 15rpx;
 	}
+	.tabs {
+		margin-top: 20rpx;
+		margin-bottom: 40rpx;
+	}
+	.uni-tab-item {
+	    display: inline-block;
+		margin-right: 20rpx;
+	}
+	
+	.uni-tab-item-title {
+	    color: #555;
+	    font-size: 30rpx;
+	    line-height: 55rpx;
+		background-color: #FFFFFF;
+		border-radius: 15rpx;
+	    padding-left: 20rpx;
+	    padding-right: 20rpx;
+	}
+	
+	.uni-tab-item-title-active {
+	    color: #FFFFFF;
+		background-color: #30C478;
+		border-radius: 15rpx;
+	}
+	
 	
 	
 </style>

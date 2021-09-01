@@ -441,8 +441,13 @@ export default {
 				packageid:that.current_packageid,
 				nft_supplierid : that.current_nft_supplierid,
 				
-				
 			};
+		var userInfo = that.abotapi.get_user_info();
+		if (userInfo) {
+			post_data.userid = userInfo.userid;
+			post_data.checkstr = userInfo.checkstr;
+		}
+			
 	
 		console.log('=========>>>>>>>>>>>');
 		console.log(post_data);

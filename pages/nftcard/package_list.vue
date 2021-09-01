@@ -8,7 +8,7 @@
 			
 			<input  placeholder="提示卡包" class="search_package" :value="searchValue"
 				confirm-type="search"
-				@input="searchValueInput()"
+				@input="searchValueInput($event)"
 				@confirm="package_list_search()"/>
 				
 			<button @tap="package_list_search()" style="width: 90rpx; height: 65rpx;line-height: 80rpx;">
@@ -171,7 +171,7 @@ export default {
 		    data: {
 				sellerid:that.abotapi.globalData.default_sellerid,
 				nft_supplierid : that.current_nft_supplierid,
-				keywords: that.searchValue,
+				
 				page_num: 1,
 				page_size: 50,
 		    },
@@ -339,7 +339,9 @@ export default {
 		    var value = e.detail.value;
 			that.searchValue = value,
 			that.page = 1
-			if (!value && that.current_package_list.length == 0) {
+			if (!value
+			 
+			 && that.current_package_list.length == 0) {
 				that.centent_show = false;
 			}
 		},
