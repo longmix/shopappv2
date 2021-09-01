@@ -28,9 +28,10 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				<!-- 2021.08.11卡牌封面 ==> 模态框 -->
 				<view>
-					<view class="show_modal_mask" v-if="showModal_kapaifengmian" @click="showModal_kapaifengmian=false"></view>
+					<view class="show_modal_mask" v-if="showModal_kapaifengmian" 
+						@click="showModal_kapaifengmian=false">
+					</view>
 					<!-- 模态框 -->
-					<!-- <view id="try" class="show_modal_pop" v-if="showModal_kapaifengmian"  :style="{paddingTop: (card_bg_img_height*0.6)+'rpx'}"> -->
 					<view id="try" class="show_modal_pop" v-if="showModal_kapaifengmian">
 							
 						<!-- box_rolling下执行正面翻转动画   -->
@@ -57,22 +58,34 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 							
 					</view>
 					<!-- 卡牌封面 -->
-					<view @click="showModal_kapaifengmian=true" :style="{paddingTop: (card_bg_img_height*0.15)+'rpx',paddingLeft: (card_bg_img_width*0.1)+'rpx'}">
+					<view @click="showModal_kapaifengmian=true" 
+						:style="{paddingTop: (card_bg_img_height*0.15)+'rpx',paddingLeft: (card_bg_img_width*0.1)+'rpx'}">
 						<image :src="current_card_detail.cover_img_url_2x3" 
 							class="card_detail_image" 
-							:style="{width: (card_bg_img_width*0.8)+'rpx', height: (card_bg_img_height*0.8)+'rpx'}"></image>
+							:style="{width: (card_bg_img_width*0.8)+'rpx', height: (card_bg_img_height*0.8)+'rpx'}">
+						</image>
 						<!-- 价格 -->
-						<!-- <view @load="imageLoad">
+						<view @load="imageLoad">
 							
-							<image :style="{top:(card_bg_img_height*0.75)+'rpx', right:(card_bg_img_width*0.10)+'rpx'}"
-							class="package_list_mark" 
-							src="https://yanyubao.tseo.cn/Tpl/static/nft_card/mark01.png" mode="widthFix" ></image>
-							<view :style="{top:(card_bg_img_height*0.84)+'rpx', right:(card_bg_img_width*0.11)+'rpx'}" 
-							class="package_list_mark_num">
-								<view style="color: yellow;font-weight: bold; font-size: 35rpx;">￥{{current_card_detail.price}}</view>
+							<!-- <image :style="{top:(card_bg_img_height*0.70)+'rpx', right:(card_bg_img_width*0.10)+'rpx'}"
+								class="package_list_mark" 
+								src="https://yanyubao.tseo.cn/Tpl/static/nft_card/mark01.png" mode="widthFix" >
+							</image> -->
+							<view :style="{top:(card_bg_img_height*0.80)+'rpx', right:(card_bg_img_width*0.11)+'rpx'}" 
+								class="package_list_mark_num">
+								<view style="color: #FFFFFF;">
+									<text v-if="current_card_detail.price">
+										￥{{current_card_detail.price}}
+									</text>
+									<text v-else>
+										免费
+									</text>
+									
+								</view>
+								
 							</view>
 							
-						</view> -->
+						</view>
 					</view>
 				</view>
 			
@@ -371,7 +384,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				</view> -->
 			<!-- </view> -->
 			<!-- 2021.08.06购买 -->
-			<block v-if= "nft_card_hidden_buy_button == 1">
+			<block v-if= "nft_card_hidden_buy_button != 1">
 				<view v-if="current_card_detail.is_buy_limit != -1"
 					class="card_detail_goumai1" 
 					:style="{backgroundColor:wxa_shop_nav_bg_color}" 
@@ -1760,6 +1773,11 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		display: flex;
 		position:absolute;
 		z-index: 2;
+		background-color: #666666;
+		padding: 10rpx;
+		margin-right: 10rpx;
+		border-radius: 4rpx;
+		opacity: 0.8;
 	}
 	
 	
