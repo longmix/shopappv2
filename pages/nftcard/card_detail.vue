@@ -1773,11 +1773,11 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		display: flex;
 		position:absolute;
 		z-index: 2;
-		background-color: #666666;
+		background-color: #000000;
 		padding: 10rpx;
 		margin-right: 10rpx;
 		border-radius: 4rpx;
-		opacity: 0.8;
+		opacity: 0.7;
 	}
 	
 	
@@ -1823,26 +1823,26 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	
 /* 收藏按钮 */
 	.card_detail_schang_boder{
-		width: 47rpx;
-		height: 47rpx;
+		width: 50rpx;
+		height: 50rpx;
 		padding-right: 10rpx;
 		padding-bottom: 10rpx;
 		background-color: #FFFFFF;
 		border-radius: 50%;
-		background: rgb(0, 0, 0,0.6);
+		background: rgb(0, 0, 0,0.7);
 		position: absolute;
 	}
 	.card_detail_schang {
-		width: 39rpx;
-		height: 39rpx;
-		margin-top: 6rpx;
-		margin-left: 10rpx;
+		width: 40rpx;
+		height: 40rpx;
+		margin-top: 8rpx;
+		margin-left: 11rpx;
 	}
 	.card_detail_ps {
 		width: 36rpx;
 		height: 36rpx;
-		margin-top: 8rpx;
-		margin-left: 11rpx;
+		margin-top: 10rpx;
+		margin-left: 12rpx;
 	}
 	/* 线索未亮按钮 */
 	.card_detail_xiaoxi1 {
