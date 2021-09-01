@@ -498,7 +498,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 						
 					
 				</view>
-				<!-- <view v-else>您还没有购买记录哦~</view> -->
 				
 			</view>
 			
@@ -1239,7 +1238,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				uni.navigateTo({
 					url: new_url
 				})
-
+				
+				//that.current_card_detail.buyed_counter ++;
 
 			},
 
