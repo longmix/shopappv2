@@ -12,10 +12,14 @@
 			
 			<!-- icon喜欢图标--------- -->
 			<view class="like_number" >
-				<image v-if="current_package_detail.is_like == 0"  @tap="set_like(1)" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xin02.png"
-					mode="widthFix" style="width: 50rpx;height: 50rpx; margin-top: 15rpx;margin-left: 12rpx;" ></image>
-				<image v-if="current_package_detail.is_like == 1" @tap="set_like(0)"  src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xin.png" 
-					mode="widthFix" style="width: 60rpx;height:56rpx;margin-top: 11rpx;margin-left: 8rpx;"  ></image>
+				<image v-if="current_package_detail.is_like == 0" 
+					@tap="set_like(1)" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xin02.png"
+					mode="widthFix" style="width: 50rpx;height: 50rpx; margin-top: 15rpx;margin-left: 12rpx;" >
+				</image>
+				<image v-if="current_package_detail.is_like == 1" @tap="set_like(0)" 
+					src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xin.png" mode="widthFix" 
+					style="width: 60rpx;height:56rpx;margin-top: 11rpx;margin-left: 8rpx;"  >
+				</image>
 				<!-- <view style="font-weight: 100; font-size: 10rpx;"> {{current_package_detail.like_count}}</view> -->
 			</view>
 			
@@ -33,17 +37,17 @@
 						<image :src="current_nftcard_poster.img_url" mode="widthFix" style="width:600rpx;" ></image>
 					
 					<!--#ifndef MP-WEIXIN  -->
-							<button class="purple_btn btn_box" @click="saveImgToLocal" :style="{background:wxa_shop_nav_bg_color}">
+							<button class="purple_btn btn_box" @click="saveImgToLocal" style="color: #FFFFFF;" :style="{background:wxa_shop_nav_bg_color}">
 								保存到相册
 							</button>
 						<!-- #endif -->
 						
 						<!-- #ifdef MP-WEIXIN -->
-						<button v-if="openSettingBtnHidden" class="purple_btn btn_box" @click="saveEwm" :style="{background:wxa_shop_nav_bg_color}">
+						<button v-if="openSettingBtnHidden" class="purple_btn btn_box" @click="saveEwm" style="color: #FFFFFF;" :style="{background:wxa_shop_nav_bg_color}">
 							保存到相册
 						</button>
 						
-						<button v-else class="purple_btn btn_box" hover-class="none" open-type="openSetting" @opensetting='handleSetting'  >保存到相册</button>
+						<button v-else class="purple_btn btn_box" hover-class="none" style="color: #FFFFFF;" open-type="openSetting" @opensetting='handleSetting'  >保存到相册</button>
 						<!-- #endif -->	 
 				</view>	
 			</view>
