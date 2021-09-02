@@ -1,6 +1,6 @@
 <template>
   <view class="waterfalls-box" :style="{ height: height + 'px' }">
-    <!--  #ifdef  MP-WEIXIN -->
+    <!--  #ifdef  MP-WEIXIN | MP-ALIPAY -->
     <view
       v-for="(item, index) of list"
       class="waterfalls-list"
@@ -29,7 +29,7 @@
     </view>
     <!--  #endif -->
 
-    <!--  #ifndef  MP-WEIXIN -->
+    <!--  #ifndef  MP-WEIXIN | MP-ALIPAY -->
     <view
       v-for="(item, index) of list"
       class="waterfalls-list"
