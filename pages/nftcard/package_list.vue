@@ -411,7 +411,7 @@ export default {
 
 <style>
 	
-	@import "/static/css/nftcard.css";
+	@import "./static/css/nftcard.css";
 	
 	.package_search{
 		display: flex;

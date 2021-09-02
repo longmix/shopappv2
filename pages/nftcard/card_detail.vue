@@ -1737,7 +1737,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	}
 </style>
 <style>
-	@import "/static/css/nftcard.css";
+	@import "./static/css/nftcard.css";
+	
 	.card_detail_xing {
 		width: 30rpx;
 		height: 30rpx;

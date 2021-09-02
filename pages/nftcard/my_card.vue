@@ -48,7 +48,8 @@
 <script>
 import util from '../../common/util.js';
 
-import waterfallsFlow from "@/components/maramlee-waterfalls-flow/maramlee-waterfalls-flow.vue";
+//import waterfallsFlow from "@/components/maramlee-waterfalls-flow/maramlee-waterfalls-flow.vue";
+import waterfallsFlow from "./components/maramlee-waterfalls-flow/maramlee-waterfalls-flow.vue";
 	
 export default {
 	components: { waterfallsFlow },

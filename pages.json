@@ -1,37 +1,13 @@
 {	
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
-		"navigationBarTitleText" : "卡扑",
-		"navigationBarBackgroundColor" : "#30c478",
+		"navigationBarTitleText" : "V2系统加载中",
+		"navigationBarBackgroundColor" : "#2d96ff",
 		"backgroundColor" : "#ffffff",
 		"backgroundColorTop":"#ffffff",
 		"backgroundColorBottom":"#ffffff"
 	},
-	"tabBar": {
-		"color": "#333333",
-		"selectedColor": "#d81e06",
-		"borderStyle": "black",
-		"backgroundColor": "#ffffff",
-		"list": [{
-				"pagePath": "pages/index/index",
-				"iconPath": "static/img/tabBar/home.png",
-				"selectedIconPath": "static/img/tabBar/home-on.png",
-				"text": "首页"
-			},
-			{
-				"pagePath": "pages/nft_card/package_list",
-				"iconPath": "static/img/tabBar/category.png",
-				"selectedIconPath": "static/img/tabBar/category-on.png",
-				"text": "卡包"
-			},
-			{
-				"pagePath": "pages/user/user",
-				"iconPath": "static/img/tabBar/user.png",
-				"selectedIconPath": "static/img/tabBar/user-on.png",
-				"text": "我的"
-			}
-		]
-	},
+	//默认不设置tabbar
 
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{	//主页
@@ -653,32 +629,8 @@
             }            
         }
 		//======= NFT卡包卡牌相关 Begin  ====
-		,
-		{
-            "path" : "pages/nftcard/card_detail",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": true
-            }            
-        },
-		{
-		    "path" : "pages/nftcard/card_list",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "",
-		        "enablePullDownRefresh": true
-		    }            
-		
-		},
-		{
-            "path" : "pages/nftcard/package_detail",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": true
-            }            
-        },
+		//这个可能会挂接在底部导航中，所有不放在分包里面
+		/*,
 		{
 			"path":"pages/nftcard/package_list",
 			"style":
@@ -686,27 +638,91 @@
 				"navigationBarTitleText":"",
 				"enablePullDownRefresh":true
 			}
-		},
-		{
-			"path":"pages/nftcard/my_card",
-			"style":
-			{
-				"navigationBarTitleText":"",
-				"enablePullDownRefresh":true
-			}
-		},
-		{
-			"path":"pages/nftcard/my_package",
-			"style":
-			{
-				"navigationBarTitleText":"",
-				"enablePullDownRefresh":true
-			}
-		}
+		}*/
 		//======= NFT卡包卡牌相关 Begin  ====
 		
 
-    ],	
+    ],
+	"subPackages": [
+		//======= NFT卡包卡牌相关的分包 Begin  ====
+		{
+			
+			"root": "pages/nftcard",
+			"pages": [
+				{"path" : "card_detail",
+					"style" :                                                                                    
+					{
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": true
+					}            
+				},
+				{
+					"root": "pages/nftcard",
+					"path" : "card_list",
+					"style" :                                                                                    
+					{
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": true
+					}            
+				
+				},
+				{
+					"root": "pages/nftcard",
+					"path" : "package_detail",
+					"style" :                                                                                    
+					{
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": true
+					}            
+				},
+				
+				{
+					"root": "pages/nftcard",
+					"path" : "package_list",
+					"style" :                                                                                    
+					{
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": true
+					}            
+				},
+				
+				{
+					"root": "pages/nftcard",
+					"path":"my_card",
+					"style":
+					{
+						"navigationBarTitleText":"",
+						"enablePullDownRefresh":true
+					}
+				},
+				{
+					"root": "pages/nftcard",
+					"path":"my_package",
+					"style":
+					{
+						"navigationBarTitleText":"",
+						"enablePullDownRefresh":true
+					}
+				},
+				{
+					"root": "pages/nftcard",
+					"path":"shopDetail",
+					"style": {
+						"navigationBarTitleText": "商家详情",
+						"enablePullDownRefresh": true,
+						"softinputNavBar":"none",
+						"app-plus": {
+							"titleNView": false ,//禁用原生导航栏
+							"softinputNavBar":"none",
+							"navigationBarTextStyle":"black"
+						}
+					}
+				}
+			]
+			
+		}
+		//======= NFT卡包卡牌相关的分包 Begin  ====
+	],
 	"condition" : { //模式配置，仅开发期间生效
 		"current": 0, //当前激活的模式(list 的索引项)
 		"list": [

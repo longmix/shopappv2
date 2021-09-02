@@ -189,7 +189,10 @@
         },
         "uniStatistics" : {
             "enable" : false
-        }
+        },
+		"optimization":{
+			"subPackages":true
+		}
     },
     /* 插件放到ext.json 中定义,
 		"plugins": {

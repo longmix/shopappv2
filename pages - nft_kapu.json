@@ -18,12 +18,13 @@
 				"selectedIconPath": "static/img/tabBar/home-on.png",
 				"text": "首页"
 			},
+			/* 分包里面的资源不能被放在TabBar中。
 			{
 				"pagePath": "pages/nftcard/package_list",
 				"iconPath": "static/img/tabBar/category.png",
 				"selectedIconPath": "static/img/tabBar/category-on.png",
 				"text": "卡包"
-			},
+			},*/
 			{
 				"pagePath": "pages/user/user",
 				"iconPath": "static/img/tabBar/user.png",

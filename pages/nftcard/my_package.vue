@@ -398,7 +398,7 @@ export default {
 </script>
 
 <style>
-	@import "/static/css/nftcard.css";
+	@import "./static/css/nftcard.css";
 	
 	.my_package_screen{
 		background-color: #FFFFFF;

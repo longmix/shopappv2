@@ -28,7 +28,7 @@
 						mode="widthFix" style="width: 45rpx;margin-top: 17rpx;margin-left: 18rpx;"></image>
 				</view>
 				
-					<view class="show_modal_mask" v-if="showPosterModal" @tap="showPosterModal=false"@touchmove.stop.prevent = "doNothing"></view>
+					<view class="show_modal_mask" v-if="showPosterModal" @tap="showPosterModal=false" @touchmove.stop.prevent = "doNothing"></view>
 					<view class="show_modal_pop" v-if="showPosterModal">
 						<image :src="current_nftcard_poster.img_url" mode="widthFix" style="width:600rpx;" ></image>
 					
@@ -43,7 +43,7 @@
 							保存到相册
 						</button>
 						
-						<button v-else class="purple_btn btn_box" hover-class="none"open-type="openSetting" @opensetting='handleSetting'  >保存到相册</button>
+						<button v-else class="purple_btn btn_box" hover-class="none" open-type="openSetting" @opensetting='handleSetting'  >保存到相册</button>
 						<!-- #endif -->	 
 				</view>	
 			</view>
@@ -145,7 +145,10 @@
 				<view class="package_detail_lable">标签</view>
 				
 				<view class="package_label" style="margin-top: 10rpx;">
-					<view class="package_detail_lable_list" v-for="(item,index) in current_package_detail.tag_list" style="font-size: 20rpx;">
+					<view class="package_detail_lable_list" 
+						v-for="(item, index) in current_package_detail.tag_list" 
+						:key="index"
+						style="font-size: 20rpx;">
 						<view style="margin-left: 5rpx;margin-right: 5rpx;">{{item}}</view>
 					</view>
 				</view>
@@ -196,7 +199,9 @@
 		<!-- 筛选框 -->
 		<view class="">
 			<view class="list_box">
-				<view v-for="(item, tag_item_index) in package_tag_item_list" :key="tag_item_index" @tap="package_tag_item_click(tag_item_index)" 
+				<view v-for="(item, tag_item_index) in package_tag_item_list" 
+					:key="tag_item_index" 
+					@tap="package_tag_item_click(tag_item_index)" 
 					:class="[item.selected?'tag_item_selected':'tag_item_unselected']">
 						{{item.selected?item.title:item.title}}
 						
@@ -212,7 +217,8 @@
 		<view class="card_list_background">
 			<view class="my_package_detail_card_list">
 				<view class="card_list"
-						v-for="(current_card_item,index) in current_card_list"
+						v-for="(current_card_item, index) in current_card_list"
+						:key="index"
 						@tap="go_to_card_detail(current_card_item.packageid, current_card_item.cardid)">
 						
 					<view class="" style="width: 340rpx;height: 615rpx;">
@@ -265,7 +271,9 @@
 			
 			<scroll-view scroll-x="true">
 				<view class="" style="display: flex;margin-left: 20rpx;margin-right: 20rpx;">
-					<view class="" style="margin-bottom: 30rpx;" v-for="(current_package_item,index) in current_package_list"
+					<view class="" style="margin-bottom: 30rpx;" 
+							v-for="(current_package_item, index) in current_package_list"
+							:key="index"
 							@tap="goto_package_detail(current_package_item.packageid)">
 						<image class="package_list_recommend" :src="current_package_item.cover_img_url" mode=""></image>
 						<view class="series_package" style="font-weight: bold;margin-left: 5rpx;width: 200rpx;word-wrap: break-word;">{{current_package_item.title}}</view>
@@ -934,13 +942,24 @@ export default {
 		 
 		
 		 
-		 goto_supplier_detail:function(shangid){
+		goto_supplier_detail:function(){
+			var shangid = this.current_package_detail.sellerid;
+			 
 		 	console.log('跳转到发行商详情:' + shangid);
 		
 		 	uni.navigateTo({
-		 		url: '/pages/shopDetail/shopDetail?shangid='+this.current_package_detail.sellerid,
+		 		url: '/pages/nftcard/shopDetail?shangid='+this.current_package_detail.sellerid,
+				success: (res) => {
+					console.log(res);
+				},
+				fail: (res) => {
+					console.log(res);
+				},
+				complete: (res) => {
+					console.log(res);
+				}
 		 	})
-		 },
+		},
 		  
 		
 		
@@ -1341,7 +1360,7 @@ export default {
 </script>
 
 <style>
-	@import "/static/css/nftcard.css";
+	@import "./static/css/nftcard.css";
 	
 	
 	

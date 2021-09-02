@@ -1974,7 +1974,7 @@
 </script>
 
 <style lang="scss">
-	
+	@import "./static/css/nftcard.css";
 	
 	.mystatusbar {
 		width: 100%;
