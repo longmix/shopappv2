@@ -17,31 +17,26 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				<!-- 背景模糊图片 -->
 				<image :src="current_card_detail.cover_img_url_2x3"  @load="imageLoad"
 					class="card_detail_border"
-					:style="{width: card_bg_img_width+'rpx', height: (card_bg_img_height*0.8)+'rpx'}" ></image>
-				<!-- 卡牌封面 -->
-				<!-- <view :style="{textAlign: 'center', paddingTop: (card_bg_img_height*0.15)+'rpx'}">
-					<image :src="current_card_detail.cover_img_url" 
-						class="card_detail_image"
-						:style="{width: (card_bg_img_width*0.8)+'rpx', height: (card_bg_img_height*0.8)+'rpx'}"></image>
-						
-				</view> -->
-				
+					:style="{width: card_bg_img_width+'rpx', height: (card_bg_img_height*0.8)+'rpx'}" >
+				</image>
 				<!-- 2021.08.11卡牌封面 ==> 模态框 -->
 				<view>
-					<view class="show_modal_mask" v-if="showModal_kapaifengmian" 
+					<view class="show_modal_mask" 
+						v-if="showModal_kapaifengmian" 
 						@click="showModal_kapaifengmian=false">
 					</view>
 					<!-- 模态框 -->
 					<view id="try" class="show_modal_pop" v-if="showModal_kapaifengmian">
-							
 						<!-- box_rolling下执行正面翻转动画   -->
-						<div class="rollbox" :class="{'box_rolling':isRolling}" @click="isRolling = !isRolling">
+						<div class="rollbox" :class="{'box_rolling':isRolling}" 
+							@click="isRolling = !isRolling">
 							<!-- 卡牌正面 -->
 							<div class="rollbox_front">
 								<div class="contentbox">
 									<image :src="current_card_detail.cover_img_url_2x3"
 										class="card_detail_image"
-										:style="{width: (card_bg_img_width*1)+'rpx', height: (card_bg_img_height*1)+'rpx'}"></image>
+										:style="{width: (card_bg_img_width*1)+'rpx', height: (card_bg_img_height*1)+'rpx'}">
+									</image>
 								</div>
 							</div>
 							<!-- 卡牌反面 -->
@@ -49,14 +44,15 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 								<div class="contentbox">
 									<image :src="current_card_detail.cover_img_back_url"
 										class="card_detail_image"
-										:style="{width: (card_bg_img_width*1)+'rpx', height: (card_bg_img_height*1)+'rpx'}"></image>
-									<view style="display:inline-block; height:100%; vertical-align:middle;"></view>
+										:style="{width: (card_bg_img_width*1)+'rpx', height: (card_bg_img_height*1)+'rpx'}">
+									</image>
 								</div>
 							</div>
+							
 						</div>
-							
-							
 					</view>
+					
+					
 					<!-- 卡牌封面 -->
 					<view @click="showModal_kapaifengmian=true" 
 						:style="{paddingTop: (card_bg_img_height*0.15)+'rpx',paddingLeft: (card_bg_img_width*0.1)+'rpx'}">
@@ -64,86 +60,91 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 							class="card_detail_image" 
 							:style="{width: (card_bg_img_width*0.8)+'rpx', height: (card_bg_img_height*0.8)+'rpx'}">
 						</image>
-						<!-- 价格 -->
+						<!-- 2021.09.1价格 -->
 						<view @load="imageLoad">
-							
-							<!-- <image :style="{top:(card_bg_img_height*0.70)+'rpx', right:(card_bg_img_width*0.10)+'rpx'}"
-								class="package_list_mark" 
-								src="https://yanyubao.tseo.cn/Tpl/static/nft_card/mark01.png" mode="widthFix" >
-							</image> -->
 							<view :style="{top:(card_bg_img_height*0.80)+'rpx', right:(card_bg_img_width*0.11)+'rpx'}" 
 								class="package_list_mark_num">
 								<view style="color: #FFFFFF;">
 									<text v-if="current_card_detail.price">
 										￥{{current_card_detail.price}}
 									</text>
-									<text v-else>
-										免费
-									</text>
-									
+									<text v-else>免费</text>
 								</view>
-								
 							</view>
-							
 						</view>
 					</view>
+					
+					
 				</view>
 			
-				
-				
-				
-				
-				
-				<!-- 2021.08.09收藏 -->
+				<!-- 2021.08.09收藏切换按钮 -->
 				<view class="card_detail_schang_boder"
 					:style="{top:(card_bg_img_height*0.20)+'rpx', right:(card_bg_img_width*0.14)+'rpx'}"
 					 v-if="current_card_detail">
-					<image class="card_detail_schang" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xingxing.png" 
-						v-if="current_card_detail.is_favorite == 1" @tap="set_favorite(0)"></image>
+					<image class="card_detail_schang" 
+						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xingxing.png" 
+						v-if="current_card_detail.is_favorite == 1" 
+						@tap="set_favorite(0)">
+					</image>
 						
-					<image class="card_detail_schang" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xingxing01.png"
-					v-if="current_card_detail.is_favorite == 0" @tap="set_favorite(1)"></image>
+					<image class="card_detail_schang" 
+						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xingxing01.png"
+						v-if="current_card_detail.is_favorite == 0" 
+						@tap="set_favorite(1)">
+					</image>
 					
 					<view style="padding-top: 20rpx;">
 						<!-- 2021.08.30相机 -->
-						<view class="card_detail_schang_boder" @tap="package_showPosterModal()">
+						<view class="card_detail_schang_boder" 
+							@tap="package_showPosterModal()">
 							<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/ps.png"
-								mode="widthFix" class="card_detail_ps"></image>
+								mode="widthFix" class="card_detail_ps">
+							</image>
 						</view>
-						<view class="show_modal_mask" v-if="showPosterModal" @tap="showPosterModal=false"@touchmove.stop.prevent = "doNothing"></view>
-						<view class="show_modal_pop" v-if="showPosterModal">
-							
-								<image :src="current_nftcard_poster.img_url" mode="widthFix" style="width:600rpx" ></image>
-								
-								<!--#ifndef MP-WEIXIN  -->
-								
-										<button class="purple_btn btn_box" @click="saveImgToLocal" :style="{background:wxa_shop_nav_bg_color}">
-											保存到相册
-										</button>
-									<!-- #endif -->
-									
-									<!-- #ifdef MP-WEIXIN -->
-									<button v-if="openSettingBtnHidden" class="purple_btn btn_box" @click="saveEwm" :style="{background:wxa_shop_nav_bg_color}">
-										保存到相册
-									</button>
-									
-									<button v-else class="purple_btn btn_box" hover-class="none"open-type="openSetting" @opensetting='handleSetting'>保存到相册</button>
-									<!-- #endif -->	 
-									
+						<view class="show_modal_mask" 
+							v-if="showPosterModal" 
+							@tap="showPosterModal=false"
+							@touchmove.stop.prevent = "doNothing">
+						</view>
 						
+						<!-- 海报模态框 -->
+						<view class="show_modal_pop" v-if="showPosterModal">
+							<image :src="current_nftcard_poster.img_url" 
+								mode="widthFix" style="width:600rpx" >
+							</image>
+							<!--#ifndef MP-WEIXIN  -->
+								<button class="purple_btn btn_box" 
+									@click="saveImgToLocal" 
+									style="color: #FFFFFF;"
+									:style="{background:wxa_shop_nav_bg_color}">
+									保存到相册
+								</button>
+							<!-- #endif -->
+							
+							<!-- #ifdef MP-WEIXIN -->
+								<button v-if="openSettingBtnHidden" 
+									class="purple_btn btn_box" 
+									@click="saveEwm" 
+									style="color: #FFFFFF;"
+									:style="{background:wxa_shop_nav_bg_color}">
+									保存到相册
+								</button>
 								
+								<button v-else class="purple_btn btn_box" 
+									hover-class="none" open-type="openSetting"
+									style="color: #FFFFFF;"
+									@opensetting='handleSetting'>
+									保存到相册
+								</button>
+							<!-- #endif -->
 						</view>
+						
+						
 					</view>
 					
 				</view>
 				
-				
-				
-				
 			</view>
-			
-			
-			
 			
 			
 			<!-- 卡牌信息 -->
@@ -152,46 +153,48 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				<view style="float: right;">
 					<image class="card_detail_xing"
 						src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png">
-						<text style="color: #666666;padding-left: 6rpx;">{{current_card_detail.favorite_counter}}</text>
+						<text style="color: #666666;padding-left: 6rpx;">
+							{{current_card_detail.favorite_counter}}
+						</text>
 					</image>
 				</view>
+				
 				<!-- 卡牌名称 -->
 				<h4 class="card_detail_title" 
 					style="padding-bottom: 15rpx;width: 90%;" 
 					v-if="current_card_detail">
 					{{current_card_detail.card_name}}
 				</h4>
+				
 				<view style="font-size: 30rpx;">
 					<!-- 卡牌介绍 -->
 					<view>{{current_card_detail.brief}}</view>
 					<!-- 获得的卡牌序号 -->
 					<view v-if="current_card_detail && current_card_detail.user_have_list">
 						已获得：
-						<block v-for="(cpl_item , index001) in current_card_detail.user_have_list">
+						<block v-for="(cpl_item , index001) in current_card_detail.user_have_list"
+							:key="index001">
 							#{{cpl_item.cplseq}}
 							<!-- 最后一个字符不加’，‘ -->
 							<!-- {{index001 == current_card_detail.user_have_list.length-1 ? " ":" ,"}} -->
 						</block>
 					</view>
 				</view>
-				<view style="color: #868686;font-size: 30rpx;">
-					<!-- <text>限购：{{current_card_detail.buy_limit}}张</text> -->
-					<!-- 发行时间 -->
-					<!-- <text id="card_detail_mystr" v-if="current_card_detail">{{current_card_detail.time_begin}}</text> -->
-					
-					<!-- <view >总共{{current_card_detail.faxing_counter}} 还剩{{current_card_detail.kucun_counter}} </view> -->
-					<view style="font-size: 30rpx;">
+				
+				
+				<view style="color: #868686;">
+					<view>
 						分发进度（{{current_card_detail.sale_counter}}/{{current_card_detail.publish_counter}}）
 					</view>
 					
-					
 					<!-- 进度条 -->
 					<view v-if="current_card_detail ">
-						<progress :percent="current_card_detail.sale_percent" stroke-width="4" show-info="true" activeColor="#30C478"
-						 backgroundColor="red" font-size="14" active="true" active-mode="forwards"></progress>
+						<progress :percent="current_card_detail.sale_percent" 
+							stroke-width="4" show-info="true" activeColor="#30C478"
+							backgroundColor="red" font-size="14" active="true" 
+							active-mode="forwards">
+						</progress>
 					</view>
-					
-					
 					
 				</view>
 			</view>
@@ -200,8 +203,12 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			
 			<!-- 所属卡包信息-->
 			<view class="card_detail_suoshukabao">
-				<h4 class="card_detail_h4" :style="{color: wxa_shop_nav_bg_color, borderBottom: wxa_shop_nav_bg_color+' 2rpx solid'}">
-					<image class="card_detail_tubiao" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/suoshukabaotubiao.png"></image>所属卡包
+				<h4 class="card_detail_h4"
+					:style="{color: wxa_shop_nav_bg_color, borderBottom: wxa_shop_nav_bg_color+' 2rpx solid'}">
+					<image class="card_detail_tubiao"
+						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/suoshukabaotubiao.png">
+					</image>
+					<text>所属卡包</text>
 				</h4>
 				
 				<view style="display: flex;" v-if="current_card_detail">
@@ -210,65 +217,60 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 							@tap="go_to_card_package(current_package_detail.packageid)"
 							class="card_detail_kabaotoxiang"></image>
 					</view>
-				
-					<view class="card_detail_kabaoxinxi" @tap="go_to_card_package(current_package_detail.packageid)">
-						<view class="card_packages_title">{{current_card_detail.package_title}}
+					<view class="card_detail_kabaoxinxi" 
+						@tap="go_to_card_package(current_package_detail.packageid)">
+						<view class="card_packages_title">
+							{{current_card_detail.package_title}}
 						</view>
 						<view class="card_detail_suoshukabao_jieshao">
 							{{current_package_detail.brief}}
 						</view>
-				
-				
 					</view>
-				
 				</view>
 			</view>
 			
 			
 			<!-- 同系列卡牌 -->
 			<view class="card_detail_tong">
-				<h4 class="card_detail_h5" style="margin-left: 20rpx;"
+				<h4 class="card_detail_h5"
 					:style="{color: wxa_shop_nav_bg_color, borderBottom: wxa_shop_nav_bg_color+' 2rpx solid'}" >
 					<image class="card_detail_tubiao" 
-					src="https://yanyubao.tseo.cn/Tpl/static/nft_card/tongxilitubiao.png">
-					</image>同系列卡牌
-				
+						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/tongxilitubiao.png">
+					</image>
+					<text>同系列卡牌</text>
 				</h4>
 				<scroll-view scroll-x="true">
 					<view style="display: flex;position: relative;">
-						<view v-for="(current_card_list_item,index) in current_card_list"
+						<view v-for="(current_card_list_item, index) in current_card_list"
+							:key="index"
 							@tap="go_to_card_detail(current_card_list_item.packageid, current_card_list_item.cardid)">
 							<view class="slide_cards_pic">
 								<image v-if="current_card_detail.is_buyed == 0"
-								class="package_card_watermark" 
-								src="https://yanyubao.tseo.cn/Tpl/static/nft_card/watermark01.png" 
-								mode="widthFix" >
+									class="package_card_watermark" 
+									src="https://yanyubao.tseo.cn/Tpl/static/nft_card/watermark01.png" 
+									mode="widthFix">
 								</image>
-								<image v-if="current_card_detail.is_buyed == 0" 
-								class="card_detail_img_border" 
-								:src="current_card_list_item.cover_img_url_2x3" 
-								mode="aspectFill" 
-								style="background: rgb(0,0,0,0.5);">
+								<image v-if="current_card_detail.is_buyed == 0"
+									class="card_detail_img_border"
+									:src="current_card_list_item.cover_img_url_2x3" 
+									mode="aspectFill">
 								</image>
 								<image v-if="current_card_detail.is_buyed == 1" 
-								:src="current_card_list_item.cover_img_url_2x3" mode="aspectFill"
-								class="card_detail_img_border">
+									:src="current_card_list_item.cover_img_url_2x3"
+									mode="aspectFill"
+									class="card_detail_img_border">
 								</image>
-								
-								<view class="card_detail_kapai_title">{{current_card_list_item.card_name}}
+								<view class="card_detail_kapai_title">
+									{{current_card_list_item.card_name}}
 								</view>
 							</view>
 							
 						</view>
 					</view>
 				</scroll-view>
-			
 			</view>
 			
 			
-			
-			
-
 			<!-- 富媒体文本展示卡牌详情 -->
 			<view class="card_detail_xiangqing">
 				<view class="description001">
@@ -288,43 +290,39 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 
 		<!-- 悬浮 -->
 		<view class="card_detail_footer">
-			<!-- 详情按钮切换 -->
-			<!-- <view @click="layOut">
-				<view @click="showModal_xiansuo=true" v-if="lay_type" class="card_detail_liebiao">
-					<image class="card_detail_xiaoxi1"
-						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/tips.png"></image>				
-				</view>
-				<view v-else class="card_detail_liebiao_xiaoxi">
-					<image v-if="showModal_xiansuo" @click="showModal_xiansuo=false" class="card_detail_xiaoxi2"
-						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/tips2.png"></image>
-				</view>
-				
-			</view> -->
-			
-			
 			<!-- 线索按钮 -->
 			<view @click="layOut">
 				<!-- 线索未亮按钮 -->
 				<view @click="showModal_xiansuo=true" v-if="lay_type" 
 				class="card_detail_liebiao">
 					<image class="card_detail_xiaoxi1" 
-						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/tips1.png"></image>				
+						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/tips1.png">
+					</image>				
 				</view>
-				<view class="show_modal_mask" v-if="showModal_xiansuo" @click="showModal_xiansuo=false"></view>
+				<view class="show_modal_mask" 
+					v-if="showModal_xiansuo" 
+					@click="showModal_xiansuo=false">
+				</view>
 				<!-- 线索点亮按钮 -->
-				<view style="padding-bottom: 115rpx;" v-if="showModal_xiansuo" 
-				@click="showModal_xiansuo=false">
+				<view style="padding-bottom: 115rpx;"
+					v-if="showModal_xiansuo" 
+					@click="showModal_xiansuo=false">
 					<view class="card_detail_liebiao_xiaoxi">
 						<image class="card_detail_xiaoxi2"
-							src="https://yanyubao.tseo.cn/Tpl/static/nft_card/tips2.png"></image>
+							src="https://yanyubao.tseo.cn/Tpl/static/nft_card/tips2.png">
+						</image>
 					</view>
 				</view>
 				<!-- 线索模态框 -->
 				<view @click="showModal_xiansuo=false">
-					<view class="show_modal_pop card_detail_xiansuo" v-if="showModal_xiansuo">
+					<view class="show_modal_pop card_detail_xiansuo" 
+						v-if="showModal_xiansuo">
 						<scroll-view scroll-y="true" class="scroll-Y">
 							<view>
-								<view v-if="current_package_detail.clue" style="word-break: break-word;">{{current_package_detail.clue}}</view>
+								<view v-if="current_package_detail.clue" 
+									style="word-break: break-word;">
+									{{current_package_detail.clue}}
+								</view>
 								<view v-else>还没有线索~</view>
 							</view>
 						</scroll-view>
@@ -335,54 +333,39 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			<!-- 分享 -->
 			<view>
 				<!-- #ifdef MP -->
-				<button open-type="share" 
-				style="background: none;outline: none;border: none;border: 0rpx; padding-left: 15rpx;">
-					<view class="card_detail_liebiao" style="padding: 0rpx; margin: 0rpx;" >
-						<image class="card_detail_fenxiang" style="padding-left: 7rpx;"
-							src="https://yanyubao.tseo.cn/Tpl/static/nft_card/fenxiang02.png"></image>
-					</view>
-				</button>
-				<!-- <button style="padding-left: 0;padding-right: 0;" open-type="share">分享</button> -->
+					<button open-type="share" 
+						class="button_fenxiang_border">
+						<view class="card_detail_liebiao" 
+							style="padding: 0rpx; margin: 0rpx;">
+							<image class="card_detail_fenxiang" 
+								style="padding-left: 7rpx;"
+								src="https://yanyubao.tseo.cn/Tpl/static/nft_card/fenxiang02.png">
+							</image>
+						</view>
+					</button>
 				<!-- #endif -->
 				
 				<!-- #ifdef APP-PLUS -->
-				
 				<button @click="is_show">
-					
 					<view class="card_detail_liebiao" >
 						<image class="card_detail_fenxiang"
-							src="https://yanyubao.tseo.cn/Tpl/static/nft_card/fenxiang02.png"></image>
+							src="https://yanyubao.tseo.cn/Tpl/static/nft_card/fenxiang02.png">
+						</image>
 					</view>
 				</button>
-				<!-- <button style="padding-left: 0;padding-right: 0;" open-type="share">分享</button> -->
 				<!-- #endif -->
-				
 				
 				<!-- #ifdef H5 -->
 				<view @tap="share_shang_detail">
 					<view class="card_detail_liebiao" >
 						<image class="card_detail_fenxiang"
-							src="https://yanyubao.tseo.cn/Tpl/static/nft_card/fenxiang02.png"></image>
+							src="https://yanyubao.tseo.cn/Tpl/static/nft_card/fenxiang02.png">
+						</image>
 					</view>
 				</view>
 				<!-- #endif -->
-				
-				
 			</view>
 			
-			<!-- 未购买时不显示赠予和丢弃 -->
-			<!-- <view v-if="current_card_detail.is_buyed == 1"> -->
-				<!-- 2021.08.06赠予 -->
-				<!-- <view class="card_detail_liebiao">
-					<image class="card_detail_an"
-						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/zengsong.png"></image>
-				</view> -->
-					<!-- 2021.08.06丢弃 -->
-				<!-- <view class="card_detail_liebiao">
-					<image class="card_detail_an"
-						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xiaohui.png"></image>
-				</view> -->
-			<!-- </view> -->
 			<!-- 2021.08.06购买 -->
 			<block v-if= "nft_card_hidden_buy_button != 1">
 				<view v-if="current_card_detail.is_buy_limit != -1"
@@ -392,8 +375,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					<image class="card_detail_an" 
 						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/goumai.png">
 					</image>
-					
 				</view>
+				
 				<!-- 购买达到限制颜色变灰 -->
 				<view v-else 
 					class="card_detail_goumai_xianzi" 
@@ -403,20 +386,10 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					</image>
 				</view>
 			</block>
-
-			<!-- 2021.08.06卡牌持有的数量 -->
 			
-			<!-- <view class="card_detail_goumai2">
-				<image class="card_detail_items"
-				src="https://yanyubao.tseo.cn/Tpl/static/nft_card/cheng.png"></image>
-				<view style="font-size: 35rpx;padding-top: 20rpx;padding-right: 5rpx;">
-					{{current_card_detail.user_have_counter}}
-				</view>
-			</view> -->
-			
-			<!-- 卡牌明细 模态框 -->
+			<!-- 卡牌明细 -->
 			<view>
-				<!-- 阴影底部*1按钮 -->
+				<!-- 卡牌持有的数量 底部按钮 -->
 				<view @click="showModal_liuzhuanjilv=true">
 					<view class="card_detail_goumai2">
 						<image class="card_detail_items"
@@ -426,60 +399,64 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 						</view>
 					</view>
 				</view>
-				<!-- 顶部*1按钮 --><!-- @touchmove.stop.prevent="disabledScroll" -->
-				<view class="show_modal_mask" v-if="current_card_detail && showModal_liuzhuanjilv"
-				@click="showModal_liuzhuanjilv=false"></view>
-				<view v-if="showModal_liuzhuanjilv" @click="showModal_liuzhuanjilv=false">
+				<!-- 卡牌持有的数量 顶部按钮 -->
+				<view class="show_modal_mask" 
+					v-if="current_card_detail && showModal_liuzhuanjilv"
+					@click="showModal_liuzhuanjilv=false">
+				</view>
+				<view v-if="showModal_liuzhuanjilv" 
+					@click="showModal_liuzhuanjilv=false">
 					<view class="card_goumai2_modal">
 						<image class="card_detail_items"
-						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/cheng.png"></image>
-						<view style="font-size: 35rpx;padding-top: 20rpx;padding-right: 5rpx;">
+							src="https://yanyubao.tseo.cn/Tpl/static/nft_card/cheng.png">
+						</image>
+						<view class="card_detail_buyed_counter">
 							{{current_card_detail.buyed_counter}}
 						</view>
 					</view>
-					
 				</view>
+				
+				<!-- 卡牌明细记录模态框 -->
 				<view class="show_modal_pop card_detail_showmodal_fenxaingjilv" 
 					v-if="showModal_liuzhuanjilv">
-						<view v-if="current_card_detail.is_buyed == 1">
-							
-					<scroll-view scroll-y="true" class="scroll-Y">
-							<view v-for="(card_publish_item,index) in current_card_publish_list">
+					<view v-if="current_card_detail.is_buyed == 1">
+						<scroll-view scroll-y="true" class="scroll-Y">
+							<view v-for="(card_publish_item, index) in current_card_publish_list"
+								:key="index">
 								<view class="card_detail_goumaijilv" 
-								@click="showModal_liuzhuanjilv_zengsong=true">
-									<view>
-										<view style="display: flex;">
-											<view class="card_detail_modal_kapaimingxi">卡牌id：</view>
-											<b style="font-size: 34rpx;">{{card_publish_item.cplno}}</b>
-										</view>
-										<view style="display: flex;">
-											<view class="card_detail_modal_kapaimingxi">序号：</view>
-											<b style="font-size: 34rpx;">#{{card_publish_item.cplseq}}</b>
-										</view>
-										<view style="display: flex;">
-											<view class="card_detail_modal_kapaimingxi">获得时间：</view>
-											<b style="font-size: 34rpx;">{{card_publish_item.updatetime}}</b>
-										</view>
-										<view style="display: flex;">
-											<view class="card_detail_modal_kapaimingxi">获得方式：</view>
-											<b style="font-size: 34rpx;">{{card_publish_item.is_private_str}}</b>
-										</view>
+									@click="showModal_liuzhuanjilv_zengsong=true">
+									
+									<view style="display: flex;">
+										<view class="card_detail_modal_kapaimingxi">卡牌id：</view>
+										<b style="font-size: 34rpx;">{{card_publish_item.cplno}}</b>
 									</view>
-									
-									
+									<view style="display: flex;">
+										<view class="card_detail_modal_kapaimingxi">序号：</view>
+										<b style="font-size: 34rpx;">#{{card_publish_item.cplseq}}</b>
+									</view>
+									<view style="display: flex;">
+										<view class="card_detail_modal_kapaimingxi">获得时间：</view>
+										<b style="font-size: 34rpx;">{{card_publish_item.updatetime}}</b>
+									</view>
+									<view style="display: flex;">
+										<view class="card_detail_modal_kapaimingxi">获得方式：</view>
+										<b style="font-size: 34rpx;">{{card_publish_item.is_private_str}}</b>
+									</view>
 									
 									<view style="float: right;margin-top: -215rpx;">
 										<!-- 2021.08.20赠予
 										<view @click="showModal_zengyu=true" class="card_detail_showmodal_zengsong">
 											<image class="card_detail_showmodal_tupian"
-												src="https://yanyubao.tseo.cn/Tpl/static/nft_card/zengsong.png"></image>
+												src="https://yanyubao.tseo.cn/Tpl/static/nft_card/zengsong.png">
+											</image>
 										</view>
-										
-										
+											
+											
 										<view class="show_modal_mask" v-if="showModal_liuzhuanjilv_zengsong" 
-											@click="showModal_liuzhuanjilv_zengsong=false"></view>
+											@click="showModal_liuzhuanjilv_zengsong=false">
+										</view>
 										<view class="show_modal_pop card_detail_showmodal_kapaimingxi" 
-										v-if="showModal_liuzhuanjilv_zengsong" @click="showModal_liuzhuanjilv_zengsong=false">
+											v-if="showModal_liuzhuanjilv_zengsong" @click="showModal_liuzhuanjilv_zengsong=false">
 											<view style="background-color: #FFFFFF; width: 500rpx; height: 200rpx;padding: 10rpx;">
 												<input style="border: #666666 1rpx solid;margin: 10rpx;" type="text" placeholder="请输入赠送人的手机号" />
 												<input style="border: #666666 2rpx solid;margin: 10rpx;" type="text" placeholder="请输入赠言" />
@@ -488,39 +465,27 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 											
 										</view> 
 										 -->
-										
-										
+											
 										<!-- 2021.08.20销毁  丢弃 -->
 										<view class="card_detail_showmodal_zengsong">
 											<image class="card_detail_showmodal_tupian"
 												src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xiaohui.png"
 												@tap="nftcard_discard(card_publish_item.cplid)"></image>
 										</view>
-										
-										
+											
 									</view>
 								</view>
 								
 							</view>
-					</scroll-view>
+						</scroll-view>
 					
-					
-						</view>
-						<!-- <view v-else class="card_detail_goumaijilv"> -->
-						<view class="card_detail_xiansuo" v-else>您还没有获取记录哦~</view>
-						
-					
+					</view>
+					<view class="card_detail_xiansuo" v-else>您还没有获取记录哦~</view>
 				</view>
-				
 			</view>
-			
 		</view>
 
-		
-
 	</view>
-
-
 </template>
 
 <script>
@@ -1728,7 +1693,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		transform: translateY(-50%);
 		width: 590rpx;
 		padding: 20rpx;
-		// background-color: #FFFFFF;
 	}
 	.card_detail_modal_kapaimingxi{
 		color: #666666;
@@ -1763,26 +1727,15 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		background-color: #FFFFFF;
 		box-shadow: 0rpx 0rpx 20rpx #000000;
 	}
-	.package_list_mark{
-		width: 200rpx;
-		position: absolute;
-		z-index: 1;
-		opacity: 0.6;
-		-webkit-transform:rotate(90deg);
-	}
 	.package_list_mark_num{
 		display: flex;
 		position:absolute;
 		z-index: 2;
-		background-color: #000000;
+		background: rgb(0,0,0,0.7);
 		padding: 10rpx;
 		margin-right: 10rpx;
 		border-radius: 4rpx;
-		opacity: 0.7;
 	}
-	
-	
-	
 	
 	.card_detail_h4 {
 		font-size: 30rpx;
@@ -1808,6 +1761,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		width: 220rpx;
 		text-align: center;
 		margin-top: 25rpx;
+		margin-left: 20rpx;
 		padding-top: 15rpx;
 	}
 	.card_detail_tong{
@@ -1828,7 +1782,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		height: 50rpx;
 		padding-right: 10rpx;
 		padding-bottom: 10rpx;
-		background-color: #FFFFFF;
 		border-radius: 50%;
 		background: rgb(0, 0, 0,0.7);
 		position: absolute;
@@ -1855,7 +1808,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	/* 线索点亮模态框按钮 */
 	.card_detail_xiaoxi2 {
 		position: fixed;
-		/* transform: translateY(50%); */
 		z-index: 2;
 		width: 60rpx;
 		height: 60rpx;
@@ -1933,7 +1885,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		border-radius: 100%;
 		margin: 15rpx;
 		margin-right: 23rpx;
-		/* border: #aeb8ab 3rpx solid; */
 	}
 	.card_detail_goumai2{
 		display: flex;
@@ -1943,7 +1894,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		border-radius: 50%;
 		margin: 15rpx;
 		margin-right: 23rpx;
-		/* border: #aeb8ab 3rpx solid; */
 	}
 	.card_goumai2_modal{
 		position: fixed;
@@ -1957,7 +1907,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		border-radius: 50%;
 		margin: 15rpx;
 		margin-right: 23rpx;
-		/* border: #aeb8ab 3rpx solid; */
 	}
 	.card_detail_kabaotoxiang {
 		display: flex;
@@ -2019,5 +1968,10 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	}
 	.scroll-Y {
 		max-height: 760rpx;
+	}
+	.card_detail_buyed_counter{
+		font-size: 35rpx;
+		padding-top: 20rpx;
+		padding-right: 5rpx;
 	}
 </style>

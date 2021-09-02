@@ -56,11 +56,8 @@ export default {
 	data() {
 		return {
 			current_card_list:null,
-			// current_packageid:0,
 			
 			action_data_type:'my_favorite_list',
-			//action_data_type:'my_card_buy_list',
-			
 			
 			tabIndex:0,
 			    tabBars:[

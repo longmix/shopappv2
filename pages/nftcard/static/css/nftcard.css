@@ -1,6 +1,13 @@
 	button:after{
 		display:none;
 	}
+	.button_fenxiang_border{
+		background: none;
+		outline: none;
+		border: none;
+		border: 0rpx;
+		padding-left: 15rpx;
+	}
 	.global_background{
 		background-color:#eceeef;
 	}
@@ -121,6 +128,6 @@
 		position: absolute;
 		margin-top: 100rpx;
 		margin-left: 55rpx;
-		z-index:2;
+		z-index: 2;
 	}
 	

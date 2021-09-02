@@ -1,23 +1,38 @@
 <template>
 	<view class="card_background">
+		<!-- 智能排序 -->
 		<picker @change="bindPickerChange" :value="index" :range="array" style="padding: 20rpx;">
-			<view class="card_list_picker">{{array[index]}}
-				<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/drop_down.png" mode="widthFix" style="width: 30rpx;"></image>
+			<view class="card_list_picker">
+				{{array[index]}}
+				<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/drop_down.png"
+					mode="widthFix" style="width: 30rpx;">
+				</image>
 			</view>
 		</picker>
 		<view style="display: flex;flex-wrap: wrap;">
 			<view v-for="(current_card_item, index) in current_card_list" 
+				:key="index"
 				@tap="go_to_detail(current_card_item.packageid, current_card_item.cardid)">
 				<view style="padding: 15rpx;">
 					<view class="card_list_background_color">
+						<!-- 卡牌 -->
 						<view class="card_detail_kapai_borderwidth">
-							<image :src="current_card_item.cover_img_url" class="card_detail_kapai_imgwidth"></image>
+							<image :src="current_card_item.cover_img_url" 
+								class="card_detail_kapai_imgwidth">
+							</image>
 						</view>
-						<view class="card_list_title" style="width: 260rpx;">{{current_card_item.card_name}}</view>
+						<!-- 卡牌名称 -->
+						<view class="card_list_title" style="width: 260rpx;">
+							{{current_card_item.card_name}}
+						</view>
+						<!-- 收藏人数 -->
 						<view class="card_list_right">
 							<image src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png" 
-							class="card_list_images"></image>{{current_card_item.favorite_counter}}
+								class="card_list_images">
+							</image>
+							{{current_card_item.favorite_counter}}
 						</view>
+						
 					</view>
 				</view>
 			</view>
@@ -256,6 +271,10 @@ export default {
 		background-color: #FFFFFF;
 		border-radius: 30rpx;
 		border: 1rpx solid #dedede;
+	}
+	.card_list_picker_image{
+		padding-top: 5rpx;
+		padding-left: 5rpx;
 	}
 	.card_list_background_color{
 		background: #FFFFFF;
