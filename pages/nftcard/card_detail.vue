@@ -61,7 +61,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 							:style="{width: (card_bg_img_width*0.8)+'rpx', height: (card_bg_img_height*0.8)+'rpx'}">
 						</image>
 						<!-- 2021.09.1价格 -->
-						<view @load="imageLoad">
+						<view v-if= "nft_card_hidden_buy_button != 1">
 							<view :style="{top:(card_bg_img_height*0.80)+'rpx', right:(card_bg_img_width*0.11)+'rpx'}" 
 								class="package_list_mark_num">
 								<view style="color: #FFFFFF;">
@@ -154,7 +154,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					<image class="card_detail_xing"
 						src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png">
 						<text style="color: #666666;padding-left: 6rpx;">
-							{{current_card_detail.favorite_counter}}
+							{{current_card_detail.favorite_count}}
 						</text>
 					</image>
 				</view>
@@ -572,7 +572,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			that.current_card_detail.is_favorite = 0;
 			that.current_card_detail.card_name = '';
 			that.current_card_detail.createtime = '';
-			that.current_card_detail.favorite_counter = 0;
+			that.current_card_detail.favorite_count = 0;
 
 			that.current_card_detail.package_title = '';
 			// that.current_card_detail.supplier_name = '';
@@ -1141,9 +1141,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 						that.current_card_detail.is_favorite = value001;
 
 						if (value001 == 1) {
-							that.current_card_detail.favorite_counter++;
+							that.current_card_detail.favorite_count++;
 						} else {
-							that.current_card_detail.favorite_counter--;
+							that.current_card_detail.favorite_count--;
 						}
 
 
@@ -1238,14 +1238,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				})
 			},
 			
-			// go_to_kapaimingxi:function(){
-			// 	var userInfo = that.abotapi.get_user_info();
-			// 	if (userInfo) {
-			// 		post_data.userid = userInfo.userid;
-			// 		post_data.checkstr = userInfo.checkstr;
-			// 	}
-			// },
-			
 			// 2021.08.09获取卡牌封面的真实宽度
 			imageLoad: function (e) {
 				var that = this;
@@ -1271,35 +1263,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 			   
 			},
-			
-			
-			
-			// borderLoad: function (e) {
-			// 	var that = this;
-				
-			// 	//图片的宽度和高度
-			//     var imgwidth = e.detail.width;
-			//     var imgheight = e.detail.height;
-				
-			//     //宽高比  
-			//     var ratio = imgwidth / imgheight;
-				
-			// 	console.log('imageLoad id===>>> '+e.target.dataset.id +'图片实际大小：');
-			//     console.log(imgwidth, imgheight)
-				
-			// 	that.windowWidth = 750;
-				
-			// 	console.log('窗体的宽度：' + that.windowWidth);
-				
-			//     //计算的高度值  
-			// 	that.card_bg_img_width = that.windowWidth;
-			// 	that.card_bg_img_height = that.card_bg_img_width / ratio;
-				
-				
-			   
-			// },
-			
-			
 			
 			__get_card_list:function(){
 				var that = this;

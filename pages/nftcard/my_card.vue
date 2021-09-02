@@ -3,15 +3,23 @@
 		<!-- 全部及典藏珍藏卡牌按钮 -->
 		<view class="tabs">
 		    <block v-for="(tab,index) in tabBars" :key="tab.id">
-				<view class="uni-tab-item" :class="{'uni-tab-item-title-active' :tabIndex==index}" @tap="tabtap(index)">
-					<view class="uni-tab-item-title" :class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{tab.name}}</view>
+				<view class="uni-tab-item" 
+					:class="{'uni-tab-item-title-active' :tabIndex==index}" 
+					@tap="tabtap(index)">
+					<view class="uni-tab-item-title" 
+						:class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{tab.name}}</view>
 				</view>
 		    </block>
 		</view>
 		
+		<view v-if="current_card_list.length == 0" style="text-align : center;">
+			<image src="https://yanyubao.tseo.cn/Tpl/static/images/empty_favorite.png" mode="widthFix" style="width: 300rpx;"></image>
+			<view>空空如也 ~~</view>
+		</view>
 		
-		
-	    <waterfallsFlow :list="current_card_list" 
+	    <waterfallsFlow 
+			v-else
+			:list="current_card_list" 
 			@wapper-lick="go_to_card_detail">
 			<!--  #ifdef  MP-WEIXIN -->
 			<!-- 微信小程序自定义内容 -->
@@ -62,8 +70,9 @@ export default {
 			tabIndex:0,
 			    tabBars:[
 					{ name:"全部卡牌",id:"quanbu"},
-			        { name:"典藏卡",id:"diancang"},
-			        { name:"珍藏卡",id:"zhencang"},
+					//先隐藏以下两个按钮的功能，下个版本再考虑增加
+			        //{ name:"典藏卡",id:"diancang"},
+			        //{ name:"珍藏卡",id:"zhencang"},
 			    ]
 		};
 	},
@@ -104,6 +113,12 @@ export default {
 			});
 			
 		}
+		else{
+			that.action_data_type = 'my_favorite_list';
+			uni.setNavigationBarTitle({
+				title : '我收藏的卡牌（临）'
+			});
+		}
 		
 		this.abotapi.set_shop_option_data(this, this.callback_function_shop_option_data);
 		
@@ -111,69 +126,7 @@ export default {
 		
 		console.log('that.current_packageid ===》》 ', that.current_packageid);
 		
-		//判断用户是否登录
-		
-		var userInfo = that.abotapi.get_user_info();
-		if ((!userInfo) || (!userInfo.userid)) {
-			that.abotapi.call_h5browser_or_other_goto_url('/pages/login/login');
-			return;
-		}
-		
-		//获取收藏的卡牌列表
-		
-		that.abotapi.abotRequest({
-		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_list',
-		    method: 'post',
-		    data: {
-				sellerid:that.abotapi.globalData.default_sellerid,
-				//packageid:that.current_packageid,
-				checkstr:userInfo.checkstr,
-				userid:userInfo.userid,
-				action: that.action_data_type,
-		    },
-		    success: function (res) {
-				
-				if((res.data.code != 1) || (!res.data.data) ){
-					uni.showToast({
-						title:'数据加载中',
-						duration: 2000,
-					});
-					
-					return;
-				}
-				
-				var card_list = res.data.data;
-				
-				that.current_card_list = [];
-				
-				for(var i=0; i<card_list.length; i++){
-					var card_item = card_list[i];
-					
-					console.log(card_item);
-					//转换为对象数组
-					var new_card_item = {};
-					new_card_item.packageid = card_item.packageid;
-					new_card_item.cardid = card_item.cardid;
-					new_card_item.id = card_item.cardid;
-					new_card_item.image_url = card_item.cover_img_url_2x3;
-					new_card_item.title = card_item.card_name;
-					new_card_item.text = card_item.brief;
-					
-					that.current_card_list.push(new_card_item);
-				}
-				
-				console.log('current_card_list ===>>> ', that.current_card_list);
-					
-				
-		    },
-		    fail: function (e) {
-				uni.showToast({
-					title: '网络异常！',
-					duration: 2000
-				});
-		    },
-			
-		});
+		this.__get_card_list();
 		
 		
 		
@@ -197,20 +150,7 @@ export default {
 		
 		console.log('onPullDownRefresh=====>>>>>');
 		
-		// #ifndef MP-ALIPAY
-		uni.showToast({
-			title: '数据更新中……',
-			icon:'loading',
-		});
-		// #endif
-		
-		// #ifdef MP-ALIPAY
-		uni.showToast({
-			title: '数据更新中……',
-			//icon:'loading', 	//支付宝不支持icon为 loading
-			//duration:2000
-		});
-		// #endif
+		this.__get_card_list();
 		
 		
 	},
@@ -304,6 +244,84 @@ export default {
 			uni.navigateTo({
 				url: '/pages/nftcard/card_detail?packageid=' + packageid + '&cardid=' + cardid,
 			})
+		},
+		
+		__get_card_list:function(){
+			var that = this;
+			
+			//判断用户是否登录
+			
+			var userInfo = that.abotapi.get_user_info();
+			if ((!userInfo) || (!userInfo.userid)) {
+				that.abotapi.call_h5browser_or_other_goto_url('/pages/login/login');
+				return;
+			}
+			
+			//获取收藏的卡牌列表
+			
+			uni.showLoading({
+				title: '数据加载中...',
+			})
+			
+			that.abotapi.abotRequest({
+			    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_list',
+			    method: 'post',
+			    data: {
+					sellerid:that.abotapi.globalData.default_sellerid,
+					//packageid:that.current_packageid,
+					checkstr:userInfo.checkstr,
+					userid:userInfo.userid,
+					action: that.action_data_type,
+			    },
+			    success: function (res) {
+					
+					uni.hideLoading();
+					
+					that.current_card_list = [];
+					
+					if((res.data.code != 1) || (!res.data.data) ){
+						uni.showToast({
+							title:'暂无数据',
+							duration: 2000,
+						});
+						
+						return;
+					}
+					
+					var card_list = res.data.data;
+					
+					
+					
+					for(var i=0; i<card_list.length; i++){
+						var card_item = card_list[i];
+						
+						console.log(card_item);
+						//转换为对象数组
+						var new_card_item = {};
+						new_card_item.packageid = card_item.packageid;
+						new_card_item.cardid = card_item.cardid;
+						new_card_item.id = card_item.cardid;
+						new_card_item.image_url = card_item.cover_img_url_2x3;
+						new_card_item.title = card_item.card_name;
+						new_card_item.text = card_item.brief;
+						
+						that.current_card_list.push(new_card_item);
+					}
+					
+					console.log('current_card_list ===>>> ', that.current_card_list);
+						
+					
+			    },
+			    fail: function (e) {
+					uni.showToast({
+						title: '网络异常！',
+						duration: 2000
+					});
+			    },
+				
+			});
+			
+			
 		},
 		
 		
