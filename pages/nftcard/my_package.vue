@@ -28,7 +28,8 @@
 		
 		<!-- 喜欢的卡包列表 -->
 		<view class="" >
-			<view class="my_package_like_list" v-for="(current_package_list_item,index) in current_package_list"
+			<view v-for="(current_package_list_item,index) in current_package_list"
+				:key="index" class="my_package_like_list"
 				@tap="goto_package_detail(current_package_list_item.packageid)">
 				
 				<!--卡包的图片 -->
