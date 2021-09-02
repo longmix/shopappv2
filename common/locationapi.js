@@ -8,6 +8,12 @@ import abotapi from './abotapi.js';
 
 module.exports = {
 	
+	get_location_remove:function(){
+		console.log('删除缓存的位置坐标');
+		
+		uni.removeStorageSync('locationData_cache');
+	},
+	
 	//获取经纬度（国测局坐标）
 	get_location: function (that, callback_function='') {
 	
@@ -15,7 +21,7 @@ module.exports = {
 		
 		console.log('123456789 get_location');
 		
-		let locationData = uni.getStorageSync('locationData');
+		let locationData = uni.getStorageSync('locationData_cache');
 		console.log('获取缓存坐标',locationData);
 		
 		if(locationData){
@@ -57,7 +63,7 @@ module.exports = {
 							
 				
 				//缓存位置信息					
-				uni.setStorageSync('locationData', locationData)
+				uni.setStorageSync('locationData_cache', locationData)
 				console.log('进入1');
 				typeof callback_function == "function" && callback_function(that, locationData);
 				return;		
@@ -129,7 +135,7 @@ module.exports = {
 							locationData.addressComponent = rs.addressComponents;
 							 
 							 //缓存位置信息			getStorageSync
-							 uni.setStorageSync('locationData', locationData)
+							 uni.setStorageSync('locationData_cache', locationData)
 							 
 							 console.log('进入 H5 获取经纬度完成=====>>>>>>', locationData);
 							 
@@ -227,7 +233,7 @@ module.exports = {
 									
 						
 						//缓存位置信息			getStorageSync		
-						uni.setStorageSync('locationData', locationData)
+						uni.setStorageSync('locationData_cache', locationData)
 						
 						console.log('进入1');
 						
@@ -250,7 +256,7 @@ module.exports = {
 									
 						
 						//缓存位置信息			getStorageSync		
-						uni.setStorageSync('locationData', locationData)
+						uni.setStorageSync('locationData_cache', locationData)
 						
 						typeof callback_function == "function" && callback_function(that, locationData);
 					},
@@ -289,7 +295,7 @@ module.exports = {
 									
 						
 						//缓存位置信息			getStorageSync		
-						uni.setStorageSync('locationData', locationData)
+						uni.setStorageSync('locationData_cache', locationData)
 						
 						console.log('进入1');
 						
@@ -314,7 +320,7 @@ module.exports = {
 									
 						
 						//缓存位置信息			getStorageSync		
-						uni.setStorageSync('locationData', locationData)
+						uni.setStorageSync('locationData_cache', locationData)
 						
 						typeof callback_function == "function" && callback_function(that, locationData);
 						
@@ -337,9 +343,6 @@ module.exports = {
 		}
 	},
 	
-	get_location_remove:function(){
-		uni.removeStorageSync("locationData");
-	},
 	
 	pi: 3.14159265358979324,
 	a: 6378245.0,

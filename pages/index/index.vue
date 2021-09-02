@@ -39,12 +39,12 @@
 		
 		<!-- 轮播图 -->
 		<view class="swiper" v-if="wxa_show_index_swiper == 1">
-			<view class="swiper-box" :style="{height:swiper_box_height + 'px'} ">
+			<view class="swiper-box" :style="{height:swiper_box_height + 'rpx'} ">
 				<swiper circular="true" autoplay="true" @change="swiperChange" 
-					:style="{height:swiper_box_height + 'px'} ">
+					:style="{height:swiper_box_height + 'rpx'} ">
 					<swiper-item v-for="(swiper, index) in flash_ad_list" :key="swiper.id" @click="toAdDetails(flash_ad_list[index].url)">
 						<image class="img_swiper" @load="imageLoad($event)" 
-							 :style="{height:swiper_img_heights[currentSwiper] + 'px'} "
+							 :style="{height:swiper_img_heights[currentSwiper] + 'rpx'} "
 							:data-id='index' :src="swiper.image" mode="widthFix"></image>
 					</swiper-item>
 				</swiper>
@@ -526,13 +526,14 @@ export default {
 		}
 		
 		
+		/*
 		var system_info = uni.getSystemInfoSync();
 		
 		console.log('getSystemInfo==>>>system_info==>>>', system_info)
 		console.log('getSystemInfo==>>>system_info==>>>', system_info.windowWidth)
 		that.windowWidth = system_info.windowWidth;
 		that.windowHeight = system_info.windowHeight;
-		
+		*/
 		
 		
 		console.log('当前调试开关ii：' + this.system_debug_flag);
@@ -2153,6 +2154,9 @@ export default {
 			
 			console.log('imageLoad id===>>> '+e.target.dataset.id +'实际大小：');
 		    console.log(imgwidth, imgheight)
+			
+			//窗体默认的宽度都为750rpx，不是px
+			this.windowWidth = 750;
 			
 		    //计算的高度值  
 		    var imgheight = (this.windowWidth * 0.92)/ ratio;

@@ -78,7 +78,9 @@
 
 					if (extConfig.shop_name) {
 						console.log("444444", extConfig.shop_name)
+						
 						this.abotapi.globalData.shop_name = extConfig.shop_name;
+						this.abotapi.globalData.default_shopname = extConfig.shop_name;
 
 						uni.setNavigationBarTitle({
 							title: this.abotapi.globalData.shop_name

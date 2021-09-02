@@ -1,14 +1,14 @@
 <template>
 	<view>
-		<view class="map_container"> 
+		<view class="map_container" :style="{height:mapHeight+'rpx'}"> 
 		  <!-- <map class="map" id="map" longitude="121.159498" latitude="31.24321" scale="14" show-location="true" markers="{{markers}}" bindmarkertap="makertap"></map>  -->
 		  <map class="map" id="map" :longitude="qqmap_longitude" :latitude="qqmap_latitude" scale="14" show-location="true" :markers="markers" bindmarkertap="map_tap"></map> 
 		</view> 
 		
 		<view class="btm">
-			<view class="name">{{shopInfo.name}}</view>
+			<view class="adderss" style="font-weight: bold;">{{shopInfo.name}}</view>
 			<view class="adderss">{{shopInfo.address}}</view>
-			<view class="adderss" @tap="call_seller">{{shopInfo.telephone}}</view>
+			<view class="phone_number" @tap="call_seller">{{shopInfo.telephone}}</view>
 			<view v-if="from_page == 1 || from_page == 2" 
 				 :style="{background: btn_bg_color,color:frontColor}"
 				@tap="seeRoute" class="seeroute">到这去</view>
@@ -53,6 +53,9 @@
 				options_citizenid:'',//受助人userid
 				btn_bg_color:'',
 				frontColor:'',
+				
+				mapWidth:750,
+				mapHeight:0,
 			}
 		},
 		/**
@@ -111,7 +114,27 @@
 				this.from_page = options.from_page;
 			}
 			
-			console.log('this.from_page',this.from_page);
+			console.log('this.from_page',  this.from_page);
+			
+			
+			
+			var system_info = uni.getSystemInfoSync();
+			
+			console.log('getSystemInfo==>>>system_info==>>>', system_info)
+			console.log('getSystemInfo==>>>system_info==>>>', system_info.windowWidth)
+
+			
+			//宽高比
+			var ratio = system_info.windowWidth / system_info.windowHeight;
+			
+			this.mapWidth = 750;
+			
+			//计算的高度值
+			this.mapHeight = (this.mapWidth * 0.92)/ ratio;
+			
+			
+			
+			
 		},
 		methods: {
 			map_tap:function(e){
@@ -179,6 +202,9 @@
 					//打卡的目标GPS
 					var latitude = this.bmap_latitude;
 					var longitude = this.bmap_longitude;
+					
+					
+					locationapi.get_location_remove();
 					
 					locationapi.get_location(this, function(that001, locationData){
 						//ajax请求，保存签到数据
@@ -265,7 +291,7 @@
 
 <style>
 	.map_container{ 
-	    height: 500px; 
+	    /*height: 500px; */
 	    width: 100%; 
 	} 
 	
@@ -273,31 +299,37 @@
 	    height: 100%; 
 	    width: 100%; 
 	}
-	.name{
-	  margin-left: 4%;
+	
+	.btm{
+		position: fixed;
+		width: 100%;
+		bottom: 0;
+		height: 300rpx;
+		left: 0;
+		z-index: 101;
+		background-color: #ffffff;
+		padding: 20rpx;
+	}
+	
+	.phone_number{
 	  color: #0f0f0f;
-	  font-size: 16px;
+	  font-size: 30rpx;
 	  margin-bottom: 10rpx;
 	}
 	.adderss{
-	  margin-left: 4%;
 	  color: #5d5d5d;
-	  font-size: 14px;
+	  font-size: 26rpx;
 	  margin-bottom: 20rpx;
 	}
 	.seeroute{
 	  text-align: center;
-	  font-size: 18px;
+	  font-size: 36rpx;
 	  color: #333;
 	  line-height:80rpx;
 	  width: 92%;
-	  margin-left: 4%;
 	  background: #FFD700;
 	  border-radius: 15rpx;
 	}
-	.btm{
-		position: fixed;
-		width: 100%;
-		bottom: 60upx;
-	}
+	
+	
 </style>
