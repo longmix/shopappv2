@@ -358,6 +358,8 @@ export default {
 			
 			openSettingBtnHidden:true,
 			
+
+			
 		};
 	},
 	onLoad: function (options) {
@@ -784,6 +786,7 @@ export default {
 			var filter_price_type = -1;   // 1 免费  2  收费
 			var filter_userid_type = -1;  // 1 已有  2  未有
 			
+			
 			var click_tag_id = -1;
 			click_tag_id = this.package_tag_item_list[tag_item_index].tag_id;
 			
@@ -847,10 +850,16 @@ export default {
 				else if(tag_id002){
 					//免费的卡牌
 					filter_price_type = 1;
+					
+				
+					
+					
 				}
 				else if(tag_id003){
 					//收费的卡牌
 					filter_price_type = 2;
+					
+	
 				}
 				
 				if(tag_id004 && tag_id005){
@@ -1193,16 +1202,18 @@ export default {
 			var that = this;
 			
 			
-			//======= 判断用户是否登录 ============
-				// var last_url = '/pages/nftcard/card_detail?' + that.current_params_str;
-				
-				// var userInfo = that.abotapi.get_user_info();
-				// if (!userInfo) {
-				// 	that.abotapi.goto_user_login(last_url);
-				
-				// 	return;
-				// }
-			//============= End ================
+				//======= 判断用户是否登录 ============
+					//  var last_url = '/pages/nftcard/card_detail?' + that.current_params_str;
+					
+					//  var userInfo = that.abotapi.get_user_info();
+					//  if (!userInfo) {
+					// 	that.abotapi.goto_user_login(last_url);
+					
+					//  	return;
+					//  }
+				//============= End ================
+		
+
 			
 			var post_data = {
 					sellerid:that.abotapi.globalData.default_sellerid,

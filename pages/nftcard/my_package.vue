@@ -19,6 +19,12 @@
 		</view> -->
 		
 		
+		<view v-if="current_package_list ==''" style="text-align : center;">
+			<image src="" mode=""></image>
+			<view>空空如也</view>
+		</view>
+		
+		
 		
 		<!-- 喜欢的卡包列表 -->
 		<view class="" >
@@ -422,43 +428,8 @@ export default {
 		border-radius: 20rpx;
 		overflow: hidden;
 	}
-	.list_box {
-				display: flex;
-				
-				margin: 10rpx 20rpx 40rpx 20rpx;
-						
-	   }
-	/* 已选择 */
-		    .tag_item_selected {
-				
-				margin-top: 10rpx;
-				height: 57rpx;
-				line-height: 57rpx;
-				text-align: center;
-				
-				width: 134rpx;
-				margin-left:5rpx ;
-				margin-right: 20rpx;
-		        background: #30c478;
-		        color: #FFFFFF;
-		        border-radius: 10rpx;
-		        font-size: 30rpx;
-		    }
-		
-		    /* 未选择 */
-		    .tag_item_unselected {
-				margin-top: 10rpx;
-				height: 57rpx;
-				line-height: 57rpx;
-				text-align: center;
-				width: 134rpx;
-				margin-right: 20rpx;
-	/* 	        border: 1px solid #30c478; */
-		        background: #FFFFFF;
-		        margin-left:5rpx ;
-		        border-radius: 10rpx;
-		        font-size: 30rpx;
-		    }
+
+	
 	.my_package_detail{
 		margin-top: 5rpx;
 		margin-left: 30rpx;
@@ -484,6 +455,7 @@ export default {
 	.tabs {
 		margin-top: 20rpx;
 		margin-bottom: 40rpx;
+		margin-left: 20rpx;
 	}
 	
 	.uni-tab-item {
@@ -506,30 +478,7 @@ export default {
 		background-color: #30C478;
 		border-radius: 15rpx;
 	}
-	.tabs {
-		margin-top: 20rpx;
-		margin-bottom: 40rpx;
-	}
-	.uni-tab-item {
-	    display: inline-block;
-		margin-right: 20rpx;
-	}
 	
-	.uni-tab-item-title {
-	    color: #555;
-	    font-size: 30rpx;
-	    line-height: 55rpx;
-		background-color: #FFFFFF;
-		border-radius: 15rpx;
-	    padding-left: 20rpx;
-	    padding-right: 20rpx;
-	}
-	
-	.uni-tab-item-title-active {
-	    color: #FFFFFF;
-		background-color: #30C478;
-		border-radius: 15rpx;
-	}
 	
 	
 	
