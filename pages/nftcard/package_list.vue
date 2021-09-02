@@ -29,13 +29,11 @@
 				
 
 					<view v-if="current_package_list ==''" style="text-align : center;">
-						<image src="" mode=""></image>
+						<image src="https://yanyubao.tseo.cn/Tpl/static/images/empty_favorite.png" mode="widthFix" style="width: 400rpx;"></image>
 						<view>空空如也</view>
 					</view>
 					
-					<view v-if="!centent_show">
-						<view>没有搜索到数据</view>
-					</view>
+					
 				
 				<!-- 卡包列表及详情 -->
 				

@@ -20,8 +20,8 @@
 		
 		
 		<view v-if="current_package_list ==''" style="text-align : center;">
-			<image src="" mode=""></image>
-			<view>空空如也</view>
+			<image src="https://yanyubao.tseo.cn/Tpl/static/images/empty_favorite.png" mode="widthFix" style="width: 300rpx;"></image>
+			<view style="padding-bottom: 50rpx;color: #666666;">空空如也</view>
 		</view>
 		
 		
