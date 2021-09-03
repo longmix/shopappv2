@@ -373,9 +373,18 @@ export default {
 		console.log('newDate====>>>>>>', util.get_time_stamp() );
 		
 		
-		console.log('pages/tabBar/index/index====>>>>', options);
+		console.log('pages/nftcard/package_detail ====>>>>', options);
 		
 		var that = this;
+		
+		
+		//========== 如果是通过带参二维码进来的 =========
+		if(options.scene && (options.scene.indexOf('nft_pd_') != -1) ){
+			options.packageid = options.scene.replace('nft_pd_', '');
+			
+			console.log('通过小程序码扫描进入，卡包ID====>>>>>'+options.packageid);
+		}
+		//================== End =====================
 		
 		uni.setNavigationBarTitle({
 			title : that.abotapi.globalData.default_shopname
@@ -410,8 +419,8 @@ export default {
 		
 		if(!that.current_packageid){
 			uni.showModal({
-				title:'',
-				content:',',
+				title:'错误',
+				content:'缺少卡包ID',
 				showCancel:false
 			});
 			
