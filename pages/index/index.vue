@@ -572,12 +572,12 @@ export default {
 		}
 	
 		if (options || options != null) {
-		  if (!sellerid) {
+		  if (options.sellerid) {
 			sellerid = options.sellerid;
 			console.log('sellerid 02：' + sellerid);
 		  }
 	
-		  if (!sellerid) {
+		  if (!sellerid && options.scene) {
 			var sellerid_scene = decodeURIComponent(options.scene);
 			if (sellerid_scene && sellerid_scene.indexOf('sellerid_') != -1) {
 			  sellerid = sellerid_scene.replace('sellerid_', '');
@@ -587,6 +587,7 @@ export default {
 	
 		  }
 		}
+		
 		if (!sellerid) {
 		  sellerid = this.abotapi.get_sellerid();
 		  console.log('sellerid 04：' + sellerid);
@@ -756,8 +757,9 @@ export default {
 		
 		var userInfo = this.abotapi.get_user_info();
 		
+		//如果用户登录，则记录推荐者
 		if (userInfo && userInfo.userid) {
-			share_path += '&userid=' + userInfo.userid;
+			share_path += '&parentid=' + userInfo.userid;
 		}
 		
 		var share_img = option_list.wxa_share_img;
@@ -800,7 +802,7 @@ export default {
 			var userInfo = this.abotapi.get_user_info();
 			
 			if (userInfo && userInfo.userid) {
-				share_path += '&userid=' + userInfo.userid;
+				share_path += '&parentid=' + userInfo.userid;
 			}
 			
 			var share_img = option_list.wxa_share_img;

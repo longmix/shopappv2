@@ -1054,7 +1054,7 @@
 			var userInfo = this.abotapi.get_user_info();
 
 			if (userInfo && userInfo.userid) {
-				share_path += '&userid=' + userInfo.userid;
+				share_path += '&parentid=' + userInfo.userid;
 			}
 
 			var share_img = that.share_imageUrl;
@@ -1097,7 +1097,7 @@
 				var userInfo = this.abotapi.get_user_info();
 			
 				if (userInfo && userInfo.userid) {
-					share_path += '&userid=' + userInfo.userid;
+					share_path += '&parentid=' + userInfo.userid;
 				}
 			
 				var share_img = that.goods_detail.pictures;

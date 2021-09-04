@@ -17,13 +17,23 @@
 			<view v-if="wxa_login_only_weixin != 1">
 				<view class="flexIcon" :style="{border:'1px solid ' + wxa_shop_nav_bg_color}">
 					<view class="flexIcon-icon iconfont icon-phone_light flexIcon-icon-current"></view>
-					<input type="text" class="flexIcon-text" placeholder-class="cl-white" name="telephone" @input="phoneInput" placeholder-style="color: #999;" placeholder="请输入手机号码" />
+					<input type="text" name="telephone" 
+						class="flexIcon-text" 
+						@input="phoneInput" 
+						placeholder-class="cl-white" 
+						placeholder-style="color: #999;" 
+						placeholder="请输入手机号码" />
 				</view>
 					  
 				<view class="flexIcon" :style="{border:'1px solid ' + wxa_shop_nav_bg_color}">
 				  <view class="flexIcon-icon iconfont icon-moban flexIcon-icon-current"></view>
 					<image @click="click_check" :src="img_checkcode_url" mode="widthFix" class="img_checkcode"></image>
-					<input style="width: 60%;" type="text" class="flexIcon-text" placeholder-class="cl-white" name="telephone" @input="imgInput" placeholder-style="color: #999;" placeholder="请输入答案" />
+					<input type="text" name="telephone"
+						class="flexIcon-text" style="width: 60%;" 
+						@input="imgInput" 
+						placeholder-class="cl-white" 
+						placeholder-style="color: #999;" 
+						placeholder="请输入答案" />
 				</view>
 				<view class="flexIcon" :style="{border:'1px solid ' + wxa_shop_nav_bg_color}" style="overflow: hidden;">
 					<view class="flexIcon-icon iconfont icon-password flexIcon-icon-current"></view>
@@ -32,7 +42,12 @@
 						:style="{background:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" 
 						style="height: 60rpx;line-height: 60rpx;" 
 						class="send_btn">{{second}}</button>
-					<input style="width: 60%;" type="text" class="flexIcon-text"  name="password"  placeholder-class="cl-white" @input="telInput" placeholder-style="color: #999;"  placeholder="请输入手机验证码" />
+					<input type="text"  name="password"  
+						class="flexIcon-text"  style="width: 60%;"
+						@input="telInput" 
+						placeholder-class="cl-white" 
+						placeholder-style="color: #999;"  
+						placeholder="请输入手机验证码" />
 				</view>
 				<div></div>
 				
