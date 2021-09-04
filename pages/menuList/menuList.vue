@@ -246,8 +246,10 @@ export default {
 				var searchParams = new URLSearchParams(myURL.search);
 				
 				if(searchParams.get('sellerid')){
+					
 					options.sellerid = searchParams.get('sellerid');
 									
+					this.abotapi.globalData.force_sellerid = 0;
 					this.abotapi.globalData.default_sellerid = options.sellerid
 					this.abotapi.set_sellerid(options.sellerid);
 				}
@@ -276,6 +278,7 @@ export default {
 				if(this.abotapi.globalData.mp_alipay_query.sellerid){
 					options.sellerid = this.abotapi.globalData.mp_alipay_query.sellerid;
 									
+					this.abotapi.globalData.force_sellerid = 0;
 					this.abotapi.globalData.default_sellerid = options.sellerid
 					this.abotapi.set_sellerid(options.sellerid);
 				}
@@ -365,135 +368,24 @@ export default {
 	
 		that.shopId = shopId;
 		
-		
-	
-		  // 获取商家详情
-		var post_data = {
-			sellerid: this.abotapi.get_sellerid(),
-			xianmai_shangid: shopId,
-		}
-		
 		console.log('787878', shopId)
-		
-		
-		if (userInfo) {
-			post_data.checkstr = userInfo.checkstr,
-			post_data.userid = userInfo.userid
-		}
 		
 		
 		uni.showLoading({
 			title: '数据加载中……'
 		});
 		
-		// http://192.168.0.205/hahading/server/index.php/openapi/ProductData/get_product_list_all_data
-		//获取商家点餐分类信息
-		this.abotapi.abotRequest({
-		  url: this.abotapi.globalData.o2owaimai_server_url + 'openapi/ProductData/get_product_list_all_data',
-		  data: {
-			xianmai_shangid: that.shopId,
-			is_waimai: is_waimai,
-			sellerid:this.abotapi.globalData.default_sellerid,
-		  },
-		  header: {
-			"Content-Type": "application/x-www-form-urlencoded"
-		  },
-		  method: "POST",
-		  success: function (res) {
-	
-			console.log('fffsssssfeefefsf', res);
-			
+		setTimeout(function(){
 			uni.hideLoading();
+		}, 2000);
 	
-			
-			var data = res.data.data;
-			
-			console.log('888888',data.menu);
-			
-			
-			
-			if(res.data.code == 1){
-				if (data.menu == '') {
-					uni.showModal({
-						title: '提示',
-						content: '暂时没有商品，请等待...',
-						success(res) {
-						  if (res.confirm) {
-							// uni.navigateTo({
-							//   url: '/pages/shops/shop_detail' + '?id=' + shopId,
-							// })
-							uni.navigateBack({
-							  delta: 1
-							})
-						  } else if (res.cancel) {
-							uni.navigateBack({
-							  delta: 1
-							})
-						  }
-						}
-					})
-					return;
-				}
-				
-				var menu_list = data.menu;
-				for(var i=0; i<menu_list.length; i++){
-				  for (var j = 0; j < menu_list[i]['menu'].length; j++){       
-					for(var m=0;m<menu_list[i]['menu'][j].spec_list.length; m++){
-					  menu_list[i]['menu'][j].spec_list[m] = menu_list[i]['menu'][j].spec_list[m].split(':');
-					  menu_list[i]['menu'][j].spec_list[m][1] = menu_list[i]['menu'][j].spec_list[m][1].split('|');
-					}
-				  }
-				}
-				console.log('menu_list===', menu_list)
+		
+		this.__get_product_list_all_data();
+		
+		this.__get_shang_detail();
 				
 				
-				
-				var selectOrder = data.menu[0] ? data.menu[0].id : 0;
-				that.menu_list = menu_list;
-				that.selectOrder = selectOrder;
-			}
-	
-		  },
-		  fail: function (e) {
-			uni.hideLoading();
-		  },
-		});
-				
-				
-		this.abotapi.abotRequest({
-			url: this.abotapi.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/get_shang_detail',
-			// url: 'https://yanyubao.tseo.cn/hahading/index.php/openapi/ProductData/get_product_list_all_data',
-			data: post_data,
-			header: {
-			  "Content-Type": "application/x-www-form-urlencoded"
-			},
-			method: "POST",
-			success: function (res) {
-				if(res.data.code != 1){
-					uni.showToast({
-						title:'请求商家数据失败'
-					})
-					return;
-				}
-				
-				var data = res.data.data;    
-				 
-				that.shoplist = data;
-				console.log('that.shoplist',res);
-	
-				uni.setStorage({
-					key: 'shoplist',
-					data: that.shoplist,
-					success: function (res) {
-						console.log('异步保存成功')
-					}
-				})
-	
-			},
-			fail: function (e) {
-	
-			},
-		  });
+		
 		
 	
 		/* setTimeout(function() {
@@ -501,6 +393,8 @@ export default {
 		}, 1000); */
 	
 		console.log('ffffifififififif', is_waimai);
+		
+		
 		if (is_waimai == 1){
 		  var cart_list = uni.getStorageSync('waimai_list_' + this.shopId);
 		  console.log('fffeeeeefififif', cart_list);
@@ -596,12 +490,12 @@ export default {
 		var that = this;
 		
 		
-		that.get_flash_ad_list();
-		that.get_flash_img_list();
-		that.initArticleList();
-		that.get_shop_icon_index();
+		//that.get_flash_ad_list();
+		//that.get_flash_img_list();
+		//that.initArticleList();
+		//that.get_shop_icon_index();
 		
-		that.get_product_list();
+		//that.get_product_list();
 		
 		
 		
@@ -622,48 +516,144 @@ export default {
 			});
 			return;
 		}
-		uni.request({
-		    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
-		    method: 'post',
-		    data: {
-				sellerid:this.abotapi.globalData.default_sellerid,
-				sort: 1,
-				page: that.page_num,
-				page_size:that.page_size,
-		    },
-		    header: {
-				'Content-Type': 'application/x-www-form-urlencoded'
-		    },
-		    success: function (res) {
-				console.log('bbafff===', res);
-				
-				if(res.data.code == 1){
-					that.is_OK = false;
-					that.productList = that.productList.concat(res.data.product_list);
-					console.log('超过一页',that.productList)
-					uni.stopPullDownRefresh();//得到数据后停止下拉刷新
-				}else if(res.data.code == 0){
-					that.is_OK = true;
-					uni.showToast({
-						title: '暂无数据',
-						duration: 2000
-					});
-					return;
-				}
-		    },
-		    fail: function (e) {
-				uni.showToast({
-					title: '暂无数据！',
-					duration: 2000
-				});
-		    },
-		});
+		
+		
 	},
 	
 	
 	
 	
 	methods: {
+		
+		__get_product_list_all_data:function(){
+			var that = this;
+			
+			// 获取商品分类及下属商品
+			
+			// http://192.168.0.205/hahading/server/index.php/openapi/ProductData/get_product_list_all_data
+			//获取商家点餐分类信息
+			that.abotapi.abotRequest({
+			  url: that.abotapi.globalData.o2owaimai_server_url + 'openapi/ProductData/get_product_list_all_data',
+			  data: {
+				xianmai_shangid: that.shopId,
+				is_waimai: that.is_waimai,
+				sellerid: that.abotapi.get_sellerid(),
+			  },
+			  success: function (res) {
+				
+				console.log('fffsssssfeefefsf', res);
+				
+				
+				var data = res.data.data;
+				
+				console.log('888888',data.menu);
+				
+				
+				
+				if(res.data.code == 1){
+					if (data.menu == '') {
+						uni.showModal({
+							title: '提示',
+							content: '暂时没有商品...',
+							success(res) {
+							  if (res.confirm) {
+								// uni.navigateTo({
+								//   url: '/pages/shops/shop_detail' + '?id=' + shopId,
+								// })
+								uni.navigateBack({
+								  delta: 1
+								})
+							  } else if (res.cancel) {
+								uni.navigateBack({
+								  delta: 1
+								})
+							  }
+							}
+						})
+						return;
+					}
+					
+					var menu_list = data.menu;
+					for(var i=0; i<menu_list.length; i++){
+					  for (var j = 0; j < menu_list[i]['menu'].length; j++){       
+						for(var m=0;m<menu_list[i]['menu'][j].spec_list.length; m++){
+						  menu_list[i]['menu'][j].spec_list[m] = menu_list[i]['menu'][j].spec_list[m].split(':');
+						  menu_list[i]['menu'][j].spec_list[m][1] = menu_list[i]['menu'][j].spec_list[m][1].split('|');
+						}
+					  }
+					}
+					console.log('menu_list===', menu_list)
+					
+					
+					
+					var selectOrder = data.menu[0] ? data.menu[0].id : 0;
+					that.menu_list = menu_list;
+					that.selectOrder = selectOrder;
+				}
+				
+			  },
+			  fail: function (e) {
+				
+			  },
+			});
+			
+			
+			
+		},
+		
+		__get_shang_detail:function(){
+			var that = this;
+			
+			// 获取商家详情
+			var post_data = {
+				sellerid: that.abotapi.get_sellerid(),
+				xianmai_shangid: that.shopId,
+			}
+			
+			console.log('787878', that.shopId)
+			
+			var userInfo = that.abotapi.get_user_info();
+			
+			if (userInfo) {
+				post_data.checkstr = userInfo.checkstr,
+				post_data.userid = userInfo.userid
+			}
+			
+			that.abotapi.abotRequest({
+				url: that.abotapi.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/get_shang_detail',
+				data: post_data,
+				header: {
+				  "Content-Type": "application/x-www-form-urlencoded"
+				},
+				method: "POST",
+				success: function (res) {
+					if(res.data.code != 1){
+						uni.showToast({
+							title:'请求商家数据失败'
+						})
+						return;
+					}
+					
+					var data = res.data.data;    
+					 
+					that.shoplist = data;
+					console.log('that.shoplist',res);
+				
+					uni.setStorage({
+						key: 'shoplist',
+						data: that.shoplist,
+						success: function (res) {
+							console.log('异步保存成功')
+						}
+					})
+				
+				},
+				fail: function (e) {
+				
+				},
+			});
+			
+		},
 		
 		/**
 		   * 点击商品展示滚动
