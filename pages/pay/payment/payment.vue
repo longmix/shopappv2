@@ -39,105 +39,104 @@
 		</view>
 
 
-		<view :style="pay_price != 0.00?'':'display:none'">
+		<view class="my_pay_type" :style="pay_price != 0.00?'':'display:none'">
 
-			<view ng-if="pay_type">
-				<view style="width: 94%;height:35px;line-height:35px;font-size: 14px;color:#666;margin:30px auto 0 auto; ">支付方式</view>
+			<view style="width: 94%;height:35px;line-height:35px;font-size: 14px;color:#666;margin:30px auto 0 auto; ">支付方式</view>
 
-				<view style="width: 100%;border-bottom: 2rpx solid #e6e6e6;border-top: 2rpx solid #e6e6e6;">
-					<view class="payment_box">
-						<radio-group class="radio-group" @change="radioChange">
-							<view class="zhifu_li" v-if="show_weixin_pay==1">
-								<image src="../../../static/img/kefu.png" class="tubiao_zhifu"></image>
-								<view class="zhifu_name">微信支付</view>
+			<view style="width: 100%;border-bottom: 2rpx solid #e6e6e6;border-top: 2rpx solid #e6e6e6;">
+				<view class="payment_box">
+					<radio-group class="radio-group" @change="radioChange">
+						<view class="zhifu_li" v-if="show_weixin_pay==1">
+							<image src="../../../static/img/kefu.png" class="tubiao_zhifu"></image>
+							<view class="zhifu_name">微信支付</view>
 
-								<radio value='wx_pay' checked='true' style='margin-left:90%;margin-top:7px;'></radio>
+							<radio value='wx_pay' checked='true' style='margin-left:90%;margin-top:7px;'></radio>
+						</view>
+						
+						<view class="zhifu_li" v-if="show_ali_pay==1">
+							<image src="../../../static/img/alipay.png" class="tubiao_zhifu"></image>
+							<view class="zhifu_name">支付宝支付</view>
+						
+							<radio value='ali_pay' style='margin-left:90%;margin-top:7px;'></radio>
+						</view>
+
+						<view class="zhifu_li" v-if="show_zhuanzhang_pay==1">
+							<image src="../../../static/img/payment_zhuanzhang.png" class="tubiao_zhifu"></image>
+							<view class="zhifu_name">转账支付</view>
+							<radio value='zz_pay' style='margin-left:90%;margin-top:7px;'></radio>
+						</view>
+
+					</radio-group>
+
+				</view>
+
+
+				<view class="zhifu_li" :key="index" :data-index='index' @tap='zhuangzhangPay($event)' v-for="(item,index) in zhuanzhang_pay_list"
+				 :style='key==index?"background-color:#e6e6e6":""+is_online_pay?"display:none":"display:block"'>
+					<view class="zhifu_name" :key="index" :data-index='index' @tap='zhuangzhangPay($event)' style="font-weight: bold;">{{item.pay_name}}</view>
+				</view>
+				<view :style="payView?'display:none':'display:block'+';font-size:15px;margin-bottom:100px;'">
+					<view :style="is_online_pay?'display:none':'display:block'">
+						<view v-if="zhuanzhang_pay_item.pay_type==0">
+							<view class="section">
+								<label class='section_view'>收款人：</label>
+								<view class='section_view2'>{{zhuanzhang_pay_item.username}}</view>
 							</view>
-							
-							<view class="zhifu_li" v-if="show_ali_pay==1">
-								<image src="../../../static/img/alipay.png" class="tubiao_zhifu"></image>
-								<view class="zhifu_name">支付宝支付</view>
-							
-								<radio value='ali_pay' style='margin-left:90%;margin-top:7px;'></radio>
+							<view class="section">
+								<label class='section_view'>收款银行：</label>
+								<view class='section_view2'>{{zhuanzhang_pay_item.bank_name}}</view>
 							</view>
-
-							<view class="zhifu_li" v-if="show_zhuanzhang_pay==1">
-								<image src="../../../static/img/payment_zhuanzhang.png" class="tubiao_zhifu"></image>
-								<view class="zhifu_name">转账支付</view>
-								<radio value='zz_pay' style='margin-left:90%;margin-top:7px;'></radio>
+							<view class="section">
+								<label class='section_view'>收款账号：</label>
+								<view class='section_view2'>{{zhuanzhang_pay_item.card_num}}</view>
 							</view>
+						</view>
 
-						</radio-group>
+						<view style='text-align:center' v-else>
+							<image style='width:250px;' mode='widthFix' :src='zhuanzhang_pay_item.card_num'></image>
+						</view>
 
-					</view>
-
-
-					<view class="zhifu_li" :key="index" :data-index='index' @tap='zhuangzhangPay($event)' v-for="(item,index) in zhuanzhang_pay_list"
-					 :style='key==index?"background-color:#e6e6e6":""+is_online_pay?"display:none":"display:block"'>
-						<view class="zhifu_name" :key="index" :data-index='index' @tap='zhuangzhangPay($event)' style="font-weight: bold;">{{item.pay_name}}</view>
-					</view>
-					<view :style="payView?'display:none':'display:block'+';font-size:15px;margin-bottom:100px;'">
-						<view :style="is_online_pay?'display:none':'display:block'">
-							<view v-if="zhuanzhang_pay_item.pay_type==0">
+						<view>
+							<view style='margin-top: 20rpx;color: gray;padding: 20rpx 30rpx;'>转账后请填写以下信息，以便于与财务对账</view>
+							<form @submit="formSubmit">
 								<view class="section">
-									<label class='section_view'>收款人：</label>
-									<view class='section_view2'>{{zhuanzhang_pay_item.username}}</view>
+									<label class='section_view' style="line-height:50rpx">汇款人：</label>
+									<input type="text" name="name" placeholder="请填写汇款人" :value="adds.name" />
 								</view>
 								<view class="section">
-									<label class='section_view'>收款银行：</label>
-									<view class='section_view2'>{{zhuanzhang_pay_item.bank_name}}</view>
+									<label class='section_view' style="line-height:50rpx">汇款方式：</label>
+									<input type="text" name="huikuan_pingtai" placeholder="如工行转账、建设银行等" :value="adds.huikuan_pingtai" />
 								</view>
 								<view class="section">
-									<label class='section_view'>收款账号：</label>
-									<view class='section_view2'>{{zhuanzhang_pay_item.card_num}}</view>
+									<label class='section_view'>汇款日期：</label>
+									<!--<view class='section_view2'>{{time}}</view>-->
+
+									<picker mode="date" :value="date" start="2018-09-01" end="2030-06-01" @change="bindDateChange">
+										<input placeholder="请输入日期" @input="dateInput" :value="date" />
+									</picker>
 								</view>
-							</view>
 
-							<view style='text-align:center' v-else>
-								<image style='width:250px;' mode='widthFix' :src='zhuanzhang_pay_item.card_num'></image>
-							</view>
+								<view class="section">
+									<label class='section_view'>汇款时间：</label>
+									<!--<view class='section_view2'>{{time}}</view>-->
 
-							<view>
-								<view style='margin-top: 20rpx;color: gray;padding: 20rpx 30rpx;'>转账后请填写以下信息，以便于与财务对账</view>
-								<form @submit="formSubmit">
-									<view class="section">
-										<label class='section_view' style="line-height:50rpx">汇款人：</label>
-										<input type="text" name="name" placeholder="请填写汇款人" :value="adds.name" />
-									</view>
-									<view class="section">
-										<label class='section_view' style="line-height:50rpx">汇款方式：</label>
-										<input type="text" name="huikuan_pingtai" placeholder="如工行转账、建设银行等" :value="adds.huikuan_pingtai" />
-									</view>
-									<view class="section">
-										<label class='section_view'>汇款日期：</label>
-										<!--<view class='section_view2'>{{time}}</view>-->
-
-										<picker mode="date" :value="date" start="2018-09-01" end="2030-06-01" @change="bindDateChange">
-											<input placeholder="请输入日期" @input="dateInput" :value="date" />
-										</picker>
-									</view>
-
-									<view class="section">
-										<label class='section_view'>汇款时间：</label>
-										<!--<view class='section_view2'>{{time}}</view>-->
-
-										<picker mode="time" @value="time" start="00:01" end="23:59" @change="bindTimeChange">
-											<input placeholder="请输入时间" @input="timeInput" :value="time" />
-										</picker>
-									</view>
-									<view class="section">
-										<view class='section_view'>汇款金额：</view>
-										<view class='section_view2'>{{pay_price}}</view>
-									</view>
-									<view class="pay_submit">
-										<button class="pay_submit" type="default" id="Pay" formType="submit" :data-price="pay_price" @tap="createProductOrderByZZ()">确认支付</button>
-									</view>
-								</form>
-							</view>
+									<picker mode="time" @value="time" start="00:01" end="23:59" @change="bindTimeChange">
+										<input placeholder="请输入时间" @input="timeInput" :value="time" />
+									</picker>
+								</view>
+								<view class="section">
+									<view class='section_view'>汇款金额：</view>
+									<view class='section_view2'>{{pay_price}}</view>
+								</view>
+								<view class="pay_submit">
+									<button class="pay_submit" type="default" id="Pay" formType="submit" :data-price="pay_price" @tap="createProductOrderByZZ()">确认支付</button>
+								</view>
+							</form>
 						</view>
 					</view>
 				</view>
 			</view>
+			
 		</view>
 
 		<view class="pay_submit" v-if="is_online_pay">
@@ -196,9 +195,6 @@
 				//可用的转账支付的方式列表，例如 银行账号、收款二维码等
 				zhuanzhang_pay_list: '',
 				zhuanzhang_pay_item: '',
-				
-				
-				pay_type: '',
 				
 				adds: '',
 				name: '',
@@ -1112,6 +1108,10 @@
 
 	.section_view {
 		width: 160rpx;
+	}
+	
+	.my_pay_type {
+		margin-bottom:20rpx;
 	}
 
 	.pay_submit button {

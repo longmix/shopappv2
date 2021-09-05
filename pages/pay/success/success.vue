@@ -41,6 +41,10 @@
 			//this.amount = parseFloat(e.amount).toFixed(2);
 			//this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 			
+			uni.setNavigationBarTitle({
+				title: '支付完成'
+			});
+			
 			//多个orderid用半角逗号分开
 			this.orderid = options.orderid;
 			
