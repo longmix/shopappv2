@@ -172,7 +172,14 @@
 				<!-- <image class="comment_img comment_right_img" src="../../../static/img/help/friends.png"></image> -->
 		     </view>
 		</view>
+		
+		<abot-tab-bar :list="tabbar_list" 
+			v-if="tabbar_list_test == 1"
+			style="position:fixed;bottom:0;width:100%;left:0;right:0;" 
+			@tabChange="tabChange"></abot-tab-bar>
+		
 	</view>
+	
 </template>
 
 <script>
@@ -183,11 +190,14 @@
 // #ifdef MP-ALIPAY
 	import parseHtml from "../../common/html-parser.js"
 // #endif	
+
+	import abotTabBar from '@/components/abot-tabbar.vue'
 	
 	
 	export default {
 		components:{
-			abotshare
+			abotshare,
+			abotTabBar
 		},
 		data() {
 			return {
@@ -239,6 +249,23 @@
 				share_href:'',
 				share_summary:'',
 				share_titles:'',
+				
+				tabbar_list_test:0,
+				tabbar_list: [{
+				     "text": "未录入",
+				     "iconPath": 'https://yanyubao.tseo.cn/uploads/bottom_icon/style_003_icon6.png' ,
+				     "selectedIconPath": 'https://yanyubao.tseo.cn/uploads/bottom_icon/i_2.png'
+				   },
+				   {
+				     "text": "作业互评",
+				     "iconPath": 'http://yanyubao.tseo.cn/uploads/bottom_icon/cort.png',
+				     "selectedIconPath":'https://yanyubao.tseo.cn/uploads/bottom_icon/i_5.png'
+				     },
+				     {
+				       "text": "成绩分析",
+				       "iconPath": '../../static/analyse.png',
+				       "selectedIconPath": '../../static/analyse-select.png'
+				}],
 			}
 		},
 		
