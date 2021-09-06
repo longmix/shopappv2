@@ -526,14 +526,17 @@
 		
 		
 		//重写返回按钮的处理事件
-		// #ifndef MP-ALIPAY
+		/*
+		// #ifndef MP-ALIPAY 
 		onBackPress:function(event){
 			console.log('触发返回事件：', event);
 			
 			this.abotapi.call_h5browser_or_other_goto_url('/pages/user/user');
 		},
 		// #endif
-		
+		*/
+	   
+	   
 		//点击加载更多
 		onReachBottom: function () {
 			var that = this;

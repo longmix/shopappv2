@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class='view1'>
-			<view class='vw'><text>支付信息</text></view>
+			<view class="sub_title"><text>支付信息</text></view>
 			<view class='vw1'>
 				<text>订单编号：</text>
 				<view class='view2'>{{orderData.orderno}}</view>
@@ -32,7 +32,7 @@
 				<view class='view2' v-if="balance_zengsong_dikou != 0">-{{balance_zengsong_dikou}}</view>
 				<view class='view2' v-if="balance_zengsong_dikou == 0">0</view>
 			</view>
-			<view class='vw1'>
+			<view class='vw1' style="font-weight: bold;">
 				<text>应付金额：</text>
 				<view class='view2'>{{pay_price}}</view>
 			</view>
@@ -41,9 +41,9 @@
 
 		<view class="my_pay_type" :style="pay_price != 0.00?'':'display:none'">
 
-			<view style="width: 94%;height:35px;line-height:35px;font-size: 14px;color:#666;margin:30px auto 0 auto; ">支付方式</view>
+			<view class="sub_title">支付方式</view>
 
-			<view style="width: 100%;border-bottom: 2rpx solid #e6e6e6;border-top: 2rpx solid #e6e6e6;">
+			<view style="width: 100%;border-bottom: 2rpx solid #e6e6e6;">
 				<view class="payment_box">
 					<radio-group class="radio-group" @change="radioChange">
 						<view class="zhifu_li" v-if="show_weixin_pay==1">
@@ -129,7 +129,7 @@
 									<view class='section_view2'>{{pay_price}}</view>
 								</view>
 								<view class="pay_submit">
-									<button class="pay_submit" type="default" id="Pay" formType="submit" :data-price="pay_price" @tap="createProductOrderByZZ()">确认支付</button>
+									<button type="default" id="Pay" formType="submit" :data-price="pay_price" @tap="createProductOrderByZZ()">确认支付</button>
 								</view>
 							</form>
 						</view>
@@ -1113,12 +1113,24 @@
 	.my_pay_type {
 		margin-bottom:20rpx;
 	}
+	
+	.sub_title {
+		width: 94%;
+		height:70rpx;
+		line-height:70rpx;
+		font-size: 28rpx;
+		font-weight: bold;
+		color:#555555;
+		margin:60rpx auto 0 auto;
+		border-bottom: 2rpx solid #aaaaaa;
+	}
 
+	.pay_submit{
+		margin-top:50rpx;
+	}
 	.pay_submit button {
 		display: block;
 		/*position: fixed;*/
-		bottom: 20rpx;
-		left: 0;
 		background-color: #1AAD19;
 		z-index: 100;
 		text-align: center;
@@ -1132,14 +1144,12 @@
 	}
 
 	.view1 {
-		font-family: "微软雅黑";
 		font-size: 28rpx;
 		margin-top: 100rpx;
 		color: #666;
 	}
 
 	.vw {
-		font-family: "微软雅黑";
 		font-size: 34rpx;
 		margin-left: 40rpx;
 		color: black;

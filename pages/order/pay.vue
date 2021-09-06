@@ -123,11 +123,21 @@
 				</view>
 				<switch class='d-dikou' :checked="isSwitch2" @change="switch1Change($event)" data-type="2" />
 			</view>
+			
 			<view v-if="orderredpackge_list.code == 1" class="a-redpackets">
 				<view class="b-redpackets">
 					<view>订单红包</view>
 				</view>
-				 <img src="http://yanyubao.tseo.cn/Tpl/Home/plugin/yanyubao/images/asd23.png" v-show="picture_show" @click="get_redpackage_while_ordering" disabled="true"/>
+				<view class="a_redpackets_img_wrap" v-show="orderredpackge_picture_show" >
+					<image :src="redpackge_cover_img_url"
+										class="a_redpackets_img"
+										style="position: absolute;"
+										mode="widthFix"
+										@click="get_redpackage_while_ordering" 
+										disabled="true"></image>
+					
+				</view>
+				 
 				<view class="c-redpackets" @click="get_redpackage_picture_show">{{redpackge_text_tips}}</view>
 			</view>
 
@@ -139,7 +149,7 @@
 				
 				
 				<!-- <view class="heji_con" v-if='is_waimai == 1'> -->
-				<view class="heji_con">
+				<view class="heji_con" v-if="traffic_price > 0">
 					<text class="gm_ovh_1h pt10">运费</text>
 					<text class="gm_ovh_1h pt10">¥ {{traffic_price}}</text>
 				</view>
@@ -291,11 +301,15 @@
 				
 				
 				current_userinfo:null,
-				picture_show: false,
+				
+				
+				orderredpackge_picture_show: false,
+				
 				orderredpackge_list:[],
 				redpackge_lingqu_score:0,
 				is_ordering_redpackge_click:false,
-				redpackge_text_tips:'',
+				redpackge_text_tips:'先领红包再下单',
+				redpackge_cover_img_url:'https://yanyubao.tseo.cn/Tpl/Home/plugin/yanyubao/images/asd23.png',
 				
 				//2020.12.3. 爱拼团的参数
 				cuxiao_huodong:null,
@@ -1023,6 +1037,11 @@ extraData = 'xxxxxxxxxxxxxxx'
 						
 						that.redpackge_text_tips = res.data.data.tips_text;
 						console.log("ORDER_QUEREN_res===code",that.redpackge_text_tips);
+						
+						if(res.data.data.redpackge_cover_img_url){
+							that.redpackge_cover_img_url = res.data.data.redpackge_cover_img_url;
+						}
+						
 						
 						
 					},
@@ -1932,15 +1951,16 @@ extraData = 'xxxxxxxxxxxxxxx'
 			
 			//图片弹出
 			get_redpackage_picture_show:function(e){
-				this.picture_show = true;
+				this.orderredpackge_picture_show = true;
 				
 				
-				if(this.redpackge_lingqu_score>0){
+				if(this.redpackge_lingqu_score > 0){
 					uni.showToast({
-						title: '您已经领取过了！',
+						title: '已领取过红包',
 						duration: 2000
 					});
-					this.picture_show = false;
+					
+					this.orderredpackge_picture_show = false;
 					
 				}
 			},  
@@ -1953,7 +1973,9 @@ extraData = 'xxxxxxxxxxxxxxx'
 				if(this.is_ordering_redpackge_click){
 					return;
 				}
+				
 				this.is_ordering_redpackge_click = true;
+				
 				console.log('this.is_ordering_redpackge_click===222222=>>>>', this.is_ordering_redpackge_click);
 				
 				
@@ -1977,6 +1999,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 					success: function (res) {
 						console.log('sssss', res)
 						
+						that.is_ordering_redpackge_click = false;
 						
 						
 						if(!res || !res.data || !res.data.code || (res.data.code != 1) ){
@@ -1984,9 +2007,10 @@ extraData = 'xxxxxxxxxxxxxxx'
 								title: res.data.msg,
 								duration: 2000
 							});
+							
 							setTimeout(function(){
-								that.picture_show = false;
-							},1000)
+								that.orderredpackge_picture_show = false;
+							}, 1000)
 							
 							// if(res && res.data && res.msg){
 							// 	uni.showModal({
@@ -1997,6 +2021,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 							
 							return;
 						}
+						
 						if(res.data.code == 1){
 							that.redpackge_lingqu_score = that.redpackge_lingqu_score + 1;
 						}
@@ -2022,18 +2047,22 @@ extraData = 'xxxxxxxxxxxxxxx'
 									
 									console.log('33333333333333333333' );
 									
-									that.is_ordering_redpackge_click = false;
 									
 									
-									var balance_zengsong_num = Number(that.balance_zengsong*100);
 									
-									console.log('赠款金额==>>>'+balance_zengsong_num+'元');
-									that.balance_zengsong = String((balance_zengsong_num + my_lucky_redpackge_first)/100);
+									var balance_zengsong_num = parseInt(that.balance_zengsong*100);
+									
+									console.log('赠款金额==>>>' + String(balance_zengsong_num) + '元');
+									
+									balance_zengsong_num = balance_zengsong_num + my_lucky_redpackge_first;
+									balance_zengsong_num = parseFloat(balance_zengsong_num/100).toFixed(2);
+									
+									that.balance_zengsong = String(balance_zengsong_num);
 									
 							        if (res.confirm) {
 										//立即用
 							            console.log('用户点击确定');
-										that.picture_show = false;
+										that.orderredpackge_picture_show = false;
 										that.switch1Change(null, true, String(my_lucky_redpackge_first002), that);
 										
 							        } 
@@ -2041,13 +2070,13 @@ extraData = 'xxxxxxxxxxxxxxx'
 										//稍后用
 							            console.log('用户点击取消');
 										
-										that.picture_show = false;
+										that.orderredpackge_picture_show = false;
 										console.log('用户领取红包后赠款==',that.balance_zengsong);
 							        }
 							    }
 							});
 							
-						},1500)
+						}, 1500)
 						
 						
 						
@@ -2355,7 +2384,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 	  padding:0 0 3%;
 	  font-size:28upx;
 	  justify-content:space-between;
-	  border-bottom:1px solid #e5e5e5;
+	  border-bottom:1rpx solid #e5e5e5;
 	  margin-bottom:20upx;
 	  width:94%;
 	  margin-left:3%;
@@ -2366,22 +2395,29 @@ extraData = 'xxxxxxxxxxxxxxx'
 		padding:0 0 3%;
 		font-size:28upx;
 		justify-content:space-between;
-		border-bottom:1px solid #e5e5e5;
+		border-bottom:1rpx solid #e5e5e5;
 		margin-bottom:20upx;
 		width:94%;
 		margin-left:3%;
 		margin-top: 30upx;
 	}
-	.a-redpackets img{
-			width: 200px;
-			position: absolute;
-		    top: 0;
-		    left: 0;
-		    right: 0;
-		    bottom: 0;
-		    background: rgba(0,0,0,0.3);
-		    z-index: 4;
-		    margin: auto;
+	
+	.a_redpackets_img_wrap {
+		width:400rpx;
+		
+			position: absolute;			
+			top: 300rpx;
+			/*bottom: 0;*/
+			left: 0;
+			right: 0;
+			
+			z-index: 4;
+			margin: auto;
+	}
+	.a_redpackets_img{
+		width:400rpx;
+		background: rgba(0,0,0,0.3);
+		    
 	}
 	@-moz-keyframes tada{
 	    0%{-moz-transform:scale(1);}
@@ -2396,7 +2432,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 	    30%,50%,70%,90%{-webkit-transform:scale(1.2) rotate(3deg);}
 	    40%,60%,80%{-webkit-transform:scale(1.2) rotate(-3deg);}
 	    100%{-webkit-transform:scale(1) rotate(0);}}
-	.a-redpackets img:hover{
+	.a_redpackets_img:hover{
 	  -webkit-animation: tada 1s .2s ease both;
 	  -moz-animation: tada 1s .2s ease both;
 	}
