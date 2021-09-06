@@ -136,7 +136,13 @@
 			 	<view class="progress-box">
 					<view style="display: flex;">
 						<view style="font-weight: 100;">收集进度：</view>
-						（{{current_package_detail.packageid_card_user_buy_count}}/{{current_package_detail.packageid_card_count}}）</view>
+							<view class="">
+								（{{current_package_detail.packageid_card_user_buy_count}}/{{current_package_detail.packageid_card_count}}）
+							</view>
+						<!-- 	<button class="" v-if="!userInfo" style="height: 40rpx;line-height: 40rpx;width: 200rpx;font-size: 25rpx;margin-left: 0rpx;">
+								点击查看
+							</button> -->
+						</view>
 					<progress :percent="current_package_detail.sale_percent" activeColor="#30C478" stroke-width="4" 
 						show-info="" backgroundColor="red" font-size="15"></progress>
 				</view>
@@ -279,7 +285,7 @@
 							v-for="(current_package_item, index) in current_package_list"
 							:key="index"
 							@tap="goto_package_detail(current_package_item.packageid)">
-						<image class="package_list_recommend" :src="current_package_item.cover_img_url" mode=""></image>
+						<image class="package_list_recommend" :src="current_package_item.cover_img_url_stand" mode=""></image>
 						<view class="series_package" style="font-weight: bold;margin-left: 5rpx;width: 200rpx;word-wrap: break-word;">{{current_package_item.title}}</view>
 					</view>	
 				</view>

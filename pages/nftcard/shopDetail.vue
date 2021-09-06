@@ -77,8 +77,8 @@
 					
 				
 				<view class="supplier_package_num">
-					<view style="font-size: 25rpx;font-weight: 100;">卡包</view>
-					<view style="font-size: 40rpx;font-weight: bold;">{{current_shang_detail.package_count}}</view>
+					<view style="font-size: 25rpx;font-weight: 100;text-align: center;">卡包</view>
+					<view style="font-size: 40rpx;font-weight: bold;text-align: center;">{{current_shang_detail.package_count}}</view>
 				</view>
 				<view class="supplier_package_num01">
 					<view style="font-size: 25rpx;font-weight: 100;text-align: center;">卡牌</view>
@@ -317,12 +317,14 @@
 						<view class="nft_package" >
 							<view class="">
 								<img class="supplier_package_list" :src="item.cover_img_url"  >
-								<image class="package_list_mark" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/mark01.png" mode="widthFix" style="border-top-right-radius: 20rpx;"></image>
-								<view class="package_list_mark_num">
-									<view style="color: #cdcdcd;font-weight: bold; font-size: 35rpx;">{{item.card_count_mianfei}}</view>
-									<view style="color: #FFFFFF;">/</view>
-									<view style="color: yellow;font-weight: bold; font-size: 35rpx;">{{item.card_count_fufei}}</view>
+				
+									<view class="package_list_mark_num" >
+										<view class="supplier_package_card_num" style="color: #cdcdcd;margin-left: 5rpx;-webkit-filter:brightness(2.3);">{{item.card_count_mianfei}}</view>
+										<view style="color: #FFFFFF;">/</view>
+										<view class="supplier_package_card_num" style="color: yellow;margin-right: 5rpx;-webkit-filter:brightness(2.3);">{{item.card_count_fufei}}</view>
+									
 								</view>
+								
 							</view>
 							
 							<view class="supplier_image_description">
@@ -334,7 +336,7 @@
 								 	<view class="progress-box">
 										<view class="" style="display: flex;">
 											<view style="font-size: 20rpx;margin-top: 5rpx;font-weight: 100;">收集进度：</view>
-											<view class="">({{item.packageid_card_user_buy_count}}/{{item.packageid_card_count}})</view>
+											<view class="" style="font-size: 25rpx;">({{item.packageid_card_user_buy_count}}/{{item.packageid_card_count}})</view>
 										</view>
 										
 										<progress style="width: 95%;" :percent="item.sale_percent" activeColor="#30C478" stroke-width="3" 
@@ -3098,11 +3100,29 @@
 		z-index: 1;
 		opacity: 0.6;
 	}
+	// .package_list_mark_num{
+	// 	position:absolute;
+	// 	width: 90rpx;
+	// 	height: 90rpx;
+	// 	background-color: #000000;
+	// 	border-radius: 50%;
+	// 	opacity: 0.6;
+	// 	left: 248rpx;
+	// 	top: 5rpx;
+	// 	z-index: 2;
+	// }
 	.package_list_mark_num{
-		display: flex;
 		position:absolute;
+		display:flex;
+		background: rgba(0,0,0,0.6);
+		border-radius: 10rpx;
 		left: 270rpx;
-		top: 14rpx;
+		top: 10rpx;
 		z-index: 2;
+	}
+	.supplier_package_card_num{
+		font-weight: bold;
+		font-size: 35rpx;
+	
 	}
 </style>
