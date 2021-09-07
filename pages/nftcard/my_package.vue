@@ -33,7 +33,7 @@
 				@tap="goto_package_detail(current_package_list_item.packageid)">
 				
 				<!--卡包的图片 -->
-				<view><image :src="current_package_list_item.cover_img_url" mode="" style="width:345rpx;height:100%;border-radius: 20rpx;"></image></view>
+				<view><image :src="current_package_list_item.cover_img_url_3x2_stand" mode="widthFix" style="width:345rpx;border-radius: 20rpx;"></image></view>
 				
 				<!-- 卡包详情 -->
 				<view class="my_package_detail" >
@@ -51,7 +51,7 @@
 					 	<view class="progress-box">
 						<view class="" style="display: flex;">
 							<view style="font-size: 20rpx;margin-top: 5rpx;font-weight: 100;">收集进度：</view>
-							<view class="">({{current_package_list_item.packageid_card_user_buy_count}}/{{current_package_list_item.packageid_card_count}})</view>
+							<view class="" style="font-size: 25rpx;">({{current_package_list_item.packageid_card_user_buy_count}}/{{current_package_list_item.packageid_card_count}})</view>
 						</view>
 							<progress :percent="current_package_list_item.sale_percent" activeColor="#30C478" stroke-width="3" 
 								show-info="" backgroundColor="red" font-size="15"></progress>
@@ -85,8 +85,8 @@ export default {
 			tabIndex:0,
 			    tabBars:[
 					{ name:"全部卡牌",id:"quanbu"},
-			        { name:"正在发售",id:"diancang"},
-			        { name:"已过期",id:"zhencang"},
+			        // { name:"正在发售",id:"diancang"},
+			        // { name:"已过期",id:"zhencang"},
 			    ]
 			
 		}
@@ -235,13 +235,57 @@ export default {
 		},
 		
 		tabtap(index){
-			this.tabIndex=index;
-			uni.showToast({
-				title: ' ',
-				duration: 2000,
-			});
+			
+			var that=this;
+			//获取卡包列表
+			
+			var post_data = {
+					sellerid:that.abotapi.globalData.default_sellerid,
+					//action02:'expire_list',
+					action: 'my_like_list',
+			};
+			
+			
+			    var userInfo = that.abotapi.get_user_info();
+			    if (userInfo) {
+			    	post_data.userid = userInfo.userid;
+			    	post_data.checkstr = userInfo.checkstr;
+			   }
+			
+			
+			that.abotapi.abotRequest({
+				url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_list',
+				method: 'post',
+				data: post_data,
+				success: function (res) {
+					
+					if(res.data.code != 1){
+						uni.showToast({
+							title:'卡包列表没有数据',
+							duration: 2000,
+						});
 						
-			return;
+						return;
+					}
+					
+					that.tabIndex=index;
+					
+					that.current_package_list = res.data.data;
+					
+					console.log('current_package_list ===>>> ', that.current_package_list);
+					
+							
+					
+				},
+				fail: function (e) {
+					uni.showToast({
+						title: '网络异常！',
+						duration: 2000
+					});
+				},
+			});
+					
+			
 		},
 		
 		
@@ -261,7 +305,7 @@ export default {
 			
 			var post_data = {
 					sellerid:that.abotapi.globalData.default_sellerid,
-					action02:'expire_list',
+					// action02:'expire_list',
 					action: 'my_like_list',
 			};
 			
@@ -323,78 +367,6 @@ export default {
 		
 		
 			},
-		
-		
-		
-		
-		package_tag_item_click(tag_item_index){
-			
-			
-			var click_tag_id = -1;
-			click_tag_id = this.package_tag_item_list[tag_item_index].tag_id;
-			
-			//1，控制界面变化
-			if(this.package_tag_item_list[tag_item_index].selected == true ){
-				
-				this.package_tag_item_list[tag_item_index].selected = false;
-				
-				/*
-				for (var i=0; i< this.package_tag_item_selected_seq_list.length; i++){
-					if(this.package_tag_item_selected_seq_list[i] == click_tag_id){
-						this.package_tag_item_selected_seq_list.splice(i, 1);
-					}
-					
-				}*/
-			}
-			else{
-				
-				this.package_tag_item_list[tag_item_index].selected =true;
-				if(click_tag_id == 1){
-					
-					for (var i=0; i< this.package_tag_item_list.length; i++){
-						if(this.package_tag_item_list[i].selected && (this.package_tag_item_list[i].tag_id != 1)){
-							this.package_tag_item_list[i].selected = false;
-						}
-						
-					}
-				}
-				else{
-					for (var i=0; i< this.package_tag_item_list.length; i++){
-						if(this.package_tag_item_list[i].selected && (this.package_tag_item_list[i].tag_id == 1)){
-							this.package_tag_item_list[i].selected = false;
-						}
-						
-					}
-				}
-				
-			}
-		
-			//2，计算那些被选中了
-			var tag_id001 = this.package_tag_item_list[0].selected;
-			var tag_id002 = this.package_tag_item_list[1].selected;
-			var tag_id003 = this.package_tag_item_list[2].selected;
-			if(tag_id001){
-				
-			}
-			else{
-				if(tag_id002 && tag_id003){
-					
-				}
-			
-				else if(tag_id002){
-					//发售的卡牌
-					
-				}
-				else if(tag_id003){
-					//过期的卡牌
-					
-				}
-			}
-			this.__nft_get_package_list();
-		}
-		
-		
-		
 		
 		
 		
