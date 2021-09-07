@@ -59,24 +59,13 @@
 	.description001 .content {
 		padding-bottom: 50rpx;
 	}
-	.slide_cards_pic {
-		padding-left: 20rpx;
-		padding-right: 10rpx;
-		padding-top: 20rpx;
-		padding-bottom: 10rpx;
-	}
+	
 	.slide_cards_pic_border{
 		width: 190rpx;
 		padding-left: 20rpx;
 		padding-right: 10rpx;
 		padding-top: 20rpx;
 		padding-bottom: 10rpx;
-	}
-	.card_detail_img_border {
-		width: 190rpx;
-		height: 295rpx;
-		border-radius: 20rpx;
-		z-index: 1;
 	}
 	.card_detail_kapai_title {
 		width: 195rpx;
@@ -123,11 +112,5 @@
 		margin: 15rpx;
 		z-index: 5;
 	}
-	.package_card_watermark{
-		width: 80rpx;
-		position: absolute;
-		margin-top: 100rpx;
-		margin-left: 55rpx;
-		z-index: 2;
-	}
+	
 	

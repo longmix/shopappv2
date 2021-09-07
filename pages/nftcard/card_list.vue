@@ -260,7 +260,6 @@ export default {
 
 <style>
 	.card_background{
-		background-color: #F0F0F0;
 		margin: 0rpx;
 		padding: 0rpx;
 	}

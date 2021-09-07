@@ -1,31 +1,31 @@
 const globalData = {
 		weiduke_server_url: 'https://cms.weiduke.com/',
-		//yanyubao_server_url: 'https://yanyubao.tseo.cn/',
-		yanyubao_server_url: 'http://192.168.0.205/yanyubao_server/index.php/',
+		yanyubao_server_url: 'https://yanyubao.tseo.cn/',
+		//yanyubao_server_url: 'http://192.168.0.205/yanyubao_server/index.php/',
 		o2owaimai_server_url: 'https://app.tseo.cn/o2owaimai/index.php/',
 		socket_server: 'https://socketio.tseo.cn',
 		
-		version_number:'Ver 1.7.0 Build 207',
+		version_number:'Ver 1.0.5 Build 207',
 		version_code:207,
 		
 		force_sellerid:1,
 	
-		xiaochengxu_appid: 'wx35111d4e91dd83fa',			//微信小程序的appid
-		xiaochengxu_account: 'gh_d27a3d893452',				//微信小程序的账号
-		weixin_open_platform_appid: 'wxa1936d5844aefa8b',	//微信开放平台中登记的APP对应的appid（务必与manifest中的配置一致）
+		xiaochengxu_appid: 'wxd4ab638ad39a3fe4',			//微信小程序的appid
+		xiaochengxu_account: 'gh_4d8e10130e8c',				//微信小程序的账号
+		weixin_open_platform_appid: '',	//微信开放平台中登记的APP对应的appid（务必与manifest中的配置一致）
 		
-		//通版商城
-		default_shopname: '虎鱼电脑测试账号',
+		//卡扑小程序，确保  xiaochengxu_appid == wxd4ab638ad39a3fe4， xianmai_shang_list_switch_to_supplier_list == 1
+		default_shopname: '卡扑',    
 		default_sellerid: 'pQNNmSkaq',
-		default_copyright_text:' @ 版权所有',
+		default_copyright_text:'延誉宝 @ 版权所有',
 		
 		
 		//=======以下配置项在发布版本的时候确定，服务器端配置无效===
 		
 		//平台相关的配置
-		current_platform : 'app-android',
+		//current_platform : 'app-android',
 		//current_platform : 'app-ios',
-		//current_platform : 'mp-weixin',
+		current_platform : 'mp-weixin',
 		//current_platform : 'mp-baidu',
 		//current_platform : 'mp-alipay',
 		//current_platform : 'h5',
@@ -35,7 +35,7 @@ const globalData = {
 		//并确保与 navigationBarTextStyle / navigationBarBackgroundColor   保持一致
 		navigationBarBackgroundColor_fixed:1,
 		navigationBar_font_color:'#ffffff',
-		navigationBar_bg_color:'#30C478',
+		navigationBar_bg_color:'#30c478',
 		//======================End=======================
 		
 		//======以下选项可以在服务器端修改，这里是默认值=====
@@ -43,17 +43,25 @@ const globalData = {
 		default_shang_list_count_in_front_page:0,
 		default_publish_list_count_in_front_page:0,
 		
-		//2021.1.13. 关于订单支付的特殊设置
-		order_buy_payment_to_mp_weixin:1, //将微信支付订单跳转到小程序中
-		  
-		//2021.8.5. 重新定义商家列表为supplier列表 /pages/shopList/shopList
-		xianmai_shang_list_switch_to_supplier_list:1,
+		
 		
 		
 		baidu_map_ak: 'OTsGerqQhowGSFOWG8c6p86R',
 		userInfo: {},
+		
+		
+		
+		
+		//2021.1.13. 关于订单支付的特殊设置
+		order_buy_payment_to_mp_weixin:0, //将微信支付订单跳转到小程序中
+		  
+		//2021.8.5. 重新定义商家列表为supplier列表 /pages/shopList/shopList
+		xianmai_shang_list_switch_to_supplier_list:1,
+		
 	};
-
+	
+	
+	
 module.exports = {
 	globalData,
 }

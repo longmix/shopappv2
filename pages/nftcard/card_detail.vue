@@ -160,8 +160,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				</view>
 				
 				<!-- 卡牌名称 -->
-				<h4 class="card_detail_title" 
-					style="padding-bottom: 15rpx;width: 90%;" 
+				<h4 class="card_detail_title"
 					v-if="current_card_detail">
 					{{current_card_detail.card_name}}
 				</h4>
@@ -183,7 +182,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				
 				<view style="color: #868686;">
-					<view>
+					<view v-if="current_card_detail.buy_limit != 0">
 						<text style="color: #ff0000;">每人限购{{current_card_detail.buy_limit}}张</text>
 					</view>
 					<view>
@@ -216,9 +215,10 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				<view style="display: flex;" v-if="current_card_detail">
 					<view>
-						<image :src="current_package_detail.cover_img_url"
+						<image :src="current_package_detail.cover_img_url_stand"
 							@tap="go_to_card_package(current_package_detail.packageid)"
-							class="card_detail_kabaotoxiang"></image>
+							class="card_detail_kabaotoxiang">
+						</image>
 					</view>
 					<view class="card_detail_kabaoxinxi" 
 						@tap="go_to_card_package(current_package_detail.packageid)">
@@ -243,58 +243,39 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					<text>同系列卡牌</text>
 				</h4>
 				<scroll-view scroll-x="true">
-					<!-- <view style="display: flex;position: relative;">
-						<view v-for="(current_card_list_item, index) in current_card_list"
-							:key="index"
-							@tap="go_to_card_detail(current_card_list_item.packageid, current_card_list_item.cardid)">
-							<view class="slide_cards_pic">
-								<image v-if="current_card_detail.is_buyed == 0"
-									class="package_card_watermark" 
-									src="https://yanyubao.tseo.cn/Tpl/static/nft_card/watermark01.png" 
-									mode="widthFix">
-								</image>
-								<image v-if="current_card_detail.is_buyed == 0"
-									class="card_detail_img_border"
-									:src="current_card_list_item.cover_img_url_2x3" 
-									mode="aspectFill">
-								</image>
-								<image v-if="current_card_detail.is_buyed == 1" 
-									:src="current_card_list_item.cover_img_url_2x3"
-									mode="aspectFill"
-									class="card_detail_img_border">
-								</image>
-								<view class="card_detail_kapai_title">
-									{{current_card_list_item.card_name}}
-								</view>
-							</view>
-							
-						</view>
-					</view> -->
 					
 					<view style="display: flex;position: relative;">
 						<view class="card_list"
-								v-for="(current_card_list_item, index) in current_card_list"
-								:key="index"
-								@tap="go_to_card_detail(current_card_list_item.packageid, current_card_list_item.cardid)">
+							v-for="(current_card_list_item, index) in current_card_list"
+							:key="index"
+							@tap="go_to_card_detail(current_card_list_item.packageid, current_card_list_item.cardid)">
 								
 							<view>
 								 
 								<!--是否购买  加灰透明 加水印 -->
-								<view  style="background-color: #000000; width:240rpx;height: 350rpx;border-radius: 20rpx;">
-									<image v-if="current_card_list_item.is_buyed == 0" class="package_card_watermark" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/watermark01.png" mode="widthFix" ></image>
-									<image v-if="current_card_list_item.is_buyed == 0" class="package_card_img" :src="current_card_list_item.cover_img_url_2x3" mode="" style="opacity:0.7 ;"></image>
-									<image v-if="current_card_list_item.is_buyed == 1" class="package_card_img" :src="current_card_list_item.cover_img_url_2x3" mode=""></image>
-									
+								<view class="card_detail_is_buyed">
+									<image v-if="current_card_list_item.is_buyed == 0" 
+										class="package_card_watermark" 
+										src="https://yanyubao.tseo.cn/Tpl/static/nft_card/watermark01.png" 
+										mode="widthFix" >
+									</image>
+									<image v-if="current_card_list_item.is_buyed == 0" 
+										class="package_card_img" :src="current_card_list_item.cover_img_url_2x3_stand" 
+										style="opacity:0.7 ;">
+									</image>
+									<image v-if="current_card_list_item.is_buyed == 1" 
+										class="package_card_img" :src="current_card_list_item.cover_img_url_2x3_stand">
+									</image>
 								</view>
-							
-									
-											
+								
 								<!-- 卡牌名称 -->
 								<view class="card_detail_kapai_title">
 									{{current_card_list_item.card_name}}
 								</view>
+								
 							</view>
-						</view>	 
+							
+						</view>
 					</view>
 					
 				</scroll-view>
@@ -397,7 +378,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			</view>
 			
 			<!-- 2021.08.20赠予 -->
-			<view @tap="__nftcard_gift_or_discard" class="card_detail_showmodal_zengsong">
+			<view @tap="go_to_gift_card(current_cardid)" class="card_detail_showmodal_zengsong">
 				<image class="card_detail_showmodal_tupian"
 					src="https://yanyubao.tseo.cn/Tpl/static/nft_card/zengsong.png">
 				</image>
@@ -609,14 +590,14 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			that.current_card_detail.description = '';
 			that.current_card_detail.cover_img_url_2x3 = 'https://yanyubao.tseo.cn/Tpl/static/nft_card/default_card_cover.png';
 			that.current_card_detail.cover_img_back_url = 'https://yanyubao.tseo.cn/Tpl/static/nft_card/default_card_cover.png';
-			that.current_card_detail.is_favorite = 0;
+			that.current_card_detail.is_favorite = 0;//是否收藏
 			that.current_card_detail.card_name = '';
 			that.current_card_detail.createtime = '';
-			that.current_card_detail.favorite_count = 0;
+			that.current_card_detail.favorite_count = 0;//有多少人收藏
 
 			that.current_card_detail.package_title = '';
 			// that.current_card_detail.supplier_name = '';
-			that.current_card_detail.is_buyed = 0;
+			that.current_card_detail.is_buyed = 0;//是否购买
 			that.current_card_detail.clue = '';
 			
 			that.current_card_detail.buyed_counter= 0 ;//购买卡的次数
@@ -628,7 +609,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			that.current_card_detail.sale_percent = 50;
 			
 			that.current_nftcard_poster = {};
-			
 			
 			
 			that.current_package_detail = {
@@ -688,9 +668,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			//================== End =====================
 			
 			
-			
-			
-
 			that.abotapi.set_shop_option_data(that, that.callback_function_shop_option_data);
 
 
@@ -719,7 +696,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				uni.showModal({
 					title: '没有cardid',
-					content: ',',
+					content: ' ',
 					showCancel: false
 				});
 
@@ -727,13 +704,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			}
 
 			
-			
 			that.__get_card_detail();
-
-
-			
-
-			//
 
 
 			
@@ -889,11 +860,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 			},
 			
-			// disabledScroll(){
-			// 	return
-			// },
-			
-			
 			
 			
 			//微信小程序保存到相册
@@ -995,23 +961,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			},
 			
 			
-			// is_xiaohui:function(){
-			// 	uni.showModal({
-			// 		title: '',
-			// 		content: '是否确认销毁',
-			// 		cancelText: '取消',
-			// 		confirmText: '确认',
-			// 	})
-			// },
-			
-			// get_user_account_info:function(){
-			// 	var user_account_info_str = uni.getStorageSync("user_account_info");
-			// 	if(!user_account_info_str){
-			// 		return null;
-			// 	}
-			// 	return JSON.parse(user_account_info_str);
-			// },
-			
 			callback_function_shop_option_data: function(that, cb_params) {
 
 				console.log('当前调试开关22：' + this.system_debug_flag);
@@ -1036,8 +985,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 
 			set_favorite: function(value001) {
 				var that = this;
-
-
+				
+				
 				//======= 判断用户是否登录 ============
 				var last_url = '/pages/nftcard/card_detail?' + that.current_params_str;
 
@@ -1079,7 +1028,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 								title: '操作失败',
 								duration: 2000,
 							});
-
+							
 							return;
 						}
 
@@ -1088,15 +1037,15 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 							duration: 2000,
 						});
 
+						
 						//请求成功之后，修改本地的数据
 						that.current_card_detail.is_favorite = value001;
-
+						
 						if (value001 == 1) {
 							that.current_card_detail.favorite_count++;
 						} else {
 							that.current_card_detail.favorite_count--;
 						}
-
 
 
 					},
@@ -1193,6 +1142,15 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 
 				uni.navigateTo({
 					url: '/pages/nftcard/card_detail?packageid=' + packageid + '&cardid=' + cardid,
+				})
+			},
+			
+			go_to_gift_card:function(cardid){
+				console.log('cardid===>>>' + cardid);
+				
+				uni.navigateTo({
+					// url: '/pages/nftcard/gift_card?cardid='+cardid,
+					url: '/pages/nftcard/gift_card?cardid=' + cardid,
 				})
 			},
 			
@@ -1354,9 +1312,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					},
 				});
 			},
-			
+			//丢弃
 			nftcard_discard:function(cplid){				var that = this;								uni.showModal({					title: '',					content: '是否确认丢弃',					cancelText: '取消',					confirmText: '确认',					success: function (res){						if(res.confirm){							console.log('用户点击了确认');							that.__nftcard_gift_or_discard(cplid, 'discard');						} else if (res.cancel) {							console.log('用户点击取消');						}					}				})											},
-			
+			//赠予
 			nftcard_gift:function(cplid, wish, mobile){
 				
 				this.__nftcard_gift_or_discard(cplid, 'gift', wish, mobile);
@@ -1366,13 +1324,13 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				var that = this;
 				
 				var post_data = {
-						sellerid: that.abotapi.globalData.default_sellerid,
-						cplid: cplid,
-						data_type: data_type,
-						//new_user_modile: that.current_new_user_modile,
-						//sender_name: that.current_sender_name,
-						//sender_wish: that.current_sender_wish,
-					};
+					sellerid: that.abotapi.globalData.default_sellerid,
+					cplid: cplid,
+					data_type: data_type,
+					//new_user_modile: that.current_new_user_modile,
+					//sender_name: that.current_sender_name,
+					//sender_wish: that.current_sender_wish,
+				};
 				
 				
 				if(data_type == 'gift'){
@@ -1979,6 +1937,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		border-radius: 15rpx;
 	}
 	.card_detail_title {
+		width: 85%;
+		padding-bottom: 15rpx;
 		text-align: left;
 		font-size: 38rpx;
 		font-weight: bold;
@@ -2017,15 +1977,13 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		padding-top: 20rpx;
 		padding-right: 5rpx;
 	}
-	
-	
 	.card_list{
 		margin:20rpx 10rpx 20rpx 20rpx;
 		border-radius: 20rpx;
 	}
 	.package_card_img{
 		width: 240rpx; 
-		height: 350rpx;
+		height: 360rpx;
 		border-radius: 20rpx;
 	}
 	.package_card_watermark{
@@ -2034,5 +1992,10 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		margin-top: 140rpx;
 		margin-left: 80rpx; 
 		z-index: 1;
+	}
+	.card_detail_is_buyed{
+		background-color: #000000;
+		height: 360rpx;
+		border-radius: 20rpx;
 	}
 </style>
