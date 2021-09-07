@@ -356,6 +356,7 @@
         ,{
             "path" : "pages/help_detail/help_detail",
             "style": {
+				"enablePullDownRefresh": true,
             	"navigationBarTitleText": "文章详情",
             	"softinputNavBar":"none"
             }

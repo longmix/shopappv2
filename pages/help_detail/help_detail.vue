@@ -334,23 +334,17 @@
 			console.log('jjjjj', userInfo, this.abotapi.globalData.token);
 			
 			this.__get_img_from_weiduke(options.id, this); 
-			that.get_remark_list();
+			
 			
 			//this.initArticle(options.aid)
 		},
 		
 		
 		onShow: function () {
-			
+			/*
 			this.userInfo = this.abotapi.get_user_info();
 			
-			uni.showLoading({
-				title: '加载中...',
-			})
-			
-			setTimeout(function () {
-				uni.hideLoading()
-			}, 1000)
+			*/
 		  
 		},
 		onReady: function () {
@@ -361,6 +355,56 @@
 		},
 		onUnload: function () {
 			// 页面关闭
+		},
+		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
+		onPullDownRefresh: function () {
+			var that = this;
+			
+			console.log('onPullDownRefresh=====>>>>>');
+			
+			uni.showLoading({
+				title: '加载中...',
+			})
+			
+			setTimeout(function () {
+				uni.stopPullDownRefresh();
+				
+				uni.hideLoading()
+			}, 1000);
+			
+			that.get_remark_list();
+		},
+		
+		onShareAppMessage: function () {
+			console.log('==================>>>');
+			var that = this;
+			return {
+				title: '' + that.wz_text.title,
+				path: 'pages/help_detail/help_detail?id='+that.id,
+				imageUrl:that.wz_text.pic,
+				success: function(res) {
+				// 分享成功
+					uni.showToast({
+						title: '分享完成',
+						icon: 'success',
+						duration: 2000
+					})
+				},
+				fail: function(res) {
+					// 分享失败
+					uni.showToast({
+						title: '分享失败',
+						icon: 'success',
+						duration: 2000
+					})
+				}
+			}
+		},
+		onShareTimeline: function () {
+			
+		},
+		onAddToFavorites: function () {
+			this.onShareTimeline();
 		},
 		methods: {
 			callback_set_option: function (that, cb_params) {
@@ -420,6 +464,12 @@
 				}
 				
 				var cbSuccess = function (res) {
+					
+					//文章内容请求完成，马上请求评论列表
+					that.get_remark_list();
+					
+					
+					
 					if (res.data.code == 1) {
 						//更新首页的商户头条
 						//console.log('成功返回商户头条信息:' + res);
@@ -480,12 +530,17 @@
 						that.article_info = newArr;
 
 // #endif						
+
+
+						
+						
 						
 					}
 				};
 				var cbError = function (res) {
 				
 				};
+				
 				this.abotapi.httpPost(url, post_data, cbSuccess, cbError);
 					//========End====================
 			},
@@ -497,37 +552,6 @@
 				});
 			},
 			
-			onShareAppMessage: function () {
-				console.log('==================>>>');
-				var that = this;
-				return {
-					title: '' + that.wz_text.title,
-					path: 'pages/help_detail/help_detail?id='+that.id,
-					imageUrl:that.wz_text.pic,
-					success: function(res) {
-					// 分享成功
-						uni.showToast({
-							title: '分享完成',
-							icon: 'success',
-							duration: 2000
-						})
-					},
-					fail: function(res) {
-						// 分享失败
-						uni.showToast({
-							title: '分享失败',
-							icon: 'success',
-							duration: 2000
-						})
-					}
-				}
-			},
-			onShareTimeline: function () {
-				
-			},
-			onAddToFavorites: function () {
-				this.onShareTimeline();
-			},
 			//h5点击分享触发
 			share_publish:function(){
 				console.log('==================>>>h5');
@@ -680,6 +704,7 @@
 				
 			//获取评论列表
 			get_remark_list: function () {
+				
 				var that = this;
 				//var userInfo = this.abotapi.get_user_info();
 				this.abotapi.abotRequest({
