@@ -378,10 +378,13 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			</view>
 			
 			<!-- 2021.08.20赠予 -->
-			<view @tap="go_to_gift_card(current_cardid)" class="card_detail_showmodal_zengsong">
-				<image class="card_detail_showmodal_tupian"
-					src="https://yanyubao.tseo.cn/Tpl/static/nft_card/zengsong.png">
-				</image>
+			<view>
+				<view @tap="go_to_gift_card(current_cardid)"
+					class="card_detail_showmodal_zengsong">
+					<image class="card_detail_showmodal_tupian"
+						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/zengsong.png">
+					</image>
+				</view>
 			</view>
 			
 			<!-- 2021.08.06购买 -->
@@ -464,28 +467,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 									</view>
 									
 									<view style="float: right;margin-top: -215rpx;">
-										<!-- 2021.08.20赠予
-										<view @click="showModal_zengyu=true" class="card_detail_showmodal_zengsong">
-											<image class="card_detail_showmodal_tupian"
-												src="https://yanyubao.tseo.cn/Tpl/static/nft_card/zengsong.png">
-											</image>
-										</view>
-											
-											
-										<view class="show_modal_mask" v-if="showModal_liuzhuanjilv_zengsong" 
-											@click="showModal_liuzhuanjilv_zengsong=false">
-										</view>
-										<view class="show_modal_pop card_detail_showmodal_kapaimingxi" 
-											v-if="showModal_liuzhuanjilv_zengsong" @click="showModal_liuzhuanjilv_zengsong=false">
-											<view style="background-color: #FFFFFF; width: 500rpx; height: 200rpx;padding: 10rpx;">
-												<input style="border: #666666 1rpx solid;margin: 10rpx;" type="text" placeholder="请输入赠送人的手机号" />
-												<input style="border: #666666 2rpx solid;margin: 10rpx;" type="text" placeholder="请输入赠言" />
-												<input style="border: #666666 3rpx solid;margin: 10rpx;" type="text" placeholder="请输入姓名" />
-											</view>
-											
-										</view> 
-										 -->
-											
 										<!-- 2021.08.20销毁  丢弃 -->
 										<view class="card_detail_showmodal_zengsong">
 											<image class="card_detail_showmodal_tupian"
@@ -1057,32 +1038,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					},
 				});
 
-
-
 			},
-
-			// go_to_gift_friends_card: function(packageid, cardid) {
-				
-			// 	//======= 判断用户是否登录 ============
-				
-			// 	var last_url = '/pages/nftcard/gift_friends_card?'+ that.current_params_str;
-				
-			// 	var userInfo = that.abotapi.get_user_info();
-			// 	if (!userInfo) {
-			// 		that.abotapi.goto_user_login(last_url);
-				
-			// 		return;
-			// 	}
-			// 	//============= End ================
-				
-			// 	console.log('packageid===>>>' + packageid);
-			// 	console.log('cardid===>>>' + cardid);
-				
-			// 	uni.navigateTo({
-			// 		url: '/pages/nftcard/gift_friends_card?packageid=' + packageid + '&cardid=' + cardid,
-			// 	})
-			// },
-
 
 
 			test_goto_buy: function() {
@@ -1146,6 +1102,29 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			},
 			
 			go_to_gift_card:function(cardid){
+				var that = this;
+				
+				//======= 判断用户是否登录 ============
+				var last_url = '/pages/nftcard/card_detail?' + that.current_params_str;
+				
+				var userInfo = that.abotapi.get_user_info();
+				if (!userInfo) {
+					that.abotapi.goto_user_login(last_url);
+				
+					return;
+				}
+				//============= End ================
+				
+				// if(that.current_card_detail.buyed_counter == 0){
+				// 	uni.showModal({
+				// 		title:'提示',
+				// 		content:'您还未获得卡牌，不能赠送给好友',
+				// 		showCancel:false
+				// 	})
+					
+				// 	return;
+				// }
+				
 				console.log('cardid===>>>' + cardid);
 				
 				uni.navigateTo({
@@ -1314,11 +1293,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			},
 			//丢弃
 			nftcard_discard:function(cplid){				var that = this;								uni.showModal({					title: '',					content: '是否确认丢弃',					cancelText: '取消',					confirmText: '确认',					success: function (res){						if(res.confirm){							console.log('用户点击了确认');							that.__nftcard_gift_or_discard(cplid, 'discard');						} else if (res.cancel) {							console.log('用户点击取消');						}					}				})											},
-			//赠予
-			nftcard_gift:function(cplid, wish, mobile){
-				
-				this.__nftcard_gift_or_discard(cplid, 'gift', wish, mobile);
-			},
+
 			
 			__nftcard_gift_or_discard:function(cplid, data_type, wish='', mobile=''){
 				var that = this;
@@ -1689,10 +1664,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		z-index: 5;
 	}
 	.card_detail_showmodal_fenxaingjilv{
-		position: absolute;
-		top: 50%;
-		left: 8%;
-		transform: translateY(-50%);
 		width: 590rpx;
 		padding: 20rpx;
 	}
@@ -1714,8 +1685,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	}
 	.main_body {
 		width: 100%;
-		/* margin-bottom: 200rpx; */
-		/* padding-bottom: 200rpx; */
 	}
 
 	.card_detail_border {
@@ -1771,11 +1740,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		background-color: #FFFFFF;
 		margin: 15rpx;
 		border-radius: 15rpx;
-	}
-	.card_detail_showmodal_kapaimingxi{
-		top: 1%;
-		left: 50%;
-		transform: translateX(-50%);
 	}
 	
 /* 收藏按钮 */

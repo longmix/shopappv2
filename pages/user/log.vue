@@ -25,7 +25,7 @@
 			<view>
 				<view class="balance_lists" v-for="(item,index) in log_list" :key="index">
 					<view class="dabox_li">
-						<view class="jifeng">￥{{item.balance}}</view>
+						<view class="jifeng">{{item.balance}}</view>
 						<view class="headboss">￥{{item.balance_total}}</view>
 						
 					</view>

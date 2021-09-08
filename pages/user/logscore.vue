@@ -10,7 +10,7 @@
 			<view>
 				<view class="balance_lists" style="padding-bottom: 10px;" v-for="(item,index) in log_list" :key="index">
 					<view class="dabox_li">
-						<view class="jifeng">{{item.score}}</view>
+						<view class="jifeng">+{{item.score}}</view>
 						<view class="headboss">{{item.score_total}}</view>
 						
 						

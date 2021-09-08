@@ -13,8 +13,8 @@
 		display: flow-root;
 		margin: auto;
 		text-align: center;
-		margin-top: 10rpx;
-		margin-bottom: 10rpx;
+		margin-top: 6rpx;
+		margin-bottom: 6rpx;
 		padding-bottom: 30rpx;
 		background-color: #FFFFFF;
 	}
@@ -62,7 +62,7 @@
 		padding: 20rpx 0;
 		font-size: 40rpx;
 		background-color: #FFFFFF;
-		margin-bottom: 10rpx;
+		margin-bottom: 6rpx;
 		line-height: 40rpx;
 		color: #333;
 	}
@@ -141,16 +141,17 @@
 		line-height: 40rpx;
 	}
 	.jifeng {
-		color: red;
-		font-size: 40rpx;
-		padding-right:20rpx ;
+		font-size: 38rpx;
+		padding-right:20rpx;
 		text-align: right;
 		height: 60rpx;
 		line-height: 60rpx;
+		font-weight: bold;
 	}
 	.headboss{
 		padding-right:20rpx ;
 		text-align: right;
+		color: #666666;
 	}
 	.loading-text {
 		display: block;
