@@ -371,6 +371,21 @@ price_type 保留参数
 waimai_list_ + xianmaishangid 读取外卖购物车缓存
 cart_list_ + xianmaishangid 读取堂食购物车缓存
 
+
+[2021.9.9. 附带订单选项的请求示例]
+
+          var order_option_key_and_value = [];
+          order_option_key_and_value.push({'key':'jianghan_orderno', 'value':orderno});
+
+          var order_option_key_and_value_str = encodeURIComponent(JSON.stringify(order_option_key_and_value));
+
+          new_url = '/pages/order/pay?action=direct_buy&amount=1&productid='+data.buy_url_productid;
+          new_url += '&order_option_key_and_value_str='+order_option_key_and_value_str;
+          new_url += '&buyer_memo=' + '代续费订单：'+orderno;
+
+
+
+
 //2020.12.3. 爱拼团的参数
 cuxiao_huodong == aipingou
 tuansn = 参团的编号，如果没有，则代表新开团
