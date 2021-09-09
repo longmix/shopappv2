@@ -56,6 +56,8 @@
 				
 				mapWidth:750,
 				mapHeight:0,
+				
+				current_option:null,
 			}
 		},
 		/**
@@ -84,6 +86,10 @@
 				
 				this.options_citizenid = options.citizenid;
 			}
+			
+			
+			this.current_option = options;
+			
 			
 			this.abotapi.set_option_list_str(this, this.call_back_set_option);
 			
@@ -210,11 +216,15 @@
 						//ajax请求，保存签到数据
 						var userInfo = that001.abotapi.get_user_info();
 						
+						/*
 						var lbs02 = {
 							latitude:latitude,
 							longitude:longitude,
 							citizenid:that001.options_citizenid,
-						};
+						};*/
+						
+						var lbs02 = that001.current_option;
+						
 						var lbs_json = encodeURIComponent(JSON.stringify(lbs02))
 						
 						
