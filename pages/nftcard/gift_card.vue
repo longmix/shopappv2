@@ -4,7 +4,7 @@
 		<view style="display: flex;">
 			<view>
 				<image :src="current_card_detail.cover_img_url_2x3_stand"
-				style="border-radius: 15rpx;width: 340rpx;">
+					style="border-radius: 15rpx;width: 340rpx;">
 				</image>
 			</view>
 			<view style="padding-left: 20rpx;width: 350rpx;">
@@ -37,27 +37,36 @@
 		</view> -->
 		<view>
 			<view style="padding: 20rpx 0px 5px 0px">想要转赠的卡牌</view>
-			
-			<table width="100%" border="0" cellspacing="0" cellpadding="0" style="text-align: center;line-height: 60rpx;">
+			<!-- 复选框按钮 -->
+			<uni-data-checkbox
+				min="1"
+				multiple 
+				mode="tag" 
+				selectedColor="#65b847"
+				v-model="checkbox_value_cplid" 
+				:localdata="checkbox_range_card_publish_list" 
+				@change="checkbox_change_cplid">
+			</uni-data-checkbox>
+		</view>
+				
+			<!-- <table width="100%" border="0" cellspacing="0" cellpadding="0" style="text-align: center;line-height: 60rpx;">
 				<tr style="background: #c8c6cc;">
 					<td></td>
 					<td>序号</td>
 					<td>卡牌id</td>
 					<td>获得时间</td>
-					<!-- <td>是否兑换</td> -->
+					<td>是否兑换</td>
 				</tr>
 				<tr v-for="(current_card_publish_item,index) in current_card_publish_list" :key="index">
 					<td>
-						<!-- 多选框 -->
-						<!-- <view class="selfCheckBox" @click="clickCheckBox(index)" v-for="(item,index) in checkBoxArr" :key="index">
+						多选框
+						<view class="selfCheckBox" @click="clickCheckBox(index)" v-for="(item,index) in checkBoxArr" :key="index">
 							<view class="selfCkeckImgBox">
 								<img v-if="item.selectStatus==1" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/checkbox1.png" alt="选中图标">
 								<img v-if="item.selectStatus==0" src="http://192.168.0.111/yanyubao_server/Tpl/static/nft_card/checkbox2.png" alt="未选中图标">
 							</view>
-						</view> -->
-						<view>
-							<uni-data-checkbox multiple v-model="value" :localdata="range" @change="change"></uni-data-checkbox>
 						</view>
+						
 					</td>
 					<td>
 						#{{current_card_publish_item.cplseq}}
@@ -68,18 +77,18 @@
 					<td>
 						{{current_card_publish_item.updatetime_str}}
 					</td>
-					<!-- <td style="text-align: center;">
+					<td style="text-align: center;">
 						未兑换
-					</td> -->
+					</td>
 				</tr>
 				
-			</table>
-		</view>
+			</table> -->
+		
 		
 		<view style="padding: 30rpx 0px 10px 0px">
 			<view>赠言</view>
 			<view class="gift_card_textarea">
-				<textarea style="width: 100%;" 
+				<textarea
 				placeholder-style="color: #30c478"
 				maxlength="70"
 				placeholder="请输入赠言" 
@@ -88,9 +97,19 @@
 			</view>
 		</view>
 		
+		<!-- 单选框按钮 -->
+		<view style="padding-left: 2.5%;">
+			<uni-data-checkbox
+				mode="tag" 
+				v-model="checkbox_value"
+				selectedColor="#65b847"
+				:localdata="checkbox_range" 
+				@change="checkbox_change_cplid">
+			</uni-data-checkbox>
+		</view>
 		
 		<!-- 单选框 -->
-		<view style="padding-top: 20rpx; display: flex;">
+		<!-- <view style="padding-top: 20rpx; display: flex;">
 			<view class="selfRadio" @click="clickRadio(1)">
 				<view class="selfRadioImgBox" style="display: flex;">
 					<img v-show="radioVal==1"
@@ -115,16 +134,36 @@
 					<view style="padding-left: 10rpx;">限领一张</view>
 				</view>
 			</view>
-		</view>
+		</view> -->
 		
 		
 		<view style="padding-top: 50rpx;">
-			<button type="default"
-				class="gift_card_button_zengsong"
-				:style="{background:wxa_shop_nav_bg_color}">
-				赠送
-			</button>
+				<!-- <button type="default"
+					class="gift_card_button_zengsong"
+					:style="{background:wxa_shop_nav_bg_color}">
+					赠送
+				</button> -->
+			
+			<!-- #ifdef MP -->
+				<button open-type="share" @click="nft_card_gift"
+					class="button_fenxiang_border gift_card_button_zengsong" :style="{background:wxa_shop_nav_bg_color}">
+					赠送
+				</button>
+			<!-- #endif -->
+			
+			<!-- #ifdef APP-PLUS -->
+				<button @click="is_show" class="gift_card_button_zengsong" :style="{background:wxa_shop_nav_bg_color}">
+					赠送
+				</button>
+			<!-- #endif -->
+			
+			<!-- #ifdef H5 -->
+				<button @tap="share_shang_detail" class="gift_card_button_zengsong" :style="{background:wxa_shop_nav_bg_color}">
+					赠送
+				</button>
+			<!-- #endif -->
 		</view>
+			
 		
 	</view>
 </template>
@@ -139,33 +178,22 @@ export default {
 	components: { uniDataCheckbox },
 	data() {
 		return {
+			//复选
+			checkbox_value_cplid: 0,
+			checkbox_range_card_publish_list: [{"value": 0,"text":"卡牌id"},{"value": 1,"text":"#2 卡牌id"}],
+			// 单选
+			checkbox_value: 0,
+			checkbox_range: [{"value": 0,"text":"全部领取"},{"value": 1,"text":"限领一张"}],
 			
-			// value: [0,2],
-			range: [{"value": 0,"text": "篮球"}],
-			
-			// title: 'checkbox 复选框',
-			// items: [{
-			// 		value: '1',
-			// 		name: '1',
-			// 		checked: 'true'
-			// 	},
-			// 	{
-			// 		value: '2',
-			// 		name: '2',
-			// 	},
-			// 	{
-			// 		value: '3',
-			// 		name: '3'
-			// 	},
-			// ],
 			
 			tkinfotest: "",//文本输入
 			
-			radioVal:1,//单选
+			//radioVal:1,//单选
+			
 			
 			nftcard_gift: null,
 			current_card_detail: null,
-			current_card_publish_list: null,
+			current_card_publish_list: "",
 			
 			// checkBoxArr:[
 			// 	{
@@ -256,47 +284,70 @@ export default {
 	//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
 	onReachBottom: function () {
 		
-		this.get_product_list();
+		//this.get_product_list();
 		
 	},
 	
-	onShareAppMessage: function () {
+	//微信分享给好友
+	onShareAppMessage: function() {
 		var that = this;
+		// that.cplid,that.action,that.get_type='',that.from = '',that.send_wish = ''
+		// if(that.checkbox_change_cplid == ""){
+		// 	uniShowModal({
+		// 		title: "提示",
+		// 	});
 		
-		var option_list = this.abotapi.globalData.option_list;
+		// 	return;
+		// }
+		// console.log("checkbox_change_cplid----------" + );
 		
-		var share_title = option_list.wxa_share_title;
+		
+		var share_title = that.current_card_detail.card_name;
+		
+		if(that.abotapi.get_user_info()){
+			if(that.abotapi.get_user_account_info()){
+				var account_info = that.abotapi.get_user_account_info();
+				console.log('昵称==========>',account_info);
+				
+				share_title = account_info.nickname + '向您赠送了卡牌' + share_title;
+			}
+		}
+		
 		if (share_title.length > 22) {
 			share_title = share_title.substr(0, 20) + '...';
 		}
-		
-		var share_path = '/pages/index/index?sellerid=' + this.abotapi.get_sellerid();
-		
+	
+		var share_path = 'pages/nftcard/card_detail?sellerid=' + that.abotapi.globalData.default_sellerid;
+		share_path += '&packageid='+that.current_packageid;
+		share_path += '&cardid='+that.current_cardid;
+	
+		//如果登录了，则带上分享者的userid
 		var userInfo = this.abotapi.get_user_info();
-		
 		if (userInfo && userInfo.userid) {
 			share_path += '&userid=' + userInfo.userid;
 		}
-		
-		var share_img = option_list.wxa_share_img;
+	
+		var share_img = that.current_card_detail.cover_img_url_2x3_stand;
 		if(!share_img){
-			share_img = option_list.wxa_shop_operation_logo_url;
+			share_img = that.current_card_detail.cover_img_url_2x3;
 		}
+		
+		console.log('111111111111111111111111111111'+that.current_card_detail.cover_img_url_2x3_stand);
 		
 		return {
 			title: share_title,
 			path: share_path,
 			imageUrl: share_img,
 			success: function(res) {
-				// 分享成功
+				// 赠送成功
 			},
 			fail: function(res) {
-				// 分享失败
+				// 赠送失败
 			}
 		}
 	},
-	
-	onShareTimeline: function () {
+	//微信分享到朋友圈
+	onShareTimeline: function() {
 		return this.share_return();
 	},
 	onAddToFavorites: function () {
@@ -305,6 +356,35 @@ export default {
 	methods: {
 		share_return: function() {
 			var that = this;
+			
+			var share_title = that.current_card_detail.card_name;
+			if (share_title.length > 22) {
+				share_title = share_title.substr(0, 20) + '...';
+			}
+			
+			var share_path = 'sellerid=' + that.abotapi.globalData.default_sellerid;
+			share_path += '&packageid='+that.current_packageid;
+			share_path += '&cardid='+that.current_cardid;
+			
+			//如果登录了，则带上分享者的userid
+			var userInfo = this.abotapi.get_user_info();
+			if (userInfo && userInfo.userid) {
+				share_path += '&userid=' + userInfo.userid;
+			}
+			
+			var share_img = that.current_card_detail.cover_img_url_2x3_stand;		
+			if(!share_img){
+				share_img = that.current_card_detail.cover_img_url_2x3
+			
+				console.log('111111111111111111111111111111'+that.current_card_detail.cover_img_url_2x3_stand);
+				
+				return {
+					title: share_title,
+					query: share_path,
+					imageUrl: share_img,
+				}
+			
+			}
 		},
 		
 		callback_function_shop_option_data:function(that, cb_params){
@@ -416,10 +496,19 @@ export default {
 					}
 					
 					that.current_card_publish_list = res.data.data;
-			
+					
 					console.log('current_card_publish_list ===>>> ', that.current_card_publish_list);
-			
-			
+					
+					
+					that.checkbox_range_card_publish_list = [];
+					
+					for(var ii=0; ii<that.current_card_publish_list.length; ii++){
+						var temp001 = that.current_card_publish_list[ii];
+						
+						that.checkbox_range_card_publish_list.push({"value": temp001.cplid, "text": "#"+temp001.cplseq +'  '+ temp001.cplno});
+					}
+					
+					
 				},
 				fail: function(e) {
 					uni.showToast({
@@ -431,7 +520,10 @@ export default {
 		},
 		//赠予
 		nft_card_gift:function(cplid){
+			var that = this;
+			
 			this.nftcard_gift(cplid, 'send', get_type, from, send_wish);
+			
 		},
 		
 		nftcard_gift:function(cplid, action, get_type='', from = '', send_wish = ''){
@@ -504,9 +596,12 @@ export default {
 		// 	}
 		// },
 		
-		//多选框
-		change(e){
-			console.log('e:',e);
+		//选框
+		checkbox_change_cplid(e){
+			console.log('e:', e);
+			
+			console.log('checkbox_value_cplid:' + this.checkbox_value_cplid);
+			
 		},
 		
 		//多选框
@@ -530,6 +625,28 @@ export default {
 			console.log(e.detail.value)
 		},
 		
+		//h5点击分享触发
+		share_shang_detail: function() {
+			var that = this;
+			that.nft_card_gift();
+			console.log('==================>>>h5');
+			if(that.checkbox_value_cplid){
+				uni.showModal({
+					title: '请选择想要赠送的卡牌 ',
+					showCancel: false,
+				})
+			}
+			
+			
+			
+			return;
+			
+		},
+		
+		//app  分享点击
+		click_wxa_share: function() {
+			abotsharejs.click_wxa_share(this.share_href, this.share_titles, this.share_summary, this.share_imageUrl);
+		},
 		
 	},
 	filters: {
@@ -595,9 +712,12 @@ export default {
 		}
 	}
 	.gift_card_textarea{
-		border: 2rpx #9f9f9f solid;
+		width: 90%;
+		border: 4rpx #9f9f9f solid;
 		padding: 10rpx;
 		margin-top: 10rpx;
+		margin-left: 2.5%;
+		border-radius: 18rpx;
 	}
 	.selfRadio{
 		cursor: pointer;
@@ -610,7 +730,9 @@ export default {
 		}
 	}
 	.gift_card_button_zengsong{
-		width: 400rpx;
+		width: 350rpx;
+		// padding: 10rpx;
+		text-align: center;
 		background: #30c478;
 		color: #FFFFFF;
 	}

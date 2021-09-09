@@ -1652,7 +1652,7 @@ export default {
 		margin-left: 10rpx;
 	}
 	.package_card_name{
-		width: 60%;
+		width: 82%;
 		font-weight: bold;
 		font-size: 40rpx;
 		white-space: nowrap;

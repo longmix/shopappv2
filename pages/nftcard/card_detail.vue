@@ -1115,15 +1115,15 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				}
 				//============= End ================
 				
-				// if(that.current_card_detail.buyed_counter == 0){
-				// 	uni.showModal({
-				// 		title:'提示',
-				// 		content:'您还未获得卡牌，不能赠送给好友',
-				// 		showCancel:false
-				// 	})
+				if(that.current_card_detail.buyed_counter == 0){
+					uni.showModal({
+						title:'提示',
+						content:'您还未获得卡牌，不能赠送给好友',
+						showCancel:false
+					})
 					
-				// 	return;
-				// }
+					return;
+				}
 				
 				console.log('cardid===>>>' + cardid);
 				
