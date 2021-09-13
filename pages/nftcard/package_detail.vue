@@ -2,9 +2,13 @@
 	<view class="global_background">
 		
 		<!-- 封面  模糊背景 -->
-		<view class="" style="height: 550rpx;">
+		<view class="" 
+			:style="{width: card_bg_img_width+'rpx', height: card_bg_img_height+'rpx'}">
 			
-				<image class="package_background" :src="current_package_detail.cover_img_url" ></image>
+				<image class="package_background" 
+					 @load="imageLoad"
+					:src="current_package_detail.cover_img_url"
+					:style="{width: card_bg_img_width+'rpx', height: card_bg_img_height+'rpx'}"></image>
 			<!-- <view class="">
 				<image class="package_image" :src="current_package_detail.cover_img_url" ></image>
 			</view> -->
@@ -25,31 +29,29 @@
 			
 			
 			
-			<view class="">
+			<view class="package_ps" @tap="package_showPosterModal()">
 				<!-- 截图按钮 -->
-				 <view class="package_ps"  @tap="package_showPosterModal()" >
-					<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/ps.png"
-						mode="widthFix" style="width: 45rpx;margin-top: 17rpx;margin-left: 18rpx;"></image>
-				</view>
+				<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/ps.png"
+					mode="widthFix" style="width: 45rpx;margin-top: 17rpx;margin-left: 18rpx;"></image>
+			</view>
+			
+			<view class="show_modal_mask" v-if="showPosterModal" @tap="showPosterModal=false" @touchmove.stop.prevent = "doNothing"></view>
+			<view class="show_modal_pop" v-if="showPosterModal">
+				<image :src="current_nftcard_poster.img_url" mode="widthFix" style="width:600rpx;" ></image>
+			
+			<!--#ifndef MP-WEIXIN  -->
+					<button class="purple_btn btn_box" @click="saveImgToLocal" style="color: #FFFFFF;" :style="{background:wxa_shop_nav_bg_color}">
+						保存到相册
+					</button>
+				<!-- #endif -->
 				
-					<view class="show_modal_mask" v-if="showPosterModal" @tap="showPosterModal=false" @touchmove.stop.prevent = "doNothing"></view>
-					<view class="show_modal_pop" v-if="showPosterModal">
-						<image :src="current_nftcard_poster.img_url" mode="widthFix" style="width:600rpx;" ></image>
-					
-					<!--#ifndef MP-WEIXIN  -->
-							<button class="purple_btn btn_box" @click="saveImgToLocal" style="color: #FFFFFF;" :style="{background:wxa_shop_nav_bg_color}">
-								保存到相册
-							</button>
-						<!-- #endif -->
-						
-						<!-- #ifdef MP-WEIXIN -->
-						<button v-if="openSettingBtnHidden" class="purple_btn btn_box" @click="saveEwm" style="color: #FFFFFF;" :style="{background:wxa_shop_nav_bg_color}">
-							保存到相册
-						</button>
-						
-						<button v-else class="purple_btn btn_box" hover-class="none" style="color: #FFFFFF;" open-type="openSetting" @opensetting='handleSetting'  >保存到相册</button>
-						<!-- #endif -->	 
-				</view>	
+				<!-- #ifdef MP-WEIXIN -->
+				<button v-if="openSettingBtnHidden" class="purple_btn btn_box" @click="saveEwm" style="color: #FFFFFF;" :style="{background:wxa_shop_nav_bg_color}">
+					保存到相册
+				</button>
+				
+				<button v-else class="purple_btn btn_box" hover-class="none" style="color: #FFFFFF;" open-type="openSetting" @opensetting='handleSetting'  >保存到相册</button>
+				<!-- #endif -->	 
 			</view>
 			 
 		
@@ -367,6 +369,9 @@ export default {
 			wxa_shop_nav_bg_color: '#30C478',
 			
 			openSettingBtnHidden:true,
+			
+			card_bg_img_width:'750',
+			card_bg_img_height:'',
 			
 
 			
@@ -715,6 +720,28 @@ export default {
 			}
 			
 			
+		},
+		
+		// 2021.08.09获取卡牌封面的真实宽度
+		imageLoad: function (e) {
+			var that = this;
+			
+			//图片的宽度和高度
+		    var imgwidth = e.detail.width;
+		    var imgheight = e.detail.height;
+			
+		    //宽高比  
+		    var ratio = imgwidth / imgheight;
+			
+			console.log('imageLoad id===>>> '+e.target.dataset.id +'图片实际大小：');
+		    console.log(imgwidth, imgheight)
+			
+		    //计算的高度值  
+			that.card_bg_img_width = 750;
+			that.card_bg_img_height = that.card_bg_img_width / ratio;
+			
+			
+		   
 		},
 		
 		//微信小程序保存到相册
@@ -1401,9 +1428,6 @@ export default {
 	
 	
 	.package_background{
-		position: absolute;
-		width: 100%;
-		height: 550rpx;
 	}
 	
 	
@@ -1425,6 +1449,7 @@ export default {
 		padding: 0 20rpx;
 		border-radius: 20rpx;
 		overflow: hidden;
+		width:690rpx;
 	}
 	.package_information_like_count{
 		margin-top: 10rpx;
@@ -1438,26 +1463,24 @@ export default {
 		margin-bottom: 10rpx;
 	}
 	.like_number{
-		float: right;
-		position:relative;
-		margin-right: 45rpx;
-		margin-top:430rpx; 
+		position:absolute;
 		width: 75rpx; 
 		height: 75rpx;
 		background: rgb(0, 0, 0,0.7);
 		border-radius: 50%;
 		overflow: hidden;
+		top:30rpx;
+		left:650rpx;
 	}
 	.package_ps{
-		float: right;
-		position: relative;
-		margin-right:-75rpx;
-		margin-top: 45rpx;
+		position: absolute;
 		width: 80rpx; 
 		height: 80rpx; 
 		background: rgb(0, 0, 0,0.7);
 		border-radius: 50%;
 		overflow: hidden;
+		top:130rpx;
+		left:650rpx;
 	}
 	
 	.package_title{

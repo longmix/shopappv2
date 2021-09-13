@@ -60,7 +60,7 @@
 							<view style="color: yellow;font-weight: bold; font-size: 35rpx;">{{current_package_item.card_count_fufei}}</view>
 						</view>
 						 
-						<image class="package_list_loop" :src="current_package_item.cover_img_url" mode=" aspectFill" ></image>
+						<image class="package_list_loop" :src="current_package_item.cover_img_url_3x2_stand" mode=" aspectFill" ></image>
 						<view class="package_label" >
 							<view class="package_lable_list" v-for="(item,index) in current_package_item.tag_of_editor" :key="index">{{item}}</view>
 						</view>

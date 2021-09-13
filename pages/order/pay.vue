@@ -501,9 +501,14 @@ extraData = 'xxxxxxxxxxxxxxx'
 			
 			
 			//必带的参数		
-			if(options.total) {			
+			if(!(options.total === null || options.total === undefined  || options.total === '')) {			
 				that.all_price = options.total;				
 			}
+			
+			//console.log('that.all_price ===>>> ', options.total);
+			//console.log('that.all_price ===>>> ', that.all_price);
+			
+			
 			if(options.all_price) {
 				that.all_price = options.all_price;				
 			}
@@ -882,7 +887,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 				}
 				
 				//如果指定了商品的价格
-				if(that.all_price > 0){
+				if(that.all_price >= 0){
 					data_params.all_price = that.all_price
 				}
 				

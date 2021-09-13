@@ -380,15 +380,16 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			<!-- 2021.08.20赠予 -->
 			<view>
 				<view @tap="go_to_gift_card(current_cardid)"
-					class="card_detail_showmodal_zengsong">
+					class="card_detail_showmodal_zengsong"
+					:style="{backgroundColor:wxa_shop_nav_bg_color}">
 					<image class="card_detail_showmodal_tupian"
-						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/zengsong.png">
+						src="https://yanyubao.tseo.cn/Tpl/static/nft_card/zengsong2.png">
 					</image>
 				</view>
 			</view>
 			
 			<!-- 2021.08.06购买 -->
-			<block v-if= "nft_card_hidden_buy_button == 1">
+			<block v-if= "nft_card_hidden_buy_button != 1">
 				<view v-if="current_card_detail.is_buy_limit != -1"
 					class="card_detail_goumai1" 
 					:style="{backgroundColor:wxa_shop_nav_bg_color}" 
@@ -688,11 +689,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			that.__get_card_detail();
 
 
-			
-			if(!userInfo){
-				return;
-			}
-			
 			//以下数据需要登陆后再发请求
 			
 			
@@ -1073,8 +1069,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				var price = that.current_card_detail.price;
 				var extraData = that.current_card_detail.extraData;
 
-				var new_url = '/pages/order/pay?productid=' + productid + '&total=' + price + '&extraData=' +
-				extraData;
+				var new_url = '/pages/order/pay?productid=' + productid + '&total=' + price + '&extraData=' + extraData;
+				
+				console.log('准备跳转到购买页面：' + new_url);
 
 				uni.navigateTo({
 					url: new_url
