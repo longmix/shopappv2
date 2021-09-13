@@ -191,11 +191,7 @@
 								title: res.data.msg,
 								icon: 'success',
 								duration: 2000
-							})
-							// uni.redirectTo({
-							// 	url: '../../tabBar/user/user'
-			          
-							// })
+							});
 							return;
 						}
 						else if(res.data.code == 0){

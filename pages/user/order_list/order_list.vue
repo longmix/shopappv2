@@ -468,7 +468,7 @@
 		 */
 		onUnload: function () {
 			
-		  this.abotapi.call_h5browser_or_other_goto_url('/pages/user/user');
+		  this.abotapi.call_h5browser_or_other_goto_url('/pages/tabbar/user');
 		  
 		},
 		onLoad: function(options) {
@@ -531,7 +531,7 @@
 		onBackPress:function(event){
 			console.log('触发返回事件：', event);
 			
-			this.abotapi.call_h5browser_or_other_goto_url('/pages/user/user');
+			this.abotapi.call_h5browser_or_other_goto_url('/pages/tabbar/user');
 		},
 		// #endif
 		*/

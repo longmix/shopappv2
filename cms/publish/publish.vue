@@ -690,7 +690,7 @@
 						return;
 			          }
 					  
-					  that.abotapi.call_h5browser_or_other_goto_url('/pages/user/user');
+					  that.abotapi.call_h5browser_or_other_goto_url('/pages/tabbar/user');
 			        },
 			        fail: function () {
 			          // fail

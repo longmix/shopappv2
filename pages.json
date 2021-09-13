@@ -94,7 +94,7 @@
 			}
 		},
 		{	//用户主页
-			"path": "pages/user/user",
+			"path": "pages/tabbar/user",
 			"style": {
 				"enablePullDownRefresh": true,
 				"backgroundTextStyle":"light",
@@ -105,7 +105,7 @@
 					"softinputNavBar":"none",
 					"subNVues888":[{  
 						"id": "userTitleNvue", //唯一标识  
-						"path": "pages/user/subNvue/userTitleNvue", //页面路径  
+						"path": "pages/tabbar/userTitleNvue", //页面路径  
 						"type":"navigationBar"
 					}]
 				}
@@ -120,17 +120,7 @@
 					"bounce":"none"
 				}
 			}
-		},
-		{	//商品列表
-            "path" : "pages/product/goods-list/goods-list",
-            "style" : {
-				"navigationBarTitleText" : "商品列表",
-				"enablePullDownRefresh": true,
-				"app-plus": {
-					"bounce":"none"
-				}
-			}
-        },
+		},		
 		{	//超级相册
 		    "path" : "cms/library/library",
 		    "style" : {
@@ -144,107 +134,15 @@
 				  "navigationBarTitleText": "",
 				  "onReachBottomDistance": 50
 				}
-		},
-		{	//商品详情
-		    "path" : "pages/product/detail",
-		    "style" : {
-				"navigationBarTitleText" : "商品详情",
-				"onReachBottomDistance":50,
-				"h5":{
-					"titleNView":false
-				},
-				"app-plus": {
-					"titleNView": false ,//禁用原生导航栏
-					"bounce":"none"
-				}
-			}
-		},
-		{	//手机验证码登录页
-			"path": "pages/login/login",
-			"style": {
-				"navigationBarTitleText": "手机账号登录",
-				"app-plus": {
-		            "bounce": "none" ,//关闭窗口回弹效果
-					"softinputNavBar":"none"
-		        }
-			}
-		},
-		{	//账号密码登录页
-			"path": "pages/login/login_by_password",
-			"style": {
-				"navigationBarTitleText": "账号密码登录",
-				"app-plus": {
-		            "bounce": "none" ,//关闭窗口回弹效果
-					"softinputNavBar":"none"
-		        }
-			}
-		},
-		{	//账号注册页
-			"path": "pages/login/register",
-			"style": {
-				"navigationBarTitleText": "注册账号",
-				"app-plus": {
-				    "bounce": "none" ,//关闭窗口回弹效果
-					"softinputNavBar":"none"
-				}
-			}
-		},
+		},		
 		{
-			"path": "pages/login/resetpasswd",
-			"style": {
-				"navigationBarTitleText": "重置密码",
-				"app-plus": {
-				    "bounce": "none" ,//关闭窗口回弹效果
-					"softinputNavBar":"none"
-				}
-			}
-		}
-        ,{
             "path" : "pages/order/pay",
             "style": {
             	"navigationBarTitleText": "确认订单",
 				"softinputNavBar":"none"
             }
         }
-        ,{	//订单列表
-            "path" : "pages/user/order_list/order_list",
-            "style" : {
-				"navigationBarTitleText":"我的订单"
-			}
-        }
-		,{	//订单列表
-		    "path" : "pages/user/orderDetail/orderDetail",
-		    "style" : {
-				"navigationBarTitleText":"订单详情"
-			}
-		}
-        ,{	//用户设置
-            "path" : "pages/user/setting/setting",
-            "style" : {
-				"navigationBarTitleText":"我的设置"
-			}
-        }
-		,{	//用户设置
-		    "path" : "pages/user/logscore",
-		    "style" : {
-				"navigationBarTitleText":"我的积分"
-			}
-		}
-		,{	//用户设置
-		    "path" : "pages/user/log",
-		    "style" : {
-				"navigationBarTitleText":"我的余额"
-			}
-		}
-        ,{
-            "path" : "pages/user/myQR/myQR",
-            "style" : {
-				"navigationBarTitleText":"我的二维码",
-				"app-plus":{
-					"bounce":"none"
-				}
-			}
-        }
+        
         ,{
             "path" : "pages/msg/msg",
             "style" : {
@@ -262,43 +160,7 @@
 				}
 			}
         }
-        ,{
-            "path" : "pages/user/coupon/coupon",
-            "style" : {
-				"navigationBarTitleText": "优惠券",
-				"app-plus":{
-					"bounce":"none"
-				}
-			}
-        }
-        ,{
-            "path" : "pages/user/keep/keep",
-            "style" : {
-				"navigationBarTitleText": "我的收藏",
-				"app-plus":{
-					"bounce":"none"
-				}
-			}
-        }
-        ,{
-            "path" : "pages/user/address/address",
-            "style" : {
-				"navigationBarTitleText":"地址管理"
-			}
-        }
-        ,{
-            "path" : "pages/user/address/edit/edit",
-            "style" : {
-
-				"navigationBarTitleText":"编辑收件人地址"
-			}
-        }
-        ,{
-            "path" : "pages/user/deposit/deposit",
-            "style" : {
-				"navigationBarTitleText":"充值"
-			}
-        }
+        
         ,{
             "path" : "pages/pay/payment/payment",
             "style" : {
@@ -311,16 +173,8 @@
 
 				"navigationBarTitleText":"支付完成"
 			}
-        }
-        ,{
-            "path" : "pages/product/ratings/ratings",
-            "style" : {
-				"navigationBarTitleText":"商品评论",
-				"enablePullDownRefresh": true,
-				"onReachBottomDistance":50
-			}
-        }
-        ,{
+        },
+		{
             "path" : "pages/h5browser/h5browser",
             "style" : {
 				"app-plus": {
@@ -512,11 +366,7 @@
 		,{
 		    "path" : "pages/welcome_page/welcome_page",
 		    "style" : {}
-		}
-        ,{
-            "path" : "pages/user/nickName/nickNameEdit",
-            "style" : {}
-        },
+		},
 		{
 		    "path" : "cms/discover/discover",
 		    "style" : {
@@ -545,19 +395,8 @@
 		{	//资料库详情
 			"path": "cms/quanquan/quanquan_details",
 			"style": {}
-		},
+		},		
 		{
-			"path" : "pages/login/login_get_userinfo",
-		    "style" : {}
-		}
-		,{
-            "path" : "pages/user/accountEdit/accountEdit",
-            "style" : {}
-        }
-		,{
-		    "path" : "pages/user/updateMobile/updateMobile",
-		    "style" : {}
-		},{
             "path" : "pages/live/live-list",
             "style" : {
 				"navigationBarTitleText":"直播间列表",
@@ -638,15 +477,6 @@
 		    
 		},
 		{
-		    "path" : "pages/login/login_with_openid",
-		    "style" : {
-				"onReachBottomDistance":5,
-		        "navigationBarTitleText": "授权登录",
-		        "enablePullDownRefresh": true
-		    }
-		    
-		},
-		{
             "path" : "pages/shutdown_website/shutdown_website",
             "style" :                                                                                    
             {
@@ -670,12 +500,211 @@
 
     ],
 	"subPackages": [
-		//======= NFT卡包卡牌相关的分包 Begin  ====
+		//======= 商品详情相关的分包 Begin  ====
 		{
+			"root": "pages/product",
+			"pages": [
+				{	//商品详情
+				    "path" : "detail",
+				    "style" : {
+						"navigationBarTitleText" : "商品详情",
+						"onReachBottomDistance":50,
+						"h5":{
+							"titleNView":false
+						},
+						"app-plus": {
+							"titleNView": false ,//禁用原生导航栏
+							"bounce":"none"
+						}
+					}
+				},
+				{
+				    "path" : "ratings/ratings",
+				    "style" : {
+						"navigationBarTitleText":"商品评论",
+						"enablePullDownRefresh": true,
+						"onReachBottomDistance":50
+					}
+				},
+				{	//商品列表
+				    "path" : "goods-list/goods-list",
+				    "style" : {
+						"navigationBarTitleText" : "商品列表",
+						"enablePullDownRefresh": true,
+						"app-plus": {
+							"bounce":"none"
+						}
+					}
+				}
+			]
 			
+		},
+		//======= 商品详情相关的分包 Begin  ====
+		//======= 会员登录相关的分包 Begin  ====
+		{
+			"root": "pages/login",
+			"pages": [
+				{	//手机验证码登录页
+					"path": "login",
+					"style": {
+						"navigationBarTitleText": "手机账号登录",
+						"app-plus": {
+				            "bounce": "none" ,//关闭窗口回弹效果
+							"softinputNavBar":"none"
+				        }
+					}
+				},
+				{	//账号密码登录页
+					"path": "login_by_password",
+					"style": {
+						"navigationBarTitleText": "账号密码登录",
+						"app-plus": {
+				            "bounce": "none" ,//关闭窗口回弹效果
+							"softinputNavBar":"none"
+				        }
+					}
+				},
+				{	//账号注册页
+					"path": "register",
+					"style": {
+						"navigationBarTitleText": "注册账号",
+						"app-plus": {
+						    "bounce": "none" ,//关闭窗口回弹效果
+							"softinputNavBar":"none"
+						}
+					}
+				},
+				{
+					"path": "resetpasswd",
+					"style": {
+						"navigationBarTitleText": "重置密码",
+						"app-plus": {
+						    "bounce": "none" ,//关闭窗口回弹效果
+							"softinputNavBar":"none"
+						}
+					}
+				},
+				{
+					"path" : "login_get_userinfo",
+				    "style" : {}
+				},
+				{
+				    "path" : "login_with_openid",
+				    "style" : {
+						"onReachBottomDistance":5,
+				        "navigationBarTitleText": "授权登录",
+				        "enablePullDownRefresh": true
+				    }
+				    
+				}
+			]
+			
+		},
+		//======= 会员登录相关的分包 Begin  ====
+		//======= 个人中心相关的分包 Begin  ====
+		{
+			"root": "pages/user",
+			"pages": [
+				{	//订单列表
+					"path" : "order_list/order_list",
+					"style" : {
+						"navigationBarTitleText":"我的订单"
+					}
+				},
+				{	//订单列表
+					"path" : "orderDetail/orderDetail",
+					"style" : {
+						"navigationBarTitleText":"订单详情"
+					}
+				},
+				{	//用户设置
+					"path" : "setting/setting",
+					"style" : {
+						"navigationBarTitleText":"我的设置"
+					}
+				},
+				{	//用户设置
+					"path" : "logscore",
+					"style" : {
+						"navigationBarTitleText":"我的积分"
+					}
+				},
+				{	//用户设置
+					"path" : "log",
+					"style" : {
+						"navigationBarTitleText":"我的余额"
+					}
+				},
+				{
+					"path" : "myQR/myQR",
+					"style" : {
+						"navigationBarTitleText":"我的二维码",
+						"app-plus":{
+							"bounce":"none"
+						}
+					}
+				},
+				{
+					"path" : "coupon/coupon",
+					"style" : {
+						"navigationBarTitleText": "优惠券",
+						"app-plus":{
+							"bounce":"none"
+						}
+					}
+				},
+				{
+					"path" : "keep/keep",
+					"style" : {
+						"navigationBarTitleText": "我的收藏",
+						"app-plus":{
+							"bounce":"none"
+						}
+					}
+				},
+				{
+					"path" : "address/address",
+					"style" : {
+						"navigationBarTitleText":"地址管理"
+					}
+				},
+				{
+					"path" : "address/edit/edit",
+					"style" : {
+		
+						"navigationBarTitleText":"编辑收件人地址"
+					}
+				},
+				{
+					"path" : "deposit/deposit",
+					"style" : {
+						"navigationBarTitleText":"充值"
+					}
+				},
+				
+				{
+					"path" : "nickName/nickNameEdit",
+					"style" : {}
+				},
+				
+				{
+					"path" : "accountEdit/accountEdit",
+					"style" : {}
+				},
+				{
+					"path" : "updateMobile/updateMobile",
+					"style" : {}
+				}
+			]
+			
+		},
+		//======= 个人中心相关的分包 Begin  ====
+		//======= NFT卡包卡牌相关的分包 Begin  ====
+		{	
 			"root": "pages/nftcard",
 			"pages": [
-				{"path" : "card_detail",
+				{
+					"path" : "card_detail",
 					"style" :                                                                                    
 					{
 						"navigationBarTitleText": "",
@@ -683,7 +712,6 @@
 					}            
 				},
 				{
-					"root": "pages/nftcard",
 					"path" : "card_list",
 					"style" :                                                                                    
 					{
@@ -693,7 +721,6 @@
 				
 				},
 				{
-					"root": "pages/nftcard",
 					"path" : "package_detail",
 					"style" :                                                                                    
 					{
@@ -703,7 +730,6 @@
 				},
 				
 				{
-					"root": "pages/nftcard",
 					"path" : "package_list",
 					"style" :                                                                                    
 					{
@@ -713,7 +739,6 @@
 				},
 				
 				{
-					"root": "pages/nftcard",
 					"path":"my_card",
 					"style":
 					{
@@ -722,7 +747,6 @@
 					}
 				},
 				{
-					"root": "pages/nftcard",
 					"path":"my_package",
 					"style":
 					{
@@ -731,7 +755,6 @@
 					}
 				},
 				{
-					"root": "pages/nftcard",
 					"path":"shopDetail",
 					"style": {
 						"navigationBarTitleText": "商家详情",
@@ -745,7 +768,6 @@
 					}
 				},
 				{
-					"root": "pages/nftcard",
 					"path" : "gift_card",
 					"style" :                                                                                    
 					{

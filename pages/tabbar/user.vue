@@ -287,7 +287,7 @@
 		},
 
 		onLoad() {
-			console.log('user/user===>>>onLoad()');
+			console.log('/pages/tabbar/user===>>>onLoad()');
 			
 			var that = this;
 
@@ -413,7 +413,7 @@
 		methods: {
 			set_option_list_callback:function(that001, option_list){
 				//that001.abotapi.getColor();
-				console.log('option_list(/pages/user/user)', option_list);
+				console.log('option_list(/pages/tabbar/user)', option_list);
 				that001.wxa_shop_nav_bg_color = option_list.wxa_shop_nav_bg_color;
 				
 				that001.wxa_shop_nav_font_color = option_list.wxa_shop_nav_font_color;
@@ -494,7 +494,7 @@
 							if (res.data.code == -1) {
 								that.abotapi.del_user_info();
 								
-								var last_url = '/pages/user/user';
+								var last_url = '/pages/tabbar/user';
 								that.abotapi.goto_user_login(last_url, 'normal');
 							} else {
 								var data = res.data;
@@ -657,7 +657,7 @@
 			goto_user_function(url) {
 
 
-				var last_url = '/pages/user/user';
+				var last_url = '/pages/tabbar/user';
 
 				var userInfo = this.abotapi.get_user_info();
 				if (!userInfo) {

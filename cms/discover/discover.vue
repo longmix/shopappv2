@@ -994,7 +994,7 @@
 					post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/get_faquan_list_by_userid';
 					
 					if (!userInfo) {
-						var last_url = '/pages/user/user';
+						var last_url = '/pages/tabbar/user';
 						that.abotapi.goto_user_login(last_url, 'normal');
 						return;
 					}
@@ -1008,7 +1008,7 @@
 					post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/get_faquan_collect_list';
 					
 					if (!userInfo) {
-						var last_url = '/pages/user/user';
+						var last_url = '/pages/tabbar/user';
 						that.abotapi.goto_user_login(last_url, 'normal');
 						return;
 					}
@@ -1022,7 +1022,7 @@
 					
 					if (!userInfo) {
 						
-						var last_url = '/pages/user/user';
+						var last_url = '/pages/tabbar/user';
 						that.abotapi.goto_user_login(last_url, 'normal');
 						return;
 					}

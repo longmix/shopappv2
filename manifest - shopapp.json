@@ -157,7 +157,11 @@
         },
         "uniStatistics" : {
             "enable" : false
-        }
+        },
+		"optimization": {
+		    "subPackages": true
+		},
+		"runmode" : "liberate" // 开启分包优化后，必须配置资源释放模式
     },
     /* SDK配置 */
     "quickapp" : {},

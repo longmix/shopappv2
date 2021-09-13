@@ -442,7 +442,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				<!-- 卡牌明细记录模态框 -->
 				<view class="show_modal_pop card_detail_showmodal_fenxaingjilv" 
 					v-if="showModal_liuzhuanjilv">
-					<view v-if="current_card_detail.is_buyed == 1">
+					<view v-if="current_card_detail.user_have_counter > 0">
 					<!-- <view> -->
 						<scroll-view scroll-y="true" class="scroll-Y">
 							<view v-for="(card_publish_item, index) in current_card_publish_list"
@@ -1793,10 +1793,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		padding-left: 20rpx;
 	}
 	.card_detail_showmodal_tupian {
-		width: 40rpx;
-		height: 40rpx;
-		padding-top: 24rpx;
-		padding-left: 24rpx;
+		width: 70rpx;
+		height: 70rpx;
+		padding: 10rpx;
 	}
 	.card_detail_showmodal_zengsong {
 		background-color: #dff3e7;

@@ -86,7 +86,7 @@
 		methods: {
 			gotoUser() {
 				
-				this.abotapi.call_h5browser_or_other_goto_url('/pages/user/user');
+				this.abotapi.call_h5browser_or_other_goto_url('/pages/tabbar/user');
 				
 			},
 			gotoHome() {

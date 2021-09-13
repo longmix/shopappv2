@@ -1112,7 +1112,7 @@ module.exports = {
 		//首页
 		this.globalData.is_index_index_in_tabbar = is_obj_0_or_1(this.globalData.is_index_index_in_tabbar);
 		//会员中心
-		this.globalData.is_user_user_in_tabbar = is_obj_0_or_1(this.globalData.is_user_user_in_tabbar);
+		this.globalData.is_tabbar_user_in_tabbar = is_obj_0_or_1(this.globalData.is_tabbar_user_in_tabbar);
 		
 		//购物车在底部导航栏（如果购物车在底部导航栏，请务必选择此项，避免向购物车跳转失败）
 		this.globalData.is_shop_cart_in_tabbar = is_obj_0_or_1(this.globalData.is_shop_cart_in_tabbar);
@@ -1141,11 +1141,11 @@ module.exports = {
 			this.globalData.is_index_index_in_tabbar = 0;
 		}
 		
-		if ((this.globalData.is_user_user_in_tabbar == -1) && !isNullOrUndefined(option_list.is_user_user_in_tabbar)) {
-		  this.globalData.is_user_user_in_tabbar = option_list.is_user_user_in_tabbar;
+		if ((this.globalData.is_tabbar_user_in_tabbar == -1) && !isNullOrUndefined(option_list.is_tabbar_user_in_tabbar)) {
+		  this.globalData.is_tabbar_user_in_tabbar = option_list.is_tabbar_user_in_tabbar;
 		}
-		if(!this.globalData.is_user_user_in_tabbar){
-			this.globalData.is_user_user_in_tabbar = 0;
+		if(!this.globalData.is_tabbar_user_in_tabbar){
+			this.globalData.is_tabbar_user_in_tabbar = 0;
 		}
 
 		if ((this.globalData.is_shop_cart_in_tabbar == -1) && !isNullOrUndefined(option_list.is_shop_cart_in_tabbar)) {
@@ -1471,8 +1471,8 @@ module.exports = {
 					url: url,
 				})
 			}
-			else if((url == '/pages/user/user') && (this.globalData.is_user_user_in_tabbar == 1)){
-				console.log('is_user_user_in_tabbar====>>>>', this.globalData.is_user_user_in_tabbar);
+			else if((url == '/pages/tabbar/user') && (this.globalData.is_tabbar_user_in_tabbar == 1)){
+				console.log('is_tabbar_user_in_tabbar====>>>>', this.globalData.is_tabbar_user_in_tabbar);
 				
 				uni.switchTab({
 					url: url,

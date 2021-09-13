@@ -162,6 +162,10 @@
         "uniStatistics" : {
             "enable" : false
         },
+		"optimization": {
+		    "subPackages": true
+		},
+		"runmode" : "liberate", // 开启分包优化后，必须配置资源释放模式
 		"permissionExternalStorage": {  
 			"request": "once",  
 			"prompt": "应用保存运行状态等信息，需要获取读写手机存储（系统提示为访问设备上的照片、媒体内容和文件）权限，请允许。"  
