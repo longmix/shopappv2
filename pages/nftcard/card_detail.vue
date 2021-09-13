@@ -583,7 +583,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			that.current_card_detail.clue = '';
 			
 			that.current_card_detail.buyed_counter= 0 ;//购买卡的次数
-			
+			that.current_card_detail.buy_limit = 0;
 			
 			that.current_card_detail.sale_counter = 0;//领取了多少   售出的数量
 			that.current_card_detail.publish_counter = 0; //发售的数量
@@ -1125,7 +1125,6 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				console.log('cardid===>>>' + cardid);
 				
 				uni.navigateTo({
-					// url: '/pages/nftcard/gift_card?cardid='+cardid,
 					url: '/pages/nftcard/gift_card?cardid=' + cardid,
 				})
 			},
@@ -1609,7 +1608,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		&_behind{
 			transform-style: preserve-3d; //表示所有子元素在3D空间中呈现
 			backface-visibility: hidden;  //元素背面向屏幕时是否可见
-	        transition-duration:0.5s;
+	        transition-duration:0.7s;
 			transition-timing-function:'ease-in';
 			.contentbox{
 				display: flex;
@@ -1733,7 +1732,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		padding-top: 15rpx;
 	}
 	.card_detail_tong{
-		height: 500rpx;
+		height: 530rpx;
 		background-color: #FFFFFF;
 		margin: 15rpx;
 		border-radius: 15rpx;

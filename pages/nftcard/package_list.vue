@@ -17,7 +17,7 @@
 		</view>
 	
 				<!-- 排序 -->
-		<view class="drop_down_menu">
+		<!-- <view class="drop_down_menu">
 			<picker @change="bindPickerChange" :value="index" :range="array">
 				<view class="picker" >
 					<view style="margin-left: 5rpx;">{{array[index]}}</view>
@@ -25,7 +25,7 @@
 						mode="widthFix" style="width: 25rpx;margin-left: 6rpx; margin-top: 15rpx;"></image>
 				</view>
 			</picker>
-		</view>
+		</view> -->
 				
 
 					<view v-if="current_package_list ==''" style="text-align : center;">

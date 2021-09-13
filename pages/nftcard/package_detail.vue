@@ -9,9 +9,6 @@
 					 @load="imageLoad"
 					:src="current_package_detail.cover_img_url"
 					:style="{width: card_bg_img_width+'rpx', height: card_bg_img_height+'rpx'}"></image>
-			<!-- <view class="">
-				<image class="package_image" :src="current_package_detail.cover_img_url" ></image>
-			</view> -->
 			
 			
 			<!-- icon喜欢图标--------- -->
@@ -236,12 +233,25 @@
 					<view class="" style="width: 340rpx;height: 615rpx;">
 						 
 					<!--是否购买  加灰透明 加水印 -->
-					 <view style="background-color: #000000; width:340rpx;height: 510rpx;">
-						<image v-if="current_card_item.is_buyed == 0" class="package_card_watermark" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/watermark01.png" mode="widthFix" ></image>
-						<image v-if="current_card_item.is_buyed == 0" class="package_card_img" :src="current_card_item.cover_img_url_2x3_stand" mode="" style="opacity:0.7 ;"></image>
-						<image v-if="current_card_item.is_buyed == 1" class="package_card_img" :src="current_card_item.cover_img_url_2x3_stand" mode=""></image>
+					 <view class="package_detail_kabao">
+						<image v-if="current_card_item.is_buyed == 0"
+							class="package_card_watermark"
+							src="https://yanyubao.tseo.cn/Tpl/static/nft_card/watermark01.png"
+							mode="widthFix" >
+						</image>
+						<image v-if="current_card_item.is_buyed == 0"
+							class="package_card_img"
+							:src="current_card_item.cover_img_url_2x3_stand"
+							style="opacity:0.7 ;">
+						</image>
+						<image v-if="current_card_item.is_buyed == 1"
+							class="package_card_img"
+							:src="current_card_item.cover_img_url_2x3_stand" mode="">
+						</image>
 						
 					</view>
+					
+					
 						<!-- icon喜欢图标和喜欢人数-----------已有卡牌/已发售卡牌 -->
 						<view class="already_sold_card_icon_like">
 							<view class="card_like_num" >
@@ -667,7 +677,7 @@ export default {
 		}
 	
 		
-		var share_img = that.current_package_detail.cover_img_url_3x2;
+		var share_img = that.current_package_detail.cover_img_url_stand;
 		
 		return {
 			title: share_title,
@@ -710,7 +720,7 @@ export default {
 				share_path += '&userid=' + userInfo.userid;
 			}
 			
-			var share_img = that.current_package_detail.cover_img_url_3x2;
+			var share_img = that.current_package_detail.cover_img_url_stand;
 			
 			
 			return {
@@ -1626,15 +1636,17 @@ export default {
 		width: 730rpx;
 	}
 	.card_list{
-		
 		float: left;
  		background-color: #FFFFFF; 
 		width: 340rpx;
 		margin:10rpx 10rpx 15rpx 15rpx;
 		border-radius: 10rpx;
 		overflow: hidden;
-		
-		
+	}
+	.package_detail_kabao{
+		background-color: #000000;
+		width:340rpx;
+		height: 510rpx;
 	}
 	.package_card_watermark{
 		width: 120rpx;
