@@ -30,7 +30,7 @@
     "pages/publish/publish_list": {
       "navigationBarTitleText": "分类信息"
     },
-    "pages/user/user": {
+    "pages/tabbar/user": {
       "navigationBarTitleText": "个人中心"
     }
   },

@@ -64,7 +64,7 @@
         "text": "品质商家"
       },
       {
-        "pagePath": "pages/user/user",
+        "pagePath": "pages/tabbar/user",
         "iconPath": "static/img/tabBar/user.png",
         "selectedIconPath": "static/img/tabBar/user-on.png",
         "text": "我的"

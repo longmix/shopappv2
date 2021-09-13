@@ -1447,7 +1447,7 @@ module.exports = {
 		  }
 		}
 		else if ((url == '/pages/index/index') || (url == '/pages/category/category') 
-			|| (url == '/pages/cart/cart') || (url == '/pages/user/user') 
+			|| (url == '/pages/cart/cart') || (url == '/pages/tabbar/user') 
 			||(url == '/pages/publish/publish_index')||(url == '/pages/publish/publish_list')
 			|| (url == '/pages/member/list') || (url == '/pages/shopList/shopList')) {
 				

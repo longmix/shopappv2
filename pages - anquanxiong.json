@@ -30,7 +30,7 @@
 			"text": "购物车"
 		},	
   		{
-  			"pagePath": "pages/user/user",
+  			"pagePath": "pages/tabbar/user",
   			"iconPath": "static/img/tabBar/user.png",
   			"selectedIconPath": "static/img/tabBar/user-on.png",
   			"text": "个人中心"
