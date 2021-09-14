@@ -267,7 +267,9 @@
 				balance_zengsong:0,
 				balance:0,
 				
-				all_price:0,
+				
+				all_price: null,  // ！！！！！！!!!!!!!
+				
 				single_price:0,	//指定商品的单价
 				traffic_price:0,
 				pay_price:'',
@@ -511,7 +513,9 @@ extraData = 'xxxxxxxxxxxxxxx'
 			}
 			
 			
-			//必带的参数		
+			//必带的参数	
+			console.log('options.all_price ===>>> ', options.all_price);
+				
 			if(!(options.total === null || options.total === undefined  || options.total === '')) {			
 				that.all_price = options.total;				
 			}
@@ -906,7 +910,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 				}
 				
 				//如果指定了商品的价格
-				if(that.all_price >= 0){
+				if( (that.all_price !== null) && (that.all_price >= 0) ){
 					data_params.all_price = that.all_price
 				}
 				
