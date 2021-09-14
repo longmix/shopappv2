@@ -12,16 +12,16 @@
     "buttonRefuse": "退出应用"  
   },  
   "styles": {  
-    "backgroundColor": "#00FF00",  
+    "backgroundColor": "#FFFFFF",  
     "borderRadius":"5px",  
     "title": {  
-      "color": "#ff00ff"  
+      "color": "#000000"  
     },  
     "buttonAccept": {  
-      "color": "#ffff00"  
+      "color": "#269ad7"  
     },  
     "buttonRefuse": {  
-      "color": "#00ffff"  
+      "color": "#666666"  
     }  
   }  
 }
