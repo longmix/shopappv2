@@ -1042,6 +1042,18 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 
 				console.log('tgggggggggggggggggg_buy');
 				
+				//======= 判断用户是否登录 ============
+				var last_url = '/pages/nftcard/card_detail?' + that.current_params_str;
+				
+				var userInfo = that.abotapi.get_user_info();
+				if (!userInfo) {
+					that.abotapi.goto_user_login(last_url);
+				
+					return;
+				}
+				//============= End ================
+				
+				
 				if( (that.current_card_detail.publish_counter > 0)
 					&& (that.current_card_detail.publish_counter <= that.current_card_detail.sale_counter) ){
 					uni.showModal({
@@ -1070,6 +1082,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				var extraData = that.current_card_detail.extraData;
 
 				var new_url = '/pages/order/pay?productid=' + productid + '&total=' + price + '&extraData=' + extraData;
+				new_url += '&product_name='+that.current_card_detail.package_title + '：' + that.current_card_detail.card_name;
+				new_url += '&product_picture='+encodeURIComponent(that.current_card_detail.cover_img_url_stand);
 				
 				console.log('准备跳转到购买页面：' + new_url);
 
@@ -1936,25 +1950,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		padding-top: 20rpx;
 		padding-right: 5rpx;
 	}
-	.card_list{
-		margin:20rpx 10rpx 20rpx 20rpx;
-		border-radius: 20rpx;
-	}
-	.package_card_img{
-		width: 240rpx; 
-		height: 360rpx;
-		border-radius: 20rpx;
-	}
-	.package_card_watermark{
-		width: 80rpx;
-		position: absolute;
-		margin-top: 140rpx;
-		margin-left: 80rpx; 
-		z-index: 1;
-	}
-	.card_detail_is_buyed{
-		background-color: #000000;
-		height: 360rpx;
-		border-radius: 20rpx;
-	}
+	
+	
+	
 </style>

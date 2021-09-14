@@ -219,6 +219,9 @@
 	export default {
 		data() {
 			return {
+				current_option :null,
+				
+				
 				buylist:[],		//订单列表
 				goodsPrice:0.0,	//商品合计价格
 				sumPrice:0.0,	//用户付款价格
@@ -362,6 +365,9 @@ order_type_001
 	shopmall （默认，可以不传）
 		action 默认不传，支持action=direct_buy
 		productid 商品ID
+		[2021.9.14.]
+		product_name （可选） 商品名称
+		product_picture （可选） 商品图片
 		
 	xianmaishang 实体商家的订单
 		xianmaishangid 商家的ID
@@ -382,8 +388,9 @@ cart_list_ + xianmaishangid 读取堂食购物车缓存
           new_url = '/pages/order/pay?action=direct_buy&amount=1&productid='+data.buy_url_productid;
           new_url += '&order_option_key_and_value_str='+order_option_key_and_value_str;
           new_url += '&buyer_memo=' + '代续费订单：'+orderno;
-
-
+[2021.9.14. 附带商品名称和图片的示例]
+          new_url += '&product_name=' + '这是商品名称';
+		  new_url += '&product_picture=' + 'http://www.dfdsf.com/aaa.jpg';
 
 
 //2020.12.3. 爱拼团的参数
@@ -407,6 +414,10 @@ extraData = 'xxxxxxxxxxxxxxx'
 			var that = this;
 			
 			console.log('order/pay 参数：', options);
+			
+			
+			that.current_option = options;
+					
 					
 			
 			var last_url = '/pages/order/pay';
@@ -876,6 +887,14 @@ extraData = 'xxxxxxxxxxxxxxx'
 						amount: that.amount,
 						sellerid: that.abotapi.get_sellerid(),
 					};
+					
+					if(that.current_option.product_name){
+						data_params.product_name = that.current_option.product_name;
+					}
+					if(that.current_option.product_picture){
+						data_params.product_picture = encodeURIComponent(that.current_option.product_picture);
+					}
+					
 				} 
 				else {
 					data_params = {

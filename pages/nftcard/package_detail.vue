@@ -166,20 +166,24 @@
 		</view>
 		
 		
-		
+		<!-- 发行商图片及简介 以及关注信息-->
 		<view class="publish_information">
 			
-				<!-- icon关注图标 -->
-				<view class="publish_icon_follow" :style="{border: wxa_shop_nav_bg_color+ ' 2rpx solid'}" v-if="current_package_detail.is_fans ==0" @tap="set_fans(1)">
-					<image  src="https://yanyubao.tseo.cn/Tpl/static/nft_card/follow01.png" 
-						mode="widthFix" style="width: 60rpx; margin-top: 8rpx; "></image>
-					<view style="color: #30c478;margin-left:10rpx; margin-top: 5rpx; font-size: 30rpx;">关注</view>
-				</view>
-				<view class="publish_icon_follow01" :style="{background:wxa_shop_nav_bg_color}" v-if="current_package_detail.is_fans ==1" @tap="set_fans(0)">
-					<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/follow02.png" 
-						mode="widthFix" style="width: 50rpx;height: 30rpx;margin-top:8rpx ;"></image>
-					<view style="color: #FFFFFF;margin-left:0rpx; margin-top: 5rpx; font-size: 30rpx;">已关注</view>
-				</view>
+			<!-- icon关注图标 -->
+			<view class="publish_icon_follow" :style="{border: wxa_shop_nav_bg_color+ ' 2rpx solid'}" 
+				v-if="current_package_detail.is_fans ==0" 
+				@tap="set_fans(1)">
+				<image  src="https://yanyubao.tseo.cn/Tpl/static/nft_card/follow01.png" 
+					mode="widthFix" style="width: 60rpx; margin-top: 8rpx; "></image>
+				<view style="color: #30c478;margin-left:10rpx; margin-top: 5rpx; font-size: 30rpx;">关注</view>
+			</view>
+			<view class="publish_icon_follow01" :style="{background:wxa_shop_nav_bg_color}" 
+				v-if="current_package_detail.is_fans ==1" 
+				@tap="set_fans(0)">
+				<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/follow02.png" 
+					mode="widthFix" style="width: 50rpx;height: 30rpx;margin-top:8rpx ;"></image>
+				<view style="color: #FFFFFF;margin-left:0rpx; margin-top: 5rpx; font-size: 30rpx;">已关注</view>
+			</view>
 		
 			
 			<!-- 发行商图片及简介 12324-->

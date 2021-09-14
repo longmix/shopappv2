@@ -278,12 +278,17 @@
 						
 					</view>
 					<view class="supplier_hot_card" >
-						<scroll-view scroll-x="true" style="background-color:#FFFFFF;width: 730rpx;margin-left: 10rpx;" >
+						
+						<scroll-view scroll-x="true" 
+							style="background-color:#FFFFFF;width: 730rpx;margin-left: 10rpx;" >
 							<view class="" style="display: flex;height: 390rpx;">
-								<view class="" style="margin-bottom: 30rpx;" v-for="(current_card_item,index) in current_nft_card_list"
-										@tap="go_to_card_detail(current_card_item.packageid, current_card_item.cardid)">
-									<view class="slide_cards_pic"style="height: 350rpx;">
-										<image class="card_detail_img_border" :src="current_card_item.cover_img_url_2x3_stand" mode="widthFix"
+								<view class="" style="margin-bottom: 30rpx;" 
+									v-for="(current_card_item,index) in current_nft_card_list"
+									:key="index"
+									@tap="go_to_card_detail(current_card_item.packageid, current_card_item.cardid)" >
+									<view class="slide_cards_pic_border" style="height: 350rpx;">
+										<image class="package_card_img" 
+											:src="current_card_item.cover_img_url_2x3_stand" mode="widthFix"
 											></image>
 										<view class="card_detail_kapai_title" >{{current_card_item.card_name}}</view>
 									</view>
@@ -460,7 +465,8 @@
 		
 		
 		<!-- 优惠 -->
-		<view style="border-bottom:6px solid #eee;" v-if="current_shang_detail.youhui_title != ''">
+		<view style="border-bottom:6px solid #eee;display:none;" 
+			v-if="current_shang_detail.youhui_title != ''">
 			<view class="icon-title2">
 				<image :src="user_console_setting.user_console_icon_youhui" mode="widthFix"></image>
 				<view class='biaoti'>优惠活动</view>
@@ -728,7 +734,7 @@
 				current_nft_supplierid:1,
 				
 				//2021.8.13. 控制头部风格是否为NFT 卡包
-				use_theme_nft_package: 0,
+				use_theme_nft_package: 1,
 				
 				current_nft_card_list:null,
 				
@@ -742,14 +748,17 @@
 		},
 		
 		onLoad(options) {
-			
-			
-			var that = this;
 
 			console.log('options===', options)
 
 			
 			var that = this;
+			
+			
+			that.abotapi.globalData.xianmai_shang_list_switch_to_supplier_list = 1;
+			
+			
+			
 
 			var xianmai_shangid = 0;
 			
@@ -973,7 +982,7 @@
 				if(user_console_setting.show_shang_shop_wxa_qrcode){
 					this.shang_shop_wxa_qrcode_url = 'https://yanyubao.tseo.cn/openapi/SupplierInfo/getwxacodeunlimit?appid=';
 					this.shang_shop_wxa_qrcode_url += this.abotapi.globalData.xiaochengxu_appid;
-					this.shang_shop_wxa_qrcode_url += '&path=pages%2FshopDetail%2FshopDetail&shortcode=';
+					this.shang_shop_wxa_qrcode_url += '&path=pages%2Fnftcard%2FshopDetail&shortcode=';
 					this.shang_shop_wxa_qrcode_url += this.current_xianmai_shangid;
 				}
 				
