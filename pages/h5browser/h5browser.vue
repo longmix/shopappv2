@@ -117,11 +117,8 @@
 				options.url = decodeURIComponent(options.url);
 				
 				console.log('微信小程序中做特殊判断，多加一次转换后的参数：', options);
-				console.log('111111111 decodeURIComponent======>>>>' + this.url);
 				
 				// #endif
-				
-				//console.log('111111111 decodeURIComponent======>>>>' + this.url);
 		
 		
 		        //判断分享转发的特殊参数，即带了分享转发的文字和图片
@@ -153,7 +150,11 @@
 				
 				
 				
-				//this.url = decodeURIComponent(options.url)
+				console.log('111111111111111111111======>>>>'+options.url);
+								
+				this.url = decodeURIComponent(options.url)
+				
+				console.log('111111111 decodeURIComponent======>>>>' + this.url);
 				
 				
 		        
