@@ -482,7 +482,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 						</scroll-view>
 					
 					</view>
-					<view class="card_detail_xiansuo" v-else>您还没有获取记录哦~</view>
+					<view v-else class="card_detail_xiansuo">您还没有获取记录哦~</view>
 				</view>
 			</view>
 		</view>
@@ -1140,6 +1140,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				uni.navigateTo({
 					url: '/pages/nftcard/gift_card?cardid=' + cardid,
+					// url: '/pages/nftcard/gift_card_share?cardid=' + cardid,
 				})
 			},
 			
@@ -1516,7 +1517,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 						
 						
 						
-						that.current_card_detail.user_have_counter= 0;//购买卡的次数
+						//that.current_card_detail.user_have_counter= 0;//购买卡的次数
 						
 						//计算已经售出的备份比
 						that.current_card_detail.sale_percent = 50;
@@ -1807,9 +1808,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		padding-left: 20rpx;
 	}
 	.card_detail_showmodal_tupian {
-		width: 70rpx;
-		height: 70rpx;
-		padding: 10rpx;
+		width: 50rpx;
+		height: 50rpx;
+		padding: 20rpx;
 	}
 	.card_detail_showmodal_zengsong {
 		background-color: #dff3e7;

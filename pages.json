@@ -26,7 +26,7 @@
 				"text": "卡包"
 			},*/
 			{
-				"pagePath": "pages/user/user",
+				"pagePath": "pages/tabbar/user",
 				"iconPath": "static/img/tabBar/user.png",
 				"selectedIconPath": "static/img/tabBar/user-on.png",
 				"text": "我的"
@@ -775,8 +775,17 @@
 						"enablePullDownRefresh": true
 					}            
 				
-				}
-			]
+				},
+				{
+                    "path" : "gift_card_share",
+                    "style" :                                                                                    
+					{
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+                
+                }
+            ]
 			
 		}
 		//======= NFT卡包卡牌相关的分包 Begin  ====

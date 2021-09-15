@@ -1,7 +1,7 @@
 <template>
 	<view style="padding: 20rpx;">
 		<!-- 卡牌封面 卡牌名称及简介 -->
-		<view style="display: flex;">
+		<view style="display: flex;padding-top: 10rpx;">
 			<view @tap="go_to_card_detail(current_packageid,current_cardid)">
 				<image :src="current_card_detail.cover_img_url_2x3_stand"
 					style="border-radius: 15rpx;width: 340rpx;">
@@ -18,98 +18,75 @@
 		</view>
 		
 		
-		<block v-if="is_sender">
+		<view>
+			<view style="padding: 20rpx 0px 5px 0px">想要转赠的卡牌</view>
+			<!-- 复选框按钮 -->
+			<uni-data-checkbox
+				min="1"
+				multiple 
+				mode="tag" 
+				selectedColor="#65b847"
+				v-model="checkbox_value_cplid" 
+				:localdata="checkbox_range_card_publish_list" 
+				@change="checkbox_change_cplid">
+			</uni-data-checkbox>
+		</view>
+			
 		
-			<view>
-				<view style="padding: 20rpx 0px 5px 0px">想要转赠的卡牌</view>
-				<!-- 复选框按钮 -->
-				<uni-data-checkbox
-					min="1"
-					multiple 
-					mode="tag" 
-					selectedColor="#65b847"
-					v-model="checkbox_value_cplid" 
-					:localdata="checkbox_range_card_publish_list" 
-					@change="checkbox_change_cplid">
-				</uni-data-checkbox>
+		<view style="padding: 30rpx 0px 10px 0px">
+			<view>赠言</view>
+			<view class="gift_card_textarea">
+				<textarea
+				placeholder-style="color: #30c478"
+				maxlength="70"
+				placeholder="请输入赠言" 
+				@blur="bindTextAreaBlur"
+				v-model="tkinfotest"/>
 			</view>
-				
-			
-			<view style="padding: 30rpx 0px 10px 0px">
-				<view>赠言</view>
-				<view class="gift_card_textarea">
-					<textarea
-					placeholder-style="color: #30c478"
-					maxlength="70"
-					placeholder="请输入赠言" 
-					@blur="bindTextAreaBlur"
-					v-model="tkinfotest"/>
-				</view>
-			</view>
-			
-			<!-- 单选框按钮 -->
-			<view style="padding-left: 2.5%;">
-				<uni-data-checkbox
-					mode="tag" 
-					v-model="checkbox_value_get_type"
-					selectedColor="#65b847"
-					:localdata="checkbox_range_get_type" 
-					@change="checkbox_change_get_type">
-				</uni-data-checkbox>
-			</view>
-			
-			
-			<view style="padding-top: 50rpx;">
-					<!-- <button type="default"
-						class="gift_card_button_zengsong"
-						:style="{background:wxa_shop_nav_bg_color}">
-						赠送
-					</button> -->
-				
-				<!-- #ifdef MP -->
-					<button open-type="share"
-						class="button_fenxiang_border gift_card_button_zengsong" :style="{background:wxa_shop_nav_bg_color}">
-						赠送
-					</button>
-				<!-- #endif -->
-				
-				<!-- #ifdef APP-PLUS -->
-					<button @click="is_show" class="gift_card_button_zengsong" :style="{background:wxa_shop_nav_bg_color}">
-						赠送
-					</button>
-				<!-- #endif -->
-				
-				<!-- #ifdef H5 -->
-					<button @tap="share_shang_detail" class="gift_card_button_zengsong" :style="{background:wxa_shop_nav_bg_color}">
-						赠送
-					</button>
-				<!-- #endif -->
-			</view>
-		</block>
-		<block v-else>
-			<view style="display: flex;">
+		</view>
+		
+		<!-- 单选框按钮 -->
+		<view style="padding-left: 2.5%;">
+			<uni-data-checkbox
+				mode="tag" 
+				v-model="checkbox_value_get_type"
+				selectedColor="#30c478"
+				:localdata="checkbox_range_get_type" 
+				@change="checkbox_change_get_type">
+			</uni-data-checkbox>
+		</view>
+		
+		
+		<view style="padding-top: 50rpx;color: #FFFFFF;">
+			<button type="default" @tap="go_to_gift_card_share"
+				class="gift_card_button_zengsong"
+				:style="{background:wxa_shop_nav_bg_color}">
+				去赠送
+			</button>
+		</view>
+		<!-- <block v-else>
+			<view style="display: flex;padding-top: 20rpx;">
 				<view style="">
 					<image style="width: 150rpx; height: 150rpx;border-radius: 50%;" :src="current_card_item.headimgurl" mode="heightFix"></image>
 				</view>
 				
 				<view>
-					<view>{{current_card_item.nickname}}</view>
+					<view style="padding: 30rpx;font-size: 40rpx;">{{current_card_item.nickname}}</view>
 				</view>
 			</view>
-			<view style="font-size: 40rpx;">{{current_card_item.send_wish}}</view>
+			<view style="font-size: 40rpx;padding: 30rpx;">{{current_card_item.send_wish}}</view>
 			<view style="text-align: right;">{{current_card_item.createtime}}</view>
 			<view style="padding-top: 50rpx;">
 				<button class="gift_card_button_zengsong" :style="{background:wxa_shop_nav_bg_color}">
 					领取卡牌
 				</button>
 			</view>
-		</block>
+		</block> -->
 		
 	</view>
 </template>
 
 <script>
-	
 import util from '../../common/util.js';
 	
 import uniDataCheckbox from "./components/uni-data-checkbox/uni-data-checkbox.vue";	
@@ -214,7 +191,6 @@ export default {
 		that.__receiver_get_card_cpl_info(cplid);
 		
 		
-		
 	},
 	onShow:function(){
 		console.log('call onShow function (/pages/index/index)');
@@ -259,70 +235,7 @@ export default {
 	
 	//微信分享给好友
 	onShareAppMessage: function() {
-		var that = this;
-
-		// if(that.data.cplid == "",that.data.action == "",that.data.send_wish == ""){
-		// 	uniShowModal({
-		// 		title: "提示",
-		// 	});
-		
-		// 	return;
-		// }
-		// console.log("checkbox_change_cplid----------" + );
-		
-		
-		
-		if(that.__nft_card_gift('app_mesage') == 0){
-			return;
-		}
-		
-		
-		
-		
-		var share_title = that.current_card_detail.card_name;
-		
-		if(that.abotapi.get_user_info()){
-			if(that.abotapi.get_user_account_info()){
-				var account_info = that.abotapi.get_user_account_info();
-				console.log('昵称==========>',account_info);
-				
-				share_title = account_info.nickname + '向您赠送了卡牌' + share_title;
-			}
-		}
-		
-		if (share_title.length > 22) {
-			share_title = share_title.substr(0, 20) + '...';
-		}
-	
-		var share_path = 'pages/nftcard/card_detail?sellerid=' + that.abotapi.globalData.default_sellerid;
-		share_path += '&packageid='+that.current_packageid;
-		share_path += '&cardid='+that.current_cardid;
-		share_path += 'from=app_message&cplid=' + that.checkbox_value_cplid;
-	
-		//如果登录了，则带上分享者的userid
-		var userInfo = this.abotapi.get_user_info();
-		if (userInfo && userInfo.userid) {
-			share_path += '&userid=' + userInfo.userid;
-		}
-	
-		var share_img = that.current_card_detail.cover_img_url_stand;
-		if(!share_img){
-			share_img = that.current_card_detail.cover_img_url;
-		}
-		
-		console.log('111111111111111111111111111111'+that.current_card_detail.cover_img_url_stand);
-		
-		return {
-			title: share_title,
-			path: share_path,
-			imageUrl: share_img,
-			success: function(res) {
-				// 赠送成功
-			},
-			fail: function(res) {
-				// 赠送失败
-			}
-		}
+		return;
 	},
 	//微信分享到朋友圈
 	onShareTimeline: function() {
@@ -335,40 +248,7 @@ export default {
 		share_return: function() {
 			var that = this;
 			
-			if(that.__nft_card_gift('timeline') == 0){
-				return;
-			}
-			
-			
-			var share_title = that.current_card_detail.card_name;
-			if (share_title.length > 22) {
-				share_title = share_title.substr(0, 20) + '...';
-			}
-			
-			var share_path = 'sellerid=' + that.abotapi.globalData.default_sellerid;
-			share_path += '&packageid='+that.current_packageid;
-			share_path += '&cardid='+that.current_cardid;
-			share_path += 'from=timeline&cplid=' + that.checkbox_value_cplid;
-			
-			//如果登录了，则带上分享者的userid
-			var userInfo = this.abotapi.get_user_info();
-			if (userInfo && userInfo.userid) {
-				share_path += '&userid=' + userInfo.userid;
-			}
-			
-			var share_img = that.current_card_detail.cover_img_url_stand;		
-			if(!share_img){
-				share_img = that.current_card_detail.cover_img_url;
-			
-				console.log('111111111111111111111111111111'+that.current_card_detail.cover_img_url_stand);
-				
-				return {
-					title: share_title,
-					query: share_path,
-					imageUrl: share_img,
-				}
-			
-			}
+			return;
 		},
 		
 		callback_function_shop_option_data:function(that, cb_params){
@@ -506,7 +386,7 @@ export default {
 			});
 		},
 		//赠予
-		__nft_card_gift:function(from=''){
+		__nft_card_gift:function(from='send'){
 			var that = this;
 			
 			if(!that.checkbox_value_cplid){
@@ -547,7 +427,6 @@ export default {
 				
 			}
 			
-			
 			//赠送
 			var post_data = {
 				sellerid: that.abotapi.get_sellerid(),
@@ -561,12 +440,6 @@ export default {
 				send_wish: that.send_wish,
 			};
 			
-			// var userInfo = that.abotapi.get_user_info();
-			// if (userInfo) {
-			// 	post_data.userid = userInfo.userid;
-			// 	post_data.checkstr = userInfo.checkstr;
-			// }
-			
 			
 			that.abotapi.abotRequest({
 				url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/nftcard_gift',
@@ -575,8 +448,18 @@ export default {
 				success: function(res) {
 			
 					if (res.data.code == 1) {
-						console.log("赠送成功");
+						console.log("赠送的数据保存成功");
 					}
+					
+					
+					
+					
+					
+					uni.navigateTo({
+						url: '/pages/nftcard/gift_card_share?cardid=' + cardid,
+					})
+					
+					
 					
 					console.log('nftcard_gift ===>>> ', res.data);
 					
@@ -591,9 +474,6 @@ export default {
 						}
 					})
 					
-					
-					
-			
 			
 				},
 				fail: function(e) {
@@ -604,27 +484,7 @@ export default {
 				},
 			});
 			
-			
-			
-			
-			
 		},
-		
-		
-		
-		
-		// checkboxChange: function (e) {
-		// 	var items = this.items,
-		// 		values = e.detail.value;
-		// 	for (var i = 0, lenI = items.length; i < lenI; ++i) {
-		// 		const item = items[i]
-		// 		if(values.includes(item.value)){
-		// 			this.$set(item,'checked',true)
-		// 		}else{
-		// 			this.$set(item,'checked',false)
-		// 		}
-		// 	}
-		// },
 		
 		//选框
 		checkbox_change_cplid(e){
@@ -648,28 +508,6 @@ export default {
 			this.send_wish = e.detail.value;
 			
 		},
-		
-		//h5点击分享触发
-		share_shang_detail: function() {
-			var that = this;
-			
-			console.log('==================>>>h5 模拟赠卡');
-			
-			
-			if(that.__nft_card_gift('h5') == 0){
-				return;
-			}
-			
-			
-			
-			
-		},
-		
-		//app  分享点击
-		click_wxa_share: function() {
-			abotsharejs.click_wxa_share(this.share_href, this.share_titles, this.share_summary, this.share_imageUrl);
-		},
-		
 		//赠言
 		__receiver_get_card_cpl_info:function(cplid){
 			var that = this;
@@ -687,7 +525,7 @@ export default {
 				checkstr: userInfo.checkstr,
 				cardid: that.current_cardid,
 				cplid: cplid,
-				action: 'info',
+				action: 'info', 
 			};
 			
 			that.abotapi.abotRequest({
@@ -699,18 +537,11 @@ export default {
 					if (res.data.code == 1) {
 						console.log("赠送成功");
 					}
-					
 					
 					that.current_card_item = res.data.data;
 					
 					console.log('nftcard_gift ===>>> ', res.data);
 					
-					
-					
-					
-					
-			
-			
 				},
 				fail: function(e) {
 					uni.showToast({
@@ -719,61 +550,6 @@ export default {
 					});
 				},
 			});
-			
-			
-			
-			
-		},
-		//接收
-		receiver_get_card_cpl:function(cplid){
-			
-			var post_data = {
-				sellerid: that.abotapi.get_sellerid(),
-				userid: userInfo.userid,
-				cardid: that.current_card_detail.cardid,
-				checkstr: userInfo.checkstr,
-				cplid: cplid,
-				action: 'get',
-			};
-			
-			that.abotapi.abotRequest({
-				url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/nftcard_gift',
-				method: 'post',
-				data: post_data,
-				success: function(res) {
-			
-					if (res.data.code == 1) {
-						console.log("赠送成功");
-					}
-					
-					console.log('nftcard_gift ===>>> ', res.data);
-					
-					uni.showModal({
-						title: "提示",
-						content: "赠送完成",
-						showCancel: false,
-						success: () => {
-							uni.navigateTo({
-								url: '/pages/nftcard/card_detail?cardid='+that.current_cardid,
-							})
-						}
-					})
-					
-					
-					
-			
-			
-				},
-				fail: function(e) {
-					uni.showToast({
-						title: '网络异常！',
-						duration: 2000
-					});
-				},
-			});
-			
-			
-			
 			
 		},
 		
@@ -785,7 +561,60 @@ export default {
 				url: '/pages/nftcard/card_detail?packageid=' + packageid + '&cardid=' + cardid,
 			})
 		},
-		
+		go_to_gift_card_share: function(){
+			var that = this;
+			
+			
+			if(!that.checkbox_value_cplid){
+				uni.showModal({
+					title: '请选择想要赠送的卡牌',
+					showCancel: false,
+				});
+				
+				return;
+			}
+			
+			if(!that.tkinfotest){
+				uni.showModal({
+					title: '请输入赠言',
+					showCancel: false,
+				});
+				
+				return;
+			}
+			
+			// console.log('cardid===>>>' + cardid);
+			
+			var data001 =  {};
+			data001.send_wish = that.send_wish;
+			data001.cplseq = that.cplseq,
+			data001.cplid = that.checkbox_value_cplid,
+			data001.cplno = that.cplno,
+			
+			data001.cpl_list = [];
+			
+			console.log('checkbox_value_cplid:' + that.checkbox_value_cplid);
+			
+			var cplid_list = that.checkbox_value_cplid.split(',');
+			
+			for(var i = 0; i < cplid_list.length; i++){
+				var cpl_item001 = {};
+				cpl_item001.cplid = cplid_list[i];
+				cpl_item001.cplseq = cplid_list[i];
+				cpl_item001.cplno = cplid_list[i];
+				
+				data001.cpl_list.push(cpl_item001);
+			}
+			
+			
+			
+			uni.setStorageSync('zhuanzeng_data', data001);
+			
+			
+			that.__nft_card_gift();
+			
+			
+		},
 		
 	},
 	filters: {
@@ -870,7 +699,7 @@ export default {
 	}
 	.gift_card_button_zengsong{
 		width: 350rpx;
-		// padding: 10rpx;
+		
 		text-align: center;
 		background: #30c478;
 		color: #FFFFFF;
