@@ -1292,7 +1292,7 @@ export default {
 			
 			that.get_flash_ad_list();
 			that.get_flash_img_list();
-			that.initArticleList();
+			that.initArticleList(cb_params.option_list);
 			that.get_shop_icon_index();
 			
 			that.get_product_list();
@@ -1868,26 +1868,69 @@ export default {
 		},
 		
 		
-		initArticleList: function () {
-			/*
-		    var that = this
-		
-		    //=====更新商户头条=================
-		    var url = this.abotapi.globalData.weiduke_server_url + '?g=Home&m=Yanyubao&a=yingxiao';//+ app.globalData.sellerid;
-		    var data = {
-				id: 'seller',
-				action: 'list',
-				sellerid: this.abotapi.get_sellerid(),
-				currentpage: 1
-		    };
-		
-		    var cbError = function (res) {
-		
-		    };
-		    //this.abotapi.httpPost(url, data, this.get_weiduke_yanyubao_yingxiao_list, cbError);
-		    //========End====================
-			*/
-			this.get_weiduke_yanyubao_yingxiao_list();
+		initArticleList: function (option_list) {
+			
+			
+			
+			console.log('initArticleList_new initArticleList_new', option_list);
+			
+			if(!option_list || !option_list.weiduke_token_to_toutiao || !option_list.weiduke_classid_to_toutiao){
+				console.log('缺少 weiduke_token_to_toutiao 或 weiduke_classid_to_toutiao');
+				return;
+			}
+			
+			var that = this;
+			
+			that.cms_token = option_list.weiduke_token_to_toutiao;
+			that.cataid = option_list.weiduke_classid_to_toutiao; 
+			
+			if(that.cms_token && that.cataid){
+				publish_list_api.get_publish_list(that, function(that003, res_data){
+					
+					
+					if(!res_data.index_list){
+						console.log('res_data=====>>>>', res_data);
+						
+						return;
+					}
+					
+					
+					that.articlelist = res_data.index_list;
+					
+					console.log('articlelist', that.articlelist);
+					
+					//如果显示为两个一组
+					if (that.wxa_shop_toutiao_flash_line == 2) {
+						
+						var articlelist2_temp = [];
+						
+						//如果只有一条新闻
+						if(that.articlelist.length <= 1){
+							that.wxa_shop_toutiao_flash_line = 1;
+						}
+						else{
+							for (var i = 0, length = that.articlelist.length -1; i < (length / 2); i++) {
+								var arr = [that.articlelist[0], that.articlelist[1]];
+								
+								articlelist2_temp.push(arr);
+								
+								that.articlelist.shift()
+								that.articlelist.shift()
+							}
+							
+							that.articlelist2 =  articlelist2_temp;
+							console.log('that.articlelist2',that.articlelist2);
+						}
+						
+					}
+					
+					
+				});
+			}
+			else{
+				this.get_weiduke_yanyubao_yingxiao_list();
+			}
+			
 		
 		},
 		  
@@ -1940,10 +1983,12 @@ export default {
 				header:{'Content-Type': 'application/x-www-form-urlencoded'},
 				success:function(res){
 					console.log('res1',res);
+					
 					that.abotapi.set_current_weiduke_token(res.data.token);
+					
 					if(res.data.code == 1){
 						that.articlelist = res.data.data;
-						console.log('articlelist',that.articlelist);
+						console.log('articlelist', that.articlelist);
 					}
 					
 					//如果显示为两个一组
