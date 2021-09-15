@@ -121,7 +121,7 @@
 				<view class="right" v-else>
 					<view class="box">
 						<view class="img logo-img">
-							<image :src="wxa_shop_operation_logo_url" mode="widthFix" class="logo"></image>
+							<image :src="wxa_shop_operation_logo_url" mode="widthFix" class="logo001"></image>
 							<!-- <view class="icon chongzhi"></view> -->
 						</view>
 						<view class="text"></view>
@@ -1010,8 +1010,9 @@
 		margin-top: 44rpx;
 	}
 
-	.logo {
+	.logo001 {
 		width: 90rpx;
+		height:90rpx;
 		border-radius: 10rpx;
 	}
 

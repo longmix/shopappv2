@@ -123,7 +123,35 @@
 			console.log('this.from_page',  this.from_page);
 			
 			
+			this.mapWidth = 750;
 			
+			var that = this;
+			
+			uni.getSystemInfo({
+			    success: function (res) {
+			        console.log(res.model);
+			        console.log(res.pixelRatio);
+			        console.log(res.windowWidth);
+			        console.log(res.windowHeight);
+			        console.log(res.language);
+			        console.log(res.version);
+			        console.log(res.platform);
+					
+					//计算px与rpx的比例
+					var px_from_rpx = res.windowWidth / 750;
+					
+					//计算 btm 的高度 300rpx 等于多少px
+					//var btm_height_px = 300 * px_from_rpx;
+					
+					//计算高度  res.windowHeight 等于 多少rpx
+					var windowHeight_rpx = res.windowHeight / px_from_rpx;
+					
+					//计算地图的高度值 （单位 rpx）
+					that.mapHeight = windowHeight_rpx - 300 - 20;
+			    }
+			});
+			
+			/*
 			var system_info = uni.getSystemInfoSync();
 			
 			console.log('getSystemInfo==>>>system_info==>>>', system_info)
@@ -133,11 +161,10 @@
 			//宽高比
 			var ratio = system_info.windowWidth / system_info.windowHeight;
 			
-			this.mapWidth = 750;
 			
 			//计算的高度值
 			this.mapHeight = (this.mapWidth * 0.92)/ ratio;
-			
+			*/
 			
 			
 			
