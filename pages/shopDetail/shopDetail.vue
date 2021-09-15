@@ -28,68 +28,6 @@
 				</view>
 			</view>
 		</view>
-		
-		
-		<!--NTF卡包卡牌  头部显示======begin  -->
-		<block v-if="use_theme_nft_package == 1">
-			<view class="" style="background-color: #eceeef; padding-bottom: 400rpx;">
-				<!--放行商封面  -->
-				<view style="" >
-					<image :src="current_shang_detail.mendian_image" mode="" style="width: 100%; height: 450rpx; position: absolute; "></image>
-				</view>
-				<!-- 发行商头像和名称 -->
-				<view style="margin-left: 20rpx; position: relative;top: 350rpx;">
-					<view class="supplier_follow_num_icon01" >
-						<!-- icon关注图标 -->
-						<view class="publish_icon_follow"  :style="{background:wxa_shop_nav_bg_color}" v-if="current_shang_detail.is_fans ==0" @tap="set_fans(1)">
-							<image  src="https://yanyubao.tseo.cn/Tpl/static/nft_card/follow04.png" 
-								mode="widthFix" style="width: 35rpx; margin-top: 10rpx;"></image>
-							<view style="color: #FFFFFF;margin-left:10rpx; margin-top: 5rpx; font-size: 30rpx;">关注</view>
-						</view>
-						<view class="publish_icon_follow01" v-if="current_shang_detail.is_fans ==1" @tap="set_fans(0)">
-							<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/follow02.png" 
-								mode="widthFix" style="width: 50rpx;height: 30rpx;margin-top:8rpx ; position: relative;"></image>
-							<view style="color: #FFFFFF;margin-left:0rpx; margin-top: 5rpx; font-size: 30rpx;">已关注</view>
-						</view>
-					</view>
-					<image :src="current_shang_detail.icon_image" mode="" style="width: 200rpx;height: 200rpx; border-radius: 50%;"></image>
-						
-						<view style="width: 500rpx;display: flex;margin-left: 40rpx;">
-							<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/authentication.png"
-								mode="widthFix" style="width: 30rpx;top: 5rpx;"></image>
-							<view style="margin-left: 5rpx;"> {{current_shang_detail.name}}</view>
-						</view>
-						
-					
-				</view>
-			
-					
-				
-				
-				
-				<view class="supplier_follow_num_icon">
-					<!-- 关注人数====粉丝数量 -->
-					<view class="supplier_follow_num" >
-						<view style="font-size: 25rpx;font-weight: 100;text-align: center;">粉丝</view>
-						<view style="font-size: 40rpx;font-weight: bold;text-align: center;">{{current_shang_detail.supplier_fans_count}}</view>
-					</view>
-				</view>
-					
-				
-				<view class="supplier_package_num">
-					<view style="font-size: 25rpx;font-weight: 100;">卡包</view>
-					<view style="font-size: 40rpx;font-weight: bold;">{{current_shang_detail.package_count}}</view>
-				</view>
-				<view class="supplier_package_num01">
-					<view style="font-size: 25rpx;font-weight: 100;text-align: center;">卡牌</view>
-					<view style="font-size: 40rpx;font-weight: bold;text-align: center;">{{current_shang_detail.card_count}}</view>
-				</view>
-				
-			</view>
-			
-		</block>
-		
-		<block v-else>
 		<view class="welcome_image">
 			<view v-if="current_shang_detail.mendian_image">
 				<image @load="imageLoad($event)" :data-id='index' mode="widthFix" style="width: 100%;" :src="current_shang_detail.mendian_image"></image>
@@ -164,63 +102,7 @@
 			</view>
 			<!-- 营业时间 地址结束 -->
 
-		</view>		
-		</block>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		<!--商家简介-->
-		<view class="supplier_detail_brief"  >
-			<view class="supplier_icon-title3" style="">
-				<view class="supplier_icon-title4" :style="{borderBottom:wxa_shop_nav_bg_color+' 2rpx solid'}">
-				<!-- 	<image :src="user_console_setting.user_console_icon_jianjie" mode="widthFix" style="width: 50rpx;"></image> -->
-					<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/house.png" mode="widthFix" style="width: 50rpx;margin-top: 8rpx;"></image>
-					<view class='nft_supplier_biaoti' :style="{color:wxa_shop_nav_bg_color}">商家简介</view>
-				</view>
-			</view>
-			
-			<block v-if="current_shang_detail.brief == ''">
-				<view style="text-align: center;color:#ccc;font-size:16px;">暂无简介</view>
-				<view style="padding-bottom: 21px;color: red;width: 94%;margin-left: 13px;">
-					<text style="width:20px;"></text>
-				</view>
-			</block>
-		
-			<block v-if="current_shang_detail.brief != ''">
-				<view style="padding-bottom: 20rpx;color: #666;width: 100%;font-size:14px;">
-					<view class="supplier_brief">
-					
-						<!-- 运营时间和发行商地址 -->
-						
-						<view class="info">
-							<view style="font-size: 25rpx;margin-bottom:5rpx ;">运营时间：{{current_shang_detail.yingyeshijian}}</view>
-							<view style="font-size: 25rpx;margin-bottom: 5rpx;">地址：{{current_shang_detail.address}}</view>
-							<view :class="{hide:!iSinfo}" style="font-size: 25rpx;">
-								{{current_shang_detail.brief}}
-							</view>
-							<text @tap="showinfo" v-if="!iSinfo">
-								<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/arrow_down.png" mode="widthFix" style="width: 30rpx;margin-right: 20rpx;"></image></text>
-							
-						</view>
-						<text @tap="showinfo" v-if="iSinfo" class="hidebtn" ><image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/arrow_up.png" mode="widthFix" style="width: 30rpx;margin-right: 20rpx;"></image></text>
-					</view>
-				</view>
-			</block>
 		</view>
-		
-		
-		
-		
-		
-		
-		
 		
 		<!-- 关联的超级会员卡 Begin -->
 		<view style="border-bottom:6px solid #eee;"  v-if="vip_card_list">
@@ -246,149 +128,6 @@
 			</view>
 		</view>
 		<!-- 关联的超级会员卡 End -->
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		<!-- =====-发行商详情接口==================supplier_detail -->
-		
-		<!-- NFT卡包卡牌功能模块 Begin -->
-		<view style="border-bottom:6px solid #eceeef;"  v-if="nft_package_list_show_flag == 1">
-			<view class="">
-				<view class="" style="width:100%;background-color: #eceeef;">
-					<view class="supplier_icon-title3" style="margin-left: 10rpx;border-radius: 10rpx;">
-						<view class="supplier_icon-title4" :style="{borderBottom:wxa_shop_nav_bg_color+' 2rpx solid'}">
-							<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/rocket.png" mode="widthFix" style="width: 45rpx;margin-left: 10rpx;margin-top: 8rpx;"></image>
-							<view class='nft_supplier_biaoti'  :style="{color:wxa_shop_nav_bg_color}"  >热门卡牌</view>	
-							
-						</view>
-						
-						
-					</view>
-					<view class="supplier_hot_card" >
-						<scroll-view scroll-x="true" style="background-color:#FFFFFF;width: 730rpx;margin-left: 10rpx;" >
-							<view class="" style="display: flex;height: 390rpx;">
-								<view class="" style="margin-bottom: 30rpx;" v-for="(current_card_item,index) in current_nft_card_list"
-										@tap="go_to_card_detail(current_card_item.packageid, current_card_item.cardid)">
-									<view class="slide_cards_pic"style="height: 350rpx;">
-										<image class="card_detail_img_border" :src="current_card_item.cover_img_url_2x3_stand" mode="widthFix"
-											></image>
-										<view class="card_detail_kapai_title" >{{current_card_item.card_name}}</view>
-									</view>
-									
-								</view>	
-							</view>
-									
-						</scroll-view>
-					</view>
-						
-				</view>
-				
-			
-				<view class="" style="background-color: #eceeef;">
-					<view class="supplier_icon-title3" style="margin-left: 10rpx;">
-						<view class="supplier_icon-title2" :style="{borderBottom:wxa_shop_nav_bg_color+' 2rpx solid'}">
-							<image class="card_detail_tubiao" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/suoshukabaotubiao.png" style="margin-left: 5rpx;"></image>
-							<view class='nft_supplier_biaoti'  :style="{color:wxa_shop_nav_bg_color}">已发行卡包</view>
-							<view class='nft_supplier_biaoti' @tap="goto_supplier_all_package_list"></view>
-						
-						</view>
-					</view><!-- nft_package_list -->
-					
-				</view>		
-				
-				<!-- 发行商发行的卡包 -->
-				<view class="nft_issue_package_list">
-					<view style="height: 20rpx;"></view>
-					<view class="nft_package_list" v-for="(item,index) in current_nft_package_list" :key='index' 
-						@tap="goto_surrlier_package_detail(item.packageid)">
-						<view class="nft_package" >
-							<view class="">
-								<img class="supplier_package_list" :src="item.cover_img_url"  >
-								<image class="package_list_mark" src="https://yanyubao.tseo.cn/Tpl/static/nft_card/mark01.png" mode="widthFix" style="border-top-right-radius: 20rpx;"></image>
-								<view class="package_list_mark_num">
-									<view style="color: #cdcdcd;font-weight: bold; font-size: 35rpx;">{{item.card_count_mianfei}}</view>
-									<view style="color: #FFFFFF;">/</view>
-									<view style="color: yellow;font-weight: bold; font-size: 35rpx;">{{item.card_count_fufei}}</view>
-								</view>
-							</view>
-							
-							<view class="supplier_image_description">
-								<view class="nft_package_title">{{item.title}}</view>
-								
-								
-								<!-- 进度条 -->
-								<view class="uni-padding-wrap uni-common-mt">
-								 	<view class="progress-box">
-										<view class="" style="display: flex;">
-											<view style="font-size: 20rpx;margin-top: 5rpx;font-weight: 100;">收集进度：</view>
-											<view class="">({{item.packageid_card_user_buy_count}}/{{item.packageid_card_count}})</view>
-										</view>
-										
-										<progress style="width: 95%;" :percent="item.sale_percent" activeColor="#30C478" stroke-width="3" 
-											show-info="" backgroundColor="red" font-size="15"></progress>
-									</view>
-								</view>
-								<!-- <view style="float: right;">
-									<view class="package_state" v-if="is_package_time_expire ==false" style="background-color: #30c478;">
-										<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/circle.png" mode="widthFix" style="width: 25rpx;margin-right: 10rpx;margin-top: 10rpx;margin-left: 10rpx;"></image>
-										<view style="font-size: 25rpx;">{{current_package_detail.status_str}}</view>
-									</view>
-									<view class="package_state" v-else="is_package_time_expire ==true" style="background-color:red;" >
-										<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/down.png" mode="widthFix" style="width: 28rpx;margin-top: 10rpx;margin-left: 10rpx;"></image>
-										<view style="font-size: 25rpx;margin-left: 10rpx;">已下架</view>
-									</view>
-								</view> -->
-								<view style="font-size:20rpx ;font-weight: 100;">有效期：</view>
-								<view class="" style="font-size: 20rpx; font-weight: 100;">{{item.time_begin_str}}~{{item.time_end_str}}</view>
-							</view>
-							
-						</view>
-						
-						<!-- <view v-if="item.huiyuan_status == 1" class="banka_btn" style="margin-top: 20rpx;" @tap="go_detail_huiyuan(item.userid)">
-							<view>
-								<view class="banka_ft">查看卡片</view>
-							</view>
-						</view>
-						<view v-else class="banka_btn" style="margin-top: 20rpx;"  @tap="become_huiyuan(item.userid)">
-							<view>
-								<view class="banka_">我要领卡</view>
-							</view>
-						</view> -->
-					</view>
-				</view>
-			</view>
-			
-			
-		</view>
-		<!-- NFT卡包卡牌功能模块 End -->
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 
 		<!-- 功能按钮-->
 		<view>
@@ -479,6 +218,26 @@
 			</block>
 		</view>
 		
+		<!--商家简介-->
+		<view style="border-bottom:6px solid #eee;" v-if="current_shang_detail.brief != ''">
+			<view class="icon-title2">
+				<image :src="user_console_setting.user_console_icon_jianjie" mode="widthFix"></image>
+				<view class='biaoti'>商家简介</view>
+			</view>
+			<block v-if="current_shang_detail.brief == ''">
+				<view style="text-align: center;color:#ccc;font-size:16px;">暂无简介</view>
+				<view style="padding-bottom: 21px;color: red;width: 94%;margin-left: 13px;">
+					<text style="width:20px;"></text>
+				</view>
+			</block>
+
+			<block v-if="current_shang_detail.brief != ''">
+				<view style="padding-top:5px;padding-bottom: 24rpx;color: #666;width: 94%;margin: 0 auto;font-size:14px;text-indent: 54rpx;">
+					<text>{{current_shang_detail.brief}}</text>
+				</view>
+			</block>
+		</view>
+		
 		<!-- 小程序码 -->
 		<!-- #ifdef MP-WEIXIN -->
 		<view class="wxa_qrcode_block">
@@ -494,8 +253,7 @@
 			{{default_copyright_text}}
 		</view>
 		
-		<!--  || !user_console_setting.user_console_quick_button_position -->
-		<view v-if="user_console_setting.user_console_quick_button_position == 'left'">
+		<view v-if="user_console_setting.user_console_quick_button_position == 'left' || !user_console_setting.user_console_quick_button_position">
 			<view @tap="isShoucang==1?Shoucang('del'):Shoucang('add')" class="home-p">
 				<image v-if="isShoucang == 0" src="../../static/img/help/star_off.png"></image>
 				<image v-if="isShoucang == 1" src="../../static/img/help/star_on.png"></image>
@@ -718,44 +476,17 @@
 				vip_card_list:'',
 				
 				default_copyright_text:'',
-				
-				//2021.8.4. NFT卡包卡牌相关的
-				current_nft_package_list: null,
-				nft_package_list_show_flag:0,	// 0 不展示NFT卡包列表  1  展示
-				current_packageid:0,
-				current_nft_supplierid:1,
-				
-				//2021.8.13. 控制头部风格是否为NFT 卡包
-				use_theme_nft_package: 0,
-				
-				current_nft_card_list:null,
-				
-				current_package:0,
-				iSinfo:false,
-				
-				wxa_shop_nav_bg_color: '#30C478',
-				
-				
 			};
 		},
 		
 		onLoad(options) {
-			
-			
 			var that = this;
 
 			console.log('options===', options)
 
-			
 			var that = this;
 
 			var xianmai_shangid = 0;
-			
-			that.current_card_detail = {
-				'title': ' '
-			};
-			that.current_shang_detail.supplier_fans_count='';
-			that.current_shang_detail.brief ='';
 			
 			//如果传了商户编号 sellerid （suppliersn），则保存
 			if(options.sellerid){
@@ -792,24 +523,6 @@
 				that.default_copyright_text = that.abotapi.globalData.default_copyright_text;
 				
 			});
-			
-			
-			
-			
-			
-	
-			
-		
-			
-			
-			
-			//2021.8.5. 如果读取supplier的列表
-			if(that.abotapi.globalData.xianmai_shang_list_switch_to_supplier_list == 1){
-				that.nft_package_list_show_flag = 1;
-			}
-			
-			
-		
 			
 			this.get_merchant_basic_data();
 			
@@ -939,8 +652,6 @@
 				
 				console.log("shangid===",this.current_shang_detail)
 				
-				that.wxa_shop_nav_bg_color  = cb_params.option_list.wxa_shop_nav_bg_color;
-				
 				abotsharejs.click_wxa_command_copy(this.abotapi, cmd_type, this.current_shang_detail["xianmai_shangid"], userid, sellerid);
 				
 			},
@@ -974,14 +685,6 @@
 					this.shang_shop_wxa_qrcode_url += '&path=pages%2FshopDetail%2FshopDetail&shortcode=';
 					this.shang_shop_wxa_qrcode_url += this.current_xianmai_shangid;
 				}
-				
-				//控制头部风格										
-				if(user_console_setting.use_theme_nft_package){
-					//that.shop_header_style = 'style001';
-					this.use_theme_nft_package = user_console_setting.use_theme_nft_package;
-				}
-				
-				console.log('this.use_theme_nft_package ====>>>>>> ', this.use_theme_nft_package);
 				
 				
 				this.get_shang_detail();
@@ -1134,8 +837,8 @@
 				
 				// 获取本地商家自己设置的一些选项，包括是否显示外卖 堂吃按钮等。
 				var post_data = {
-					sellerid: that.abotapi.globalData.default_sellerid,
-					xianmai_shangid: that.current_xianmai_shangid,
+					sellerid: this.abotapi.globalData.default_sellerid,
+					xianmai_shangid: this.current_xianmai_shangid,
 				}
 				
 				this.abotapi.abotRequest({
@@ -1170,7 +873,6 @@
 						}
 						
 						
-						
 						that.abotapi.get_xianmaishang_setting_list(that.callback_func_for_xianmaishang_setting_list);
 						
 						
@@ -1178,241 +880,10 @@
 					fail: function(e) {
 				
 					},
-				});
+				})
 				
 				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				//========= 2021.8.4. 如果定义了 xianmai_shang_list_switch_to_supplier_list，则打开了开关 nft_package_list_show_flag ===============				
-				if(that.nft_package_list_show_flag == 1){
-				
-					//获取卡包列表
-					//将 xianmai_shangid 转为 supplierid，因为传入进来的就是supplierid (xianmai_shang_list_switch_to_supplier_list == 1)
-					//如果 xianmai_shang_list_switch_to_supplier_list != 1，目前还没有应用场景
-					// that.abotapi.globalData.default_sellerid  ===>>> that.current_xianmai_shangid
-					var post_data = {
-							sellerid:that.abotapi.globalData.default_sellerid,
-						
-							nft_supplierid : that.current_xianmai_shangid,
-							page_num: 1,
-							page_size: 10,
-							
-						};
-						
-					var userInfo = that.abotapi.get_user_info();	
-					if(userInfo){
-						post_data.userid = userInfo.userid;
-						post_data.checkstr = userInfo.checkstr;
-					}
-				
-				
-					that.abotapi.abotRequest({
-					    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_list',
-					    method: 'post',
-					    data: post_data,
-					    success: function (res) {
-							
-							if(res.data.code != 1){
-								uni.showToast({
-									title:'卡包列表没有数据',
-									duration: 2000,
-								});
-								
-								return;
-							}
-							
-							that.current_nft_package_list = res.data.data;
-							
-							console.log('current_nft_package_list ===>>> ', that.current_nft_package_list);
-							
-							
-							for(var i=0; i<that.current_nft_package_list.length; i++){
-								
-								//计算已经售出的备份比
-								that.current_nft_package_list[i].sale_percent = 50;
-								if(that.current_nft_package_list[i].packageid_card_count == 0){
-									that.current_nft_package_list[i].sale_percent = 100;
-								}
-								else{
-									
-									that.current_nft_package_list[i].sale_percent =
-										parseInt(that.current_nft_package_list[i].packageid_card_user_buy_count/that.current_nft_package_list[i].packageid_card_count*100);
-								}
-								
-								
-							}
-							
-							
-							
-						
-							
-							
-									
-							
-					    },
-					    fail: function (e) {
-							uni.showToast({
-								title: '网络异常！',
-								duration: 2000
-							});
-					    },
-					});
-					
-					
-				}//	
-					
-					
-				//获取卡牌列表
-				
-				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_list',
-					method: 'post',
-					data: {
-						sellerid:that.abotapi.globalData.default_sellerid,
-						nft_supplierid:that.current_xianmai_shangid,
-						
-						action:'card_hot_list'
-						
-						
-					},
-					success: function (res) {
-						
-						if(res.data.code != 1){
-							uni.showToast({
-								title:'卡牌列表没有数据',
-								duration: 2000,
-							});
-							
-							return;
-						}
-						
-						that.current_nft_card_list = res.data.data;
-						
-						console.log('current_nft_card_list ===>>> ', that.current_nft_card_list);
-						
-						
-						
-						
-								
-						
-					},
-					fail: function (e) {
-						uni.showToast({
-							title: '网络异常！',
-							duration: 2000
-						});
-					},
-				});
-					
-					
-			},		
-					
-			
-			set_fans:function(value003){
-				var that = this;
-				
-				//======= 判断用户是否登录 ============
-				var last_url = '/pages/nftcard/package_detail?'+ that.current_params_str;
-				
-				var userInfo = that.abotapi.get_user_info();
-				if (!userInfo) {
-					that.abotapi.goto_user_login(last_url);
-				
-					return;
-				}
-				//============= End ================
-			
-				
-				
-			
-				
-				//请求服务器接口、关注 已关注
-				var post_data = {
-						sellerid:that.abotapi.globalData.default_sellerid,
-						nft_supplierid:that.current_xianmai_shangid,
-						
-						userid:that.current_userid,			
-					};
-					
-				var userInfo = that.abotapi.get_user_info();	
-				if(userInfo){
-					post_data.userid = userInfo.userid;
-					post_data.checkstr = userInfo.checkstr;
-				}
-			
-				
-				//添加关注   请求粉丝接口 
-				that.abotapi.abotRequest({
-				    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/supplier_fans_add',
-				    method: 'post',
-				    data: post_data,
-				    success: function (res) {
-						
-						if(res.data.code != 1){
-							uni.showToast({
-								title:'关注失败',
-								duration: 2000,
-							});
-							
-							return;
-						}
-						
-						console.log('current_supplier_fans_add  ===>>> ', that.current_supplier_fans_add);
-						
-						
-						
-						
-						
-						//请求成功之后，修改本地的数据
-						that.current_shang_detail.is_fans = value003;
-						
-						
-						if (value003 == 1) {
-							that.current_shang_detail.supplier_fans_count++;
-						} else {
-							that.current_shang_detail.supplier_fans_count--;
-						}
-						
-						
-						
-						
-				    },
-				    fail: function (e) {
-						uni.showToast({
-							title: '网络异常！',
-							duration: 2000
-						});
-				    },
-				});
-				
-			
-				
-				
-			},	
-				
-				
-			showinfo(){
-				this.iSinfo = !this.iSinfo
 			},
-					
-					
-					
-				
-				//====================== End ================================
-				
-				
-				
-				
-			
 			
 			//点击图片放大
 			bigImg:function(e){
@@ -1533,7 +1004,15 @@
 						}
 						
 						
-						console.log('超级会员卡 vip_card_list的拥有情况：', that.vip_card_list);
+						console.log('8888888888888',that.vip_card_list);
+						
+						
+						
+						
+						
+						
+						
+						
 						
 						
 						
@@ -1542,6 +1021,11 @@
 						//   latitude : data.latitude,
 						//   longitude : data.longitude,
 						// };
+						
+						
+						
+						
+						
 						
 						
 
@@ -1930,18 +1414,6 @@
 				
 			},
 			
-			go_to_card_detail:function(packageid, cardid){
-				console.log('packageid===>>>' + packageid);
-				console.log('cardid===>>>' + cardid);
-				
-				uni.navigateTo({
-					url: '/pages/nftcard/card_detail?packageid='+packageid+'&cardid='+cardid,
-				})
-			},
-			
-			
-			
-			
 			//查看会员详情
 			go_detail_huiyuan:function(kazhu_userid){
 				
@@ -1951,31 +1423,14 @@
 				uni.navigateTo({
 					url: '/pages/myecard/myecard?kazhu_userid=' + kazhu_userid + '&ecard_data_type=' + 'super_vip_card'
 				});
-			},
-			
-			//跳转到卡包列表页面
-			goto_supplier_all_package_list:function(){
-				var new_url = '/pages/nftcard/package_list?nft_supplierid='+this.current_xianmai_shangid;
-			},
-				
-			goto_surrlier_package_detail:function(packageid){
-				console.log('准备跳转到卡包详情：' + packageid);
-				
-				uni.navigateTo({
-					url:'/pages/nftcard/package_detail?packageid='+ packageid +'',
-				});
-			},
-			
-			
-			
+			}
+					
 			
 		}
 	};
 </script>
 
 <style lang="scss">
-	
-	
 	.mystatusbar {
 		width: 100%;
 		height: 0;
@@ -2859,250 +2314,5 @@
 		border: 1rpx dotted #666;
 		margin: 20rpx auto;		
 		border-radius: 5rpx;
-	}
-	
-	
-	
-	
-	
-	// 2021.8.5发行商详情的css
-	.nft_issue_package_list{
-		
-		background-color: #eceeef;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-	}
-	.nft_package_list{
-		background-color: #FFFFFF;
-		width: 730rpx;
-		height: 230rpx;
-		margin-bottom: 30rpx;
-		border-radius: 20rpx;
-		overflow: hidden;
-		
-	}
-	.nft_package{
-		display: flex;
-		position: relative;
-		
-	}
-	.supplier_image_description{
-		width: 400rpx;
-		margin: 20rpx 10rpx 10rpx 20rpx;
-		
-	}
-	.nft_package_title{
-		font-weight: bold;
-		font-size: 30rpx;
-		width: 80%;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-	.nft_package_brief{
-		font-weight: 100;
-		font-size: 10rpx;
-		margin-top: 10rpx;
-		width: 90%;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-	.supplier_package_list{
-		width: 340rpx;
-		height: 230rpx;
-		border-radius: 20rpx;
-		overflow: hidden;
-	}
-	//8.13
-	.supplier_biaoti {
-		
-		font-size: 17px;
-		color: #6EB8F2;
-		padding-left: 0px;
-	}
-	.supplier_icon-title2 {
-		display: flex;
-		margin-top: 10rpx 20rpx;
-		height: 60rpx;
-		line-height: 60rpx;
-		align-items: center;
-		border-bottom: 1px solid #eee;
-		
-	}
-	
-	.supplier_icon-title2 image {
-		width: 40rpx;
-		height: 40rpx;
-	}
-	.nft_supplier_biaoti{
-		font-weight: bold;
-		font-size: 15px;
-		padding-left: 5px;
-		
-	}
-	.supplier_detail_brief{
-		border-bottom:6px solid #eee;
-		background-color: #eceeef; 
-		padding-left: 10rpx;
-	
-	}
-	.supplier_icon-title3{
-		width: 730rpx;
-		background-color: #FFFFFF;
-		margin-top: 10rpx 20rpx;
-		display: flex;
-		border-radius: 10rpx;
-	
-		align-items: center;
-		
-	
-	}
-	.supplier_hot_card{
-		background-color: #eceeef;
-		height: 400rpx;
-		
-	}
-	.supplier_icon-title4{
-		display: flex;
-		height: 60rpx;
-		line-height: 60rpx;
-	}
-	.series_package{
-		width:340rpx;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-
-
-	.supplier_follow_num_icon{
-		 float: right;
-		 margin-top: 220rpx;
-		 margin-right: 200rpx;
-	}
-	.supplier_follow_num_icon01{
-		float: right;
-		margin-top: 140rpx;
-		margin-right: 30rpx;
-	}
-	.supplier_follow_num{
-
-		width: 100rpx;
-		height: 100rpx;
-		line-height: 50rpx;
-	}
-	.publish_icon_follow{
-		
-		width: 150rpx;
-		height: 50rpx;
-		display: flex;
-		justify-content: center;
-	
-		border-radius: 10rpx;
-		overflow: hidden;
-		// border: #30c478 2rpx solid;
-	}
-	.publish_icon_follow01{
-		width: 150rpx;
-		height: 50rpx;
-		display: flex;
-	
-		margin-top: 0rpx;
-		
-		background-color:#999999; 
-		border-radius: 10rpx;
-		overflow: hidden;
-	}
-	.supplier_package_num{
-		float:left ;
-		
-		height: 100rpx;
-		line-height: 50rpx;
-		margin-top: 220rpx;
-		margin-left: 250rpx; 
-
-		border-radius: 10rpx;
-		overflow: hidden;
-	}
-	.supplier_package_num01{
-		float:left ;
-	
-		height: 100rpx;
-		line-height: 50rpx;
-		margin-top: 220rpx;
-		margin-left: 60rpx; 
-		
-		border-radius: 10rpx;
-		overflow: hidden;
-	}
-	.supplier_brief{
-		
-		width: 670rpx;
-		flex-direction: column;
-		background-color: #FFFFFF;
-		padding: 5rpx 60rpx 10rpx 0rpx;
-		
-		position:relative;
-		border-bottom-left-radius: 10rpx;
-		border-bottom-right-radius: 10rpx;
-		.info{
-			
-			margin-left: 10rpx;
-			display: flex;
-			flex-direction: column;
-			view{
-				
-				text-align: justify;
-				word-break: break-word;
-				
-			}
-			text{
-				width: 150rpx;
-				display: flex;
-				justify-content: flex-end;
-				align-items:center;
-				position: absolute;
-				bottom: 10rpx;
-				right: 5rpx;
-			}
-		}
-		
-		
-	}
-	.hidebtn{
-		position: absolute;
-		display: flex;
-		flex: 1;
-		right: 10rpx;
-		bottom: 10rpx;
-		justify-content: flex-end;
-		
-	}
-	.hide{
-		word-break: break-word;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		display: -webkit-box;
-		-webkit-line-clamp:1;
-		-webkit-box-orient:vertical;
-		
-	}
-	.package_list_mark{
-		width: 150rpx;
-		top: 0rpx;
-		left: 190rpx;
-		position: absolute;
-		z-index: 1;
-		opacity: 0.6;
-	}
-	.package_list_mark_num{
-		display: flex;
-		position:absolute;
-		left: 270rpx;
-		top: 14rpx;
-		z-index: 2;
 	}
 </style>
