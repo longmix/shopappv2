@@ -6,6 +6,7 @@
 				<image :src="current_card_detail.cover_img_url_2x3_stand"
 					style="border-radius: 15rpx;width: 340rpx;">
 				</image>
+				
 			</view>
 			<view style="padding-left: 20rpx;width: 350rpx;">
 				<view class="card_detail_title">
@@ -109,6 +110,7 @@ export default {
 			
 			//radioVal:1,//单选
 			
+			current_cplid:0,
 			
 			nftcard_gift: null,
 			current_card_detail: null,
@@ -375,6 +377,7 @@ export default {
 						that.checkbox_range_card_publish_list.push({"value": temp001.cplid, "text": "#"+temp001.cplseq +'  '+ temp001.cplno});
 					}
 					
+					console.log('checkbox_range_card_publish_list=====>>>',checkbox_range_card_publish_list)
 					
 				},
 				fail: function(e) {
@@ -384,106 +387,6 @@ export default {
 					});
 				},
 			});
-		},
-		//赠予
-		__nft_card_gift:function(from='send'){
-			var that = this;
-			
-			if(!that.checkbox_value_cplid){
-				uni.showModal({
-					title: '请选择想要赠送的卡牌',
-					showCancel: false,
-				});
-				
-				return 0;
-			}
-			
-			/*
-			if(that.checkbox_value_get_type == -1){
-				uni.showModal({
-					title: '请选择卡牌的赠送方式',
-					showCancel: false,
-				});
-				
-				return;
-			}
-			*/
-			
-			if(that.send_wish.length == 0){
-				uni.showModal({
-					title: '请填写转赠留言',
-					showCancel: false,
-				});
-				
-				return 0;
-			}
-			
-			
-			
-			var userInfo = that.abotapi.get_user_info();
-			
-			if (!userInfo) {
-				return 0;
-				
-			}
-			
-			//赠送
-			var post_data = {
-				sellerid: that.abotapi.get_sellerid(),
-				userid: userInfo.userid,
-				checkstr: userInfo.checkstr,
-				cardid: that.current_card_detail.cardid,
-				cplid: that.checkbox_value_cplid,
-				action: 'send',
-				get_type: that.checkbox_value_get_type,
-				from: from,
-				send_wish: that.send_wish,
-			};
-			
-			
-			that.abotapi.abotRequest({
-				url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/nftcard_gift',
-				method: 'post',
-				data: post_data,
-				success: function(res) {
-			
-					if (res.data.code == 1) {
-						console.log("赠送的数据保存成功");
-					}
-					
-					
-					
-					
-					
-					uni.navigateTo({
-						url: '/pages/nftcard/gift_card_share?cardid=' + cardid,
-					})
-					
-					
-					
-					console.log('nftcard_gift ===>>> ', res.data);
-					
-					uni.showModal({
-						title: "提示",
-						content: "赠送完成",
-						showCancel: false,
-						success: () => {
-							uni.navigateTo({
-								url: '/pages/nftcard/card_detail?cardid='+that.current_cardid,
-							})
-						}
-					})
-					
-			
-				},
-				fail: function(e) {
-					uni.showToast({
-						title: '网络异常！',
-						duration: 2000
-					});
-				},
-			});
-			
 		},
 		
 		//选框
@@ -508,50 +411,7 @@ export default {
 			this.send_wish = e.detail.value;
 			
 		},
-		//赠言
-		__receiver_get_card_cpl_info:function(cplid){
-			var that = this;
-			
-			var userInfo = that.abotapi.get_user_info();
-			
-			if (!userInfo) {
-				return 0;
-				
-			}
-			
-			var post_data = {
-				sellerid: that.abotapi.get_sellerid(),
-				userid: userInfo.userid,
-				checkstr: userInfo.checkstr,
-				cardid: that.current_cardid,
-				cplid: cplid,
-				action: 'info', 
-			};
-			
-			that.abotapi.abotRequest({
-				url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/nftcard_gift',
-				method: 'post',
-				data: post_data,
-				success: function(res) {
-			
-					if (res.data.code == 1) {
-						console.log("赠送成功");
-					}
-					
-					that.current_card_item = res.data.data;
-					
-					console.log('nftcard_gift ===>>> ', res.data);
-					
-				},
-				fail: function(e) {
-					uni.showToast({
-						title: '网络异常！',
-						duration: 2000
-					});
-				},
-			});
-			
-		},
+		
 		
 		go_to_card_detail: function(packageid, cardid) {
 			console.log('packageid===>>>' + packageid);
@@ -586,32 +446,123 @@ export default {
 			// console.log('cardid===>>>' + cardid);
 			
 			var data001 =  {};
+			
+			var cplid_list_str = that.checkbox_value_cplid;
+			
+			cplid_list_str = cplid_list_str.toString();
+			
+			data001.current_packageid = that.current_card_detail.packageid;
+			data001.current_cardid = that.current_card_detail.cardid;
+		
 			data001.send_wish = that.send_wish;
-			data001.cplseq = that.cplseq,
-			data001.cplid = that.checkbox_value_cplid,
-			data001.cplno = that.cplno,
 			
+
+			data001.checkbox = that.checkbox_value_get_type;
 			data001.cpl_list = [];
+			console.log('data001.checkboxt=====>>>',data001.checkbox)
+			console.log('checkbox_value_cplid:' + cplid_list_str);
 			
-			console.log('checkbox_value_cplid:' + that.checkbox_value_cplid);
+			var cplid_list = cplid_list_str.split(',');
 			
-			var cplid_list = that.checkbox_value_cplid.split(',');
+			
+			console.log('checkbox_value_cplid list:', cplid_list);
 			
 			for(var i = 0; i < cplid_list.length; i++){
 				var cpl_item001 = {};
+				
 				cpl_item001.cplid = cplid_list[i];
-				cpl_item001.cplseq = cplid_list[i];
-				cpl_item001.cplno = cplid_list[i];
+		
+				for(var j=0; j<that.checkbox_range_card_publish_list.length; j++){
+					var ttt = that.checkbox_range_card_publish_list[j];
+					
+					console.log('ttt1111111=====>>>>',ttt)
+					console.log('ttt1111111=====>>>>',cpl_item001.cplid)
+					
+					
+					if(cpl_item001.cplid == ttt.value){
+						cpl_item001.text = ttt.text;
+						
+						break;
+					}
+					
+					
+					console.log('cpl_item001.text=====>>>>',cpl_item001.text)
+					
+				}
+				
+				
+				
 				
 				data001.cpl_list.push(cpl_item001);
+				
+				
 			}
 			
 			
+			data001.card_detail = that.current_card_detail;
+			
+			console.log('data001.cpl_list=====>>>',data001.cpl_list)
 			
 			uni.setStorageSync('zhuanzeng_data', data001);
 			
 			
 			that.__nft_card_gift();
+			
+			
+			
+		},
+		//赠予
+		__nft_card_gift:function(from='h5'){
+			var that = this;
+			
+			var userInfo = that.abotapi.get_user_info();
+			
+			if (!userInfo) {
+				return 0;				
+			}
+			
+			
+			//赠送
+			var post_data = {
+				sellerid: that.abotapi.get_sellerid(),
+				userid: userInfo.userid,
+				checkstr: userInfo.checkstr,
+				cardid: that.current_card_detail.cardid,
+				cplid: that.checkbox_value_cplid.toString(),
+				action: 'send',
+				get_type: that.checkbox_value_get_type,
+				from: from,
+				send_wish: that.send_wish,
+			};
+			
+			that.abotapi.abotRequest({
+				url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/nftcard_gift',
+				method: 'post',
+				data: post_data,
+				success: function(res) {
+			
+					if (res.data.code == 1) {
+						console.log("赠送成功");
+					}
+					
+					console.log('nftcard_gift ===>>> ', res.data);
+					
+					uni.navigateTo({
+						url: '/pages/nftcard/gift_card_share?cardid=' + that.current_cardid,
+					})
+					
+			
+				},
+				fail: function(e) {
+					uni.showToast({
+						title: '网络异常！',
+						duration: 2000
+					});
+				},
+			});
+			
+			
+			
 			
 			
 		},

@@ -22,21 +22,20 @@
 		
 			<view>
 				<view style="padding: 20rpx 0px 5px 0px">转赠的卡牌</view>
-				<!-- 复选框按钮 -->
-				<uni-data-checkbox
-					mode="tag" 
-					selectedColor="#65b847"
-					v-model="checkbox_value_cplid" 
-					:localdata="checkbox_range_card_publish_list" 
-					@change="checkbox_change_cplid" disabled>
-				</uni-data-checkbox>
 				
+				<view v-for="(current_card_cpl_item,index) in current_card_cpl" :key="index" style="display: flex;">
+					<view class="" style="display: flex;"> 
+						{{current_card_cpl_item.text}} 
+					</view>
+					
+				</view>
+				<!-- 复选框按钮 -->
 				<!-- <uni-data-checkbox
 					mode="tag" 
 					selectedColor="#65b847"
 					v-model="checkbox_value_cplid" 
 					:localdata="checkbox_range_card_publish_list" 
-					@change="checkbox_change_cplid">
+					@change="checkbox_change_cplid" disabled>
 				</uni-data-checkbox> -->
 			</view>
 				
@@ -44,19 +43,26 @@
 			<view style="padding: 30rpx 0px 10px 0px">
 				<view>赠言</view>
 				<view style="font-size: 40rpx;padding: 30rpx;">
-					<!-- {{current_card_item.send_wish}} -->
+					 {{current.send_wish}}
 				</view>  
 			</view>
 			<view>方式</view>
 			<!-- 单选框按钮 -->
-			<view style="padding-left: 2.5%;">
-				<uni-data-checkbox
+			<view style="padding-left: 2.5%;margin-top: 10rpx;">
+				
+				<view class="" v-if="current.checkbox==0" style="background: #30c478;width: 150rpx;text-align: center;color: #FFFFFF;margin: 5rpx;border-radius: 10rpx;">
+					全部领取
+				</view>
+				<view class="" v-if="current.checkbox==1" style="background: #30c478;width: 150rpx;text-align: center;color: #FFFFFF;margin: 5rpx;border-radius: 10rpx;">
+					限领一张
+				</view>
+				<!-- <uni-data-checkbox
 					mode="tag" 
 					v-model="checkbox_value_get_type"
 					selectedColor="#65b847"
 					:localdata="checkbox_range_get_type" 
-					@change="checkbox_change_get_type">
-				</uni-data-checkbox>
+					@change="checkbox_change_get_type" disabled>
+				</uni-data-checkbox> -->
 			</view>
 			
 			
@@ -87,20 +93,59 @@
 				<!-- #endif -->
 			</view>
 		</block>
+		
+			
 		<block v-else>
-			<view style="display: flex;padding-top: 20rpx;">
-				<view style="">
-					<image style="width: 150rpx; height: 150rpx;border-radius: 50%;" :src="current_card_item.headimgurl" mode="heightFix"></image>
+			
+			<view>
+				<view style="padding: 20rpx 0px 5px 0px">转赠的卡牌</view>
+				
+				<view class="" v-for="(current_card_item_list , index) in current_card_item.cplid">
+					<view>#{{current_card_item_list.cplseq}} {{current_card_item_list.cplno}}</view>
+				</view>
+				<!-- 复选框按钮 -->
+				<!-- <uni-data-checkbox
+					mode="tag" 
+					selectedColor="#65b847"
+					v-model="checkbox_value_cplid" 
+					:localdata="checkbox_range_card_publish_list" 
+					@change="checkbox_change_cplid" disabled>
+				</uni-data-checkbox> -->
+			</view>
+				
+			
+			<view style="padding: 30rpx 0px 10px 0px">
+				<view>赠言</view>
+				<view style="font-size: 40rpx;padding: 30rpx;">
+					 {{current_card_item.send_wish}}
+				</view>  
+			</view>
+			<!-- <view>方式</view> -->
+			<!-- 单选框按钮 -->
+			<!-- <view style="padding-left: 2.5%;">
+				<uni-data-checkbox
+					mode="tag" 
+					v-model="checkbox_value_get_type"
+					selectedColor="#65b847"
+					:localdata="checkbox_range_get_type" 
+					@change="checkbox_change_get_type" disabled>
+				</uni-data-checkbox>
+			</view> -->
+			<view class="">
+				<view>来自于</view>
+				<view class="" style="display: flex;">
+					<image :src="current_card_item.headimgurl" mode="widthFix" style="width: 50rpx;"></image>
+					<view class="">{{current_card_item.nickname}}</view>	
 				</view>
 				
-				<view>
-					<view style="padding: 30rpx;font-size: 40rpx;">{{current_card_item.nickname}}</view>
-				</view>
 			</view>
-			<view style="font-size: 40rpx;padding: 30rpx;">{{current_card_item.send_wish}}</view>
-			<view style="text-align: right;">{{current_card_item.createtime}}</view>
+			
+			
+			
 			<view style="padding-top: 50rpx;">
-				<button class="gift_card_button_zengsong" :style="{background:wxa_shop_nav_bg_color}">
+				<button class="gift_card_button_zengsong" 
+					:style="{background:wxa_shop_nav_bg_color}" 
+					@tap="receiver_get_card_cpl(cplid)">
 					领取卡牌
 				</button>
 			</view>
@@ -184,16 +229,9 @@ export default {
 		}
 		
 		
-		// 页面加载默认界面
-		that.current_card_detail = {
-			'title': ' '
-		};
 		
-		that.current_card_detail.cover_img_url_2x3 = 'https://yanyubao.tseo.cn/Tpl/static/nft_card/default_card_cover.png';
-		that.current_card_detail.cover_img_url_2x3_stand= 'https://yanyubao.tseo.cn/Tpl/static/nft_card/default_card_cover.png';
-		that.current_card_detail.card_name = '';
-		that.current_card_detail.brief = '';
-			
+		
+		
 		
 		uni.setNavigationBarTitle({
 			title : '赠送'
@@ -202,7 +240,21 @@ export default {
 		that.__get_card_detail();
 		
 		if(!options.from){
-			that.__get_card_publish_list();
+			
+			//that.__get_card_publish_list();
+			
+			var data001 = uni.getStorageSync('zhuanzeng_data');
+			
+			console.log('data001111111111=====>>>',data001)
+			that.current = data001;
+			//that.current_get_type = data001.checkbox_value_get_type;
+			that.current_card_detail = data001.card_detail;
+			that.current_card_cpl = data001.cpl_list;
+			
+			console.log('that.current_card_cpl =====>>>',that.current_card_cpl )
+		//	console.log('111111111111current_card_detail=====>>>',that.current_card_detail)
+			
+			
 			
 			return;
 		}
@@ -262,7 +314,6 @@ export default {
 	onShareAppMessage: function() {
 		var that = this;
 		
-		return;
 
 		// if(that.data.cplid == "",that.data.action == "",that.data.send_wish == ""){
 		// 	uniShowModal({
@@ -304,7 +355,7 @@ export default {
 			share_title = share_title.substr(0, 20) + '...';
 		}
 	
-		var share_path = 'pages/nftcard/card_detail?sellerid=' + that.abotapi.globalData.default_sellerid;
+		var share_path = 'pages/nftcard/gift_card_share?sellerid=' + that.abotapi.globalData.default_sellerid;
 		share_path += '&packageid='+that.current_packageid;
 		share_path += '&cardid='+that.current_cardid;
 		share_path += 'from=app_message&cplid=' + that.checkbox_value_cplid;
@@ -558,19 +609,21 @@ export default {
 			}
 			
 			
+
+			
 			//赠送
 			var post_data = {
 				sellerid: that.abotapi.get_sellerid(),
 				userid: userInfo.userid,
 				checkstr: userInfo.checkstr,
 				cardid: that.current_card_detail.cardid,
-				cplid: that.checkbox_value_cplid,
+				cplid: that.current.cplid,
 				action: 'send',
 				get_type: that.checkbox_value_get_type,
 				from: from,
-				send_wish: that.send_wish,
+				send_wish: that.current.send_wish,
 			};
-			
+			console.log('that.current_card_cpl.cplid ===>>> ', that.current_card_cpl.cplid);
 			// var userInfo = that.abotapi.get_user_info();
 			// if (userInfo) {
 			// 	post_data.userid = userInfo.userid;
@@ -696,6 +749,7 @@ export default {
 				userid: userInfo.userid,
 				checkstr: userInfo.checkstr,
 				cardid: that.current_cardid,
+				get_type: that.checkbox_value_get_type,
 				cplid: cplid,
 				action: 'info', 
 			};
@@ -742,7 +796,7 @@ export default {
 				userid: userInfo.userid,
 				cardid: that.current_card_detail.cardid,
 				checkstr: userInfo.checkstr,
-				cplid: cplid,
+				cplid: that.cplid,
 				action: 'get',
 			};
 			
