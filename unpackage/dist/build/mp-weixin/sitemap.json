@@ -70,7 +70,7 @@
       "matching": "exclusive"
     },{
       "action": "disallow",
-      "page": "pages/user/user"
+      "page": "pages/tabbar/user"
     },{
       "action": "allow",
       "page": "pages/login/login"
