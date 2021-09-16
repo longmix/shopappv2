@@ -16,7 +16,7 @@
     "force_sellerid_value": "pQNNmSkaq",
     "shop_name": "延誉电商",
     "version_number": "Ver 2.0.1 Build 290",
-    "navigationBarBackgroundColor_fixed": 1,
+    "navigationBarBackgroundColor_fixed": 0,
     "navigationBar_font_color":"#ffffff",
     "navigationBar_bg_color":"#f37404",
     "kefu_telephone": "",
