@@ -84,13 +84,12 @@
 					
 					<view style="display: flex;">
 						
-						
-						<button  class="share" open-type="share"></button>
 						<!-- #ifdef MP -->
+						<button  class="share" open-type="share"></button>
 						<image class="comment_img comment_right_img" src="../../static/img/help/share.png" open-type="share"></image>
 						<!-- #endif -->
 						<!-- #ifdef APP-PLUS -->
-						<image class="comment_img comment_right_img" src="../../static/img/help/share.png" @click="is_show"></image>
+						<image class="comment_img comment_right_img" src="../../static/img/help/share.png" @click="is_share_api_show"></image>
 						<!-- #endif -->
 						<!-- #ifdef H5 -->
 						<image class="comment_img comment_right_img" src="../../static/img/help/share.png" @tap="share_publish"></image>
@@ -1047,7 +1046,7 @@
 				
 				abotsharejs.click_wxa_system_share(this.share_summary, this.share_href);
 			},
-			is_show:function(){
+			is_share_api_show:function(){
 				this.$refs.share_api.is_show();
 			}
 		},
@@ -1274,13 +1273,13 @@
 	 color: #3aa756;
 	 font-weight:bolder;
 	}
-	.share{
+	.share {
 	  opacity:0;
-	  width:55rpx;
+	  width:100rpx;
 	  height:55rpx;
 	  position:absolute;
 	  background:transparent;
-	  left:582rpx;
+	  right:10rpx;
 	
 	}
 	

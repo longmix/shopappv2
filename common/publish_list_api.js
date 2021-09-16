@@ -1,9 +1,19 @@
 import abotapi from './abotapi.js';
 const isNullOrUndefined = obj=>obj===null || obj === undefined  || obj === '';
 
+
+
+
 module.exports = {
 	
 	//获取帖子列表 （封装） (页面刷新要重置页数，必须的参数有cms_token,sellerid)
+	/**
+	 * that 的参数 ：
+	 * cms_token
+	 * cms_token_001  如果有，则优先使用，否则使用 cms_token
+	 * cms_cataid 如果为0，则请求全部文章
+	 * 
+	 */
 	get_publish_list: function (that, callback_function='', action='',) {
 		
 		var publishData = []; //返回的数组
@@ -20,7 +30,14 @@ module.exports = {
 			return;
 		}
 		
-		if(!that.cms_token){
+		var current_cms_token = null;
+		current_cms_token = that.cms_token;
+		
+		if(that.cms_token_001){
+			current_cms_token = that.cms_token_001;
+		}
+		
+		if(!current_cms_token){
 			//没有cms——token
 			console.log('(common/publish_list_api.js) ===>>> get_publish_list 没有 CMS Token');
 			
@@ -30,7 +47,7 @@ module.exports = {
 		}
 		
 		var post_data = {
-				token:that.cms_token,
+				token: current_cms_token,
 				sellerid: that.abotapi.globalData.default_sellerid,
 				action: 'newlist',
 				page:that.current_page,

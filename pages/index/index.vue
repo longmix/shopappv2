@@ -1301,7 +1301,22 @@ export default {
 			
 			//显示最新的帖子列表
 			if(that.abotapi.globalData.default_publish_list_count_in_front_page > 0){
-				publish_list_api.get_publish_list(that,that.get_api_publish_list);
+				console.log('首页准备获取发帖列表，cms token为：' + that.cms_token);
+				
+				that.cms_token_001 = null;
+				
+				//如果后台的“通版商城V2”中没有设置“论坛和发帖相关”的CMS Token，则默认使用商户头条的。
+				if(!that.cms_token){
+					that.cms_token = cb_params.option_list.weiduke_token_to_toutiao;
+				}
+				
+				console.log('首页准备获取发帖列表，cms token为（2）：' + that.cms_token);
+				
+				that.cataid = 0; 
+				that.current_page = 0;
+				that.current_page_size = cb_params.option_list.default_publish_list_count_in_front_page;
+				
+				publish_list_api.get_publish_list(that, that.get_api_publish_list);
 			}
 			
 			//加载天气预报
@@ -1881,8 +1896,9 @@ export default {
 			
 			var that = this;
 			
-			that.cms_token = option_list.weiduke_token_to_toutiao;
+			that.cms_token_001 = option_list.weiduke_token_to_toutiao;
 			that.cataid = option_list.weiduke_classid_to_toutiao; 
+			that.page = 0;
 			
 			if(that.cms_token && that.cataid){
 				publish_list_api.get_publish_list(that, function(that003, res_data){

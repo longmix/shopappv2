@@ -253,7 +253,8 @@
 			{{default_copyright_text}}
 		</view>
 		
-		<view v-if="user_console_setting.user_console_quick_button_position == 'left' || !user_console_setting.user_console_quick_button_position">
+		<view v-if="(user_console_setting.user_console_quick_button_position == 'left') 
+					|| (!user_console_setting.user_console_quick_button_position)">
 			<view @tap="isShoucang==1?Shoucang('del'):Shoucang('add')" class="home-p">
 				<image v-if="isShoucang == 0" src="../../static/img/help/star_off.png"></image>
 				<image v-if="isShoucang == 1" src="../../static/img/help/star_on.png"></image>

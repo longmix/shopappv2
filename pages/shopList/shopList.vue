@@ -6,8 +6,14 @@
 		<view class="top-input-con">
 
 			<view  class="scroll-txt" :style="'border:2rpx solid '+ wxa_shop_nav_bg_color + ';'">   
-				<input type="text" v-model="search_text" placeholder="搜索附近商家" confirm-type="search" style="background: #e6e6e6;" @confirm="search()"/>
-				<icon type="search" size="15" style="margin: 0px 10rpx 0 0;position:absolute;right:30rpx;" @tap="search()"></icon>
+				<input type="text" 
+					v-model="search_text" 
+					placeholder="搜索附近商家" 
+					confirm-type="search" 
+					style="background: #e6e6e6;" 
+					@confirm="search()"/>
+				<icon type="search" size="15" style="margin: 0rpx 10rpx 0 0;position:absolute;right:30rpx;" 
+					@tap="search()"></icon>
 				<!-- <text class="scroll-ads">搜索附近商家</text> -->
 			</view>
 		</view>
@@ -15,8 +21,11 @@
 		<!-- 轮播图 -->
 		<view class="swiper">
 			<view class="swiper-box">
-				<swiper circular="true" autoplay="true"  :style="{height:imgheights[current] + 'px'} ">
-					<swiper-item v-for="(swiper,index) in productLists" :key="swiper.id" @click="toAdDetails(swiper.url)"><!-- @click="toAdDetails(swiper.url)" -->
+				<swiper circular="true" autoplay="true"  
+					@change="swiperChange" 
+					:style="{height:imgheights[current_swiper_img_seq] + 'rpx'} ">
+					<swiper-item v-for="(swiper,index) in productLists" :key="swiper.id" @click="toAdDetails(swiper.url)">
+						<!-- @click="toAdDetails(swiper.url)" -->
 						<image @load="imageLoad($event)"  :data-id='index' :src="swiper.image" mode="widthFix"></image>
 					</swiper-item>
 				</swiper>
@@ -126,8 +135,8 @@
 				is_OK:false,
 				cb_params:'',
 				city: '北京',
-				currentSwiper: 0,
-				// 轮播图片
+				
+				
 				
 				index_icon_list:'',
 				Promotion: [],
@@ -135,9 +144,14 @@
 			
 				productList:'',
 				loadingText: '正在加载...',
+				
+				// 轮播图片				
 				imgheights: [],
-				current: 0,
+				current_swiper_img_seq: 0,
 				windowHeight: 0,
+				
+				
+				
 				//获取商家
 				page:1,
 				shang_num:10,
@@ -255,7 +269,7 @@
 			this.get_gundong_img();
 			//this.shuaxin();
 			console.log('imgheights2222',this.imgheights);
-			console.log('imgheights2222',this.current);
+			console.log('imgheights2222',this.current_swiper_img_seq);
 			
 		},
 		
@@ -972,34 +986,52 @@
 			
 			//轮播图指示器
 			swiperChange(event) {
-				this.currentSwiper = event.detail.current;
+				this.current_swiper_img_seq = event.detail.current;
+				
+				console.log('当前滚动图片序号：' + this.current_swiper_img_seq);
+				console.log('当前滚动图片高度：' + this.imgheights[this.current_swiper_img_seq]);
 			},
 			
 			
 			imageLoad: function (e) {//获取图片真实宽度  
 				var that = this;
-				var imgwidth = e.detail.width,
-				  imgheight = e.detail.height,
-				  //宽高比  
-				  ratio = imgwidth / imgheight;
-				console.log(imgwidth, imgheight)
-				//计算的高度值  
-				var viewHeight = (this.windowWidth * 2 * 0.92)/ ratio;
-				var imgheight = viewHeight;
-				var imgheights = this.imgheights;
-				//把每一张图片的对应的高度记录到数组里  
-				imgheights[e.target.dataset.id] = uni.upx2px(imgheight);
-					
-				console.log('id===>>>'+e.target.dataset.id+", imgheights====>>>", imgheights);
-						
-				console.log('imgheightsimgheightsimgheights',imgheights);
 				
+				var imgwidth = e.detail.width;
+				
+				var imgheight = e.detail.height;
+				
+				console.log('图片的宽度和高度：' + imgwidth + ',' + imgheight);
+				
+				//宽高比  
+				var ratio = imgwidth / imgheight;
+				
+				
+				//计算的高度值
+				this.windowWidth = 750;  //宽度固定位 750rpx
+				
+				//计算出来的高度，单位 rpx
+				//var viewHeight = (this.windowWidth * 2 * 0.92)/ ratio;
+				var viewHeight = this.windowWidth/ ratio;
+				
+				//全局的高度 数组
+				var imgheights = this.imgheights;
+				
+				//把每一张图片的对应的高度记录到数组里  
+				//imgheights[e.target.dataset.id] = uni.rpx2px(viewHeight);
+				imgheights[e.target.dataset.id] = viewHeight;
+					
+				console.log('id===>>>'+e.target.dataset.id+", viewHeight====>>>", viewHeight);
+						
+				console.log('全局的高度列表的数组', imgheights);
+				
+				/*
 				var heights = [];
 				for(var i = 0; i < imgheights.length;i++){
 					heights[i] = imgheights[i]
 				}
-				
-				 that.imgheights = heights;
+				*/
+			   
+				that.imgheights = imgheights;
 			   
 			  },
 			
@@ -1079,7 +1111,7 @@
 	.ab {
 		text-align: center;
 		font-size: 32rpx;
-		padding: 15upx 0;
+		padding: 15rpx 0;
 		border: 1px solid #ddd;
 		border-radius: 20px;
 		color: #666;
@@ -1094,7 +1126,7 @@
 }
 .swiper {
 	width: 100%;
-	margin-top: 10upx;
+	margin-top: 10rpx;
 	display: flex;
 	
 	justify-content: center;
@@ -1103,8 +1135,9 @@
 		// height: 30.7vw;
 
 		overflow: hidden;
-		border-radius: 15upx;
-		box-shadow: 0upx 8upx 25upx rgba(0, 0, 0, 0.2);
+		border-radius: 15rpx;
+		/*box-shadow: 0rpx 8rpx 25rpx rgba(0, 0, 0, 0.2);*/
+		
 		//兼容ios，微信小程序
 		position: relative;
 		z-index: 1;
@@ -1119,16 +1152,16 @@
 		}
 		.indicator {
 			position: absolute;
-			bottom: 20upx;
-			left: 20upx;
+			bottom: 20rpx;
+			left: 20rpx;
 			background-color: rgba(255, 255, 255, 0.4);
-			width: 150upx;
-			height: 5upx;
-			border-radius: 3upx;
+			width: 150rpx;
+			height: 5rpx;
+			border-radius: 3rpx;
 			overflow: hidden;
 			display: flex;
 			.dots {
-				width: 0upx;
+				width: 0rpx;
 				background-color: rgba(255, 255, 255, 1);
 				transition: all 0.3s ease-out;
 				&.on {
