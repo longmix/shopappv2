@@ -22,11 +22,13 @@
 			</view>
 		</view>
 		<abotshare
-		ref="share_api"
-		@click_wxa_share="click_wxa_share"   
-		@click_wxa_circle_share='click_wxa_circle_share'  
-		@click_wxa_applet_share='click_wxa_applet_share'  
-		@click_wxa_system_share='click_wxa_system_share'
+			ref="share_api"
+			@click_wxa_share="click_wxa_share"   
+			@click_wxa_circle_share='click_wxa_circle_share'  
+			@click_wxa_applet_share='click_wxa_applet_share'  
+			@click_wxa_system_share='click_wxa_system_share'
+			@click_wxa_command_copy='click_wxa_command_copy'
+			flag_hidden_btn_command_copy=1
 		></abotshare>
 		
 		
@@ -308,6 +310,13 @@
 			console.log("sellerid:" + options.sellerid);
 			
 			
+			that.theme_color_wenku = '#ffffff';
+			
+			
+			this.options_str = options_str;
+			
+			this.abotapi.set_option_list_str(that, that.callback_set_option);
+			
 			if(that.form_page == 'spec_cms_token'){
 				
 				that.current_cms_token = options.cms_token;
@@ -318,9 +327,7 @@
 				that.current_cms_token = this.abotapi.get_current_weiduke_token();
 			}
 			
-			this.options_str = options_str;
 			
-			this.abotapi.set_option_list_str(that, that.callback_set_option);
 			var userInfo = this.abotapi.get_user_info();
 			var current_openid = this.abotapi.get_current_openid();
 			
@@ -1045,6 +1052,19 @@
 			click_wxa_system_share:function (){
 				
 				abotsharejs.click_wxa_system_share(this.share_summary, this.share_href);
+			},
+			click_wxa_command_copy:function(){
+				/*var userid = 0;
+				var sellerid = this.abotapi.get_sellerid();
+				var cmd_type = 'product';
+
+				var userInfo = this.abotapi.get_user_info();
+				if (userInfo) {
+					userid = userInfo.userid;
+				}
+
+
+				abotsharejs.click_wxa_command_copy(this.abotapi, cmd_type, this.goods_detail["productid"], userid, sellerid);*/
 			},
 			is_share_api_show:function(){
 				this.$refs.share_api.is_show();

@@ -995,6 +995,7 @@
 
 
 			this.loadCataXiangqing();
+			
 
 			// #ifdef MP
 			//小程序隐藏返回按钮
@@ -1166,7 +1167,9 @@
 
 				for (var i = 0; i < attr_list.length; i++) {
 					if (spec_str == attr_list[i].option_name) {
-						var productid = attr_list[i].productid
+						productid = attr_list[i].productid;
+						
+						that.productid = productid;
 					}
 				}
 				
@@ -1208,40 +1211,44 @@
 						
 						var code = res.data.code;
 						
-						if (code == 1) {
-
-							that.goods_detail = res.data.data;
-							console.log('that.goods_detail', res);
-							that.describe = that.goods_detail.describe;
-
-							// #ifdef MP-ALIPAY
-
-							const filter = that.$options.filters["formatRichText"];
-							that.describe = filter(that.describe);
-
-							//console.log('that.describe====>>>>', that.describe);
-
-							let data001 = that.describe;
-							let newArr = [];
-							let arr = parseHtml(data001);
-							arr.forEach((item, index) => {
-								newArr.push(item);
-							});
-
-							//console.log('arr arr arr====>>>>', arr);
-							//console.log('newArr newArr newArr====>>>>', newArr);
-
-							that.describe = newArr;
-
-							// #endif	
-
-							that.picture_list = that.goods_detail.picture_list;
-
-							console.log('that.picture_list===>>>', that.picture_list);
-
-							that.picture_length = that.goods_detail.picture_list ? that.goods_detail.picture_list.length : 0;
-
+						if (code != 1) {
+							return;
 						}
+						
+						that.goods_detail = res.data.data;
+						console.log('that.goods_detail', res);
+						that.describe = that.goods_detail.describe;
+						
+						// #ifdef MP-ALIPAY
+						
+						const filter = that.$options.filters["formatRichText"];
+						that.describe = filter(that.describe);
+						
+						//console.log('that.describe====>>>>', that.describe);
+						
+						let data001 = that.describe;
+						let newArr = [];
+						let arr = parseHtml(data001);
+						arr.forEach((item, index) => {
+							newArr.push(item);
+						});
+						
+						//console.log('arr arr arr====>>>>', arr);
+						//console.log('newArr newArr newArr====>>>>', newArr);
+						
+						that.describe = newArr;
+						
+						// #endif	
+						
+						that.picture_list = that.goods_detail.picture_list;
+						
+						console.log('that.picture_list===>>>', that.picture_list);
+						
+						that.picture_length = that.goods_detail.picture_list ? that.goods_detail.picture_list.length : 0;
+						
+						
+						
+						that.loadCataXiangqing();
 
 					},
 					fail: function(res) {

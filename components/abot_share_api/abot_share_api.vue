@@ -17,7 +17,9 @@
 				<view style="font-size: 28rpx;color: #333333;">小程序</view>
 			</view>
 			
-			<view style="width: 25%;text-align: center;" @click="click_wxa_command_copy">
+			<view style="width: 25%;text-align: center;" 
+				@click="click_wxa_command_copy"
+				v-if="flag_hidden_btn_command_copy != 1">
 				<image style="width: 100rpx;height: 100rpx;" src="../../static/img/share/koling.png"></image>
 				<view style="font-size: 28rpx;color: #333333;">分享口令</view>
 			</view>
@@ -37,7 +39,7 @@
 	export default {
 		name: 'abot_share_api',
 		props: {
-			
+			flag_hidden_btn_command_copy:0,
 		},
 		data() {
 			return {

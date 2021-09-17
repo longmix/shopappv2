@@ -98,7 +98,9 @@ module.exports = {
 	},
 	//================= End ================
 	click_wxa_system_share:function(summary, href){
+		
 		console.log('我是系统消息分享',href);
+		
 		uni.shareWithSystem({
 		  summary: summary,
 		  href: href,
