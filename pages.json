@@ -499,7 +499,7 @@
 					}
 				},
 				{
-				    "path" : "pages/locationList/locationList",
+				    "path" : "locationList/locationList",
 				    "style" : {}
 				}
 			]
