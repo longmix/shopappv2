@@ -323,7 +323,7 @@
 				);
 				
 				
-				
+				return;
 			}
 			// #endif
 			//========= End ===============
@@ -551,7 +551,7 @@
 				}
 				
 				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_xiangqing',
+					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=order_xiangqing',
 					method: 'post',
 					data: post_data,
 					header: {

@@ -1246,7 +1246,7 @@ export default {
 					const filter = that.$options.filters["formatRichText"];
 					that.index_rich_html_content = filter(that.index_rich_html_content);
 					
-					console.log('1111111111====>>>' + that.index_rich_html_content);
+					//console.log('1111111111====>>>' + that.index_rich_html_content);
 					
 					//const filter = that.$options.filters["formatRichText"];
 					//that.index_rich_html_content = filter(that.index_rich_html_content);
