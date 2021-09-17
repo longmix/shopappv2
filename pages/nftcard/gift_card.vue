@@ -19,8 +19,8 @@
 		</view>
 		
 		
-		<view>
-			<view style="padding: 20rpx 0px 5px 0px">想要转赠的卡牌</view>
+		<view class="content_block">
+			<view class="block_title">想要转赠的卡牌</view>
 			<!-- 复选框按钮 -->
 			<uni-data-checkbox
 				min="1"
@@ -34,8 +34,8 @@
 		</view>
 			
 		
-		<view style="padding: 30rpx 0px 10px 0px">
-			<view>赠言</view>
+		<view class="content_block">
+			<view class="block_title">赠言，建议不超过20个汉字</view>
 			<view class="gift_card_textarea">
 				<textarea
 				placeholder-style="color: #30c478"
@@ -47,7 +47,9 @@
 		</view>
 		
 		<!-- 单选框按钮 -->
-		<view style="padding-left: 2.5%;">
+		<view class="content_block">
+			<view class="block_title">赠送方式</view>
+			
 			<uni-data-checkbox
 				mode="tag" 
 				v-model="checkbox_value_get_type"
@@ -58,7 +60,7 @@
 		</view>
 		
 		
-		<view style="padding-top: 50rpx;color: #FFFFFF;">
+		<view class="content_block" style="padding-top: 50rpx;">
 			<button type="default" @tap="go_to_gift_card_share"
 				class="gift_card_button_zengsong"
 				:style="{background:wxa_shop_nav_bg_color}">
@@ -616,6 +618,15 @@ export default {
 <style lang="scss">
 	@import "./static/css/nftcard.css";
 	
+	.content_block {
+		padding: 20rpx 0px 5px 0px;
+	}
+	
+	.block_title {
+		font-size:28rpx;
+		font-weight: bold;
+	}
+	
 	.card_detail_title {
 		padding-bottom: 15rpx;
 		font-size: 36rpx;
@@ -652,7 +663,7 @@ export default {
 	}
 	.gift_card_button_zengsong{
 		width: 350rpx;
-		
+		// padding: 10rpx;
 		text-align: center;
 		background: #30c478;
 		color: #FFFFFF;

@@ -337,7 +337,9 @@ export default {
 		var share_path = 'pages/nftcard/gift_card_share?sellerid=' + that.abotapi.globalData.default_sellerid;
 		share_path += '&packageid='+that.current_packageid;
 		share_path += '&cardid='+that.current_cardid;
-		share_path += 'from=app_message&cplid=' + that.current_cplid_list_str;
+		share_path += '&from=app_message&cplid=' + that.current_cplid_list_str;
+		
+		console.log('share_path====>>>>>' + share_path);
 	
 		var share_img = that.current_card_detail.cover_img_url_stand;
 		if(!share_img){
