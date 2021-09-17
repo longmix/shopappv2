@@ -256,7 +256,7 @@
 			//搜索跳转
 			toSearch() {
 				uni.navigateTo({
-					url:'/pages/search/search'				
+					url:'/pages/main/search/search'				
 				})
 			},
 			

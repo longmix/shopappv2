@@ -369,7 +369,7 @@
 					var userInfo = this.abotapi.get_user_info();
 					
 					if (!userInfo || !userInfo.userid) {
-						var last_url = '/pages/about/about?about=' + this.about_title;
+						var last_url = '/pages/main/about/about?about=' + this.about_title;
 						this.abotapi.goto_user_login(last_url, 'normal');
 						return;
 					}

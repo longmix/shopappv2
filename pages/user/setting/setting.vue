@@ -62,7 +62,7 @@
 					<view class="title">问题反馈</view>
 					<view class="right"><view class="tis"></view><view class="icon xiangyou"></view></view>
 				</navigator>
-				<navigator url="/pages/about/about" class="row">
+				<navigator url="/pages/main/about/about" class="row">
 					<view class="title">关于商城</view>
 					<view class="right"><view class="tis"></view><view class="icon xiangyou"></view></view>
 				</navigator>

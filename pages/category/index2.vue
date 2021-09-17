@@ -535,7 +535,7 @@
 			goto_search: function(view) {
 				//搜索跳转
 				uni.navigateTo({
-					url: '/pages/search/search'
+					url: '/pages/main/search/search'
 				})
 
 			}

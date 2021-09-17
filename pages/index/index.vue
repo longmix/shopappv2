@@ -9,7 +9,7 @@
 			:style="{ position: headerPosition,top:headerTop,opacity: afterHeaderOpacity }">
 			<!-- 定位城市 -->
 			<navigator v-if="disable_gps_location != 1"
-				url="../locationList/locationList" class="addr" :style="{fontSize:current_citynameWidth+'px'}">
+				url="../main/locationList/locationList" class="addr" :style="{fontSize:current_citynameWidth+'px'}">
 				<view class="icon location"></view>
 				<view style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:28rpx;">{{current_cityname}}</view>
 			</navigator>
@@ -968,7 +968,7 @@ export default {
 				//跳转到网站关闭的提示页面
 				console.log("跳转到网站关闭的提示页面");
 				uni.reLaunch({
-					url:'/pages/shutdown_website/shutdown_website'
+					url:'/pages/main/shutdown_website/shutdown_website'
 				})
 				return;
 			}
@@ -2172,7 +2172,7 @@ export default {
 		//搜索跳转
 		toSearch() {
 			uni.navigateTo({
-				url:'/pages/search/search'				
+				url:'/pages/main/search/search'				
 			})
 		},
 		

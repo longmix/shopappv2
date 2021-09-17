@@ -110,17 +110,7 @@
 					}]
 				}
 			}
-		},
-		{	//商品搜索
-		    "path" : "pages/search/search",
-		    "style" : {
-				"navigationBarTitleText" : "商品搜索",
-				"enablePullDownRefresh": true,
-				"app-plus": {
-					"bounce":"none"
-				}
-			}
-		},		
+		},	
 		{	//超级相册
 		    "path" : "cms/library/library",
 		    "style" : {
@@ -293,25 +283,6 @@
 		    }
 		},
 		{
-		    "path" : "pages/about/about",
-		    "style": {
-		    	"navigationBarTitleText": "关于",
-		    	"softinputNavBar":"none"
-		    }
-		},
-		{
-		    "path" : "pages/about/module_list",
-		    "style": {
-		    	"navigationBarTitleText": "延誉宝功能模块列表",
-		    	"softinputNavBar":"none",
-				"enablePullDownRefresh": true
-		    }
-		}
-        ,{
-            "path" : "pages/locationList/locationList",
-            "style" : {}
-        },
-		{
 		    "path" : "pages/shopMap/shopMap",
 		    "style" : {}
 		},{
@@ -406,15 +377,13 @@
 				      }
 				}
 			}
-        },
-		
+        },		
 		{
 		    "path" : "pages/live/live-historylog",
 		    "style" : {
 				"navigationBarTitleText":"直播记录"
 			}
 		},
-		
 		{
 		    "path" : "pages/live/live-pusher",
 		    "style" : {
@@ -475,15 +444,7 @@
 		        "enablePullDownRefresh": true
 		    }
 		    
-		},
-		{
-            "path" : "pages/shutdown_website/shutdown_website",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": true
-            }            
-        }
+		}
 		//======= NFT卡包卡牌相关 Begin  ====
 		//这个可能会挂接在底部导航中，所有不放在分包里面
 		/*,
@@ -500,6 +461,51 @@
 
     ],
 	"subPackages": [
+		//======= 一些内容详情页的分包 Begin  ====
+		{
+			"root": "pages/main",
+			"pages": [
+				{
+				    "path" : "shutdown_website/shutdown_website",
+				    "style" :                                                                                    
+					{
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": true
+					}
+				},
+				{
+				    "path" : "about/about",
+				    "style": {
+				    	"navigationBarTitleText": "关于",
+				    	"softinputNavBar":"none"
+				    }
+				},
+				{
+				    "path" : "about/module_list",
+				    "style": {
+				    	"navigationBarTitleText": "延誉宝功能模块列表",
+				    	"softinputNavBar":"none",
+						"enablePullDownRefresh": true
+				    }
+				},
+				{	//商品搜索
+				    "path" : "search/search",
+				    "style" : {
+						"navigationBarTitleText" : "商品搜索",
+						"enablePullDownRefresh": true,
+						"app-plus": {
+							"bounce":"none"
+						}
+					}
+				},
+				{
+				    "path" : "pages/locationList/locationList",
+				    "style" : {}
+				}
+			]
+			
+		},
+		//======= 一些内容详情页的分包 Begin  ====
 		//======= 商品详情相关的分包 Begin  ====
 		{
 			"root": "pages/product",

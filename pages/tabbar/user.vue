@@ -147,7 +147,7 @@
 					</view>
 					<view class="text">{{row.name}}</view>
 				</view>
-				<navigator class="box" :url="'/pages/about/about?about=' + about">
+				<navigator class="box" :url="'/pages/main/about/about?about=' + about">
 					<view class="img">
 						<image src="https://yanyubao.tseo.cn/Tpl/static/images/aboutus.png"></image>
 					</view>
@@ -165,7 +165,7 @@
 				</view>
 
 
-				<navigator class="icon_box_item" :url="'/pages/about/about?about=' + about">
+				<navigator class="icon_box_item" :url="'/pages/main/about/about?about=' + about">
 					<view style='float: left;'>
 						<image style="width:70rpx;height:70rpx;margin-right:40rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/aboutus.png"></image>
 					</view>
