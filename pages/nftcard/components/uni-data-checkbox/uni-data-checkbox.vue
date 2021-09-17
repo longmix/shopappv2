@@ -464,7 +464,7 @@
 <style lang="scss">
 	$checked-color: #007aff;
 	$border-color: #DCDFE6;
-	$disable:0.4;
+	$disable:0.8;
 
 	@mixin flex {
 		/* #ifndef APP-NVUE */

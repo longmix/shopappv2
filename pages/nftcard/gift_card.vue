@@ -377,7 +377,7 @@ export default {
 						that.checkbox_range_card_publish_list.push({"value": temp001.cplid, "text": "#"+temp001.cplseq +'  '+ temp001.cplno});
 					}
 					
-					console.log('checkbox_range_card_publish_list=====>>>',checkbox_range_card_publish_list)
+					console.log('checkbox_range_card_publish_list=====>>>', that.checkbox_range_card_publish_list)
 					
 				},
 				fail: function(e) {
@@ -453,12 +453,14 @@ export default {
 			
 			data001.current_packageid = that.current_card_detail.packageid;
 			data001.current_cardid = that.current_card_detail.cardid;
+			data001.cplid_list_str = cplid_list_str;
 		
 			data001.send_wish = that.send_wish;
 			
 
-			data001.checkbox = that.checkbox_value_get_type;
+			data001.get_type = that.checkbox_value_get_type;
 			data001.cpl_list = [];
+			
 			console.log('data001.checkboxt=====>>>',data001.checkbox)
 			console.log('checkbox_value_cplid:' + cplid_list_str);
 			
