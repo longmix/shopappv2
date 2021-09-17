@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view style="text-align: center;margin-top: 40%;">
-			<image style="width: 300rpx;" src="../../static/img/help/comment.png"  mode="widthFix"></image>
+			<image style="width: 300rpx;" src="../../../static/img/help/comment.png"  mode="widthFix"></image>
 			<text style="display: block;margin: 50rpx; color: #666;">{{shutdown_website_tips}}</text>
 		</view>
 	</view>

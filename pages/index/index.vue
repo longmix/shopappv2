@@ -9,7 +9,7 @@
 			:style="{ position: headerPosition,top:headerTop,opacity: afterHeaderOpacity }">
 			<!-- 定位城市 -->
 			<navigator v-if="disable_gps_location != 1"
-				url="../main/locationList/locationList" class="addr" :style="{fontSize:current_citynameWidth+'px'}">
+				url="/pages/main/locationList/locationList" class="addr" :style="{fontSize:current_citynameWidth+'px'}">
 				<view class="icon location"></view>
 				<view style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:28rpx;">{{current_cityname}}</view>
 			</navigator>

@@ -54,7 +54,7 @@
 				<view class="li_title">清空缓存</view>
 				<view class="li_info">
 					<view class="jiantou">
-						<image src="../../static/img/x_right.png"></image>
+						<image src="../../../static/img/x_right.png"></image>
 					</view>
 				</view>
 			</view>
@@ -64,7 +64,7 @@
 				<view class="li_title">重置延誉宝数据</view>
 				<view class="li_info">
 					<view class="jiantou">
-						<image src="../../static/img/x_right.png"></image>
+						<image src="../../../static/img/x_right.png"></image>
 					</view>
 				</view>
 			</view>

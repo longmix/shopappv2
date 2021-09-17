@@ -7,7 +7,7 @@
 				@input="searchValueInput($event)" 
 				:focus="focus"  
 				@confirm="doSearch($event)"/><!--  -->
-			<button @tap="doSearch"><image class="searchcion" src="../../static/img/search.png" style="width: 50rpx;height:50rpx;"></image></button>
+			<button @tap="doSearch"><image class="searchcion" src="../../../static/img/search.png" style="width: 50rpx;height:50rpx;"></image></button>
 		</view>
 		<view class="cont" v-if="hotKeyShow">
 			<text class="font_14">热门搜索</text>

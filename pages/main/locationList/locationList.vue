@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="head" style="margin-top: 40rpx;">
-			<image src="../../static/img/addricon.png" style="width:40upx;height: 40upx;margin-left:20rpx ;"></image>
+			<image src="../../../static/img/addricon.png" style="width:40upx;height: 40upx;margin-left:20rpx ;"></image>
 			<view style="margin-left: 20upx ;">
 			  <view style="color: #808080;display:inline-block;">当前位置：</view>
 			</view>
@@ -18,7 +18,7 @@
 		</view>
 		
 		<view class="head" style="margin-top: 40rpx;">
-			<image src="../../static/img/VIP.png" style="width:40upx;height: 40upx;margin-left:20rpx ;"></image>
+			<image src="../../../static/img/VIP.png" style="width:40upx;height: 40upx;margin-left:20rpx ;"></image>
 			<view style="margin-left: 20upx ;">
 			  <view style="color: #808080;display:inline-block;">城市列表：</view>
 			</view>
@@ -44,7 +44,7 @@
 
 <script>
 	
-	import locationapi from '../../common/locationapi.js'; 
+	import locationapi from '../../../common/locationapi.js'; 
 	
 	export default {
 		data() {
