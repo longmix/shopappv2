@@ -64,7 +64,7 @@
 			<button type="default" @tap="go_to_gift_card_share"
 				class="gift_card_button_zengsong"
 				:style="{background:wxa_shop_nav_bg_color}">
-				去赠送
+				确认赠送信息
 			</button>
 		</view>
 		<!-- <block v-else>

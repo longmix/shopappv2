@@ -1309,6 +1309,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			__nftcard_gift_or_discard:function(cplid, data_type, wish='', mobile=''){
 				var that = this;
 				
+				
 				var post_data = {
 					sellerid: that.abotapi.globalData.default_sellerid,
 					cplid: cplid,

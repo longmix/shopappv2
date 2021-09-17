@@ -331,7 +331,43 @@
 			</view>
 		</view>
 		
-			
+		<!-- 卡包兑换优惠券 -->
+		<view class="" v-if="show_package_to_coupon_btn == 1">
+			<button type="default" style="width:100%;position:fixed;bottom:0;background-color: #30C478;color: #FFFFFF;"
+			 @tap="showModal_exchange_btn = true">
+				兑换优惠券
+			 </button>
+		</view>
+		
+		<!-- 点击兑换按钮的弹层 -->
+		
+		<view class="show_modal_mask" v-if="showModal_exchange_btn" @tap="showModal_exchange_btn=false"></view>
+		<view class="show_modal_pop" v-if="showModal_exchange_btn">
+			<view style="width: 500rpx;height:100%;background-color: #FFFFFF; overflow-y: auto;">
+				
+				<view class="" v-for="(current_coupon_list_item ,index) in current_coupon_list" :key="index"  
+				 @tap="coupon_exchange()">
+					<view class="" style="display: flex;margin: 20rpx ;">
+						<view class="" style="">
+							<image :src="current_coupon_list_item.icon" mode="widthFix" style="width: 100rpx;"></image>
+						</view>
+						<view class="">
+							<view class="" style="margin-left: 10rpx;font-size: 25rpx;">
+								{{current_coupon_list_item.name}}
+							</view>
+							<view class="" style="margin-left: 10rpx;">
+								抵扣：￥{{current_coupon_list_item.price}}
+							</view>
+						</view>
+						
+						
+					</view>
+					
+						
+				</view>
+				
+			</view>
+		</view>
 	
 	</view>
 </template>
@@ -388,6 +424,12 @@ export default {
 			card_bg_img_height:'',
 			
 
+			//2021.9.17. 卡包兑换优惠券
+			//实现显示兑换按钮
+			show_package_to_coupon_btn : 0,
+			
+			
+			showModal_exchange_btn:false,
 			
 		};
 	},
@@ -568,9 +610,11 @@ export default {
 				// #endif	
 				
 				
-				//获取相关卡包列表
-				
+				//获取相关卡包列表				
 				that.__nft_get_relate_package_list();
+				
+				//查询当前卡包是否可兑换
+				that.__nft_check_package_vs_coupon();
 				
 				
 		    },
@@ -1386,7 +1430,156 @@ export default {
 			
 			
 			
-		}
+		},
+		
+		__nft_check_package_vs_coupon:function(){
+			var that = this;
+			
+			var userInfo = that.abotapi.get_user_info();
+			
+			if (!userInfo) {
+				return;
+				
+			}
+		
+		
+			//获取单张卡牌的购买记录列表
+			var post_data = {
+				sellerid:that.abotapi.globalData.default_sellerid,
+				packageid:that.current_package_detail.packageid,
+				
+			};
+			
+			
+			post_data.userid = userInfo.userid;
+			post_data.checkstr = userInfo.checkstr;
+			
+		
+		
+			// 获取推荐卡包但不获取自己
+			that.abotapi.abotRequest({
+			    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/nftcard_package_vs_coupon_list',
+			    method: 'post',
+			    data: post_data,
+			    success: function (res) {
+					
+					if(res.data.code != 1){
+						
+						
+						return;
+					}
+				
+			
+					that.show_package_to_coupon_btn = 1;
+					
+					that.current_coupon_list = res.data.data;
+					
+					
+					
+					console.log('current_coupon_list ===>>> ', that.current_coupon_list);
+					
+					for(var i=0; i<that.current_coupon_list.length; i++){
+					
+						
+						that.current_coupon_list[i].price = parseInt(that.current_coupon_list[i].price/100);
+						
+						that.current_coupon_list.couponid = that.current_coupon_list[i].couponid
+						
+						console.log('current_coupon_list0000000000000000 ===>>> ', that.current_coupon_list.couponid);
+						console.log('that.current_coupon_list.price ===>>> ', that.current_coupon_list[i].price);
+						
+						
+						
+					}
+					
+					
+					
+				
+							
+					
+			    },
+			    fail: function (e) {
+					uni.showToast({
+						title: '网络异常！',
+						duration: 2000
+					});
+			    },
+			});
+			
+			
+			
+			
+		},
+		
+		//nftcard_package_to_coupon_add
+		coupon_exchange:function(){
+			var that = this;
+			
+			
+				var userInfo = that.abotapi.get_user_info();
+				
+				if (!userInfo) {
+					return;
+					
+				}
+			
+			
+				var post_data = {
+					sellerid:that.abotapi.globalData.default_sellerid,
+					packageid:that.current_package_detail.packageid,
+					couponid:that.current_coupon_list.couponid,
+				};
+				
+				
+				post_data.userid = userInfo.userid;
+				post_data.checkstr = userInfo.checkstr;
+				
+			
+				that.abotapi.abotRequest({
+				    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/nftcard_package_to_coupon_add',
+				    method: 'post',
+				    data: post_data,
+				    success: function (res) {
+						
+						uni.showModal({
+							title:'',
+							content:res.data.msg,
+							showCancel:false,
+							success: (res) => {
+								if(res.data.code == 1){
+									
+									uni.navigateTo({
+										url:'/pages/nftcard/package_to_coupon_log'
+									})
+									
+									return;
+								}
+													
+							}
+						})
+						
+						
+						
+								
+						
+				    },
+				    fail: function (e) {
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+				    },
+				});
+				
+			
+			
+		},
+		
+		
+		
+		
+		
+		
 		
 	},
 	filters: {
@@ -1651,6 +1844,7 @@ export default {
 		background-color: #000000;
 		width:340rpx;
 		height: 510rpx;
+	
 	}
 	.package_card_watermark{
 		width: 120rpx;

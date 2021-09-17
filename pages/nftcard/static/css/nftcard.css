@@ -73,7 +73,7 @@
 	.package_card_img{
 		width: 240rpx; 
 		height: 360rpx;
-		border-radius: 20rpx;
+		border-radius: 10rpx;
 	}
 	.package_card_watermark{
 		width: 80rpx;

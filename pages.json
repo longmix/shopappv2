@@ -807,7 +807,25 @@
 						"enablePullDownRefresh": false
 					}
                 
-                }
+                },
+				{
+				    "path" : "package_to_coupon_log",
+				    "style" :                                                                                    
+					{
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				
+				},
+				{
+				    "path" : "gift_send_or_get_log",
+				    "style" :                                                                                    
+					{
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				
+				}
             ]
 			
 		}
