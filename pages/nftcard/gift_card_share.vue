@@ -105,9 +105,17 @@
 			
 			
 			<view>
-				<view style="padding: 40rpx 10rpx;">来自于<b>{{current_card_item.nickname}}</b>转增的卡牌</view>
+				<view style="line-height:60rpx ;">来自于</view>
+		
+					<view class="" style="display: flex;">
+						<image :src="current_card_item.headimgurl" mode="widthFix" style="width: 120rpx; margin:20rpx 10rpx;"></image>
+						<view class="card_cpl_nickname" >{{current_card_item.nickname}}</view>
+					</view>
+					
+					<view style="line-height:60rpx ;">转赠的卡牌</view>
+			
 				
-				<view class="" v-for="(current_card_item_list , index) in current_card_item.cplid">
+				<view class="" v-for="(current_card_item_list , index) in current_card_item.cplid" style="margin: 20rpx 5rpx;">
 					<view class="card_cpl_transfer">
 						#{{current_card_item_list.cplseq}} {{current_card_item_list.cplno}}
 					</view>
@@ -122,13 +130,13 @@
 				</uni-data-checkbox> -->
 			</view>
 				
-			
-			<view style="padding: 20rpx 10rpx; font-size:40rpx;" :style="{color:wxa_shop_nav_bg_color}">
+			<view>赠言：</view>
+			<view class="card_cpl_gift"  :style="{color:wxa_shop_nav_bg_color}">
 				{{current_card_item.send_wish}}
 			</view>
 			
-			<image :src="current_card_item.headimgurl" mode="widthFix" style="width: 120rpx; margin:20rpx 80rpx;"></image>
-			<view style="font-size: 20rpx; padding: 20rpx 80rpx;">
+		
+			<view style="font-size: 20rpx; padding: 20rpx 10rpx;">
 				 {{current_card_item.createtime}}
 			</view>  
 			
@@ -820,7 +828,16 @@ export default {
 		border-radius: 10rpx;
 		margin-right: 20rpx;
 	}
-	
+	.card_cpl_gift{
+		padding: 20rpx 10rpx; 
+		font-size:40rpx;
+		overflow: hidden;
+		
+		display:-webkit-box;
+		-webkit-line-clamp:3;
+		-webkit-box-orient:vertical;
+		word-wrap: break-word;
+	}
 	.checkbox_receive{
 		background: #30c478;
 		width: 150rpx;
@@ -831,15 +848,7 @@ export default {
 		height: 50rpx;
 		line-height: 50rpx;
 	}
-	
-	.card_detail_title {
-		padding-bottom: 15rpx;
-		font-size: 36rpx;
-		font-weight: bold;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-	}
+
 	.selfCheckBox{
 		cursor: pointer;
 		.selfCkeckImgBox img{
@@ -870,13 +879,11 @@ export default {
 		padding: 15rpx;
 		border-bottom: 2rpx #666666 solid;
 	}
-	.gift_card_brief{
-		color: #666666;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		display:-webkit-box;
-		-webkit-line-clamp:10;
-		-webkit-box-orient:vertical;
+
+	.card_cpl_nickname{
+		font-weight: bold;
+		font-size: 40rpx;
+		margin: 40rpx 20rpx 20rpx 20rpx
 	}
 	//实现隔行换色
 	// table tr:nth-child(odd){

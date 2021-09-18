@@ -627,14 +627,7 @@ export default {
 		font-weight: bold;
 	}
 	
-	.card_detail_title {
-		padding-bottom: 15rpx;
-		font-size: 36rpx;
-		font-weight: bold;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-	}
+	
 	.selfCheckBox{
 		cursor: pointer;
 		.selfCkeckImgBox img{
@@ -672,14 +665,7 @@ export default {
 		padding: 15rpx;
 		border-bottom: 2rpx #666666 solid;
 	}
-	.gift_card_brief{
-		color: #666666;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		display:-webkit-box;
-		-webkit-line-clamp:10;
-		-webkit-box-orient:vertical;
-	}
+
 	//实现隔行换色
 	// table tr:nth-child(odd){
 	// 	background: #c8c6cc;

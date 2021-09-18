@@ -491,13 +491,20 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 </template>
 
 <script>
+	
+	
 	import util from '../../common/util.js';
 
 	// #ifdef MP-ALIPAY
 	import parseHtml from "../../common/html-parser.js"
 	// #endif
-
+	
+	
+	var locationapi = require('../../common/locationapi.js');
+	
+	
 	export default {
+		
 		name:'try',
 		data() {
 			return {				
@@ -646,6 +653,24 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				options.cardid = options.scene.replace('nft_cd_', '');
 				
 				console.log('通过小程序码扫描进入，卡牌ID====>>>>>'+options.cardid);
+				
+				this.current_cardid = options.cardid;
+			}
+			else if(options.scene && (options.scene.indexOf('lbs_') != -1) ){
+				options.cardid = options.scene.replace('lbs_', '');
+				
+				console.log('通过小程序码扫描进入，卡牌ID====>>>>>'+options.cardid);
+				
+				this.current_cardid = options.cardid;
+				
+				//获取GPS坐标
+				that.abotapi.set_shop_option_data(that, this.__handle_lbs_get_card);
+				
+				
+				
+				return;
+				
+				
 			}
 			//================== End =====================
 			
@@ -1567,7 +1592,106 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				
 				
-			}
+			},
+			__handle_lbs_get_card:function(){
+				
+				var that = this;
+				
+				var cardid = that.current_cardid;
+				
+				var last_url = '/pages/nftcard/card_detail?' + that.current_params_str;
+				var userInfo = that.abotapi.get_user_info();
+				
+				if(!userInfo){
+					that.abotapi.goto_user_login(last_url);
+					
+						return;
+				}
+				
+				
+				//打卡的目标GPS
+				locationapi.get_location_remove();
+				
+				locationapi.get_location(this, function(that001, locationData){
+					console.log('locationData',locationData)
+					
+					
+					//ajax请求，保存签到数据
+					var userInfo = that001.abotapi.get_user_info();
+					
+					/*
+					var lbs02 = {
+						latitude:latitude,
+						longitude:longitude,
+						citizenid:that001.options_citizenid,
+					};*/
+					
+
+					
+					
+					//checkin_latitude  checkin_longitude 受助者的坐标地址
+					
+					var post_data = {
+						sellerid:that001.abotapi.globalData.default_sellerid,
+						userid:userInfo.userid,
+						checkstr: userInfo.checkstr,
+						latitude:locationData.latitude,
+						longitude:locationData.longitude,
+						city:locationData.addressComponent.city,
+						address:locationData.address,
+						
+					}
+					
+					//签退的时候  目前没有用到这里  判断是签到签退在服务器端判断了
+					if(0){
+						post_data.tongji_key = 'checkout';
+					}else if(1){
+						post_data.tongji_key = 'checkin';
+					}
+					
+					
+					
+					
+					that001.abotapi.abotRequest({
+						url: that001.abotapi.globalData.yanyubao_server_url + 'openapi/NftCardData/',
+						method: 'post',
+						data: post_data,
+						success: function (res) {
+							console.log(res);
+							
+							uni.showModal({
+								title:'提示',
+								content:res.data.msg,
+								showCancel:false,
+								success: (res) => {
+									
+									//跳转到卡牌详情页
+									if(res.data.code == 1){
+										
+										uni.navigateTo({
+											url: '/pages/nftcard/card_detail?cardid='+that.current_cardid,
+										})
+										
+									}
+									
+								}
+							})
+							
+							
+						} 
+					})
+					
+					console.log('=>',locationData);
+				})
+					
+					
+				},
+				
+				
+				
+				
+				
+			
 			
 			
 		},
@@ -1913,13 +2037,11 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	}
 	.card_detail_title {
 		width: 85%;
-		padding-bottom: 15rpx;
+
 		text-align: left;
 		font-size: 38rpx;
-		font-weight: bold;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
+	
+		
 	}
 	.card_packages_title {
 		font-size: 32rpx;

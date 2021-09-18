@@ -3,7 +3,7 @@
 		<view class="" style="width: 750rpx;height: 20rpx;"></view>
 		
 
-		<view v-if="current_package_list ==''" style="text-align : center;">
+		<view v-if="current_coupon_log == null" style="text-align : center;">
 			<image src="https://yanyubao.tseo.cn/Tpl/static/images/empty_favorite.png" mode="widthFix" style="width: 300rpx;"></image>
 			<view style="padding-bottom: 50rpx;color: #666666;">空空如也 ~~</view>
 		</view>
@@ -229,7 +229,7 @@ export default {
 						return;
 					}
 			
-					 that.current_coupon_log = res.data.data;
+					that.current_coupon_log = res.data.data;
 				
 					console.log('package_to_coupon_log_list 55555555555555555===>>> ', that.current_coupon_log.coupon_item);
 					

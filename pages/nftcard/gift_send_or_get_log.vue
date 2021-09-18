@@ -3,7 +3,7 @@
 		<view class="" style="width: 750rpx;height: 20rpx;"></view>
 		
 
-		<view v-if="current_package_list ==''" style="text-align : center;">
+		<view v-if="current_coupon_log == null" style="text-align : center;">
 			<image src="https://yanyubao.tseo.cn/Tpl/static/images/empty_favorite.png" mode="widthFix" style="width: 300rpx;"></image>
 			<view style="padding-bottom: 50rpx;color: #666666;">空空如也 ~~</view>
 		</view>

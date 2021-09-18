@@ -11,6 +11,22 @@
 	.global_background{
 		background-color:#eceeef;
 	}
+	.card_detail_title{
+		padding-bottom: 15rpx;
+		font-size: 36rpx;
+		font-weight: bold;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.gift_card_brief{
+		color: #666666;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display:-webkit-box;
+		-webkit-line-clamp:10;
+		-webkit-box-orient:vertical;
+	}
  	.package_label{
 		display: flex;
 		position: relative;
