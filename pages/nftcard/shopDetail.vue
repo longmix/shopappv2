@@ -994,6 +994,8 @@
 				
 				console.log('this.use_theme_nft_package ====>>>>>> ', this.use_theme_nft_package);
 				
+				this.user_console_setting.user_console_quick_button_position = 'none';
+				
 				
 				this.get_shang_detail();
 				
