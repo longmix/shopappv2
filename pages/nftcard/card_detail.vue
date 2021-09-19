@@ -1071,7 +1071,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			test_goto_buy: function() {
 				var that = this;
 
-				console.log('tgggggggggggggggggg_buy');
+				console.log('tgggggggggggggggggg_buy', that.current_card_detail.publish_counter);
+				console.log('tgggggggggggggggggg_buy', that.current_card_detail.sale_counter);
 				
 				//======= 判断用户是否登录 ============
 				var last_url = '/pages/nftcard/card_detail?' + that.current_params_str;
@@ -1086,7 +1087,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				
 				if( (that.current_card_detail.publish_counter > 0)
-					&& (that.current_card_detail.publish_counter <= that.current_card_detail.sale_counter) ){
+					&& (parseInt(that.current_card_detail.publish_counter) <= parseInt(that.current_card_detail.sale_counter) ) ){
 					uni.showModal({
 						title:'提示',
 						content:'卡牌已售罄',

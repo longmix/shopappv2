@@ -83,11 +83,13 @@ export default {
 			current_package_list : null,
 			userid:0,
 			tabIndex:0,
-			    tabBars:[
-					{ name:"全部卡牌",id:"quanbu"},
-			        // { name:"正在发售",id:"diancang"},
-			        // { name:"已过期",id:"zhencang"},
-			    ]
+			tabBars:[
+				{ name:"全部卡牌",id:"quanbu"},
+				// { name:"正在发售",id:"diancang"},
+				// { name:"已过期",id:"zhencang"},
+			],
+			
+			current_page : 1
 			
 		}
 	},
@@ -167,10 +169,13 @@ export default {
 		});
 		// #endif
 		
-		
+		this.current_page = 1;
+		this.current_package_list = [];
+		this.__nft_get_package_list();
 	},
 	//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
 	onReachBottom: function () {
+		this.current_page ++;
 		
 		this.__nft_get_package_list();
 		
@@ -236,55 +241,7 @@ export default {
 		
 		tabtap(index){
 			
-			var that=this;
-			//获取卡包列表
 			
-			var post_data = {
-					sellerid:that.abotapi.globalData.default_sellerid,
-					//action02:'expire_list',
-					action: 'my_like_list',
-			};
-			
-			
-			    var userInfo = that.abotapi.get_user_info();
-			    if (userInfo) {
-			    	post_data.userid = userInfo.userid;
-			    	post_data.checkstr = userInfo.checkstr;
-			   }
-			
-			
-			that.abotapi.abotRequest({
-				url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_list',
-				method: 'post',
-				data: post_data,
-				success: function (res) {
-					
-					if(res.data.code != 1){
-						uni.showToast({
-							title:'卡包列表没有数据',
-							duration: 2000,
-						});
-						
-						return;
-					}
-					
-					that.tabIndex=index;
-					
-					that.current_package_list = res.data.data;
-					
-					console.log('current_package_list ===>>> ', that.current_package_list);
-					
-							
-					
-				},
-				fail: function (e) {
-					uni.showToast({
-						title: '网络异常！',
-						duration: 2000
-					});
-				},
-			});
-					
 			
 		},
 		
@@ -307,7 +264,7 @@ export default {
 					sellerid:that.abotapi.globalData.default_sellerid,
 					// action02:'expire_list',
 					action: 'my_like_list',
-					page:1,
+					page: that.current_page,
 			};
 			
 			
@@ -333,7 +290,15 @@ export default {
 						return;
 					}
 					
-					that.current_package_list = res.data.data;
+					if(!that.current_package_list){
+						that.current_package_list = [];
+					}
+						
+					for(var i=0; i<res.data.data.length;i++ ){
+						that.current_package_list.push(res.data.data[i]);
+					}
+					
+					//that.current_package_list = res.data.data;
 					
 					console.log('current_package_list ===>>> ', that.current_package_list);
 					

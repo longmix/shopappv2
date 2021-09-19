@@ -63,17 +63,18 @@ export default {
 	components: { waterfallsFlow },
 	data() {
 		return {
-			current_card_list:null,
+			current_card_list:[],
 			
 			action_data_type:'my_favorite_list',
 			
 			tabIndex:0,
-			    tabBars:[
-					{ name:"全部卡牌",id:"quanbu"},
-					//先隐藏以下两个按钮的功能，下个版本再考虑增加
-			        //{ name:"典藏卡",id:"diancang"},
-			        //{ name:"珍藏卡",id:"zhencang"},
-			    ]
+			tabBars:[
+				{ name:"全部卡牌",id:"quanbu"},
+				//先隐藏以下两个按钮的功能，下个版本再考虑增加
+				//{ name:"典藏卡",id:"diancang"},
+				//{ name:"珍藏卡",id:"zhencang"},
+			],
+			current_page : 1
 		};
 	},
 	/**
@@ -150,14 +151,16 @@ export default {
 		
 		console.log('onPullDownRefresh=====>>>>>');
 		
+		this.current_page = 1;
+		this.current_card_list = [];
 		this.__get_card_list();
 		
 		
 	},
 	//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
 	onReachBottom: function () {
-		
-		this.get_product_list();
+		this.current_page ++;
+		this.__get_card_list();
 		
 	},
 	
@@ -272,13 +275,11 @@ export default {
 					checkstr:userInfo.checkstr,
 					userid:userInfo.userid,
 					action: that.action_data_type,
-					page:1,
+					page: that.current_page,
 			    },
 			    success: function (res) {
 					
 					uni.hideLoading();
-					
-					that.current_card_list = [];
 					
 					if((res.data.code != 1) || (!res.data.data) ){
 						uni.showToast({
@@ -291,6 +292,18 @@ export default {
 					
 					var card_list = res.data.data;
 					
+					if(!that.current_card_list){
+						that.current_card_list = [];
+					}
+					
+					if(card_list && (card_list.length == 0) ){
+						uni.showToast({
+							title:'到底了~',
+							duration: 2000,
+						});
+						
+						return;
+					}
 					
 					
 					for(var i=0; i<card_list.length; i++){

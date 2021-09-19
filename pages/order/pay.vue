@@ -4,12 +4,12 @@
 			<view class="p_all bg_white mt10 font_14" v-if="addemt==0">
 				<view @click="goAddress()">
 					<view class="df">
-						<view class="df_1 c6" style="padding: 5upx 20upx;">
+						<view class="df_1 c6" style="padding: 5rpx 20rpx;">
 							<view style='display:flex;'>
-								<view class="l_h20" style="font-size:40upx;margin-right:56upx;">{{order_address_detail.name}}</view>
-								<view class="l_h20 " style="font-size:40upx;">{{order_address_detail.mobile}}</view>
+								<view class="l_h20" style="font-size:40rpx;margin-right:56rpx;">{{order_address_detail.name}}</view>
+								<view class="l_h20 " style="font-size:40rpx;">{{order_address_detail.mobile}}</view>
 							</view>
-							<view class="l_h20 mt5" style="font-size:32upx;margin-top:22upx;">
+							<view class="l_h20 mt5" style="font-size:32rpx;margin-top:22rpx;">
 								{{order_address_detail.province_name}}{{order_address_detail.city_name}}{{order_address_detail.district_name}}{{order_address_detail.address}}
 							</view>
 						</view>
@@ -79,7 +79,7 @@
 						<text style="">{{item.name}} <text style="color:#666;font-size:26rpx" v-if="item.spec_list.length">（{{item.spec_list}}）</text></text>
 						<view>￥ {{item.price}}</view>
 					</view>
-					<view style="font-size: 26rpx;margin-top: 14px;">x {{item.count}}</view>
+					<view style="font-size: 26rpx;margin-top: 28rpx;">x {{item.count}}</view>
 				</view>
 			</view>
 		</view>
@@ -163,7 +163,7 @@
 
 			
 			<view class="p_all bg_white mt10 font_14">
-				<b><text style="font-size:28upx;margin-bottom: 20upx;">备注</text></b>
+				<b><text style="font-size:28rpx;margin-bottom: 20rpx;">备注</text></b>
 				<textarea class="min_60" auto-height name="remark" placeholder="如有备注请填写" @input="remarkInput" :value="remark" rows="3" />
 				</view>	
 		
@@ -2264,8 +2264,8 @@ extraData = 'xxxxxxxxxxxxxxx'
 	    width: 60px; 
 	    height: 60px;
 	    overflow: hidden; 
-	    border-radius: 3px; 
-	    margin-right: 10px;
+	    border-radius: 6rpx; 
+	    margin-right: 20rpx;
 	}
 	.item .cp_photo image{ 
 	    width: 60px; 
@@ -2277,7 +2277,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 	  flex-direction: column;
 	}
 	.gm_ovh_2h{
-	    line-height:25px; 
+	    line-height:50rpx; 
 	    height: 50px; 
 	    margin:0; 
 	    overflow:hidden;  
@@ -2285,59 +2285,59 @@ extraData = 'xxxxxxxxxxxxxxx'
 	    display:-webkit-box; 
 	    -webkit-line-clamp:2;  
 	    -webkit-box-orient:vertical; 
-	    font-size: 16px;
+	    font-size: 32rpx;
 	}
 	.gm_ovh_1h{
-	    line-height:25px; 
-	    height: 25px; 
+	    line-height:50rpx; 
+	    height: 50rpx; 
 	    margin:0; 
 	    overflow:hidden;  
 	    text-overflow:ellipsis; 
 	    display:-webkit-box; 
 	    -webkit-line-clamp:2;  
 	    -webkit-box-orient:vertical; 
-	    font-size: 28upx;
+	    font-size: 28rpx;
 	} 
 	.h10_hui{
-	    height: 10px;
+	    height: 20rpx;
 	    width: 100%;
 	    background: #eee;
 	}
 	
 	.min_60{
-	    min-height: 60px;
-	    width: 100%;
-	    border: 1px solid #e5e5e5;
+	    min-height: 120rpx;
+	    border: 1rpx solid #e5e5e5;
+		padding:20rpx;
 	}
 	
 	.w100{ width: 100%}
 	
 	.iconWarn{
-	   vertical-align:top;padding-right:2px;
+	   vertical-align:top;padding-right:4rpx;
 	}
 	
 	.iconClear{
 	  float:right;
-	  padding-top: 5px;
-	  padding-left: 10px;
-	  padding-right:10px;
+	  padding-top: 10rpx;
+	  padding-left: 20rpx;
+	  padding-right:20rpx;
 	  margin-top:-36px;
-	  height: 28px;
+	  height: 216rpx;
 	}
 	
 	.inputStyle{
 	  height: 36px;
 	  line-height: 36px;
-	  padding-left: 2px;
+	  padding-left: 4rpx;
 	  width:80%;
 	}
 	
 	.tips{
-	  margin-bottom:10px;
+	  margin-bottom:20rpx;
 	}
 	.x_right{
-	    width:16px;
-	    height: 18px;
+	    width:32rpx;
+	    height: 116rpx;
 	    display:inline-block; 
 	    vertical-align: middle;
 	    float: right; 
@@ -2347,7 +2347,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 	    margin-bottom: 1px;
 	    padding: 4%;
 	    width: 92%;
-	    font-size: 14px;
+	    font-size: 28rpx;
 	    color: #666;
 	}
 	.font_20{
@@ -2355,7 +2355,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 	    font-weight: bold;
 	}
 	.xx_pay_submit{
-	  margin-top: 10px;
+	  margin-top: 20rpx;
 	  color: #fff;
 	  background-color: #1AAD19;
 	
@@ -2367,13 +2367,13 @@ extraData = 'xxxxxxxxxxxxxxx'
 	}
 	.gms_view navigator{
 	    border: 1px solid #ddd;
-	    width: 22px;
-	    height: 22px;
+	    width: 24rpx;
+	    height: 24rpx;
 	    border-radius: 50%;
 	    color: #666;
-	    font-size: 12px;
+	    font-size: 24rpx;
 	    text-align: center;
-	    line-height: 22px;
+	    line-height: 24rpx;
 	    float: right;
 	    font-weight: bold;
 	    
@@ -2381,10 +2381,10 @@ extraData = 'xxxxxxxxxxxxxxx'
 	.gms_view input{
 	    background: #fff;
 	    border: 1px solid #ddd;
-	    border-radius: 2px;
-	    font-size: 12px;
-	    width: 30px;
-	    margin: 0 5px;
+	    border-radius: 4rpx;
+	    font-size: 24rpx;
+	    width: 60rpx;
+	    margin: 0 10rpx;
 	    text-align: center;
 	    color: #999;
 	    float: right;
@@ -2395,13 +2395,13 @@ extraData = 'xxxxxxxxxxxxxxx'
 	    height: 20px;
 	}
 	.hui{
-	    margin-left: 28upx;
-	    font-size: 30upx;
+	    margin-left: 28rpx;
+	    font-size: 30rpx;
 	    
 	}
 	.xuan{
-	    padding: 10upx 0;
-	    font-size: 30upx;
+	    padding: 10rpx 0;
+	    font-size: 30rpx;
 	}
 	
 	.photo_name{
@@ -2411,10 +2411,10 @@ extraData = 'xxxxxxxxxxxxxxx'
 	.danji_shulian{
 	  display:flex;
 	  justify-content:space-between;
-	  border-bottom: 1upx solid #e5e5e5;
-	  padding:0 20upx;
-	  height:70upx;
-	  margin-top: 10upx;
+	  border-bottom: 1rpx solid #e5e5e5;
+	  padding:0 20rpx;
+	  height:70rpx;
+	  margin-top: 10rpx;
 	}
 	
 	.heji_con{
@@ -2425,24 +2425,24 @@ extraData = 'xxxxxxxxxxxxxxx'
 	.a-dikou{
 	  display:flex;
 	  padding:0 0 3%;
-	  font-size:28upx;
+	  font-size:28rpx;
 	  justify-content:space-between;
 	  border-bottom:1rpx solid #e5e5e5;
-	  margin-bottom:20upx;
+	  margin-bottom:20rpx;
 	  width:94%;
 	  margin-left:3%;
-	  margin-top: 30upx;
+	  margin-top: 30rpx;
 	}
 	.a-redpackets{
 		display:flex;
 		padding:0 0 3%;
-		font-size:28upx;
+		font-size:28rpx;
 		justify-content:space-between;
 		border-bottom:1rpx solid #e5e5e5;
-		margin-bottom:20upx;
+		margin-bottom:20rpx;
 		width:94%;
 		margin-left:3%;
-		margin-top: 30upx;
+		margin-top: 30rpx;
 	}
 	
 	.a_redpackets_img_wrap {
@@ -2486,11 +2486,11 @@ extraData = 'xxxxxxxxxxxxxxx'
 	  display: flex;
 	}
 	.c-redpackets{
-		margin-left:40upx;
+		margin-left:40rpx;
 		color: #0497cc;
 	}
 	.c-dikou{
-	  margin-left:40upx;
+	  margin-left:40rpx;
 	  font-size:25rpx;
 	  color:#666;
 	}
@@ -2521,10 +2521,10 @@ extraData = 'xxxxxxxxxxxxxxx'
 		margin: 2% 0;
 	}
 	.mt5{
-		margin-top: 10upx;
+		margin-top: 10rpx;
 	}
 	.font_14{
-		font-size: 28upx;
+		font-size: 28rpx;
 	}
 	.df_1 {
 		-webkit-box-flex: 1;
@@ -2534,8 +2534,8 @@ extraData = 'xxxxxxxxxxxxxxx'
 		-webkit-tap-highlight-color: transparent;	
 	}
 	.x_rights {
-		width:16px;
-		height: 18px;
+		width:32rpx;
+		height: 116rpx;
 	}
 	
 	
@@ -2558,7 +2558,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 	}
 
 	.demo {
-		width:410px;
+		width:420rpx;
 		margin:0 auto;
 	}
 	.stamp * {
@@ -2569,7 +2569,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 	}
 	.stamp {
 		height: 240rpx;
-		padding: 0 10px;
+		padding: 0 20rpx;
 		position: relative;
 		overflow: hidden;
 		margin-top: 10rpx;
@@ -2596,7 +2596,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 		float: left;
 		padding: 10rpx 30rpx;
 		width: 280rpx;
-		border-right:2px dashed rgba(255, 255, 255, .3);
+		border-right:4rpx dashed rgba(255, 255, 255, .3);
 		text-align: left;
 	}
 	.stamp .par p {
@@ -2615,50 +2615,50 @@ extraData = 'xxxxxxxxxxxxxxx'
 	}
 	.stamp .par sub {
 		position: relative;
-		top:-5px;
+		top:-10rpx;
 		color:rgba(255, 255, 255, .8);
 	}
 	.stamp .copy {
 		display: inline-block;
-		padding:21px 14px;
-		width:100px;
+		padding:42rpx 28rpx;
+		width:200rpx;
 		vertical-align: text-bottom;
-		font-size: 30px;
+		font-size: 60rpx;
 		color:rgb(255,255,255);
 		text-align: center;
 		line-height: initial;
 	}
 	.stamp .copy p {
-		font-size: 16px;
-		margin-top: 15px;
+		font-size: 32rpx;
+		margin-top: 30rpx;
 	}
 	.stamp04 {
 		width: 680rpx;
-		background: radial-gradient(rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0) 4px, #50ADD3 4px);
-		background-size: 12px 8px;
-		background-position: -5px 10px;
+		background: radial-gradient(rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0) 8rpx, #50ADD3 8rpx);
+		background-size: 24rpx 16rpx;
+		background-position: -10rpx 20rpx;
 	}
 	.stamp04:before {
 		background-color:#50ADD3;
-		left: 5px;
-		right: 5px;
+		left: 10rpx;
+		right: 10rpx;
 	}
 	.stamp04 .copy {
-		padding: 11px 8px 4px 25px;
+		padding: 22rpx 16rpx 8rpx 50rpx;
 		font-size: 25rpx;
 	}
 	.stamp04 .copy p {
 		font-size: 24rpx;
-		margin-top: 5px;
-		margin-bottom: 8px;
+		margin-top: 10rpx;
+		margin-bottom: 16rpx;
 	}
 	.stamp04 .copy a {
 		background-color:#fff;
 		color:#333;
-		font-size: 14px;
+		font-size: 28rpx;
 		text-decoration:none;
-		padding:5px 10px;
-		border-radius:3px;
+		padding:10rpx 20rpx;
+		border-radius:6rpx;
 		display: block;
 	}
 	//============== End ==============
