@@ -170,11 +170,11 @@ export default {
 		
 	},
 	//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
-	/*  onReachBottom: function () {
+	onReachBottom: function () {
 		
-		//this.get_product_list();
+		this.__nft_get_package_list();
 		
-	}, */
+	},
 	
 	onShareAppMessage: function () {
 		var that = this;
@@ -307,6 +307,7 @@ export default {
 					sellerid:that.abotapi.globalData.default_sellerid,
 					// action02:'expire_list',
 					action: 'my_like_list',
+					page:1,
 			};
 			
 			

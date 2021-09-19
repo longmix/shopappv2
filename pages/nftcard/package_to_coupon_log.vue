@@ -3,7 +3,7 @@
 		<view class="" style="width: 750rpx;height: 20rpx;"></view>
 		
 
-		<view v-if="current_coupon_log == null" style="text-align : center;">
+		<view v-if="(current_coupon_log == null)  || (current_coupon_log.length ==0 )" style="text-align : center;">
 			<image src="https://yanyubao.tseo.cn/Tpl/static/images/empty_favorite.png" mode="widthFix" style="width: 300rpx;"></image>
 			<view style="padding-bottom: 50rpx;color: #666666;">空空如也 ~~</view>
 		</view>
@@ -49,7 +49,7 @@ export default {
 			current_package_list : null,
 			userid:0,
 			current_coupon_log:null,
-			
+			current_page:1,
 		}
 	},
 	
@@ -117,13 +117,19 @@ export default {
 		// #endif
 		
 		
+		this.current_page = 1;
+		this.current_coupon_log = [];
+		this.__nft_get_package_list();
+		
+		
 	},
 	//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
-	/*  onReachBottom: function () {
+	 onReachBottom: function () {
 		
-		//this.get_product_list();
+		this.current_page ++;
+		this.__nft_get_package_list();
 		
-	}, */
+	}, 
 	
 	onShareAppMessage: function () {
 		var that = this;
@@ -209,7 +215,7 @@ export default {
 				sellerid: that.abotapi.get_sellerid(),
 				userid: userInfo.userid,
 				checkstr: userInfo.checkstr,
-				
+				page:that.current_page,
 			};
 			
 			//获取卡包列表
@@ -222,14 +228,23 @@ export default {
 					
 					if(res.data.code != 1){
 						uni.showToast({
-							title:'优惠券没数据',
+							title:'到底了~',
 							duration: 2000,
 						});
 						
 						return;
 					}
-			
-					that.current_coupon_log = res.data.data;
+					
+
+					if(!that.current_coupon_log){
+						that.current_coupon_log = [];
+					}
+						
+					for(var i=0; i<res.data.data.length;i++ ){
+						that.current_coupon_log.push(res.data.data[i]);
+					}
+					
+					
 				
 					console.log('package_to_coupon_log_list 55555555555555555===>>> ', that.current_coupon_log.coupon_item);
 					

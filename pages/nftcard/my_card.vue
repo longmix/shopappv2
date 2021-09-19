@@ -272,6 +272,7 @@ export default {
 					checkstr:userInfo.checkstr,
 					userid:userInfo.userid,
 					action: that.action_data_type,
+					page:1,
 			    },
 			    success: function (res) {
 					

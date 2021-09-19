@@ -388,8 +388,11 @@ export default {
 			current_nftcard_poster:null,
 			current_package_detail:null,
 			current_supplier_detail:null,
+			
 			current_package_list:null,
+			
 			current_card_list:null,
+			
 			current_supplier_fans_add:null,
 			
 			current_packageid:0,
@@ -398,7 +401,6 @@ export default {
 			current_nft_supplierid:0,
 		
 			showPosterModal: false,
-			
 			
 			card_description:'',  //卡包的富媒体描述
 			
@@ -1322,6 +1324,8 @@ export default {
 			var post_data = {
 					sellerid:that.abotapi.globalData.default_sellerid,
 					packageid:that.current_packageid,
+					page: 1,
+					page_size:20,
 			};
 			
 			

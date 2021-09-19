@@ -28,10 +28,10 @@
 		</view> -->
 				
 
-					<view v-if="current_package_list ==''" style="text-align : center;">
-						<image src="https://yanyubao.tseo.cn/Tpl/static/images/empty_favorite.png" mode="widthFix" style="width: 400rpx;"></image>
-						<view>空空如也</view>
-					</view>
+			<view v-if="current_package_list ==''" style="text-align : center;">
+				<image src="https://yanyubao.tseo.cn/Tpl/static/images/empty_favorite.png" mode="widthFix" style="width: 400rpx;"></image>
+				<view>空空如也</view>
+			</view>
 					
 					
 				
@@ -172,7 +172,7 @@ export default {
 				sellerid:that.abotapi.globalData.default_sellerid,
 				nft_supplierid : that.current_nft_supplierid,
 				
-				page_num: 1,
+				page: 1,
 				page_size: 50,
 		    },
 		    success: function (res) {
@@ -251,6 +251,11 @@ export default {
 		});
 		// #endif
 		
+		
+		
+		this.current_page = 1;
+
+		this.__nft_get_package_list();
 		
 	},
 	//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
@@ -332,6 +337,7 @@ export default {
 			})
 		},
 		 
+		
 		//获取用户输入的搜索值
 		searchValueInput: function (e) {
 			console.log('e',e);

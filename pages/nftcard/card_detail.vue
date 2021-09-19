@@ -12,7 +12,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 
 		
 -->
-		<view class="main_body">
+		<view class="main_body" v-if="page_show_flag == 1">
 			<view :style="{width: card_bg_img_width+'rpx', height: card_bg_img_height+'rpx'}">
 				<!-- 背景模糊图片 -->
 				<image :src="current_card_detail.cover_img_url_2x3"  @load="imageLoad"
@@ -300,7 +300,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		
 
 		<!-- 悬浮 -->
-		<view class="card_detail_footer">
+		<view class="card_detail_footer" v-if="page_show_flag == 1">
 			<!-- 线索按钮 -->
 			<view @click="layOut">
 				<!-- 线索未亮按钮 -->
@@ -507,7 +507,10 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		
 		name:'try',
 		data() {
-			return {				
+			return {
+				
+				page_show_flag :1,	//页面内容是否展示
+				
 				isRolling:false,//模态框图片翻转
 				
 				lay_type:1,//详情隐藏控件
@@ -657,6 +660,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				this.current_cardid = options.cardid;
 			}
 			else if(options.scene && (options.scene.indexOf('lbs_') != -1) ){
+				
+				this.page_show_flag = 0;
+				
 				options.cardid = options.scene.replace('lbs_', '');
 				
 				console.log('通过小程序码扫描进入，卡牌ID====>>>>>'+options.cardid);
@@ -1639,7 +1645,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 						longitude:locationData.longitude,
 						city:locationData.addressComponent.city,
 						address:locationData.address,
-						
+						cardid:that.current_cardid,
 					}
 					
 					//签退的时候  目前没有用到这里  判断是签到签退在服务器端判断了
@@ -1653,21 +1659,21 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					
 					
 					that001.abotapi.abotRequest({
-						url: that001.abotapi.globalData.yanyubao_server_url + 'openapi/NftCardData/',
+						url: that001.abotapi.globalData.yanyubao_server_url + 'openapi/NftCardData/scan_lbs_card_qrcode',
 						method: 'post',
 						data: post_data,
 						success: function (res) {
-							console.log(res);
 							
+							//console.log('res222222222222222222222222222======>>>',res)
 							uni.showModal({
 								title:'提示',
 								content:res.data.msg,
 								showCancel:false,
-								success: (res) => {
-									
+								success: (res02) => {
+								console.log('res222222222222222222222222222======>>>',res02)
 									//跳转到卡牌详情页
 									if(res.data.code == 1){
-										
+						
 										uni.navigateTo({
 											url: '/pages/nftcard/card_detail?cardid='+that.current_cardid,
 										})
