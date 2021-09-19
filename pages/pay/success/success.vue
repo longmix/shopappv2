@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="icon">
-			<image src="/static/img/success.png"></image>
+			<image src="https://yanyubao.tseo.cn/Tpl/static/images/success.png"></image>
 		</view>
 		<view class="tis">
 			订单支付完成

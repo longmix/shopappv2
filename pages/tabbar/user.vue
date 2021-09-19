@@ -185,6 +185,12 @@
 				<view style="float:left;"><text style="color:#333;font-size:35rpx;">测试图标</text></view>
 				<view style="clear:both;"></view>
 			</view>
+			<navigator class="icon_box_item" :url="'/pages/login/login_get_userinfo'"  style="display:none;">
+				<view style='float: left;'>
+					<image style="width:70rpx;height:70rpx;margin-right:40rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/aboutus.png"></image>
+				</view>
+				<view style="float:left;"><text style="color:#333;font-size:35rpx;">头像和昵称</text></view>
+			</navigator>
 			
 			
 			
@@ -337,6 +343,10 @@
 			this.showHeader = true;
 			this.statusHeight = plus.navigator.getStatusbarHeight();
 			// #endif
+			
+			
+			
+			
 		},
 		onReady() {
 			//此处，演示,每次页面初次渲染都把登录状态重置
@@ -464,59 +474,103 @@
 			//获取用户信息
 			get_current_userinfo: function() {
 				var that = this;
-
+				
 				var userInfo = that.abotapi.get_user_info();
-				that.userInfo = userInfo;
-
-				console.log('get_current_userinfo--userInfo==', userInfo)
-
-				if (userInfo && userInfo.userid) {
-					
-					var post_data = {
-							sellerid: that.abotapi.globalData.default_sellerid,
-							checkstr: userInfo.checkstr,
-							userid: userInfo.userid,
-							//appid: that.abotapi.globalData.xiaochengxu_appid,
-					};
-					
-					// #ifdef MP-WEIXIN
-						post_data.appid = that.abotapi.globalData.xiaochengxu_appid,
-					// #endif
-					
-					that.abotapi.abotRequest({
-						url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=get_user_info',
-						data: post_data,
-						success: function(res) {
-							console.log('ddd', res);
-							
-							
-							
-							if (res.data.code == -1) {
-								that.abotapi.del_user_info();
-								
-								var last_url = '/pages/tabbar/user';
-								that.abotapi.goto_user_login(last_url, 'normal');
-							} else {
-								var data = res.data;
-								that.user_info = data.data;
-								that.fenxiao_info = that.user_info.fenxiao_info;
-								console.log('data2==>>', that.user_info.status_count2);
-								console.log('fenxiao_userinfo==>>', that.fenxiao_info);
-								
-								
-								that.order_icon_list[1].order_num = that.user_info.status_count1;
-								that.order_icon_list[2].order_num = that.user_info.status_count2;
-								that.order_icon_list[3].order_num = that.user_info.status_count3;
-								
-								console.log('fenxiao_userinfo==>>====', that.order_icon_list);
-								
-								
+				
+				if (!userInfo || !userInfo.userid) {
+					return;
+				}
+				
+				// #ifdef MP-WEIXIN
+				if(userInfo.is_get_userinfo != 1){
+					uni.showModal({
+						title:'提示',
+						content:'需要获取头像和昵称以继续',
+						success: (res) => {
+							if(res.confirm){
+								uni.navigateTo({
+									url: '/pages/login/login_get_userinfo'
+								})
+							}
+							else{
+								uni.showModal({
+									title:'提示',
+									content:'没有您的头像和昵称，个性化信息无法展示，是否不再提示？',
+									success: (res02) => {
+										if(res02.confirm){
+											that.abotapi.globalData.userInfo.is_get_userinfo = 1;
+										}
+									}
+								})
 							}
 						}
 					})
-				} else {
-					that.user_info = '';
+					
 				}
+				// #endif
+				
+				
+				
+				that.userInfo = userInfo;
+
+				console.log('get_current_userinfo--userInfo==', userInfo);
+				
+				var post_data = {
+						sellerid: that.abotapi.globalData.default_sellerid,
+						checkstr: userInfo.checkstr,
+						userid: userInfo.userid,
+						//appid: that.abotapi.globalData.xiaochengxu_appid,
+				};
+				
+				// #ifdef MP-WEIXIN
+					post_data.xiaochengxu_appid = that.abotapi.globalData.xiaochengxu_appid,
+					post_data.xiaochengxu_openid = that.abotapi.get_current_openid('userid_openid_' + userInfo.userid);
+				// #endif
+				
+				that.abotapi.abotRequest({
+					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=get_user_info',
+					data: post_data,
+					success: function(res) {
+						console.log('ddd', res);
+						
+						
+						
+						if (res.data.code == -1) {
+							that.abotapi.del_user_info();
+							
+							var last_url = '/pages/tabbar/user';
+							that.abotapi.goto_user_login(last_url, 'normal');
+							
+						} 
+						else {
+							var data = res.data;
+							
+							//渲染前端界面
+							that.user_info = data.data;
+							
+							
+							that.fenxiao_info = that.user_info.fenxiao_info;
+							
+							
+							
+							console.log('data2==>>', that.user_info.status_count2);
+							console.log('fenxiao_userinfo==>>', that.fenxiao_info);
+							
+							
+							that.order_icon_list[1].order_num = that.user_info.status_count1;
+							that.order_icon_list[2].order_num = that.user_info.status_count2;
+							that.order_icon_list[3].order_num = that.user_info.status_count3;
+							
+							console.log('fenxiao_userinfo==>>====', that.order_icon_list);
+							
+							
+						}
+					}
+				})
+				
+				
+
+				
 			},
 			get_user_function_list: function() {
 				var that = this;

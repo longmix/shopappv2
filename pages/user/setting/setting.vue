@@ -251,14 +251,21 @@
 										//that.userAcountInfo.headimgurl = obj.img_url;
 										//that.abotapi.set_user_account_info(that.userAcountInfo);
 										
-										//更新用户信息
-										that.abotapi.abotRequest({
-										  url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
-										  data: {
+										var post_data = {
 										     checkstr:userInfo.checkstr,
 										     userid:userInfo.userid,
 										     sellerid: that.abotapi.globalData.default_sellerid
-										  },    
+										  }
+										
+										// #ifdef MP-WEIXIN
+											post_data.xiaochengxu_appid = that.abotapi.globalData.xiaochengxu_appid,
+											post_data.xiaochengxu_openid = that.abotapi.get_current_openid('userid_openid_' + userInfo.userid);
+										// #endif
+										
+										//更新用户信息
+										that.abotapi.abotRequest({
+										  url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
+										  data: post_data,    
 										  success:function(res){
 											  
 										    console.log('success',res);

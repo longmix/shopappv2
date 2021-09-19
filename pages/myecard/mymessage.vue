@@ -5,7 +5,7 @@
 	  
 		<view class="head-img">
 			<view >
-				<image src="../../static/img/noorder.png"></image>
+				<image src="https://yanyubao.tseo.cn/Tpl/static/images/noorder.png"></image>
 			</view>
 		</view>
 	  

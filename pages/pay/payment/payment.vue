@@ -47,21 +47,21 @@
 				<view class="payment_box">
 					<radio-group class="radio-group" @change="radioChange">
 						<view class="zhifu_li" v-if="show_weixin_pay==1">
-							<image src="../../../static/img/kefu.png" class="tubiao_zhifu"></image>
+							<image src="https://yanyubao.tseo.cn/Tpl/static/images/kefu.png" class="tubiao_zhifu"></image>
 							<view class="zhifu_name">微信支付</view>
 
 							<radio value='wx_pay' checked='true' style='margin-left:90%;margin-top:7px;'></radio>
 						</view>
 						
 						<view class="zhifu_li" v-if="show_ali_pay==1">
-							<image src="../../../static/img/alipay.png" class="tubiao_zhifu"></image>
+							<image src="https://yanyubao.tseo.cn/Tpl/static/images/alipay.png" class="tubiao_zhifu"></image>
 							<view class="zhifu_name">支付宝支付</view>
 						
 							<radio value='ali_pay' style='margin-left:90%;margin-top:7px;'></radio>
 						</view>
 
 						<view class="zhifu_li" v-if="show_zhuanzhang_pay==1">
-							<image src="../../../static/img/payment_zhuanzhang.png" class="tubiao_zhifu"></image>
+							<image src="https://yanyubao.tseo.cn/Tpl/static/images/payment_zhuanzhang.png" class="tubiao_zhifu"></image>
 							<view class="zhifu_name">转账支付</view>
 							<radio value='zz_pay' style='margin-left:90%;margin-top:7px;'></radio>
 						</view>

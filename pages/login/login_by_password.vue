@@ -33,13 +33,20 @@
 			<div></div>
 			
 			<!-- #ifdef MP-WEIXIN -->
-				<button type="primary" class="btn-row-submit" 
+				<!--<button type="primary" class="btn-row-submit" 
 					:style="{background:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" 
 					
 					open-type="getUserInfo"  @getuserinfo="btnWxaGetUserinfo"
 					
 					style="margin-left: 8%;"
+					formType="submit" >登陆</button>-->
+				<button type="primary" class="btn-row-submit"
+					:style="{background:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" 
+					@tap="btnWxaLogin"
+					style="margin-left: 8%;"
 					formType="submit" >登陆</button>
+				
+					
 			<!-- #endif -->
 			
 			<!-- #ifdef MP-ALIPAY -->
@@ -427,14 +434,22 @@
 
 						that.abotapi.set_user_info(that.abotapi.globalData.userInfo);
 						
-						that.abotapi.abotRequest({
-							 url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=get_user_info',
-							 data: {
+						var post_data = {
 							   sellerid: that.abotapi.globalData.default_sellerid,
 							   checkstr: request_res.data.checkstr,
 							   userid: request_res.data.userid,
 							   parentid: that.abotapi.get_current_parentid(),
-							 },
+							 };
+							 
+						// #ifdef MP-WEIXIN
+							post_data.xiaochengxu_appid = that.abotapi.globalData.xiaochengxu_appid,
+							post_data.xiaochengxu_openid = that.abotapi.get_current_openid('userid_openid_' + request_res.data.userid);
+						// #endif
+						
+						
+						that.abotapi.abotRequest({
+							 url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=get_user_info',
+							 data: post_data,
 							 success: function (res) {
 								console.log('login_by_password=====>>>>>get_user_info===>>>>', res);
 								 
@@ -488,7 +503,16 @@
 				});
 			    
 			},
+			btnWxaLogin:function(e){
+				var that = this;
+				
+				// #ifdef MP-WEIXIN
+				that.login_after_get_userinfo = 0;
+				that.btn_user_login();
+				// #endif
+			},
 			//获取用户的头像和昵称信息
+			//2021.9.19. 这个方法已经不再使用了，微信使用 getUserProfile替代了
 			btnWxaGetUserinfo:function(e){
 				var that = this;
 				
