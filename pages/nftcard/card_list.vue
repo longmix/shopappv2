@@ -86,52 +86,9 @@ export default {
 			return;
 		}
 		
+		that.__nft_get_card_list();
 		//获取卡牌列表
 		
-		that.abotapi.abotRequest({
-		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_list',
-		    method: 'post',
-		    data: {
-				sellerid:that.abotapi.globalData.default_sellerid,
-
-				packageid:that.current_packageid,
-				
-		    },
-		    success: function (res) {
-				
-				if(res.data.code != 1){
-					uni.showToast({
-						title:'卡包列表没有数据',
-						duration: 2000,
-					});
-					
-					return;
-				}
-				
-				that.current_card_list = res.data.data;
-				
-				console.log('current_card_list ===>>> ', that.current_card_list);
-					
-				
-		    },
-		    fail: function (e) {
-				uni.showToast({
-					title: '网络异常！',
-					duration: 2000
-				});
-		    },
-			
-			
-			//下拉框
-			bindPickerChange :function (e) {		//改变的事件名
-				//console.log('picker发送选择改变，携带值为', e.target.value)   //用于输出改变索引值
-				this.index = e.target.value			//将数组改变索引赋给定义的index变量
-				this.jg=this.array[this.index]		//将array【改变索引】的值赋给定义的jg变量
-				console.log(this.jg)		//输出获取的值
-			},
-			
-			
-		});
 		
 		
 		
@@ -170,13 +127,13 @@ export default {
 			//duration:2000
 		});
 		// #endif
-		
+		this.__nft_get_card_list();
 		
 	},
 	//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
 	onReachBottom: function () {
 		
-		this.get_product_list();
+		this.__nft_get_card_list();
 		
 	},
 	
@@ -237,6 +194,54 @@ export default {
 			}
 			
 			console.log('cb_params====', cb_params);
+		},
+		
+		__nft_get_card_list:function(){
+			that.abotapi.abotRequest({
+			    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_list',
+			    method: 'post',
+			    data: {
+					sellerid:that.abotapi.globalData.default_sellerid,
+					page:1,
+					packageid:that.current_packageid,
+					
+			    },
+			    success: function (res) {
+					
+					if(res.data.code != 1){
+						uni.showToast({
+							title:'卡包列表没有数据',
+							duration: 2000,
+						});
+						
+						return;
+					}
+					
+					that.current_card_list = res.data.data;
+					
+					console.log('current_card_list ===>>> ', that.current_card_list);
+						
+					
+			    },
+			    fail: function (e) {
+					uni.showToast({
+						title: '网络异常！',
+						duration: 2000
+					});
+			    },
+				
+				
+				//下拉框
+				bindPickerChange :function (e) {		//改变的事件名
+					//console.log('picker发送选择改变，携带值为', e.target.value)   //用于输出改变索引值
+					this.index = e.target.value			//将数组改变索引赋给定义的index变量
+					this.jg=this.array[this.index]		//将array【改变索引】的值赋给定义的jg变量
+					console.log(this.jg)		//输出获取的值
+				},
+				
+				
+			});
+			
 		},
 		
 		

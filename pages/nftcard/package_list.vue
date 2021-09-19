@@ -162,57 +162,7 @@ export default {
 		that.abotapi.set_shop_option_data(that, that.callback_function_shop_option_data);
 	
 		
-		
-		//获取卡包列表
-		
-		that.abotapi.abotRequest({
-		    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_list',
-		    method: 'post',
-		    data: {
-				sellerid:that.abotapi.globalData.default_sellerid,
-				nft_supplierid : that.current_nft_supplierid,
-				
-				page: 1,
-				page_size: 50,
-		    },
-		    success: function (res) {
-				
-				if(res.data.code != 1){
-					uni.showToast({
-						title:'卡包列表没有数据',
-						duration: 2000,
-					});
-					
-					return;
-				}
-		
-				that.current_package_list = res.data.data;
-				
-				console.log('current_package_list ===>>> ', that.current_package_list);
-				
-				
-				
-				
-				
-				
-				
-				
-						
-				
-		    },
-		    fail: function (e) {
-				uni.showToast({
-					title: '网络异常！',
-					duration: 2000
-				});
-		    },
-		});
-		
-		
-		
-		
-		
-		
+		that.__nft_get_package_list();
 		
 		
 		
@@ -251,19 +201,15 @@ export default {
 		});
 		// #endif
 		
-		
-		
-		this.current_page = 1;
-
 		this.__nft_get_package_list();
 		
 	},
 	//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
-	/*  onReachBottom: function () {
+	onReachBottom: function () {
+	
+		this.__nft_get_package_list();
 		
-		//this.get_product_list();
-		
-	}, */
+	}, 
 	
 	onShareAppMessage: function () {
 		var that = this;
@@ -352,6 +298,61 @@ export default {
 			}
 		},
 		
+		
+		
+		__nft_get_package_list:function(){
+			//获取卡包列表
+			var that = this;
+			that.abotapi.abotRequest({
+			    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_list',
+			    method: 'post',
+			    data: {
+					sellerid:that.abotapi.globalData.default_sellerid,
+					nft_supplierid : that.current_nft_supplierid,
+					
+					page: 1,
+					page_size: 50,
+			    },
+			    success: function (res) {
+					
+					if(res.data.code != 1){
+						uni.showToast({
+							title:'卡包列表没有数据',
+							duration: 2000,
+						});
+						
+						return;
+					}
+			
+					that.current_package_list = res.data.data;
+					
+					console.log('current_package_list ===>>> ', that.current_package_list);
+					
+					
+					
+					
+					
+					
+					
+					
+							
+					
+			    },
+			    fail: function (e) {
+					uni.showToast({
+						title: '网络异常！',
+						duration: 2000
+					});
+			    },
+			});
+			
+			
+			
+			
+			
+			
+			
+		},
 		
 		package_list_search:function(e){
 			var that = this;
