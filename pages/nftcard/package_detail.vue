@@ -7,7 +7,7 @@
 			
 				<image class="package_background" 
 					 @load="imageLoad"
-					:src="current_package_detail.cover_img_url"
+					:src="current_package_detail.cover_img_url_3x2"
 					:style="{width: card_bg_img_width+'rpx', height: card_bg_img_height+'rpx'}"></image>
 			
 			
@@ -19,7 +19,7 @@
 				</image>
 				<image v-if="current_package_detail.is_like == 1" @tap="set_like(0)" 
 					src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xin.png" mode="widthFix" 
-					style="width: 60rpx;height:56rpx;margin-top: 11rpx;margin-left: 8rpx;"  >
+					style="width: 60rpx;height:60rpx;margin-top: 11rpx;margin-left: 8rpx;"  >
 				</image>
 				<!-- <view style="font-weight: 100; font-size: 10rpx;"> {{current_package_detail.like_count}}</view> -->
 			</view>
@@ -528,133 +528,20 @@ export default {
 		
 		
 		//当前卡包所属的supplierid
-		if(options.nft_supplierid){
+		/*if(options.nft_supplierid){
 			that.current_nft_supplierid = options.nft_supplierid;
 		}
 		else{
 			that.current_nft_supplierid = that.abotapi.globalData.default_sellerid;
-		}
-		
-		
-		
-		//获取卡包详情
-		var post_data = {
-				sellerid:that.abotapi.globalData.default_sellerid,
-				packageid:that.current_packageid,
-				nft_supplierid : that.current_nft_supplierid,
-				
-			};
-		var userInfo = that.abotapi.get_user_info();
-		if (userInfo) {
-			post_data.userid = userInfo.userid;
-			post_data.checkstr = userInfo.checkstr;
-		}
-			
-	
-		console.log('=========>>>>>>>>>>>');
-		console.log(post_data);
-	
-		that.abotapi.abotRequest({
-			url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_detail',
-			method: 'post',
-		    data: post_data,
-		    success: function (res) {
-			
-				if(res.data.code != 1){
-					uni.showToast({
-						title:'卡包详情没数据',
-						duration: 2000,
-					});
-					
-					return;
-				}
-		
-				that.current_package_detail = res.data.data;
-				
-				console.log('current_package_detail ===>>> ', that.current_package_detail);
-				
-				//计算已经售出的备份比
-				that.current_package_detail.sale_percent = 0;
-				if(that.current_package_detail.packageid_card_count == 0){
-					that.current_package_detail.sale_percent = 100;
-				}
-				else{
-					console.log('fenmu===========>',that.current_package_detail.packageid_card_count);
-					console.log('fenzi===========>',that.current_package_detail.packageid_card_user_buy_count);
-					console.log('===========>',that.current_package_detail.sale_percent);
-					
-					
-					
-					that.current_package_detail.sale_percent =
-						parseInt(that.current_package_detail.packageid_card_user_buy_count/that.current_package_detail.packageid_card_count*100);
-				}
-				
-				
-				//检查卡包是否已经过期
-				if(that.current_package_detail.time_end < util.get_time_stamp()){
-					that.is_package_time_expire = true;
-				}
-				
-				
-				//处理商品详情
-				that.card_description = that.current_package_detail.description;
-				
-				
-				// #ifdef MP-ALIPAY		
-				
-					const filter = that.$options.filters["formatRichText"];
-					that.card_description = filter(that.card_description);
-				
-					//console.log('that.card_description====>>>>', that.card_description);
-				
-					let data001 = that.card_description;
-					let newArr = [];
-					let arr = parseHtml(data001);
-					arr.forEach((item, index) => {
-						newArr.push(item);
-					});
-				
-					//console.log('arr arr arr====>>>>', arr);
-					//console.log('newArr newArr newArr====>>>>', newArr);
-				
-					that.card_description = newArr;
-				
-				// #endif	
-				
-				
-				//获取相关卡包列表				
-				that.__nft_get_relate_package_list();
-				
-				//查询当前卡包是否可兑换
-				that.__nft_check_package_vs_coupon();
-				
-				
-		    },
-		    fail: function (e) {
-				uni.showToast({
-					title: '网络异常！',
-					duration: 2000
-				});
-		    },
-		});
-		
-		
-		
-		
-		
-		
-		
-			
+		}*/
+
 		that.abotapi.set_shop_option_data(that, that.callback_function_shop_option_data);
 			
-		
-		
-		
-		
-		
-		
-		
+
 		console.log('导航栏背景颜色：' + that.abotapi.globalData.navigationBar_bg_color);
+		
+		//获取卡包详情
+		that.__get_package_detail();
 		
 		
 		//获取卡牌列表
@@ -698,6 +585,10 @@ export default {
 			//duration:2000
 		});
 		// #endif
+		
+		
+		//获取卡包详情
+		that.__get_package_detail();
 		
 		
 	},
@@ -788,6 +679,115 @@ export default {
 				query: share_path,
 				imageUrl: share_img,
 			}
+			
+			
+		},
+		
+		__get_package_detail:function(){
+			var that = this;
+			
+			//获取卡包详情
+			var post_data = {
+					sellerid:that.abotapi.globalData.default_sellerid,
+					packageid:that.current_packageid,
+					//nft_supplierid : that.current_nft_supplierid,
+					
+				};
+			var userInfo = that.abotapi.get_user_info();
+			if (userInfo) {
+				post_data.userid = userInfo.userid;
+				post_data.checkstr = userInfo.checkstr;
+			}
+				
+				
+			console.log('=========>>>>>>>>>>>');
+			console.log(post_data);
+				
+			that.abotapi.abotRequest({
+				url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_detail',
+				method: 'post',
+			    data: post_data,
+			    success: function (res) {
+				
+					if(res.data.code != 1){
+						uni.showToast({
+							title:'卡包详情没数据',
+							duration: 2000,
+						});
+						
+						return;
+					}
+			
+					that.current_package_detail = res.data.data;
+					
+					console.log('current_package_detail ===>>> ', that.current_package_detail);
+					
+					//计算已经售出的备份比
+					that.current_package_detail.sale_percent = 0;
+					if(that.current_package_detail.packageid_card_count == 0){
+						that.current_package_detail.sale_percent = 100;
+					}
+					else{
+						console.log('fenmu===========>',that.current_package_detail.packageid_card_count);
+						console.log('fenzi===========>',that.current_package_detail.packageid_card_user_buy_count);
+						console.log('===========>',that.current_package_detail.sale_percent);
+						
+						
+						
+						that.current_package_detail.sale_percent =
+							parseInt(that.current_package_detail.packageid_card_user_buy_count/that.current_package_detail.packageid_card_count*100);
+					}
+					
+					
+					//检查卡包是否已经过期
+					if(that.current_package_detail.time_end < util.get_time_stamp()){
+						that.is_package_time_expire = true;
+					}
+					
+					
+					//处理商品详情
+					that.card_description = that.current_package_detail.description;
+					
+					
+					// #ifdef MP-ALIPAY		
+					
+						const filter = that.$options.filters["formatRichText"];
+						that.card_description = filter(that.card_description);
+					
+						//console.log('that.card_description====>>>>', that.card_description);
+					
+						let data001 = that.card_description;
+						let newArr = [];
+						let arr = parseHtml(data001);
+						arr.forEach((item, index) => {
+							newArr.push(item);
+						});
+					
+						//console.log('arr arr arr====>>>>', arr);
+						//console.log('newArr newArr newArr====>>>>', newArr);
+					
+						that.card_description = newArr;
+					
+					// #endif	
+					
+					
+					//获取相关卡包列表				
+					that.__nft_get_relate_package_list();
+					
+					//查询当前卡包是否可兑换
+					that.__nft_check_package_vs_coupon();
+					
+					
+			    },
+			    fail: function (e) {
+					uni.showToast({
+						title: '网络异常！',
+						duration: 2000
+					});
+			    },
+			});
+			
+			
 			
 			
 		},
@@ -1404,7 +1404,7 @@ export default {
 			    method: 'post',
 			    data: {
 					sellerid:that.abotapi.globalData.default_sellerid,
-					nft_supplierid:0,
+					//nft_supplierid:0,
 					//except_supplierid:that.current_package_detail.sellerid,
 					except_packageid: that.current_packageid,
 			    },
@@ -1822,6 +1822,7 @@ export default {
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
+		font-weight: bold;
 	}
 /* 	.scroll_button{
 		display: flex;

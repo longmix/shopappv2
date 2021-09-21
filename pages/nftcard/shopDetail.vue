@@ -9,7 +9,7 @@
 				<view class="middle"></view>
 				<view class="icon-btn">
 					<!-- <view class="icon tongzhi" @tap="toMsg"></view> -->
-					<view class="icon zhuye" @tap="toindex"></view>
+					<view class="icon zhuye" @tap="go_to_url('/pages/index/index')"></view>
 				</view>
 			</view>
 			<!-- 头部-滚动渐变显示 -->
@@ -24,7 +24,7 @@
 				<view class="middle"></view>
 				<view class="icon-btn">
 					<!-- <view class="icon tongzhi" @tap="toMsg"></view> -->      <!-- 下版本-> toMsg -->
-					<view class="icon zhuye" @tap="toindex"></view>
+					<view class="icon zhuye" @tap="go_to_url('/pages/index/index')"></view>
 				</view>
 			</view>
 		</view>
@@ -499,8 +499,12 @@
 		<!-- #endif -->
 		
 		<view class="page_bottom copyright_info">
-			{{default_copyright_text}}
+			<view>{{default_copyright_text}}</view>
+			<view  v-if="current_shang_detail.footer_ad_text"
+				style="margin-top:60rpx;color: #2a2a2a;"
+				@tap="go_to_url(current_shang_detail.footer_ad_link)">{{current_shang_detail.footer_ad_text}}</view>
 		</view>
+		
 		
 		<!--  || !user_console_setting.user_console_quick_button_position -->
 		<view v-if="user_console_setting.user_console_quick_button_position == 'left'">
@@ -734,7 +738,7 @@
 				current_nft_supplierid:1,
 				
 				//2021.8.13. 控制头部风格是否为NFT 卡包
-				use_theme_nft_package: 1,
+				use_theme_nft_package: 0,
 				
 				current_nft_card_list:null,
 				
@@ -1014,17 +1018,12 @@
 			//返回上一页
 			back_return() {
 				uni.navigateBack();
+			},			
+			go_to_url:function(new_url){
+				this.abotapi.call_h5browser_or_other_goto_url(new_url);
 			},
-			//跳转到首页
-			toindex:function(){
-				console.log('toCart 向首页跳转')
-				
-				uni.switchTab({
-					url:'../index/index'
-				})
-				
-				
-			},
+			
+			
 			imageLoad: function(e) { //获取图片真实宽度  
 
 				var imgwidth = e.detail.width,
@@ -1476,6 +1475,11 @@
 					post_url = that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/supplier_detail';
 				}
 				
+				post_url = that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/supplier_detail';
+				
+				
+				
+				
 				this.abotapi.abotRequest({
 					url: post_url,
 					data: post_data,
@@ -1519,6 +1523,7 @@
 						}
 						
 						that.current_shang_detail = data;
+						that.use_theme_nft_package = 1;
 						
 						//2020.11.17. 商家的发圈列表（暂无数据返回）
 						that.shang_faquan_list = data.shang_faquan_list;
