@@ -26,6 +26,7 @@
 		display:-webkit-box;
 		-webkit-line-clamp:10;
 		-webkit-box-orient:vertical;
+		font-size: 30rpx;
 	}
  	.package_label{
 		display: flex;

@@ -451,16 +451,16 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 									@click="showModal_liuzhuanjilv_zengsong=true">
 									
 									<view style="display: flex;">
-										<view class="card_detail_modal_kapaimingxi">卡牌ID：</view>
+										<view class="card_detail_modal_kapaimingxi">ID：</view>
 										<view class="card_detail_modal_kapai_value">{{card_publish_item.cplno}}</view>
 									</view>
 									<view style="display: flex;">
-										<view class="card_detail_modal_kapaimingxi">序号：</view>
+										<view class="card_detail_modal_kapaimingxi">NO：</view>
 										<view class="card_detail_modal_kapai_value">{{card_publish_item.cplseq}}</view>
 									</view>
 									<view style="display: flex;">
-										<view class="card_detail_modal_kapaimingxi">获得时间：</view>
-										<view class="card_detail_modal_kapai_value">{{card_publish_item.updatetime}}</view>
+										<view class="card_detail_modal_kapaimingxi">TT：</view>
+										<view class="card_detail_modal_kapai_value">{{card_publish_item.updatetime_str}}</view>
 									</view>
 									<view style="display:none;">
 										<view class="card_detail_modal_kapaimingxi">获得方式：</view>
@@ -1205,17 +1205,27 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			__get_card_list:function(){
 				var that = this;
 				
+				var post_data = {
+						sellerid: that.abotapi.get_sellerid(),
+						packageid: that.current_packageid,
+						// cardid: that.current_cardid,
+						except_cardid: that.current_cardid,
+					};
+				
+				var userInfo = that.abotapi.get_user_info();
+				
+				if (userInfo) {
+					post_data.userid = userInfo.userid;
+					post_data.checkstr = userInfo.checkstr;
+				}
+				
+				
 				//获取卡牌列表
 				that.abotapi.abotRequest({
 					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_card_list',
 				
 					method: 'post',
-					data: {
-						sellerid: that.abotapi.globalData.default_sellerid,
-						packageid: that.current_packageid,
-						// cardid: that.current_cardid,
-						except_cardid: that.current_cardid,
-					},
+					data: post_data,
 					success: function(res) {
 				
 						if (res.data.code != 1) {

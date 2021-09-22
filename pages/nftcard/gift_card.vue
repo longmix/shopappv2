@@ -63,8 +63,8 @@
 		<view class="content_block" style="padding-top: 50rpx;">
 			<button type="default" @tap="go_to_gift_card_share"
 				class="gift_card_button_zengsong"
-				:style="{background:wxa_shop_nav_bg_color}">
-				确认赠送信息
+				:style="{background:wxa_shop_nav_bg_color, color:wxa_shop_nav_font_color}">
+				保存赠送信息
 			</button>
 		</view>
 		<!-- <block v-else>
@@ -124,6 +124,7 @@ export default {
 			current_cardid: 0,
 			
 			wxa_shop_nav_bg_color: '#30C478',
+			wxa_shop_nav_font_color:'#ffffff',
 			
 			//是否是发送者的界面
 			is_sender:true
@@ -265,6 +266,11 @@ export default {
 			}
 			
 			console.log('cb_params====', cb_params);
+			
+			
+			that.wxa_shop_nav_bg_color  = cb_params.option_list.wxa_shop_nav_bg_color;
+			that.wxa_shop_nav_font_color = cb_params.option_list.wxa_shop_nav_font_color;
+			
 		},
 		
 		//获取卡牌详情

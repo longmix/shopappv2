@@ -204,7 +204,7 @@
 					
 					<!-- 发行商名字----详情 -->
 					<view class="publish_name">{{current_package_detail.supplier_item.name}}</view>
-					<view class="publish_brief" style="font-weight: 300; font-size: 25rpx;">{{current_package_detail.supplier_item.brief}}</view>
+					<view class="publish_brief">{{current_package_detail.supplier_item.brief}}</view>
 						
 						
 				</view>
@@ -1779,7 +1779,7 @@ export default {
 	} 
 
 	.publish_information{	
-		height: 150rpx;
+		height: 190rpx;
 		background-color: #FFFFFF;
 		margin: 30rpx 10rpx 20rpx 10rpx;
 		
@@ -1791,7 +1791,16 @@ export default {
 		width: 100%;
 		margin-top: 25rpx;
 		margin-left:40rpx;
-	
+		margin-right:40rpx;
+	}
+	.publish_brief{
+		font-weight: 300; 
+		font-size: 25rpx;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 3;
+		text-align: justify;
+		overflow: hidden;
 	}
 	.publish_icon_follow{
 		width: 150rpx;

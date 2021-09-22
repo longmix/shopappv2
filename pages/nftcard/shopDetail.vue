@@ -56,7 +56,7 @@
 						
 						<view style="width: 500rpx;display: flex;margin-left: 40rpx;">
 							<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/authentication.png"
-								mode="widthFix" style="width: 30rpx;top: 5rpx;"></image>
+								mode="widthFix" style="width: 30rpx;height: 30rpx;top: 5rpx;"></image>
 							<view style="margin-left: 5rpx;"> {{current_shang_detail.name}}</view>
 						</view>
 						
@@ -182,7 +182,7 @@
 				<view class="supplier_icon-title4" :style="{borderBottom:wxa_shop_nav_bg_color+' 2rpx solid'}">
 				<!-- 	<image :src="user_console_setting.user_console_icon_jianjie" mode="widthFix" style="width: 50rpx;"></image> -->
 					<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/house.png" mode="widthFix" style="width: 50rpx;margin-top: 8rpx;"></image>
-					<view class='nft_supplier_biaoti' :style="{color:wxa_shop_nav_bg_color}">商家简介</view>
+					<view class='nft_supplier_biaoti' :style="{color:wxa_shop_nav_bg_color}">发行商简介</view>
 				</view>
 			</view>
 			
@@ -200,9 +200,11 @@
 						<!-- 运营时间和发行商地址 -->
 						
 						<view class="info">
-							<view style="font-size: 25rpx;margin-bottom:5rpx ;">运营时间：{{current_shang_detail.yingyeshijian}}</view>
-							<view style="font-size: 25rpx;margin-bottom: 5rpx;">地址：{{current_shang_detail.address}}</view>
-							<view :class="{hide:!iSinfo}" style="font-size: 25rpx;">
+							<view style="font-size: 25rpx;margin-bottom:5rpx ;">
+								<view style="font-weight: bold;float: left;">运营时间：</view>{{current_shang_detail.yingyeshijian}}</view>
+							<view style="font-size: 25rpx;margin-bottom: 5rpx;">
+								<view style="font-weight: bold;float: left;">联系地址：</view>{{current_shang_detail.address}}</view>
+							<view :class="{hide_text888:!iSinfo}" style="font-size: 28rpx;color: #3c3c3c;">
 								{{current_shang_detail.brief}}
 							</view>
 							<text @tap="showinfo" v-if="!iSinfo">
@@ -3099,7 +3101,7 @@
 		justify-content: flex-end;
 		
 	}
-	.hide{
+	.hide_text{
 		word-break: break-word;
 		overflow: hidden;
 		text-overflow: ellipsis;

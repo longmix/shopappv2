@@ -107,19 +107,22 @@
 			<view>
 				<view style="line-height:60rpx ;">来自于</view>
 		
-					<view class="" style="display: flex;">
-						<image :src="current_card_item.headimgurl" mode="widthFix" style="width: 120rpx; margin:20rpx 10rpx;"></image>
-						<view class="card_cpl_nickname" >{{current_card_item.nickname}}</view>
-					</view>
-					
-					<view style="line-height:60rpx ;">转赠的卡牌</view>
-			
+				<view class="" style="display: flex;">
+					<image :src="current_card_item.headimgurl" mode="widthFix" style="width: 80rpx; margin:20rpx 10rpx;border-radius: 50%;"></image>
+					<view class="card_cpl_nickname" >{{current_card_item.nickname}}</view>
+				</view>
 				
-				<view class="" v-for="(current_card_item_list , index) in current_card_item.cplid" style="margin: 20rpx 5rpx;">
+				
+				<view style="line-height:60rpx ;">转赠的卡牌</view>
+		
+			
+				<view class="" v-for="(current_card_item_list , index) in current_card_item.cplid" 
+					style="margin: 20rpx 5rpx;">
 					<view class="card_cpl_transfer">
 						#{{current_card_item_list.cplseq}} {{current_card_item_list.cplno}}
 					</view>
 				</view>
+				
 				<!-- 复选框按钮 -->
 				<!-- <uni-data-checkbox
 					mode="tag" 
@@ -128,41 +131,33 @@
 					:localdata="checkbox_range_card_publish_list" 
 					@change="checkbox_change_cplid" disabled>
 				</uni-data-checkbox> -->
+				
+				
+				<view>赠言：</view>
+				<view class="card_cpl_gift"  :style="{color:wxa_shop_nav_bg_color}">
+					{{current_card_item.send_wish}}
+				</view>
+				
+						
+				<view style="font-size: 30rpx; padding: 20rpx 10rpx;">
+					 {{current_card_item.createtime}}
+				</view> 				
+				
+				<view style="padding-top: 50rpx;">
+					<button class="gift_card_button_zengsong" 
+						:style="{background:wxa_shop_nav_bg_color}" 
+						@tap="receiver_get_card_cpl(cplid)">
+						领取卡牌
+					</button>
+				</view>
+				
+				
 			</view>
 				
-			<view>赠言：</view>
-			<view class="card_cpl_gift"  :style="{color:wxa_shop_nav_bg_color}">
-				{{current_card_item.send_wish}}
-			</view>
-			
-		
-			<view style="font-size: 20rpx; padding: 20rpx 10rpx;">
-				 {{current_card_item.createtime}}
-			</view>  
-			
-			
-			<!-- <view>方式</view> -->
-			<!-- 单选框按钮 -->
-			<!-- <view style="padding-left: 2.5%;">
-				<uni-data-checkbox
-					mode="tag" 
-					v-model="checkbox_value_get_type"
-					selectedColor="#65b847"
-					:localdata="checkbox_range_get_type" 
-					@change="checkbox_change_get_type" disabled>
-				</uni-data-checkbox>
-			</view> -->
 			
 			
 			
 			
-			<view style="padding-top: 50rpx;">
-				<button class="gift_card_button_zengsong" 
-					:style="{background:wxa_shop_nav_bg_color}" 
-					@tap="receiver_get_card_cpl(cplid)">
-					领取卡牌
-				</button>
-			</view>
 		</block>
 		
 	</view>
@@ -576,8 +571,10 @@ export default {
 				from: from,
 				send_wish: that.current.send_wish,
 			};
+			
 			console.log('that.current_card_cpl_list.cplid ===>>> ', that.current_card_cpl_list.cplid);
-
+			
+			
 			
 			that.abotapi.abotRequest({
 				url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/nftcard_gift',
@@ -663,6 +660,14 @@ export default {
 				cplid: cplid,
 				action: 'info', 
 			};
+			
+			console.log('that.abotapi.globalData.xiaochengxu_appid ===>>> ', that.abotapi.globalData.xiaochengxu_appid);
+			
+			// #ifdef MP-WEIXIN
+				if(that.abotapi.globalData.xiaochengxu_appid){
+					post_data.xiaochengxu_appid = that.abotapi.globalData.xiaochengxu_appid;
+				}
+			// #endif
 			
 			that.abotapi.abotRequest({
 				url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/nftcard_gift',
