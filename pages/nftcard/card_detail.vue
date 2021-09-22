@@ -296,6 +296,20 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				</view>
 			</view>
 			
+			
+			<view class="copyright_info" style="margin:20rpx;">
+				<image style="float:left;width: 40rpx;margin-right: 10rpx;"
+					mode="widthFix"
+					:data-cardid='current_card_detail.cardid' @tap="nftCardJubao"
+					src="../../static/img/help/jubao.png"></image>
+				<view style="color:#707070;float: left;font-size:26rpx;">举报</view>
+			</view>
+			<view class="copyright_info" style="margin:20rpx;height:120rpx;">
+				<view style="clear:both;color:#a2a2a2;float: left;font-size:24rpx;margin:0 120rpx 160rpx;">{{current_card_detail.msg_tips_in_footer}}</view>
+			</view>
+			
+			
+			
 		</view>
 		
 
@@ -413,7 +427,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			<view>
 				<!-- 卡牌持有的数量 底部按钮 -->
 				<view @click="showModal_liuzhuanjilv=true">
-					<view class="card_detail_goumai2">
+					<view class="card_detail_goumai2"
+						:style="{border:'solid ' + wxa_shop_nav_bg_color + ' 2rpx'}">
 						<image class="card_detail_items"
 							src="https://yanyubao.tseo.cn/Tpl/static/nft_card/cheng.png">
 						</image>
@@ -1712,8 +1727,55 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				})
 					
 					
-				},
+			},
+			
+			//发圈举报
+			nftCardJubao:function(e){
+				console.log('e=======', e)
 				
+				var that = this;
+				var cardid = e.target.dataset.cardid;
+				
+				var userInfo = that.abotapi.get_user_info();
+				
+				var post_data = {
+						sellerid: that.abotapi.get_sellerid(),
+						cardid: cardid,
+					};
+				
+				if(userInfo){
+					post_data.userid = userInfo.userid;
+				}
+				
+				that.abotapi.abotRequest({
+					url: that.abotapi.globalData.yanyubao_server_url + 'openapi/NftCardData/nft_card_jubao',
+					method: 'post',
+					data: post_data,
+					header: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					},
+					success: function(res) {
+						
+						var msg = '您的举报请求我们已经收到，并将尽快处理！';
+						if(res.data.msg){
+							msg = res.data.msg;
+						}
+						
+						uni.showModal({
+							title:'感谢反馈',
+							content:msg,
+							showCancel:false
+						})
+				
+					},
+					fail: function(e) {
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+					},
+				});
+			},	
 				
 				
 				
@@ -1994,7 +2056,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 	.card_detail_items {
 		width: 40rpx;
 		height: 40rpx;
-		padding-top: 20rpx;
+		padding-top: 25rpx;
 		padding-left: 6rpx;
 	}
 	.card_detail_goumai1{
