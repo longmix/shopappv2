@@ -129,7 +129,7 @@ export default {
 			searchValue:'',
 			
 			centent_show:true,
-			
+			current_page:1
 		}
 	},
 
@@ -200,12 +200,14 @@ export default {
 			//duration:2000
 		});
 		// #endif
+		this.current_page = 1;
 		
 		this.__nft_get_package_list();
 		
 	},
 	//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
 	onReachBottom: function () {
+	
 	
 		this.__nft_get_package_list();
 		
@@ -310,7 +312,7 @@ export default {
 					sellerid:that.abotapi.globalData.default_sellerid,
 					nft_supplierid : that.current_nft_supplierid,
 					
-					page: 1,
+					page: that.current_page,
 					page_size: 50,
 			    },
 			    success: function (res) {

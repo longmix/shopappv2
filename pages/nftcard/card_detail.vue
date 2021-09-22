@@ -451,23 +451,23 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 									@click="showModal_liuzhuanjilv_zengsong=true">
 									
 									<view style="display: flex;">
-										<view class="card_detail_modal_kapaimingxi">卡牌id：</view>
-										<b style="font-size: 34rpx;">{{card_publish_item.cplno}}</b>
+										<view class="card_detail_modal_kapaimingxi">卡牌ID：</view>
+										<view class="card_detail_modal_kapai_value">{{card_publish_item.cplno}}</view>
 									</view>
 									<view style="display: flex;">
 										<view class="card_detail_modal_kapaimingxi">序号：</view>
-										<b style="font-size: 34rpx;">#{{card_publish_item.cplseq}}</b>
+										<view class="card_detail_modal_kapai_value">{{card_publish_item.cplseq}}</view>
 									</view>
 									<view style="display: flex;">
 										<view class="card_detail_modal_kapaimingxi">获得时间：</view>
-										<b style="font-size: 34rpx;">{{card_publish_item.updatetime}}</b>
+										<view class="card_detail_modal_kapai_value">{{card_publish_item.updatetime}}</view>
 									</view>
-									<view style="display: flex;">
+									<view style="display:none;">
 										<view class="card_detail_modal_kapaimingxi">获得方式：</view>
-										<b style="font-size: 34rpx;">{{card_publish_item.is_private_str}}</b>
+										<view class="card_detail_modal_kapai_value">{{card_publish_item.is_private_str}}</view>
 									</view>
 									
-									<view style="float: right;margin-top: -215rpx;">
+									<view style="float: right;margin-top: -160rpx;">
 										<!-- 2021.08.20销毁  丢弃 -->
 										<view class="card_detail_showmodal_zengsong">
 											<image class="card_detail_showmodal_tupian"
@@ -1342,10 +1342,20 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				var that = this;
 				
 				
+				var userInfo = that.abotapi.get_user_info();
+				
+				if (!userInfo) {
+					return 0;
+					
+				}
+				
+				
 				var post_data = {
 					sellerid: that.abotapi.globalData.default_sellerid,
 					cplid: cplid,
 					data_type: data_type,
+					userid: userInfo.userid,
+					checkstr: userInfo.checkstr,
 					//new_user_modile: that.current_new_user_modile,
 					//sender_name: that.current_sender_name,
 					//sender_wish: that.current_sender_wish,
@@ -1801,9 +1811,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		top: 40%;
 		left: 50%;
 		width: 550rpx;
-		border-radius: 30rpx;
+		border-radius: 10rpx;
 		border: 5rpx #c3c3c3 solid;
-		background-color: #e2d281;
+		background-color: #ffffff;
 		z-index: 5;
 	}
 	.card_detail_showmodal_fenxaingjilv{
@@ -1811,9 +1821,12 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		padding: 20rpx;
 	}
 	.card_detail_modal_kapaimingxi{
-		color: #666666;
+		color: #2a2a2a;
 		width: 180rpx;
 		display: flex;
+	}
+	.card_detail_modal_kapai_value {
+		color:#666666;
 	}
 </style>
 <style>
