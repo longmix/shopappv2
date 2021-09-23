@@ -6,13 +6,13 @@
 
 		<view class="package_search">
 			
-			<input  placeholder="提示卡包" class="search_package" :value="searchValue"
+			<input :placeholder="search_placeholder_text" class="search_package" :value="searchValue"
 				confirm-type="search"
 				@input="searchValueInput($event)"
-				@confirm="package_list_search()"/>
+				@confirm="package_list_search()" />
 				
 			<button @tap="package_list_search()" style="width: 90rpx; height: 65rpx;line-height: 80rpx;">
-				<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/search01.png"mode="widthFix" style="width: 45rpx;"></image>
+				<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/search01.png" mode="widthFix" style="width: 45rpx;height:45rpx;"></image>
 			</button>
 		</view>
 	
@@ -127,6 +127,7 @@ export default {
 			current_nft_supplierid:0,
 			
 			searchValue:'',
+			search_placeholder_text:'输入搜索词',
 			
 			centent_show:true,
 			current_page:1
@@ -200,17 +201,18 @@ export default {
 			//duration:2000
 		});
 		// #endif
-		this.current_page = 1;
 		
+		this.current_page = 1;
+		this.current_package_list = [];
 		this.__nft_get_package_list();
 		
 	},
 	//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
 	onReachBottom: function () {
-	
-	
-		this.__nft_get_package_list();
 		
+		this.current_page ++;
+		
+		this.__nft_get_package_list();
 	}, 
 	
 	onShareAppMessage: function () {
@@ -311,9 +313,8 @@ export default {
 			    data: {
 					sellerid:that.abotapi.globalData.default_sellerid,
 					nft_supplierid : that.current_nft_supplierid,
-					
 					page: that.current_page,
-					page_size: 50,
+					page_size: 10,
 			    },
 			    success: function (res) {
 					
@@ -326,16 +327,19 @@ export default {
 						return;
 					}
 			
-					that.current_package_list = res.data.data;
+					if(!that.current_package_list){
+						that.current_package_list = [];
+					}
+						
+					for(var i=0; i<res.data.data.length;i++ ){
+						that.current_package_list.push(res.data.data[i]);
+					}
 					
 					console.log('current_package_list ===>>> ', that.current_package_list);
 					
-					
-					
-					
-					
-					
-					
+					if(res.data.search_placeholder_text){
+						that.search_placeholder_text = res.data.search_placeholder_text;
+					}
 					
 							
 					
@@ -543,6 +547,7 @@ export default {
 	}
 	.package_rare_total_time{
 		margin-left: 20rpx;
+		margin-bottom: 20rpx;
 	}
 	.package_rare_total{
 		float: right;

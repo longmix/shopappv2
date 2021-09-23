@@ -12,21 +12,24 @@
 		
 		<!-- 兑换的卡包记录 -->
 		<view class="" >
-			<view v-for="(current_coupon_log_list,index) in current_coupon_log"
-			 :key="index" class="my_package_like_list"
-			  @tap="goto_coupon_item()">
+			<view v-for="(user_coupon_log_item,index) in current_coupon_log"
+				:key="index" 
+				class="my_package_like_list"
+				@tap="goto_coupon_item(user_coupon_log_item.user_coupon_id, user_coupon_log_item.user_coupon_qrcode)" >
 				
 				<view class="" style="display: flex;">
 					<!--卡包的图片 -->
 					<view>
-						<image :src="current_coupon_log_list.package_item.cover_img_url_stand" mode="widthFix" style="width:200rpx;border-radius: 10rpx;"></image>
+						<image :src="user_coupon_log_item.package_item.cover_img_url_stand" mode="widthFix" style="width:200rpx;border-radius: 10rpx;"></image>
 					</view>
 					<!-- 卡包及优惠券信息 -->		
 					<view style="margin-top: 10rpx;margin-left: 20rpx;width: 490rpx;" >
-						<view class="my_package_name" style="font-size: 35rpx;">{{current_coupon_log_list.package_item.title}}</view>
+						<view class="my_package_name" style="font-size: 30rpx;">{{user_coupon_log_item.coupon_item.name}}</view>
 						
-						<view class="my_package_name" style="color: #ecb36c;font-size: 30rpx;margin-top: 25rpx;">{{current_coupon_log_list.coupon_item.name}}</view>
-						<view class="my_package_name" style="color: #666666;font-size: 25rpx;margin-top: 25rpx;">兑换时间：{{current_coupon_log_list.createtime}}</view>
+						<view class="my_package_name" style="color: #ecb36c;font-size: 24rpx;margin-top: 25rpx;">来自卡包：{{user_coupon_log_item.package_item.title}}</view>
+						<view class="my_package_name" style="color: #666666;font-size: 24rpx;margin-top: 25rpx;">兑换时间：{{user_coupon_log_item.createtime}}</view>
+						<view class="my_package_name" style="color: #666666;font-size: 24rpx;margin-top: 25rpx;">优惠编码：{{user_coupon_log_item.user_coupon_id}}</view>
+						<view class="my_package_name" style="color: #666666;font-size: 24rpx;margin-top: 25rpx;">当前状态：{{user_coupon_log_item.user_coupon_status}}</view>
 						
 						
 					</view>
@@ -34,6 +37,28 @@
 				
 			</view>
 		</view>
+		
+		
+		<!-- 点击兑换按钮的弹层 Begin -->
+		<view class="show_modal_mask" v-if="showModal_exchange_btn" @tap="showModal_exchange_btn=false"></view>
+		<view class="show_modal_pop" v-if="showModal_exchange_btn"
+			 style="width: 350rpx;background-color: #FFFFFF; overflow-y: auto;" >
+			<view style="margin: 20rpx; padding: 20rpx; border-radius: 5rpx;" >
+		
+				<view style="color:#3c3c3c;">
+					核销优惠券：{{user_coupon_id}}
+				</view>
+				
+				<view>
+					<image :src="user_coupon_qrcode_img_url" mode="widthFix" style="width: 250rpx;"></image>
+				</view>
+					
+			</view>
+		</view>
+		<!-- 点击兑换按钮的弹层 End -->
+		
+		
+		
 	</view>
 </template>
 
@@ -50,6 +75,12 @@ export default {
 			userid:0,
 			current_coupon_log:null,
 			current_page:1,
+			
+			//是否显示弹框
+			showModal_exchange_btn:false,
+			//弹框里面的二维码
+			user_coupon_qrcode_img_url:'',
+			user_coupon_id:0
 		}
 	},
 	
@@ -130,54 +161,7 @@ export default {
 		this.__nft_get_package_list();
 		
 	}, 
-	
-	onShareAppMessage: function () {
-		var that = this;
-		
-		var option_list = this.abotapi.globalData.option_list;
-		
-		var share_title = option_list.wxa_share_title;
-		if (share_title.length > 22) {
-			share_title = share_title.substr(0, 20) + '...';
-		}
-		
-		var share_path = '/pages/index/index?sellerid=' + this.abotapi.get_sellerid();
-		
-		var userInfo = this.abotapi.get_user_info();
-		
-		if (userInfo && userInfo.userid) {
-			share_path += '&userid=' + userInfo.userid;
-		}
-		
-		var share_img = option_list.wxa_share_img;
-		if(!share_img){
-			share_img = option_list.wxa_shop_operation_logo_url;
-		}
-		
-		return {
-			title: share_title,
-			path: share_path,
-			imageUrl: share_img,
-			success: function(res) {
-				// 分享成功
-			},
-			fail: function(res) {
-				// 分享失败
-			}
-		}
-	},
-	
-	onShareTimeline: function () {
-		return this.share_return();
-	},
-	onAddToFavorites: function () {
-		return this.share_return();
-	},
-	methods: {
-		share_return: function() {
-			var that = this;
-		},
-		
+	methods: {		
 		callback_function_shop_option_data:function(that, cb_params){
 			
 			console.log('当前调试开关22：' + this.system_debug_flag);
@@ -265,9 +249,26 @@ export default {
 		},
 			
 			
-		goto_coupon_item:function(){
-			var new_url = 'https://yanyubao.tseo.cn/Home/User/ticket_index/platform/shopappv2.html?ensellerid=%ensellerid%&oneclicklogin=%oneclicklogin%';
-			this.abotapi.call_h5browser_or_other_goto_url(new_url)
+		goto_coupon_item:function(user_coupon_id, user_coupon_qrcode_img_url){
+			
+			var that = this;
+			
+			console.log('user_coupon_id ===>>> ', user_coupon_id);
+			console.log('user_coupon_qrcode_img_url ===>>> ', user_coupon_qrcode_img_url);
+			
+			//var new_url = 'https://yanyubao.tseo.cn/Home/User/ticket_index/platform/shopappv2.html?ensellerid=%ensellerid%&oneclicklogin=%oneclicklogin%';
+			//this.abotapi.call_h5browser_or_other_goto_url(new_url)
+			
+			that.user_coupon_id = user_coupon_id;
+			
+			//设置优惠券的二维码
+			that.user_coupon_qrcode_img_url = user_coupon_qrcode_img_url;
+			
+			
+			that.showModal_exchange_btn = true;
+			
+			
+			
 		}	
 			
 		
