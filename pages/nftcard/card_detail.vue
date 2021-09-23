@@ -182,7 +182,10 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				
 				<view style="color: #868686;">
-					<view v-if="current_card_detail.buy_limit != 0">
+					<view v-if="current_card_detail.buy_limit == -1">
+						<text style="color: #ff0000;">此卡牌不可在线获取</text>
+					</view>
+					<view v-else-if="current_card_detail.buy_limit != 0">
 						<text style="color: #ff0000;">每人限购{{current_card_detail.buy_limit}}张</text>
 					</view>
 					<view>
@@ -297,10 +300,10 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			</view>
 			
 			
-			<view class="copyright_info" style="margin:20rpx;">
+			<view class="copyright_info" style="margin:20rpx;" @tap="nftCardJubao">
 				<image style="float:left;width: 40rpx;margin-right: 10rpx;"
 					mode="widthFix"
-					:data-cardid='current_card_detail.cardid' @tap="nftCardJubao"
+					:data-cardid='current_card_detail.cardid'
 					src="../../static/img/help/jubao.png"></image>
 				<view style="color:#707070;float: left;font-size:26rpx;">举报</view>
 			</view>
@@ -455,7 +458,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				</view>
 				
 				<!-- 卡牌明细记录模态框 -->
-				<view class="show_modal_pop card_detail_showmodal_fenxaingjilv" 
+				<view class="show_modal_pop card_detail_showmodal_fenxiangjilv" 
 					v-if="showModal_liuzhuanjilv">
 					<view v-if="current_card_detail.user_have_counter > 0">
 					<!-- <view> -->
@@ -1715,6 +1718,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 										})
 										
 									}
+									else{
+										that.abotapi.call_h5browser_or_other_goto_url('/pages/index/index');
+									}
 									
 								}
 							})
@@ -1888,9 +1894,10 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		background-color: #ffffff;
 		z-index: 5;
 	}
-	.card_detail_showmodal_fenxaingjilv{
+	.card_detail_showmodal_fenxiangjilv{
 		width: 590rpx;
 		padding: 20rpx;
+		background-color: #e2e2e2;
 	}
 	.card_detail_modal_kapaimingxi{
 		color: #2a2a2a;
