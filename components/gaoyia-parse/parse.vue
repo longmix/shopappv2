@@ -11,6 +11,24 @@
  2021.1.26.
  https://ext.dcloud.net.cn/plugin?id=364
  
+ 
+ 
+使用举例：传入参数 imgOptions为Boolean类型，图片点击事件禁用。
+:imgOptions=false  前面前冒号，确保 false作为boolean类型被传递，而不是string类型。
+
+		<u-parse v-if="show_rich_html_in_index == 1" 
+			:content="index_rich_html_content" 
+			:imageProp = "u_parse_imageProp"
+			:imgOptions=false
+			@preview888="index_rich_html_preview_image" 
+			@navigate="index_rich_html_click_link" />
+			
+		<!--<rich-text :nodes="index_rich_html_content|formatIndexRichText"></rich-text>-->
+		
+ 
+ 
+ 
+ 
  */-->
 
 <template>

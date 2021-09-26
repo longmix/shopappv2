@@ -134,6 +134,7 @@
 		<!-- 富媒体组件 2021.1.18. -->
 		<!-- rich-text  和 v-html 都有各自的优缺点 -->
 		<!-- u-parse虽然可以支持链接和图片的点击事件，但是对CSS的支持过于广泛，所以效率低，
+		但是链接可以点击，图片可以预览
 		而且在服务器端要求更专业的CSS定义，不适用于商品详情页和发帖内容页面 -->
 <!-- #ifdef MP-ALIPAY -->			
 			<rich-text :nodes="index_rich_html_content"></rich-text>
@@ -145,8 +146,13 @@
 <!-- #ifndef MP-ALIPAY | H5 -->
 		<u-parse v-if="show_rich_html_in_index == 1" 
 			:content="index_rich_html_content" 
-			@preview="index_rich_html_preview_image" 
+			:imageProp = "u_parse_imageProp"
+			:imgOptions=false
+			@preview888="index_rich_html_preview_image" 
 			@navigate="index_rich_html_click_link" />
+			
+		<!--<rich-text :nodes="index_rich_html_content|formatIndexRichText"></rich-text>-->
+			
 <!-- #endif -->		
 		
 		<!-- 平铺广告图 -->
@@ -483,6 +489,8 @@ export default {
 			 show_rich_html_in_index:0,
 			 index_rich_html_type:'static',
 			 index_rich_html_content:'<h1></h1>',
+			 //传给uParse组件的属性值
+			 u_parse_imageProp:{mode:'aspectFit', padding:0, lazyLoad:true, domain:''},
 
 		};
 	},
@@ -2545,7 +2553,10 @@ export default {
 			newContent = newContent.replace(/<h2[^>]*>/gi, '<h2 class="content-article-detail_h2">');
 			
 			return newContent;
-		}	
+		},
+		formatIndexRichText(html){
+			return html;
+		}
 	},
 };
 </script>
