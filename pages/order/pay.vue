@@ -89,7 +89,7 @@
 
 
 		<view class="w100">
-			<view class="a-dikou" :hidden="wxa_order_hide_balance_zengsong==1">
+			<view class="a-dikou" :hidden="(wxa_order_hide_balance_zengsong==1) || (!coupon_list)">
 				<view class="b-dikou">
 					<view>优惠券</view>
 				</view>
@@ -107,7 +107,7 @@
 				</view>
 			</view>
 
-			<view class="a-dikou" :hidden="wxa_order_hide_balance_zengsong==1">
+			<view class="a-dikou" :hidden="(wxa_order_hide_balance_zengsong==1) || (balance_zengsong == 0)">
 				<view class="b-dikou">
 					<view>赠款抵扣</view>
 					<view class="c-dikou">使用￥<span class="c-dikou_amount">{{balance_zengsong_dikou}}</span> 可用￥{{balance_zengsong}}</view>
@@ -116,7 +116,7 @@
 			</view>
 
 
-			<view class="a-dikou" :hidden="wxa_order_hide_balance==1">
+			<view class="a-dikou" :hidden="(wxa_order_hide_balance==1) || (balance == 0)">
 				<view class="b-dikou">
 					<view>余额抵扣</view>
 					<view class="c-dikou">使用￥<span class="c-dikou_amount">{{balance_dikou}}</span> 可用￥{{balance}}</view>

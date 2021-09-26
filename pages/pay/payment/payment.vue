@@ -55,7 +55,7 @@
 						
 						<view class="zhifu_li" v-if="show_ali_pay==1">
 							<image src="https://yanyubao.tseo.cn/Tpl/static/images/alipay.png" class="tubiao_zhifu"></image>
-							<view class="zhifu_name">支付宝支付</view>
+							<view class="zhifu_name" checked="true">支付宝支付</view>
 						
 							<radio value='ali_pay' style='margin-left:90%;margin-top:7px;'></radio>
 						</view>
@@ -408,12 +408,14 @@
 			
 			that.loadOrderDetail();
 			
+			var post_data = {
+					sellerid: that.abotapi.get_sellerid(),
+					xiaochengxu_appid: that.abotapi.globalData.xiaochengxu_appid
+				};
+			
 			that.abotapi.abotRequest({
 				url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=payment_type_list',
-				data: {
-					sellerid: that.abotapi.get_sellerid(),
-					appid: that.abotapi.globalData.xiaochengxu_appid
-				},
+				data: post_data,
 				success: function(res) {
 					console.log("res111", res);
 					var code = res.data.code;
@@ -438,12 +440,17 @@
 						}
 						
 						// #ifdef MP-WEIXIN
+							show_weixin_pay = 1;
 							show_ali_pay = 0;
+							
+							that.current_payment_type = 'wx_pay';
 						// #endif
 						
 						// #ifdef MP-ALIPAY
 							show_weixin_pay = 0;
 							show_ali_pay = 1;
+							
+							that.current_payment_type = 'ali_pay';
 						// #endif
 
 						that.type_list = type_list;
