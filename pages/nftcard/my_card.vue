@@ -105,12 +105,12 @@ export default {
 		
 		if(that.action_data_type == 'my_favorite_list'){
 			uni.setNavigationBarTitle({
-				title : '我收藏的卡牌'
+				title : '我的收藏'
 			});
 		}
 		else if(that.action_data_type == 'my_card_buy_list'){
 			uni.setNavigationBarTitle({
-				title : '我购买的卡牌'
+				title : '我的卡牌'
 			});
 			
 		}

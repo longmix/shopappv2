@@ -1911,7 +1911,7 @@ export default {
 	.package_card_name{
 		width: 82%;
 		font-weight: bold;
-		font-size: 40rpx;
+		font-size: 30rpx;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;

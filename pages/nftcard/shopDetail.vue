@@ -37,6 +37,8 @@
 				<view style="" >
 					<image :src="current_shang_detail.mendian_image" mode="" style="width: 100%; height: 450rpx; position: absolute; "></image>
 				</view>
+				
+				
 				<!-- 发行商头像和名称 -->
 				<view style="margin-left: 20rpx; position: relative;top: 350rpx;">
 					<view class="supplier_follow_num_icon01" >
@@ -54,10 +56,10 @@
 					</view>
 					<image :src="current_shang_detail.icon_image" mode="" style="width: 200rpx;height: 200rpx; border-radius: 50%;"></image>
 						
-						<view style="width: 500rpx;display: flex;margin-left: 40rpx;">
+						<view style="width: 500rpx;display: flex;margin-left: 40rpx;margin-top: 15rpx;">
 							<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/authentication.png"
 								mode="widthFix" style="width: 30rpx;height: 30rpx;top: 5rpx;"></image>
-							<view style="margin-left: 5rpx;"> {{current_shang_detail.name}}</view>
+							<view style="margin-left: 5rpx; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"> {{current_shang_detail.name}}</view>
 						</view>
 						
 					
@@ -200,10 +202,10 @@
 						<!-- 运营时间和发行商地址 -->
 						
 						<view class="info">
-							<view style="font-size: 25rpx;margin-bottom:5rpx ;">
+							<view style="font-size: 25rpx;margin-bottom:10rpx ;">
 								<view style="font-weight: bold;float: left;">运营时间：</view>{{current_shang_detail.yingyeshijian}}</view>
-							<view style="font-size: 25rpx;margin-bottom: 5rpx;">
-								<view style="font-weight: bold;float: left;">联系地址：</view>{{current_shang_detail.address}}</view>
+							<view style="font-size: 25rpx;margin-bottom: 10rpx;">
+								<view style="font-weight: bold;float: left;">经营地址：</view>{{current_shang_detail.address}}</view>
 							<view :class="{hide_text888:!iSinfo}" style="font-size: 28rpx;color: #3c3c3c;">
 								{{current_shang_detail.brief}}
 							</view>
@@ -323,7 +325,7 @@
 						@tap="goto_surrlier_package_detail(item.packageid)">
 						<view class="nft_package" >
 							<view class="">
-								<img class="supplier_package_list" :src="item.cover_img_url"  >
+								<img class="supplier_package_list" :src="item.cover_img_url_3x2_stand"  >
 				
 									<view class="package_list_mark_num" >
 										<view class="supplier_package_card_num" style="color: #cdcdcd;margin-left: 5rpx;-webkit-filter:brightness(2.3);">{{item.card_count_mianfei}}</view>
@@ -740,7 +742,7 @@
 				current_nft_supplierid:1,
 				
 				//2021.8.13. 控制头部风格是否为NFT 卡包
-				use_theme_nft_package: 0,
+				use_theme_nft_package: 1,
 				
 				current_nft_card_list:null,
 				
@@ -3000,7 +3002,7 @@
 
 	.supplier_follow_num_icon{
 		 float: right;
-		 margin-top: 220rpx;
+		 margin-top: 200rpx;
 		 margin-right: 200rpx;
 	}
 	.supplier_follow_num_icon01{
@@ -3041,7 +3043,7 @@
 		
 		height: 100rpx;
 		line-height: 50rpx;
-		margin-top: 220rpx;
+		margin-top: 200rpx;
 		margin-left: 250rpx; 
 
 		border-radius: 10rpx;
@@ -3052,7 +3054,7 @@
 	
 		height: 100rpx;
 		line-height: 50rpx;
-		margin-top: 220rpx;
+		margin-top: 200rpx;
 		margin-left: 60rpx; 
 		
 		border-radius: 10rpx;

@@ -1,5 +1,5 @@
 <template>
-	<view style="padding: 20rpx;">
+	<view style="padding: 20rpx;" v-if="is_page_show_to_user == 1">
 		<!-- 卡牌封面 卡牌名称及简介 -->
 		<view style="display: flex;">
 			<view @tap="go_to_card_detail(current_packageid,current_cardid)">
@@ -173,6 +173,11 @@ export default {
 	components: { uniDataCheckbox },
 	data() {
 		return {
+			is_page_show_to_user:0,
+			
+			current_option_str:null,
+			last_url : '',
+			
 			//复选
 			current_card_cpl_list: [{"value": 0,"text":"卡牌id"},{"value": 1,"text":"#2 卡牌id"}],
 			// 单选
@@ -204,6 +209,30 @@ export default {
 		console.log('pages/tabBar/index/index====>>>>', options);
 		
 		var that = this;
+		
+		
+		
+		var last_url = '/pages/nftcard/gift_card_share';
+		
+		var arr = Object.keys(options);
+		var options_len = arr.length;
+		
+		if (options_len > 0){
+			var params_str = '';
+		
+			for(var key in options){
+				params_str += key+'='+options[key]+'&';
+			}
+			params_str = params_str.substr(0, params_str.length - 1);
+			
+			that.current_option_str = params_str;
+		
+			last_url = last_url+'?'+params_str;
+		}
+		
+		
+		that.last_url = last_url;
+		
 		
 		uni.setNavigationBarTitle({
 			title : that.abotapi.globalData.default_shopname
@@ -239,6 +268,23 @@ export default {
 		//赠送卡牌的页面
 		if(!options.from){
 			
+			var userInfo = this.abotapi.get_user_info();
+			
+			//2021.6.19. 有例外的情况，不需要用户登录也可以下单
+			var no_user_login = options.no_user_login;
+			
+			if( (!userInfo || !userInfo.userid) && (no_user_login != 1) ){
+				
+				
+				that.abotapi.goto_user_login(last_url, 'normal');
+				return;
+			}
+			
+			
+			
+			
+			that.is_page_show_to_user = 1;
+			
 			uni.setNavigationBarTitle({
 				title : '赠送卡牌给好友'
 			});
@@ -270,6 +316,8 @@ export default {
 		uni.setNavigationBarTitle({
 			title : '领取卡牌'
 		});
+		
+		that.is_page_show_to_user = 1;
 		
 		
 		that.__get_card_detail();
@@ -374,40 +422,32 @@ export default {
 		share_return: function() {
 			var that = this;
 			
-			if(that.__nft_card_gift('timeline') == 0){
-				return;
-			}
+			var share_title = that.current_send_wish;
 			
-			
-			var share_title = that.current_card_detail.card_name;
 			if (share_title.length > 22) {
 				share_title = share_title.substr(0, 20) + '...';
 			}
-			
+				
 			var share_path = 'sellerid=' + that.abotapi.globalData.default_sellerid;
 			share_path += '&packageid='+that.current_packageid;
 			share_path += '&cardid='+that.current_cardid;
-			share_path += 'from=timeline&cplid=' + that.checkbox_value_cplid;
+			share_path += '&from=timeline&cplid=' + that.current_cplid_list_str;
 			
-			//如果登录了，则带上分享者的userid
-			var userInfo = this.abotapi.get_user_info();
-			if (userInfo && userInfo.userid) {
-				share_path += '&userid=' + userInfo.userid;
-			}
-			
-			var share_img = that.current_card_detail.cover_img_url_stand;		
+			console.log('share_path====>>>>>' + share_path);
+				
+			var share_img = that.current_card_detail.cover_img_url_stand;
 			if(!share_img){
 				share_img = that.current_card_detail.cover_img_url;
-			
-				console.log('111111111111111111111111111111'+that.current_card_detail.cover_img_url_stand);
-				
-				return {
-					title: share_title,
-					query: share_path,
-					imageUrl: share_img,
-				}
-			
 			}
+			
+			console.log('111111111111111111111111111111'+that.current_card_detail.cover_img_url_stand);
+			
+			return {
+				title: share_title,
+				query: share_path,
+				imageUrl: share_img,
+			}
+			
 		},
 		
 		callback_function_shop_option_data:function(that, cb_params){
@@ -544,80 +584,7 @@ export default {
 				},
 			});
 		},
-		//赠予
-		__nft_card_gift:function(from=''){
-			var that = this;
-
-			
-			var userInfo = that.abotapi.get_user_info();
-			
-			if (!userInfo) {
-				return 0;
-				
-			}
-			
-			
-
-			
-			//赠送
-			var post_data = {
-				sellerid: that.abotapi.get_sellerid(),
-				userid: userInfo.userid,
-				checkstr: userInfo.checkstr,
-				cardid: that.current_card_detail.cardid,
-				cplid: that.current_cplid_list_str,
-				action: 'send',
-				get_type: that.current_get_type,
-				from: from,
-				send_wish: that.current.send_wish,
-			};
-			
-			console.log('that.current_card_cpl_list.cplid ===>>> ', that.current_card_cpl_list.cplid);
-			
-			
-			
-			that.abotapi.abotRequest({
-				url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/nftcard_gift',
-				method: 'post',
-				data: post_data,
-				success: function(res) {
-			
-					if (res.data.code == 1) {
-						console.log("赠送成功");
-					}
-					
-					console.log('nftcard_gift ===>>> ', res.data);
-					
-					uni.showModal({
-						title: "提示",
-						content: "赠送完成",
-						showCancel: false,
-						success: () => {
-							uni.navigateTo({
-								url: '/pages/nftcard/card_detail?cardid='+that.current_cardid,
-							})
-						}
-					})
-					
-					
-					
-			
-			
-				},
-				fail: function(e) {
-					uni.showToast({
-						title: '网络异常！',
-						duration: 2000
-					});
-				},
-			});
-			
-			
-			
-			
-			
-		},
-		
+	
 		
 		
 		//h5点击分享触发
@@ -644,17 +611,11 @@ export default {
 		__receiver_get_card_cpl_info:function(cplid){
 			var that = this;
 			
-			var userInfo = that.abotapi.get_user_info();
-			
-			if (!userInfo) {
-				return 0;
-				
-			}
 			
 			var post_data = {
 				sellerid: that.abotapi.get_sellerid(),
-				userid: userInfo.userid,
-				checkstr: userInfo.checkstr,
+				//userid: userInfo.userid,
+				//checkstr: userInfo.checkstr,
 				cardid: that.current_cardid,
 				get_type: that.current_get_type,
 				cplid: cplid,
@@ -708,13 +669,18 @@ export default {
 			
 			var that = this;
 			
-			var userInfo = that.abotapi.get_user_info();
 			
-			if (!userInfo) {
-				return 0;
+			var userInfo = this.abotapi.get_user_info();
+			
+			//2021.6.19. 有例外的情况，不需要用户登录也可以下单
+			var no_user_login = options.no_user_login;
+			
+			if( (!userInfo || !userInfo.userid) && (no_user_login != 1) ){
 				
+				
+				that.abotapi.goto_user_login(last_url, 'normal');
+				return;
 			}
-			
 			
 			var post_data = {
 				sellerid: that.abotapi.get_sellerid(),

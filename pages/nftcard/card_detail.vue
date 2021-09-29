@@ -173,7 +173,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 						已获得：
 						<block v-for="(cpl_item , index001) in current_card_detail.user_have_list"
 							:key="index001">
-							#{{cpl_item.cplseq}}
+							<text style="font-weight: bold; margin-right: 10rpx;">#{{cpl_item.cplseq}} </text>
 							<!-- 最后一个字符不加’，‘ -->
 							<!-- {{index001 == current_card_detail.user_have_list.length-1 ? " ":" ,"}} -->
 						</block>

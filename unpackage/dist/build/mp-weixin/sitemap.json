@@ -1,6 +1,80 @@
 {
-  "desc": "关于本文件的更多信息，请参考文档 https://developers.weixin.qq.com/miniprogram/dev/framework/sitemap.html",
+  "desc": "通版商城V2小程序版 Powered By 延誉宝",
   "rules": [{
+    "action": "allow",
+    "page": "pages/index/index"
+    },{
+      "action": "allow",
+      "page": "pages/category/category"
+    },{
+      "action": "allow",
+      "page": "pages/category/index2"
+    },{
+      "action": "allow",
+      "page": "pages/about_applet/about_applet"
+    },{
+      "action": "allow",
+      "page": "pages/product/goods-list/goods-list",
+      "params": ["cataid"],
+      "matching": "inclusive"
+    },{
+      "action": "allow",
+      "page": "pages/product/detail",
+      "params": ["productid"],
+      "matching": "inclusive"
+    },{
+      "action": "allow",
+      "page": "pages/help_detail/help_detail",
+      "params": ["id", "sellerid"],
+      "matching": "partial"
+    },{
+      "action": "allow",
+      "page": "pages/help/help",
+      "params": ["sellerid8888"],
+      "matching": "exclusive"
+    },
+    {
+      "action": "allow",
+      "page": "pages/publish/publish_list",
+      "params": ["sellerid8888"],
+      "matching": "exclusive"
+    },{
+      "action": "allow",
+      "page": "cms/quanquan/quanquanlist",
+      "params": ["sellerid8888"],
+      "matching": "exclusive"
+    },{
+      "action": "allow",
+      "page": "cms/quanquan/quanquan_details",
+      "params": ["videoid"],
+      "matching": "inclusive"
+    },{
+      "action": "allow",
+      "page": "pages/shopList/shopList",
+      "params": ["sellerid8888"],
+      "matching": "exclusive"
+    },{
+      "action": "allow",
+      "page": "pages/shopDetail/shopDetail",
+      "params": ["shangid"],
+      "matching": "inclusive"
+    },{
+      "action": "allow",
+      "page": "pages/selfform/selfform",
+      "params": ["sellerid8888"],
+      "matching": "exclusive"
+    },{
+      "action": "allow",
+      "page": "pages/welcome_page/welcome_page",
+      "params": ["sellerid8888"],
+      "matching": "exclusive"
+    },{
+      "action": "disallow",
+      "page": "pages/tabbar/user"
+    },{
+      "action": "allow",
+      "page": "pages/login/login"
+    },{
   "action": "allow",
   "page": "*"
   }]

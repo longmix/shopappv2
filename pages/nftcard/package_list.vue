@@ -118,7 +118,6 @@ export default {
 	data() {
 		return {
 			current_package_list : null,
-			p:2,
 			
 			index:0,
 			//array:['智能排序','按热度排序','按到期时间排序','按卡牌数量排序','按销售状态',],
@@ -128,6 +127,8 @@ export default {
 			
 			searchValue:'',
 			search_placeholder_text:'输入搜索词',
+			
+			tag_of_editor:'',
 			
 			centent_show:true,
 			current_page:1
@@ -143,12 +144,21 @@ export default {
 		
 		var that = this;
 		
+		/*
 		uni.setNavigationBarTitle({
 			title : that.abotapi.globalData.default_shopname
-		});
+		});*/
+		
+		var title_str = '卡包列表';
+		
+		if(options.tag_of_editor){
+			title_str += ' - ' + options.tag_of_editor; 
+			
+			that.tag_of_editor = options.tag_of_editor;
+		}
 		
 		uni.setNavigationBarTitle({
-			title : '卡包列表',
+			title : title_str,
 		});
 		
 		//当前卡包所属的supplierid
@@ -307,15 +317,23 @@ export default {
 		__nft_get_package_list:function(){
 			//获取卡包列表
 			var that = this;
-			that.abotapi.abotRequest({
-			    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_list',
-			    method: 'post',
-			    data: {
+			
+			var post_data = {
 					sellerid:that.abotapi.globalData.default_sellerid,
 					nft_supplierid : that.current_nft_supplierid,
 					page: that.current_page,
 					page_size: 10,
-			    },
+			    };
+			
+			if(that.tag_of_editor){
+				post_data.tag_of_editor = that.tag_of_editor;
+			}
+			
+			
+			that.abotapi.abotRequest({
+			    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_list',
+			    method: 'post',
+			    data: post_data,
 			    success: function (res) {
 					
 					if(res.data.code != 1){

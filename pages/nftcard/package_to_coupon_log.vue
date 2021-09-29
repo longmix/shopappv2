@@ -15,15 +15,19 @@
 			<view v-for="(user_coupon_log_item,index) in current_coupon_log"
 				:key="index" 
 				class="my_package_like_list"
-				@tap="goto_coupon_item(user_coupon_log_item.user_coupon_id, user_coupon_log_item.user_coupon_qrcode)" >
+				 >
 				
 				<view class="" style="display: flex;">
 					<!--卡包的图片 -->
 					<view>
-						<image :src="user_coupon_log_item.package_item.cover_img_url_stand" mode="widthFix" style="width:200rpx;border-radius: 10rpx;"></image>
+						<image :src="user_coupon_log_item.package_item.cover_img_url_stand" 
+							mode="widthFix" 
+							style="width:200rpx;border-radius: 10rpx;"
+							@tap="goto_package_detail(user_coupon_log_item.packageid)"></image>
 					</view>
 					<!-- 卡包及优惠券信息 -->		
-					<view style="margin-top: 10rpx;margin-left: 20rpx;width: 490rpx;" >
+					<view style="margin-top: 10rpx;margin-left: 20rpx;width: 490rpx;"
+						@tap="goto_coupon_item(user_coupon_log_item.user_coupon_id, user_coupon_log_item.user_coupon_qrcode)">
 						<view class="my_package_name" style="font-size: 30rpx;">{{user_coupon_log_item.coupon_item.name}}</view>
 						
 						<view class="my_package_name" style="color: #ecb36c;font-size: 24rpx;margin-top: 25rpx;">来自卡包：{{user_coupon_log_item.package_item.title}}</view>
@@ -42,7 +46,7 @@
 		<!-- 点击兑换按钮的弹层 Begin -->
 		<view class="show_modal_mask" v-if="showModal_exchange_btn" @tap="showModal_exchange_btn=false"></view>
 		<view class="show_modal_pop" v-if="showModal_exchange_btn"
-			 style="width: 350rpx;background-color: #FFFFFF; overflow-y: auto;" >
+			 style="width: 440rpx;background-color: #FFFFFF; overflow-y: auto;" >
 			<view style="margin: 20rpx; padding: 20rpx; border-radius: 5rpx;" >
 		
 				<view style="color:#3c3c3c;">
@@ -50,7 +54,7 @@
 				</view>
 				
 				<view>
-					<image :src="user_coupon_qrcode_img_url" mode="widthFix" style="width: 250rpx;"></image>
+					<image :src="user_coupon_qrcode_img_url" mode="widthFix" style="width: 350rpx;"></image>
 				</view>
 					
 			</view>
@@ -269,7 +273,14 @@ export default {
 			
 			
 			
-		}	
+		},
+		goto_package_detail:function(packageid){
+			
+			uni.navigateTo({
+				url:'/pages/nftcard/package_detail?packageid='+packageid
+			})
+			
+		}
 			
 		
 		

@@ -12,22 +12,22 @@
 		
 		<!-- 兑换的卡包记录 -->
 		<view class="" >
-			<view v-for="(current_coupon_log_list,index) in current_coupon_log"
+			<view v-for="(current_coupon_item, index) in current_coupon_log"
 			 :key="index" class="my_package_like_list"
-			  @tap="goto_coupon_item()">
+			  @tap="goto_card_detail(current_coupon_item.cardid, current_coupon_item.packageid)">
 				
 				<view class="" style="display: flex;">
 					<!--卡包的图片 -->
 					<view>
-						<image :src="current_coupon_log_list.cover_img_url" mode="widthFix" style="width:200rpx;border-radius: 10rpx;"></image>
+						<image :src="current_coupon_item.cover_img_url" mode="widthFix" style="width:200rpx;border-radius: 10rpx;"></image>
 					</view>
 					<!-- 卡包及优惠券信息 -->		
 					<view style="margin-top: 10rpx;margin-left: 20rpx;width: 490rpx;" >
-						<view class="my_package_name" style="font-size: 35rpx;">{{current_coupon_log_list.card_name}}</view>
+						<view class="my_package_name" style="font-size: 35rpx;">{{current_coupon_item.card_name}}</view>
 						
-						<view class="my_package_name" style="color: #ecb36c;font-size: 30rpx;margin-top: 15rpx;">{{current_coupon_log_list.memo}}</view>
-						<view class="my_package_name" style="color: #666666;font-size: 30rpx;margin-top: 15rpx;">赠言：{{current_coupon_log_list.send_wish}}</view>
-						<view class="my_package_name" style="color: #666666;font-size: 25rpx;margin-top: 15rpx;">{{current_coupon_log_list.createtime}}</view>
+						<view class="my_package_name" style="color: #ecb36c;font-size: 30rpx;margin-top: 15rpx;">{{current_coupon_item.memo}}</view>
+						<view class="my_package_name" style="color: #666666;font-size: 30rpx;margin-top: 15rpx;">赠言：{{current_coupon_item.send_wish}}</view>
+						<view class="my_package_name" style="color: #666666;font-size: 25rpx;margin-top: 15rpx;">{{current_coupon_item.createtime}}</view>
 						
 						
 					</view>
@@ -283,13 +283,19 @@ export default {
 			
 			
 		},
+		goto_card_detail:function(cardid, packageid){
 			
+			var new_url = '/pages/nftcard/card_detail?cardid='+cardid;
 			
-		goto_coupon_item:function(){
-			var new_url = 'https://yanyubao.tseo.cn/Home/User/ticket_index/platform/shopappv2.html?ensellerid=%ensellerid%&oneclicklogin=%oneclicklogin%';
-			this.abotapi.call_h5browser_or_other_goto_url(new_url)
-		}	
+			if(packageid){
+				new_url += '&packageid=' + packageid;
+			}
 			
+			uni.navigateTo({
+				url: new_url
+			})
+			
+		},		
 		
 		
 		
