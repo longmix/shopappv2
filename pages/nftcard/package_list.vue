@@ -125,10 +125,15 @@ export default {
 			
 			current_nft_supplierid:0,
 			
+			//搜索的关键词
+			searchValue02:'',
+			//输入在搜索框中，还没有点击搜索按钮时候的词
 			searchValue:'',
 			search_placeholder_text:'输入搜索词',
 			
+			//System编辑设置的标签
 			tag_of_editor:'',
+			
 			
 			centent_show:true,
 			current_page:1
@@ -155,6 +160,11 @@ export default {
 			title_str += ' - ' + options.tag_of_editor; 
 			
 			that.tag_of_editor = options.tag_of_editor;
+		}
+		else if(options.searchValue){
+			that.searchValue02 = options.searchValue;
+			
+			title_str += ' - ' + options.searchValue;
 		}
 		
 		uni.setNavigationBarTitle({
@@ -328,6 +338,9 @@ export default {
 			if(that.tag_of_editor){
 				post_data.tag_of_editor = that.tag_of_editor;
 			}
+			else if(that.searchValue02){
+				post_data.keywords = that.searchValue02;
+			}
 			
 			
 			that.abotapi.abotRequest({
@@ -380,52 +393,22 @@ export default {
 		
 		package_list_search:function(e){
 			var that = this;
-					
-			// 获取卡包
-			that.abotapi.abotRequest({
-			    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_list',
-			    method: 'post',
-			    data: {
-					sellerid:that.abotapi.globalData.default_sellerid,
-					nft_supplierid : that.current_nft_supplierid,
-					keywords: that.searchValue,
-					action:'search',
-			    },
-				header: {
-					'Content-Type': 'application/x-www-form-urlencoded'
-				},
-			    success: function (res) {
-					
-					if(res.data.code != 1){
-						uni.showToast({
-							title:'卡包列表没数据',
-							duration: 2000,
-						});
-						
-						return;
-					}
 			
-					that.current_package_list = res.data.data;
-					
-					console.log('current_package_list ===>>> ', that.current_package_list);
-					
-					
-					
-					
-					
-					
-					
-					
-							
-					
-			    },
-			    fail: function (e) {
-					uni.showToast({
-						title: '网络异常！',
-						duration: 2000
-					});
-			    },
+			this.current_page = 1;
+			this.current_package_list = [];
+			
+			that.searchValue02 = that.searchValue;
+			
+			//修改标题
+			var title_str = '卡包列表';			
+			if(that.searchValue02){				
+				title_str += ' - ' + that.searchValue02;
+			}			
+			uni.setNavigationBarTitle({
+				title : title_str,
 			});
+			
+			this.__nft_get_package_list();
 			
 		}
 		

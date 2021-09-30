@@ -526,6 +526,7 @@ module.exports = {
 				var option_list = option_data.option_list;		
 				that002.globalData.option_list = option_list;
 				
+				
 				//刷新界面
 				typeof callback_function == "function" && callback_function(that, option_list);
 			}
@@ -642,6 +643,17 @@ module.exports = {
 					
 					that002.__get_ext_setting_from_server();
 					that002.__get_and_set_color();
+					
+					
+					//判断是否是关闭状态，如果是，跳转到指定page，并显示关站提示。
+					if(option_data.shutdown_website_status == 1){
+						//跳转到网站关闭的提示页面
+						uni.reLaunch({
+							url:'/pages/main/shutdown_website'
+						})
+						return;
+					}
+					
 				
 					//刷新界面
 					typeof callback_function == "function" && callback_function(that, option_data);

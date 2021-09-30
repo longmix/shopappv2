@@ -47,6 +47,7 @@
 				
 				console.log('cb_params====', cb_params);
 				
+				/*
 				if(cb_params.shutdown_website_status != 1){
 					uni.switchTab({
 						url:'/pages/index/index'
@@ -54,7 +55,7 @@
 					
 					return;
 				}
-				
+				*/
 				
 				
 				

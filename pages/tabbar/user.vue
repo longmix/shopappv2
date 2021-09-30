@@ -94,18 +94,34 @@
 			<!-- 余额 / 赠款 / 积分 -->
 			<view class="balance-info">
 				<view class="left">
-					<view class="box" @tap="goto_user_function('/pages/user/log')">
+					<!-- 余额 -->
+					<view v-if="wxa_hide_balance_in_usercenter != 1"
+						class="box" 
+						@tap="goto_user_function('/pages/user/log')">
 						<view class="num">{{fenxiao_info && fenxiao_info.balance_yuan ? fenxiao_info.balance_yuan : '0.00'}}</view>
 						<view class="text">{{text_balance_str}}</view>
 					</view>
-
+					<view v-else
+						class="box">
+						<image :src="wxa_hide_balance_in_usercenter_icon" mode="heightFix" style="height: 100rpx;"></image>
+					</view>
+					
+					<!-- 赠款 -->
 					<view class="box" v-if="wxa_show_zengkuan_in_usercenter == 1" @tap="goto_user_function('/pages/user/log?type=zengkuan')">
 						<view class="num">{{fenxiao_info && fenxiao_info.balance_zengsong_yuan ? fenxiao_info.balance_zengsong_yuan : '0.00'}}</view>
 						<view class="text">{{text_balance_zengsong_str}}</view>
 					</view>
-					<view class="box" @tap="goto_user_function('/pages/user/logscore')">
+					
+					<!-- 积分 -->
+					<view v-if="wxa_hide_score_in_usercenter != 1"
+						class="box" 
+						@tap="goto_user_function('/pages/user/logscore')">
 						<view class="num">{{fenxiao_info && fenxiao_info.score ? fenxiao_info.score : '0'}}</view>
 						<view class="text">{{text_score_str}}</view>
+					</view>
+					<view v-else
+						class="box">
+						<image :src="wxa_hide_score_in_usercenter_icon" mode="heightFix" style="height: 100rpx;"></image>
 					</view>
 				</view>
 
@@ -288,7 +304,14 @@
 				wxa_usercenter_ad_list: [], //平铺图片
 				
 				//是否隐藏扫码图标
-				wxa_hidden_qrcode_scan_btn_in_usercenter:0
+				wxa_hidden_qrcode_scan_btn_in_usercenter:0,
+				
+				//是否隐藏 余额和积分图标
+				wxa_hide_balance_in_usercenter:0,
+				wxa_hide_score_in_usercenter:0,
+				wxa_hide_balance_in_usercenter_icon:'',
+				wxa_hide_score_in_usercenter_icon:'',
+				
 			}
 		},
 
@@ -466,6 +489,18 @@
 				if(option_list.wxa_hidden_qrcode_scan_btn_in_usercenter){
 					that001.wxa_hidden_qrcode_scan_btn_in_usercenter = option_list.wxa_hidden_qrcode_scan_btn_in_usercenter;
 				}
+				//隐藏余额图标
+				if(option_list.wxa_hide_balance_in_usercenter){
+					that001.wxa_hide_balance_in_usercenter = option_list.wxa_hide_balance_in_usercenter;
+					that001.wxa_hide_balance_in_usercenter_icon = option_list.wxa_hide_balance_in_usercenter_icon;
+				}
+				if(option_list.wxa_hide_score_in_usercenter){
+					that001.wxa_hide_score_in_usercenter = option_list.wxa_hide_score_in_usercenter;
+					that001.wxa_hide_score_in_usercenter_icon = option_list.wxa_hide_score_in_usercenter_icon;
+				}
+				
+				//that001.wxa_hide_balance_in_usercenter = 1;
+				//that001.wxa_hide_score_in_usercenter = 1;
 				
 				that001.get_current_userinfo();
 				
@@ -610,23 +645,22 @@
 
 			//消息列表
 			toMsg() {
-				uni.navigateTo({
-					url: '/pages/msg/msg'
-				})
+				this.goto_user_function('/pages/msg/msg');
 			},
 			toOrderList(row, index) {
+				
 				console.log("row", row);
 				console.log("index", index);
+				
 				uni.setStorageSync('tbIndex', index);
 				uni.setStorageSync('tbOtype', row);
-				uni.navigateTo({
-					url: '/pages/user/order_list/order_list?currentTab=' + index + '&otype=' + row
-				})
+				
+				
+				this.goto_user_function('/pages/user/order_list/order_list?currentTab=' + index + '&otype=' + row);
+				
 			},
 			toSetting() {
-				uni.navigateTo({
-					url: '/pages/user/setting/setting'
-				})
+				this.goto_user_function('/pages/user/setting/setting');
 			},
 
 			//点击商户头条进入列表
@@ -704,9 +738,9 @@
 			toDeposit() {
 				// uni.showToast({title: '该功能升级中'});
 				// return;
-				uni.navigateTo({
-					url: '/pages/user/deposit/deposit'
-				})
+				
+				this.goto_user_function('/pages/user/deposit/deposit');
+				
 			},
 			goto_user_function(url) {
 
@@ -1065,8 +1099,7 @@
 	}
 
 	.logo001 {
-		width: 90rpx;
-		height:90rpx;
+		width: 100rpx;
 		border-radius: 10rpx;
 	}
 
