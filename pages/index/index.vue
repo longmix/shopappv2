@@ -2546,7 +2546,7 @@ export default {
 			
 			newContent = newContent.replace(/<p[^>]*>/gi, '<p style="margin:20px;">');
 			
-			newContent = newContent.replace(/\<img/gi, '<img style="max-width:100%;height:auto;display:inline-block;margin:10rpx auto;vertical-align: middle;"');
+			newContent = newContent.replace(/\<img/gi, '<img style="max-width:100%;height:auto;display:inline-block;margin:0px auto;vertical-align: middle;"');
 			///newContent = newContent.replace(/\<img/gi, '<img style="width:100%; display:inline-block;"');
 			//newContent = newContent.replace(/\<img/gi, '<img width="5rem"');
 			

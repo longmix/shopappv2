@@ -150,6 +150,11 @@
 </script>
 
 <style lang="scss">
+page{
+    background-color:#F0F0F0;  
+}	
+	
+
 .weui-cell {
     padding: 20rpx 30rpx;
     position: relative;
@@ -182,20 +187,24 @@
     -webkit-box-flex: 1;
     -webkit-flex: 1;
     flex: 1;
-	border: 1rpx solid #aaa;
+	height:48rpx;
+	line-height:48px;
+	background-color:#fff;
+	border:1px solid #17A8E2;
+	border-radius:21px;
 	padding: 5rpx;
-	border-radius: 5rpx;
 }
 
 
 .weui-input {
-    width: 100%;
-    border: 0;
+    width: 95%;
     outline: 0;
     -webkit-appearance: none;
     background-color: transparent;
     font-size: inherit;
     color: inherit;
+	padding-left: 20rpx;
+
 }
 
 .weui-btn_primary {

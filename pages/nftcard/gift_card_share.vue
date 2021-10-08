@@ -174,7 +174,7 @@ export default {
 	data() {
 		return {
 			is_page_show_to_user:0,
-			
+			current_params_str: '',
 			current_option_str:null,
 			last_url : '',
 			
@@ -239,6 +239,23 @@ export default {
 		});
 		
 		this.abotapi.set_shop_option_data(this, this.callback_function_shop_option_data);
+		
+		
+		
+		//=== 参数拼接 ====
+		this.current_params_str = '';
+		
+		for(var key in options){
+		  this.current_params_str += key+'='+options[key]+'&';
+		}			
+		if(this.current_params_str != ''){
+			this.current_params_str = this.current_params_str.substr(0, this.current_params_str.length-1);
+		}
+		//======== End ============
+		
+		
+		
+		
 		
 		
 		that.current_cardid = options.cardid;
@@ -669,15 +686,10 @@ export default {
 			
 			var that = this;
 			
-			
+			var last_url = '/pages/nftcard/gift_card_share?' + that.current_params_str;
 			var userInfo = this.abotapi.get_user_info();
-			
-			//2021.6.19. 有例外的情况，不需要用户登录也可以下单
-			var no_user_login = options.no_user_login;
-			
-			if( (!userInfo || !userInfo.userid) && (no_user_login != 1) ){
-				
-				
+	
+			if( (!userInfo || !userInfo.userid) ){				
 				that.abotapi.goto_user_login(last_url, 'normal');
 				return;
 			}

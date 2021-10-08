@@ -188,7 +188,11 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					<view v-else-if="current_card_detail.buy_limit != 0">
 						<text style="color: #ff0000;">每人限购{{current_card_detail.buy_limit}}张</text>
 					</view>
-					<view>
+					
+					<view v-if="current_card_detail.publish_counter == 0">
+						分发进度（{{current_card_detail.sale_counter}}/无限量）
+					</view>
+					<view v-else>
 						分发进度（{{current_card_detail.sale_counter}}/{{current_card_detail.publish_counter}}）
 					</view>
 					
@@ -1452,7 +1456,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				//======= 判断用户是否登录 ============
 				
-				var last_url = '/pages/nftcard/gift_friends_card?'+ that.current_params_str;
+				var last_url = '/pages/nftcard/card_detail?'+ that.current_params_str;
 				
 				var userInfo = that.abotapi.get_user_info();
 				if (!userInfo) {

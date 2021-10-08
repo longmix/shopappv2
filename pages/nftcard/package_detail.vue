@@ -194,7 +194,8 @@
 		
 			
 			<!-- 发行商图片及简介 12324-->
-			<view class="" style="display: flex;" @tap="goto_supplier_detail()">
+			
+			<view v-if="current_package_detail.supplier_item != null" class="" style="display: flex;" @tap="goto_supplier_detail()">
 				<view class="">
 					<image class="" :src="current_package_detail.supplier_item.icon_image"
 						mode="" style="width: 120rpx;height: 120rpx;border-radius: 50%;margin: 15rpx;"></image>
@@ -1788,12 +1789,13 @@ export default {
 	}
 	
 	.package_card_publish{
-		width: 100%;
+		width: 500rpx;
 		margin-top: 25rpx;
 		margin-left:40rpx;
 		margin-right:40rpx;
 	}
 	.publish_brief{
+		width: 65%;
 		font-weight: 300; 
 		font-size: 25rpx;
 		display: -webkit-box;
@@ -1827,7 +1829,7 @@ export default {
 	}
 	.publish_name{
 		margin-bottom: 15rpx;
-		width: 60%;
+		width: 70%;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
