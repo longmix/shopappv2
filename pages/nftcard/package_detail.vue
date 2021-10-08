@@ -1340,7 +1340,7 @@ export default {
 					sellerid:that.abotapi.globalData.default_sellerid,
 					packageid:that.current_packageid,
 					page: 1,
-					page_size:20,
+					page_size:50,
 			};
 			
 			
