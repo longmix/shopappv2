@@ -124,16 +124,8 @@
 				  "navigationBarTitleText": "",
 				  "onReachBottomDistance": 50
 				}
-		},		
+		},
 		{
-            "path" : "pages/order/pay",
-            "style": {
-            	"navigationBarTitleText": "确认订单",
-				"softinputNavBar":"none"
-            }
-        }
-        
-        ,{
             "path" : "pages/msg/msg",
             "style" : {
 				"enablePullDownRefresh": true,
@@ -148,20 +140,6 @@
 					"softinputNavBar":"none",
 					"bounce":"none"
 				}
-			}
-        }
-        
-        ,{
-            "path" : "pages/pay/payment/payment",
-            "style" : {
-				"navigationBarTitleText":"订单支付"
-			}
-        }
-        ,{
-            "path" : "pages/pay/success/success",
-            "style" : {
-
-				"navigationBarTitleText":"支付完成"
 			}
         },
 		{
@@ -640,6 +618,40 @@
 			
 		},
 		//======= 个人中心相关的分包 Begin  ====
+		//======= 支付流程相关的2个分包 Begin  ====
+		{
+			"root": "pages/order",
+			"pages": [
+				{
+				    "path" : "pay",
+				    "style": {
+				    	"navigationBarTitleText": "确认订单",
+				    	"softinputNavBar":"none"
+				    }
+				}
+			]
+			
+		},
+		{
+			"root": "pages/pay",
+			"pages": [
+				{
+				    "path" : "payment/payment",
+				    "style" : {
+						"navigationBarTitleText":"订单支付"
+					}
+				},
+				{
+				    "path" : "success/success",
+				    "style" : {
+				
+						"navigationBarTitleText":"支付完成"
+					}
+				}
+			]
+			
+		},
+		//======= 支付流程相关的2个分包 Begin  ====
 		//======= address相关的分包 Begin  ====
 		{
 			"root": "pages/address",

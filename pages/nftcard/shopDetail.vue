@@ -35,7 +35,8 @@
 			<view class="" style="background-color: #eceeef; padding-bottom: 400rpx;">
 				<!--放行商封面  -->
 				<view style="" >
-					<image :src="current_shang_detail.mendian_image" mode="" style="width: 100%; height: 450rpx; position: absolute; "></image>
+					<image :src="current_shang_detail.mendian_image" mode="" 
+						style="width: 100%; height: 450rpx; position: absolute; "></image>
 				</view>
 				
 				
@@ -54,7 +55,8 @@
 							<view style="color: #FFFFFF;margin-left:0rpx; margin-top: 5rpx; font-size: 30rpx;">已关注</view>
 						</view>
 					</view>
-					<image :src="current_shang_detail.icon_image" mode="" style="width: 200rpx;height: 200rpx; border-radius: 50%;"></image>
+					<image :src="current_shang_detail.icon_image" mode="" 
+						style="width: 180rpx;height: 180rpx; border-radius: 50%; background-color:#ffffff; padding: 20rpx;"></image>
 						
 						<view style="width: 500rpx;display: flex;margin-left: 40rpx;margin-top: 15rpx;">
 							<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/authentication.png"
