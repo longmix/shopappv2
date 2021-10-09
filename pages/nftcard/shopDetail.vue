@@ -31,7 +31,7 @@
 		
 		
 		<!--NTF卡包卡牌  头部显示======begin  -->
-		<block v-if="use_theme_nft_package == 1">
+		<block v-if="(use_theme_nft_package == 1) &&  current_shang_detail">
 			<view class="" style="background-color: #eceeef; padding-bottom: 400rpx;">
 				<!--放行商封面  -->
 				<view style="" >
@@ -91,95 +91,9 @@
 			
 		</block>
 		
-		<block v-else>
-		<view class="welcome_image">
-			<view v-if="current_shang_detail.mendian_image">
-				<image @load="imageLoad($event)" :data-id='index' mode="widthFix" style="width: 100%;" :src="current_shang_detail.mendian_image"></image>
-			</view>
-		</view>
-
-		<view class="shang_detail_box1">
-			<!-- 头像昵称 -->
-			<view style="margin-top: 25upx;" class="head_and_name">
-				<image style="margin-right:10upx;width: 70upx;height:70upx;border-radius: 50%;" :src="current_shang_detail.icon_image" mode=""></image>
-				<text>{{current_shang_detail.name}}</text>
-			</view>
-			<!-- 头像昵称结束 -->
-
-			<!-- 星级 -->
-			<view style="display: flex;justify-content: center;align-items: center;">
-				<text>星级</text>
-				<image v-for="item in current_shang_detail.star_level" :key="item" style="width: 50upx;height: 50upx;" src="../../static/img/VIP.png"
-				 mode=""></image>
-
-			</view>
-			<!-- 星级结束 -->
-
-			<!-- 标签 -->
-			<view style="display:flex;flex-wrap: wrap;justify-content: center;">
-				<view v-for="item in current_shang_detail.spec" :key="item" class="biaoqian">
-					{{item}}
-				</view>
-
-
-			</view>
-			<!-- 标签结束-->
-
-			<!-- 服务-->
-			<view style="width: 100%;display: flex;justify-content: center;align-items: center;padding:0upx;">
-				<view style="width:60%;background-color: #FFFFFF;height: 10upx;"></view>
-				<view class="fuwu">
-					<!-- {{current_shang_detail.name}} -->
-				</view>
-				<view style="width:60%;background-color: #FFFFFF;height: 10upx;"></view>
-			</view>
-			<!-- 服务结束-->
-
-			<!-- 营业时间 地址 -->
-			<view class="shijian_dizhi">
-				<!-- 营业时间-->
-				<view style="display: flex;justify-content: space-between;align-items: center;padding: 30upx 20upx;">
-
-					<view style="color:#333;font-size: 28upx;display: flex;align-items: center;">
-						<image style="width: 30upx;height: 30upx;" src="https://yanyubao.tseo.cn/Tpl/static/images/time.png"></image>
-						<span style="margin-left: 25upx;">营业时间 | {{current_shang_detail.yingyeshijian}}</span>
-					</view>
-					<image style="width: 30upx;height: 30upx; display:none;" src="https://yanyubao.tseo.cn/Tpl/static/images/time.png"></image>
-
-
-				</view>
-				<!-- 地址-->
-				<navigator :url="'/pages/shopMap/shopMap?address=' + current_shang_detail.address + '&latitude=' + current_shang_detail.latitude + '&longitude=' + current_shang_detail.longitude + '&name=' + current_shang_detail.name + '&telephone=' + current_shang_detail.telephone"
-				 class="shang_detail_address">
-					<view style="color:#333;font-size: 28upx;display: flex;align-items: center;">
-						<image style="width:40upx;height:40upx;" src="https://yanyubao.tseo.cn/Tpl/static/images/weizhi.png"></image>
-						<view style="width: 100%;">
-							<span style="margin-left: 25upx;">{{current_shang_detail.address}}</span>
-						</view>
-					</view>
-					<view>
-						<image style="width: 30upx;height: 30upx;" src="../../static/img/x_right.png"></image>
-					</view>
-
-
-				</navigator>
-			</view>
-			<!-- 营业时间 地址结束 -->
-
-		</view>		
-		</block>
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		<!--商家简介-->
-		<view class="supplier_detail_brief"  >
+		<view class="supplier_detail_brief" v-if="current_shang_detail" >
 			<view class="supplier_icon-title3" style="">
 				<view class="supplier_icon-title4" :style="{borderBottom:wxa_shop_nav_bg_color+' 2rpx solid'}">
 				<!-- 	<image :src="user_console_setting.user_console_icon_jianjie" mode="widthFix" style="width: 50rpx;"></image> -->

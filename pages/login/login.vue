@@ -765,7 +765,8 @@
 							
 							
 							
-						}else {
+						}
+						else {
 							//一键登录返回错误代码
 							uni.showModal({
 								title: '提示',
@@ -773,7 +774,27 @@
 								showCancel:false,
 								success(res) {
 									if (res.confirm) {
-										console.log('用户点击确定')
+										console.log('用户点击确定');
+										
+										
+										//重新获取js_code
+										uni.login({
+											success: function (res) {
+												console.log("btn_wxa_one_click_login 获取到的jscode是:" + res.code);
+											  
+												//如果拒绝授权， e.detail.errMsg
+												//console.log(e.detail.errMsg);return;
+											  
+												that.current_weixin_js_code = res.code;
+											  
+											},
+											fail: function (login_res) {
+												console.log('login.js  uni.login失败。');
+											}
+										});
+										
+										
+										
 									}
 								}
 							})		  

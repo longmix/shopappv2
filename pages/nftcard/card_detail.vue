@@ -35,7 +35,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 								<div class="contentbox">
 									<image :src="current_card_detail.cover_img_url_2x3"
 										class="card_detail_image"
-										:style="{width: (card_bg_img_width*1)+'rpx', height: (card_bg_img_height*1)+'rpx'}">
+										:style="{width: (card_bg_img_width*1)*0.8 + 'rpx', height: (card_bg_img_height*1)*0.8 + 'rpx'}">
 									</image>
 								</div>
 							</div>
@@ -44,7 +44,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 								<div class="contentbox">
 									<image :src="current_card_detail.cover_img_back_url"
 										class="card_detail_image"
-										:style="{width: (card_bg_img_width*1)+'rpx', height: (card_bg_img_height*1)+'rpx'}">
+										:style="{width: (card_bg_img_width*1)*0.8 + 'rpx', height: (card_bg_img_height*1)*0.8 + 'rpx'}">
 									</image>
 								</div>
 							</div>

@@ -342,6 +342,13 @@
 			</view>
 		</view>
 		
+		<!-- 著作信息 -->
+		<view class="copyright_info">{{default_copyright_text}}</view>
+		
+		
+		
+		
+		
 		<!-- 卡包兑换优惠券 -->
 		<view class="" v-if="show_package_to_coupon_btn == 1">
 			<button type="default" 
@@ -1797,13 +1804,13 @@ export default {
 	}
 	
 	.package_card_publish{
-		width: 500rpx;
+		width: 400rpx;
 		margin-top: 25rpx;
 		margin-left:10rpx;
 		margin-right:40rpx;
 	}
 	.publish_brief{
-		width: 65%;
+		width: 380rpx;
 		font-weight: 300; 
 		font-size: 25rpx;
 		display: -webkit-box;
@@ -1837,7 +1844,7 @@ export default {
 	}
 	.publish_name{
 		margin-bottom: 15rpx;
-		width: 70%;
+		width: 380rpx;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -1925,6 +1932,7 @@ export default {
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
+		margin-top:10rpx;
 		
 	}
 	.package_card_description{
