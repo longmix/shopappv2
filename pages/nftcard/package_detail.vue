@@ -853,39 +853,47 @@ export default {
 		saveImgToLocal:function(e){
 			var that = this;
 			
+			
+			uni.downloadFile({
+				url:that.current_nftcard_poster.img_url,
+				success:function(res) {
+					if(res.statusCode === 200){
+						
+						uni.saveImageToPhotosAlbum({
+							filePath:res.tempFilePath,
+							success:function(){
+								uni.showToast({
+									title:"保存成功",
+									duration: 2000,
+								});
+							},
+							fail:function(){
+								uni.showToast({
+									title:"保存失败",
+									duration: 2000,
+								});
+							}
+						});
+					}	
+				}	
+			})
+			
+			
+			
+			/*
+			
 			uni.showModal({
 				title:'提示',
-				content:'确认保存到相册',
+				content:'确认保存到相册', 
 				success:function(res){
 					if(res.confirm){
-						uni.downloadFile({
-							url:that.current_nftcard_poster.img_url,
-							success:function(res) {
-								if(res.statusCode === 200){
-									
-									uni.saveImageToPhotosAlbum({
-										filePath:res.tempFilePath,
-										success:function(){
-											uni.showToast({
-												title:"保存成功",
-												duration: 2000,
-											});
-										},
-										fail:function(){
-											uni.showToast({
-												title:"保存失败",
-												duration: 2000,
-											});
-										}
-									});
-								}	
-							}	
-						})
+						
 					}else if (res.cancel){
 						
 					}
 				}
-			});
+			});*/
+			
 		},
 		
 		
@@ -1780,7 +1788,7 @@ export default {
 	} 
 
 	.publish_information{	
-		height: 190rpx;
+		
 		background-color: #FFFFFF;
 		margin: 30rpx 10rpx 20rpx 10rpx;
 		
@@ -1791,7 +1799,7 @@ export default {
 	.package_card_publish{
 		width: 500rpx;
 		margin-top: 25rpx;
-		margin-left:40rpx;
+		margin-left:10rpx;
 		margin-right:40rpx;
 	}
 	.publish_brief{
@@ -1800,7 +1808,7 @@ export default {
 		font-size: 25rpx;
 		display: -webkit-box;
 		-webkit-box-orient: vertical;
-		-webkit-line-clamp: 3;
+		-webkit-line-clamp: 2;
 		text-align: justify;
 		overflow: hidden;
 	}

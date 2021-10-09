@@ -1,7 +1,7 @@
 <template>
 	<view>
-		<view class="icon">
-			<image src="https://yanyubao.tseo.cn/Tpl/static/images/success.png"></image>
+		<view class="icon" :style="{backgroundColor: frontColor}">
+			<image src="https://yanyubao.tseo.cn/Tpl/static/images/success_white.png"></image>
 		</view>
 		<view class="tis">
 			订单支付完成
@@ -23,8 +23,12 @@
 		
 		
 		<view class="back">
-			<view class="btn" @tap="gotoUser">个人中心</view>
-			<view class="btn" @tap="gotoHome">返回首页</view>
+			<view class="btn"
+				:style="{color:frontColor, border: 'solid 2rpx '+frontColor, backgroundColor:btn_bg_color}" 
+				@tap="gotoUser">个人中心</view>
+			<view class="btn" 
+				:style="{color:frontColor, border: 'solid 2rpx '+frontColor, backgroundColor:btn_bg_color}" 
+				@tap="gotoHome">返回首页</view>
 		</view>
 	</view>
 </template>
@@ -35,6 +39,10 @@
 			return {
 				amount:0,
 				order_list:null,
+				
+				frontColor:'#f06c7a',
+				btn_bg_color:'#ffffff',
+				
 			};
 		},
 		onLoad(options) {
@@ -62,8 +70,8 @@
 						frontColor:that.abotapi.globalData.navigationBar_font_color,
 					})*/
 					
-					that.frontColor = that.abotapi.globalData.navigationBar_font_color;
-					that.btn_bg_color = that.abotapi.globalData.navigationBar_bg_color;
+					that.btn_bg_color = that.abotapi.globalData.navigationBar_font_color;
+					that.frontColor = that.abotapi.globalData.navigationBar_bg_color;
 					
 				}
 				else{
@@ -74,8 +82,8 @@
 					
 					console.log('cb_params==>',cb_params.wxa_shop_nav_font_color);
 					
-					that.frontColor = cb_params.wxa_shop_nav_font_color;
-					that.btn_bg_color = cb_params.wxa_shop_nav_bg_color;
+					that.btn_bg_color = cb_params.wxa_shop_nav_font_color;
+					that.frontColor = cb_params.wxa_shop_nav_bg_color;
 				}
 				
 				
@@ -143,7 +151,8 @@
 		justify-content: center;
 	}
 .icon{
-	width: 100%;
+	border-radius: 50%;
+	background-color: #f06c7a;
 	margin-top: 100rpx;
 	image{
 		width: 200rpx;
@@ -164,16 +173,19 @@
 	position: absolute;
 	width: 100%;
 	bottom: 80rpx;
-	.btn{
-		padding: 0 50rpx;
-		height: 70rpx;
-		border: solid 2rpx #f06c7a;
-		color: #f06c7a;
-		align-items: center;
-		border-radius: 10rpx;
-		font-size: 34rpx;
-		margin:10rpx;
-	}
+	
+}
+
+.btn{
+	padding: 0 50rpx;
+	height: 70rpx;
+	border: solid 2rpx #f06c7a;
+	color: #f06c7a;
+	background-color: #ffff;
+	align-items: center;
+	border-radius: 10rpx;
+	font-size: 34rpx;
+	margin:10rpx;
 }
 
 .order_list {

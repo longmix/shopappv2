@@ -927,39 +927,47 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			saveImgToLocal:function(e){
 				var that = this;
 				
-				uni.showModal({
+				
+				uni.downloadFile({
+					url:that.current_nftcard_poster.img_url,
+					success:function(res) {
+						if(res.statusCode === 200){
+							
+							uni.saveImageToPhotosAlbum({
+								filePath:res.tempFilePath,
+								success:function(){
+									uni.showToast({
+										title:"保存成功",
+										duration: 2000,
+									});
+								},
+								fail:function(){
+									uni.showToast({
+										title:"保存失败",
+										duration: 2000,
+									});
+								}
+							});
+						}	
+					}	
+				})
+				
+				
+				
+				
+				
+				
+				/* uni.showModal({
 					title:'提示',
 					content:'确认保存到相册',
 					success:function(res){
 						if(res.confirm){
-							uni.downloadFile({
-								url:that.current_nftcard_poster.img_url,
-								success:function(res) {
-									if(res.statusCode === 200){
-										
-										uni.saveImageToPhotosAlbum({
-											filePath:res.tempFilePath,
-											success:function(){
-												uni.showToast({
-													title:"保存成功",
-													duration: 2000,
-												});
-											},
-											fail:function(){
-												uni.showToast({
-													title:"保存失败",
-													duration: 2000,
-												});
-											}
-										});
-									}	
-								}	
-							})
+							
 						}else if (res.cancel){
 							
 						}
 					}
-				});
+				}); */
 			},
 			
 			
