@@ -323,7 +323,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		<!-- 悬浮 -->
 		<view class="card_detail_footer" v-if="page_show_flag == 1">
 			<!-- 线索按钮 -->
-			<view @click="layOut">
+			<view @click="layOut" style="display:none;">
 				<!-- 线索未亮按钮 -->
 				<view @click="showModal_xiansuo=true" v-if="lay_type" 
 				class="card_detail_liebiao">
