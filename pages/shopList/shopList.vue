@@ -587,6 +587,7 @@
 					
 					if(xz_shang_list.length == 0){
 						var that = this;
+						
 						uni.showModal({
 							title:'没有对应商家',
 							showCancel:false,
@@ -766,7 +767,9 @@
 					}
 					console.log('xz_shang_list',xz_shang_list);
 					if(xz_shang_list.length == 0){
+						
 						var that = this;
+						
 						uni.showModal({
 							title:'没有对应商家',
 							showCancel:false,

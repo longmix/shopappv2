@@ -18,6 +18,12 @@
 				"text": "首页"
 			},
 			{
+				"pagePath": "pages/shopList/shopList",
+				"iconPath": "static/img/tabBar/shang.png",
+				"selectedIconPath": "static/img/tabBar/shang-on.png",
+				"text": "附近"
+			},			
+			{
 				"pagePath": "pages/tabbar/user",
 				"iconPath": "static/img/tabBar/user.png",
 				"selectedIconPath": "static/img/tabBar/user-on.png",

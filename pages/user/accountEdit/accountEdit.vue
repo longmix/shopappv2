@@ -197,7 +197,8 @@ page{
 
 
 .weui-input {
-    width: 95%;
+    width: 90%;
+    border: 0;
     outline: 0;
     -webkit-appearance: none;
     background-color: transparent;
