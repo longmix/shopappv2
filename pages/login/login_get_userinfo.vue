@@ -251,6 +251,7 @@
 	.box image {
 		width: 180rpx;
 		height: 180rpx;
+		border-radius: 50%;
 	}
 
 	.from-list {

@@ -1100,6 +1100,7 @@
 
 	.logo001 {
 		width: 100rpx;
+		height: 100rpx;
 		border-radius: 10rpx;
 	}
 

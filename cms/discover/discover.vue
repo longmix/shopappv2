@@ -1232,8 +1232,9 @@
 				
 				if (e.currentTarget.dataset.type == 'my_publish') {
 					//我的发布
-					this.page = 1;
+					this.page = 1;					
 					this.faquanList = [];
+					this.videometa_width_height_list = [];
 					
 					this.is_my_discover = 1;
 					this.is_my_discover_collection = 0;
@@ -1250,6 +1251,7 @@
 					//我的点赞
 					this.page = 1;
 					this.faquanList = [];
+					this.videometa_width_height_list = [];
 					
 					this.is_my_discover = 0;
 					this.is_my_discover_collection = 0;
@@ -1265,6 +1267,7 @@
 					//我的收藏
 					this.page = 1;
 					this.faquanList = [];
+					this.videometa_width_height_list = [];
 					
 					this.is_my_discover = 0;
 					this.is_my_discover_collection = 1;
@@ -1280,6 +1283,7 @@
 					//最近更新
 					this.page = 1;
 					this.faquanList = [];
+					this.videometa_width_height_list = [];
 					
 					this.is_my_discover = 0;
 					this.is_my_discover_collection = 0;
