@@ -6,7 +6,9 @@
 		</view>
 		
 	<block v-for="(item, index) in xianmaishangList" :key="index" style='background-color: #ffffff;'>
-	<view @click="toShangDetail($event)" :data-shangid="item.xianmai_shangid" style="display: flex;padding: 10upx;margin: 10upx;border-radius: 10upx;background: #fff;">
+	<view @click="toShangDetail($event)" 
+		:data-shangid="item.xianmai_shangid" 
+		style="display: flex;padding: 10upx;margin: 10upx;border-radius: 10upx;background: #fff;">
 		<view style="width:200upx;height:200upx;margin-left: 20upx;">
 			<image style="width:200upx;height:200upx;" :src="item.icon_image"></image>
 		</view>
@@ -15,8 +17,13 @@
 				<view style="font-size: 30upx;color:#333;">{{item.name}}</view>
 				<view style="display: flex; align-items:center;justify-content:space-between;">
 					<view style="display: flex;">
-						<image v-for="(items,indexs) in item.star_level" :key="indexs" style="width: 40upx;height: 40upx;" src="../../static/img/VIP.png"></image>
-						
+						<block v-if="item.star_level.length <= 5">
+							<image v-for="(items,indexs) in item.star_level" 
+								:key="indexs" 
+								style="width: 40upx;height: 40upx;" 
+								src="http://yanyubao.tseo.cn/Tpl/static/images/VIP.png">
+							</image>
+						</block>
 					</view>
 					<view style="margin-right: 30rpx;font-size: 24upx;">
 						{{item.dis}}

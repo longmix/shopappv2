@@ -48,7 +48,7 @@
 		<!-- VIP banner -->
 		<view class="VIP" v-if="wxa_show_levelname_in_usercenter == 1">
 			<view class="img">
-				<image src="/static/img/VIP.png"></image>
+				<image src="http://yanyubao.tseo.cn/Tpl/static/images/VIP.png" ></image>
 			</view>
 			<view class="title">{{userInfo && userInfo.userid ? fenxiao_info.level_name : '开通VIP会员'}}</view>
 			<view class="tis" @tap="showMemberExplain">会员特权</view>

@@ -19,7 +19,7 @@
 				<div @click="goForum(item.id)" class="flist-item" v-for="(item,fkey) in index_list" :key="fkey">
 					<div class="flist-user">
 						<label v-if="item.user_detail.headimgurl"><image :src="item.user_detail.headimgurl" class="flist-head"></image></label>
-						<label v-else><image src="../../static/img/VIP.png" class="flist-head"></image></label>
+						<label v-else><image src="http://yanyubao.tseo.cn/Tpl/static/images/VIP.png" class="flist-head"></image></label>
 						<div class="flex-1">
 							<div class="flist-nick" style="color: #ccc;font-size: 28upx;">
 								<label v-if="item.user_detail.nickname">{{item.user_detail.nickname}}</label>

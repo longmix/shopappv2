@@ -8,7 +8,7 @@
 		            <view class="list-item">  <!-- 002 -->
 		                <view :data-id="item.faquanid">  <!-- 003 -->
 		                    <view class="list-type">
-		                      <view class="list-zan-a" v-if="is_my_discover != 1">
+		                      <view class="list-zan-a" v-if="(is_my_discover != 1) && (hide_like_and_favorite != 1)">
 		
 		                        <image class='list-zan' :data-faquanid='item.faquanid' :data-index='idx' @tap="fanquaDianzan" 
 									:src="faquanList[idx].has_like == 0 ? '../../static/img/help/dianzan_grey.png' : '../../static/img/help/dianzan_red.png'"></image>
@@ -190,7 +190,10 @@
 			disabled:false,
 			tag:'',
 			videometa_width_height_list:'',
-			current_playing_videoid:0
+			current_playing_videoid:0,
+			
+			hide_like_and_favorite:0,
+			
 		},
 		methods:{
 			fanquaJubao:function(fanquaJubao){

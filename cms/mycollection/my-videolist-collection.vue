@@ -36,7 +36,7 @@
 				<view class='c-2'>{{item.title}}</view>
 				<view class="d-1">
 				  <view>{{item.number}}人观看</view>
-				  <image class="time" src="../../static/img/VIP.png"></image>
+				  <image class="time" src="http://yanyubao.tseo.cn/Tpl/static/images/VIP.png"></image>
 				  <view class='c-3'>{{item.month}}</view>
 				  <view>{{item.video_type_text}}</view>
 				</view>

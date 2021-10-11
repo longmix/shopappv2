@@ -18,7 +18,8 @@
 		</view>
 		
 		<view class="head" style="margin-top: 40rpx;">
-			<image src="../../../static/img/VIP.png" style="width:40upx;height: 40upx;margin-left:20rpx ;"></image>
+			<image src="http://yanyubao.tseo.cn/Tpl/static/images/VIP.png" 
+				style="width:40upx;height: 40upx;margin-left:20rpx ;"></image>
 			<view style="margin-left: 20upx ;">
 			  <view style="color: #808080;display:inline-block;">城市列表：</view>
 			</view>

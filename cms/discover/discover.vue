@@ -1034,7 +1034,7 @@
 
 
 				var post_data = {
-					appid: this.abotapi.globalData.xiaochengxu_appid,
+					faquan_wxa_appid: this.abotapi.globalData.xiaochengxu_appid,
 					sellerid: this.abotapi.get_sellerid(),
 					page: that.page,
 					faquanid: current_faquanid,

@@ -10,7 +10,7 @@
 			<view class="chat" v-for="(chat,index) in latestMsgList" :key="index" v-if="chat.chat_type == 1">
 				<view class="row" @tap888="toChat(chat)">
 					<view class="left">
-						<image v-if="!chat.from_person_detail" src="../../static/img/VIP.png"></image>
+						<image v-if="!chat.from_person_detail" src="http://yanyubao.tseo.cn/Tpl/static/images/VIP.png"></image>
 						<image v-if="chat.from_person_detail" :src="chat.from_person_detail.headimgurl"></image>
 					</view>
 					<view class="right">

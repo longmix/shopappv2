@@ -45,8 +45,11 @@
 			<!-- 星级 -->
 			<view style="display: flex;justify-content: center;align-items: center;">
 				<text>星级</text>
-				<image v-for="item in current_shang_detail.star_level" :key="item" style="width: 50upx;height: 50upx;" src="../../static/img/VIP.png"
-				 mode=""></image>
+				<image v-for="(item, index) in current_shang_detail.star_level" 
+					:key="index" 
+					style="width: 50upx;height: 50upx;" 
+					src="http://yanyubao.tseo.cn/Tpl/static/images/VIP.png"
+				 mode="widthFix"></image>
 
 			</view>
 			<!-- 星级结束 -->
@@ -56,8 +59,6 @@
 				<view v-for="item in current_shang_detail.spec" :key="item" class="biaoqian">
 					{{item}}
 				</view>
-
-
 			</view>
 			<!-- 标签结束-->
 
@@ -178,22 +179,6 @@
 
 		<!-- 功能按钮结束-->
 		
-		<!-- 发圈发现随拍 （关联商家的） -->
-		<discoverList 
-			:faquanList="current_faquanList"
-			:videometa_width_height_list="current_videometa_width_height_list"
-			@fanquaDianzan="fanquaDianzan"
-			@fanquanCollect="fanquanCollect"
-			@click_share_btn="click_share_btn"
-			@bigImg="bigImg"
-			>
-			<!-- 
-			@videometa="videometa"
-			@change_faquan_status="change_faquan_status"
-			@oneClickSave="oneClickSave" 
-			@copyText="copyText"
-			@img_or_video_download="img_or_video_download" -->
-		</discoverList>
 		
 		
 		<!-- 优惠 -->
@@ -237,6 +222,20 @@
 				</view>
 			</block>
 		</view>
+		
+		
+		
+		<!-- 发圈发现随拍 （关联商家的） -->
+		<discoverList 
+			:faquanList="current_faquanList"
+			:videometa_width_height_list="current_videometa_width_height_list"
+			:hide_like_and_favorite = 1
+			@fanquaDianzan="fanquaDianzan"
+			@fanquanCollect="fanquanCollect"
+			@click_share_btn="click_share_btn"
+			@bigImg="bigImg"			
+			>			
+		</discoverList>
 		
 		<!-- 小程序码 -->
 		<!-- #ifdef MP-WEIXIN -->
@@ -1108,10 +1107,12 @@
 						
 						
 			  var post_data = {
-				appid: this.abotapi.globalData.xiaochengxu_appid,
+				faquan_wxa_appid: this.abotapi.globalData.xiaochengxu_appid,
 				sellerid: this.abotapi.get_sellerid(),
-				extend_id:this.current_xianmai_shangid,
+				
 				faquan_type:1,
+				extend_id:this.current_xianmai_shangid,
+				
 			  };
 							
 			  
