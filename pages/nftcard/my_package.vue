@@ -113,13 +113,17 @@ export default {
 		
 		
 		
-		//判断用户是否登录
+		//======= 判断用户是否登录 ============
+		var last_url = '/pages/nftcard/my_package';
 		
 		var userInfo = that.abotapi.get_user_info();
-		if ((!userInfo) || (!userInfo.userid)) {
-			that.abotapi.call_h5browser_or_other_goto_url('/pages/login/login');
+		if (!userInfo) {
+			that.abotapi.goto_user_login(last_url);
+		
 			return;
 		}
+		//============= End ================
+		
 		
 		
 		

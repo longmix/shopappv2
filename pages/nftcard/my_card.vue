@@ -251,14 +251,18 @@ export default {
 		
 		__get_card_list:function(){
 			var that = this;
-			
-			//判断用户是否登录
+						
+			//======= 判断用户是否登录 ============
+			var last_url = '/pages/nftcard/my_card';
 			
 			var userInfo = that.abotapi.get_user_info();
-			if ((!userInfo) || (!userInfo.userid)) {
-				that.abotapi.call_h5browser_or_other_goto_url('/pages/login/login');
+			if (!userInfo) {
+				that.abotapi.goto_user_login(last_url);
+			
 				return;
 			}
+			//============= End ================
+			
 			
 			//获取收藏的卡牌列表
 			
