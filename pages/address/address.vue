@@ -28,8 +28,9 @@
 						</view>
 						<view class="input">
 							<picker @change="bindPickerChangeshengArr" :value="shengIndex" mode="selector" :range="shengArr" >
+								
 								<view class="picker">
-								 {{shengArr[shengIndex]}} 
+									{{shengArr[shengIndex]}} 
 									
 								</view>
 							</picker>
@@ -40,10 +41,10 @@
 							选择城市
 						</view>
 						<view class="input">
-							<picker @change="bindPickerChangeshiArr" :value="shiIndex" mode="selector" :range="shiArr">
+							<picker @change="bindPickerChangeshiArr" :value="shiIndex"  mode="selector" :range="shiArr">
+								
 								<view class="picker">
-									{{shiArr[shiIndex]}}
-									
+									{{shiArr[shiIndex]}}		
 								</view>
 							</picker>
 						</view>
@@ -54,9 +55,9 @@
 						</view>
 						<view class="input">
 							<picker @change="bindPickerChangequArr" :value="quIndex" mode="selector" :range="quArr" >
-								<view class="picker">
-									{{quArr[quIndex]}}
 								
+								<view class="picker" >
+									{{quArr[quIndex]}}
 								</view>
 							</picker>
 						</view>
@@ -117,7 +118,9 @@
 				quIndex: 0,
 				mid: 0,
 				sheng:0,
+				province:0,
 				city:0,
+				district:0,
 				area:0,
 				code:0,
 				cartId:0,
@@ -143,6 +146,14 @@
 				//themeColor: '#007AFF',
 				
 				wxa_shop_nav_bg_color:'#07c160', 
+				
+				
+				
+				
+				area_province:null,
+				area_city:null,
+				area_district:null,
+			
 			};
 		},
 		onLoad:function(options) {
@@ -186,18 +197,10 @@
 			}
 			else{
 				this.__get_china_data_list();
+				
 			}
 			
 
-			
-			
-			
-			
-			
-			
-			
-			
-			
 			
 			// this.cartId = e.cartId;
 			this.action = options.action;
@@ -256,6 +259,34 @@
 						for (var i = 0; i < res.data.data.length; i++) {
 							data_arr.push(res.data.data[i].chinese);
 							data_id.push(res.data.data[i].code01);
+							
+							
+							console.log('1111222223333333====>>>>', res.data.data[i].chinese);
+							console.log('111122222333333333444444====>>>>', res.data.data[i].code01);
+							
+							if((data_type == 'province') && (that.area_province) ){
+								if(res.data.data[i].chinese == that.area_province){
+									that.shengIndex = i;
+									that.shengIndex ++;
+									
+									that.__get_china_data_list(res.data.data[i].code01, 'city');
+								}
+							}
+							else if((data_type == 'city') && (that.area_city) ){
+								if(res.data.data[i].chinese == that.area_city){
+									that.shiIndex = i;
+									that.shiIndex ++;
+									that.__get_china_data_list(res.data.data[i].code01, 'district');
+								}
+							}
+							else if((data_type == 'district') && (that.area_district) ){
+								if(res.data.data[i].chinese == that.area_district){
+									that.quIndex = i;
+									that.quIndex ++;
+								}
+							}
+							
+							
 						}
 						
 						console.log('this.shengArr', data_arr);
@@ -304,44 +335,42 @@
 						if(res.data.code == 1){
 							
 							that.address_detail = res.data.data;
-							//省
-							that.province = that.address_detail.province - 1;
+							
+							console.log('44444444444444444444444444444=======>>>>>>',that.address_detail);
+							/* //省
+							that.province =that.address_detail.area_province;
 							
 							console.log('that.province',that.province);
 							//市
-							that.city = that.address_detail.city;
+							that.city = that.address_detail.area_city;
 							// that.city = ++that.city;
 							console.log('that.city',that.city);
 							//区
-							that.district = that.address_detail.district;
-							that.district = ++that.district;
+							that.district = that.address_detail.area_district; */
+							//that.district = ++that.district; 
 							
 							
-							that.shengIndex = that.province;
-							that.shiIndex = that.city;
-							that.quIndex = that.district;
 							that.shixb = that.city;
-							that.quxb = that.district;
+							that.quxb = that.district; 
 							
-							//拿到地址对应id
-							that.province = that.address_detail.province,
-							that.city = that.address_detail.city,
-							that.district = that.address_detail.district,
-							that.area = that.address_detail.district,
-							that.address = that.address_detail.address,
-							that.sheng = that.address_detail.province
+							//拿到地址对应名字
+							that.area_province = that.address_detail.area_province;
+							that.area_city = that.address_detail.area_city;
+							that.area_district = that.address_detail.area_district;
 							
-							console.log('that.province==>>',that.province);
-							console.log('that.shengIndex==>>',that.shengIndex);
-							console.log('that.shiIndex==>>',that.shiIndex);
-							console.log('that.quIndex==>>',that.quIndex);
-							console.log('that.shixb==>>',that.shixb);
-							console.log('that.quxb==>>',that.quxb);
-				
+							console.log('111122222====>>>>',that.area_province);
+							console.log('111122222====>>>>',that.area_city);
+							console.log('111122222====>>>>',that.area_district);
+							
+							that.address = that.address_detail.address;
+							
+							that.__get_china_data_list();
 							
 						}
 					}
 				});
+				
+				
 				
 				
 				
@@ -352,11 +381,12 @@
 				
 				this.shengIndex = e.detail.value;
 				
-				//console.log('this.addressId====',this.addressId)
-				
 				var code02 = this.shengId[this.shengIndex];
 				console.log('code02===>>>', code02);
 				
+				this.province_name = this.shengArr[this.shengIndex];
+				console.log('c55555555555555555===>>>', this.province_name);
+				this.province = code02;
 				
 				this.__get_china_data_list(code02,'city');
 				
@@ -366,8 +396,11 @@
 				console.log('bindPickerChangeshiArr==>>',e);
 				
 				this.shiIndex = e.detail.value;
-				
+			
 				var code02 = this.shiId[this.shiIndex];
+				
+				this.city = code02;
+				this.city_name = this.shiArr[this.shiIndex];
 				
 				this.__get_china_data_list(code02, 'district');
 				
@@ -375,20 +408,21 @@
 			},
 			
 			bindPickerChangequArr: function (e) {
-			
+				console.log('bindPickerChangequArr==>>',e);
 				
 				this.quIndex = e.detail.value;
-				
+			
 				var code02 = this.quId[this.quIndex];
-				
-				this.__get_china_data_list();
+				this.district = code02;
+				this.district_name = this.quArr[this.quIndex];
+				//this.__get_china_data_list(code02);
 			},	
 			
 			
 			formSubmit: function(e) {
 				
 				console.log('this.addressId====formSubmit>>',this.addressId)
-				console.log('asdsdsd66666',e)
+				console.log('asdsdsd66666======>>>>',e)
 				var that = this;
 				console.log('form发生了submit事件，携带数据为：',e)
 				var formdata = e.detail.value;
@@ -546,17 +580,21 @@
 				method: "POST",  
 				data: {
 					action:that.action,
+					
 					checkstr:userInfo.checkstr,
 					userid:userInfo.userid,
 					sellerid: this.abotapi.globalData.default_sellerid,
 					name: that.form_list.name,
 					mobile: that.form_list.phone,
-					province: that.province,
-					city: that.city,
-					district: that.area,
+					area_province: that.province_name,
+					area_city: that.city_name,
+					area_district: that.district_name,
 					address: that.form_list.address,
+					province:that.shengIndex,
+					city:that.shiIndex,
+					district:that.quIndex,
 					is_default: that.form_list.is_default,
-					addressid: this.addressid,
+					//addressid: this.addressid,
 					moren:this.moren
 				},    
 				success:function(res){
