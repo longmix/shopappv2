@@ -702,7 +702,7 @@
 				var params = options.scene.split('_');
 				options.productid = params[2];
 				
-				console.log('通过小程序码扫描进入，productID====>>>>>'+options.cardid);
+				console.log('通过小程序码扫描进入，productID====>>>>>'+options.productid);
 				
 				var new_sellerid = params[1];
 				that.abotapi.set_sellerid(new_sellerid);
