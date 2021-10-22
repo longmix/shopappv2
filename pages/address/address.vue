@@ -79,21 +79,29 @@
 								<switch color="#f06c7a"  data-name="moren" @change="isDefaultChange" />
 						</view>
 					</view>
-					<view class="row" v-if="action=='edit'" @tap="delAddress(address_detail.addressid)">
-						<view class="del">
-							删除收货地址
-						</view><br>
-							
-					</view>						
-					<view class="row">
+					<view style="display: flex;" v-if="action=='edit'">
+						<view class="row"  @tap="delAddress(address_detail.addressid)">
+							<view class="del">
+								删除收货地址
+							</view><br>
+								
+						</view>						
+						<view class="row">
+							<button class="baocun" form-type="submit"
+								:style="{backgroundColor:wxa_shop_nav_bg_color}">
+								保存地址
+							</button>
+						
+						</view>
+					
+					</view>
+					<view class="row" v-if="action=='add'">
 						<button class="baocun" form-type="submit"
 							:style="{backgroundColor:wxa_shop_nav_bg_color}">
 							保存地址
 						</button>
 					
 					</view>
-					
-					
 				</view>
 					
 			</form>
@@ -109,26 +117,20 @@
 			return {
 				shengArr: ['请选择'],//省级数组
 				shengId: [0],//省级id数组
+				
 				shiArr: ['请选择'],//城市数组
 				shiId: [0],//城市id数组
+				
 				quArr: ['请选择'],//区数组
 				quId:[0],//区id数组
+				
 				shengIndex:0,
 				shiIndex: 0,
 				quIndex: 0,
-				mid: 0,
-				sheng:0,
-				province:0,
-				city:0,
-				district:0,
-				area:0,
-				code:0,
-				cartId:0,
-				diqu:'',
-				shi:'',
-				shiArr2:'',
+	
+
 				action: 'add',
-				name:'',
+				
 				address_detail:'',
 				region_id:'',
 				
@@ -136,18 +138,13 @@
 				addressId:'',
 				user_address:'',
 				editType: 'edit',
-				// id: '',
-				// name: '',
+				
 				mobile: '',
-				// city:'',
+				
 				address:'',
 				moren: '',
-				cityPickerValue: [0, 0, 1],
-				//themeColor: '#007AFF',
 				
 				wxa_shop_nav_bg_color:'#07c160', 
-				
-				
 				
 				
 				area_province:null,
@@ -174,8 +171,7 @@
 			
 			this.addressid = options.addressId;
 			console.log('9999999999',this.addressid);
-			
-			this.cartId = options.cartId;
+
 			this.action = options.action;
 			  
 
@@ -201,8 +197,6 @@
 			}
 			
 
-			
-			// this.cartId = e.cartId;
 			this.action = options.action;
 			if(this.action == 'edit'){
 				that.region_id = this.province;
@@ -235,26 +229,35 @@
 							return;
 						}
 						
-						var data_arr = that.shengArr;
-						var data_id = that.shengId;
+						var data_arr = null;
+						var data_id = null;
 						
-						if(data_type == 'city'){
+						if(data_type == 'province'){
+							that.shengArr = ['请选择'];							
+							that.shengId = [0];
+							
+							data_arr = that.shengArr;
+							data_id = that.shengId;
+						}
+						else if(data_type == 'city'){
 							that.shiArr = ['请选择'];
 							that.shiId = [0];
-							
+						
 							data_arr = that.shiArr;
 							data_id = that.shiId;
+							
+							that.shiIndex = 0;
 						}
 						else if(data_type == 'district'){
 							that.quArr = ['请选择'];
 							that.quId = [0];
-							
+					
 							data_arr = that.quArr;
 							data_id = that.quId;
+							
+							that.quIndex = 0;
 						}
-						
-						//data_arr = ['请选择'];
-						//data_id = [0];
+											
 							
 						for (var i = 0; i < res.data.data.length; i++) {
 							data_arr.push(res.data.data[i].chinese);
@@ -270,6 +273,9 @@
 									that.shengIndex ++;
 									
 									that.__get_china_data_list(res.data.data[i].code01, 'city');
+									
+									
+									
 								}
 							}
 							else if((data_type == 'city') && (that.area_city) ){
@@ -319,58 +325,61 @@
 				      return;
 				};
 				
-				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_save',
-					data: {
+				var post_data = {
 						action:'get',
 						checkstr: userInfo.checkstr,
 				        userid:userInfo.userid,
 				        sellerid: that.abotapi.get_sellerid(),
 						addressid: that.addressid
-					},
+				};
+				
+				this.__ajax_address_save(post_data, function(response_data){
+					
+					if(response_data.code != 1){
+						return;
+					}
+					console.log('44444444444444444444444444444=======>>>>>>',response_data.data);
+					that.address_detail = response_data.data;
+					
+					
+					
+					
+					//拿到地址对应名字
+					that.area_province = that.address_detail.area_province;
+					that.area_city = that.address_detail.area_city;
+					that.area_district = that.address_detail.area_district;
+					
+					console.log('111122222====>>>>',that.area_province);
+					console.log('111122222====>>>>',that.area_city);
+					console.log('111122222====>>>>',that.area_district);
+					
+					that.address = that.address_detail.address;
+					
+					that.__get_china_data_list();
+					
+				});
+				
+				
+				
+				
+				
+				
+				
+				
+			},
+			
+			__ajax_address_save:function(post_data, callback_function){
+				var that = this;
+				that.abotapi.abotRequest({
+					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_save',
+					data: post_data,
 				    success: function (res) {
 						
 						console.log(res);
 						
-						if(res.data.code == 1){
-							
-							that.address_detail = res.data.data;
-							
-							console.log('44444444444444444444444444444=======>>>>>>',that.address_detail);
-							/* //省
-							that.province =that.address_detail.area_province;
-							
-							console.log('that.province',that.province);
-							//市
-							that.city = that.address_detail.area_city;
-							// that.city = ++that.city;
-							console.log('that.city',that.city);
-							//区
-							that.district = that.address_detail.area_district; */
-							//that.district = ++that.district; 
-							
-							
-							that.shixb = that.city;
-							that.quxb = that.district; 
-							
-							//拿到地址对应名字
-							that.area_province = that.address_detail.area_province;
-							that.area_city = that.address_detail.area_city;
-							that.area_district = that.address_detail.area_district;
-							
-							console.log('111122222====>>>>',that.area_province);
-							console.log('111122222====>>>>',that.area_city);
-							console.log('111122222====>>>>',that.area_district);
-							
-							that.address = that.address_detail.address;
-							
-							that.__get_china_data_list();
-							
-						}
+						typeof callback_function == "function" && callback_function(res.data);
 					}
 				});
-				
-				
 				
 				
 				
@@ -382,11 +391,13 @@
 				this.shengIndex = e.detail.value;
 				
 				var code02 = this.shengId[this.shengIndex];
+				
 				console.log('code02===>>>', code02);
 				
-				this.province_name = this.shengArr[this.shengIndex];
-				console.log('c55555555555555555===>>>', this.province_name);
-				this.province = code02;
+				this.area_province = this.shengArr[this.shengIndex];
+				
+				
+				console.log('当前选择的省的名字===>>>', this.area_province);
 				
 				this.__get_china_data_list(code02,'city');
 				
@@ -398,9 +409,10 @@
 				this.shiIndex = e.detail.value;
 			
 				var code02 = this.shiId[this.shiIndex];
+						
+				this.area_city = this.shiArr[this.shiIndex];
 				
-				this.city = code02;
-				this.city_name = this.shiArr[this.shiIndex];
+				console.log('当前的市的名字====>>>>'+ this.area_city);
 				
 				this.__get_china_data_list(code02, 'district');
 				
@@ -413,9 +425,10 @@
 				this.quIndex = e.detail.value;
 			
 				var code02 = this.quId[this.quIndex];
-				this.district = code02;
-				this.district_name = this.quArr[this.quIndex];
-				//this.__get_china_data_list(code02);
+				this.area_district = this.quArr[this.quIndex];
+				
+				console.log('当前的区县的名字=====>>>'+this.area_district);
+
 			},	
 			
 			
@@ -423,8 +436,12 @@
 				
 				console.log('this.addressId====formSubmit>>',this.addressId)
 				console.log('asdsdsd66666======>>>>',e)
+				
+				
 				var that = this;
+				
 				console.log('form发生了submit事件，携带数据为：',e)
+				
 				var formdata = e.detail.value;
 				
 				var rephone =/^[1][3,4,5,7,8][0-9]{9}$/; 
@@ -436,9 +453,6 @@
 				
 				
 				console.log('form_list：',that.form_list);
-				console.log('2form_list：',that.province);
-				console.log('1form_list：',that.city);
-				console.log('form_list：',that.area);
 				
 				if(!formdata.name){
 					uni.showToast({
@@ -446,14 +460,11 @@
 					})
 					return;
 				}
-				// if(!formdata.phone){
-				// 	uni.showToast({
-				// 		title:'请填写电话号码'
-				// 	})
-				// 	return;
-				// }
+				
+				
 				console.log('=========>',formdata.phone);
 				 console.log(rephone.test(formdata.phone));
+				 
 				if(!rephone.test(formdata.phone)) {
 					uni.showToast({
 						title:'请写填正确的电话号码'
@@ -466,165 +477,110 @@
 				
 				
 				
-				if(!that.shengArr || !that.shiArr ||!that.quArr){
+				//if(!that.shengIndex || !that.shiIndex ||!that.quIndex){
+				if(!that.shengIndex || !that.shiIndex){
 					uni.showToast({
 						title:'请选择省市区'
 					})
 					return;
 				}
 				
-				that.save();
-			},
-			onCancel(e) {
-				console.log(e)
-			},
-			
-			
-			del(e) {
-				console.log('del-e==>>',e);
+				var userInfo = this.abotapi.get_user_info();
+				console.log('this.addressId123====>>',this.addressId);
 				
-				// uni.showModal({
-				// 	title: '删除提示',
-				// 	content: '你将删除这个收货地址',
-				// 	success: (res) => {
-				// 		if (res.confirm) {
-				// 			uni.setStorage({
-				// 				key: 'delAddress',
-				// 				data: {
-				// 					id: this.id
-				// 				},
-				// 				success() {
-				// 					uni.navigateBack();
-				// 				}
-				// 			})
-				// 		} else if (res.cancel) {
-				// 			console.log('用户点击取消');
-				// 		}
-				// 	}
-				// });
-
-			},
-		
-		delAddress: function (e) {
-		    var that = this;
-		    console.log(e)
-		    // var addrId = e.currentTarget.dataset.id;
-		    var userInfo = this.abotapi.get_user_info();
-		    uni.showModal({
-		      title: '提示',
-		      content: '你确认移除吗',
-		      success: function(res) {
-		        res.confirm && uni.request({
-		          url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_save',
-		          data: {
-		            action: 'del',
-		            addressid: e.addressid,
-		            userid: userInfo.userid,
-		            checkstr: userInfo.checkstr,
-		            sellerid: that.abotapi.globalData.default_sellerid,
-		          },
-		          method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-		          header: {// 设置请求的 header
-		            'Content-Type':  'application/x-www-form-urlencoded'
-		          },
-		          
-		          success: function (res) {
-		            // success
-		            var code = res.data.code;
-		            if(code==1){
-						uni.navigateTo({
-							url:"/pages/user/address/address"
-						})
-		            }else{
-		              uni.showToast({
-		                title: res.data.msg,
-		                duration: 2000
-		              });
-		            }
-		          },
-		          fail: function () {
-		            // fail
-		            uni.showToast({
-		              title: '网络异常！',
-		              duration: 2000
-		            });
-		          }
-		        });
-		      }
-		    });
-		
-		  },
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		save:function(){
-			var that = this;
-			var userInfo = this.abotapi.get_user_info();
-			console.log('this.addressId123====>>',this.addressId)
-			if(!that.action){
-				that.action = 'add';
-			}
-			console.log('121323125555',that.area)
-			uni.request({
-				url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_save',
-				header: {  
-			            "Content-Type": "application/x-www-form-urlencoded"  
-			          }, 
-				method: "POST",  
-				data: {
-					action:that.action,
-					
-					checkstr:userInfo.checkstr,
-					userid:userInfo.userid,
-					sellerid: this.abotapi.globalData.default_sellerid,
-					name: that.form_list.name,
-					mobile: that.form_list.phone,
-					area_province: that.province_name,
-					area_city: that.city_name,
-					area_district: that.district_name,
-					address: that.form_list.address,
-					province:that.shengIndex,
-					city:that.shiIndex,
-					district:that.quIndex,
-					is_default: that.form_list.is_default,
-					//addressid: this.addressid,
-					moren:this.moren
-				},    
-				success:function(res){
-					console.log('success=====>>>>>>',res);
-					if(res.data.code == 1){
+				console.log('success111111111=====>>>>>>',that.area_province);
+				console.log('success2222222222=====>>>>>>',that.area_city);
+				
+				if(!that.action){
+					that.action = 'add';
+				}
+				
+				
+				var post_data = {
+						action:that.action,
+						
+						checkstr:userInfo.checkstr,
+						userid:userInfo.userid,
+						sellerid: this.abotapi.globalData.default_sellerid,
+						name: that.form_list.name,
+						mobile: that.form_list.phone,
+						area_province: that.area_province,
+						area_city: that.area_city,
+						area_district: that.area_district,
+						address: that.form_list.address,
+						moren:this.moren,
+						addressid:that.addressid,
+					};
+				
+				that.__ajax_address_save(post_data, function(response_data){
+					if(response_data.code == 1){
 						uni.showToast({
-							title: res.data.msg,
+							title: response_data.msg,
 							icon: 'success',
 							duration: 2000
 						});
+						
 						setTimeout(function() {
 							uni.navigateBack({
 							    delta: 1
 							});
 						}, 2000);
+						
 					}
-				},			
-			});
+				});
+				
+				
+		},			
+			
+		
+		delAddress: function (e) {
+		    var that = this;
+			
+		    console.log(e)
+			
+			
+		    var userInfo = this.abotapi.get_user_info();
+			
+			
+			
+		    uni.showModal({
+		      title: '提示',
+		      content: '你确认移除吗',
+		      success: function(res) {
+				  if(res.confirm){
+					var post_data = {
+						action: 'del',
+						addressid: that.addressid,
+						userid: userInfo.userid,
+						checkstr: userInfo.checkstr,
+						sellerid: that.abotapi.globalData.default_sellerid,
+					  };
+					  
+					that.__ajax_address_save(post_data, function(response_data){
+						if(response_data.code == 1){
+							uni.navigateTo({
+								url:"/pages/user/address/address"
+							})
+						}else{
+						  uni.showToast({
+						    title: response_data.msg,
+						    duration: 2000
+						  });
+						}
+						
+						
+					});
+						  
+						  
+					
+				  }
+				  
+				  
+				  
+		      }
+		    });
+		
 		},
-		// onBackPress() {
-		// 	if (this.$refs.mpvueCityPicker.showPicker) {
-		// 		this.$refs.mpvueCityPicker.pickerCancel();
-		// 		return true;
-		// 	}
-		// },
-		// onUnload() {
-		// 	if (this.$refs.mpvueCityPicker.showPicker) {
-		// 		this.$refs.mpvueCityPicker.pickerCancel()
-		// 	}
-		// }
 		
 		isDefaultChange:function(e){
 			var name = e.target.dataset.name;
@@ -712,7 +668,7 @@
 				}
 			}
 			.del{
-				width: 100%;
+				width: 300rpx;
 				height: 100upx;
 				justify-content: center;
 				align-items: center;
@@ -722,6 +678,7 @@
 				border-bottom: solid 1upx #eee;
 				margin-top: 20upx;
 				border-radius:30upx;
+				margin-left: 30rpx;
 			}
 		}
 	}
@@ -756,7 +713,7 @@
 	}
 	
 	.baocun{
-	 width: 100%;
+	 width: 300rpx;
 	 height: 100upx;
 	 justify-content: center;
 	 align-items: center;

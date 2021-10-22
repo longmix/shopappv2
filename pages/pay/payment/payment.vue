@@ -549,8 +549,10 @@
 				
 				var userInfo = that.abotapi.get_user_info();
 				
-				var post_data = {orderid: that.orderid,						
-						sellerid: that.abotapi.get_sellerid(),};
+				var post_data = {
+					orderid: that.orderid,						
+					sellerid: that.abotapi.get_sellerid(),
+				};
 				
 				if(userInfo){
 					post_data.userid = userInfo.userid;

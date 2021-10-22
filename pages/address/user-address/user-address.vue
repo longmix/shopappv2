@@ -344,7 +344,7 @@
 								Name: Name
 							},
 							success: function(res) {
-								console.log('aaaaaname', res);
+								console.log('aaaaaname55555555555', res);
 								var province = res.data.data.provinceCode;
 								var city = res.data.data.cityCode;
 								var county = res.data.data.countyCode;
@@ -358,9 +358,9 @@
 										sellerid: that.abotapi.get_sellerid(),
 										name: Name,
 										mobile: telNumber,
-										province: province,
-										city: city,
-										district: county,
+										area_province: provinceName,
+										area_city: cityName,
+										area_district: countyName,
 										address: detailInfo,
 									},
 									success: function() {

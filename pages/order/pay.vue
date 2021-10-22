@@ -10,7 +10,7 @@
 								<view class="l_h20 " style="font-size:40rpx;">{{order_address_detail.mobile}}</view>
 							</view>
 							<view class="l_h20 mt5" style="font-size:32rpx;margin-top:22rpx;">
-								{{order_address_detail.province_name}}{{order_address_detail.city_name}}{{order_address_detail.district_name}}{{order_address_detail.address}}
+								{{order_address_detail.area_province}}{{order_address_detail.area_city}}{{order_address_detail.area_district}}{{order_address_detail.address}}
 							</view>
 						</view>
 						<image class="x_rights" src="../../static/img/x_right.png"></image>
@@ -1546,6 +1546,9 @@ extraData = 'xxxxxxxxxxxxxxx'
 					  //userid: userInfo.userid,
 					  //checkstr: userInfo.checkstr,
 					  
+					  area_province: that.order_address_detail.area_province,
+					  area_city: that.order_address_detail.area_city,
+					  area_district: that.order_address_detail.area_district,
 					  //traffic_price: 0,//that.data.traffic_price,
 					  
 					  pay_price: that.pay_price,
