@@ -696,6 +696,19 @@
 			console.log('/pages/product/detail=====', options);
 
 			var that = this;
+			
+			//========== 2021.10.22. 如果是通过带参二维码进来的 =========
+			if(options.scene && (options.scene.indexOf('pro_') != -1) ){
+				var params = options.scene.split('_');
+				options.productid = params[2];
+				
+				console.log('通过小程序码扫描进入，productID====>>>>>'+options.cardid);
+				
+				var new_sellerid = params[1];
+				that.abotapi.set_sellerid(new_sellerid);
+				
+			}
+			//==================== End ============================
 
 			var options_str = '';	//记录网址带的参数
 
@@ -765,6 +778,7 @@
 				platform: that.abotapi.globalData.current_platform,
 			};
 
+			//如果是来自淘宝客、京东联盟的商品
 			if (this.product_source_channel == 1) {
 				detail_url = this.abotapi.globalData.yanyubao_server_url +
 					'index.php/openapi/UnionPromotionData/get_product_detail';

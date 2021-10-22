@@ -19,8 +19,9 @@
 		</view> -->
 		
 		
-		<view v-if="current_package_list ==''" style="text-align : center;">
-			<image src="https://yanyubao.tseo.cn/Tpl/static/images/empty_favorite.png" mode="widthFix" style="width: 300rpx;"></image>
+		<view v-if="(is_http_data_loaded == 1) && (current_package_list =='')" 
+			style="text-align : center;">
+			<image src="https://yanyubao.tseo.cn/Tpl/static/images/empty_favorite.png" mode="widthFix" style="width: 300rpx;height: 300rpx;"></image>
 			<view style="padding-bottom: 50rpx;color: #666666;">空空如也 ~~</view>
 		</view>
 		
@@ -89,7 +90,10 @@ export default {
 				// { name:"已过期",id:"zhencang"},
 			],
 			
-			current_page : 1
+			current_page : 1,
+			
+			//是否网络数据传输完成
+			is_http_data_loaded:0,
 			
 		}
 	},
@@ -284,6 +288,8 @@ export default {
 				method: 'post',
 				data: post_data,
 				success: function (res) {
+					
+					that.is_http_data_loaded = 1;
 					
 					if(res.data.code != 1){
 						uni.showToast({

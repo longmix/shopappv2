@@ -950,6 +950,8 @@ module.exports = {
 	
 	    //缓存返回数据
 	    uni.setStorageSync("current_sellerid", sellerid);
+		
+		this.globalData.default_sellerid = sellerid;
 	},
 	
 	del_sellerid: function(){

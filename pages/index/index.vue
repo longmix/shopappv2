@@ -137,10 +137,12 @@
 		但是链接可以点击，图片可以预览
 		而且在服务器端要求更专业的CSS定义，不适用于商品详情页和发帖内容页面 -->
 <!-- #ifdef MP-ALIPAY -->			
-			<rich-text :nodes="index_rich_html_content"></rich-text>
+		<rich-text  v-if="show_rich_html_in_index == 1" 
+			:nodes="index_rich_html_content"></rich-text>
 <!-- #endif -->		
 <!-- #ifdef H5 -->
-		<view v-html="index_rich_html_content" ></view>
+		<view  v-if="show_rich_html_in_index == 1" 
+			v-html="index_rich_html_content" ></view>
 <!-- #endif -->
 
 <!-- #ifndef MP-ALIPAY | H5 -->
@@ -160,7 +162,7 @@
 			v-for="(tab,index) in flash_img_list" :key="index" @click="toAdDetails(tab.url)">
 			
 			<view class="banner" >
-				<image :src="tab.image" style="width: 100%;vertical-align: middle;" mode="widthFix"></image>
+				<image lazy-load="true" :src="tab.image" style="width: 100%;vertical-align: middle;" mode="widthFix"></image>
 			</view>
 		</view>
 		<!-- 活动区 -->
@@ -490,7 +492,7 @@ export default {
 			 index_rich_html_type:'static',
 			 index_rich_html_content:'<h1></h1>',
 			 //传给uParse组件的属性值
-			 u_parse_imageProp:{mode:'aspectFit', padding:0, lazyLoad:true, domain:''},
+			 u_parse_imageProp:{mode:'widthFix', padding:0, lazyLoad:true, domain:''},
 
 		};
 	},

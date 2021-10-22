@@ -3,8 +3,9 @@
 		<view class="" style="width: 750rpx;height: 20rpx;"></view>
 		
 
-		<view v-if="(current_coupon_log == null) || (current_coupon_log.length == 0)" style="text-align : center;">
-			<image src="https://yanyubao.tseo.cn/Tpl/static/images/empty_favorite.png" mode="widthFix" style="width: 300rpx;"></image>
+		<view v-if="(is_http_data_loaded == 1) && ((current_coupon_log == null) || (current_coupon_log.length == 0))" 
+			style="text-align : center;">
+			<image src="https://yanyubao.tseo.cn/Tpl/static/images/empty_favorite.png" mode="widthFix" style="width: 300rpx;height: 300rpx;"></image>
 			<view style="padding-bottom: 50rpx;color: #666666;">空空如也 ~~</view>
 		</view>
 		
@@ -52,7 +53,10 @@ export default {
 			current_coupon_log:null,
 			
 			current_data_type:'',
-			current_page:1
+			current_page:1,
+			
+			//是否网络数据传输完成
+			is_http_data_loaded:0,
 			
 		}
 	},
@@ -88,6 +92,16 @@ export default {
 		
 		that.current_data_type = options.data_type;
 		
+		
+		uni.showLoading({
+			title: '数据加载中...',
+		})
+		
+		setTimeout(function() {
+			uni.hideLoading();
+		}, 2000);
+		
+		
 	
 		//获取列表
 		that.__nft_get_package_list();
@@ -115,6 +129,19 @@ export default {
 	//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
 	onPullDownRefresh: function () {
 		var that = this;
+		
+		uni.showLoading({
+			title: '数据加载中...',
+		})
+		
+		setTimeout(function() {
+			console.log('timeout===>>>stopPullDownRefresh===>>>hideToast');
+			
+			uni.stopPullDownRefresh();
+			uni.hideLoading();
+			
+		}, 2000);
+		
 		
 		console.log('onPullDownRefresh=====>>>>>');
 		
@@ -243,6 +270,8 @@ export default {
 			    method: 'post',
 			    data: post_data,
 			    success: function (res) {
+					
+					that.is_http_data_loaded = 1;
 					
 					if(res.data.code != 1){
 						uni.showToast({
