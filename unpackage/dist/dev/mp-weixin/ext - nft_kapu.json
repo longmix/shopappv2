@@ -15,7 +15,7 @@
     "force_sellerid_flag": 1,
     "force_sellerid_value": "pQNNmSkaq",  
     "shop_name": "卡扑",
-    "version_number": "Ver 1.1.0 Build 162",
+    "version_number": "Ver 1.1.3 Build 171",
     "navigationBarBackgroundColor_fixed": 1,
     "navigationBar_font_color":"#ffffff",
     "navigationBar_bg_color":"#30C478",
@@ -23,7 +23,7 @@
     "kefu_qq": "",
     "kefu_website": "",
     "kefu_gongzhonghao": "",
-    "default_copyright_text": "延誉宝 @ 版权所有"
+    "default_copyright_text": "延誉宝 @ 技术支持"
   },
   "extPages": {
     "pages/publish/publish_list": {

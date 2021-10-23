@@ -3,6 +3,12 @@
 		
 <template>
 	<view>
+		<swiperBanner v-if="banner_swiper_list"
+			:imgUrls="banner_swiper_list" 
+			:border_radius="0"
+			:swiper_width_percent_value="100"
+			@goto_url="toAdDetails"></swiperBanner>
+			
 		<view class="weui-panel weui-panel_access">
 			<view class="weui-panel__bd">
 				<block v-for="(item, artlist_for) in articlelist" :key="artlist_for">
@@ -35,12 +41,20 @@
 <script>
 	import publish_list_api from '../../common/publish_list_api.js';
 	
+	import swiperBanner from '../../components/swiper-banner.vue';
+	
 	export default {
+		components:{
+			swiperBanner,
+		},
 		data() {
 			return {
 				sellerid:'',
 				articlelist: [],
 				loading: true,
+				
+				banner_swiper_list:[],
+
 				
 				//===相关的 publish_list_api 组件相关的==
 				is_get_article_list:1,
@@ -77,7 +91,7 @@
 			
 			that.sellerid = options.sellerid;
 			
-			if (typeof (that.sellerid) == 'undefined') {
+			if ((typeof (that.sellerid) == 'undefined') || (!that.sellerid) ){
 				that.sellerid = this.abotapi.globalData.default_sellerid;
 			}
 			
@@ -85,6 +99,35 @@
 			//this.initArticleList(that.sellerid);
 			
 			this.abotapi.set_option_list_str(this, this.initArticleList_new);
+			
+			
+			
+			//APP/小程序首页滚动广告
+			this.abotapi.abotRequest({
+				url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_flash_ad_list',
+				method: 'post',
+				data: {
+					sellerid: this.abotapi.globalData.default_sellerid,
+					'type': 4,
+				},
+				success: function (res) {
+					var banner = res.data.data;
+					console.log('res',res);
+					console.log('banner',banner);
+						
+					//that.initProductData(data);
+					that.banner_swiper_list = banner;
+					//endInitData
+				},
+				fail: function (e) {
+					uni.showToast({
+					  title: '网络异常！',
+					  duration: 2000
+					});
+				},
+			})
+			
+			
 			
 			
 		},
@@ -186,12 +229,32 @@
 				})
 			},
 			
+			//轮播图、平面广告跳转
+			toAdDetails:function(url){
+				
+				// var home_url = '/pages/index/index';
+				// this.abotapi.goto_user_login(home_url, 'switchTab');
+				
+				var var_list = Object();
+
+				console.log('toAdDetails- to url ====>>>>>>', url);
+				
+				this.abotapi.call_h5browser_or_other_goto_url(url, var_list, '');
+				
+			},
+			
+			
+			
 		}
 	}
 	
 </script>
 
 <style>
+	
+	
+	
+	
 .weui-panel {
   background-color: #FFFFFF;
   margin-top: 10px;

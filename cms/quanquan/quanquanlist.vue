@@ -3,13 +3,9 @@
 	<!--cms/discover/discover.wxml-->
 		<!--滚动图片start-->
 		<view v-if="!is_my_video_collection">
-		  <swiper @change="bindchange" indicator-dots="true" autoplay="true" interval="5000" duration="500" :style="{height:imgheights[current] + 'rpx'}">
-			<block v-for="(item,index) in imgUrls" :key="index">
-			  <swiper-item>
-				<image :src="item.image"  :data-id='index' mode="widthFix"  class="slide-image" @load='imageLoad'  @click="toAdDetails" :data-url="item.url"/>
-			  </swiper-item>
-			</block>
-		  </swiper>
+		  <swiperBanner v-if="banner_swiper_list"
+		  	:imgUrls="banner_swiper_list" 
+		  	@goto_url="toAdDetails"></swiperBanner>
 		</view>
 	
 		<!-- 筛选 -->
@@ -51,29 +47,42 @@
 			<view class='bottom-line-a'></view>
 		</view>
 		
+		
+		<!-- 跳转回首页 -->
+		<view class='icon-jump' @click='toPageIndex' 
+			:style="{background: wxa_shop_nav_bg_color}">
+			<image src="../../static/img/shouye.svg"></image>
+			<view :style="{color:wxa_shop_nav_font_color}">首页</view>
+		</view>
+		
 	</view>
 </template>
 
 <script>
+	import swiperBanner from '../../components/swiper-banner.vue';
 	
 	export default { 
-		
+		components:{
+			swiperBanner,
+		},
 		data() {
 			return {
 				is_my_video_collection:'',
 				page: 1,
 				month: '',
 				cata: '',
-				imgheights:[],
+
 				videoList:[],
-				current:0,
-				imgUrls:[],
+				
+				banner_swiper_list:[],
+
 				isShowBottomLine:0,
 				page_info:'精彩瞬间',
 				cataArr:[], 
 				monthArr:[],
 				
-				wxa_shop_nav_bg_color:'red'
+				wxa_shop_nav_bg_color:'red',
+				wxa_shop_nav_font_color:'white'
 			};
 		},
 		onLoad(options) {
@@ -85,6 +94,10 @@
 			}
 			else{
 				var cata001 = uni.getStorageSync('current_quanquan_cata');
+				
+				//2021.10.23. 不再使用这种机制
+				cata001 = null;
+				
 				if(cata001){
 					this.cata = cata001;
 				}
@@ -95,13 +108,16 @@
 			
 			this.abotapi.set_shop_option_data(this, function(that002, cb_params){
 				if (cb_params.option_list.wxa_shop_nav_bg_color) {
-				    that002.wxa_shop_nav_bg_color = cb_params.option_list.wxa_shop_nav_bg_color
+				    that002.wxa_shop_nav_bg_color = cb_params.option_list.wxa_shop_nav_bg_color;
+					
+					that002.wxa_shop_nav_font_color = cb_params.option_list.wxa_shop_nav_font_color;
 				}
 			});
 			
 			
 			var that = this;
 			
+			//APP/小程序首页滚动广告
 			this.abotapi.abotRequest({
 				url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_flash_ad_list',
 				method: 'post',
@@ -115,7 +131,7 @@
 					console.log('banner',banner);
 						
 					//that.initProductData(data);
-					that.imgUrls = banner;
+					that.banner_swiper_list = banner;
 					//endInitData
 				},
 				fail: function (e) {
@@ -124,7 +140,7 @@
 					  duration: 2000
 					});
 				},
-			})
+			});
 			
 			var post_data = {};
 			
@@ -424,30 +440,6 @@
 				this.getVideoList();
 			},
 			
-			
-			imageLoad: function (e) {//获取图片真实宽度  
-			    var imgwidth = e.detail.width,
-			      imgheight = e.detail.height,
-			      //宽高比  
-			      ratio = imgwidth / imgheight;
-			    console.log(imgwidth, imgheight)
-			    //计算的高度值  
-			    var viewHeight = 750 / ratio;
-			    var imgheight = viewHeight;
-			    var imgheights = this.imgheights;
-			    //把每一张图片的对应的高度记录到数组里  
-			    imgheights[e.target.dataset.id] = imgheight;
-			
-			    console.log(imgheights);
-				this.imgheights = imgheights;
-			    this.current = e.target.dataset.id;
-			},
-			  
-			bindchange: function (e) {
-				// console.log(e.detail.current)
-				this.current = e.detail.current;
-			},
-			  
 			tovideo_details: function (e) {
 				console.log('0000',e)
 			   
@@ -457,17 +449,22 @@
 			},
 			
 			//轮播图、平面广告跳转
-			toAdDetails:function(e){
+			toAdDetails:function(url){
 				
 				// var home_url = '/pages/index/index';
 				// this.abotapi.goto_user_login(home_url, 'switchTab');
 				
-				var that = this;
 				var var_list = Object();
-				var url = e.currentTarget.dataset.url;
+				
 				console.log('toAdDetails- to url ====>>>>>>', url);
 				
 				this.abotapi.call_h5browser_or_other_goto_url(url, var_list, '');
+				
+			},
+			
+			toPageIndex: function(e) {
+				
+				this.abotapi.call_h5browser_or_other_goto_url('/pages/index/index');
 				
 			},
 		},
@@ -481,10 +478,6 @@
 <style lang="scss">
 /* cms/discover/discover.wxss */
 /* cms/quanquan/quanquanlist.wxss */
-.slide-image {
-  width: 100%;
-  /*height: 150px;*/
-}
 
 .section{
   display: flex;
@@ -594,4 +587,30 @@ margin-top: 20rpx;
   height:26rpx;
   margin-left: 10rpx;
 }
+
+
+	.icon-jump {
+		width: 120rpx;
+		height: 120rpx;
+		position: fixed;
+		right: 40rpx;
+		bottom: 120rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 100px;
+		background: #00FF00;
+		flex-direction: column;
+		font-size: 28rpx;
+	}
+
+	.icon-jump image {
+		width: 60rpx;
+		height: 60rpx;
+	}
+	
+
+
+
+	
 </style>

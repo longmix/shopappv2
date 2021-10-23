@@ -220,7 +220,10 @@
 		<!-- 占位 -->
 		<view class="place-bottom"></view>
 
-		<view class='icon-jump' @click='toPageIndex' :style="{background: icon_jump_bg_color}" v-if="wxa_show_return_to_index_in_usercenter == 1">
+		<!-- 跳转回首页 -->
+		<view class='icon-jump' @click='toPageIndex' 
+			:style="{background: wxa_shop_nav_bg_color}" 
+			v-if="wxa_show_return_to_index_in_usercenter == 1">
 			<image src="../../static/img/shouye.svg"></image>
 			<view :style="{color:wxa_shop_nav_font_color}">首页</view>
 		</view>
@@ -299,7 +302,6 @@
 				wxa_shop_operation_logo_url: '',
 				wxa_show_return_to_index_in_usercenter: 0, //控制返回首页是否显示
 
-				icon_jump_bg_color: '#000', //返回首页的悬浮图标的背景颜色
 				wxa_usercenter_function_list: 0, //控制工具栏的样式  是九宫格还是列表
 				wxa_usercenter_ad_list: [], //平铺图片
 				
@@ -469,10 +471,6 @@
 				
 				if (option_list.wxa_show_return_to_index_in_usercenter) {
 					that001.wxa_show_return_to_index_in_usercenter = option_list.wxa_show_return_to_index_in_usercenter;
-				}
-				
-				if (option_list.wxa_shop_nav_bg_color) {
-					that001.icon_jump_bg_color = option_list.wxa_shop_nav_bg_color;
 				}
 				
 				if (option_list.wxa_usercenter_function_list) {

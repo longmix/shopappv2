@@ -19,18 +19,13 @@
 		</view>
 		
 		<!-- 轮播图 -->
-		<view class="swiper">
-			<view class="swiper-box">
-				<swiper circular="true" autoplay="true"  
-					@change="swiperChange" 
-					:style="{height:imgheights[current_swiper_img_seq] + 'rpx'} ">
-					<swiper-item v-for="(swiper,index) in productLists" :key="swiper.id" @click="toAdDetails(swiper.url)">
-						<!-- @click="toAdDetails(swiper.url)" -->
-						<image @load="imageLoad($event)"  :data-id='index' :src="swiper.image" mode="widthFix"></image>
-					</swiper-item>
-				</swiper>
-			</view>
-		</view>
+		<swiperBanner v-if="productLists"
+			:imgUrls="productLists" 
+			:border_radius="5"
+			:swiper_width_percent_value="92"
+			@goto_url="toAdDetails"></swiperBanner>
+		
+		
 		
 		<!-- -附近商家 -->
 		
@@ -96,9 +91,12 @@
 	import locationapi from '../../common/locationapi.js'; 
 	import shopList from '../../components/shop-list/shop-list.vue';
 	
+	import swiperBanner from '../../components/swiper-banner.vue';
+	
 	export default {
 		components:{
-			shopList
+			shopList,
+			swiperBanner
 		},
 		data() {
 			return {
@@ -146,8 +144,6 @@
 				loadingText: '正在加载...',
 				
 				// 轮播图片				
-				imgheights: [],
-				current_swiper_img_seq: 0,
 				windowHeight: 0,
 				
 				
@@ -987,58 +983,6 @@
 				});
 			},
 			
-			//轮播图指示器
-			swiperChange(event) {
-				this.current_swiper_img_seq = event.detail.current;
-				
-				console.log('当前滚动图片序号：' + this.current_swiper_img_seq);
-				console.log('当前滚动图片高度：' + this.imgheights[this.current_swiper_img_seq]);
-			},
-			
-			
-			imageLoad: function (e) {//获取图片真实宽度  
-				var that = this;
-				
-				var imgwidth = e.detail.width;
-				
-				var imgheight = e.detail.height;
-				
-				console.log('图片的宽度和高度：' + imgwidth + ',' + imgheight);
-				
-				//宽高比  
-				var ratio = imgwidth / imgheight;
-				
-				
-				//计算的高度值
-				this.windowWidth = 750;  //宽度固定位 750rpx
-				
-				//计算出来的高度，单位 rpx
-				//var viewHeight = (this.windowWidth * 2 * 0.92)/ ratio;
-				var viewHeight = this.windowWidth/ ratio;
-				
-				//全局的高度 数组
-				var imgheights = this.imgheights;
-				
-				//把每一张图片的对应的高度记录到数组里  
-				//imgheights[e.target.dataset.id] = uni.rpx2px(viewHeight);
-				imgheights[e.target.dataset.id] = viewHeight;
-					
-				console.log('id===>>>'+e.target.dataset.id+", viewHeight====>>>", viewHeight);
-						
-				console.log('全局的高度列表的数组', imgheights);
-				
-				/*
-				var heights = [];
-				for(var i = 0; i < imgheights.length;i++){
-					heights[i] = imgheights[i]
-				}
-				*/
-			   
-				that.imgheights = imgheights;
-			   
-			  },
-			
-			
 			//首页导航图标、轮播图、平面广告跳转
 			toAdDetails:function(url){
 				// var var_list = Object();
@@ -1127,53 +1071,6 @@
 	padding-top: 1rpx;
 
 }
-.swiper {
-	width: 100%;
-	margin-top: 10rpx;
-	display: flex;
-	
-	justify-content: center;
-	.swiper-box {
-		width: 92%;
-		// height: 30.7vw;
-
-		overflow: hidden;
-		border-radius: 15rpx;
-		/*box-shadow: 0rpx 8rpx 25rpx rgba(0, 0, 0, 0.2);*/
-		
-		//兼容ios，微信小程序
-		position: relative;
-		z-index: 1;
-		swiper {
-			width: 100%;
-			// height: 30.7vw;
-			swiper-item {
-				image {
-					width: 100%;
-				}
-			}
-		}
-		.indicator {
-			position: absolute;
-			bottom: 20rpx;
-			left: 20rpx;
-			background-color: rgba(255, 255, 255, 0.4);
-			width: 150rpx;
-			height: 5rpx;
-			border-radius: 3rpx;
-			overflow: hidden;
-			display: flex;
-			.dots {
-				width: 0rpx;
-				background-color: rgba(255, 255, 255, 1);
-				transition: all 0.3s ease-out;
-				&.on {
-					width: (100%/3);
-				}
-			}
-		}
-	}
-}	
 .status {
 	width: 100%;
 	height: 0;

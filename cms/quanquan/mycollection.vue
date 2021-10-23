@@ -2,13 +2,11 @@
 	<view>
 		<!--滚动图片start-->
 			<view v-if="!is_my_video_collection">
-			  <swiper @change="bindchange" indicator-dots="true" autoplay="true" interval="5000" duration="500" :style="{height:imgheights[current] + 'rpx'}">
-				<block v-for="(item,index) in imgUrls" :key="index">
-				  <swiper-item>
-					<image :src="item.image"  :data-id='index' mode="widthFix"  class="slide-image" @load='imageLoad'  @click="toAdDetails" :data-url="item.url"/>
-				  </swiper-item>
-				</block>
-			  </swiper>
+				<swiperBanner v-if="imgUrls"
+					:imgUrls="imgUrls" 
+					:border_radius="5"
+					:swiper_width_percent_value="92"
+					@goto_url="toAdDetails"></swiperBanner>
 			</view>
 		
 			<!-- 筛选 -->
@@ -54,20 +52,22 @@
 
 <script>
 	
-	
+	import swiperBanner from '../../components/swiper-banner.vue';
 	
 	export default {
-		
+		components: {
+			swiperBanner
+		},
 		data() {
 			return {
 				is_my_video_collection:'',
 				page: 1,
 				month: '',
 				cata: '',
-				imgheights:[],
 				videoList:[],
-				current:0,
+				
 				imgUrls:[],
+				
 				isShowBottomLine:0,
 				page_info:'精彩瞬间',
 				cataArr:[], 
@@ -365,30 +365,6 @@
 				this.getVideoList();
 			},
 			
-			
-			imageLoad: function (e) {//获取图片真实宽度  
-			    var imgwidth = e.detail.width,
-			      imgheight = e.detail.height,
-			      //宽高比  
-			      ratio = imgwidth / imgheight;
-			    console.log(imgwidth, imgheight)
-			    //计算的高度值  
-			    var viewHeight = 750 / ratio;
-			    var imgheight = viewHeight;
-			    var imgheights = this.imgheights;
-			    //把每一张图片的对应的高度记录到数组里  
-			    imgheights[e.target.dataset.id] = imgheight;
-			
-			    console.log(imgheights);
-				this.imgheights = imgheights;
-			    this.current = e.target.dataset.id;
-			},
-			  
-			bindchange: function (e) {
-				// console.log(e.detail.current)
-				this.current = e.detail.current;
-			},
-			  
 			tovideo_details: function (e) {
 				console.log('0000',e)
 			   
@@ -398,14 +374,8 @@
 			},
 			
 			//轮播图、平面广告跳转
-			toAdDetails:function(e){
+			toAdDetails:function(url){
 				
-				// var home_url = '/pages/index/index';
-				// this.abotapi.goto_user_login(home_url, 'switchTab');
-				
-				var that = this;
-				var var_list = Object();
-				var url = e.currentTarget.dataset.url;
 				console.log('toAdDetails- to url ====>>>>>>', url);
 				
 				this.abotapi.call_h5browser_or_other_goto_url(url, var_list, '');

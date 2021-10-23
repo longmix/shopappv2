@@ -4,14 +4,13 @@
 
 		<!--滚动图片start-->
 		<view class="swiper" v-if="!is_my_discover_collection && !is_my_discover && !is_my_discover_like && isShowBanner">
-			<view class="swiper-box">
-				<swiper circular="true" autoplay="true" @change="swiperChange" :style="{height:imgheights[current] + 'px'} ">
-					<swiper-item v-for="(swiper,index) in imgUrls" :key="index" @click="toAdDetails(imgUrls[index].url)">
-						<image class="img_swiper" @load="imageLoad($event)" :style="{height:imgheights[current] + 'px'}" style="width:100%;"
-						 :data-id='index' :src="swiper.image" mode="widthFix"></image>
-					</swiper-item>
-				</swiper>
-			</view>
+			
+			<swiperBanner v-if="imgUrls"
+				:imgUrls="imgUrls" 
+				:border_radius="5"
+				:swiper_width_percent_value="92"
+				@goto_url="toAdDetails"></swiperBanner>
+			
 		</view>
 		<!--滚动图片end-->
 
@@ -35,8 +34,9 @@
 		<!-- 标签end -->
 
 		<!-- 总共收藏数 或 发布  -->
-		<view class='col-con' v-if="is_my_discover_collection || is_my_discover || is_my_discover_like" style="height: 280upx;line-height: 80upx;"
-		 :style="{'background-color': wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}">
+		<view class='col-con' v-if="is_my_discover_collection || is_my_discover || is_my_discover_like" 
+			style="height: 280upx;line-height: 80upx;"
+			:style="{'background-color': wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}">
 
 			<view>{{nav_title}}</view>
 			<!-- <view style="color:#E0B351;margin-left:20rpx;font-weight:normal;"></view> -->
@@ -174,9 +174,13 @@
 
 <script>
 	import discoverList from '../../components/discover-list/discover-list.vue';
+	
+	import swiperBanner from '../../components/swiper-banner.vue';
+	
 	export default {
 		components: {
-			discoverList
+			discoverList,
+			swiperBanner
 		},
 		data() {
 			return {
@@ -185,8 +189,6 @@
 				publish_list:{count_my_publish:0, count_like:0, count_collect:0},  //帖子的发布，点赞，收藏数量
 				isShowBottomLine: 0,
 
-				imgheights: [],
-				current: 0,
 				startself: 0,
 				selectTabArr: [],
 				current_self_in_tabbar: 1, //当前这个page挂接在底部导航中，用switchTab跳转
@@ -495,42 +497,7 @@
 
 
 		methods: {
-			imageLoad: function(e) { //获取图片真实宽度
-
-				var imgwidth = e.detail.width;
-				var imgheight = e.detail.height;
-				//宽高比  
-				var ratio = imgwidth / imgheight;
-
-				console.log('imageLoad id===>>> ' + e.target.dataset.id + '实际大小：');
-				console.log(imgwidth, imgheight)
-
-				//计算的高度值  
-				imgheight = (this.windowWidth * 0.92) / ratio;
-
-				console.log('imageLoad id===>>> ' + e.target.dataset.id + '显示大小：');
-				console.log(this.windowWidth * 0.92, imgheight)
-
-
-				var img_heights = this.imgheights;
-
-
-				//把每一张图片的对应的高度记录到数组里   
-				//imgheights[e.target.dataset.id] = uni.upx2px(imgheight);
-				img_heights[e.target.dataset.id] = imgheight;
-
-				console.log('imageLoad id===>>> ' + e.target.dataset.id + ", imgheights====>>>", img_heights);
-				console.log("imgheights:" + typeof(img_heights))
-				this.imgheights = img_heights;
-				this.current = e.target.dataset.id;
-
-			},
-
-			//轮播图指示器
-			swiperChange(event) {
-				console.log('swiperChange====>>>>>>', event);
-				this.current = event.detail.current;
-			},
+			
 			ddddd: function() {
 				console.log(11111111);
 				this.imgheights = [163];
@@ -1915,57 +1882,6 @@
 
 	
 
-	.swiper {
-		width: 100%;
-		margin-top: 10upx;
-		display: flex;
-		justify-content: center;
-
-		.swiper-box {
-			width: 92%;
-			// height: 30.7vw;
-			overflow: hidden;
-			border-radius: 15upx;
-			box-shadow: 0upx 8upx 25upx rgba(0, 0, 0, 0.2);
-			//兼容ios，微信小程序
-			position: relative;
-			z-index: 1;
-
-			swiper {
-				width: 100%;
-
-				// height: 30.7vw;
-				swiper-item {
-					image {
-						width: 100%;
-						height: auto;
-					}
-				}
-			}
-
-			.indicator {
-				position: absolute;
-				bottom: 20upx;
-				left: 20upx;
-				background-color: rgba(255, 255, 255, 0.4);
-				width: 150upx;
-				height: 5upx;
-				border-radius: 3upx;
-				overflow: hidden;
-				display: flex;
-
-				.dots {
-					width: 0upx;
-					background-color: rgba(255, 255, 255, 1);
-					transition: all 0.3s ease-out;
-
-					&.on {
-						width: (100%/3);
-					}
-				}
-			}
-		}
-	}
 
 	.icon-number {
 		width: 100%;

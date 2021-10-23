@@ -39,16 +39,11 @@
 		
 		<!-- 轮播图 -->
 		<view class="swiper" v-if="wxa_show_index_swiper == 1">
-			<view class="swiper-box" :style="{height:swiper_box_height + 'rpx'} ">
-				<swiper circular="true" autoplay="true" @change="swiperChange" 
-					:style="{height:swiper_box_height + 'rpx'} ">
-					<swiper-item v-for="(swiper, index) in flash_ad_list" :key="swiper.id" @click="toAdDetails(flash_ad_list[index].url)">
-						<image class="img_swiper" @load="imageLoad($event)" 
-							 :style="{height:swiper_img_heights[currentSwiper] + 'rpx'} "
-							:data-id='index' :src="swiper.image" mode="widthFix"></image>
-					</swiper-item>
-				</swiper>
-			</view>
+			<swiperBanner v-if="flash_ad_list"
+				:imgUrls="flash_ad_list" 
+				:border_radius="5"
+				:swiper_width_percent_value="92"
+				@goto_url="toAdDetails"></swiperBanner>
 		</view>
 		
 		<view class="content_block" v-if="show_weather_forecast_in_index == 1">
@@ -98,7 +93,10 @@
 		
 		<!-- 首页导航图标列表 -->
 		<view class="category-list" v-if="wxa_show_index_icon == 1">
-			<view class="category" :style="wxa_show_icon_index_count== 4? 'width:25%':'width:20%'" v-for="(item, index) in index_icon_list"	:key="index" @click="toAdDetails(item.url)"> <!--  -->
+			<view class="category" :style="wxa_show_icon_index_count== 4? 'width:25%':'width:20%'" 
+				v-for="(item, index) in index_icon_list"	
+				:key="index" 
+				@click="toAdDetails(item.url)"> <!--  -->
 				<view >
 					<view class="img"><image :src="item.src"></image></view>
 					<view class="text">{{ item.name }}</view>
@@ -159,7 +157,8 @@
 		
 		<!-- 平铺广告图 -->
 		<view v-if="wxa_show_pic_pinpu == 1"
-			v-for="(tab,index) in flash_img_list" :key="index" @click="toAdDetails(tab.url)">
+			v-for="(tab,index) in flash_img_list" :key="index" 
+			@click="toAdDetails(tab.url)">
 			
 			<view class="banner" >
 				<image lazy-load="true" :src="tab.image" style="width: 100%;vertical-align: middle;" mode="widthFix"></image>
@@ -252,7 +251,10 @@
 					<image class="u-go-home2" @tap="call_seller" :style="{backgroundColor:wxa_kefu_bg_color}" :src="wxa_kefu_button_icon" mode="widthFix"></image>
 			</block>
 			<block v-if="wxa_kefu_button_type==2">
-					<image class="u-go-home2" @tap="toAdDetails(wxa_kefu_form_url)" :style="{backgroundColor:wxa_kefu_bg_color}" :src="wxa_kefu_button_icon" mode="widthFix"></image>
+					<image class="u-go-home2" 
+						:style="{backgroundColor:wxa_kefu_bg_color}" 
+						:src="wxa_kefu_button_icon" mode="widthFix"
+						@tap="toAdDetails(wxa_kefu_form_url)" ></image>
 			</block>
 			<block v-if="wxa_kefu_button_type==3">
 				<button class="u-go-home2" open-type="contact" :style="{backgroundColor:wxa_kefu_bg_color}">
@@ -334,6 +336,8 @@ import uParse from '@/components/gaoyia-parse/parse.vue'
 	import parseHtml from "../../common/html-parser.js"
 // #endif
 
+import swiperBanner from '../../components/swiper-banner.vue';
+
 const isNullOrUndefined = obj=>obj===null || obj === undefined  || obj === '';
 
 export default {
@@ -341,7 +345,8 @@ export default {
 		shopList,
 		publishList,
 		productList,
-		uParse
+		uParse,
+		swiperBanner
 	},
 	data() {
 		return {
@@ -395,7 +400,7 @@ export default {
 			
 			
 			
-			
+			// 轮播图片
 			flash_ad_list:null,
 			flash_img_list:null,
 			index_icon_list:null,
@@ -430,10 +435,8 @@ export default {
 			wxa_product_list_show_type:'',
 			wxa_hidden_product_list:0,
 			
-			// 轮播图片
-			currentSwiper: 0,
-			swiper_img_heights: [],
-			swiper_box_height:100,
+			
+			
 			
 			windowHeight: 0,
 			windowWidth: 0,
@@ -2211,48 +2214,8 @@ export default {
 		toShangList(){
 			this.abotapi.call_h5browser_or_other_goto_url('/pages/shopList/shopList');
 		},
-		//轮播图指示器
-		swiperChange(event) {
-			
-			this.currentSwiper = event.detail.current;
-		},
 		
-		
-		imageLoad: function (e) {//获取图片真实宽度  
-				
-		    var imgwidth = e.detail.width;
-		    var imgheight = e.detail.height;
-		      //宽高比  
-		    var ratio = imgwidth / imgheight;
-			
-			console.log('imageLoad id===>>> '+e.target.dataset.id +'实际大小：');
-		    console.log(imgwidth, imgheight)
-			
-			//窗体默认的宽度都为750rpx，不是px
-			this.windowWidth = 750;
-			
-		    //计算的高度值  
-		    var imgheight = (this.windowWidth * 0.92)/ ratio;
-			
-			console.log('imageLoad id===>>> '+e.target.dataset.id +'显示大小：');
-			console.log(this.windowWidth * 0.92, imgheight)
-			
-		    var imgheights = this.swiper_img_heights;
-			
-			console.log('sdhsdshjdsk',imgheights);
-			
-		    //把每一张图片的对应的高度记录到数组里  
-		    //imgheights[e.target.dataset.id] = uni.upx2px(imgheight);
-			imgheights[e.target.dataset.id] = imgheight;
-			
-			this.swiper_box_height = imgheight;
-	
-		    console.log('imageLoad id===>>> '+e.target.dataset.id +", imgheights====>>>", imgheights);		
-	
-		    this.swiper_img_heights = imgheights
-		   
-		  },
-		
+
 		
 		//首页导航图标、轮播图、平面广告跳转
 		toAdDetails:function(url){
@@ -2683,52 +2646,6 @@ page{position: relative;background-color: #fff;}
 	}
 }
 
-.swiper {
-	width: 100%;
-	margin-top: 10upx;
-	display: flex;
-	justify-content: center;
-	.swiper-box {
-		width: 92%;
-		// height: 30.7vw;
-		overflow: hidden;
-		border-radius: 15upx;
-		box-shadow: 0upx 8upx 25upx rgba(0, 0, 0, 0.2);
-		//兼容ios，微信小程序
-		position: relative;
-		z-index: 1;
-		swiper {
-			width: 100%;
-			// height: 30.7vw;
-			swiper-item {
-				image {
-					width: 100%;
-					height: auto;
-				}
-			}
-		}
-		.indicator {
-			position: absolute;
-			bottom: 20upx;
-			left: 20upx;
-			background-color: rgba(255, 255, 255, 0.4);
-			width: 150upx;
-			height: 5upx;
-			border-radius: 3upx;
-			overflow: hidden;
-			display: flex;
-			.dots {
-				width: 0upx;
-				background-color: rgba(255, 255, 255, 1);
-				transition: all 0.3s ease-out;
-				&.on {
-					width: (100%/3);
-				}
-			}
-		}
-	}
-}
-
 .category-list {
 	width: 96%;
 	margin-left: 2%;
@@ -3101,6 +3018,7 @@ page{position: relative;background-color: #fff;}
 	.weatherinfo_icon{
 		margin-right:20rpx;
 		width: 50rpx;
+		height:50rpx;
 	}
 	
 	/*地址卡片相关*/
