@@ -43,6 +43,7 @@
 				:imgUrls="flash_ad_list" 
 				:border_radius="5"
 				:swiper_width_percent_value="92"
+				:show_bottom_shadow="1"
 				@goto_url="toAdDetails"></swiperBanner>
 		</view>
 		

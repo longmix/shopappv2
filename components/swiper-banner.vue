@@ -3,7 +3,10 @@
 		<swiper @change="bindchange" indicator-dots="true" autoplay="true"
 						interval="5000" duration="500" 
 						class="swiper-box"
-						:style="{height:imgheights[current] + 'rpx', borderRadius:border_radius, width:swiper_width_percent_value+'%'}">
+						:style="{height:imgheights[current] + 'rpx', 
+							borderRadius:border_radius, 
+							width:swiper_width_percent_value+'%',
+							boxShadow:(show_bottom_shadow==0)?'0rpx':box_shadow_value}">
 					<block v-for="(item, index) in imgUrls" :key="index">
 					  <swiper-item>
 						<image :src="item.image"  :data-id='index' mode="widthFix"  
@@ -26,7 +29,8 @@
  * 
  * 2、border_radius  圆角的半径值，0为没有圆角
  * 3、swiper_width_percent_value  滚动组件的宽度，填写百分比，例如 90，代表宽度为90%。
- * 4、goto_url  点击图片后的跳转，传回的参数为跳转的路径
+ * 4、show_bottom_shadow  底部是否显示阴影  0  不显示  1 显示
+ * 5、goto_url  点击图片后的跳转，传回的参数为跳转的路径
  * 
  */	
 	export default {
@@ -36,13 +40,14 @@
 			imgUrls:{ type: Array, required: true },
 			
 			border_radius: { type: Number, default: 0 },
-			swiper_width_percent_value: { type: Number, default: 100 }
+			swiper_width_percent_value: { type: Number, default: 100 },
+			show_bottom_shadow: { type: Number, default: 0 },
 		},
 		data(){
 			return {
 				imgheights:[],
 				current:0,
-				
+				box_shadow_value: '0rpx 8rpx 25rpx rgba(0, 0, 0, 0.2)',
 				
 				
 			}
@@ -108,11 +113,11 @@
 <style>
 	.swiper-box {
 		width: 100%;
-		// height: 30.7vw;
+		/* height: 30.7vw;*/
 		overflow: hidden;
 		border-radius: 15rpx;
-		box-shadow: 0rpx 8rpx 25rpx rgba(0, 0, 0, 0.2);
-		//兼容ios，微信小程序
+		/*box-shadow: 0rpx 8rpx 25rpx rgba(0, 0, 0, 0.2);*/
+		/*兼容ios，微信小程序*/
 		position: relative;
 		z-index: 1;		
 		margin: 0 auto;
