@@ -662,14 +662,7 @@
 			toSetting() {
 				this.goto_user_function('/pages/user/setting/setting');
 			},
-
-			//点击商户头条进入列表
-			touTiaoList: function(e) {
-				console.log('点击商户头条进入列表');
-				uni.navigateTo({
-					url: '/pages/help/help?sellerid=' + this.abotapi.globalData.default_sellerid
-				})
-			},
+			//使用二维码扫码工具
 			toMyQR() {
 				// uni.navigateTo({
 				// 	url:'/pages/user/myQR/myQR'

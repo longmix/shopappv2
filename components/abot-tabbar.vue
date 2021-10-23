@@ -12,7 +12,7 @@
 /**
  * 使用方法
  * 
- * 【测试  http://localhost:8080/h5/abotds/#/pages/help_detail/help_detail?id=8066 】
+ * 【测试  http://localhost:8080/h5/abotds/#/pages/help/detail?id=8066 】
  * 
  * import abotTabBar from '@/components/abot-tabbar.vue'
 components:{

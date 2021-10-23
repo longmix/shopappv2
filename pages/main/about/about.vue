@@ -103,10 +103,10 @@
 		<view style="display: flex;justify-content: center;margin-bottom: 15rpx;align-items: center;">
 			
 			<navigator style="color: #0055FF;float: left;font-size: 30rpx;margin-right: 5rpx;" 
-				:url="'/pages/help_detail/help_detail?id='+ yinsi_cfg_shiyongxieyi_imgid +'&form_page=spec_cms_token&cms_token='+ yinsi_cfg_shiyongxieyi_cms_token +'&hidden_remark=1'">服务协议</navigator>
+				:url="'/pages/help/detail?id='+ yinsi_cfg_shiyongxieyi_imgid +'&form_page=spec_cms_token&cms_token='+ yinsi_cfg_shiyongxieyi_cms_token +'&hidden_remark=1'">服务协议</navigator>
 			|
 			<navigator style="color: #0055FF;float: left;font-size: 30rpx;margin-left: 5rpx;" 
-				:url="'/pages/help_detail/help_detail?id='+ yinsi_cfg_yinsizhengce_imgid +'&form_page=spec_cms_token&cms_token='+ yinsi_cfg_yinsizhengce_cms_token +'&hidden_remark=1'">隐私政策</navigator>
+				:url="'/pages/help/detail?id='+ yinsi_cfg_yinsizhengce_imgid +'&form_page=spec_cms_token&cms_token='+ yinsi_cfg_yinsizhengce_cms_token +'&hidden_remark=1'">隐私政策</navigator>
 		</view>
 		<!-- end -->
 		

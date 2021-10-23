@@ -275,9 +275,9 @@
 		 * @param {Object} options
 		 *  form_page  如果为 publish_list 代表从论坛的文章列表点击过来，默认为从商户头条点击过来
 		 * 
-		 * /page/help/help_detail?id=1234							//读取商户头条
-		 * /page/help/help_detail?id=1234&form_page=publish_list	//读取论坛文章
-		 * /page/help/help_detail?id=1234&form_page=spec_cms_token&cms_token=abcdefg		//读取指定文章，例如隐私政策等，具体的内容由id来标志
+		 * /page/help/list_detail?id=1234							//读取商户头条
+		 * /page/help/list_detail?id=1234&form_page=publish_list	//读取论坛文章
+		 * /page/help/list_detail?id=1234&form_page=spec_cms_token&cms_token=abcdefg		//读取指定文章，例如隐私政策等，具体的内容由id来标志
 		 * 
 		 */
 		onLoad: function (options) {
@@ -386,7 +386,7 @@
 			var that = this;
 			return {
 				title: '' + that.wz_text.title,
-				path: 'pages/help_detail/help_detail?id='+that.id,
+				path: 'pages/help/detail?id='+that.id,
 				imageUrl:that.wz_text.pic,
 				success: function(res) {
 				// 分享成功
@@ -589,9 +589,9 @@
 							}else if(res.confirm){
 								//确认
 								if(that.form_page && that.form_page == 'publish_list'){
-									var last_url = '/pages/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid + '&form_page=publish_list';
+									var last_url = '/pages/help/detail?id=' + that.id + '&sellerid=' + that.sellerid + '&form_page=publish_list';
 								}else{
-									var last_surl = '/pages/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid;
+									var last_surl = '/pages/help/detail?id=' + that.id + '&sellerid=' + that.sellerid;
 								}
 								
 								that.abotapi.goto_user_login(last_url, 'normal');
@@ -617,7 +617,7 @@
 			returnto_toutiao:function(){
 				var that = this;
 				uni.redirectTo({
-					url: '/pages/help/help?sellerid=' + that.sellerid	
+					url: '/pages/help/list?sellerid=' + that.sellerid	
 				})
 			},
 			returnto_index: function () {
@@ -657,9 +657,9 @@
 								return;
 							}else if(res.confirm){
 								if(that.form_page && that.form_page == 'publish_list'){
-									var last_url = '/pages/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid + '&form_page=publish_list';
+									var last_url = '/pages/help/detail?id=' + that.id + '&sellerid=' + that.sellerid + '&form_page=publish_list';
 								}else{
-									var last_url = '/pages/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid;
+									var last_url = '/pages/help/detail?id=' + that.id + '&sellerid=' + that.sellerid;
 								}
 								
 								that.abotapi.goto_user_login(last_url, 'normal');
@@ -910,9 +910,9 @@
 								return;
 							}else if(res.confirm){
 								if(that.form_page && that.form_page == 'publish_list'){
-									var last_url = '/pages/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid + '&form_page=publish_list';
+									var last_url = '/pages/help/detail?id=' + that.id + '&sellerid=' + that.sellerid + '&form_page=publish_list';
 								}else{
-									var last_url = '/pages/help_detail/help_detail?id=' + that.id + '&sellerid=' + that.sellerid;
+									var last_url = '/pages/help/detail?id=' + that.id + '&sellerid=' + that.sellerid;
 								}
 								
 								that.abotapi.goto_user_login(last_url, 'normal');
@@ -1043,7 +1043,7 @@
 			
 			
 			click_wxa_applet_share:function (){
-				var path = 'pages/help_detail/help_detail'+ this.options_str;
+				var path = 'pages/help/detail'+ this.options_str;
 				var account = this.abotapi.globalData.xiaochengxu_account;
 				abotsharejs.click_wxa_applet_share(this.share_href, this.share_titles, path, this.share_imageUrl, account);
 			},

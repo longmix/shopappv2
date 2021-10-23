@@ -632,7 +632,7 @@
 			touTiaoList: function(e) {
 				console.log('点击商户头条进入列表');
 				uni.navigateTo({
-					url: '../help/help?sellerid=' + this.abotapi.globalData.sellerid
+					url: '../help/list?sellerid=' + this.abotapi.globalData.sellerid
 
 				})
 			},
@@ -643,7 +643,7 @@
 
 				var id = e.currentTarget.dataset.id;
 				uni.navigateTo({
-					url: '../help_detail/help_detail?id=' + id + '&sellerid=' + this.abotapi.globalData.sellerid
+					url: '../help/detail?id=' + id + '&sellerid=' + this.abotapi.globalData.sellerid
 
 				})
 			},

@@ -7,32 +7,7 @@
 		"backgroundColorTop":"#ffffff",
 		"backgroundColorBottom":"#ffffff"
 	},
-	"tabBar": {
-		"color": "#333333",
-		"selectedColor": "#d81e06",
-		"borderStyle": "black",
-		"backgroundColor": "#ffffff",
-		"list": [{
-				"pagePath": "pages/index/index",
-				"iconPath": "static/img/tabBar/home.png",
-				"selectedIconPath": "static/img/tabBar/home-on.png",
-				"text": "首页"
-			},
-			/* 分包里面的资源不能被放在TabBar中。
-			{
-				"pagePath": "pages/nftcard/package_list",
-				"iconPath": "static/img/tabBar/category.png",
-				"selectedIconPath": "static/img/tabBar/category-on.png",
-				"text": "卡包"
-			},*/
-			{
-				"pagePath": "pages/tabbar/user",
-				"iconPath": "static/img/tabBar/user.png",
-				"selectedIconPath": "static/img/tabBar/user-on.png",
-				"text": "我的"
-			}
-		]
-	},
+	//默认不设置tabbar
 
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{	//主页
@@ -192,22 +167,8 @@
 					"softinputNavBar":"none"
 				}
 			}
-        }
-        ,{
-            "path" : "pages/help/help",
-            "style": {
-            	"navigationBarTitleText": "文章列表",
-            	"softinputNavBar":"none"
-            }
-        }
-        ,{
-            "path" : "pages/help_detail/help_detail",
-            "style": {
-				"enablePullDownRefresh": true,
-            	"navigationBarTitleText": "文章详情",
-            	"softinputNavBar":"none"
-            }
-        },		
+        },
+				
 		{
 		    "path" : "pages/shopList/shopList",
 		    "style": {
@@ -520,6 +481,31 @@
 			
 		},
 		//======= 会员登录相关的分包 Begin  ====
+		
+		//======= address相关的分包 Begin  ====
+		{
+			"root": "pages/help",
+			"pages": [
+				{
+				    "path" : "list",
+				    "style": {
+				    	"navigationBarTitleText": "文章列表",
+				    	"softinputNavBar":"none"
+				    }
+				},
+				{
+				    "path" : "detail",
+				    "style": {
+						"enablePullDownRefresh": true,
+				    	"navigationBarTitleText": "文章详情",
+				    	"softinputNavBar":"none"
+				    }
+				}
+			]
+			
+		},
+		//======= address相关的分包 Begin  ====
+		
 		//======= 个人中心相关的分包 Begin  ====
 		{
 			"root": "pages/user",
@@ -674,6 +660,52 @@
 			
 		},
 		//======= address相关的分包 Begin  ====
+		//======= wordpress相关的分包 Begin  ====
+		//======= 2021.10.23. 合并的意义不大，而且abotapi.js读取基本配置的接口都不一样，准备扩展help和help_detail来适应
+		/*
+		{
+			"root": "pages/wordpress",
+			"pages": [
+				{	//文章详情页
+				    "path" : "detail",
+				    "style" : {
+						"backgroundTextStyle":"dark",
+						"enablePullDownRefresh": true
+					}
+				},
+				{	//'关于'页面
+				    "path" : "page",
+				    "style" : {
+						"backgroundTextStyle":"dark",
+						"enablePullDownRefresh": true
+					}
+				},
+				{	//'专题'页面
+				    "path" : "topic",
+				    "style" : {
+						"backgroundTextStyle":"dark",
+						"enablePullDownRefresh": true
+					}
+				},
+				{	//文章列表页
+				    "path" : "list",
+				    "style" : {
+						"backgroundTextStyle":"dark",
+						"enablePullDownRefresh": true
+					}
+				},
+				{	//'关于'页面
+				    "path" : "about",
+				    "style" : {
+						"backgroundTextStyle":"dark",
+						"enablePullDownRefresh": true
+						
+					}
+				}
+			]
+			
+		},*/
+		//======= wordpress相关的分包 Begin  ====
 		//======= 视频直播相关的分包 Begin  ====
 		{
 			"root": "pages/live",

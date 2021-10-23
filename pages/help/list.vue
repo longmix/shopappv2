@@ -182,7 +182,7 @@
 				
 			  
 				uni.navigateTo({
-					url: '/pages/help_detail/help_detail?id=' + id + '&sellerid=' + that.sellerid
+					url: '/pages/help/detail?id=' + id + '&sellerid=' + that.sellerid
 				})
 			},
 			
