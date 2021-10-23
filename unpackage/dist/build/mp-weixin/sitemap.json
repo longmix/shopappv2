@@ -24,13 +24,13 @@
       "matching": "inclusive"
     },{
       "action": "allow",
-      "page": "pages/help_detail/help_detail",
+      "page": "pages/help/detail",
       "params": ["id", "sellerid"],
       "matching": "partial"
     },{
       "action": "allow",
-      "page": "pages/help/help",
-      "params": ["sellerid8888"],
+      "page": "pages/help/list",
+      "params": ["sellerid"],
       "matching": "exclusive"
     },
     {
