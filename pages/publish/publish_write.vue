@@ -198,7 +198,7 @@
 					
 					
 					<!-- <upimg-box></upimg-box> -->
-					<view class="fabu_xuzhi_block"> 
+					<view class="fabu_xuzhi_block" v-if="shop_option_data"> 
 					
 						<checkbox-group name='fabu_xuzhi' style="zoom:70%;margin-right: 8rpx;">
 								<checkbox value="1">
@@ -235,6 +235,9 @@
 	import biaofunDatetimePicker from '@/components/biaofun-datetime-picker/biaofun-datetime-picker.vue';
 	
 	export default {
+		components:{
+			biaofunDatetimePicker
+		},
 		
 		data:function(){
 			
@@ -399,7 +402,7 @@
 			
 			//2020.5.7. 加载图片平铺广告
 			this.abotapi.abotRequest({
-			  url: that.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/SelfformData/get_ad_list',
+			  url: that.abotapi.globalData.yanyubao_server_url + '/index.php/openapi/SelfformData/get_ad_list',
 			  data: {
 				sellerid: that.abotapi.get_sellerid(),
 			  },
@@ -456,7 +459,7 @@
 			//提交表单数据
 			formSubmit:function(e){
 				
-				if(e.detail.value.fabu_xuzhi[0] != 1){
+				if(e.detail.value.fabu_xuzhi && (e.detail.value.fabu_xuzhi[0] != 1) ){
 					uni.showToast({
 						title:'请阅读发布须知',
 					})
@@ -511,7 +514,7 @@
 				var post_data = {}
 				
 				if(that.form_type == 1){//延誉宝会员扩展属性
-					submit_url = that.abotapi.globalData.yanyubao_server_url+'index.php/Yanyubao/ShopAppWxa/user_set_ext_info_list';
+					submit_url = that.abotapi.globalData.yanyubao_server_url+'/index.php/Yanyubao/ShopAppWxa/user_set_ext_info_list';
 					
 					post_data = {
 						sellerid:that.abotapi.get_sellerid(),
@@ -525,7 +528,7 @@
 					}
 					console.log('858899',post_data);
 				}else if(that.form_type == 2){//微读客的万能表单
-					submit_url = that.abotapi.globalData.weiduke_server_url+'index.php/openapi/SelfformData/submit_data_url_selfform';
+					submit_url = that.abotapi.globalData.weiduke_server_url+'/index.php/openapi/SelfformData/submit_data_url_selfform';
 					
 					post_data = {
 						sellerid:that.abotapi.get_sellerid(),
@@ -545,7 +548,7 @@
 					}
 					console.log('858899',post_data);
 				}else if(that.form_type == 3){	//微读客的帖子
-					submit_url = that.abotapi.globalData.weiduke_server_url+'index.php/openapi/ArticleImgApi/add_article_item';
+					submit_url = that.abotapi.globalData.weiduke_server_url+'/index.php/openapi/ArticleImgApi/add_article_item';
 					
 					post_data = {
 						sellerid:that.abotapi.get_sellerid(),
@@ -664,10 +667,10 @@
 			},
 			getWriteFormInputList:function(){
 				
-				var shop_option_data = uni.getStorageSync('shop_option_data_' + this.abotapi.globalData.default_sellerid);
-				var json_shop_option_data = JSON.parse(shop_option_data);
-				
 				if(!this.cms_token){
+					var shop_option_data = uni.getStorageSync('shop_option_data_' + this.abotapi.globalData.default_sellerid);
+					var json_shop_option_data = JSON.parse(shop_option_data);
+					
 					this.cms_token = json_shop_option_data.option_list.cms_token;
 				}
 				
@@ -678,7 +681,7 @@
 				var url = '';
 				if(that.form_type == 1){
 					//会员扩展属性 延誉宝
-					url = that.abotapi.globalData.yanyubao_server_url+'openapi/SupplierData/supplier_input_list';
+					url = that.abotapi.globalData.yanyubao_server_url+'/openapi/SupplierData/supplier_input_list';
 					
 					var post_data = {
 						sellerid: that.abotapi.globalData.default_sellerid,
@@ -686,7 +689,7 @@
 					
 				}else if(that.form_type == 2){
 					//CMS万能表单  微读客
-					url = that.abotapi.globalData.weiduke_server_url+'openapi/SelfformData/get_selfform_option';
+					url = that.abotapi.globalData.weiduke_server_url+'/openapi/SelfformData/get_selfform_option';
 					
 					var post_data = {
 						selfform_type: 'selfform',
@@ -696,7 +699,7 @@
 					
 				}else if(that.form_type == 3){
 					//帖子属性   微读客
-					url = that.abotapi.globalData.weiduke_server_url+'openapi/SelfformData/get_selfform_option';
+					url = that.abotapi.globalData.weiduke_server_url+'/openapi/SelfformData/get_selfform_option';
 					
 					var post_data = {
 						selfform_type: 'img_classify',
@@ -822,7 +825,7 @@
 						console.log('chooseImageRes',tempFilePaths[2]);
 						for(let i = 0; i < tempFilePaths.length;i++){
 							uni.uploadFile({
-							    url: that.abotapi.globalData.yanyubao_server_url + 'openapi/ShopAppV2Data/upload_video_or_img', //仅为示例，非真实的接口地址
+							    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ShopAppV2Data/upload_video_or_img', //仅为示例，非真实的接口地址
 							    filePath: tempFilePaths[i],
 							    name: 'file',
 							    formData: {
@@ -864,7 +867,7 @@
 			    var region_Id = ++e.detail.value;
 			    
 			    that.abotapi.abotRequest({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=region_get',
+					url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=region_get',
 					data: {
 						region_id: ++region_Id,
 					},
@@ -998,7 +1001,7 @@
 						console.log('8888888888===>', that.abotapi.globalData.yanyubao_server_url);
 						
 						uni.uploadFile({
-							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=upload_image_file_by_user',
+							url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=upload_image_file_by_user',
 							filePath: filepath,
 							name: 'file',
 							formData: formData,
@@ -1112,10 +1115,7 @@
 		font-size: 24rpx;
 		color: #666;
 		align-items: center;
-		margin-top: 40rpx;
-		margin-bottom: 40rpx;
-		padding-left: 34rpx;
-		padding-top: 50rpx;
+		margin: 20rpx 34rpx 20rpx 50rpx;
 		clear: both;
 		
 	}
@@ -1125,7 +1125,7 @@
 		margin-left: 5%;
 		border-radius: 5px;
 		background-color: #fff;
-		margin-bottom: 20rpx;
+		margin: 20rpx auto;
 		height: 80rpx;
 		line-height: 80rpx;
 		background-color: #07c160;

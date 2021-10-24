@@ -1532,7 +1532,7 @@ module.exports = {
 			
 			
 		}
-		else if (url == '/pages/help_detail/help_detail') {
+		else if (url == '/pages/help/detail') {
 			var browser_cache_id = uni.getStorageSync('browser_cache_id');
 			if (browser_cache_id) {
 				uni.navigateTo({

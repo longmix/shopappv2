@@ -537,7 +537,7 @@
 							
 							// #ifdef MP-WEIXIN
 								post_data.xiaochengxu_appid = that.abotapi.globalData.xiaochengxu_appid,
-								post_data.xiaochengxu_openid = that.abotapi.get_current_openid('userid_openid_' + request_res.data.userid);
+								post_data.xiaochengxu_openid = that.abotapi.get_current_openid();
 							// #endif
 							
 							
