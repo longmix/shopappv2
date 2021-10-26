@@ -1,0 +1,90 @@
+{
+  "extEnable": true,
+  "extAppid": "wxe6565fced2f812da",
+  "directCommit": true,
+  "ext": {
+    "name": "wechat",
+    "attr": {
+      "host": "open.weixin.qq.com",
+      "users": [
+        "user_1",
+        "user_2"
+      ]
+    },
+    "xiaochengxu_appid": "wxe6565fced2f812da",
+    "force_sellerid_flag": 0,
+    "force_sellerid_value": "pQNNmSkaq",
+    "shop_name": "延誉电商",
+    "version_number": "Ver 2.0.1 Build 290",
+    "navigationBarBackgroundColor_fixed": 0,
+    "navigationBar_font_color":"#ffffff",
+    "navigationBar_bg_color":"#f37404",
+    "kefu_telephone": "",
+    "kefu_qq": "",
+    "kefu_website": "",
+    "kefu_gongzhonghao": "",
+    "default_copyright_text": "延誉电商 - 延誉宝 @ 版权所有"
+  },
+  "extPages": {
+    "pages/publish/publish_list": {
+      "navigationBarTitleText": "分类信息"
+    },
+    "pages/tabbar/user": {
+      "navigationBarTitleText": "个人中心"
+    }
+  },
+  "tabBar": {
+    "color": "#515151",
+    "selectedColor": "#d81e06",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "static/img/tabBar/home.png",
+        "selectedIconPath": "static/img/tabBar/home-on.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/publish/publish_list",
+        "iconPath": "static/img/tabBar/imglist.png",
+        "selectedIconPath": "static/img/tabBar/imglist-on.png",
+        "text": "创业与开业"
+      },
+      {
+        "pagePath": "pages/shopList/shopList",
+        "iconPath": "static/img/tabBar/category.png",
+        "selectedIconPath": "static/img/tabBar/category-on.png",
+        "text": "城市合伙人"
+      },
+      {
+        "pagePath": "pages/tabbar/quanquan",
+        "iconPath": "static/img/tabBar/category.png",
+        "selectedIconPath": "static/img/tabBar/category-on.png",
+        "text": "圈圈和文件"
+      },
+      {
+        "pagePath": "pages/tabbar/user",
+        "iconPath": "static/img/tabBar/user.png",
+        "selectedIconPath": "static/img/tabBar/user-on.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#f37404",
+    "navigationBarTitleText": "延誉电商",
+    "navigationBarTextStyle": "white"
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "downloadFile": 10000
+  },
+  "navigateToMiniProgramAppIdList": [
+    "wx00d1e2843c3b3f77",
+    "wx5ade221daf329103",
+    "wx424d6888ee0403e9",
+    "wxa36bafa53080cac8"
+  ]
+}
