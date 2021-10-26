@@ -13,7 +13,10 @@
 								{{order_address_detail.area_province}}{{order_address_detail.area_city}}{{order_address_detail.area_district}}{{order_address_detail.address}}
 							</view>
 						</view>
-						<image class="x_rights" src="../../static/img/x_right.png"></image>
+						<view>
+							<image class="x_rights" src="../../static/img/x_right.png"></image>
+						</view>
+						
 					</view>
 				</view>
 			</view>
@@ -21,8 +24,10 @@
 				<view @click="goAddress()">
 					<view class="df">
 						<view class="df_1 c6">添加收货地址</view>
-
-						<image class="x_rights" src="../../static/img/x_right.png"></image>
+						<view>
+							<image class="x_rights" src="../../static/img/x_right.png"></image>
+						</view>
+						
 					</view>
 				</view>
 			</view>
@@ -2204,8 +2209,18 @@ extraData = 'xxxxxxxxxxxxxxx'
 			user_coupon_dikou_handle(price, ucid){
 				var that = this;
 				
-				console.log('准备使用优惠券：', price);
-				console.log('准备使用优惠券：', ucid);
+				if(isNaN(price)){
+					uni.showModal({
+						title:'错误',
+						content:'优惠券金额异常',
+						showCancel:false
+					})
+					
+					return;
+				}
+				
+				console.log('准备使用优惠券，价格：', price);
+				console.log('准备使用优惠券，ID：', ucid);
 				
 				//如果之前选过优惠券，先恢复之前的价格
 				if(that.youhui_diko_price > 0){
@@ -2538,7 +2553,8 @@ extraData = 'xxxxxxxxxxxxxxx'
 	}
 	.x_rights {
 		width:32rpx;
-		height: 116rpx;
+		height: 32rpx;
+		margin-top: 40rpx;
 	}
 	
 	
