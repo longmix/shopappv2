@@ -46,7 +46,7 @@
 		<radio-group class="radio-group">
 			<view class="address" v-for="(item,index) in address" :key="index">
 				<view class="address-icon" @tap="setDefault($event)" :data-id="item.addressid">
-					<radio :checked="item.is_default==1?true:false" value="index" />
+					<radio :checked="item.is_default==1?true:false" :value="index" />
 				</view>
 
 				<view class="address-detail">
@@ -64,7 +64,7 @@
 						</view>
 						<view style="overflow: hidden; display: flex;align-items: center;">
 							<view style="margin-right: 120rpx;color: #868686;font-size: 35rpx;">
-								<text :hidden_address="item.is_default==0?false:true" @tap="setDefault" :data-id="item.addressid">设置默认</text>
+								<text :hidden="item.is_default==0?false:true" @tap="setDefault" :data-id="item.addressid">设置默认</text>
 							</view>
 							<view class="address_add" :data-id="item.addressid" @tap="saveAddress($event)">
 								<image style="width: 40rpx;" mode="widthFix" src="../../../static/img/address.png"></image>
@@ -131,7 +131,10 @@
 				action: '',
 				action_pay: '',
 				
-				wxa_shop_nav_bg_color:'#000000'
+				wxa_shop_nav_bg_color:'#000000',
+				
+				
+				isRadioGroupRefresh:true,
 			};
 		},
 		onShow() {
@@ -238,8 +241,8 @@
 					}
 
 					that.address = address
-					console.log('aaadddddd====', that.address);
-
+					console.log('aaadddddd====>>>', that.address);
+					
 					if (cartId) {
 						that.cartId = cartId
 					}
@@ -260,6 +263,13 @@
 			})
 		},
 		methods: {
+			
+			reload_radio_group() {
+				this.isRadioGroupRefresh = false
+				this.$nextTick(() => {
+					this.isRadioGroupRefresh = true
+				})
+			},
 
 			get_address_list: function() {
 				var that = this;
@@ -438,6 +448,10 @@
 						var amount = that.amount;
 						var productid = that.productid;
 						var action_pay = that.action_pay;
+						
+						
+						
+						
 
 						console.log('productid=================11', productid)
 						console.log('amount=================11', amount)
@@ -468,12 +482,14 @@
 								});
 							}
 						} else {
-							uni.showToast({
-								title: '设置成功！',
-							});
-							uni.redirectTo({
-								url: '/pages/address/user-address/user-address',
-							});
+							
+							uni.showModal({
+								title: '提示',
+								content: '设置默认成功！',
+								
+							})
+						
+							that.DataonLoad();
 						}
 
 					},
@@ -512,7 +528,7 @@
 
 						that.address = address
 
-
+						console.log('4444444444444====>>>',that.address)
 					},
 					fail: function() {
 						// fail

@@ -53,7 +53,7 @@
 	
 	
 			<view class="p_all bg_white mt10 font_14" v-if="orderData.realname">
-				<view class="df" v-if="orderData.order_option && orderData.order_option.xianmai_order_type == 1">
+				<view class="df">
 					<view class="df_1 c6">
 					<view class="l_h20" style="font-weight: bold;color: #333;">{{orderData.realname}}    <text style="margin-left: 10rpx;">{{orderData.mobile}}</text> </view>
 					<view class="l_h20 mt5" style="font-size: 25rpx;">地址：<text v-if="!wxa_order_hide_sanji_address">{{orderData.address01}}</text>{{orderData.address02}}</view>
