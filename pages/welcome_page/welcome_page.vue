@@ -94,6 +94,7 @@ import uParse from '@/components/gaoyia-parse/parse.vue'
 	import parseHtml from "../../common/html-parser.js"
 // #endif
 
+import md5 from '../../common/md5.js'
 
 export default {
 	components:{
@@ -128,21 +129,15 @@ export default {
 			welcome_page_bottom_icon_size:'40',
 			
 			current_params_str:'',
-			wxa_share_img:''
+			wxa_share_img:'',
+			
+			//2021.10.28. 增加缓存机制
+			http_data_cache_id:null,
+			current_options:null,
+			
+			
 		};
-	},
-	onPageScroll: function (e) {
-		
-	},
-	//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
-	onPullDownRefresh: function () {
-		
-	},
-	
-	//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
-	onReachBottom: function () {
-		
-	},
+	},	
 	onLoad: function (options) {
 		
 		console.log('welcome welcome welcome ====>>123', options);
@@ -197,59 +192,58 @@ export default {
 			var parentid = url_data[1];
 			var platform = url_data[2];
 
-			this.abotapi.set_current_parentid(parentid);
-
-			if(platform == 'cms'){
-				this.__get_img_from_weiduke(imgid, this);
-			}
-			else if(platform == 'pic'){
-				this.__get_pic_from_yanyubao(imgid, this);
-				this.setData({content_type:'pic'});
-			}
-		}
-		else if(options.data_url){
-		  //2、 指定网址
-		  var parentid = options.parentid;
-		  if(parentid){
-			this.abotapi.set_current_parentid(parentid);
-		  }
-	
-		  this.__get_img_from_data_url(decodeURIComponent(options.data_url), this);
-	
-		}
-		else{
-			
-			console.log('options===============>>>>>', options);
-			
-		  //3、其他方式：直接传参
-		  var imgid = options.imgid;
-		  var parentid = options.parentid;
-		  var platform = options.platform;
-			
-		  if(parentid){
-			this.abotapi.set_current_parentid(parentid);
-		  }
-			
-		  if(!platform){
-			platform = 'cms';
-		  }
-			
-		  if(platform == 'cms'){
-			if(!imgid){
-			  this.get_default_imgid = true;
+			if(parentid){
+				this.abotapi.set_current_parentid(parentid);
 			}
 			
-			this.__get_img_from_weiduke(imgid, this);
-		  }
-		  else if(platform == 'pic'){
-			this.__get_pic_from_yanyubao(imgid, this);
-			this.content_type = 'pic';
-		  }
+			options.imgid = imgid;
+			options.parentid = parentid;
+			options.platform = platform;
+			
 		}
 		
+		this.current_options = options;
+		
+		this.__load_welcome_page_date(options);
 		
 	},
 	onShow:function(){
+		
+	},
+	onPageScroll: function (e) {
+		
+	},
+	//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
+	onPullDownRefresh: function () {
+		var that = this;
+		
+		//如果没有缓存ID，则直接刷新
+		if(!that.http_data_cache_id){
+			
+			that.__load_welcome_page_date(that.current_options);
+			
+			uni.stopPullDownRefresh();
+			return;
+		}
+		
+		//如果有缓存，则删除后再刷新
+		uni.removeStorage({
+			key: 'welcome_page_data_cache_' + that.http_data_cache_id,
+			success: (res) => {
+				that.__load_welcome_page_date(that.current_options);
+				
+				uni.stopPullDownRefresh();
+			},
+			fail: () => {
+				uni.stopPullDownRefresh();
+			}
+		})
+		
+		
+	},
+	
+	//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
+	onReachBottom: function () {
 		
 	},
 	onShareAppMessage: function () {
@@ -294,6 +288,45 @@ export default {
 	
 	
 	methods: {
+		__load_welcome_page_date:function(options){
+			
+			var parentid = options.parentid;
+			
+			if(parentid){
+				this.abotapi.set_current_parentid(parentid);
+			}
+			
+			if(options.data_url){
+				//2、 指定网址
+				this.__get_img_from_data_url(decodeURIComponent(options.data_url), this);
+			
+				return;
+			}
+			
+			//3、其他方式：直接传参
+			var imgid = options.imgid;
+			var platform = options.platform;
+			
+			if(!platform){
+				platform = 'cms';
+			}
+						
+			if(platform == 'cms'){
+				if(!imgid){
+				  this.get_default_imgid = true;
+				}
+				
+				this.__get_img_from_weiduke(imgid, this);
+			}
+			else if(platform == 'pic'){
+				this.__get_pic_from_yanyubao(imgid, this);
+				
+				//this.setData({content_type:'pic'});
+				
+				this.content_type = 'pic';
+			}
+			
+		},
 		__handle_option_list:function(that, option_list){
 		    that.abotapi.getColor();
 			
@@ -398,12 +431,75 @@ export default {
 		    }
 		
 		  },
+		  
+		  __handle_http_response_data:function(http_data){
+			  
+			var that = this;
+			
+			//如果有视频文件，则渲染视频
+			if (http_data.video_url) {
+			  that.video_url = http_data.video_url;
+			  that.video_cover_url = http_data.video_cover_url;
+			  
+				
+			  if (http_data.video_autoplay) {
+				that.video_autoplay = true;
+			  }
+			}
+			
+			
+			//如果类型为图片，则简单渲染即可
+			if(that.content_type == 'pic'){
+				that.content_pic_image = res.data.data.image;
+				that.content_pic_url = res.data.data.url;
+				
+				return;
+			}
+			  
+			//如果类型为文章（自定义数据类型也必须符合文章的数据格式），则需要具体渲染  
+			uni.setNavigationBarTitle({
+				title: http_data.title
+			})
+			  
+			that.current_title = http_data.title;
+			  		          
+			that.index_rich_html_content = http_data.info;
+			
+			//WxParse.wxParse('content', 'html', http_data.info, that, 15);
+			
+// #ifdef MP-ALIPAY		
+					console.log('that.index_rich_html_content====>>>>', that.index_rich_html_content);
+					
+					const filter = that.$options.filters["formatRichText"];
+					that.index_rich_html_content = filter(that.index_rich_html_content);
+					
+					console.log('that.index_rich_html_content====>>>>', that.index_rich_html_content);
+					
+					let data001 = that.index_rich_html_content;
+					let newArr = [];
+					let arr = parseHtml(data001);
+					arr.forEach((item, index)=>{
+						newArr.push(item);
+					});
+					
+					//console.log('arr arr arr====>>>>', arr);
+					//console.log('newArr newArr newArr====>>>>', newArr);
+					
+					that.index_rich_html_content = newArr;
+// #endif				
+						
+			
+			
+	
+			
+			  
+			  
+		  },
 		
 		  __get_img_from_weiduke: function (imgid, that){
-		
-		    uni.showLoading({
-		      title: '数据加载中……',
-		    });
+			  
+			var that = this;
+		    
 		
 		    var url = this.abotapi.globalData.weiduke_server_url + '/index.php/openapi/ArticleImgApi/article_detail.shtml';
 		    var data = {
@@ -411,7 +507,23 @@ export default {
 		      id: imgid,
 		      openid: this.abotapi.get_current_openid()
 		    };
-		
+
+			
+			that.http_data_cache_id = md5(url + JSON.stringify(data));
+			
+			console.log('md5 ===>>> ', that.http_data_cache_id);
+			
+			var http_data = uni.getStorageSync('welcome_page_data_cache_' + that.http_data_cache_id);
+			if(http_data){
+				that.__handle_http_response_data(http_data);
+				
+				return;
+			}
+
+			
+			uni.showLoading({
+			  title: '数据加载中……',
+			});
 		
 		    var cbSuccess = function (res) {
 		      uni.hideLoading();
@@ -419,49 +531,15 @@ export default {
 		      if (res.data.code == 1) {
 		        //var wz_keyword = res.data.data.keyword;
 		        
-		
-		        uni.setNavigationBarTitle({
-		          title: res.data.data.title
-		        })
-		        that.current_title = res.data.data.title;
-		          
-				that.index_rich_html_content = res.data.data.info;
-		        
-		        //WxParse.wxParse('content', 'html', res.data.data.info, that, 15);
-				
-// #ifdef MP-ALIPAY		
-						console.log('that.index_rich_html_content====>>>>', that.index_rich_html_content);
-						
-						const filter = that.$options.filters["formatRichText"];
-						that.index_rich_html_content = filter(that.index_rich_html_content);
-						
-						console.log('that.index_rich_html_content====>>>>', that.index_rich_html_content);
-						
-						let data001 = that.index_rich_html_content;
-						let newArr = [];
-						let arr = parseHtml(data001);
-						arr.forEach((item, index)=>{
-							newArr.push(item);
-						});
-						
-						//console.log('arr arr arr====>>>>', arr);
-						//console.log('newArr newArr newArr====>>>>', newArr);
-						
-						that.index_rich_html_content = newArr;
-// #endif				
-							
+				that.__handle_http_response_data(res.data.data);
 				
 				
-		
-		        if (res.data.data.video_url) {
-		          that.video_url = res.data.data.video_url;
-				  that.video_cover_url = res.data.data.video_cover_url;
-				  
-		
-		          if (res.video_autoplay) {
-		            that.video_autoplay = true;
-		          }
-		        }
+				uni.setStorage({
+					key: 'welcome_page_data_cache_' + that.http_data_cache_id,
+					data: res.data.data
+				})
+				
+
 		      }
 		    };
 		    var cbError = function (res) {
@@ -473,40 +551,53 @@ export default {
 		  },
 		
 		  __get_pic_from_yanyubao:function(imgid, that){
-		    uni.showLoading({
-		      title: '数据加载中……',
-		    });
+		    
 		
 		    var url = this.abotapi.globalData.yanyubao_server_url + '/index.php/openapi/SupplierData/get_swiper_pic_url';
 		    var data = {
 		      sellerid: this.abotapi.get_sellerid(),
 		      swiperid:imgid
 		    };
+			
+			
+			
 		
 		    var userInfo = this.abotapi.get_user_info();
 		    if(userInfo){
 		      data.userid = userInfo.userid;
 		      data.checkstr = userInfo.checkstr;
 		    }
+			
+			//读取缓存
+			that.http_data_cache_id = md5(url + JSON.stringify(data));
+			
+			console.log('md5 ===>>> ', that.http_data_cache_id);
+			
+			var http_data = uni.getStorageSync('welcome_page_data_cache_' + that.http_data_cache_id);
+			if(http_data){
+				that.__handle_http_response_data(http_data);
+				
+				return;
+			}
+			
+			
+			uni.showLoading({
+			  title: '数据加载中……',
+			});
 		
 		    var cbSuccess = function (res) {
 		      uni.hideLoading();
 		
 		      if (res.data.code == 1) {
-		        
-				that.content_pic_image = res.data.data.image;
-				that.content_pic_url = res.data.data.url;
+				  
+				  that.__handle_http_response_data(res.data.data);
+				  
+				  
+				  uni.setStorage({
+				  	key: 'welcome_page_data_cache_' + that.http_data_cache_id,
+				  	data: res.data.data
+				  })
 				
-		        if (res.data.data.video_url) {
-				  that.video_url = res.data.data.video_url;
-				  that.video_cover_url = res.data.data.video_cover_url;
-		          
-		
-		          if (res.video_autoplay) {
-					  that.video_autoplay = true;
-		            
-		          }
-		        }
 		
 		      }
 		    };
@@ -523,58 +614,42 @@ export default {
 		  },
 		  __get_img_from_data_url: function (data_url, that){
 		
-		    uni.showLoading({
-		      title: '数据加载中……',
-		    });
-		
 		    var data = {
 		      openid: this.abotapi.get_current_openid()
 		    };
 		
+			//读取缓存
+			that.http_data_cache_id = md5(data_url + JSON.stringify(data));
+			
+			console.log('md5 ===>>> ', that.http_data_cache_id);
+			
+			var http_data = uni.getStorageSync('welcome_page_data_cache_' + that.http_data_cache_id);
+			if(http_data){
+				that.__handle_http_response_data(http_data);
+				
+				return;
+			}
 		
 		
+			uni.showLoading({
+			  title: '数据加载中……',
+			});
+			
 		    var cbSuccess = function (res) {
 		      uni.hideLoading();
 		
 		      if (res.data.code == 1) {
 		        //var wz_keyword = res.data.data.keyword;
-		       
-		
-		        uni.setNavigationBarTitle({
-		          title: res.data.data.title
-		        })
-		        that.current_title = res.data.data.title;
-		
-				that.index_rich_html_content = res.data.data.info;
 				
-// #ifdef MP-ALIPAY		
-						
-						const filter = that.$options.filters["formatRichText"];
-						that.index_rich_html_content = filter(that.index_rich_html_content);
-						
-						let data001 = that.index_rich_html_content;
-						let newArr = [];
-						let arr = parseHtml(data001);
-						arr.forEach((item, index)=>{
-							newArr.push(item);
-						});
-						
-						//console.log('arr arr arr====>>>>', arr);
-						//console.log('newArr newArr newArr====>>>>', newArr);
-						
-						that.index_rich_html_content = newArr;
-
-// #endif				
 				
-		
-		        if(res.data.data.video_url){
-					that.video_url = res.data.data.video_url;
-					that.video_cover_url = res.data.data.video_cover_url;
-					
-		          if(res.video_autoplay){
-					  that.video_autoplay = true;
-		          }
-		        }
+				that.__handle_http_response_data(res.data.data);
+				
+				
+				uni.setStorage({
+					key: 'welcome_page_data_cache_' + that.http_data_cache_id,
+					data: res.data.data
+				})
+				
 		      }
 		    };
 		    var cbError = function (res) {

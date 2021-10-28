@@ -259,7 +259,9 @@
         },
 		{
 		    "path" : "pages/welcome_page/welcome_page",
-		    "style" : {}
+		    "style" : {
+				"enablePullDownRefresh": true
+			}
 		},
 		{
 		    "path" : "cms/discover/discover",

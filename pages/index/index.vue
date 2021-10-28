@@ -739,10 +739,18 @@ export default {
 		that.abotapi.get_shop_info_from_server(that.callback_func_for_shop_info);
 		that.abotapi.get_xianmaishang_setting_list_remove();
 		
+		if(that.show_rich_html_in_index == 1){
+			uni.removeStorageSync('index_rich_html_content' + that.abotapi.get_sellerid())
+		}
+		
+		
+		uni.stopPullDownRefresh();
+		
+		
 		setTimeout(function() {
 			console.log('timeout===>>>stopPullDownRefresh===>>>hideToast');
 			
-			uni.stopPullDownRefresh();
+			
 			
 			uni.hideToast();
 			//uni.hideLoading();
@@ -1249,47 +1257,11 @@ export default {
 				
 				if(that.index_rich_html_type == 'static'){
 					
-					that.index_rich_html_content = cb_params.option_list.index_rich_html_content;
+					//that.index_rich_html_content = cb_params.option_list.index_rich_html_content;
 					
-					if(!that.index_rich_html_content){
-						that.index_rich_html_content = '<h1></h1>';
-					}
 					
-					// 2021.3.1. 不需要使用formatRichText过滤，具体的css由html代码控制。
-					
-					const filter = that.$options.filters["formatRichText"];
-					that.index_rich_html_content = filter(that.index_rich_html_content);
-					
-					//console.log('1111111111====>>>' + that.index_rich_html_content);
-					
-					//const filter = that.$options.filters["formatRichText"];
-					//that.index_rich_html_content = filter(that.index_rich_html_content);
-					
-					//console.log('222222222====>>>' + that.index_rich_html_content);
-					
-					// #ifdef H5
-						
-					// #endif
-					
-					// #ifdef MP-ALIPAY
-						console.log('that.index_rich_html_content====>>>>支付宝小程序');
-						
-						
-						console.log('that.index_rich_html_content====>>>>', that.index_rich_html_content);
-						
-						let data001 = that.index_rich_html_content;
-						let newArr = [];
-						let arr = parseHtml(data001);
-						arr.forEach((item, index)=>{
-							newArr.push(item);
-						});
-						
-						//console.log('arr arr arr====>>>>', arr);
-						//console.log('newArr newArr newArr====>>>>', newArr);
-						
-						that.index_rich_html_content = newArr;
-					// #endif
-					
+					that.__index_rich_html_content_handle(cb_params.option_list.index_rich_html_content);
+
 				}
 				else if(that.index_rich_html_type == 'https'){
 					
@@ -2353,6 +2325,49 @@ export default {
 			
 		},
 		
+		__index_rich_html_content_handle(html_str){
+			var that = this;
+			
+			that.index_rich_html_content = html_str;			
+			
+			if(!that.index_rich_html_content){
+				that.index_rich_html_content = '<h1></h1>';
+			}
+			
+			console.log('that.index_rich_html_content====>>>>', that.index_rich_html_content);
+			
+			// 2021.3.1. 不需要使用formatRichText过滤，具体的css由html代码控制。			
+			const filter = that.$options.filters["formatRichText"];
+			that.index_rich_html_content = filter(that.index_rich_html_content);
+			
+			console.log('that.index_rich_html_content====>>>> formatRichText之后 ===>>>', that.index_rich_html_content);
+			
+			
+			// #ifdef H5
+			//	const filter = that.$options.filters["formatRichText"];
+			//	that.index_rich_html_content = filter(that.index_rich_html_content);
+			// #endif
+			
+			
+			// #ifdef MP-ALIPAY
+				console.log('that.index_rich_html_content====>>>>支付宝小程序');
+				
+				let data001 = that.index_rich_html_content;
+				let newArr = [];
+				let arr = parseHtml(data001);
+				arr.forEach((item, index)=>{
+					newArr.push(item);
+				});
+				
+				//console.log('arr arr arr====>>>>', arr);
+				//console.log('newArr newArr newArr====>>>>', newArr);
+				
+				that.index_rich_html_content = newArr;
+			// #endif
+						
+			
+		},
+		
 		//富媒体请求后台设置的动态网址获取参数。
 		__index_rich_html_get_content:function(rich_html_url){
 			//判断是否是http开头的？
@@ -2388,6 +2403,17 @@ export default {
 			
 			console.log('888888888url=',rich_html_url);
 			
+			//读取缓存
+			var detail_data = uni.getStorageSync('index_rich_html_content' + that.abotapi.get_sellerid())
+			
+			if(detail_data){
+				that.__index_rich_html_content_handle(detail_data);
+				
+				return;
+			}
+			
+			
+			
 			that.abotapi.abotRequest({
 			    url: rich_html_url,
 				method:'GET',
@@ -2398,41 +2424,12 @@ export default {
 					console.log('aaaa111==获取富媒体内容成功（HTML代码）');
 					///console.log('aaaa111==', res.data);
 					
-					that.index_rich_html_content = res.data;
+					uni.setStorage({
+						key: 'index_rich_html_content' + that.abotapi.get_sellerid(),
+						data: res.data
+					})
 					
-					if(!that.index_rich_html_content){
-						that.index_rich_html_content = '<h1></h1>';
-					}
-					
-					console.log('that.index_rich_html_content====>>>>', that.index_rich_html_content);
-					
-					const filter = that.$options.filters["formatRichText"];
-					that.index_rich_html_content = filter(that.index_rich_html_content);
-					
-					console.log('that.index_rich_html_content====>>>> formatRichText之后 ===>>>', that.index_rich_html_content);
-					
-					
-					// #ifdef H5
-					//	const filter = that.$options.filters["formatRichText"];
-					//	that.index_rich_html_content = filter(that.index_rich_html_content);
-					// #endif
-					
-					// #ifdef MP-ALIPAY
-						
-						let data001 = that.index_rich_html_content;
-						let newArr = [];
-						let arr = parseHtml(data001);
-						arr.forEach((item, index)=>{
-							newArr.push(item);
-						});
-						
-						//console.log('arr arr arr====>>>>', arr);
-						//console.log('newArr newArr newArr====>>>>', newArr);
-						
-						that.index_rich_html_content = newArr;
-					// #endif
-					
-					
+					that.__index_rich_html_content_handle(res.data);
 					
 					
 					
