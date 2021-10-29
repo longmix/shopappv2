@@ -61,6 +61,66 @@
 				</view>
 			</view>
 			
+			
+			
+			<view class="borderb bordert font_14" v-if="is_shop_admin == 1">
+				<view v-if="orderData.status == '1' || orderData.status == '2' ">
+				<view class="manage_express" >管理员选项</view>
+				
+					<view class="manage_express" style="display: flex;">快递公司
+						<input type="text" placeholder="请填写快递公司" 
+						  @input="get_express_company" 
+					  	  @focus = "is_show_express_company = true"
+						  @blur = "is_show_express_company = false"
+						  :value="kuaidi" class="express_input"
+						  />
+					</view>	
+					<view class="kuaidi_list" :style="is_show_express_company ? 'position:absolute' : 'display:none'">
+						<view  data-name="EMS" @tap="obtain_value" class="show_kuaidi">EMS</view>
+						<view  data-name="申通" @tap="obtain_value" class="show_kuaidi">申通</view>
+						<view  data-name="圆通" @tap="obtain_value" class="show_kuaidi">圆通</view>
+						<view  data-name="中通" @tap="obtain_value" class="show_kuaidi">中通</view>
+						<view  data-name="顺丰" @tap="obtain_value" class="show_kuaidi">顺丰</view>
+						<view  data-name="韵达" @tap="obtain_value" class="show_kuaidi">韵达</view>
+						<view  data-name="京东" @tap="obtain_value" class="show_kuaidi">京东</view>
+					</view>
+					
+						
+				
+					<!-- <view class="uni-padding-wrap">
+						<view class="uni-title">dfgdfg</view>
+					</view>
+					<picker-view :indicator-style="indicatorStyle" :value="expressIndex" @change="bindChange" class="picker-view">
+						<picker-view-column>
+							<view class="item" v-for="(item, index) in express_company" :key="index">{{item}}</view>
+						</picker-view-column>
+						
+					</picker-view> -->
+						
+					
+					<view class="manage_express" style="display: flex;">快递单号
+					<input type="text" class="express_input" 
+					  placeholder="请填写快递单号"
+					  :value="scan_kuaidi"
+					  @input="get_courier_number"/>
+					  <view class="erweima" @tap="toMyQR">
+					  	<view class="icon scan_qr"></view>
+					  </view>
+					</view>
+					<view @tap="deliver_goods()" class="button_fahuo" >发货</view>
+					
+				</view>
+				
+				
+			</view>
+			
+			
+			
+			
+			
+			
+			
+			
 		<!-- 功能按钮 -->
 		
 			<view style="overflow: hidden;margin-right: 3%;">
@@ -302,8 +362,18 @@
 				current_orderid:0,
 				
 				//2021.8.18. 管理员订单
-				is_shop_admin:0
+				is_shop_admin:0,
+	
+	
+	
+				//2021.10.29发货
+				courier_number_value:'',
+				express_company_value:'',
+				express_company_list:'',
 				
+				is_show_express_company:false,
+				kuaidi:'',
+				scan_kuaidi:'',
 			}
 		},
 		
@@ -450,6 +520,114 @@
 			        }
 			      });
 			    },
+				
+				
+				get_express_company:function(e){
+					
+					this.express_company_value = e.detail.value;
+					console.log('express_company_value======>',this.express_company_value)
+					//this.is_show_express_company = !this.is_show_express_company
+				},
+				
+				get_courier_number:function(e){
+					
+					this.courier_number_value = e.detail.value;
+					console.log('courier_number_value======>',this.courier_number_value)
+				},
+				
+				obtain_value:function(e){
+					
+					this.kuaidi = e.currentTarget.dataset.name;
+					this.express_company_value = this.kuaidi;
+					console.log('1111111111111111111111111',this.kuaidi)
+					
+				},
+				
+			
+				deliver_goods:function(){
+					var that = this;
+					
+					var userInfo = this.abotapi.get_user_info();
+					if ((!userInfo) || (!userInfo.userid)) {
+						uni.redirectTo({
+							url: '/pages/login/login',
+						})
+						return;
+					};
+					
+					var post_data = {
+						sellerid: that.abotapi.globalData.default_sellerid,
+						userid: userInfo.userid,
+						checkstr : userInfo.checkstr,
+						status : that.orderData.status,
+						delivery_company : that.express_company_value,
+						delivery_no : that.courier_number_value,
+						orderid: that.current_orderid,
+					};
+					
+					
+					
+					that.abotapi.abotRequest({
+					    url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_admin_fahuo',
+					    data: post_data,
+					    success: function (res) {
+							
+							if(res.data.code != 1){
+								uni.showToast({
+									title:'发货失败！',
+									duration: 2000,
+								});
+								
+								return;
+							}
+							
+							
+					    },
+					    fail: function (e) {
+							uni.showToast({
+								title: '网络异常！',
+								duration: 2000
+							});
+					    },
+					});
+					
+					
+					
+				},
+				
+				toMyQR() {
+				
+					var that = this;
+				
+					var userInfo = this.abotapi.get_user_info();
+					if ((!userInfo) || (!userInfo.userid)) {
+						uni.redirectTo({
+							url: '/pages/login/login',
+						})
+						return;
+					};
+				
+					uni.scanCode({
+						success: function(res) {
+							console.log('res1111111111111111111111111111111111===>>>>>>>>', res);
+							console.log('条码类型：' + res.scanType);
+							console.log('条码内容：' + res.result);
+							
+							if(res.scanType == 'QR_CODE'){
+								return;
+							}
+							
+							var result = res.result;
+							that.scan_kuaidi = result;
+							that.courier_number_value = that.scan_kuaidi;
+							
+							console.log('5555555555555555555555',that.scan_kuaidi)
+						}
+					});
+				
+				
+				},
+				
 				
 				//评价完成 之后点击完成按钮跳转发圈页面
 				go_to_page:function(e){
@@ -938,5 +1116,45 @@
 	}
 	.mg_l{
 		margin-left:10rpx;
+	}
+	.show_kuaidi{
+		
+		padding-left:350rpx;
+		
+		border-bottom:1px solid #D9D9D9 ;
+		margin-bottom: 20rpx;
+		height: 60rpx;
+		line-height: 60rpx;
+		
+	}
+	.kuaidi_list{
+		width: 90%;
+		background-color: #FFFFFF;
+		margin-left: 30rpx;
+		z-index: 999;
+	}
+	.express_input{
+		border: solid 1px #000000;
+		margin-left: 100rpx;
+		padding-left: 10rpx;
+		height: 65rpx;
+		line-height: 65rpx;
+		width: 400rpx;
+	}
+	.manage_express{
+		margin-bottom: 20rpx;
+		font-size: 28rpx;
+		margin-left: 20rpx;
+		line-height: 65rpx;
+	}
+	.button_fahuo{
+		background-color: #1AAD19;
+		color: #FFFFFF;
+		width: 600rpx;
+		margin-left: 70rpx;
+		height: 80rpx;
+		line-height: 80rpx;
+		border-radius: 50rpx;
+		text-align: center;
 	}
 </style>
