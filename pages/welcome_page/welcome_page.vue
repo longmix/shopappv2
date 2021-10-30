@@ -94,7 +94,7 @@ import uParse from '@/components/gaoyia-parse/parse.vue'
 	import parseHtml from "../../common/html-parser.js"
 // #endif
 
-import md5 from '../../common/md5.js'
+import md5 from '../../common/md5.min.js'
 
 export default {
 	components:{
@@ -500,6 +500,10 @@ export default {
 			  
 			var that = this;
 		    
+			if(!this.abotapi.get_current_weiduke_token()){
+				this.abotapi.set_current_weiduke_token('abcdefghijklmn');
+			}
+			
 		
 		    var url = this.abotapi.globalData.weiduke_server_url + '/index.php/openapi/ArticleImgApi/article_detail.shtml';
 		    var data = {
