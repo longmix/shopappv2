@@ -76,26 +76,13 @@
 						  />
 					</view>	
 					<view class="kuaidi_list" :style="is_show_express_company ? 'position:absolute' : 'display:none'">
-						<view  data-name="EMS" @tap="obtain_value" class="show_kuaidi">EMS</view>
-						<view  data-name="申通" @tap="obtain_value" class="show_kuaidi">申通</view>
-						<view  data-name="圆通" @tap="obtain_value" class="show_kuaidi">圆通</view>
-						<view  data-name="中通" @tap="obtain_value" class="show_kuaidi">中通</view>
-						<view  data-name="顺丰" @tap="obtain_value" class="show_kuaidi">顺丰</view>
-						<view  data-name="韵达" @tap="obtain_value" class="show_kuaidi">韵达</view>
-						<view  data-name="京东" @tap="obtain_value" class="show_kuaidi">京东</view>
+						<view  v-for="(item,index) in show_express_company_list">
+							<view class="show_kuaidi" :data-name="item" @tap="obtain_value">{{item}}</view>
+						</view>
 					</view>
-					
-						
 				
-					<!-- <view class="uni-padding-wrap">
-						<view class="uni-title">dfgdfg</view>
-					</view>
-					<picker-view :indicator-style="indicatorStyle" :value="expressIndex" @change="bindChange" class="picker-view">
-						<picker-view-column>
-							<view class="item" v-for="(item, index) in express_company" :key="index">{{item}}</view>
-						</picker-view-column>
-						
-					</picker-view> -->
+				
+				
 						
 					
 					<view class="manage_express" style="display: flex;">快递单号
@@ -374,6 +361,12 @@
 				is_show_express_company:false,
 				kuaidi:'',
 				scan_kuaidi:'',
+				
+				
+				express_company:[
+					'EMS','京东快递','顺丰速运','申通快递','中通快递','圆通快递','韵达快递'
+				],
+				show_express_company_list:[],
 			}
 		},
 		
@@ -523,10 +516,13 @@
 				
 				
 				get_express_company:function(e){
-					
+		
 					this.express_company_value = e.detail.value;
 					console.log('express_company_value======>',this.express_company_value)
-					//this.is_show_express_company = !this.is_show_express_company
+					
+					this.show_express_company_list = this.express_company;
+					
+					
 				},
 				
 				get_courier_number:function(e){
@@ -1119,8 +1115,7 @@
 	}
 	.show_kuaidi{
 		
-		padding-left:350rpx;
-		
+		text-align: center;
 		border-bottom:1px solid #D9D9D9 ;
 		margin-bottom: 20rpx;
 		height: 60rpx;
@@ -1128,10 +1123,10 @@
 		
 	}
 	.kuaidi_list{
-		width: 90%;
+		width: 55%;
 		background-color: #FFFFFF;
-		margin-left: 30rpx;
 		z-index: 999;
+		margin-left: 230rpx;
 	}
 	.express_input{
 		border: solid 1px #000000;
