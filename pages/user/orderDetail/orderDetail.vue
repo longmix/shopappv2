@@ -388,6 +388,8 @@
 					'EMS','京东快递','顺丰速运','申通快递','中通快递','圆通快递','韵达快递'
 				],
 				 */
+				
+				current_option:null,
 			}
 		},
 		
@@ -403,6 +405,9 @@
 		},
 		onLoad: function(options) {
 			var that = this;
+			
+			that.current_option = options;
+			
 			
 			var userInfo = that.abotapi.get_user_info();
 			if(!userInfo || !userInfo.userid){
@@ -583,16 +588,9 @@
 							uni.showModal({
 								title: '提示',
 								content: '发货成功！',
-								showCancel:false,
-								success() {
-									uni.redirectTo({
-										url:'/pages/user/order_list/order_list?currentTab=0&otype=0&is_shop_admin=1'
-									})
-								}
+								
 							});
-							
-							
-							
+							this.onLoad(that.current_option);
 					    },
 					    fail: function (e) {
 							uni.showToast({
