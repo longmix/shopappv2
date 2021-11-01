@@ -98,6 +98,9 @@
 				
 				this.imgheights = imgheights;
 			    this.current = e.target.dataset.id;
+				
+				//强制刷新界面，如果不强制刷新，只有一张图片的时候高度不会自适应
+				this.$forceUpdate();
 			},
 			//轮播图指示器  
 			bindchange: function (e) {
