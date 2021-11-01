@@ -67,42 +67,49 @@
 				<view v-if="orderData.status == '1' || orderData.status == '2' ">
 				<view class="manage_express" >管理员选项</view>
 				
-					<view class="manage_express" style="display: flex;">快递公司
-						<input type="text" placeholder="请填写快递公司" 
-						  @input="get_express_company" 
-					  	  @focus = "is_show_express_company = true"
-						  @blur = "is_show_express_company = false"
-						  :value="kuaidi" class="express_input"
-						  />
-					</view>	
-					<view class="kuaidi_list" :style="is_show_express_company ? 'position:absolute' : 'display:none'">
-						<view  v-for="(item,index) in show_express_company_list">
-							<view class="show_kuaidi" :data-name="item" @tap="obtain_value">{{item}}</view>
-						</view>
+				
+				<view class="unit-wrapper">
+					<view class="" style="display: flex;">
+						<view class="manage_express">物流公司</view>
+						<input-autocomplete 
+						 class="unit-item__input"
+						 :value="input_autocomplete_Obj.sname" 
+						 v-model="input_autocomplete_Obj.sname" 
+						 placeholder="请填写物流公司"
+						 highlightColor="#FF0000"
+						 :stringList="autocompleteStringList" 
+						 v-on:selectItem="input_autocomplete_selectItemS"></input-autocomplete>
 					</view>
+				</view>
 				
 				
-				
-						
-					
-					<view class="manage_express" style="display: flex;">快递单号
+				<view class="manage_express" style="display: flex;">快递单号
 					<input type="text" class="express_input" 
 					  placeholder="请填写快递单号"
 					  :value="scan_kuaidi"
-					  @input="get_courier_number"/>
+					  @input="get_courier_number"
+					  style="padding-right: 70rpx;width: 330rpx;"/>
+					  
 					  <view class="erweima" @tap="toMyQR">
 					  	<view class="icon scan_qr"></view>
 					  </view>
+					  
 					</view>
 					<view @tap="deliver_goods()" class="button_fahuo" >发货</view>
 					
 				</view>
-				
-				
+				<view v-if="orderData.status == '0' || orderData.status == '3' || orderData.status == '4' || orderData.status == '5' ">
+				<view class="manage_express" style="margin-bottom: 0;">管理员选项</view>
+				<view class="order_item_desc_name" style="margin-left: 20rpx;">快递公司
+					<view class="order_item_desc_value" style="margin-right: 20rpx;" v-if="orderData.delivery_company != null">{{orderData.delivery_company}}</view>
+				</view>
+				<view class="order_item_desc_name" style="margin-left: 20rpx;">快递单号
+					<view class="order_item_desc_value" style="margin-right: 20rpx;" v-if="orderData.delivery_no != null">
+					<view class="fuzhi" @click="Clipboard_text(orderData.delivery_no)" style="">复制</view>
+					{{orderData.delivery_no}}</view>
+				</view>
+				</view>
 			</view>
-			
-			
-			
 			
 			
 			
@@ -210,7 +217,13 @@
 				<view class="bordert">
 					
 				</view>
-				
+				<view>
+					<view class="order_item_desc_name">订单编号
+						<view class="fuzhi" @click="Clipboard_text(orderData.orderno)" style="">复制</view>
+						<view class="order_item_desc_value">{{orderData.orderno}}</view>
+					</view>
+				</view>
+				 
 				<view>
 					<view class="order_item_desc_name">订单状态<view class="order_item_desc_value">{{orderData.status_str}}</view></view>
 				</view>
@@ -285,6 +298,7 @@
 
 
 <script>
+	import inputAutocomplete from '@/components/input-autocomplete/input-autocomplete.vue';
 	// pages/user/dingdan.js
 	//index.js  
 	//获取应用实例  
@@ -301,6 +315,9 @@
 	
 	var next_page = 1;
 	export default {
+		components: {
+		        inputAutocomplete
+		},
 		data() {
 			return {
 				isHideLoadMore:false,
@@ -358,15 +375,19 @@
 				express_company_value:'',
 				express_company_list:'',
 				
-				is_show_express_company:false,
-				kuaidi:'',
+			
+			
 				scan_kuaidi:'',
 				
-				
-				express_company:[
+				input_autocomplete_Obj: {
+					sname: '',
+					dname: '动态',
+				},
+				autocompleteStringList: ['EMS','京东快递','顺丰速运','申通快递','中通快递','圆通快递','韵达快递'],
+				/* express_company:[
 					'EMS','京东快递','顺丰速运','申通快递','中通快递','圆通快递','韵达快递'
 				],
-				show_express_company_list:[],
+				 */
 			}
 		},
 		
@@ -419,7 +440,14 @@
 		},
 		
 		methods:{
-			  callback_set_option: function (that, option_list){
+			input_autocomplete_selectItemS(data) {
+				console.log('收到数据了:', data);
+			},
+			printLog(){
+				console.log(this.input_autocomplete_Obj);
+			},
+			
+			callback_set_option: function (that, option_list){
 			    console.log('getShopOptionAndRefresh+++++:::', option_list)
 			
 			   
@@ -515,30 +543,11 @@
 			    },
 				
 				
-				get_express_company:function(e){
-		
-					this.express_company_value = e.detail.value;
-					console.log('express_company_value======>',this.express_company_value)
-					
-					this.show_express_company_list = this.express_company;
-					
-					
-				},
-				
 				get_courier_number:function(e){
 					
 					this.courier_number_value = e.detail.value;
 					console.log('courier_number_value======>',this.courier_number_value)
 				},
-				
-				obtain_value:function(e){
-					
-					this.kuaidi = e.currentTarget.dataset.name;
-					this.express_company_value = this.kuaidi;
-					console.log('1111111111111111111111111',this.kuaidi)
-					
-				},
-				
 			
 				deliver_goods:function(){
 					var that = this;
@@ -556,7 +565,7 @@
 						userid: userInfo.userid,
 						checkstr : userInfo.checkstr,
 						status : that.orderData.status,
-						delivery_company : that.express_company_value,
+						delivery_company : that.input_autocomplete_Obj.sname,
 						delivery_no : that.courier_number_value,
 						orderid: that.current_orderid,
 					};
@@ -569,13 +578,19 @@
 					    success: function (res) {
 							
 							if(res.data.code != 1){
-								uni.showToast({
-									title:'发货失败！',
-									duration: 2000,
-								});
-								
 								return;
 							}
+							uni.showModal({
+								title: '提示',
+								content: '发货成功！',
+								showCancel:false,
+								success() {
+									uni.redirectTo({
+										url:'/pages/user/order_list/order_list?currentTab=0&otype=0&is_shop_admin=1'
+									})
+								}
+							});
+							
 							
 							
 					    },
@@ -1104,11 +1119,13 @@
 	.fuzhi{
 		float: right;
 		margin-left: 24rpx;
-		background: #1AAD19;
-		color: #fff;
+		border: 1rpx solid #999999;
 		padding: 0 18rpx;
 		border-radius: 5px;
 		font-size: 24rpx;
+		height: 40rpx;
+		line-height: 40rpx;
+		margin-top: 5rpx;
 	}
 	.mg_l{
 		margin-left:10rpx;
@@ -1152,4 +1169,49 @@
 		border-radius: 50rpx;
 		text-align: center;
 	}
+	
+	/* input-autocomplete的CSS  Begin */
+
+	.unit-item {
+		display: flex;
+		justify-content: flex-end;
+		padding-right: 30upx;
+		padding-left: 30upx;
+		margin-bottom: 30upx;
+	}
+	.unit-item__label {
+		padding-top: 2px;
+		text-align: right;
+		font-size: 28upx;
+		margin: 8upx 0 4upx 16upx;
+		min-width: 188upx;
+		width: 240upx;
+	}
+	.unit-item__input {
+		text-align: left;
+		width: 100%;
+		font-size: 28upx;
+		margin: 4upx 16upx 0 4upx;
+		border: 2upx solid #eaeaea;
+	}
+	/* input-autocomplete的CSS  End */
+	
+	.unit-item__input{
+		width: 53%;
+		font-size: 28rpx;
+		border: solid 1px #000000;
+		margin-left: 100rpx;
+		height: 65rpx;
+		line-height: 65rpx;
+		margin-bottom: 20rpx;
+		padding-left: 10rpx;
+	}
+	.scan_qr{
+		margin-left: -60rpx;
+		font-size: 50rpx;
+		margin-top: 2rpx;
+	}
+	
+	
+	
 </style>

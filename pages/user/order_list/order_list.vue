@@ -90,6 +90,8 @@
 						<view class="borderb bordert font_14" v-if="is_shop_admin == 1">
 							<view class="font_12"><b>管理员选项</b><view class='fl_r'></view></view>
 							<view style="clear: both;"><view class="font_12">商城名称：</view><view class='fl_r'>{{item.seller_name}}</view></view>
+							<view style="clear: both;"><view class="font_12">收货人名称：</view><view class='fl_r'>{{item.realname}}</view></view>
+							<view style="clear: both;"><view class="font_12">联系方式：</view><view class='fl_r'>{{item.mobile}}</view></view>
 							<view style="clear: both;"><view class="font_12">操作说明：</view><view class='fl_r'>进入订单详情处理订单</view></view>
 							
 						</view>
@@ -110,7 +112,10 @@
 						</view>
 					</view>
 					<view class="shop df bordermax" v-for="(item,index) in orderList0" :key="index" style='display: block;'>
-						<view @tap="goto_order_detail(item.orderid)" class="borderb font_14">订单编号：{{item.orderno}}</view> 
+						<view class="borderb font_14">订单编号：
+							<view class="fuzhi" @click="Clipboard_text(item.orderno)" style="">复制</view>	
+							{{item.orderno}}
+						</view> 
 						
 						<block v-if="item.order_option.hahading_order_product_list_length > 0">
 							<view class="df_1 borb" style='display:flex;'>
@@ -176,7 +181,12 @@
 						</view>
 					</view>
 					<view class="shop df bordermax" v-for="(item,index) in orderList1" :key="index" style='display: block;'>
-						<view @tap="goto_order_detail(item.orderid)" class="borderb font_14">订单编号：{{item.orderno}}</view> 
+						<view class="borderb font_14">订单编号：
+							<view class="fuzhi" @click="Clipboard_text(item.orderno)" style="">复制</view>	
+							{{item.orderno}}
+						</view> 
+						
+						
 						
 						<block v-if="item.order_option.hahading_order_product_list_length > 0">
 							<view class="df_1 borb" style='display:flex;'>
@@ -225,6 +235,8 @@
 						<view class="borderb bordert font_14" v-if="is_shop_admin == 1">
 							<view class="font_12"><b>管理员选项</b><view class='fl_r'></view></view>
 							<view style="clear: both;"><view class="font_12">商城名称：</view><view class='fl_r'>{{item.seller_name}}</view></view>
+							<view style="clear: both;"><view class="font_12">收货人名称：</view><view class='fl_r'>{{item.realname}}</view></view>
+							<view style="clear: both;"><view class="font_12">联系方式：</view><view class='fl_r'>{{item.mobile}}</view></view>
 							<view style="clear: both;"><view class="font_12">操作说明：</view><view class='fl_r'>进入订单详情处理订单</view></view>
 							
 						</view>
@@ -248,8 +260,10 @@
 						</view>
 					</view>
 					<view class="shop df bordermax" v-for="(item,index) in orderList2" :key="index" style='display: block;'>
-						<view @tap="goto_order_detail(item.orderid)" class="borderb font_14">订单编号：{{item.orderno}}</view>      
-						
+						<view class="borderb font_14">订单编号：
+							<view class="fuzhi" @click="Clipboard_text(item.orderno)" style="">复制</view>	
+							{{item.orderno}}
+						</view> 
 						<block v-if="item.order_option.hahading_order_product_list_length > 0">
 							<view class="df_1 borb" style='display:flex;'>
 								<image class="sh_slt" :src="item.order_option.hahading_order_product_list[0].img"></image>  
@@ -320,8 +334,10 @@
 						</view> 
 					</view>
 					<view class="shop df bordermax" v-for="(item,index) in orderList3" :key="index" style='display: block;'>        
-						<view @tap="goto_order_detail(item.orderid)" class="borderb font_14">订单编号：{{item.orderno}}</view>
-						
+						<view class="borderb font_14">订单编号：
+							<view class="fuzhi" @click="Clipboard_text(item.orderno)" style="">复制</view>	
+							{{item.orderno}}
+						</view> 
 						<block v-if="item.order_option.hahading_order_product_list_length > 0">
 							<view class="df_1 borb" style='display:flex;'>
 								<image class="sh_slt" :src="item.order_option.hahading_order_product_list[0].img"></image>  
@@ -416,6 +432,8 @@
 
 
 <script>
+	
+
 	// pages/user/dingdan.js
 	//index.js  
 	//获取应用实例  
@@ -432,6 +450,7 @@
 	
 	var next_page = 1;
 	export default {
+		
 		data() {
 			return {
 				
@@ -725,6 +744,27 @@
 					url:new_url,
 				})
 			},
+			
+			//复制剪切板
+			Clipboard_text:function(text){
+				
+				uni.setClipboardData({
+				    data: text,
+				    success: function () {
+				        uni.showToast({
+				        	title:'复制成功',
+				        })
+				    },
+					fail:function(){
+						uni.showToast({
+							title:'复制失败',
+						})
+					}
+				});
+			},
+			
+			
+			
 			
 			getOrderStatus:function(){
 				return this.currentTab == 0 ? 1 : this.currentTab == 2 ?2 :this.currentTab == 3 ? 3:0;
@@ -1484,5 +1524,15 @@
 		font-size: 28upx;
 		text-align: left;
 		}
+	.fuzhi{
+		float: right;
+		margin-left: 24rpx;
+		border: 1rpx solid #999999;
+		padding: 0 18rpx;
+		border-radius: 5px;
+		font-size: 24rpx;
+		line-height: 45rpx;
+		margin-top: -10rpx;
+	}
 	
 	</style>
