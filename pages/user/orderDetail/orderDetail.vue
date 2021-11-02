@@ -526,25 +526,25 @@
 						if(orderData.order_option && (orderData.order_option.xianmai_shang_order_remark)){
 							that.xianmai_shang_order_remark = orderData.order_option.xianmai_shang_order_remark;
 						}
-			           
 						
-			          
-			            console.log('current_order_product_list ====>>>>>', that.current_order_product_list);
-			          } else {
-			            uni.showToast({
-			              title: res.data.msg,
-			              duration: 2000
-			            });
-			          }
-			        },
-			        fail: function () {
-			          // fail
-			          wx.showToast({
-			            title: '网络异常！',
-			            duration: 2000
-			          });
-			        }
-			      });
+						
+						
+						console.log('current_order_product_list ====>>>>>', that.current_order_product_list);
+						} else {
+						uni.showToast({
+							title: res.data.msg,
+							duration: 2000
+						});
+						}
+					},
+					fail: function () {
+						// fail
+					  wx.showToast({
+						title: '网络异常！',
+						duration: 2000
+					  });
+					}
+				  });
 			    },
 				
 				
@@ -578,9 +578,9 @@
 					
 					
 					that.abotapi.abotRequest({
-					    url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_admin_fahuo',
-					    data: post_data,
-					    success: function (res) {
+						url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_admin_fahuo',
+						data: post_data,
+						success: function (res) {
 							
 							if(res.data.code != 1){
 								return;
@@ -590,14 +590,16 @@
 								content: '发货成功！',
 								
 							});
-							this.onLoad(that.current_option);
-					    },
-					    fail: function (e) {
+							
+							that.loadProductDetail();
+							
+						},
+						fail: function (e) {
 							uni.showToast({
 								title: '网络异常！',
 								duration: 2000
 							});
-					    },
+						},
 					});
 					
 					
@@ -674,23 +676,23 @@
 					var xianmaishangid = e.currentTarget.dataset.xianmaishangid;
 					
 					uni.showActionSheet({
-					      itemList: ['照片', '视频'],
-					      success(res) {
+					    itemList: ['照片', '视频'],
+					    success(res) {
 					        console.log(res.tapIndex)
 					        if ((res.tapIndex == 0)) {
 					          uni.navigateTo({
 					            url: '../../../cms/publish/publish?publishtype=image&orderid=' + orderid + '&xianmai_shangid=' + xianmaishangid,
 					          })
 					        } else {
-					          uni.navigateTo({
+								uni.navigateTo({
 					            url: '../../../cms/publish/publish?publishtype=video&orderid=' + orderid + '&xianmai_shangid=' + xianmaishangid,
-					          })
+								})
 					        }
-					      },
-					      fail(res) {
-					        console.log(res.errMsg)
-					      }
-					    })
+					    },
+					    fail(res) {
+							console.log(res.errMsg)
+						}
+					})
 					
 				},
 				
