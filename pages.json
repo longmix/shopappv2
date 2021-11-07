@@ -1,13 +1,50 @@
 {	
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
-		"navigationBarTitleText" : "V2系统加载中",
-		"navigationBarBackgroundColor" : "#2d96ff",
+		"navigationBarTitleText" : "延誉电商",
+		"navigationBarBackgroundColor" : "#f37404",
 		"backgroundColor" : "#ffffff",
 		"backgroundColorTop":"#ffffff",
 		"backgroundColorBottom":"#ffffff"
 	},
-	//默认不设置tabbar
+	"tabBar": {
+		"color": "#333333",
+		"selectedColor": "#d81e06",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [
+			{
+				"pagePath": "pages/yanyubao/my_module_list",
+				"iconPath": "static/img/tabBar/shang.png",
+				"selectedIconPath": "static/img/tabBar/shang-on.png",
+				"text": "开店"
+			},
+			{
+				"pagePath": "pages/publish/publish_list",
+				"iconPath": "static/img/tabBar/imglist.png",
+				"selectedIconPath": "static/img/tabBar/imglist-on.png",
+				"text": "创业与开业"
+			},
+			{
+				"pagePath": "pages/index/index",
+				"iconPath": "static/img/tabBar/publish.png",
+				"selectedIconPath": "static/img/tabBar/publish-on.png",
+				"text": "发现"
+			},
+			{
+				"pagePath": "pages/shopList/shopList",
+				"iconPath": "static/img/tabBar/category.png",
+				"selectedIconPath": "static/img/tabBar/category-on.png",
+				"text": "城市合伙人"
+			},
+			{
+				"pagePath": "pages/tabbar/user",
+				"iconPath": "static/img/tabBar/user.png",
+				"selectedIconPath": "static/img/tabBar/user-on.png",
+				"text": "我的"
+			}
+		]
+	},
 
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{	//主页
@@ -308,6 +345,22 @@
 		        "enablePullDownRefresh": true
 		    }
 		    
+		},
+		{
+		    "path" : "pages/yanyubao/module_list",
+		    "style": {
+		    	"navigationBarTitleText": "延誉宝功能模块列表",
+		    	"softinputNavBar":"none",
+				"enablePullDownRefresh": true
+		    }
+		},
+		{
+		    "path" : "pages/yanyubao/my_module_list",
+		    "style": {
+		    	"navigationBarTitleText": "我的功能模块",
+		    	"softinputNavBar":"none",
+				"enablePullDownRefresh": true
+		    }
 		}
 		//======= NFT卡包卡牌相关 Begin  ====
 		//这个可能会挂接在底部导航中，所有不放在分包里面
@@ -343,15 +396,7 @@
 				    	"navigationBarTitleText": "关于",
 				    	"softinputNavBar":"none"
 				    }
-				},
-				{
-				    "path" : "about/module_list",
-				    "style": {
-				    	"navigationBarTitleText": "延誉宝功能模块列表",
-				    	"softinputNavBar":"none",
-						"enablePullDownRefresh": true
-				    }
-				},
+				},				
 				{	//商品搜索
 				    "path" : "search/search",
 				    "style" : {

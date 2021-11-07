@@ -2,8 +2,8 @@
     "name" : "延誉电商",
     "appid" : "__UNI__A79BAA4",
     "description" : "拥抱互联网+，找延誉电商5天搞定！",
-    "versionName" : "1.7.9",
-    "versionCode" : 230,
+    "versionName" : "2.1.3",
+    "versionCode" : 293,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true, //是否启用`自定义组件模式`，为true表示新的`自定义组件模式` ，否则为`template模板模式`   
@@ -69,7 +69,8 @@
                     "NSCameraUsageDescription" : "使用相机拍摄商品以及设置头像",
                     "NSLocationWhenInUseUsageDescription" : "访问位置以计算最近的服务网点",
                     "NSLocationAlwaysUsageDescription" : "访问位置以计算最近的服务网点",
-                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "访问位置以计算最近的服务网点"
+                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "访问位置以计算最近的服务网点",
+                    "NSMicrophoneUsageDescription" : "使用麦克风以获取录制视频时候的声音"
                 }
             },
             /* ios打包配置 */
@@ -104,9 +105,7 @@
                         "UniversalLinks" : "https://yanyubao.tseo.cn/app/ulink/yyds/"
                     }
                 },
-                "push" : {
-                    "unipush" : {}
-                }
+                "push" : {}
             },
             "icons" : {
                 "android" : {
@@ -142,9 +141,9 @@
             },
             "splashscreen" : {
                 "android" : {
-                    "hdpi" : "unpackage/res/splashscreen - shopappv2/welandroid_480x762.png",
-                    "xhdpi" : "unpackage/res/splashscreen - shopappv2/welandroid_720x1242.png",
-                    "xxhdpi" : "unpackage/res/splashscreen - shopappv2/welandroid_1080x1882.png"
+                    "hdpi" : "unpackage/res/splashscreen - shopappv2/welandroid_480x762.9.png",
+                    "xhdpi" : "unpackage/res/splashscreen - shopappv2/welandroid_720x1242.9.png",
+                    "xxhdpi" : "unpackage/res/splashscreen - shopappv2/welandroid_1080x1882.9.png"
                 },
                 "ios" : {
                     "iphone" : {
@@ -158,12 +157,16 @@
                     },
                     "storyboard" : "D:/延誉电商APP/苹果开发者证书/CustomStoryboard.zip"
                 },
-                "iosStyle" : "common"
+                "iosStyle" : "storyboard"
             }
         },
         "uniStatistics" : {
             "enable" : false
-        }
+        },
+        "optimization" : {
+            "subPackages" : true
+        },
+        "runmode" : "liberate" // 开启分包优化后，必须配置资源释放模式
     },
     /* SDK配置 */
     "quickapp" : {},
@@ -183,6 +186,9 @@
         },
         "uniStatistics" : {
             "enable" : false
+        },
+        "optimization" : {
+            "subPackages" : true
         }
     },
     /* 插件放到ext.json 中定义,

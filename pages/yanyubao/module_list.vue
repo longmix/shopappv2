@@ -100,7 +100,7 @@
 				
 				
 				this.abotapi.abotRequest({
-				    url:that.abotapi.globalData.yanyubao_server_url+'Supplier/Login/show_yanyubao_module_list_for_tseo_cn',
+				    url:that.abotapi.globalData.yanyubao_server_url+'/Supplier/Login/show_yanyubao_module_list_for_tseo_cn',
 				    method: 'get',
 				    data:{
 				

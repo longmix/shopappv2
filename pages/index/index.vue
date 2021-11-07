@@ -2193,6 +2193,11 @@ export default {
 		//首页导航图标、轮播图、平面广告跳转
 		toAdDetails:function(url){
 			
+			if(!url){
+				console.log('url为空，不跳转！');
+				return;
+			}
+			
 			// var home_url = '/pages/index/index';
 			// this.abotapi.goto_user_login(home_url, 'switchTab');
 			

@@ -2,8 +2,8 @@
     "name" : "延誉电商",
     "appid" : "__UNI__A79BAA4",
     "description" : "拥抱互联网+，找延誉电商5天搞定！",
-    "versionName" : "2.0.1",
-    "versionCode" : 290,
+    "versionName" : "2.1.3",
+    "versionCode" : 293,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true, //是否启用`自定义组件模式`，为true表示新的`自定义组件模式` ，否则为`template模板模式`   
@@ -163,10 +163,10 @@
         "uniStatistics" : {
             "enable" : false
         },
-		"optimization": {
-		    "subPackages": true
-		},
-		"runmode" : "liberate" // 开启分包优化后，必须配置资源释放模式
+        "optimization" : {
+            "subPackages" : true
+        },
+        "runmode" : "liberate" // 开启分包优化后，必须配置资源释放模式
     },
     /* SDK配置 */
     "quickapp" : {},
@@ -187,9 +187,9 @@
         "uniStatistics" : {
             "enable" : false
         },
-		"optimization":{
-			"subPackages":true
-		}
+        "optimization" : {
+            "subPackages" : true
+        }
     },
     /* 插件放到ext.json 中定义,
 		"plugins": {
