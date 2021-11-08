@@ -19,12 +19,13 @@
 		<view class="mid-img">
 			<view class="head1" :style="{'border-left-color':my_module_list_001_title_color}">{{my_module_list_001_title_name}}</view>
 			<view class="icn-con" v-for="item2 in my_module_list001" :key="item2.index" 
+				:data-module_name="item2.name"
 				:data-plugin_flag="item2.plugin_flag"
 				:data-plugin_name="item2.plugin_name"
 				:data-plugin_desc_basic="item2.plugin_desc_basic" 
 				:data-link="item2.new_link"
 				@tap="goto_my_module">
-				<image v-if="item2.plugin_flag && 0" class="tips" src="https://yanyubao.tseo.cn/Tpl/static/images/bbq.png"></image>
+				<image v-if="item2.plugin_flag" class="tips" src="https://yanyubao.tseo.cn/Tpl/static/images/bbq.png"></image>
 				
 				<image class="img-h" :src="item2.icon" :style="{'background-color':item2.background_color}"></image>
 				
@@ -34,12 +35,13 @@
 		<view class="mid-img">
 			<view class="head1" :style="{'border-left-color':my_module_list_002_title_color}">{{my_module_list_002_title_name}}</view>
 			<view class="icn-con" v-for="item2 in my_module_list002" :key="item2.index" 
+				:data-module_name="item2.name"
 				:data-plugin_flag="item2.plugin_flag"
 				:data-plugin_name="item2.plugin_name"
 				:data-plugin_desc_basic="item2.plugin_desc_basic"
 				:data-link="item2.new_link"
 				@tap="goto_my_module">
-				<image v-if="item2.plugin_flag && 0" class="tips" src="https://yanyubao.tseo.cn/Tpl/static/images/bbq.png"></image>
+				<image v-if="item2.plugin_flag" class="tips" src="https://yanyubao.tseo.cn/Tpl/static/images/bbq.png"></image>
 				
 				<image class="img-h" :src="item2.icon" :style="{'background-color': '#666666'}"></image>
 				
@@ -56,12 +58,15 @@
 			return{
 				content_list:'',
 				
-				my_module_list001:'', //已经拥有的
-				my_module_list002:'', //尚未拥有的
+				my_module_list001:'', //已经拥有的功能模块
+				my_module_list002:'', //尚未拥有的功能模块
 				my_module_list_001_title_color:'#3e3e3e', 
 				my_module_list_002_title_color:'#3e3e3e', 
 				my_module_list_001_title_name:'已激活功能模块',
 				my_module_list_002_title_name:'待激活功能模块', 
+				
+				//是否跳转到功能模块，还是不响应点击事件
+				goto_my_module_pc_web_flag:0,
 			}
 		},
 		onLoad(option){
@@ -83,9 +88,11 @@
 			})
 			
 			uni.removeStorage({
-				key: 'module_icon_list_cache',
+				key: 'my_module_list_cache',
 				success:function(res008){
 					console.log('success ===>>> ', res008);
+					
+					that.abotapi.set_option_list_str(this, this.callback_set_option_list_str);
 					
 					that.get_module_list_of_supplier();
 				}
@@ -101,7 +108,14 @@
 		
 		methods:{
 			callback_set_option_list_str:function(that, option_list){
-				that.abotapi.getColor();
+				//that.abotapi.getColor();
+				
+				//是否跳转到PC版本的控制台，这个选项在 延誉电商APP后台的“全局设置选项”中设置
+				if(option_list.yanyubao_goto_my_module_pc_web_flag){					
+					that.goto_my_module_pc_web_flag = option_list.yanyubao_goto_my_module_pc_web_flag;
+				}
+				
+				
 			},
 			
 			//调用接口
@@ -117,7 +131,7 @@
 				var my_module_list = uni.getStorageSync('my_module_list_cache');
 				
 				console.log('my_module_list===',my_module_list)
-				my_module_list = null;
+				//my_module_list = null;
 				
 				if(my_module_list){
 					
@@ -125,6 +139,13 @@
 					
 					that.my_module_list001 = my_module_list.list001;
 					that.my_module_list002 = my_module_list.list002;
+					
+					// #ifdef MP-BAIDU
+					//that.my_module_list001 = that.__filter_no_plugin_module(my_module_list.list001);
+					//that.my_module_list002 = that.__filter_no_plugin_module(my_module_list.list002);
+					// #endif
+					
+					
 					
 					return;
 				}
@@ -162,6 +183,13 @@
 							that.content_list = my_module_list.content_list;
 							that.my_module_list001 = my_module_list.list001;
 							that.my_module_list002 = my_module_list.list002;
+							
+							// #ifdef MP-BAIDU
+							//that.my_module_list001 = that.__filter_no_plugin_module(my_module_list.list001);
+							//that.my_module_list002 = that.__filter_no_plugin_module(my_module_list.list002);
+							// #endif
+							
+							
 						}
 				
 				    },
@@ -173,11 +201,36 @@
 				    },
 				});
 			},
+			__filter_no_plugin_module:function(module_icon_list){
+				
+				
+				//====== 过滤掉没有描述的模块 Begin ======
+				for(let i=0; i<module_icon_list.length; i++){
+					
+					if(module_icon_list[i] && !module_icon_list[i]['plugin_flag']){
+						
+						console.log('ddddd===>>>>', module_icon_list[i]['plugin_flag']);
+						
+						module_icon_list.splice(i, 1);	// 将使后面的元素依次前移，数组长度减1
+						
+						i = i-1;   //！！！！！！如果不减，将漏掉一个元素
+					}
+					
+				}
+				//================ End ============
+				
+				return module_icon_list;
+			},
 			
 			//跳转到功能模块
 			goto_my_module:function(e){
 				
 				console.log('block_tanchuang=======>>>>>', e);
+				
+				if(!this.goto_my_module_pc_web_flag){
+					this.block_tanchuang(e);
+					return;
+				}
 				
 				var link = e.currentTarget.dataset.link;
 				
@@ -191,19 +244,23 @@
 				
 				var plugin_flag = e.currentTarget.dataset.plugin_flag;
 				
+				var plugin_name = e.currentTarget.dataset.module_name;
+				var plugin_desc_basic = '提供' + plugin_name +'相关及扩展的功能。';
+				
 				if(plugin_flag && (plugin_flag == 1) ){
-					var plugin_name = e.currentTarget.dataset.plugin_name;
-					var plugin_desc_basic = e.currentTarget.dataset.plugin_desc_basic;
-					
-					uni.showModal({
-					    title: plugin_name,
-					    content: plugin_desc_basic,
-						showCancel: false,
-					    success: function (res) {
-					        
-					    }
-					});
+					plugin_name = e.currentTarget.dataset.plugin_name;
+					plugin_desc_basic = e.currentTarget.dataset.plugin_desc_basic;				
 				}
+				
+				uni.showModal({
+				    title: plugin_name,
+				    content: plugin_desc_basic,
+					showCancel: false,
+				    success: function (res) {
+				        
+				    }
+				});
+				
 			},
 			
 			//首页导航图标、轮播图、平面广告跳转
@@ -257,7 +314,7 @@
 		width: 40upx;
 		height: 40upx;
 		position: absolute;
-		right: 66upx;
+		right: 20upx;
 		top: -20upx;
 		z-index: 2;
 	}

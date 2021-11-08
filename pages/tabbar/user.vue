@@ -569,6 +569,7 @@
 						
 						
 						if (res.data.code == -1) {
+							//登录超时
 							that.abotapi.del_user_info();
 							
 							var last_url = '/pages/tabbar/user';
