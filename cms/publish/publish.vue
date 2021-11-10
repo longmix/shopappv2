@@ -381,7 +381,7 @@
 				
 				that.disable = true;
 				
-				console.log('===>>>>>.',that.abotapi.globalData.xiaochengxu_appid);
+				console.log('2222222222===>>>>>.',that.abotapi.globalData.xiaochengxu_appid);
 				
 				var userInfo = that.abotapi.get_user_info();
 				
@@ -426,7 +426,7 @@
 												
 						if (that.publishtype == "image") {
 							//发布图片
-							
+							console.log('1111111111111111111111111111111111111',that.faquanid);
 							if(that.imgList.length == 0){
 								uni.showModal({
 									title: '提示',
@@ -439,7 +439,7 @@
 								
 								return;
 							}
-											
+							console.log('1111111111111111111111111111111111111',that.imgList);				
 							that.upLoadImg(0);
 												
 						} 
@@ -471,6 +471,7 @@
 									'accept': 'application/json',
 								},
 								name: "uploadvideo",
+								fileType:'video',
 								formData: {
 									sellerid:that.abotapi.globalData.default_sellerid,
 									userid: userInfo ? userInfo.userid : '',
@@ -557,17 +558,20 @@
 			      uni.showLoading({
 			        title: '正在上传第' + (i + 1) + '张',
 			      })
+
 			      uni.uploadFile({
 			        url: that.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/add_faquan_video_or_img',
 			        filePath: that.imgList[i],
+					fileType:'image',
 			        header: {
-			          /*如果加了这里的代码，在H5中上传图片就无效了
+			         /*如果加了这里的代码，在H5中上传图片就无效了
 					  "Content-Type": "multipart/form-data",
 			          'elem': '#up-image',
 			          'accept': 'application/json',
-			          'exts': 'jpg|jpeg|png|gif'*/
+			          'exts': 'jpg|jpeg|png|gif', */
 			        },
 			        name: "image",
+					
 			        formData: {
 			          sellerid: that.abotapi.globalData.default_sellerid,
 			          
@@ -629,7 +633,7 @@
 			          }
 			        },
 			        fail: function (res) {
-			          console.log('fail');
+			          console.log('fail',res);
 			        },
 			      })
 			    },

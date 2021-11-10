@@ -273,7 +273,7 @@
 			
 			
 
-
+			console.log('options000000000000000000000======>>>',options);
 			if (options) {
 				if (options.faquanid) {
 					that.current_faquanid = options.faquanid,

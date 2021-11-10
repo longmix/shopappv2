@@ -642,12 +642,17 @@
 				
 				//评价完成 之后点击完成按钮跳转发圈页面
 				go_to_page:function(e){
-					console.log(e);
+					console.log('ccccccccccccccccccccccccccc',e);
 					var faquanid = e.currentTarget.dataset.faquanid;
 					
 					uni.navigateTo({
 						url: '/cms/discover/discover?faquanid=' + faquanid +'&xianmai_shangid=' + this.orderData.order_option.hahading_order_xianmai_shangid,
 					})
+					//#ifdef MP-WEIXIN
+					uni.switchTab({
+						url: '/cms/discover/discover',
+					})
+					//#endif
 					
 				},
 				

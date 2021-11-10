@@ -231,7 +231,23 @@
 				{{goods_detail.name}}
 			</view>
 		</view>
+		
+		
+		<!-- 2021.11.10商品海报 -->
+		
+	
+		<view>
+			<view class="show_modal_mask" v-if="to_poster" @tap="to_poster=false"></view>
+			<view class="show_modal_pop" v-if="to_poster">
+				
+				<!-- <image :src=""></image> -->
+				<view class="show_poster_baocun" @tap="poster_baocun">保存</view>
+			</view>
 
+			<image class="image_poster" src="../../static/img/xiangji.png" mode="widthFix" @tap="toPoster"></image>
+		</view>
+		
+		
 		<!-- 供货商跳转 -->
 		
 		<navigator v-if="goods_detail.factory_name" 
@@ -679,6 +695,14 @@
 				
 				
 				form_product_info:{form_show:0},
+				
+				
+				
+				
+				
+				//2021.11.10
+				to_poster:false,
+				current_poster_modal:null,
 				
 			};
 		},
@@ -1343,6 +1367,103 @@
 					url: '../msg/msg'
 				})
 			},
+			
+			//商品海报
+			 toPoster(){
+				var that = this;
+			
+				var post_data = {
+							sellerid:that.abotapi.globalData.default_sellerid,
+							productid: that.productid,		
+						};
+					
+					
+					var userInfo = that.abotapi.get_user_info();
+					if(userInfo){
+						post_data.userid = userInfo.userid;
+						post_data.checkstr = userInfo.checkstr;
+					}
+					
+					
+					//#ifndef MP-WEIXIN 
+					
+					post_data.xiaochengxu_appid = that.globalData.xiaochengxu_appid;
+					
+					
+					// #endif 
+					
+					that.abotapi.abotRequest({
+					    url: that.abotapi.globalData.yanyubao_server_url + '/Yanyubao/ShopAppWxa/get_product_poster',
+					    data:post_data,
+					    success: function (res) {
+							
+							if(res.data.code != 1){
+								uni.showToast({
+									title:'没有数据',
+									duration: 2000,
+								});
+								
+								return;
+							}
+					
+							
+							that.to_poster = !that.to_poster;
+					
+							that.current_poster_modal = res.data;
+							
+							console.log('current_poster_modal ===>>> ', that.current_poster_modal);
+						
+						
+						
+									
+							
+					    },
+					    fail: function (e) {
+							uni.showToast({
+								title: '网络异常！',
+								duration: 2000
+							});
+					    },
+					});
+					
+				}, 
+
+				
+			
+			//保存商品海报
+			/* poster_baocun(){
+				var that = this;
+				
+				
+				uni.downloadFile({
+					url:'',
+							
+					success: (res) =>{
+						console.log('uni.downloadFile======>>>>', res);
+						
+						//if (res.statusCode === 200){
+						if(res.tempFilePath){
+							uni.saveImageToPhotosAlbum({
+								filePath: res.tempFilePath,
+								success: function() {
+									uni.showModal({
+										title: "提示",
+										content: '保存成功！',
+									});
+								},
+								fail: function() {
+									uni.showModal({
+										title: "提示",
+										content: '保存失败！',
+									});
+								}
+							});
+						}
+					}
+				})
+			}, */
+			
+			
 			// 客服
 			toChat() {
 				//如果是进入聊天对话框
@@ -2312,7 +2433,7 @@
 				console.log('sdadwadwa', form_url);
 				
 				that.abotapi.call_h5browser_or_other_goto_url('/pages/publish/publish_write' + form_url);
-			}
+			},
 			
 			
 			
@@ -3518,6 +3639,38 @@
 	}
 	.form_icon_box{
 		width: 50rpx;
+	}
+	
+	
+	
+	
+	//2021.11.9
+	.show_modal_mask{
+		background-color: #000;
+		opacity: 0.7;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 999;
+	}
+	.show_modal_pop{
+		position: fixed;
+		z-index: 999;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%,-50%);
+	}
+	.image_poster{
+		width: 40rpx;
+		float: right;
+		margin-top: -14px;
+		margin-right: 20px;
+	}
+	.show_poster_baocun{
+		color: #FFFFFF;
+		background-color: #008000;
 	}
 </style>
 
