@@ -114,6 +114,9 @@
 				if(option_list.yanyubao_goto_my_module_pc_web_flag){					
 					that.goto_my_module_pc_web_flag = option_list.yanyubao_goto_my_module_pc_web_flag;
 				}
+				else{
+					that.goto_my_module_pc_web_flag = 0;
+				}
 				
 				
 			},
@@ -226,11 +229,14 @@
 			goto_my_module:function(e){
 				
 				console.log('block_tanchuang=======>>>>>', e);
+				console.log('this.goto_my_module_pc_web_flag=======>>>>>', this.goto_my_module_pc_web_flag);
 				
-				if(!this.goto_my_module_pc_web_flag){
+				if(this.goto_my_module_pc_web_flag == 0){
+					console.log('00000000000000');
 					this.block_tanchuang(e);
 					return;
 				}
+				console.log('111111111111');
 				
 				var link = e.currentTarget.dataset.link;
 				

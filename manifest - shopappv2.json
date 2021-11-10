@@ -50,9 +50,6 @@
                     "<uses-permission android:name=\"android.permission.INTERNET\"/>",
                     "<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>",
                     "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
-                    "<uses-permission android:name=\"android.permission.READ_CONTACTS\"/>",
-                    "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
-                    "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>",
                     "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
                     "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
@@ -157,12 +154,21 @@
                     },
                     "storyboard" : "D:/延誉电商APP/苹果开发者证书/CustomStoryboard.zip"
                 },
-                "iosStyle" : "storyboard"
+                "iosStyle" : "storyboard",
+				"useOriginalMsgbox" : true
             }
         },
         "uniStatistics" : {
             "enable" : false
         },
+		"permissionExternalStorage": {  
+			"request": "once",  
+			"prompt": "应用保存运行状态等信息，需要获取读写手机存储（系统提示为访问设备上的照片、媒体内容和文件）权限，请允许。"  
+		},
+		"permissionPhoneState": {  
+			"request": "once",  
+			"prompt": "为保证您正常、安全地使用，需要获取设备识别码（部分手机提示为获取手机号码）使用权限，请允许。"  
+		},
         "optimization" : {
             "subPackages" : true
         },
