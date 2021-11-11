@@ -507,8 +507,8 @@
 						if(orderData.order_option && (orderData.order_option.order_xianmai_shangdata)){
 							that.order_xianmai_shangdata = JSON.parse(orderData.order_option.order_xianmai_shangdata); //商家信息
 						}
-						  
-						  
+						console.log('888888888888888888888====>>>',orderData)
+						console.log('888888888888888888888====>>>',that.order_xianmai_shangdata) 
 						if(orderData.order_option && (orderData.order_option.xianmai_order_type)){
 							var order_product_list = JSON.parse(orderData.order_option.hahading_order_product_list);
 							
