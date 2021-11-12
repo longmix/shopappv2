@@ -150,7 +150,23 @@
 			<image style="width: 100%;" @tap="toUrl(item.url)" v-for="(item,index) in wxa_usercenter_ad_list" :key="index" :src="item.image"
 			 mode="widthFix"></image>
 		</view>
-
+		
+		<view v-if="usercenter_contact_status == 1">
+			<view v-if="usercenter_contact_btn_type == 0">
+				<button type="default" :style="{backgroundColor:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}" style="width: 80%;margin-top: 10rpx;"
+					open-type="contact" show-message-card="usercenter_contact_wxa_extend == 1 ? 'true' : 'false'" 
+					:send-message-title="usercenter_contact_wxa_title"  :send-message-path="usercenter_contact_wxa_path" 
+					:send-message-img="usercenter_contact_wxa_img" >{{usercenter_contact_btn_text}}</button>
+			</view>
+			<view v-if="usercenter_contact_btn_type == 1">
+				<button type="default" style="width: 80%;padding: 0;border: 0;" 
+					open-type="contact" show-message-card="usercenter_contact_wxa_extend == 1 ? 'true' : 'false'"
+					:send-message-title="usercenter_contact_wxa_title"  :send-message-path="usercenter_contact_wxa_path" 
+					:send-message-img="usercenter_contact_wxa_img" plain="true">
+					<image style="width: 100%;" :src="usercenter_contact_btn_img" mode="widthFix"></image>
+					</button>
+			</view>
+		</view>
 
 		<!-- 工具栏 -->
 		<view class="toolbar">
@@ -314,6 +330,15 @@
 				wxa_hide_balance_in_usercenter_icon:'',
 				wxa_hide_score_in_usercenter_icon:'',
 				
+				
+				usercenter_contact_status:0,
+				usercenter_contact_btn_type:0,
+				usercenter_contact_btn_text:0,
+				usercenter_contact_btn_img:0,
+				usercenter_contact_wxa_extend:0,
+				usercenter_contact_wxa_title:0,
+				usercenter_contact_wxa_path:0,
+				usercenter_contact_wxa_img:0,
 			}
 		},
 
@@ -408,6 +433,34 @@
 					}
 
 
+
+
+					if(option_list.usercenter_contact_status){
+						that.usercenter_contact_status = option_list.usercenter_contact_status;
+					}
+					if(option_list.usercenter_contact_btn_type){
+						that.usercenter_contact_btn_type = option_list.usercenter_contact_btn_type;
+					}
+					if(option_list.usercenter_contact_btn_text){
+						that.usercenter_contact_btn_text = option_list.usercenter_contact_btn_text;
+					}
+					if(option_list.usercenter_contact_btn_img){
+						that.usercenter_contact_btn_img = option_list.usercenter_contact_btn_img;
+					}
+					if(option_list.usercenter_contact_wxa_extend){
+						that.usercenter_contact_wxa_extend = option_list.usercenter_contact_wxa_extend;
+					}
+					if(option_list.usercenter_contact_wxa_title){
+						that.usercenter_contact_wxa_title = option_list.usercenter_contact_wxa_title;
+					}
+					if(option_list.usercenter_contact_wxa_path){
+						that.usercenter_contact_wxa_path = option_list.usercenter_contact_wxa_path;
+					}
+					if(option_list.usercenter_contact_wxa_img){
+						that.usercenter_contact_wxa_img = option_list.usercenter_contact_wxa_img;
+					}
+					
+					
 					that.default_copyright_text = that.abotapi.globalData.default_copyright_text;
 
 
