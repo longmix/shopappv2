@@ -1,39 +1,75 @@
 <template>
 	<view>
-		<view v-if="wxa_order_queren_hide_address != 1" style="border-bottom:1px dashed #e5e5e5;">
-			<view class="p_all bg_white mt10 font_14" v-if="addemt==0">
-				<view @click="goAddress()">
-					<view class="df">
-						<view class="df_1 c6" style="padding: 5rpx 20rpx;">
-							<view style='display:flex;'>
-								<view class="l_h20" style="font-size:40rpx;margin-right:56rpx;">{{order_address_detail.name}}</view>
-								<view class="l_h20 " style="font-size:40rpx;">{{order_address_detail.mobile}}</view>
+		<view v-if="!zitidian_address ">
+			<view v-if="wxa_order_queren_hide_address != 1" style="border-bottom:1px dashed #e5e5e5;">
+				<view class="p_all bg_white mt10 font_14" v-if="addemt==0">
+					<view @click="goAddress()">
+						<view class="df">
+							<view class="df_1 c6" style="padding: 5rpx 20rpx;">
+								<view style='display:flex;'>
+									<view class="l_h20" style="font-size:40rpx;margin-right:56rpx;">{{order_address_detail.name}}</view>
+									<view class="l_h20 " style="font-size:40rpx;">{{order_address_detail.mobile}}</view>
+								</view>
+								<view class="l_h20 mt5" style="font-size:32rpx;margin-top:22rpx;">
+									{{order_address_detail.area_province}}{{order_address_detail.area_city}}{{order_address_detail.area_district}}{{order_address_detail.address}}
+								</view>
 							</view>
-							<view class="l_h20 mt5" style="font-size:32rpx;margin-top:22rpx;">
-								{{order_address_detail.area_province}}{{order_address_detail.area_city}}{{order_address_detail.area_district}}{{order_address_detail.address}}
+							<view>
+								<image class="x_rights" src="../../static/img/x_right.png"></image>
 							</view>
+							
 						</view>
-						<view>
-							<image class="x_rights" src="../../static/img/x_right.png"></image>
+					</view>
+				</view>
+				<view class="p_all bg_white mt10 font_14" v-else>
+					<view @click="goAddress()">
+						<view class="df">
+							<view class="df_1 c6">添加收货地址</view>
+							<view>
+								<image class="x_rights" src="../../static/img/x_right.png"></image>
+							</view>
+							
 						</view>
-						
 					</view>
 				</view>
 			</view>
-			<view class="p_all bg_white mt10 font_14" v-else>
-				<view @click="goAddress()">
-					<view class="df">
-						<view class="df_1 c6">添加收货地址</view>
-						<view>
-							<image class="x_rights" src="../../static/img/x_right.png"></image>
+
+		</view>
+		
+		<view style="border-bottom:1px dashed #e5e5e5;" v-else >
+			<view class="show_modal_mask" v-if="showShangModal" @tap="showShangModal=false"></view>
+			<view class="show_modal_pop" v-if="showShangModal">
+				<view v-for="(item,index) in paixu_shanglist" @tap="show_paixu_list(index)" style="border-bottom:1px dashed #e5e5e5;">
+					<view class="df_1 c6 show_paixu" style="padding: 5rpx 20rpx;">
+						<view style=''>
+							<view class="l_h20" style="font-size:25rpx;margin-right:56rpx;">商家</view>
+							<view class="l_h20 " style="font-size:25rpx;">{{item.key}}</view>
 						</view>
-						
+						<view class="l_h20 mt5" style="font-size:20rpx;margin-top:22rpx;">
+							{{item.value_arr.zitidian_address}}
+						</view>
 					</view>
+				</view>
+			</view>
+			<view class="p_all bg_white mt10 font_14" @tap="showShangModal = true">
+				<view class="df">
+					<view class="df_1 c6" style="padding: 5rpx 20rpx;">
+						<view style=''>
+							<view class="l_h20" style="font-size:40rpx;margin-right:56rpx;">商家</view>
+							<view class="l_h20 " style="font-size:25rpx;">{{paixu_shanglist[0].key}}</view>
+						</view>
+						<view class="l_h20 mt5" style="font-size:32rpx;margin-top:22rpx;">
+							{{paixu_shanglist[0].value_arr.zitidian_address}}
+						</view>
+					</view>
+					<view>
+						<image class="x_rights" src="../../static/img/x_right.png"></image>
+					</view>
+					
 				</view>
 			</view>
 		</view>
-
-
+		
 
 		<view class="p_all bg_white df item" v-for="(item,key) in productData" :key="key" v-if="order_type_001 == 'shopmall'">
 			<view class="photo_name">
@@ -129,6 +165,13 @@
 				<switch class='d-dikou' :checked="isSwitch2" @change="switch1Change($event)" data-type="2" />
 			</view>
 			
+			<view class="a-dikou" v-if="current_zitidian_data == 1">
+				<view class="b-dikou">
+					<view>商品自提</view>
+				</view>
+				<switch class='d-dikou' @change="switch2Change()" />
+			</view>
+			
 			<view v-if="orderredpackge_list.code == 1" class="a-redpackets">
 				<view class="b-redpackets">
 					<view>订单红包</view>
@@ -215,6 +258,10 @@
 </template>
 
 <script>
+	
+	import locationapi from '../../common/locationapi.js'; 
+	
+	
 	
 	var util = require('../../common/util.js');
 	var bmap = require('../../common/SDK/bmap-wx.js');
@@ -345,6 +392,15 @@
 				
 				//2021.7.30. 扩展 extraData 字段
 				extraData:null,
+				
+				
+				
+				//2021.11.15
+				zitidian_address:false,
+				current_zitidian_data:0,
+				current_zitidian_list:null,
+				paixu_shanglist:null,
+				showShangModal:false,
 				
 			};
 		},
@@ -645,8 +701,8 @@ extraData = 'xxxxxxxxxxxxxxx'
 				console.log('本次下单有扩展字段：' + that.extraData);
 			}
 			
-			
-			
+			//this.get_zitidian_list();
+			locationapi.get_location(that, that.cx_paixu_shang_list);
 			//必须放在最后，否则读取不到userinfo信息！！！！！
 			this.abotapi.set_option_list_str(this, this.callback_function);
 			
@@ -1690,7 +1746,8 @@ extraData = 'xxxxxxxxxxxxxxx'
 						{ "key": "xianmai_order_type", "value": that.order_type_001_xianmaishang_data.is_waimai }, 
 						{ "key": "waimai_buyer_latitude", "value": that.order_type_001_xianmaishang_data.waimai_buyer_latitude }, 
 						{ "key": "waimai_buyer_longitude", "value": that.order_type_001_xianmaishang_data.waimai_buyer_longitude }, 
-						{ "key": "xianmai_waimai_peisong_price", "value": that.order_type_001_xianmaishang_data.waimai_rmb });
+						{ "key": "xianmai_waimai_peisong_price", "value": that.order_type_001_xianmaishang_data.waimai_rmb }),
+						{ "key": "zitidian_list", "value": that.paixu_shanglist[0] };
 			    }
 				else {
 			      order_add_new_option_by_key_value.push(
@@ -1943,7 +2000,146 @@ extraData = 'xxxxxxxxxxxxxxx'
 			
 			
 			
+			switch2Change:function(){
 			
+				var that = this;
+				
+				that.zitidian_address = !that.zitidian_address;
+				
+			},
+			get_zitidian_list:function(){
+				var that = this;
+				var dis = 0;
+			
+				var post_data = {
+					sellerid:that.abotapi.globalData.default_sellerid,
+										
+				};
+				
+				
+				
+				that.abotapi.abotRequest({
+					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ZitiData/get_zitidian_list',
+					method: 'post',
+					data: post_data,
+					success: function (res) {
+						
+						that.current_zitidian_data = res.data.data;
+						that.current_zitidian_list = res.data.zitidian_list;
+						console.log('00000000000000000000000000======>>>>>',that.current_zitidian_list)
+						
+						that.jisuan_juli(that.current_zitidian_list);
+						
+						
+					},
+					fail: function (e) {
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+					},
+				});
+				
+				
+				
+				
+				
+				
+	
+					
+			},
+			
+			cx_paixu_shang_list:function(that, locationData){
+				
+				console.log('重新排序开始============>>>>>>',locationData);
+				var that = this;
+				
+				var coordinate = [];
+				coordinate['latitude'] = locationData.latitude;
+				coordinate['longitude'] = locationData.longitude;
+				//经纬度  点方法获取
+				that.coordinate = coordinate; //经纬度
+				
+				console.log('重新排序============>>>>>>',that.coordinate);
+				that.get_zitidian_list();
+				
+			},
+			
+			set_paixu_shanglist:function(shop_location_list){
+				
+				var that = this;
+				
+				console.log('shop_location_list111100000=========',shop_location_list)
+				//that.shop_location_list
+				
+				//开始排序
+				that.paixu_shanglist = shop_location_list.sort(compare);
+				
+				function compare(obj1, obj2) {
+				  var val1 = obj1.dis; 
+				  var val2 = obj2.dis;
+				  
+				  return val1 - val2;
+				  /*
+				  if (val1 < val2) {
+					return -1;
+				  } else if (val1 > val2) {
+					return 1;
+				  } else {
+					return 0;
+				  }*/
+				}
+				
+				console.log('进入搜索缓存排序计算完毕', that.paixu_shanglist);
+				
+				
+				
+			},
+			jisuan_juli:function(current_zitidian_list){
+				console.log('计算距离开始');
+				
+				var dis = 0
+				var shop_location_list = [];
+				var that = this;
+				
+				for (var index in current_zitidian_list) {
+					if (!isNaN(index)) {
+					  
+						dis = that.abotapi.getDistance(that.coordinate['latitude'], that.coordinate['longitude'], that.current_zitidian_list[index].value_arr['latitude'], that.current_zitidian_list[index].value_arr['longitude']);
+						
+						//dis = Math.ceil(dis)
+						if(!isNaN(dis)){
+							current_zitidian_list[index]['dis'] = dis.toFixed(2);
+							var dis_str = '';
+							if (dis < 1000) {
+							  dis_str = dis.toFixed(1) + '米'
+							}
+												
+							else {
+							  dis_str = (dis / 1000).toFixed(1) + '公里'
+							}
+							
+							current_zitidian_list[index]['dis_str'] = dis_str;
+							
+							shop_location_list.push(current_zitidian_list[index])
+						}
+						
+					}
+				}
+				console.log('shop_location_list==========>>>>>',shop_location_list)
+				that.set_paixu_shanglist(shop_location_list);
+			},
+			show_paixu_list:function(index){
+				var that = this;
+				console.log('777777======>>>>>',index)
+				console.log('77777777====>>>>>',that.paixu_shanglist)
+				
+				var item = that.paixu_shanglist[0];
+				that.paixu_shanglist[0] = that.paixu_shanglist[index];
+				that.paixu_shanglist[index] = item;
+				
+				that.showShangModal=false;
+			},
 			
 			
 			//跳转收货地址
@@ -2683,5 +2879,25 @@ extraData = 'xxxxxxxxxxxxxxx'
 	//============== End ==============
 	
 	
-	
+	//2021.11.15   =========   弹窗
+	.show_modal_mask{
+		background-color: #000;
+		opacity: 0.7;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 999;
+	}
+	.show_modal_pop{
+		position: fixed;
+		z-index: 999;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%,-50%);
+	}
+	.show_paixu{
+		background-color: #FFFFFF;
+	}
 </style>
