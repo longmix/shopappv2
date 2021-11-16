@@ -244,7 +244,7 @@
 				<view class="show_poster_baocun" @tap="poster_baocun">保存</view>
 			</view>
 
-			<image class="image_poster" src="../../static/img/xiangji.png" mode="widthFix" @tap="toPoster"></image>
+			<image class="image_poster" src="static/img/xiangji.png" mode="widthFix" @tap="toPoster"></image>
 		</view>
 		
 		
