@@ -23,7 +23,7 @@
 		</view>
 		
 		<!-- 显示标签列表 -->
-		<view class="pub-xieyi001" v-if="faquan_hot_tag_words.length > 0">
+		<view class="pub-xieyi001" v-if="faquan_hot_tag_words && (faquan_hot_tag_words.length > 0)">
 			<label style="font-size: 30rpx;opacity: 0.7;">标签</label>
 				<view>
 					<view style="margin-top: 20rpx;" v-for="(item001,ids) in faquan_hot_tag_words" :key="ids">
@@ -396,7 +396,7 @@
 				}
 				
 				//检查是否有标签
-				if(that.faquan_tag_list.length > 0){
+				if(that.faquan_tag_list && (that.faquan_tag_list.length > 0) ){
 					data_params.tag = that.faquan_tag_list.join(',');
 				}
 				
@@ -427,7 +427,7 @@
 						if (that.publishtype == "image") {
 							//发布图片
 							console.log('1111111111111111111111111111111111111',that.faquanid);
-							if(that.imgList.length == 0){
+							if(that.imgList && (that.imgList.length == 0) ){
 								uni.showModal({
 									title: '提示',
 									content:res.data.msg,
@@ -585,7 +585,13 @@
 			          i++;
 			          uni.hideLoading();
 					  
-			          console.log('res===========', res)
+			          console.log('res===========', res);
+					  
+					  if(!that.imgList){
+						  console.log('that.imgList 为 null，无法继续');
+						  
+						  return;
+					  }
 					  
 			          if (i == that.imgList.length) {
 						  
