@@ -279,7 +279,7 @@
 						
 						
 						that001.abotapi.abotRequest({
-							url: that001.abotapi.globalData.yanyubao_server_url + 'openapi/LbsCheckinData/set_data_tongji',
+							url: that001.abotapi.globalData.yanyubao_server_url + '/openapi/LbsCheckinData/set_data_tongji',
 							method: 'post',
 							data: post_data,
 							success: function (res) {

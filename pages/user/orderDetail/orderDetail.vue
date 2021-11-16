@@ -491,7 +491,7 @@
 			      console.log('userstr', userInfo.checkstr);
 				  
 			      that.abotapi.abotRequest({
-			        url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_xiangqing',
+			        url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=order_xiangqing',
 			        data: {
 			          orderid: that.current_orderid,
 			          userid: userInfo.userid,
@@ -578,7 +578,7 @@
 					
 					
 					that.abotapi.abotRequest({
-						url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_admin_fahuo',
+						url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=order_admin_fahuo',
 						data: post_data,
 						success: function (res) {
 							
@@ -713,7 +713,7 @@
 							
 							var userInfo = that.abotapi.get_user_info();
 							res.confirm && uni.request({
-								url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_tuikuan_direct',
+								url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=order_tuikuan_direct',
 								method: 'post',
 								data: {
 									orderid: orderid,
@@ -771,7 +771,7 @@
 				      content: '你确定已收到宝贝吗？',
 				      success: function(res) {
 				        res.confirm && that.abotapi.abotRequest({
-				          url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_finish',
+				          url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=order_finish',
 				          method:'post',
 				          data: {
 				            orderid: orderid,
@@ -832,7 +832,7 @@
 							var userInfo = that.abotapi.get_user_info();
 							
 							res.confirm && uni.request({
-								url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_cancel',
+								url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=order_cancel',
 								method: 'post',
 								data: {									
 									sellerid: that.abotapi.get_sellerid(),
@@ -890,7 +890,7 @@
 					var userInfo = that.abotapi.get_user_info();
 					
 					that.abotapi.abotRequest({
-					  url: that.abotapi.globalData.yanyubao_server_url + 'openapi/SnatchOrdersysData/buyer_set_status_as_finish',
+					  url: that.abotapi.globalData.yanyubao_server_url + '/openapi/SnatchOrdersysData/buyer_set_status_as_finish',
 					  data: {
 					    checkstr: userInfo.checkstr,
 					    sellerid: that.abotapi.get_sellerid(),

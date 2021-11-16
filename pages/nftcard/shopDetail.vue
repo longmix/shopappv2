@@ -1034,7 +1034,7 @@
 				}
 
 				this.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/my_favorite',
+					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/XianmaiShangData/my_favorite',
 					method: 'post',
 					data: post_data,
 					header: {
@@ -1071,7 +1071,7 @@
 				}
 				
 				this.abotapi.abotRequest({
-					url: this.abotapi.globalData.o2owaimai_server_url + 'openapi/PublicData/get_merchant_basic_data',
+					url: this.abotapi.globalData.o2owaimai_server_url + '/openapi/PublicData/get_merchant_basic_data',
 					data: post_data,
 					success: function(res) {
 						
@@ -1549,13 +1549,13 @@
 						
 			  var current_faquanid = this.current_faquanid;
 			  
-			  var post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/get_faquan_list';
+			  var post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/FaquanData/get_faquan_list';
 						
 			  if(this.is_my_discover){
-				post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/get_faquan_list_by_userid';
+				post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/FaquanData/get_faquan_list_by_userid';
 			  }
 			  else if(this.is_my_discover_collection){
-				post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/get_faquan_collect_list';
+				post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/FaquanData/get_faquan_collect_list';
 			  }
 							
 						
@@ -1688,7 +1688,7 @@
 			  }
 						
 			  that.abotapi.abotRequest({
-			    url: this.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/faquan_like',
+			    url: this.abotapi.globalData.yanyubao_server_url + '/openapi/FaquanData/faquan_like',
 			    method: 'post',
 			    data: {
 			      sellerid: this.abotapi.get_sellerid(),
@@ -1764,7 +1764,7 @@
 							}
 						
 			  that.abotapi.abotRequest({
-			    url: this.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/faquan_collect',
+			    url: this.abotapi.globalData.yanyubao_server_url + '/openapi/FaquanData/faquan_collect',
 			    data: {
 			      sellerid: this.abotapi.get_sellerid(),
 			      userid: userInfo ? userInfo.userid : '',
@@ -1833,7 +1833,7 @@
 				
 				
 				that.abotapi.abotRequest({
-				  url: this.abotapi.globalData.yanyubao_server_url + 'openapi/SuperVipCardData/add_user_card_huiyuan_item',
+				  url: this.abotapi.globalData.yanyubao_server_url + '/openapi/SuperVipCardData/add_user_card_huiyuan_item',
 				  method: 'post',
 				  data: {
 				    sellerid: this.abotapi.get_sellerid(),

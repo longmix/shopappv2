@@ -218,7 +218,7 @@
 				title: '加载中...',
 			})
 			uni.request({
-				url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_list',
+				url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=address_list',
 				data: {
 					checkstr: userInfo.checkstr,
 					userid: userInfo.userid,
@@ -275,7 +275,7 @@
 				var that = this;
 				var userInfo = this.abotapi.get_user_info();
 				uni.request({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_list',
+					url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=address_list',
 					data: {
 						checkstr: userInfo.checkstr,
 						userid: userInfo.userid,
@@ -343,7 +343,7 @@
 						var detailInfo = res.detailInfo;
 						console.log('aaaaas====ss', countyName);
 						that.abotapi.abotRequest({
-							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_city_coding',
+							url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=get_city_coding',
 							data: {
 								userid: userInfo.userid,
 								checkstr: userInfo.checkstr,
@@ -360,7 +360,7 @@
 								var county = res.data.data.countyCode;
 
 								that.abotapi.abotRequest({
-									url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_save',
+									url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=address_save',
 									data: {
 										action: 'add',
 										checkstr: userInfo.checkstr,
@@ -427,7 +427,7 @@
 				var addrId = e.currentTarget.dataset.id;
 				var userInfo = that.abotapi.get_user_info();
 				uni.request({
-					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_save',
+					url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=address_save',
 					data: {
 						action: 'edit',
 						addressid: addrId,
@@ -508,7 +508,7 @@
 				var userInfo = this.abotapi.get_user_info();
 				// 页面初始化 options为页面跳转所带来的参数
 				uni.request({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_list',
+					url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=address_list',
 					data: {
 						userid: userInfo.userid,
 						checkstr: userInfo.checkstr,
@@ -552,7 +552,7 @@
 					content: '你确认移除吗',
 					success: function(res) {
 						res.confirm && uni.request({
-							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_save',
+							url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=address_save',
 							data: {
 								action: 'del',
 								addressid: addrId,

@@ -152,7 +152,7 @@
 			console.log('56565', that.historyKeyList)
 		
 			uni.request({
-				url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppH5&a=get_shop_option',
+				url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppH5&a=get_shop_option',
 				method: 'post',
 				data: {
 					sellerid: this.abotapi.get_sellerid(),
@@ -244,7 +244,7 @@
 			    var that = this;
 			    console.log('66666666666', that.cataid)
 			    uni.request({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
+					url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=product_list',
 					method: 'post',
 					data: {
 						sellerid: this.abotapi.get_sellerid(),
@@ -367,7 +367,7 @@
 			//   var that = this;
 			//   var page = that.data.page;
 			//   uni.request({
-			//       url: this.abotapi.globalData.http_server + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
+			//       url: this.abotapi.globalData.http_server + '/?g=Yanyubao&m=ShopAppWxa&a=product_list',
 			//       method:'post',
 			//       data: {
 			//         page: page,

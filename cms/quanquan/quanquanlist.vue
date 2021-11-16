@@ -119,7 +119,7 @@
 			
 			//APP/小程序首页滚动广告
 			this.abotapi.abotRequest({
-				url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_flash_ad_list',
+				url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=get_flash_ad_list',
 				method: 'post',
 				data: {
 					sellerid: this.abotapi.globalData.default_sellerid,
@@ -151,7 +151,7 @@
 			}
 			
 			this.abotapi.abotRequest({
-				url: this.abotapi.globalData.yanyubao_server_url + 'openapi/VideoListRemarkData/get_cata_month_list',
+				url: this.abotapi.globalData.yanyubao_server_url + '/openapi/VideoListRemarkData/get_cata_month_list',
 				method: 'post',
 				data: post_data,
 				success: function (res) {
@@ -226,7 +226,7 @@
 			  
 			var that = this
 			this.abotapi.abotRequest({
-			  url: this.abotapi.globalData.yanyubao_server_url + 'openapi/VideoListRemarkData/get_video_list',
+			  url: this.abotapi.globalData.yanyubao_server_url + '/openapi/VideoListRemarkData/get_video_list',
 			  method: 'post',
 			  data: {
 				sellerid: this.abotapi.globalData.default_sellerid,
@@ -385,7 +385,7 @@
 				var that = this
 				
 				this.abotapi.abotRequest({
-					url: this.abotapi.globalData.yanyubao_server_url + 'openapi/VideoListRemarkData/get_video_list',
+					url: this.abotapi.globalData.yanyubao_server_url + '/openapi/VideoListRemarkData/get_video_list',
 					method: 'post',
 					data: {
 						sellerid: this.abotapi.globalData.default_sellerid,

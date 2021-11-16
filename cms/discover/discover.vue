@@ -637,7 +637,7 @@
 				var that = this;
 				
 				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/change_faquan_status',
+					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/FaquanData/change_faquan_status',
 					data: {
 						appid: that.abotapi.globalData.xiaochengxu_appid,
 						sellerid: that.abotapi.get_sellerid(),
@@ -805,7 +805,7 @@
 				console.log('66666666666666666q', that.isShowBanner)
 				if (type != 888) {
 					uni.request({
-						url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_flash_ad_list',
+						url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=get_flash_ad_list',
 						method: 'post',
 						data: {
 							sellerid: this.abotapi.get_sellerid(),
@@ -955,11 +955,11 @@
 				var userInfo = this.abotapi.get_user_info();
 
 				//帖子列表
-				var post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/get_faquan_list';
+				var post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/FaquanData/get_faquan_list';
 
 				if (this.is_my_discover) {
 					//我的发布
-					post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/get_faquan_list_by_userid';
+					post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/FaquanData/get_faquan_list_by_userid';
 					
 					if (!userInfo) {
 						var last_url = '/pages/tabbar/user';
@@ -973,7 +973,7 @@
 				} 
 				else if (this.is_my_discover_collection) {
 					//我的收藏
-					post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/get_faquan_collect_list';
+					post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/FaquanData/get_faquan_collect_list';
 					
 					if (!userInfo) {
 						var last_url = '/pages/tabbar/user';
@@ -986,7 +986,7 @@
 				}
 				else if (this.is_my_discover_like) {
 					//我的点赞
-					post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/get_faquan_like_list';
+					post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/FaquanData/get_faquan_like_list';
 					
 					if (!userInfo) {
 						
@@ -1151,7 +1151,7 @@
 				}
 
 				that.abotapi.abotRequest({
-					url: this.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/faquan_collect',
+					url: this.abotapi.globalData.yanyubao_server_url + '/openapi/FaquanData/faquan_collect',
 					data: {
 						sellerid: this.abotapi.get_sellerid(),
 						userid: userInfo ? userInfo.userid : '',
@@ -1318,7 +1318,7 @@
 				}
 
 				that.abotapi.abotRequest({
-					url: this.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/faquan_like',
+					url: this.abotapi.globalData.yanyubao_server_url + '/openapi/FaquanData/faquan_like',
 					method: 'post',
 					data: {
 						sellerid: this.abotapi.get_sellerid(),
@@ -1369,7 +1369,7 @@
 				var userInfo = this.abotapi.get_user_info();
 				
 				that.abotapi.abotRequest({
-					url: this.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/faquan_jubao',
+					url: this.abotapi.globalData.yanyubao_server_url + '/openapi/FaquanData/faquan_jubao',
 					method: 'post',
 					data: {
 						sellerid: this.abotapi.get_sellerid(),
@@ -1427,7 +1427,7 @@
 			img_or_video_download: function(type, img_or_video_list, i = 0) {
 
 				var that = this;
-				var file_url = this.abotapi.globalData.http_server + 'openapi/FaquanData/download_file?url=' + encodeURIComponent(
+				var file_url = this.abotapi.globalData.http_server + '/openapi/FaquanData/download_file?url=' + encodeURIComponent(
 					img_or_video_list[i].url);
 				console.log('file_url', file_url);
 				console.log('img_or_video_list', img_or_video_list);

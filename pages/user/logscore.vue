@@ -97,7 +97,7 @@
 				var balance = "balance";
 				var userInfo = this.abotapi.get_user_info();
 				this.abotapi.abotRequest({
-					url: this.abotapi.globalData.yanyubao_server_url + 'openapi/UserData/user_score_list',
+					url: this.abotapi.globalData.yanyubao_server_url + '/openapi/UserData/user_score_list',
 					method: 'post',
 					data:{
 						sellerid: that.abotapi.globalData.default_sellerid,

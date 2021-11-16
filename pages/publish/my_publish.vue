@@ -205,7 +205,7 @@
 				}
 				
 				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.weiduke_server_url + 'openapi/ArticleImgApi/article_delete',
+					url: that.abotapi.globalData.weiduke_server_url + '/openapi/ArticleImgApi/article_delete',
 					method: 'post',
 					data: {
 						sellerid: that.abotapi.get_sellerid(),

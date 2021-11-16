@@ -259,7 +259,7 @@
 				});
 
 				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_cata_tree_chart',
+					url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=product_cata_tree_chart',
 					method: 'post',
 					data: {
 						sellerid: that.abotapi.get_sellerid(),
@@ -420,7 +420,7 @@
 				var productid = e.currentTarget.dataset.productid;
 
 				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=cart_add',
+					url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopApp&a=cart_add',
 					method: 'post',
 					data: {
 						amount: 1,
@@ -438,7 +438,7 @@
 						});
 
 						that.abotapi.abotRequest({
-							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=cart_list',
+							url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=cart_list',
 							method: 'post',
 							data: {
 								userid: userInfo.userid,

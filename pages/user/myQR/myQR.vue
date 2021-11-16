@@ -136,7 +136,7 @@
 				
 				
 				this.abotapi.abotRequest({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_my_qrcode',
+					url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=get_my_qrcode',
 					data: post_data,
 					success: function (res) {
 						console.log("res",res);

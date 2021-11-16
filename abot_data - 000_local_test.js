@@ -1,8 +1,8 @@
 const globalData = {
-		weiduke_server_url: 'https://cms.weiduke.com/',
-		//yanyubao_server_url: 'https://yanyubao.tseo.cn/',
-		yanyubao_server_url: 'http://192.168.0.206/yanyubao_server/index.php/',
-		o2owaimai_server_url:'http://192.168.0.206/hahading/server/index.php/',
+		weiduke_server_url: 'https://cms.weiduke.com',
+		//yanyubao_server_url: 'https://yanyubao.tseo.cn',
+		yanyubao_server_url: 'http://192.168.0.206/yanyubao_server/index.php',
+		o2owaimai_server_url:'http://192.168.0.206/hahading/server/index.php',
 		//o2owaimai_server_url: 'https://app.tseo.cn/o2owaimai/index.php/',
 		socket_server: 'https://socketio.tseo.cn',
 		

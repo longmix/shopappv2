@@ -572,7 +572,7 @@
 			
 			
 			that.abotapi.abotRequest({
-				url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_index',
+				url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=order_index',
 				method: 'post',
 				data: {
 					order_sort: that.isStatus,
@@ -807,7 +807,7 @@
 					content: '你确定要取消订单吗？',
 					success: function(res) {
 						res.confirm && uni.request({
-							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=orderdel',
+							url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=orderdel',
 							method:'post',
 							data: {
 								orderid: orderid,
@@ -858,7 +858,7 @@
 					content: '你确定已收到宝贝吗？',
 					success: function(res) {
 						res.confirm && uni.request({
-							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_finish',
+							url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=order_finish',
 							method:'post',
 							data: {
 								orderid: orderid,
@@ -911,7 +911,7 @@
 						
 						var userInfo = that.abotapi.get_user_info();
 						res.confirm && uni.request({
-							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_tuikuan_direct',
+							url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=order_tuikuan_direct',
 							method: 'post',
 							data: {
 								orderid: orderid,
@@ -979,7 +979,7 @@
 				}
 				
 				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_index',
+					url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=order_index',
 					method:'post',
 					data: post_data,
 					header: {

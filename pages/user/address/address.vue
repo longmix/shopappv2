@@ -86,7 +86,7 @@
 				var that = this;
 				var userInfo = this.abotapi.get_user_info();
 				uni.request({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_list',
+					url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=address_list',
 					data: {
 						checkstr: userInfo.checkstr,
 				        userid:userInfo.userid,
@@ -149,7 +149,7 @@
 				var that = this;
 				var userInfo = this.abotapi.get_user_info();
 				uni.request({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_save',
+					url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=address_save',
 					data: {
 						action:'get',
 						checkstr: userInfo.checkstr,

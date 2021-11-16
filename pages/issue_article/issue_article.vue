@@ -193,7 +193,7 @@
 				input_value = encodeURIComponent(JSON.stringify(input_value));			
 				var userInfo = that.abotapi.get_user_info(); 
 				uni.request({
-					url:that.abotapi.globalData.weiduke_server_url+'openapi/ArticleImgApi/add_article_item',
+					url:that.abotapi.globalData.weiduke_server_url + '/openapi/ArticleImgApi/add_article_item',
 					method:'POST',
 					header:{'Content-Type': 'application/x-www-form-urlencoded'},
 					data:{
@@ -239,7 +239,7 @@
 				// 微读客获取文章列表   console.log(apps.globalData.weiduke_server_url);
 				//http://192.168.0.88/weiduke_cms/index.php/openapi/ArticleImgApi/article_list?token=gwcuuk1411034699&cataid=22&page=0
 				uni.request({
-					url:that.abotapi.globalData.weiduke_server_url+'openapi/SelfformData/get_selfform_option',
+					url:that.abotapi.globalData.weiduke_server_url + '/openapi/SelfformData/get_selfform_option',
 					method:'POST',
 					header:{'Content-Type': 'application/x-www-form-urlencoded'},
 					data:{
@@ -308,7 +308,7 @@
 			    var region_Id = ++e.detail.value;
 			    console.log('123?',region_Id);
 			    uni.request({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=region_get',
+					url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=region_get',
 					data: {
 						region_id: ++region_Id,
 					},

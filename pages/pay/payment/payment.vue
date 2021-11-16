@@ -414,7 +414,7 @@
 				};
 			
 			that.abotapi.abotRequest({
-				url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=payment_type_list',
+				url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=payment_type_list',
 				data: post_data,
 				success: function(res) {
 					console.log("res111", res);
@@ -509,7 +509,7 @@
 				if ((that.current_payment_type == 'zz_pay') && (that.zhuanzhang_pay_list == '') ) {
 				//if ((pay_list == '') ) {
 					that.abotapi.abotRequest({
-						url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=offlinepay_get',
+						url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=offlinepay_get',
 						method: 'post',
 						data: {
 							sellerid: that.abotapi.get_sellerid()
@@ -560,7 +560,7 @@
 				}
 				
 				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=order_xiangqing',
+					url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopApp&a=order_xiangqing',
 					method: 'post',
 					data: post_data,
 					header: {
@@ -718,7 +718,7 @@
 				}
 
 				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_buy',
+					url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=order_buy',
 					data: data_params,
 					method: 'POST',
 					header: {
@@ -874,7 +874,7 @@
 				
 				
 				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_buy',
+					url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=order_buy',
 					data: post_data,
 					method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
 					header: {

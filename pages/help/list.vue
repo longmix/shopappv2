@@ -104,7 +104,7 @@
 			
 			//APP/小程序首页滚动广告
 			this.abotapi.abotRequest({
-				url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_flash_ad_list',
+				url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=get_flash_ad_list',
 				method: 'post',
 				data: {
 					sellerid: this.abotapi.globalData.default_sellerid,
@@ -146,7 +146,7 @@
 			   
 				
 			   //=====更新商户头条=================
-			    var url = this.abotapi.globalData.weiduke_server_url + '?g=Home&m=Yanyubao&a=yingxiao';//+ app.globalData.sellerid;
+			    var url = this.abotapi.globalData.weiduke_server_url + '/?g=Home&m=Yanyubao&a=yingxiao';//+ app.globalData.sellerid;
 			    var data = {
 					id:'seller',
 					action:'list',

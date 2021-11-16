@@ -279,7 +279,7 @@
 				
 				if(that.product_source_channel == 0){
 					that.abotapi.abotRequest({
-					    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
+					    url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=product_list',
 					    data: {
 					      sellerid: this.abotapi.globalData.default_sellerid,
 					      keyword:'', 
@@ -341,7 +341,7 @@
 					//读取推广联盟的商品
 					
 					that.abotapi.abotRequest({
-					    url: this.abotapi.globalData.yanyubao_server_url + 'openapi/UnionPromotionData/get_product_list',
+					    url: this.abotapi.globalData.yanyubao_server_url + '/openapi/UnionPromotionData/get_product_list',
 					    data: {
 					      sellerid: that.abotapi.globalData.default_sellerid,
 					      union_name: that.product_channel_name, 

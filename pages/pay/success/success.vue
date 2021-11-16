@@ -111,7 +111,7 @@
 				
 				
 				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_buy_result',
+					url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=order_buy_result',
 					method: 'post',
 					data: post_data,
 					header: {

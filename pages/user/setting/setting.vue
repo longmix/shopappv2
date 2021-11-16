@@ -173,7 +173,7 @@
 			    }
 				console.log(1111555555);
 				uni.request({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=user_info_save',
+					url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=user_info_save',
 					header: {  
 						"Content-Type": "application/x-www-form-urlencoded"  
 					}, 
@@ -220,7 +220,7 @@
 						console.log("chooseImageRes",chooseImageRes);
 						var headimgurl = chooseImageRes.tempFilePaths[0];
 						uni.uploadFile({
-							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=upload_image_file',
+							url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=upload_image_file',
 							filePath: headimgurl,
 							name: 'file',
 							formData: {
@@ -234,7 +234,7 @@
 								console.log('obj',obj);
 								
 								that.abotapi.abotRequest({
-									url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=set_image_headimgurl', 
+									url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=set_image_headimgurl', 
 									data: {
 										sellerid: that.abotapi.globalData.default_sellerid,
 										checkstr: userInfo.checkstr,
@@ -264,7 +264,7 @@
 										
 										//更新用户信息
 										that.abotapi.abotRequest({
-										  url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
+										  url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
 										  data: post_data,    
 										  success:function(res){
 											  

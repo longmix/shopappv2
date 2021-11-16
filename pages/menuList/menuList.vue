@@ -533,7 +533,7 @@ export default {
 			// http://192.168.0.205/hahading/server/index.php/openapi/ProductData/get_product_list_all_data
 			//获取商家点餐分类信息
 			that.abotapi.abotRequest({
-			  url: that.abotapi.globalData.o2owaimai_server_url + 'openapi/ProductData/get_product_list_all_data',
+			  url: that.abotapi.globalData.o2owaimai_server_url + '/openapi/ProductData/get_product_list_all_data',
 			  data: {
 				xianmai_shangid: that.shopId,
 				is_waimai: that.is_waimai,
@@ -620,7 +620,7 @@ export default {
 			}
 			
 			that.abotapi.abotRequest({
-				url: that.abotapi.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/get_shang_detail',
+				url: that.abotapi.globalData.yanyubao_server_url + '/openapi/XianmaiShangData/get_shang_detail',
 				data: post_data,
 				header: {
 				  "Content-Type": "application/x-www-form-urlencoded"

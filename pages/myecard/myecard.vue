@@ -538,7 +538,7 @@
 			initArticleList:function(){
 				var that = this;
 				this.abotapi.abotRequest({
-					url : this.abotapi.globalData.weiduke_server_url + '?g=Home&m=Yanyubao&a=yingxiao',
+					url : this.abotapi.globalData.weiduke_server_url + '/?g=Home&m=Yanyubao&a=yingxiao',
 					method:'POST',
 					data: {
 						id: 'seller',
@@ -663,7 +663,7 @@
 				});
 				
 				
-				var url = that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=Xiaochengxu&a=get_user_card';
+				var url = that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=Xiaochengxu&a=get_user_card';
 				var data = {
 					sellerid: that.abotapi.get_sellerid(),
 					checkstr: userInfo.checkstr,
@@ -776,7 +776,7 @@
 				
 				console.log('pppppppppppp',kazhu_userid);
 				that.abotapi.abotRequest({
-				  url: this.abotapi.globalData.yanyubao_server_url + 'openapi/SuperVipCardData/get_huiyuan_detail',
+				  url: this.abotapi.globalData.yanyubao_server_url + '/openapi/SuperVipCardData/get_huiyuan_detail',
 				  method: 'post',
 				  data: {
 				    sellerid: this.abotapi.get_sellerid(),

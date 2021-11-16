@@ -209,14 +209,14 @@
 				
 				//#ifdef MP-WEIXIN
 					//ShopAppWxa 里面增加了对 jscode的处理逻辑
-					login_url = that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=wxa_get_userinfo';
+					login_url = that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=wxa_get_userinfo';
 					
 					
 					
 				//#endif
 				
 				//#ifdef MP-ALIPAY
-					login_url = that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppMpAlipay&a=get_alipay_user_id';
+					login_url = that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppMpAlipay&a=get_alipay_user_id';
 					
 					
 				//#endif

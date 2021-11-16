@@ -57,7 +57,7 @@ export default {
 		
 		const currentWebview = this.$mp.page.$getAppWebview()
 		this.abotapi.abotRequest({
-		  url: this.abotapi.globalData.yanyubao_server_url + 'openapi/VideoLiveData/get_live_player_and_product_list',
+		  url: this.abotapi.globalData.yanyubao_server_url + '/openapi/VideoLiveData/get_live_player_and_product_list',
 		  method: 'post',
 		  data: {				
 			live_userid: userInfo.userid,
@@ -153,7 +153,7 @@ export default {
 			console.log('userInfo',userInfo.userid);
 			console.log('userInfo',this.abotapi.get_sellerid());
 			this.abotapi.abotRequest({
-			  url: this.abotapi.globalData.yanyubao_server_url + 'openapi/VideoLiveData/set_video_live_list_and_logo_begin',
+			  url: this.abotapi.globalData.yanyubao_server_url + '/openapi/VideoLiveData/set_video_live_list_and_logo_begin',
 			  method: 'post',
 			  data: {				
 				userid: userInfo.userid,
@@ -228,7 +228,7 @@ export default {
 			let userInfo = this.abotapi.get_user_info();
 			
 			this.abotapi.abotRequest({
-			  url: this.abotapi.globalData.yanyubao_server_url + 'openapi/VideoLiveData/set_video_live_list_and_logo_end',
+			  url: this.abotapi.globalData.yanyubao_server_url + '/openapi/VideoLiveData/set_video_live_list_and_logo_end',
 			  method: 'post',
 			  data: {				
 				userid: userInfo.userid,

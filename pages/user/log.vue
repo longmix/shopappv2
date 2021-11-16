@@ -181,7 +181,7 @@
 				var balance_type = this.current_balance_type;
 				var userInfo = this.abotapi.get_user_info();
 				
-				var post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/UserData/user_balance_list';
+				var post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/UserData/user_balance_list';
 				
 				var post_data = {
 						sellerid: that.abotapi.globalData.default_sellerid,
@@ -191,7 +191,7 @@
 					};
 					
 				if(that.current_balance_type == 'super_vip_card_balance'){
-					post_url = this.abotapi.globalData.yanyubao_server_url + 'openapi/SuperVipCardData/get_huiyuan_balacne_list';
+					post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/SuperVipCardData/get_huiyuan_balacne_list';
 					
 					post_data.kazhu_userid = that.super_vip_card_kazhu_userid;
 				}
@@ -261,7 +261,7 @@
 				var userInfo = this.abotapi.get_user_info();
 				
 				this.abotapi.abotRequest({
-					url: this.abotapi.globalData.yanyubao_server_url + 'openapi/UserData/user_balance_tag_list',
+					url: this.abotapi.globalData.yanyubao_server_url + '/openapi/UserData/user_balance_tag_list',
 					method: 'post',
 					data: {
 						sellerid: that.abotapi.globalData.default_sellerid,

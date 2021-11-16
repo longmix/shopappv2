@@ -58,7 +58,7 @@
 			
 			
 			    that.abotapi.abotRequest({
-			      url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=user_info_save',
+			      url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=user_info_save',
 			      data: {
 			         nickname:that.nickname,
 			         checkstr:userInfo.checkstr,
@@ -80,7 +80,7 @@
 						
 						//更新用户信息
 						that.abotapi.abotRequest({
-						  url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
+						  url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
 						  data: {
 						     checkstr:userInfo.checkstr,
 						     userid:userInfo.userid,

@@ -321,12 +321,12 @@
 			
 			    var that = this
 			    that.abotapi.abotRequest({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_tokenstr',
+					url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=get_tokenstr',
 					success: function (res) {
 						// console.log(res.data);
 						that.tokenstr = res.data.tokenstr;		
 						//console.log(res.data.tokenstr);			
-						that.img_checkcode_url = that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=getverifycodeimg' + '&tokenstr=' + that.tokenstr
+						that.img_checkcode_url = that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=getverifycodeimg' + '&tokenstr=' + that.tokenstr
 					}
 				});
 			},
@@ -337,7 +337,7 @@
 				console.log(1111);
 				  
 				that.abotapi.abotRequest({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=sendsms',
+					url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=sendsms',
 					data: {
 						mobile: that.mobile,
 						verifycode: that.img,
@@ -369,7 +369,7 @@
 				  
 				            that.tokenstr = request_data.data.tokenstr;
 							
-							that.img_checkcode_url =  that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=Xiaochengxu&a=getverifycodeimg' + '&tokenstr=' + that.tokenstr
+							that.img_checkcode_url =  that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=Xiaochengxu&a=getverifycodeimg' + '&tokenstr=' + that.tokenstr
 			
 						}
 					}
@@ -426,7 +426,7 @@
 					return;
 				}
 				
-				var login_url = that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=login';
+				var login_url = that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopApp&a=login';
 				var post_data = { 
 						mobile: that.mobile,
 						verifycode_sms: that.tel,
@@ -436,14 +436,14 @@
 				
 				//#ifdef MP-WEIXIN
 					//ShopAppWxa 里面增加了对 jscode的处理逻辑
-					login_url = that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=login';
+					login_url = that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=login';
 					
 					
 					
 				//#endif
 				
 				//#ifdef MP-ALIPAY
-					login_url = that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppMpAlipay&a=login';
+					login_url = that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppMpAlipay&a=login';
 					
 					if(that.login_data_from_wxa_or_alipay){
 						
@@ -543,7 +543,7 @@
 							
 							
 							that.abotapi.abotRequest({
-							     url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=get_user_info',
+							     url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopApp&a=get_user_info',
 							     data: post_data,
 							     header: {
 							       "Content-Type": "application/x-www-form-urlencoded"
@@ -662,7 +662,7 @@
 				
 				
 				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=wxa_one_click_login',
+					url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=wxa_one_click_login',
 					method: "POST",
 					dataType: 'json',
 					data: {
@@ -718,7 +718,7 @@
 							
 							
 							that.abotapi.abotRequest({
-							     url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=get_user_info',
+							     url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopApp&a=get_user_info',
 							     data: post_data,
 							     success: function (res) {
 							       console.log('g=Yanyubao&m=ShopApp&a=get_user_info===>>>微信一键登录===>>>', res);
@@ -832,7 +832,7 @@
 						//console.log(e.detail.errMsg);return;
 					  
 						that.abotapi.abotRequest({
-							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=wxa_get_userinfo',
+							url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=wxa_get_userinfo',
 							method: "POST",
 							dataType: 'json',
 							data: {

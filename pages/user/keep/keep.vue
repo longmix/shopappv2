@@ -125,7 +125,7 @@
 			getCollectionProducts(){
 				var userInfo = this.abotapi.get_user_info();
 				this.abotapi.abotRequest({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=collection_products',
+					url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=collection_products',
 					method: 'post',
 					data: {
 						userid : userInfo.userid,
@@ -159,7 +159,7 @@
 			getMyFavorite(){
 				var userInfo = this.abotapi.get_user_info();
 				this.abotapi.abotRequest({
-					url: this.abotapi.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/my_favorite',
+					url: this.abotapi.globalData.yanyubao_server_url + '/openapi/XianmaiShangData/my_favorite',
 					method: 'post',
 					data: {
 						userid : userInfo.userid,
@@ -266,7 +266,7 @@
 				favoriteidArr.push(favoriteid);
 				
 				this.abotapi.abotRequest({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=del_collect_product',
+					url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=del_collect_product',
 					method: 'post',
 					data: {
 						userid : userInfo.userid,
@@ -301,7 +301,7 @@
 			deleteFavorite(xianmai_shangid,List){
 				var userInfo = this.abotapi.get_user_info();
 				this.abotapi.abotRequest({
-					url: this.abotapi.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/my_favorite',
+					url: this.abotapi.globalData.yanyubao_server_url + '/openapi/XianmaiShangData/my_favorite',
 					method: 'post',
 					data: {
 						userid: userInfo.userid,

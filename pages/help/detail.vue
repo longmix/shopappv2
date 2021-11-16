@@ -448,12 +448,12 @@
 			},
 			__get_img_from_weiduke: function (imgid, that){
 				//=====更新商户头条=================
-				//var url = this.abotapi.globalData.weiduke_server_url + '?g=Home&m=Yanyubao&a=yingxiao';//+ this.abotapi.globalData.sellerid;
+				//var url = this.abotapi.globalData.weiduke_server_url + '/?g=Home&m=Yanyubao&a=yingxiao';//+ this.abotapi.globalData.sellerid;
 				// var data = {
 				//   id:options.id,
 				//   action:'detail'
 				// };
-				var url = this.abotapi.globalData.weiduke_server_url + 'openapi/ArticleImgApi/article_detail';
+				var url = this.abotapi.globalData.weiduke_server_url + '/openapi/ArticleImgApi/article_detail';
 				var post_data = {
 					token: this.current_cms_token,
 					id: imgid,					
@@ -943,7 +943,7 @@
 					var action = 'add';
 				}
 				this.abotapi.abotRequest({
-					url: this.abotapi.globalData.weiduke_server_url + 'openapi/ArticleImgApi/dianzan_img',
+					url: this.abotapi.globalData.weiduke_server_url + '/openapi/ArticleImgApi/dianzan_img',
 					method: 'post',
 					data: {
 						userid:userInfo.userid,

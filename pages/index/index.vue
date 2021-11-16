@@ -1736,7 +1736,7 @@ export default {
 			
 			
 			this.abotapi.abotRequest({
-			    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
+			    url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=product_list',
 			    method: 'post',
 			    data: post_data,
 			    success: function (res) {
@@ -1845,7 +1845,7 @@ export default {
 			}
 			
 			this.abotapi.abotRequest({									
-			    url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_flash_img_list',
+			    url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=get_flash_img_list',
 			    method: 'post',
 			    data: {
 					sellerid:this.abotapi.globalData.default_sellerid,
@@ -1974,7 +1974,7 @@ export default {
 		get_weiduke_yanyubao_yingxiao_list:function(){
 			var that = this;
 			this.abotapi.abotRequest({
-				url : this.abotapi.globalData.weiduke_server_url + '?g=Home&m=Yanyubao&a=yingxiao',
+				url : this.abotapi.globalData.weiduke_server_url + '/?g=Home&m=Yanyubao&a=yingxiao',
 				method:'POST',
 				data: {
 					id: 'seller',
@@ -2036,7 +2036,7 @@ export default {
 			}
 			
 			that.abotapi.abotRequest({
-				url:that.abotapi.globalData.yanyubao_server_url+'?g=Yanyubao&m=ShopAppWxa&a=get_shop_icon_index',
+				url:that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=get_shop_icon_index',
 				data:{
 					sellerid:that.abotapi.globalData.default_sellerid,
 				},

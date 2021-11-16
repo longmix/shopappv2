@@ -111,7 +111,7 @@
 				that.abotapi.getColor();
 				
 				uni.request({
-					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_cata_level2',
+					url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=product_cata_level2',
 					method:'post',
 					data: {
 					 // 'cataid': 'fXiNUPaWV',
@@ -185,7 +185,7 @@
 			get_cataList:function(){
 				var that = this;
 				this.abotapi.abotRequest({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_cata_supplier',
+					url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=product_cata_supplier',
 					data: {
 					  sellerid: this.abotapi.globalData.default_sellerid,
 					  cataid: that.currType,
@@ -270,7 +270,7 @@
 				console.log(that.currType);
 				
 				this.abotapi.abotRequest({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_cata_supplier',
+					url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=product_cata_supplier',
 					data: {
 					  sellerid: this.abotapi.globalData.default_sellerid,
 					  cataid:that.currType,

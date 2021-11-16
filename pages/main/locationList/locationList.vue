@@ -112,7 +112,7 @@
 				//获取当前城市function
 				var that = this;
 				this.abotapi.abotRequest({
-				  url: this.abotapi.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/get_address_city',
+				  url: this.abotapi.globalData.yanyubao_server_url + '/openapi/XianmaiShangData/get_address_city',
 				  method: 'post',
 				  data: {
 					sellerid: this.abotapi.globalData.default_sellerid,

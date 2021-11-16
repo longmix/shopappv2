@@ -89,7 +89,7 @@
 			     }
 			     
 			     uni.request({
-			       url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=set_user_password',
+			       url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=set_user_password',
 			       data: {
 			         checkstr: userInfo.checkstr,
 			         userid: userInfo.userid,

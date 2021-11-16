@@ -306,7 +306,7 @@
 			
 			var userInfo = this.abotapi.get_user_info();
 			this.abotapi.abotRequest({
-			  url: this.abotapi.globalData.yanyubao_server_url + 'openapi/VideoLiveData/is_video_live_status',
+			  url: this.abotapi.globalData.yanyubao_server_url + '/openapi/VideoLiveData/is_video_live_status',
 			  data: {
 				  sellerid: this.abotapi.get_sellerid(),
 				  userid:userInfo.userid,
@@ -464,7 +464,7 @@
 						console.log('8888888888', res.tempFilePaths[0])
 						console.log('8888888888===>', that.abotapi.globalData.yanyubao_server_url);
 						uni.uploadFile({
-							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=upload_image_file_by_user',
+							url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=upload_image_file_by_user',
 							filePath: filepath,
 							name: 'file',
 							formData: {
@@ -657,7 +657,7 @@
 				
 				
 				this.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + 'openapi/VideoLiveData/set_plan_video_live',
+					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/VideoLiveData/set_plan_video_live',
 					data:livetips,
 					success(res) {
 						
@@ -707,7 +707,7 @@
 						if(that.zhibotype == 'weixin'){
 							
 							that.abotapi.abotRequest({
-								url: that.abotapi.globalData.yanyubao_server_url + 'openapi/VideoLiveData/video_wxa_broadcast_room',
+								url: that.abotapi.globalData.yanyubao_server_url + '/openapi/VideoLiveData/video_wxa_broadcast_room',
 								method: 'POST',
 								data:{
 									userid: userInfo.userid,
@@ -745,7 +745,7 @@
 				var userInfo = this.abotapi.get_user_info();
 
 				this.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + 'openapi/VideoLiveData/get_video_wxa_live_goods_list',
+					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/VideoLiveData/get_video_wxa_live_goods_list',
 					method: 'post',
 					data: {
 						sellerid: that.abotapi.globalData.default_sellerid,

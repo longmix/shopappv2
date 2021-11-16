@@ -614,7 +614,7 @@
 				// #endif
 				
 				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=get_user_info',
+					url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopApp&a=get_user_info',
 					data: post_data,
 					success: function(res) {
 						console.log('ddd', res);
@@ -671,7 +671,7 @@
 				}
 
 				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_shop_icon_usercenter',
+					url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=get_shop_icon_usercenter',
 					data: {
 						sellerid: that.abotapi.globalData.default_sellerid,
 					},

@@ -859,7 +859,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 				else if(that.order_type_001 == 'xianmaishang'){
 					
 					that.abotapi.abotRequest({
-					  url: that.abotapi.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/get_shang_detail',
+					  url: that.abotapi.globalData.yanyubao_server_url + '/openapi/XianmaiShangData/get_shang_detail',
 					  data: {
 					     sellerid:that.abotapi.get_sellerid(),
 						 xianmai_shangid: that.order_type_001_xianmaishang_data.xianmaishangid,
@@ -891,7 +891,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 					console.log('请求余额和赠款信息');
 					
 					that.abotapi.abotRequest({
-					  url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
+					  url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=get_user_info',
 					  data: {
 					    sellerid: that.abotapi.get_sellerid(),
 					    checkstr: userInfo.checkstr,
@@ -1001,7 +1001,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 						
 								  
 				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_queren',
+					url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=order_queren',
 					data: data_params,
 					success: function (res) {
 						console.log("ORDER_QUEREN_res",res);
@@ -1189,7 +1189,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 						
 							     
 				that.abotapi.abotRequest({
-				  url: that.abotapi.globalData.o2owaimai_server_url + 'openapi/PublicData/get_option_list',
+				  url: that.abotapi.globalData.o2owaimai_server_url + '/openapi/PublicData/get_option_list',
 				  data: {
 				    merchantid: that.order_type_001_xianmaishang_data.xianmaishangid,
 				  },
@@ -1205,7 +1205,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 				    var util = util;
 				    thats.abotapi.abotRequest({
 							
-				      url: thats.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_list',
+				      url: thats.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=address_list',
 				      data: {
 				        checkstr: userInfo.checkstr,
 				        userid: userInfo.userid,
@@ -1479,7 +1479,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 				var that = this;
 				var userInfo = this.abotapi.get_user_info();
 				that.abotapi.abotRequest({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_list',
+					url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=address_list',
 					data: {
 						checkstr: userInfo.checkstr,
 				        userid:userInfo.userid,
@@ -1652,7 +1652,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 				}
 				
 				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_add',
+					url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=order_add',
 					data: data_orderAdd,
 					success: function (res) {
 						console.log("res======",res);
@@ -2273,7 +2273,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 				}
 				
 				that.abotapi.abotRequest({
-					url: this.abotapi.globalData.yanyubao_server_url + 'openapi/OrderingRedpackageData/get_my_ordering_redpackge_num',
+					url: this.abotapi.globalData.yanyubao_server_url + '/openapi/OrderingRedpackageData/get_my_ordering_redpackge_num',
 					data: post_data,
 					success: function (res) {
 						console.log('sssss', res)

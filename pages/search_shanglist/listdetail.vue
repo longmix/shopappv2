@@ -208,7 +208,7 @@
 			get_gundong_img:function(){
 				var that = this;
 				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_flash_ad_list',
+					url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=get_flash_ad_list',
 					method: 'post',
 					data: {
 						sellerid:that.abotapi.globalData.default_sellerid,
@@ -396,7 +396,7 @@
 			yingxiao:function(){
 				var that = this;
 				uni.request({
-					url : this.abotapi.globalData.weiduke_server_url + '?g=Home&m=Yanyubao&a=yingxiao',
+					url : this.abotapi.globalData.weiduke_server_url + '/?g=Home&m=Yanyubao&a=yingxiao',
 					method:'POST',
 					data: {
 						id: 'seller',
@@ -438,7 +438,7 @@
 			get_shop_icon_index:function(){
 				var that = this;
 				uni.request({
-					url:this.abotapi.globalData.yanyubao_server_url+'?g=Yanyubao&m=ShopAppWxa&a=get_shop_icon_index',
+					url:this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=get_shop_icon_index',
 					method:'POST',
 					header:{'Content-Type': 'application/x-www-form-urlencoded'},
 					data:{

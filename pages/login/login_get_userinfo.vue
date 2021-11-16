@@ -159,7 +159,7 @@
 						
 						
 						that.abotapi.abotRequest({
-							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=wxa_get_userinfo',
+							url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=wxa_get_userinfo',
 							data: post_data,
 							success: function(res) {
 								console.log('一键获取头像和昵称完成',  res);

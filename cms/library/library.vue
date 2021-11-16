@@ -70,7 +70,7 @@
 				//uni.set_option_list_str(null, app.getColor());
 				  
 				this.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_cata_level2',
+					url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=product_cata_level2',
 					method: 'post',
 					data: {
 						// 'cataid': 'fXiNUPaWV',
@@ -97,7 +97,7 @@
 						
 							//首次进入显示商品列表
 							that.abotapi.abotRequest({
-								url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
+								url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=product_list',
 								method: 'post',
 								data: {
 									sellerid: that.abotapi.get_sellerid(),
@@ -218,7 +218,7 @@
 				}
 				else {
 					that.abotapi.abotRequest({
-						url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_cata_supplier',
+						url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=product_cata_supplier',
 						method: 'post',
 						data: {
 							sellerid: that.abotapi.get_sellerid(),
@@ -271,7 +271,7 @@
 				}
 				else {
 					that.abotapi.abotRequest({
-						url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
+						url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=product_list',
 						method: 'post',
 						data: {
 							sellerid: that.abotapi.get_sellerid(),
@@ -328,7 +328,7 @@
 			lower:function(e){
 				var that = this;
 				that.abotapi.abotRequest({
-					url: app.globalData.http_server + '?g=Yanyubao&m=ShopAppWxa&a=product_list',
+					url: app.globalData.http_server + '/?g=Yanyubao&m=ShopAppWxa&a=product_list',
 					method: 'post',
 					data: {
 						sellerid: app.get_sellerid(),

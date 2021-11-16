@@ -371,7 +371,7 @@
 			__ajax_address_save:function(post_data, callback_function){
 				var that = this;
 				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_save',
+					url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=address_save',
 					data: post_data,
 				    success: function (res) {
 						

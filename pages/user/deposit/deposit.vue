@@ -97,7 +97,7 @@
 					
 					
 					that001.abotapi.abotRequest({
-						url: that001.abotapi.globalData.yanyubao_server_url + 'openapi/OrderChongZhiData/get_chongzhi_rule_list',
+						url: that001.abotapi.globalData.yanyubao_server_url + '/openapi/OrderChongZhiData/get_chongzhi_rule_list',
 						method: 'post',
 						data: {
 							sellerid: that001.abotapi.get_sellerid(),
@@ -178,7 +178,7 @@
 			    };
 			
 			    uni.request({
-					url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_add',
+					url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=order_add',
 					method: 'post',
 					data: data_orderAdd,
 					header: {

@@ -188,7 +188,7 @@
 					}
 					
 					that.abotapi.abotRequest({
-						url: that.abotapi.globalData.yanyubao_server_url + 'openapi/ShareKoulingData/get_command_rule',
+						url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ShareKoulingData/get_command_rule',
 						data: {
 							userid: userid,
 							command_str: res.data,

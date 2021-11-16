@@ -1710,7 +1710,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					
 					
 					that001.abotapi.abotRequest({
-						url: that001.abotapi.globalData.yanyubao_server_url + 'openapi/NftCardData/scan_lbs_card_qrcode',
+						url: that001.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/scan_lbs_card_qrcode',
 						method: 'post',
 						data: post_data,
 						success: function (res) {
@@ -1766,7 +1766,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				}
 				
 				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + 'openapi/NftCardData/nft_card_jubao',
+					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/nft_card_jubao',
 					method: 'post',
 					data: post_data,
 					header: {

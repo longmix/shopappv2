@@ -140,7 +140,7 @@
 					return;
 				}
 				uni.request({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=cart_list',
+					url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=cart_list',
 					method: 'post',
 					data: {
 						userid: userInfo.userid,
@@ -307,7 +307,7 @@
 				var that = this;
 				var userInfo = this.abotapi.get_user_info();
 				uni.request({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=cart_del',
+					url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=cart_del',
 					method: 'post',
 					data: {
 						productid: this.productid,
@@ -352,7 +352,7 @@
 					content: '你确认移除吗',
 					success: function(res) {
 						res.confirm && wx.request({
-							url: app.globalData.http_server + '?g=Yanyubao&m=ShopAppWxa&a=cart_del',
+							url: app.globalData.http_server + '/?g=Yanyubao&m=ShopAppWxa&a=cart_del',
 							method: 'post',
 							data: {
 								productid: productid,
@@ -450,7 +450,7 @@
 				console.log(num);
 				var productid = that.cart_list[index].productid;
 				uni.request({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=cart_num_change',
+					url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=cart_num_change',
 					method: 'post',
 					data: {
 						productid: productid,
@@ -500,7 +500,7 @@
 				console.log(num);
 				var productid = that.cart_list[index].productid;
 				uni.request({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=cart_num_change',
+					url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=cart_num_change',
 					method: 'post',
 					data: {
 						productid: productid,

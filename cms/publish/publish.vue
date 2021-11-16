@@ -407,7 +407,7 @@
 				}
 						
 				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/add_faquan_text',
+					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/FaquanData/add_faquan_text',
 					data: data_params,
 					success: function (res) {
 						if (res.data.code != 1) {
@@ -463,7 +463,7 @@
 							})
 												
 							uni.uploadFile({
-								url: that.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/add_faquan_video_or_img',
+								url: that.abotapi.globalData.yanyubao_server_url + '/openapi/FaquanData/add_faquan_video_or_img',
 								filePath: that.video,
 								header: {
 									"Content-Type": "multipart/form-data",
@@ -560,7 +560,7 @@
 			      })
 
 			      uni.uploadFile({
-			        url: that.abotapi.globalData.yanyubao_server_url + 'openapi/FaquanData/add_faquan_video_or_img',
+			        url: that.abotapi.globalData.yanyubao_server_url + '/openapi/FaquanData/add_faquan_video_or_img',
 			        filePath: that.imgList[i],
 					fileType:'image',
 			        header: {
@@ -672,7 +672,7 @@
 			      var that = this;
 				  var userInfo = that.abotapi.get_user_info();
 			      wx.request({
-			        url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=order_finish',
+			        url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=order_finish',
 			        method: 'post',
 			        data: {
 			          orderid: that.orderid,

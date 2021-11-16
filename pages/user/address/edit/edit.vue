@@ -153,7 +153,7 @@
 			};
 			
 			uni.request({
-				url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_save',
+				url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=address_save',
 				data: {
 					action:'get',
 					checkstr: userInfo.checkstr,
@@ -203,7 +203,7 @@
 
 						//获取市级城市
 						uni.request({
-							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=region_get',
+							url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=region_get',
 							data: {
 								region_id: that.province
 							},
@@ -255,7 +255,7 @@
 					
 						//获取区地址
 						uni.request({
-							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=region_get',
+							url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=region_get',
 							data: {
 								region_id: that.city
 							},
@@ -301,7 +301,7 @@
 			
 			//获取省级城市
 			uni.request({
-				url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=region_get',
+				url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=region_get',
 				data: {
 					region_id: 1
 				},
@@ -360,7 +360,7 @@
 			    var region_Id = ++e.detail.value;
 			    console.log('123?',region_Id);
 			    uni.request({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=region_get',
+					url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=region_get',
 					data: {
 						region_id: region_Id,
 					},
@@ -421,7 +421,7 @@
 			    var region_id = city_name[--city_id].region_id;
 			    console.log('5214',region_id);
 			    uni.request({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=region_get',
+					url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=region_get',
 					data: {
 						region_id: region_id,
 					},
@@ -478,7 +478,7 @@
 				var region_id = qu_name[--qu_id].region_id;
 				console.log('123456',region_id);
 				uni.request({
-					url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=region_get',
+					url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=region_get',
 					data: {
 						region_id: region_id
 					},
@@ -549,7 +549,7 @@
 		      content: '你确认移除吗',
 		      success: function(res) {
 		        res.confirm && uni.request({
-		          url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_save',
+		          url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=address_save',
 		          data: {
 		            action: 'del',
 		            addressid: e.addressid,
@@ -602,7 +602,7 @@
 			var that = this;
 			var userInfo = this.abotapi.get_user_info();
 			uni.request({
-				url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=address_save',
+				url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=address_save',
 				header: {  
 			            "Content-Type": "application/x-www-form-urlencoded"  
 			          }, 

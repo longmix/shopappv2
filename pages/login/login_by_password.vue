@@ -240,13 +240,13 @@
 			
 			
 			    that.abotapi.abotRequest({
-			      url: this.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=get_tokenstr',
+			      url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopApp&a=get_tokenstr',
 			      success: function (res) {
 			        // console.log(res.data);
 			
 			        that.tokenstr = res.data.tokenstr;		
 			        //console.log(res.data.tokenstr);			
-					that.img_checkcode_url = that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=getverifycodeimg' + '&tokenstr=' + that.tokenstr
+					that.img_checkcode_url = that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=getverifycodeimg' + '&tokenstr=' + that.tokenstr
 			        // that.setData({
 			        //   img_checkcode_url: 
 			        // });
@@ -306,7 +306,7 @@
 				
 				
 				
-				var login_url = that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=login_by_password';
+				var login_url = that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopApp&a=login_by_password';
 				var post_data = { 
 						account: that.account,
 						password: that.password,
@@ -318,14 +318,14 @@
 				
 				//#ifdef MP-WEIXIN
 					//ShopAppWxa 里面增加了对 jscode的处理逻辑
-					login_url = that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=login_by_password';
+					login_url = that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=login_by_password';
 					
 					
 					
 				//#endif
 				
 				//#ifdef MP-ALIPAY
-					login_url = that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppMpAlipay&a=login_by_password';
+					login_url = that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppMpAlipay&a=login_by_password';
 					
 					if(that.login_data_from_wxa_or_alipay){
 						
@@ -448,7 +448,7 @@
 						
 						
 						that.abotapi.abotRequest({
-							 url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopApp&a=get_user_info',
+							 url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopApp&a=get_user_info',
 							 data: post_data,
 							 success: function (res) {
 								console.log('login_by_password=====>>>>>get_user_info===>>>>', res);
@@ -530,7 +530,7 @@
 						//console.log(e.detail.errMsg);return;
 					  
 						that.abotapi.abotRequest({
-							url: that.abotapi.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=wxa_get_userinfo',
+							url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=wxa_get_userinfo',
 							method: "POST",
 							dataType: 'json',
 							data: {
