@@ -1,6 +1,14 @@
 <template>
 	<view>
-		<view v-if="!zitidian_address ">
+		<view class="a-dikou" v-if="current_zitidian_data.global_status == 1 && current_zitidian_data.all_global_status == 0">
+			<view class="b-dikou">
+				<view>商品自提</view>
+			</view>
+			<switch class='d-dikou' @change="switch2Change()" />
+		</view>
+		<!--收货地址 -->
+		<block v-if="zitidian_status_flag == 0">
+			<view class="mt10 font_14" style="padding: 3%;">选择收货地址</view>
 			<view v-if="wxa_order_queren_hide_address != 1" style="border-bottom:1px dashed #e5e5e5;">
 				<view class="p_all bg_white mt10 font_14" v-if="addemt==0">
 					<view @click="goAddress()">
@@ -34,41 +42,47 @@
 				</view>
 			</view>
 
-		</view>
+		</block>
+		<block  v-else>
+			<!--商品自提    =======  模态框 -->
+			<view class="mt10 font_14" style="padding: 3%;">选择自提点</view>
+			<view style="border-bottom:1px dashed #e5e5e5;">
+				<view class="show_modal_mask" v-if="showShangModal" @tap="showShangModal=false"></view>
+				<view class="show_modal_pop" v-if="showShangModal">
+					<view v-for="(item,index) in paixu_shanglist" @tap="show_paixu_list(index)" style="border-bottom:1px dashed #e5e5e5;">
+						<view class="df_1 c6 show_paixu" style="padding: 5rpx 20rpx;">
+							<view style=''>
+								<view class="l_h20" style="font-size:25rpx;margin-right:56rpx;">{{item.value_arr.zitidian_name}}</view>
+								<view class="l_h20 " style="font-size:25rpx;">{{item.key}}</view>
+							</view>
+							<view class="l_h20 mt5" style="font-size:20rpx;margin-top:22rpx;">
+								{{item.value_arr.zitidian_address}}
+							</view>
+						</view>
+					</view>
+				</view>
+				<view class="p_all bg_white mt10 font_14" @tap="showShangModal = true">
+					<view class="df">
+						<view class="df_1 c6" style="padding: 5rpx 20rpx;">
+							<view style=''>
+								<view class="l_h20" style="font-size:40rpx;margin-right:56rpx;">{{paixu_shanglist[0].value_arr.zitidian_name}}</view>
+								<view class="l_h20 " style="font-size:25rpx;">{{paixu_shanglist[0].key}}</view>
+							</view>
+							<view class="l_h20 mt5" style="font-size:32rpx;margin-top:22rpx;">
+								{{paixu_shanglist[0].value_arr.zitidian_address}}
+							</view>
+						</view>
+						<view>
+							<image class="x_rights" src="../../static/img/x_right.png"></image>
+						</view>
+						
+					</view>
+				</view>
+			</view>
+			
+		</block>
 		
-		<view style="border-bottom:1px dashed #e5e5e5;" v-else >
-			<view class="show_modal_mask" v-if="showShangModal" @tap="showShangModal=false"></view>
-			<view class="show_modal_pop" v-if="showShangModal">
-				<view v-for="(item,index) in paixu_shanglist" @tap="show_paixu_list(index)" style="border-bottom:1px dashed #e5e5e5;">
-					<view class="df_1 c6 show_paixu" style="padding: 5rpx 20rpx;">
-						<view style=''>
-							<view class="l_h20" style="font-size:25rpx;margin-right:56rpx;">商家</view>
-							<view class="l_h20 " style="font-size:25rpx;">{{item.key}}</view>
-						</view>
-						<view class="l_h20 mt5" style="font-size:20rpx;margin-top:22rpx;">
-							{{item.value_arr.zitidian_address}}
-						</view>
-					</view>
-				</view>
-			</view>
-			<view class="p_all bg_white mt10 font_14" @tap="showShangModal = true">
-				<view class="df">
-					<view class="df_1 c6" style="padding: 5rpx 20rpx;">
-						<view style=''>
-							<view class="l_h20" style="font-size:40rpx;margin-right:56rpx;">商家</view>
-							<view class="l_h20 " style="font-size:25rpx;">{{paixu_shanglist[0].key}}</view>
-						</view>
-						<view class="l_h20 mt5" style="font-size:32rpx;margin-top:22rpx;">
-							{{paixu_shanglist[0].value_arr.zitidian_address}}
-						</view>
-					</view>
-					<view>
-						<image class="x_rights" src="../../static/img/x_right.png"></image>
-					</view>
-					
-				</view>
-			</view>
-		</view>
+		
 		
 
 		<view class="p_all bg_white df item" v-for="(item,key) in productData" :key="key" v-if="order_type_001 == 'shopmall'">
@@ -165,12 +179,7 @@
 				<switch class='d-dikou' :checked="isSwitch2" @change="switch1Change($event)" data-type="2" />
 			</view>
 			
-			<view class="a-dikou" v-if="current_zitidian_data == 1">
-				<view class="b-dikou">
-					<view>商品自提</view>
-				</view>
-				<switch class='d-dikou' @change="switch2Change()" />
-			</view>
+		
 			
 			<view v-if="orderredpackge_list.code == 1" class="a-redpackets">
 				<view class="b-redpackets">
@@ -396,11 +405,13 @@
 				
 				
 				//2021.11.15
-				zitidian_address:false,
+				zitidian_status_flag:0,
+				zitidian_status_type:false,
 				current_zitidian_data:0,
 				current_zitidian_list:null,
 				paixu_shanglist:null,
 				showShangModal:false,
+				
 				
 			};
 		},
@@ -537,7 +548,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 			if(options.order_type_001){
 				that.order_type_001 = options.order_type_001;
 			}
-			
+			console.log('5555555555555555 参数：',options.order_type_001);
 			//根据不同的类型带的参数
 			if(that.order_type_001 == 'shopmall'){
 				if(options.productid){
@@ -1654,6 +1665,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 							that.orderno = res.data.orderno;
 							
 							if(that.order_type_001 == 'shopmall'){
+								
 								//普通订单的支付请求
 								var url_to_payment = '/pages/pay/payment/payment?orderid=' + that.orderid;
 								url_to_payment += '&balance_zengsong_dikou=' + that.balance_zengsong_dikou;
@@ -1668,11 +1680,19 @@ extraData = 'xxxxxxxxxxxxxxx'
 									that.__cuxiao_aipingou_add_order_option(url_to_payment);
 									
 									return;
-								}								
+								}
+								else if(that.zitidian_status_flag == 1){
+									that.__zitidian_status_handle(url_to_payment);
+									return;
+								}
 								
 								uni.redirectTo({
 									url: url_to_payment,
 								})
+								
+								
+								
+								
 							}
 							else if(that.order_type_001 == 'xianmaishang'){
 								that.order_add_new_option_by_key_value();
@@ -1734,6 +1754,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 			    
 				
 			    var order_add_new_option_by_key_value = [];
+				
 			
 			    if(is_waimai == 1){
 					if(!that.order_type_001_xianmaishang_data.waimai_rmb && (that.order_type_001_xianmaishang_data.waimai_rmb != 0)){
@@ -1746,8 +1767,8 @@ extraData = 'xxxxxxxxxxxxxxx'
 						{ "key": "xianmai_order_type", "value": that.order_type_001_xianmaishang_data.is_waimai }, 
 						{ "key": "waimai_buyer_latitude", "value": that.order_type_001_xianmaishang_data.waimai_buyer_latitude }, 
 						{ "key": "waimai_buyer_longitude", "value": that.order_type_001_xianmaishang_data.waimai_buyer_longitude }, 
-						{ "key": "xianmai_waimai_peisong_price", "value": that.order_type_001_xianmaishang_data.waimai_rmb }),
-						{ "key": "zitidian_list", "value": that.paixu_shanglist[0] };
+						{ "key": "xianmai_waimai_peisong_price", "value": that.order_type_001_xianmaishang_data.waimai_rmb });
+						
 			    }
 				else {
 			      order_add_new_option_by_key_value.push(
@@ -2004,7 +2025,13 @@ extraData = 'xxxxxxxxxxxxxxx'
 			
 				var that = this;
 				
-				that.zitidian_address = !that.zitidian_address;
+				that.zitidian_status_type = !that.zitidian_status_type;
+				if(that.zitidian_status_type == false){
+					that.zitidian_status_flag = 0;
+				}
+				if(that.zitidian_status_type == true){
+					that.zitidian_status_flag = 1;
+				}
 				
 			},
 			get_zitidian_list:function(){
@@ -2019,7 +2046,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 				
 				
 				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ZitiData/get_zitidian_list',
+					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ZitidianData/get_zitidian_list',
 					method: 'post',
 					data: post_data,
 					success: function (res) {
@@ -2027,6 +2054,11 @@ extraData = 'xxxxxxxxxxxxxxx'
 						that.current_zitidian_data = res.data.data;
 						that.current_zitidian_list = res.data.zitidian_list;
 						console.log('00000000000000000000000000======>>>>>',that.current_zitidian_list)
+						
+						if(that.current_zitidian_data.global_status == 1 && that.current_zitidian_data.all_global_status == 1){
+							that.zitidian_status_flag  = 1;
+						}
+						
 						
 						that.jisuan_juli(that.current_zitidian_list);
 						
@@ -2467,9 +2499,42 @@ extraData = 'xxxxxxxxxxxxxxx'
 				
 				//关闭弹层
 				this.$refs.openAlertZhongjiang.Close();
-			}
+			},
+			__zitidian_status_handle:function(url_to_payment){
+				var that = this;
+				
+				var userInfo = that.abotapi.get_user_info();
+				
+				
+				var new_order_option = {
+					userid: userInfo.userid,
+					checkstr: userInfo.checkstr,
+					sellerid: that.abotapi.get_sellerid(),
+					orderid: that.orderid,
+					zitidian_key:that.paixu_shanglist[0].key,
+				};
+				
+				
+				that.abotapi.abotRequest({
+					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ZitidianData/new_order_option',
+					data: new_order_option,
+					success: function (res222) {
+						console.log("res======", res222);
+						
+						uni.redirectTo({
+							url:url_to_payment,
+						}) 
+					},
+				});
+					
+				
+			},
 			
-		}
+			
+		},
+		
+		
+		
 	}
 </script>
 
