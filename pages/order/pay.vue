@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="a-dikou" v-if="current_zitidian_data.global_status == 1 && current_zitidian_data.all_global_status == 0">
+		<view class="a-dikou" v-if="current_zitidian_data && current_zitidian_data.global_status == 1 && current_zitidian_data.all_global_status == 0">
 			<view class="b-dikou">
 				<view>商品自提</view>
 			</view>
@@ -8,8 +8,10 @@
 		</view>
 		<!--收货地址 -->
 		<block v-if="zitidian_status_flag == 0">
-			<view class="mt10 font_14" style="padding: 3%;">选择收货地址</view>
-			<view v-if="wxa_order_queren_hide_address != 1" style="border-bottom:1px dashed #e5e5e5;">
+			<view v-if="wxa_order_queren_hide_address != 1"
+				class="mt10 font_14" style="padding: 3%;">选择收货地址</view>
+			<view v-if="wxa_order_queren_hide_address != 1" 
+				style="border-bottom:1px dashed #e5e5e5;">
 				<view class="p_all bg_white mt10 font_14" v-if="addemt==0">
 					<view @click="goAddress()">
 						<view class="df">
@@ -404,11 +406,12 @@
 				
 				
 				
-				//2021.11.15
+				//2021.11.15 商品自提相关
 				zitidian_status_flag:0,
 				zitidian_status_type:false,
-				current_zitidian_data:0,
+				current_zitidian_data: null,
 				current_zitidian_list:null,
+				
 				paixu_shanglist:null,
 				showShangModal:false,
 				
@@ -2051,9 +2054,17 @@ extraData = 'xxxxxxxxxxxxxxx'
 					data: post_data,
 					success: function (res) {
 						
+						if(res.data.code != 1){
+							return;
+						}
+						
 						that.current_zitidian_data = res.data.data;
 						that.current_zitidian_list = res.data.zitidian_list;
 						console.log('00000000000000000000000000======>>>>>',that.current_zitidian_list)
+						
+						if(!that.current_zitidian_list){
+							return;
+						}
 						
 						if(that.current_zitidian_data.global_status == 1 && that.current_zitidian_data.all_global_status == 1){
 							that.zitidian_status_flag  = 1;

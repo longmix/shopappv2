@@ -7,36 +7,62 @@
 		
 		
 		<block v-if="content_type == 'cms'">
-		<view class='wenzhang_detail'>
-			
-			
-			
-			
-			
-<!-- #ifdef MP-ALIPAY -->			
-			<rich-text :nodes="index_rich_html_content"></rich-text>
-<!-- #endif -->
-<!-- #ifdef H5 -->
-			<view v-html="index_rich_html_content" ></view>
-<!-- #endif -->
-<!-- #ifndef MP-ALIPAY | H5 -->
-			
-			<!-- 富媒体组件 2021.1.18. -->
-			<!-- rich-text  和 v-html 都有各自的优缺点 -->
-			<u-parse v-if="index_rich_html_content" 
-				:content="index_rich_html_content" 
-				@preview="index_rich_html_preview_image" 
-				@navigate="index_rich_html_click_link" />
-<!-- #endif -->
-			
-		</view>
+			<view class='wenzhang_detail'>
+				
+				
+				
+				
+				
+	<!-- #ifdef MP-ALIPAY -->			
+				<rich-text :nodes="index_rich_html_content"></rich-text>
+	<!-- #endif -->
+	<!-- #ifdef H5 -->
+				<view v-html="index_rich_html_content" ></view>
+	<!-- #endif -->
+	<!-- #ifndef MP-ALIPAY | H5 -->
+				
+				<!-- 富媒体组件 2021.1.18. -->
+				<!-- rich-text  和 v-html 都有各自的优缺点 -->
+				<u-parse v-if="index_rich_html_content" 
+					:content="index_rich_html_content" 
+					@preview="index_rich_html_preview_image" 
+					@navigate="index_rich_html_click_link" />
+	<!-- #endif -->
+				
+			</view>
 		</block>
 		
 		<block v-if="content_type == 'pic'">
-		<view>
-			<image :src="content_pic_image" :data-url="content_pic_url" mode="widthFix" style="width:100%" @tap="content_pic_click"></image>
-		</view>
+			<view>
+				<image :src="content_pic_image" :data-url="content_pic_url" mode="widthFix" style="width:100%" @tap="content_pic_click"></image>
+			</view>
 		</block>
+		
+		
+		<!-- 客服功能按钮 -->
+		<view v-if="usercenter_contact_status == 1">
+			<!-- #ifdef MP-WEIXIN -->
+				<view v-if="usercenter_contact_btn_type == 0">
+					<button type="default" style="width: 80%;margin-top: 10rpx;"
+						:style="{backgroundColor:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}" 
+						open-type="contact" show-message-card="usercenter_contact_wxa_extend == 1 ? 'true' : 'false'" 
+						:send-message-title="usercenter_contact_wxa_title"  :send-message-path="usercenter_contact_wxa_path" 
+						:send-message-img="usercenter_contact_wxa_img" >{{usercenter_contact_btn_text}}</button>
+				</view>
+				<view v-if="usercenter_contact_btn_type == 1">
+					<button type="default" style="width: 80%;padding: 0;border: 0;" 
+						open-type="contact" show-message-card="usercenter_contact_wxa_extend == 1 ? 'true' : 'false'"
+						:send-message-title="usercenter_contact_wxa_title"  :send-message-path="usercenter_contact_wxa_path" 
+						:send-message-img="usercenter_contact_wxa_img" plain="true">
+						<image style="width: 100%;" :src="usercenter_contact_btn_img" mode="widthFix"></image>
+						</button>
+				</view>
+			<!-- #endif -->
+			
+			
+		</view>
+		
+		
 		
 		<view class="list" v-if="wxa_show_latest_product_in_welcome_page == 1">
 		    <block v-for="item in shopList" :key="item">
@@ -135,6 +161,15 @@ export default {
 			http_data_cache_id:null,
 			current_options:null,
 			
+			//客服功能相关
+			usercenter_contact_status:0,
+			usercenter_contact_btn_type:0,
+			usercenter_contact_btn_text:'',
+			usercenter_contact_btn_img:'',
+			usercenter_contact_wxa_extend:0,
+			usercenter_contact_wxa_title:'',
+			usercenter_contact_wxa_path:'',
+			usercenter_contact_wxa_img:'',
 			
 		};
 	},	
@@ -371,6 +406,41 @@ export default {
 			  
 			    that.wxa_share_img = option_list.wxa_share_img;
 			}
+			
+			
+			
+			if(option_list.usercenter_contact_status){
+				that.usercenter_contact_status = option_list.usercenter_contact_status;
+				
+				if(option_list.usercenter_contact_btn_type){
+					that.usercenter_contact_btn_type = option_list.usercenter_contact_btn_type;
+				}
+				if(option_list.usercenter_contact_btn_text){
+					that.usercenter_contact_btn_text = option_list.usercenter_contact_btn_text;
+				}
+				if(option_list.usercenter_contact_btn_img){
+					that.usercenter_contact_btn_img = option_list.usercenter_contact_btn_img;
+				}
+				if(option_list.usercenter_contact_wxa_extend){
+					that.usercenter_contact_wxa_extend = option_list.usercenter_contact_wxa_extend;
+					
+					if(option_list.usercenter_contact_wxa_title){
+						that.usercenter_contact_wxa_title = option_list.usercenter_contact_wxa_title;
+					}
+					if(option_list.usercenter_contact_wxa_path){
+						that.usercenter_contact_wxa_path = option_list.usercenter_contact_wxa_path;
+					}
+					if(option_list.usercenter_contact_wxa_img){
+						that.usercenter_contact_wxa_img = option_list.usercenter_contact_wxa_img;
+					}
+					
+					
+				}
+				
+			}
+			
+			
+			
 			
 		    if(this.get_default_imgid && option_list && option_list.wxa_default_imgid_in_welcome_page){
 		      this.__get_img_from_weiduke(option_list.wxa_default_imgid_in_welcome_page, this);

@@ -55,8 +55,8 @@
 		</view>
 
 		<!-- 会员特权说明弹层 -->
-		<view class="wx-popup" :hidden="explainFlag">
-			<view class='popup-container'>
+		<view class="wx-popup" v-if="hidden_explainFlag == 0">
+			<view class='wx-popup-container'>
 				<view class="wx-popup-title">会员特权</view>
 				<view class="wx-popup-subtitle">{{fenxiao_info.level_name}}</view>
 				<view class="wx-popup-con">
@@ -151,21 +151,27 @@
 			 mode="widthFix"></image>
 		</view>
 		
+		<!-- 客服功能按钮 -->
 		<view v-if="usercenter_contact_status == 1">
-			<view v-if="usercenter_contact_btn_type == 0">
-				<button type="default" :style="{backgroundColor:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}" style="width: 80%;margin-top: 10rpx;"
-					open-type="contact" show-message-card="usercenter_contact_wxa_extend == 1 ? 'true' : 'false'" 
-					:send-message-title="usercenter_contact_wxa_title"  :send-message-path="usercenter_contact_wxa_path" 
-					:send-message-img="usercenter_contact_wxa_img" >{{usercenter_contact_btn_text}}</button>
-			</view>
-			<view v-if="usercenter_contact_btn_type == 1">
-				<button type="default" style="width: 80%;padding: 0;border: 0;" 
-					open-type="contact" show-message-card="usercenter_contact_wxa_extend == 1 ? 'true' : 'false'"
-					:send-message-title="usercenter_contact_wxa_title"  :send-message-path="usercenter_contact_wxa_path" 
-					:send-message-img="usercenter_contact_wxa_img" plain="true">
-					<image style="width: 100%;" :src="usercenter_contact_btn_img" mode="widthFix"></image>
-					</button>
-			</view>
+			<!-- #ifdef MP-WEIXIN -->
+				<view v-if="usercenter_contact_btn_type == 0">
+					<button type="default" style="width: 80%;margin-top: 10rpx;"
+						:style="{backgroundColor:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}" 
+						open-type="contact" show-message-card="usercenter_contact_wxa_extend == 1 ? 'true' : 'false'" 
+						:send-message-title="usercenter_contact_wxa_title"  :send-message-path="usercenter_contact_wxa_path" 
+						:send-message-img="usercenter_contact_wxa_img" >{{usercenter_contact_btn_text}}</button>
+				</view>
+				<view v-if="usercenter_contact_btn_type == 1">
+					<button type="default" style="width: 80%;padding: 0;border: 0;" 
+						open-type="contact" show-message-card="usercenter_contact_wxa_extend == 1 ? 'true' : 'false'"
+						:send-message-title="usercenter_contact_wxa_title"  :send-message-path="usercenter_contact_wxa_path" 
+						:send-message-img="usercenter_contact_wxa_img" plain="true">
+						<image style="width: 100%;" :src="usercenter_contact_btn_img" mode="widthFix"></image>
+						</button>
+				</view>
+			<!-- #endif -->
+			
+			
 		</view>
 
 		<!-- 工具栏 -->
@@ -312,7 +318,7 @@
 				wxa_hidden_order_index_in_usercenter: 0,
 				wxa_show_levelname_in_usercenter: 0,
 
-				explainFlag: 1, //会员说明显示控制
+				hidden_explainFlag: 1, //会员说明显示控制
 				scrollLeft: '',
 				//shop_info_from_server: ''
 				wxa_shop_operation_logo_url: '',
@@ -330,15 +336,15 @@
 				wxa_hide_balance_in_usercenter_icon:'',
 				wxa_hide_score_in_usercenter_icon:'',
 				
-				
+				//客服功能相关
 				usercenter_contact_status:0,
 				usercenter_contact_btn_type:0,
-				usercenter_contact_btn_text:0,
-				usercenter_contact_btn_img:0,
+				usercenter_contact_btn_text:'',
+				usercenter_contact_btn_img:'',
 				usercenter_contact_wxa_extend:0,
-				usercenter_contact_wxa_title:0,
-				usercenter_contact_wxa_path:0,
-				usercenter_contact_wxa_img:0,
+				usercenter_contact_wxa_title:'',
+				usercenter_contact_wxa_path:'',
+				usercenter_contact_wxa_img:'',
 			}
 		},
 
@@ -413,8 +419,7 @@
 			//更新账号余额等信息
 			this.get_current_userinfo();
 
-			that.abotapi.set_option_list_str(that,
-				function(that001, option_list) {
+			that.abotapi.set_option_list_str(that, function(that001, option_list) {
 
 					if (option_list.wxa_show_recharge_button_in_usercenter) {
 						that.wxa_show_recharge_button_in_usercenter = option_list.wxa_show_recharge_button_in_usercenter;
@@ -437,28 +442,34 @@
 
 					if(option_list.usercenter_contact_status){
 						that.usercenter_contact_status = option_list.usercenter_contact_status;
+						
+						if(option_list.usercenter_contact_btn_type){
+							that.usercenter_contact_btn_type = option_list.usercenter_contact_btn_type;
+						}
+						if(option_list.usercenter_contact_btn_text){
+							that.usercenter_contact_btn_text = option_list.usercenter_contact_btn_text;
+						}
+						if(option_list.usercenter_contact_btn_img){
+							that.usercenter_contact_btn_img = option_list.usercenter_contact_btn_img;
+						}
+						if(option_list.usercenter_contact_wxa_extend){
+							that.usercenter_contact_wxa_extend = option_list.usercenter_contact_wxa_extend;
+							
+							if(option_list.usercenter_contact_wxa_title){
+								that.usercenter_contact_wxa_title = option_list.usercenter_contact_wxa_title;
+							}
+							if(option_list.usercenter_contact_wxa_path){
+								that.usercenter_contact_wxa_path = option_list.usercenter_contact_wxa_path;
+							}
+							if(option_list.usercenter_contact_wxa_img){
+								that.usercenter_contact_wxa_img = option_list.usercenter_contact_wxa_img;
+							}
+							
+							
+						}
+						
 					}
-					if(option_list.usercenter_contact_btn_type){
-						that.usercenter_contact_btn_type = option_list.usercenter_contact_btn_type;
-					}
-					if(option_list.usercenter_contact_btn_text){
-						that.usercenter_contact_btn_text = option_list.usercenter_contact_btn_text;
-					}
-					if(option_list.usercenter_contact_btn_img){
-						that.usercenter_contact_btn_img = option_list.usercenter_contact_btn_img;
-					}
-					if(option_list.usercenter_contact_wxa_extend){
-						that.usercenter_contact_wxa_extend = option_list.usercenter_contact_wxa_extend;
-					}
-					if(option_list.usercenter_contact_wxa_title){
-						that.usercenter_contact_wxa_title = option_list.usercenter_contact_wxa_title;
-					}
-					if(option_list.usercenter_contact_wxa_path){
-						that.usercenter_contact_wxa_path = option_list.usercenter_contact_wxa_path;
-					}
-					if(option_list.usercenter_contact_wxa_img){
-						that.usercenter_contact_wxa_img = option_list.usercenter_contact_wxa_img;
-					}
+					
 					
 					
 					that.default_copyright_text = that.abotapi.globalData.default_copyright_text;
@@ -811,13 +822,14 @@
 
 			},
 			showMemberExplain() {
+				console.log('this.fenxiao_info.level_memo ===>>> ', this.fenxiao_info.level_memo);
 				if (!this.fenxiao_info.level_memo) {
 					return;
 				}
-				this.explainFlag = 0
+				this.hidden_explainFlag = 0
 			},
 			hideMemberExplain() {
-				this.explainFlag = 1;
+				this.hidden_explainFlag = 1;
 			},
 			toPageIndex: function(e) {
 				
@@ -1149,6 +1161,7 @@
 		border-radius: 10rpx;
 	}
 
+	/* 弹窗相关 Begin */
 	.wx-popup {
 		position: absolute;
 		left: 0;
@@ -1158,10 +1171,10 @@
 		background: rgba(0, 0, 0, .5);
 	}
 
-	.popup-container {
+	.wx-popup-container {
 		position: absolute;
 		left: 50%;
-		top: 50%;
+		top: 35%;
 
 		width: 80%;
 		max-width: 600rpx;
@@ -1171,6 +1184,7 @@
 		transform: translate(-50%, -50%);
 		overflow: hidden;
 		background: #fff;
+		z-index: 999;
 	}
 
 	.wx-popup-title {
@@ -1217,6 +1231,8 @@
 		text-align: left;
 		white-space: pre-line;
 	}
+	
+	/* 弹窗相关 End  */
 
 	.icon-jump {
 		width: 120rpx;
