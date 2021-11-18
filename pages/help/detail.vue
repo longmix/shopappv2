@@ -45,13 +45,23 @@
 					<scroll-view  scroll-y='true'>
 						<!-- <view v-html="info" ></view> -->
 						
-						
-<!-- #ifdef MP-ALIPAY -->			
-					<rich-text :nodes="article_info"></rich-text>
-<!-- #endif -->				
-<!-- #ifndef MP-ALIPAY -->
-					<rich-text :nodes="article_info|formatRichText"></rich-text>
-<!-- #endif -->						
+				
+				<!-- #ifdef MP-ALIPAY -->
+							<rich-text :nodes="content_array_html"></rich-text>
+				<!-- #endif -->
+				
+				<!-- #ifdef H5 -->
+							<view v-html="content_v_html" ></view>
+				<!-- #endif -->
+				
+				<!-- #ifndef MP-ALIPAY | H5 -->
+							<!-- 富媒体组件 2021.1.18. -->
+							<!-- rich-text  和 v-html 都有各自的优缺点 -->
+							<u-parse v-if="content_html" 
+								:content="content_html" 
+								@preview="index_rich_html_preview_image" 
+								@navigate="index_rich_html_click_link" />
+				<!-- #endif -->
 						
 						
 					</scroll-view>
@@ -194,11 +204,15 @@
 
 	import abotTabBar from '@/components/abot-tabbar.vue'
 	
+	import uParse from '@/components/gaoyia-parse/parse.vue'
+	
+	import md5 from '../../common/md5.min.js'
 	
 	export default {
 		components:{
 			abotshare,
-			abotTabBar
+			abotTabBar,
+			uParse
 		},
 		data() {
 			return {
@@ -231,7 +245,18 @@
 				inputValue:'',
 				
 				comment_num:'',
-				article_info:'',
+				
+				content_html:'<h1></h1>',	//文章的html内容
+				
+				content_v_html:'',	//文章的html内容（经过Filter过滤的，在H5中使用
+				content_array_html:'',//文章的html内容（经过分析，转成array的。
+				
+				
+				//2021.10.28. 增加缓存机制
+				http_data_cache_id:null,
+				current_options:null,
+				
+				
 				
 				publishtype:'',
 				is_Focus:false,
@@ -267,6 +292,9 @@
 				       "iconPath": '../../static/analyse.png',
 				       "selectedIconPath": '../../static/analyse-select.png'
 				}],
+				
+				
+				
 			}
 		},
 		
@@ -283,7 +311,10 @@
 		onLoad: function (options) {
 		  
 			console.log('options==>>',options);
+			
 			var that = this
+			
+			this.current_options = options;
 			
 		    var options_str = '';
 			
@@ -365,6 +396,34 @@
 		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
 		onPullDownRefresh: function () {
 			var that = this;
+			
+			//如果没有缓存ID，则直接刷新
+			if(!that.http_data_cache_id){
+				
+				that.__load_welcome_page_date(that.current_options);
+				
+				uni.stopPullDownRefresh();
+				return;
+			}
+			
+			//如果有缓存，则删除后再刷新
+			uni.removeStorage({
+				key: 'help_detail_data_cache_' + that.http_data_cache_id,
+				success: (res) => {
+					
+					that.__get_img_from_weiduke(that.wz_id, that);
+					
+					uni.stopPullDownRefresh();
+				},
+				fail: () => {
+					uni.stopPullDownRefresh();
+				}
+			})
+			
+			
+			
+			
+			
 			
 			console.log('onPullDownRefresh=====>>>>>');
 			
@@ -448,17 +507,17 @@
 			},
 			__get_img_from_weiduke: function (imgid, that){
 				//=====更新商户头条=================
-				//var url = this.abotapi.globalData.weiduke_server_url + '/?g=Home&m=Yanyubao&a=yingxiao';//+ this.abotapi.globalData.sellerid;
-				// var data = {
-				//   id:options.id,
-				//   action:'detail'
-				// };
-				var url = this.abotapi.globalData.weiduke_server_url + '/openapi/ArticleImgApi/article_detail';
+				
+				
+				
+
+				var post_url = this.abotapi.globalData.weiduke_server_url + '/openapi/ArticleImgApi/article_detail';
 				var post_data = {
 					token: this.current_cms_token,
 					id: imgid,					
 					sellerid:this.abotapi.globalData.default_sellerid,
 				};
+				
 				
 				if(this.abotapi.get_current_openid()){
 					post_data.openid = this.abotapi.get_current_openid();
@@ -469,86 +528,132 @@
 					post_data.userid = userInfo.userid;
 				}
 				
+				//====== 缓存机制 Begin ==============
+				that.http_data_cache_id = md5(post_url + JSON.stringify(post_data));
+				
+				console.log('md5 ===>>> ', that.http_data_cache_id);
+				
+				var http_data = uni.getStorageSync('help_detail_data_cache_' + that.http_data_cache_id);
+				if(http_data){
+					that.__handle_http_response_data(http_data);
+					
+					return;
+				}
+				
+				uni.showLoading({
+				  title: '数据加载中……',
+				});
+				//====== 缓存机制 End ==============
+				
 				var cbSuccess = function (res) {
 					
-					//文章内容请求完成，马上请求评论列表
-					that.get_remark_list();
+					uni.hideLoading();
 					
-					
+					console.log('dddddd',res);
 					
 					if (res.data.code == 1) {
-						//更新首页的商户头条
-						//console.log('成功返回商户头条信息:' + res);
-						//console.log(mars.html2json(res.data.data.info));
-						var wz_keyword = res.data.data.keyword;
 						
-					  console.log('dddddd',res);
+						that.__handle_http_response_data(res.data.data);
 						
-						that.wz_text = res.data.data;
-						that.wz_keyword2 = wz_keyword;
-						that.wz_title = res.data.data.title;
-						that.dianzan_status = res.data.data.dianzan_status;
+						uni.setStorage({
+							key: 'help_detail_data_cache_' + that.http_data_cache_id,
+							data: res.data.data
+						})
 						
-						that.share_href = res.data.data.h5_url;
-						that.share_titles = res.data.data.title;
-						that.share_summary = res.data.data.text;
-						that.share_imageUrl = res.data.data.pic;
-						
-						//更改标题的内容
-						if(res.data.data.title){
-							if(res.data.data.title.length > 15){
-								uni.setNavigationBarTitle({
-									title: res.data.data.title.substring(0, 12)+'...'
-								})
-							}
-							else{
-								uni.setNavigationBarTitle({
-									title: res.data.data.title
-								})
-							}	
-						}
+					}
 					
-						var is_col = that.wz_text.is_col;
-						if (is_col && is_col == 1) {
-							that.isShoucang = is_col
-						}
-						that.article_info = res.data.data.info;
-						
-						
-// #ifdef MP-ALIPAY		
-						console.log('that.article_info====>>>>', that.article_info);
-						
-						const filter = that.$options.filters["formatRichText"];
-						that.article_info = filter(that.article_info);
-						
-						console.log('that.article_info====>>>>', that.article_info);
-						
-						let data001 = that.article_info;
-						let newArr = [];
-						let arr = parseHtml(data001);
-						arr.forEach((item, index)=>{
-							newArr.push(item);
-						});
-						
-						//console.log('arr arr arr====>>>>', arr);
-						//console.log('newArr newArr newArr====>>>>', newArr);
-						
-						that.article_info = newArr;
-
+				};
+				var cbError = function (res) {
+					uni.hideLoading();
+				};
+				
+				this.abotapi.httpPost(post_url, post_data, cbSuccess, cbError);
+					//========End====================
+			},
+			
+			__handle_http_response_data:function(http_data){
+				
+				var that = this;
+				
+				//文章内容请求完成，马上请求评论列表
+				that.get_remark_list();
+				
+				
+				
+				
+				//更新首页的商户头条
+				//console.log('成功返回商户头条信息:' + res);
+				//console.log(mars.html2json(http_data.info));
+				var wz_keyword = http_data.keyword;
+				
+			  
+				
+				that.wz_text = http_data;
+				that.wz_keyword2 = wz_keyword;
+				that.wz_title = http_data.title;
+				that.dianzan_status = http_data.dianzan_status;
+				
+				that.share_href = http_data.h5_url;
+				that.share_titles = http_data.title;
+				that.share_summary = http_data.text;
+				that.share_imageUrl = http_data.pic;
+				
+				//更改标题的内容
+				if(http_data.title){
+					if(http_data.title.length > 15){
+						uni.setNavigationBarTitle({
+							title: http_data.title.substring(0, 12)+'...'
+						})
+					}
+					else{
+						uni.setNavigationBarTitle({
+							title: http_data.title
+						})
+					}	
+				}
+			
+				var is_col = that.wz_text.is_col;
+				if (is_col && is_col == 1) {
+					that.isShoucang = is_col
+				}
+				
+				that.content_html = http_data.info;
+				
+				
+				//v-html使用
+				that.content_v_html = that.content_html;
+				
+				//console.log('that.content_v_html====>>>>111', that.content_v_html);
+				
+				const filter = that.$options.filters["formatRichText"];
+				that.content_v_html = filter(that.content_v_html);
+				
+				//设置百度小程序中的页面SEO信息
+				// #ifdef MP-BAIDU				
+					//2021.7.22. 删除所有的超链接和对应的超链文本
+					that.content_html = that.content_html.replace(/(<\/?a.*?>)[^>]*<\/a>/g, '');
+							
+				// #endif	
+				
+				
+// #ifdef MP-ALIPAY						
+				let data001 = that.content_html;
+				let newArr = [];
+				let arr = parseHtml(data001);
+				arr.forEach((item, index)=>{
+					newArr.push(item);
+				});
+				
+				//console.log('arr arr arr====>>>>', arr);
+				//console.log('newArr newArr newArr====>>>>', newArr);
+				
+				//rich-text使用
+				that.content_array_html = newArr;
 // #endif						
 
 
-						
-						
-						
-					}
-				};
-				var cbError = function (res) {
 				
-				};
 				
-				this.abotapi.httpPost(url, post_data, cbSuccess, cbError);
-					//========End====================
 			},
 			
 			call_mobile:function(mobile){
@@ -689,7 +794,7 @@
 				};
 				var cbSuccess = function (res) {
 					if (res.data.code == 1) {
-						that.__get_img_from_weiduke(that.wz_id,that);
+						that.__get_img_from_weiduke(that.wz_id, that);
 					}
 				};
 				var cbError = function (res) {
@@ -962,7 +1067,7 @@
 						var data = res.data;
 						if (data.code == 1) {
 							that.dianzan_status = dianzan_type;
-							that.__get_img_from_weiduke(that.wz_id,that);
+							that.__get_img_from_weiduke(that.wz_id, that);
 						}
 					}
 				})
@@ -1068,7 +1173,22 @@
 			},
 			is_share_api_show:function(){
 				this.$refs.share_api.is_show();
-			}
+			},
+			
+			//富媒体 图片被点击
+			index_rich_html_preview_image:function(img_src, e){
+			},
+			
+			//富媒体 链接点击事件
+			index_rich_html_click_link:function(new_url, e){
+				
+				console.log('index_rich_html_click_link====>>>>>', new_url);
+				
+				this.abotapi.call_h5browser_or_other_goto_url(new_url);
+				
+				
+			},
+			
 		},
 		
 		filters: {
@@ -1100,6 +1220,10 @@
 				
 				newContent = newContent.replace(/<h1[^>]*>/gi, '<h1 class="wxParse-h1">');
 				newContent = newContent.replace(/<h2[^>]*>/gi, '<h2 class="wxParse-h2">');
+				newContent = newContent.replace(/<h3[^>]*>/gi, '<h3 class="wxParse-h3">');
+				newContent = newContent.replace(/<h4[^>]*>/gi, '<h4 class="wxParse-h4">');
+				newContent = newContent.replace(/<h5[^>]*>/gi, '<h5 class="wxParse-h5">');
+				newContent = newContent.replace(/<h6[^>]*>/gi, '<h6 class="wxParse-h6">');
 				
 				return newContent;
 			}
@@ -1110,6 +1234,7 @@
 </script>
 
 <style>
+	@import url("@/components/gaoyia-parse/parse.css");
 	
 	.weui-article__title .summary {
 	  color: #1b82d1;
@@ -1303,6 +1428,46 @@
 	
 	}
 	
+	/* 对 content_v_html 做特殊处理 */ 
+	.wxParse-h1{
+	  margin: 10rpx 0;
+	  font-size:36rpx;
+	  border-left:10rpx solid #e7141a;
+	  padding:2rpx 10rpx;
+	}
+	.wxParse-h2{
+	  margin: 12rpx 0;
+	  font-size:32rpx;
+	  border-left:10rpx solid #3369e8;
+	  padding:2rpx 10rpx;
+	}
+	.wxParse-h3{
+	  margin: 14rpx 0;
+	  font-size:28rpx;
+	  border-left:10rpx solid #f37404;
+	  padding:2rpx 10rpx;
+	}
+	.wxParse-h4{
+	  margin: 16rpx 0;
+	  font-size:24rpx;
+	  border-left:10rpx solid #228B22;
+	  padding:2rpx 10rpx;
+	}
+	.wxParse-h5{
+	  margin: 18rpx 0;
+	  font-size:20rpx;
+	  border-left:10rpx solid #3369e8;
+	  padding:2rpx 10rpx;
+	}
+	.wxParse-h6{
+	  margin: 20rpx 0;
+	  font-size:16rpx;
+	  border-left:10rpx solid #f37404;
+	  padding:2rpx 10rpx;
+	}
+	
+	/* 对 content_v_html 做特殊处理  End */ 
+	
 	.wxParse-p{
 	  font-size:36rpx;
 	  margin-bottom:0rpx;
@@ -1313,36 +1478,8 @@
 	  font-weight: bold;
 	}
 	
-	.wxParse-h1{
-	  font-size:36rpx;
-	  color: #3369e8;
-	  border-left:10rpx solid #3369e8;
-	  padding:10rpx;
-	}
-	
-	.wxParse-h2{
-	  font-size:36rpx;
-	  color: #d50f25;
-	  border-left:10rpx solid #d50f25;
-	  padding:10rpx;
-	}
-	
-	.wxParse-h3{
-	  font-size:36rpx;
-	  color: #eeb211; 
-	  border-left:10rpx solid #eeb211;
-	  padding:10rpx;
-	}
-	
-	.wxParse-h4{
-	  font-size:36rpx;
-	  color: #009925;
-	  border-left:10rpx solid #009925;
-	  padding:10rpx;
-	}
-	
 	.wxParse-img{
-	  min-width: 100%;
+	  max-width: 100%;
 	}
 	
 	.wxParse-blockquote{
@@ -1504,7 +1641,8 @@
 	  margin-top:40rpx;
 	
 	}
-.title_box{
+	
+	.title_box{
 		display: -webkit-flex;
 		display: flex;
 		align-items: center;

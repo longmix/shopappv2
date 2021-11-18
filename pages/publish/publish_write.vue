@@ -10,12 +10,25 @@
 
 			    <view class="wxParse"> 
 			        <scroll-view  scroll-y='true'>
-			           <!-- #ifdef MP-ALIPAY -->
-			           					<rich-text :nodes="form_content"></rich-text>
-			           <!-- #endif -->				
-			           <!-- #ifndef MP-ALIPAY -->
-			           					<rich-text :nodes="form_content|formatRichText"></rich-text>
-			           <!-- #endif -->	
+
+					   <!-- #ifdef MP-ALIPAY -->
+					   			<rich-text :nodes="content_array_html"></rich-text>
+					   <!-- #endif -->
+					   
+					   <!-- #ifdef H5 -->
+					   			<view v-html="content_v_html" ></view>
+					   <!-- #endif -->
+					   
+					   <!-- #ifndef MP-ALIPAY | H5 -->
+					   			<!-- 富媒体组件 2021.1.18. -->
+					   			<!-- rich-text  和 v-html 都有各自的优缺点 -->
+					   			<u-parse v-if="content_html" 
+					   				:content="content_html" 
+					   				@preview="index_rich_html_preview_image" 
+					   				@navigate="index_rich_html_click_link" />
+					   <!-- #endif -->
+					   
+					   
 			        </scroll-view>
 			    </view>
 			</view>
@@ -78,7 +91,7 @@
 							<view class="input-flex-label w60" style="float: left;">{{item.displayname}}
 								<label class="FH" v-if="item.require == 1">*</label>
 							</view>
-							<input style="float: left;width: 70%;margin-top: -4rpx;" :name="item.fieldname" maxlength="40" placeholder-style="color:#c3c3c3" :placeholder="item.errortip" />
+							<input :name="item.fieldname" maxlength="40" placeholder-style="color:#c3c3c3" :placeholder="item.errortip" />
 						</view>
 						
 						<view class="box_1" v-if="item.inputtype == 'select'">
@@ -116,7 +129,7 @@
 						</view>
 						
 						<!-- 文件或图片类型 -->
-						<view class="box_1" v-if="item.inputtype == 'file'" >							
+						<view class="uni-file-upload" v-if="item.inputtype == 'file'" >							
 							<image  
 								:src="image_list[item.fieldname]?image_list[item.fieldname]:img_upload_default_icon"
 								mode="widthFix" 
@@ -234,8 +247,13 @@
 	import util from '@/common/util.js';
 	import biaofunDatetimePicker from '@/components/biaofun-datetime-picker/biaofun-datetime-picker.vue';
 	
+	import uParse from '@/components/gaoyia-parse/parse.vue'
+	
+	import md5 from '../../common/md5.min.js'
+	
 	export default {
 		components:{
+			uParse,
 			biaofunDatetimePicker
 		},
 		
@@ -286,7 +304,14 @@
 				//微读客CMS平台的万能表单中定义的表单的logo、简介和内容
 				form_logourl:'',
 				form_intro:'',
-				form_content:'',
+				
+				
+				content_html:'<h1></h1>',	//文章的html内容
+				
+				content_v_html:'',	//文章的html内容（经过Filter过滤的，在H5中使用
+				content_array_html:'',//文章的html内容（经过分析，转成array的。
+				
+				
 				
 				//首页 > 功能扩展 > 万能表单 中定义的平铺广告图片
 				ad_img_list:'',
@@ -709,6 +734,9 @@
 				}
 				
 				
+				
+				
+				
 				// 微读客获取文章列表  				
 				that.abotapi.abotRequest({
 					url:url,
@@ -736,17 +764,28 @@
 							}
 							
 							if(res.data.content){
-								that.form_content = res.data.content;
 								
-								// #ifdef MP-ALIPAY
-									console.log('that.form_content====>>>>', that.form_content);
-									
-									const filter = that.$options.filters["formatRichText"];
-									that.form_content = filter(that.form_content);
-									
-									console.log('that.form_content====>>>>', that.form_content);
-									
-									let data001 = that.form_content;
+								that.content_html = res.data.content;
+												
+								
+								//v-html使用
+								that.content_v_html = that.content_html;
+								
+								//console.log('that.content_v_html====>>>>111', that.content_v_html);
+								
+								const filter = that.$options.filters["formatRichText"];
+								that.content_v_html = filter(that.content_v_html);
+								
+								//设置百度小程序中的页面SEO信息
+								// #ifdef MP-BAIDU				
+									//2021.7.22. 删除所有的超链接和对应的超链文本
+									that.content_html = that.content_html.replace(/(<\/?a.*?>)[^>]*<\/a>/g, '');
+											
+								// #endif	
+								
+								
+								// #ifdef MP-ALIPAY						
+									let data001 = that.content_html;
 									let newArr = [];
 									let arr = parseHtml(data001);
 									arr.forEach((item, index)=>{
@@ -756,9 +795,10 @@
 									//console.log('arr arr arr====>>>>', arr);
 									//console.log('newArr newArr newArr====>>>>', newArr);
 									
-									that.form_content = newArr;
+									//rich-text使用
+									that.content_array_html = newArr;
+								// #endif
 								
-								// #endif	
 							}
 							
 							var list = res.data.data;
@@ -1105,6 +1145,12 @@
 </script>
 
 <style>
+	@import url("@/components/gaoyia-parse/parse.css");
+	
+	.wxParse {
+		width: 95%;
+		margin: 0 auto;
+	}
 	
 	.FH{
 		color: red;
@@ -1135,7 +1181,7 @@
 	}
 	.input-flex-label{
 	    width: 26%;
-	    line-height: 43rpx;
+	    line-height: 60rpx;
 	    font-size: 30rpx;
 	}
 	.bk888888{
@@ -1154,7 +1200,17 @@
 		padding: 20rpx 40rpx;
 		border-bottom: 1px solid #EEEEEE;
 		background: #FFFFFF;
+		height: 60rpx;
+		line-height: 60rpx;
 	}
+	.box_1 input {
+		float: left;
+		width: 70%;
+		margin-top: -4rpx;
+		border: 1rpx solid #eee;
+		height: 60rpx;
+	}
+	
 	.box_2{
 		float: left;
 		font-size: 30rpx;
@@ -1179,6 +1235,15 @@
 		width: 100%;
 		
 	}
+	
+	.uni-file-upload {
+		overflow: auto;
+		font-size: 30rpx;
+		padding: 20rpx 40rpx;
+		border-bottom: 1px solid #EEEEEE;
+		background: #FFFFFF;
+	}
+	
 	.input-flex{
 		/* background: #FFFFFF; */
 	}

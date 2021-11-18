@@ -16,10 +16,8 @@
 	<!-- #ifdef MP-ALIPAY -->			
 				<rich-text :nodes="index_rich_html_content"></rich-text>
 	<!-- #endif -->
-	<!-- #ifdef H5 -->
-				<view v-html="index_rich_html_content" ></view>
-	<!-- #endif -->
-	<!-- #ifndef MP-ALIPAY | H5 -->
+
+	<!-- #ifndef MP-ALIPAY -->
 				
 				<!-- 富媒体组件 2021.1.18. -->
 				<!-- rich-text  和 v-html 都有各自的优缺点 -->
@@ -891,6 +889,8 @@ export default {
 </script>
 
 <style>
+	@import url("@/components/gaoyia-parse/parse.css");
+	
 	/* 底部导航 */
 	.zdy_btn_box{
 	  position: fixed;
@@ -925,6 +925,6 @@ export default {
 	  justify-content: center;
 	  align-items: center;
 	}
-	
+		
 	
 </style>
