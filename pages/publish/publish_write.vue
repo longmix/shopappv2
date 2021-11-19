@@ -103,14 +103,14 @@
 									<view class="box_3">
 										<text class="box_text">{{item.options[item.index]}}</text>
 										<image v-if="!item.options[item.index]" 
-											style="width: 40rpx;" mode="widthFix" src="../../static/img/x_right.png"></image>
+											style="width: 40rpx;    margin-top: 10rpx;margin-left: 100rpx;" mode="widthFix" src="../../static/img/x_right.png"></image>
 									</view>
 								</view>
 							</picker>
 							<input :name="item.fieldname" :value="item.options[item.index]" :hidden='true' />
 						</view>
 						
-						<view class="box_1" v-if="item.inputtype == 'checkbox'">
+						<view class="box-checkbox" v-if="item.inputtype == 'checkbox'">
 							<checkbox-group @change="checkboxChange" :name="item.fieldname" :data-name="item.fieldname">
 								<view style="overflow: auto;margin-bottom:40rpx;">
 									<view class="box_2">
@@ -129,7 +129,14 @@
 						</view>
 						
 						<!-- 文件或图片类型 -->
-						<view class="uni-file-upload" v-if="item.inputtype == 'file'" >							
+						<view class="box-file-upload" v-if="item.inputtype == 'file'" >							
+							<view style="overflow: auto;margin-bottom:40rpx;">
+								<view class="box_2">
+									<text>{{item.displayname}}</text>
+									<label class="FH" v-if="item.require == 1">*</label>
+								</view>
+							</view>
+							
 							<image  
 								:src="image_list[item.fieldname]?image_list[item.fieldname]:img_upload_default_icon"
 								mode="widthFix" 
@@ -195,7 +202,10 @@
 						
 						<view class="uni-textarea002" style="padding: 0rpx 40rpx;" 
 							v-if="item.fieldname != 'imgimg_content' && item.inputtype == 'textarea'">
-							<view class="box_2" style="float:left;background-color: #FFFFFF;padding: 20rpx 0rpx;">{{item.displayname}}</view>
+							<view class="box_2" style="float:left;background-color: #FFFFFF;padding: 20rpx 0rpx;">
+								<text>{{item.displayname}}</text>
+								<label class="FH" v-if="item.require == 1">*</label>
+							</view>
 							<view style="float:left;clear:both;width: 100%;padding: 5rpx;">
 								<textarea :name="item.fieldname" :placeholder="item.errortip" 
 									maxlength="-1"
@@ -1203,6 +1213,24 @@
 		height: 60rpx;
 		line-height: 60rpx;
 	}
+	
+	.box-file-upload {
+		overflow: auto;
+		font-size: 30rpx;
+		padding: 20rpx 40rpx;
+		border-bottom: 1px solid #EEEEEE;
+		background: #FFFFFF;
+	}
+	
+	.box-checkbox {
+		overflow: auto;
+		font-size: 30rpx;
+		padding: 20rpx 40rpx;
+		border-bottom: 1px solid #EEEEEE;
+		background: #FFFFFF;
+	}
+	
+	
 	.box_1 input {
 		float: left;
 		width: 70%;
@@ -1216,13 +1244,14 @@
 		font-size: 30rpx;
 	}
 	.box_3{
-		float: right;
+		float: left;
+		margin-left:40rpx;
 	}
 	
 	.box_text{
 		/* position: relative; */
 		/* top: -8rpx; */
-		color: #007AFF;
+		color: #666666;
 	}
 	.uni-textarea002{
 		background: #FFFFFF;
@@ -1236,13 +1265,6 @@
 		
 	}
 	
-	.uni-file-upload {
-		overflow: auto;
-		font-size: 30rpx;
-		padding: 20rpx 40rpx;
-		border-bottom: 1px solid #EEEEEE;
-		background: #FFFFFF;
-	}
 	
 	.input-flex{
 		/* background: #FFFFFF; */
