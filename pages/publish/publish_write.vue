@@ -54,12 +54,15 @@
 						<block v-if="form_type == 3">
 							<view class="input_flex" v-if="item.fieldname == 'imgimg_title'" style="overflow: auto;padding:35rpx 40rpx 20rpx 40rpx;background-color: #FFFFFF;border-bottom: 1rpx solid #EEEEEE;">
 								<view class="input-flex-label w60" style="float: left;">标题<label class="FH">*</label></view>
-								<input style="float: left;width: 70%;margin-top: -4rpx;" name="imgimg_title" maxlength="40" placeholder-style="color:#c3c3c3" placeholder="请输入标题" />
+								<input style="float: left;width: 70%;margin-top: -4rpx; border:1rpx solid #a2a2a2;" 
+									name="imgimg_title" maxlength="40" 
+									placeholder-style="color:#c3c3c3" 
+									placeholder="请输入标题" />
 							</view>
 							
 							<view class="uni-textarea002" style="" v-if="item.fieldname == 'imgimg_content'">
 								<view style="padding: 16rpx 34rpx;font-size: 32rpx;background-color: #FFFFFF;">{{item.displayname}}</view>
-								<textarea style="padding: 16rpx 34rpx;" :name="item.fieldname" 
+								<textarea style="padding: 16rpx 34rpx; border:1rpx solid #a2a2a2;" :name="item.fieldname" 
 									maxlength="-1"
 									placeholder='请在此填写详细说明' /><!-- placeholder-style="color:#D3D3D3;font-size:15px;" -->
 							</view>
@@ -209,7 +212,7 @@
 							<view style="float:left;clear:both;width: 100%;padding: 5rpx;">
 								<textarea :name="item.fieldname" :placeholder="item.errortip" 
 									maxlength="-1"
-									style="border: 1px solid #eee;" /><!-- placeholder-style="color:#D3D3D3;font-size:15px;" -->
+									style="border: 1px solid #a2a2a2;" /><!-- placeholder-style="color:#D3D3D3;font-size:15px;" -->
 							</view>
 						</view>
 						
@@ -1235,7 +1238,7 @@
 		float: left;
 		width: 70%;
 		margin-top: -4rpx;
-		border: 1rpx solid #eee;
+		border: 1rpx solid #a2a2a2;
 		height: 60rpx;
 	}
 	
@@ -1255,7 +1258,7 @@
 	}
 	.uni-textarea002{
 		background: #FFFFFF;
-		border-bottom: 1px solid #EEEEEE;
+		border-bottom: 1px solid #a2a2a2;
 	}
 	
 	.uni-textarea002 textarea{
