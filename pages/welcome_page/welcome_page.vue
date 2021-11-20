@@ -118,6 +118,7 @@ import uParse from '@/components/gaoyia-parse/parse.vue'
 	import parseHtml from "../../common/html-parser.js"
 // #endif
 
+//2021.11.20. 这个函数在ES6中不兼容，需要使用ES5模式编译
 import md5 from '../../common/md5.min.js'
 
 export default {
@@ -126,7 +127,8 @@ export default {
 	},
 	data() {
 		return {
-			get_default_imgid:false,
+			//get_default_imgid:false,
+			wxa_default_imgid_in_welcome_page:0,
 			content_type:'cms',
 			video_autoplay:false,
 			current_title : '',
@@ -346,7 +348,9 @@ export default {
 						
 			if(platform == 'cms'){
 				if(!imgid){
-				  this.get_default_imgid = true;
+				  //this.get_default_imgid = true;
+				  
+				  imgid  = this.wxa_default_imgid_in_welcome_page;
 				}
 				
 				this.__get_img_from_weiduke(imgid, this);
@@ -438,13 +442,10 @@ export default {
 			}
 			
 			
+			if(option_list.wxa_default_imgid_in_welcome_page){
+				that.wxa_default_imgid_in_welcome_page = option_list.wxa_default_imgid_in_welcome_page;
+			}
 			
-			
-		    if(this.get_default_imgid && option_list && option_list.wxa_default_imgid_in_welcome_page){
-		      this.__get_img_from_weiduke(option_list.wxa_default_imgid_in_welcome_page, this);
-		    }
-		
-		
 		    if(!option_list || !option_list.wxa_show_latest_product_in_welcome_page){
 		      return;
 		    }
@@ -573,17 +574,21 @@ export default {
 			}
 			
 		
-		    var url = this.abotapi.globalData.weiduke_server_url + '/index.php/openapi/ArticleImgApi/article_detail.shtml';
-		    var data = {
+		    var post_url = this.abotapi.globalData.weiduke_server_url + '/openapi/ArticleImgApi/article_detail.shtml';
+		    var post_data = {
 		      token: this.abotapi.get_current_weiduke_token(),
 		      id: imgid,
 		      openid: this.abotapi.get_current_openid()
 		    };
 
+
+			console.log('准备查找网址的缓存 ===>>> ' + post_url);
+			console.log('网址的参数为 aaaa ===>>> ' + JSON.stringify(post_data));
 			
-			that.http_data_cache_id = md5(url + JSON.stringify(data));
 			
-			console.log('md5 ===>>> ', that.http_data_cache_id);
+			that.http_data_cache_id = md5(post_url + JSON.stringify(post_data));
+			
+			console.log('md5 ===>>> ' + that.http_data_cache_id);
 			
 			var http_data = uni.getStorageSync('welcome_page_data_cache_' + that.http_data_cache_id);
 			if(http_data){
@@ -618,7 +623,7 @@ export default {
 		      uni.hideLoading();
 		
 		    };
-		    this.abotapi.httpPost(url, data, cbSuccess, cbError);
+		    this.abotapi.httpPost(post_url, post_data, cbSuccess, cbError);
 		      //========End====================
 		  },
 		

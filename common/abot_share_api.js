@@ -77,7 +77,7 @@ module.exports = {
 		}
 		
 		abotapi.abotRequest({
-			url: abotapi.globalData.yanyubao_server_url + 'openapi/ShareKoulingData/create_command_str',
+			url: abotapi.globalData.yanyubao_server_url + '/openapi/ShareKoulingData/create_command_str',
 			//url:"https://192.168.0.205/yanyubao_server/index.php/OpenApi/ShareKouling/create_command_str",
 			data: post_data,
 			success:function(res){

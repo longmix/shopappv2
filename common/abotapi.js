@@ -411,7 +411,7 @@ module.exports = {
 	    }
 	
 	    this.abotRequest({
-			url: that.globalData.yanyubao_server_url + 'openapi/XianmaiShangData/get_setting_list',
+			url: that.globalData.yanyubao_server_url + '/openapi/XianmaiShangData/get_setting_list',
 			method: 'post',
 			data: {
 				sellerid: that.globalData.default_sellerid
@@ -592,8 +592,8 @@ module.exports = {
 			
 				
 			this.abotRequest({
-				//url: this.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=get_shop_option',
-				url: that002.globalData.yanyubao_server_url + 'openapi/ShopAppV2Data/get_shop_option',
+				//url: this.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=get_shop_option',
+				url: that002.globalData.yanyubao_server_url + '/openapi/ShopAppV2Data/get_shop_option',
 				method: 'post',
 				data: post_data,
 				header: {
@@ -925,6 +925,11 @@ module.exports = {
 	    if(!parentid){
 			return;
 	    }
+		
+		if(parseInt(parentid) == 0){
+			console.log("设置parentid，但是int类型为0 ===>>>" + parentid);
+			return;
+		}
 	
 	    console.log("设置parentid：" + parentid);
 	
@@ -1227,7 +1232,7 @@ module.exports = {
 	    var that002 = this;
 	
 	    this.abotRequest({
-			url: that002.globalData.yanyubao_server_url + 'openapi/FaquanData/get_faquan_setting',
+			url: that002.globalData.yanyubao_server_url + '/openapi/FaquanData/get_faquan_setting',
 			method: 'post',
 			data: {
 				sellerid: that002.globalData.default_sellerid
@@ -1385,10 +1390,10 @@ module.exports = {
 			
 			var that = this;
 			
-			var new_url = this.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=one_click_login_str';
+			var new_url = this.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=one_click_login_str';
 			
 			if (url.indexOf("%refresh_token%") != -1){
-				new_url = this.globalData.yanyubao_server_url + '?g=Yanyubao&m=ShopAppWxa&a=generate_refresh_token_value_for_other_system';
+				new_url = this.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=generate_refresh_token_value_for_other_system';
 			}
 			
 			this.abotRequest({

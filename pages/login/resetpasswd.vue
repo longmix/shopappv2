@@ -24,7 +24,7 @@
 </template>
 
 <script>
-	import md5 from "@/common/SDK/md5.min.js";
+	import md5 from "@/common/md5.min.js";
 	export default {
 		data() {
 			return {

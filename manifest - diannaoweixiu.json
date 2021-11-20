@@ -2,8 +2,8 @@
     "name" : "陆家嘴电脑维修",
     "appid" : "__UNI__5B54B05",
     "description" : "陆家嘴电脑维修：扩平台应用APP",
-    "versionName" : "1.8.0",
-    "versionCode" : 361,
+    "versionName" : "1.8.5",
+    "versionCode" : 369,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true, //是否启用`自定义组件模式`，为true表示新的`自定义组件模式` ，否则为`template模板模式`   

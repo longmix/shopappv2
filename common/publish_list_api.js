@@ -78,7 +78,7 @@ module.exports = {
 		}
 		
 		abotapi.abotRequest({
-			url: that.abotapi.globalData.weiduke_server_url + 'openapi/ArticleImgApi/article_list',
+			url: that.abotapi.globalData.weiduke_server_url + '/openapi/ArticleImgApi/article_list',
 			method: 'post',
 			data: post_data,
 			header: {
