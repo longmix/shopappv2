@@ -65,7 +65,7 @@
 			
 			<view class="borderb bordert font_14" v-if="is_shop_admin == 1">
 				<view v-if="orderData.status == '1' || orderData.status == '2' ">
-				<view class="manage_express" >管理员选项</view>
+				<view class="manage_express" style="font-weight: bold;">管理员选项</view>
 				
 				
 				<view class="unit-wrapper">
@@ -1160,7 +1160,7 @@
 	}
 	.manage_express{
 		margin-bottom: 20rpx;
-		font-size: 28rpx;
+		font-size: 24rpx;
 		margin-left: 20rpx;
 		line-height: 65rpx;
 	}

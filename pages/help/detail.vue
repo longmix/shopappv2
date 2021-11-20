@@ -246,7 +246,7 @@
 				
 				comment_num:'',
 				
-				content_html:'<h1></h1>',	//文章的html内容
+				content_html:'<div></div>',	//文章的html内容
 				
 				content_v_html:'',	//文章的html内容（经过Filter过滤的，在H5中使用
 				content_array_html:'',//文章的html内容（经过分析，转成array的。

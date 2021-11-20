@@ -137,7 +137,7 @@ export default {
 			wxa_show_latest_product_in_welcome_page:'',
 			is_more:'',
 			
-			index_rich_html_content:'<h1></h1>',
+			index_rich_html_content:'<div></div>',
 			
 			shopList:[],
 			page:1,

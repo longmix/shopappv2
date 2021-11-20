@@ -494,7 +494,7 @@ export default {
 			 //显示富媒体组件
 			 show_rich_html_in_index:0,
 			 index_rich_html_type:'static',
-			 index_rich_html_content:'<h1></h1>',
+			 index_rich_html_content:'<div></div>',
 			 //传给uParse组件的属性值
 			 u_parse_imageProp:{mode:'widthFix', padding:0, lazyLoad:true, domain:''},
 
@@ -2336,7 +2336,7 @@ export default {
 			that.index_rich_html_content = html_str;			
 			
 			if(!that.index_rich_html_content){
-				that.index_rich_html_content = '<h1></h1>';
+				that.index_rich_html_content = '<div></div>';
 			}
 			
 			console.log('that.index_rich_html_content====>>>>', that.index_rich_html_content);

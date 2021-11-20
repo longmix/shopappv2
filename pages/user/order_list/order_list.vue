@@ -90,7 +90,7 @@
 						<view class="borderb bordert font_14" v-if="is_shop_admin == 1">
 							<view class="font_12"><b>管理员选项</b><view class='fl_r'></view></view>
 							<view style="clear: both;"><view class="font_12">商城名称：</view><view class='fl_r'>{{item.seller_name}}</view></view>
-							<view style="clear: both;"><view class="font_12">收货人：</view><view class='fl_r'>{{item.realname}}</view></view>
+							<view style="clear: both;"><view class="font_12">收货姓名：</view><view class='fl_r'>{{item.realname}}</view></view>
 							<view style="clear: both;"><view class="font_12">联系方式：</view><view class='fl_r'>{{item.mobile}}</view></view>
 							<view style="clear: both;"><view class="font_12">操作说明：</view><view class='fl_r'>进入订单详情处理订单</view></view>
 							
@@ -739,6 +739,8 @@
 				if(this.is_shop_admin){
 					new_url += '&is_shop_admin=1';
 				}
+				
+				console.log('准备跳转：' + new_url);
 				
 				uni.navigateTo({
 					url:new_url,

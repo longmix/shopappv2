@@ -171,7 +171,7 @@
 				
 				current_params_str:'',
 				
-				index_rich_html_content:'<h1></h1>'
+				index_rich_html_content:'<div></div>'
 			};
 		},
 		onLoad(options) {

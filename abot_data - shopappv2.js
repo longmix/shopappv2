@@ -1,11 +1,11 @@
 const globalData = {
-		weiduke_server_url: 'https://cms.weiduke.com',
-		yanyubao_server_url: 'https://yanyubao.tseo.cn',
-		o2owaimai_server_url: 'https://app.tseo.cn/o2owaimai/index.php',
+		weiduke_server_url: 'https://cms.weiduke.com/',
+		yanyubao_server_url: 'https://yanyubao.tseo.cn/',
+		o2owaimai_server_url: 'https://app.tseo.cn/o2owaimai/index.php/',
 		socket_server: 'https://socketio.tseo.cn',
 		
-		version_number:'Ver 2.1.3 Build 293',
-		version_code:293,
+		version_number:'Ver 2.1.4 Build 295',
+		version_code:295,
 		
 		force_sellerid:0,
 	
