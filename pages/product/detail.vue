@@ -1763,7 +1763,7 @@
 				let tmpList = [];
 				let goods = {
 					id: this.goodsData.id,
-					img: '../../static/img/goods/p1.jpg',
+					img: 'https://yanyubao.tseo.cn/Tpl/static/images/empty_remark.png',
 					name: this.goodsData.name,
 					spec: '规格:' + this.goodsData.spec[this.selectSpec],
 					price: this.goodsData.price,

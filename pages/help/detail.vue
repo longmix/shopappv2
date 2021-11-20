@@ -289,8 +289,8 @@
 				     },
 				     {
 				       "text": "成绩分析",
-				       "iconPath": '../../static/analyse.png',
-				       "selectedIconPath": '../../static/analyse-select.png'
+				       "iconPath": 'https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star.png',
+				       "selectedIconPath": 'https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_star2.png'
 				}],
 				
 				

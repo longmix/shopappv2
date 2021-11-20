@@ -40,7 +40,7 @@
 	export default {
 		data() {
 			return {
-				tis:"保存到相册",
+				tis:"截屏保存到相册",
 				showBtn:false,
 				wxa_shop_nav_bg_color:'',
 				wxa_shop_nav_font_color:'',

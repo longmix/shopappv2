@@ -1116,6 +1116,20 @@
 					
 					console.log('选择的日期时间数据：', date);
 			},
+			
+			//富媒体 图片被点击
+			index_rich_html_preview_image:function(img_src, e){
+			},
+			
+			//富媒体 链接点击事件
+			index_rich_html_click_link:function(new_url, e){
+				
+				console.log('index_rich_html_click_link====>>>>>', new_url);
+				
+				this.abotapi.call_h5browser_or_other_goto_url(new_url);
+				
+				
+			},
 
 			
 		},		

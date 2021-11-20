@@ -915,8 +915,8 @@ export default {
 									 address: "北京市海淀区上地十街10号", 
 									 fail: fail, 
 									 success: success, 
-									 iconPath: '../../img/marker_red.png', 
-									 iconTapPath: '../../img/marker_red.png' 
+									 iconPath: '../../static/img/addricon.png', 
+									 iconTapPath: '../../static/img/addricon.png' 
 				});
 				
 		       // 发起suggestion检索请求 

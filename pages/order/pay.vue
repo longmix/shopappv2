@@ -1408,8 +1408,8 @@ extraData = 'xxxxxxxxxxxxxxx'
 								address: address,
 								fail: baidu_map_fail,
 								success: baidu_map_success,
-								iconPath: '../../img/marker_red.png',
-								iconTapPath: '../../img/marker_red.png'
+								iconPath: '../../static/img/addricon.png',
+								iconTapPath: '../../static/img/addricon.png'
 							});
 							//#endif
 							
