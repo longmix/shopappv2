@@ -824,6 +824,38 @@
 			
 		},
 		//======= 视频直播相关的分包 Begin  ====
+		//======= 小游戏小工具相关的分包 Begin  ====
+		{	
+			"root": "pages/tools",
+			"pages": [
+				{
+					"path" : "clock",
+					"style" :                                                                                    
+					{
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": true
+					}            
+				},
+				{
+					"path" : "calculator",
+					"style" :                                                                                    
+					{
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": true
+					}            
+				},
+				{
+					"path" : "dice",
+					"style" :                                                                                    
+					{
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": true
+					}            
+				}
+		    ]
+			
+		},
+		//======= 小游戏小工具相关的分包 Begin  ====
 		//======= NFT卡包卡牌相关的分包 Begin  ====
 		{	
 			"root": "pages/nftcard",
