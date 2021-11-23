@@ -70,7 +70,7 @@
                     "NSLocationWhenInUseUsageDescription" : "访问位置以计算最近的服务网点",
                     "NSLocationAlwaysUsageDescription" : "访问位置以计算最近的服务网点",
                     "NSLocationAlwaysAndWhenInUseUsageDescription" : "访问位置以计算最近的服务网点",
-					"NSMicrophoneUsageDescription" : "使用麦克风以获取录制视频时候的声音"
+                    "NSMicrophoneUsageDescription" : "使用麦克风以获取录制视频时候的声音"
                 }
             },
             /* ios打包配置 */
@@ -109,41 +109,41 @@
             },
             "icons" : {
                 "android" : {
-                    "hdpi" : "unpackage/res/icons_tiantianhui/72x72.png",
-                    "xhdpi" : "unpackage/res/icons_tiantianhui/96x96.png",
-                    "xxhdpi" : "unpackage/res/icons_tiantianhui/144x144.png",
-                    "xxxhdpi" : "unpackage/res/icons_tiantianhui/192x192.png"
+                    "hdpi" : "unpackage/res/icons - feiyishangcheng/72x72.png",
+                    "xhdpi" : "unpackage/res/icons - feiyishangcheng/96x96.png",
+                    "xxhdpi" : "unpackage/res/icons - feiyishangcheng/144x144.png",
+                    "xxxhdpi" : "unpackage/res/icons - feiyishangcheng/192x192.png"
                 },
                 "ios" : {
-                    "appstore" : "unpackage/res/icons_tiantianhui/1024x1024.png",
+                    "appstore" : "unpackage/res/icons - feiyishangcheng/1024x1024.png",
                     "ipad" : {
-                        "app" : "unpackage/res/icons_tiantianhui/76x76.png",
-                        "app@2x" : "unpackage/res/icons_tiantianhui/152x152.png",
-                        "notification" : "unpackage/res/icons_tiantianhui/20x20.png",
-                        "notification@2x" : "unpackage/res/icons_tiantianhui/40x40.png",
-                        "proapp@2x" : "unpackage/res/icons_tiantianhui/167x167.png",
-                        "settings" : "unpackage/res/icons_tiantianhui/29x29.png",
-                        "settings@2x" : "unpackage/res/icons_tiantianhui/58x58.png",
-                        "spotlight" : "unpackage/res/icons_tiantianhui/40x40.png",
-                        "spotlight@2x" : "unpackage/res/icons_tiantianhui/80x80.png"
+                        "app" : "unpackage/res/icons - feiyishangcheng/76x76.png",
+                        "app@2x" : "unpackage/res/icons - feiyishangcheng/152x152.png",
+                        "notification" : "unpackage/res/icons - feiyishangcheng/20x20.png",
+                        "notification@2x" : "unpackage/res/icons - feiyishangcheng/40x40.png",
+                        "proapp@2x" : "unpackage/res/icons - feiyishangcheng/167x167.png",
+                        "settings" : "unpackage/res/icons - feiyishangcheng/29x29.png",
+                        "settings@2x" : "unpackage/res/icons - feiyishangcheng/58x58.png",
+                        "spotlight" : "unpackage/res/icons - feiyishangcheng/40x40.png",
+                        "spotlight@2x" : "unpackage/res/icons - feiyishangcheng/80x80.png"
                     },
                     "iphone" : {
-                        "app@2x" : "unpackage/res/icons_tiantianhui/120x120.png",
-                        "app@3x" : "unpackage/res/icons_tiantianhui/180x180.png",
-                        "notification@2x" : "unpackage/res/icons_tiantianhui/40x40.png",
-                        "notification@3x" : "unpackage/res/icons_tiantianhui/60x60.png",
-                        "settings@2x" : "unpackage/res/icons_tiantianhui/58x58.png",
-                        "settings@3x" : "unpackage/res/icons_tiantianhui/87x87.png",
-                        "spotlight@2x" : "unpackage/res/icons_tiantianhui/80x80.png",
-                        "spotlight@3x" : "unpackage/res/icons_tiantianhui/120x120.png"
+                        "app@2x" : "unpackage/res/icons - feiyishangcheng/120x120.png",
+                        "app@3x" : "unpackage/res/icons - feiyishangcheng/180x180.png",
+                        "notification@2x" : "unpackage/res/icons - feiyishangcheng/40x40.png",
+                        "notification@3x" : "unpackage/res/icons - feiyishangcheng/60x60.png",
+                        "settings@2x" : "unpackage/res/icons - feiyishangcheng/58x58.png",
+                        "settings@3x" : "unpackage/res/icons - feiyishangcheng/87x87.png",
+                        "spotlight@2x" : "unpackage/res/icons - feiyishangcheng/80x80.png",
+                        "spotlight@3x" : "unpackage/res/icons - feiyishangcheng/120x120.png"
                     }
                 }
             },
             "splashscreen" : {
                 "android" : {
-                    "hdpi" : "unpackage/res/splashscreen_tiantianhui/splashscreen_480x762.png",
-                    "xhdpi" : "unpackage/res/splashscreen_tiantianhui/splashscreen_720x1242.png",
-                    "xxhdpi" : "unpackage/res/splashscreen_tiantianhui/splashscreen_1080x1882.png"
+                    "hdpi" : "unpackage/res/splashscreen - feiyishangcheng/feiyishangcheng.9.png",
+                    "xhdpi" : "unpackage/res/splashscreen - feiyishangcheng/feiyishangcheng.9.png",
+                    "xxhdpi" : "unpackage/res/splashscreen - feiyishangcheng/feiyishangcheng.9.png"
                 },
                 "ios" : {
                     "iphone" : {
