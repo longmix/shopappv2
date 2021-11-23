@@ -1,26 +1,96 @@
 <template>
 	<view>
-		<canvas canvas-id="myCanvas" class="canvas"></canvas>
+		<!-- 展示视图 -->
+		<view class="flex-container"> 
+		    <view class="result">
+		        <text  :style="{display:isShow}">恭喜，您摇到的数字是：{{total}}</text>
+		    </view>
+		    <view class="dice-box">
+		        <view class="dice-item">
+		            <!-- <template is="{{dice[num1]}}"></template> -->
+					
+					<dice-first v-if="dice[num1] == 'first'"></dice-first>
+					<dice-second v-if="dice[num1] == 'second'"></dice-second>
+					<dice-third v-if="dice[num1] == 'third'"></dice-third>
+					<dice-fourth v-if="dice[num1] == 'fourth'"></dice-fourth>
+					<dice-fifth v-if="dice[num1] == 'fifth'"></dice-fifth>
+					<dice-sixth v-if="dice[num1] == 'sixth'"></dice-sixth>
+		        </view>
+		    </view>
+			
+		    <view class="second-row">
+		        <view class="dice-box">
+					<view class="dice-item">
+						<!-- <template is="{{dice[num2]}}"></template> -->
+						<dice-first v-if="dice[num2] == 'first'"></dice-first>
+						<dice-second v-if="dice[num2] == 'second'"></dice-second>
+						<dice-third v-if="dice[num2] == 'third'"></dice-third>
+						<dice-fourth v-if="dice[num2] == 'fourth'"></dice-fourth>
+						<dice-fifth v-if="dice[num2] == 'fifth'"></dice-fifth>
+						<dice-sixth v-if="dice[num2] == 'sixth'"></dice-sixth>
+					</view>
+		        </view>
+				<view class="dice-box">
+					<view class="dice-item">
+						<!-- <template is="{{dice[num3]}}"></template> -->
+						<dice-first v-if="dice[num3] == 'first'"></dice-first>
+						<dice-second v-if="dice[num3] == 'second'"></dice-second>
+						<dice-third v-if="dice[num3] == 'third'"></dice-third>
+						<dice-fourth v-if="dice[num3] == 'fourth'"></dice-fourth>
+						<dice-fifth v-if="dice[num3] == 'fifth'"></dice-fifth>
+						<dice-sixth v-if="dice[num3] == 'sixth'"></dice-sixth>
+					</view>
+				</view>
+		    </view>
+			
+		    <view class="button-box">
+		        <button :type="buttonType"  @click="shakeClick" >{{buttonValue}}</button>
+		    </view>
+		</view>
 	</view>
 </template>
 <script>
-
+	import diceFirst from './components/dice-first.vue';
+	import diceSecond from './components/dice-second.vue';
+	import diceThird from './components/dice-third.vue';
+	import diceFourth from './components/dice-fourth.vue';
+	import diceFifth from './components/dice-fifth.vue';
+	import diceSixth from './components/dice-sixth.vue';
+	
 	export default {
+		components:{
+			diceFirst,
+			diceSecond,
+			diceThird,
+			diceFourth,
+			diceFifth,
+			diceSixth,
+		},
 		data() {
 			return {
 
 				wxa_shop_nav_bg_color: '',
 				wxa_shop_nav_font_color: '',
 				
-				width:0,
-				height:0
+				dice : ['first','second','third','fourth','fifth','sixth'],
+				buttonType : 'primary',
+				buttonValue : '摇一摇',
+				isShow:'none',
+				num1 : 0,
+				num2 : 0,
+				num3 : 0,
+				total: 0,
+				
+				
+				timer : null ,
+				isRand : false,
 			}
 		},
 		onLoad(options) {
 			var that = this;
 			
 			uni.setNavigationBarTitle({
-				title: '时钟'
+				title: '骰子'
 			})
 			
 
@@ -55,159 +125,94 @@
 				}
 			});
 
-			
-
-
 		},
 		//onReady生命周期函数，监听页面初次渲染完成
 		onReady: function(){
-			//调用canvasApp函数
-			this.canvasClock()
-			//对canvasAPP函数循环调用
-			this.interval = setInterval(this.canvasClock,1000)
-		},
-		//页面卸载，清除画布绘制计时器
-		onUnload:function(){
-			clearInterval(this.interval)
-		},
-		methods: {
-			canvasClock: function(){
-				var context = uni.createCanvasContext('myCanvas', this);  //创建并返回绘图上下文（获取画笔）
-				//设置宽高
-				var width = this.width
-				var height = this.height
-				var R = width/2-55;//设置文字距离时钟中心点距离
-				//重置画布函数
-				function reSet(){
-					context.height = context.height;//每次清除画布，然后变化后的时间补上
-					context.translate(width/2, height/2);//设置坐标轴原点
-					context.save();//保存中点坐标1
-				}
-				//绘制中心圆和外面大圆
-				function circle(){
-					//外面大圆
-					context.setLineWidth(2);
-					context.beginPath();
-					context.arc(0, 0, width/2-30, 0, 2 * Math.PI,true);
-					context.closePath();
-					context.stroke();
-					//中心圆
-					context.beginPath();
-					context.arc(0, 0, 8, 0, 2 * Math.PI, true);
-					context.closePath();
-					context.stroke();
-				}
-				//绘制字体
-				function num(){
-					// var R = width/2-60;//设置文字距离时钟中心点距离
-					context.setFontSize(20)//设置字体样式
-					context.textBaseline = "middle";//字体上下居中，绘制时间
-					for(var i = 1; i < 13; i++) {
-						//利用三角函数计算字体坐标表达式
-						var x = R * Math.cos(i * Math.PI / 6 - Math.PI / 2);
-						var y = R * Math.sin(i * Math.PI / 6 - Math.PI / 2);
-						if(i==11||i==12){//调整数字11和12的位置
-							context.fillText(i, x-12, y+9);
-						}else {
-							context.fillText(i, x-6, y+9);
-						}
-					}
-				}
-				//绘制小格
-				function smallGrid(){
-						context.setLineWidth(1);
-						context.rotate(-Math.PI/2);//时间从3点开始，倒转90度
-						for(var i = 0; i < 60; i++) {
-							context.beginPath();
-							context.rotate(Math.PI / 30);
-							context.moveTo(width/2-30, 0);
-							context.lineTo(width/2-40, 0);
-							context.stroke();
-						}
-				 }
-				 //绘制大格
-				 function bigGrid(){
-					context.setLineWidth(5);
-					for(var i = 0; i < 12; i++) {
-						context.beginPath();
-						context.rotate(Math.PI / 6);
-						context.moveTo(width/2-30, 0);
-						context.lineTo(width/2-45, 0);
-						context.stroke();
-					}
-				 }
-				 //指针运动函数
-				function move(){
-					var t = new Date();//获取当前时间
-					var h = t.getHours();//获取小时
-					h = h>12?(h-12):h;//将24小时制转化为12小时制
-					var m = t.getMinutes();//获取分针
-					var s = t.getSeconds();//获取秒针
-					context.save();//再次保存2
-					context.setLineWidth(7);
-					//旋转角度=30度*（h+m/60+s/3600）
-					//分针旋转角度=6度*（m+s/60）
-					//秒针旋转角度=6度*s
-					context.beginPath();
-					//绘制时针
-					context.rotate((Math.PI/6)*(h+m/60+s/3600));
-					context.moveTo(-20,0);
-					context.lineTo(width/4.5-20,0);
-					context.stroke();
-					context.restore();//恢复到2,（最初未旋转状态）避免旋转叠加
-					context.save();//3
-					//画分针
-					context.setLineWidth(5);
-					context.beginPath();
-					context.rotate((Math.PI/30)*(m+s/60));
-					context.moveTo(-20,0);
-					context.lineTo(width/3.5-20,0);
-					context.stroke();
-					context.restore();//恢复到3，（最初未旋转状态）避免旋转叠加
-					context.save();
-					//绘制秒针
-					context.setLineWidth(2);
-					context.beginPath();
-					context.rotate((Math.PI/30)*s);
-					context.moveTo(-20,0);
-					context.lineTo(width/3-20,0);
-					context.stroke();
-				}
-				function drawClock(){
-					reSet();
-					circle();
-					num();
-					smallGrid();
-					bigGrid();
-					move();
-				}
-				drawClock()//调用运动函数
-				
-				
-				context.draw();
-				
-				/*
-				// 调用 uni.drawCanvas，通过 canvasId 指定在哪张画布上绘制，通过 actions 指定绘制行为
-				wx.drawCanvas({
-					canvasId:'myCanvas',
-					actions: context.getActions()
-				})*/
-			},
 			
 		},
 
-
-
-
-
-
+		methods: {
+			 // shakeClick: function () { 
+			 //    let me = this;
+			 //    this.global.isRand = !this.global.isRand;
+			 //    if ( this.global.isRand ) {
+			 //      this.global.timer = setInterval(function (){
+			 //        let num1 = Math.floor(Math.random()*6);
+			 //        let num2 = Math.floor(Math.random()*6);
+			 //        let num3 = Math.floor(Math.random()*6);
+			 //        me.setData({num1 : num1});
+			 //        me.setData({num2 : num2});
+			 //        me.setData({num3 : num3});
+			 //        me.setData({total : num1+num2+num3+3});
+			 //      },50);
+			 //    } else {
+			 //      clearInterval(this.global.timer);
+			 //    }
+			shakeClick: function () { 
+			    var that = this;
+			    that.isRand = !that.isRand;
+			    if ( that.isRand ) {
+			      that.timer = setInterval(function (){
+			        var num1 = Math.floor(Math.random()*6);
+			        var num2 = Math.floor(Math.random()*6);
+			        var num3 = Math.floor(Math.random()*6);
+					
+					
+					
+					
+					
+			        that.num1 = num1;
+			        that.num2 = num2;
+			        that.num3 = num3;
+					
+			        that.total = num1+num2+num3+3;
+			      },50);
+			    } else {
+			      clearInterval(that.timer);
+			    }
+						
+				  that.dice = that.dice;
+				  that.buttonType = (that.isRand) ? 'default' : 'primary';
+				  that.buttonValue = (that.isRand) ? '停止' : '摇一摇';
+				  that.isShow = (that.isRand) ? 'none':'block';
+			  },
+		},
 	}
 </script>
 
 <style>
-	.canvas{
-		width: 100%;
-		height: 100%;
-		position: fixed;
+	/*外部公共容器样式*/
+	.flex-container{
+	  display:flex;
+	  height: 100vh;
+	  background-color:#666666;
+	  flex-direction : column;
+	  justify-content: center;
+	  align-items: center;
+	  color: #fff;
 	}
+	
+	.dice-box{
+	  padding: 20rpx;
+	  height: 216rpx;
+	} 
+	
+	.second-row{
+	  display:flex;
+	  flex-direction : row;
+	  justify-content: space-around;
+	  height: 216rpx;
+	}
+	.button-box{
+	  padding-top: 200rpx;
+	  width:80%;
+	}
+	.dice-item{
+		height: 216rpx;
+	}
+	.result{
+		height: 40rpx;
+		margin-bottom: 40rpx;
+	} 
+
 </style>
