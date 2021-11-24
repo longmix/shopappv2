@@ -832,7 +832,7 @@
 					"path" : "clock",
 					"style" :                                                                                    
 					{
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "简约时钟",
 						"enablePullDownRefresh": true
 					}            
 				},
@@ -840,7 +840,7 @@
 					"path" : "calculator",
 					"style" :                                                                                    
 					{
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "计算器",
 						"enablePullDownRefresh": true
 					}            
 				},
@@ -848,8 +848,32 @@
 					"path" : "dice",
 					"style" :                                                                                    
 					{
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "掷骰子",
 						"enablePullDownRefresh": true
+					}            
+				},
+				{
+					"path" : "puzzle",
+					"style" :                                                                                    
+					{
+						"navigationBarTitleText": "拼图",
+						"enablePullDownRefresh": true
+					}            
+				},
+				{
+					"path" : "mine_clearing",
+					"style" :                                                                                    
+					{
+						"navigationBarTitleText": "扫雷",
+						"enablePullDownRefresh": true
+					}            
+				},
+				{
+					"path" : "graffiti",
+					"style" :                                                                                    
+					{
+						"navigationBarTitleText": "涂鸦",
+						"enablePullDownRefresh": false
 					}            
 				}
 		    ]

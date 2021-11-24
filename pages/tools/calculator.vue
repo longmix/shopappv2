@@ -1,10 +1,12 @@
 <template>
 	<view>
-		
 		<view class="container">
 		  <view class="panel-display" style="position: relative;">
 		  <view>
 		    <icon id="icon-about" type="info" size="28" color="#aaa" @click="showAbout"/></view>
+			
+			<view id="display-num">{{calc.displayNew}}</view>
+			
 		    <view id="display-num">{{calc.displayNum}}</view>
 		    <view id="display-op">{{calc.displayOp}}</view>
 		  </view>
@@ -44,9 +46,6 @@
 		    </view>
 		  </view>
 		</view>
-		
-		
-		
 	</view>
 </template>
 <script>
@@ -61,14 +60,16 @@
 				wxa_shop_nav_font_color: '',
 				
 				calc: {},
-				tapped: {}
+				tapped: {},
+				
+				isShow:'block',
 			}
 		},
 		onLoad(options) {
 			var that = this;
 			
 			uni.setNavigationBarTitle({
-				title: '时钟'
+				title: '计算器'
 			})
 			
 
@@ -102,40 +103,41 @@
 		},
 		methods: {
 			showAbout: function(e){
-			wx.showModal({
-			  title: '关于',
-			  content: '一个简单的计算器 @V1.0',
-			  showCancel: false  
-			})
-			},
-			btnClicked: function(e){
-				var code = e.target.dataset.op
-				calc.addOp(code)
-				console.log(calc.getVars())
+				uni.showModal({
+				  title: '关于',
+				  content: '一个简单的计算器 @V1.0',
+				  showCancel: false  
+				})
+				},
+				btnClicked: function(e){
+					var code = e.target.dataset.op
+					calc.addOp(code)
+
+					console.log(calc.getVars())
+					
+					//this.setData({calc: calc.getVars()})
+					this.calc =  calc.getVars();
+
+				},
 				
-				//this.setData({calc: calc.getVars()})
-				this.calc =  calc.getVars();
-			},
-			btnTouchStart: function(e){
-				var code = e.target.dataset.op
-				var tapped = {[code]: 'active'}
+				btnTouchStart: function(e){
+
+					var code = e.target.dataset.op
+
+					var tapped = {[code]: 'active'}
+					
+					this.tapped =  tapped;
+					
+				},
 				
-				this.tapped =  tapped;
-			},
-			btnTouchEnd: function(e){
-				var code = e.target.dataset.op
-				var tapped = {}
+				btnTouchEnd: function(e){
+					var code = e.target.dataset.op
+					var tapped = {}
+					this.tapped = tapped;
+
+				},
 				
-				this.tapped = tapped;
 			},
-			
-		},
-
-
-
-
-
-
 	}
 </script>
 

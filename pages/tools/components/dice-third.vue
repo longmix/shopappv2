@@ -13,30 +13,30 @@
 	/* 骰子容器公用样式 */
 	.face {
 	  display: flex;
-	  margin: 5px;
-	  padding: 4px;
+	  margin: 10rpx;
+	  padding: 8rpx;
 	  background-color:#ffffff;
-	  width: 108px;
-	  height: 108px;
+	  width: 216rpx;
+	  height: 216rpx;
 	  object-fit: contain;
 	  border-radius:10%;
-	  box-shadow: inset 0 5px white,
-	              inset 0 -5px #bbb,
-	              inset 5px 0 #d7d7d7,
-	              inset -5px 0 #d7d7d7;
+	  box-shadow: inset 0 10rpx white,
+	              inset 0 -10rpx #bbb,
+	              inset 10rpx 0 #d7d7d7,
+	              inset -10rpx 0 #d7d7d7;
 	}
 	
 	
 	/* 筛子中的点的样式 */
 	.pip {
 	  display: block;
-	  width: 24px;
-	  height: 24px;
+	  width: 48rpx;
+	  height: 48rpx;
 	  border-radius: 50%;
-	  margin:4px;
+	  margin:8rpx;
 	  background-color: #333;
-	  box-shadow: inset 0 3px #111,
-	              inset 0 -3px #555;
+	  box-shadow: inset 0 6rpx #111,
+	              inset 0 -6rpx #555;
 	}
 	/* 第三面布局方式 */
 	.third {
