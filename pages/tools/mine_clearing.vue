@@ -1,7 +1,12 @@
 <template>
 	<view>
 		<view class="container">
-		    <icon id="icon-about" type="info" size="28" color="#aaa" @click="showAbout"/>
+		    <icon id="icon-about" type="info" size="28" color="#007aff" @click="showinput"/>
+				<view v-if="isShow" >
+					<input class="num" type="number" placeholder="排数" />
+					<input class="num" type="number" placeholder="列数" />
+					<input class="num" type="number" placeholder="雷数" />
+				</view>
 		    <view class="hint">移动端无法标记雷，将不是雷的模块全部翻出为胜</view>
 		  
 		    <view class="game">
@@ -53,6 +58,8 @@
 				app_column:10,
 				app_bomb:10,
 				
+				isShow:false,
+				
 			}
 		},
 		onLoad(options) {
@@ -88,7 +95,7 @@
 		onUnload:function(){
 			
 		},
-		methods: {		
+		methods: {
 			  setgamearr:function(row,column,bomb){//根据行列设置游戏二维数组（地图）
 			    var that=this;
 			    var arrmap=[];//二维初始数组，全为空
@@ -195,7 +202,12 @@
 			      that.count = this.app_row*this.app_column;
 				  that.gamewarn = false;
 				  that.gamesuccess = false;
-			    }
+			    },
+				showinput:function(){
+					
+					this.isShow = !this.isShow;
+					
+				}
 	
 			},
 	}
@@ -264,4 +276,16 @@
 		display: block; 
 		margin: 50rpx 0;
 		}
+	.num{
+		border: 1px solid #000000;
+		margin-bottom: 20rpx;
+	}
+	.hint{
+		margin-bottom: 40rpx;
+	}
+	#icon-about{
+	  position: absolute; 
+	  right: 3vw;
+	  top: 3vw;
+	}
 </style>
