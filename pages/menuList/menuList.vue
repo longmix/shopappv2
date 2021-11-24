@@ -243,6 +243,9 @@ export default {
 				
 				console.log('this.abotapi.globalData.qrcode_url ===>>> ', myURL);
 				
+				this.spec_business_type = 'alipay_saoma_diancan';
+				
+				/* 2021.11.24. 不再处理这里的逻辑，因为新的二维码可能是空码
 				var searchParams = new URLSearchParams(myURL.search);
 				
 				if(searchParams.get('sellerid')){
@@ -264,9 +267,16 @@ export default {
 				
 				if(searchParams.get('scan_qrcode_no')){
 					options.scan_qrcode_no = searchParams.get('scan_qrcode_no');
-				}
+				}*/
 				
-				this.spec_business_type = 'alipay_saoma_diancan';
+				
+				this.__parse_alipay_normal_qrcode(myURL);
+				
+				
+				return;
+				
+				
+				
 			}		
 			//================= End ==========================		
 			//===== 2021.6.19. 普通的  支付宝小程序带参二维码，也是从 App 的 onLaunch函数中加载进来的
@@ -1422,6 +1432,61 @@ export default {
 			this.is_show_choose_specs = false
 		   
 		  },
+		  
+		  //请求服务器分析普通二维码网址，以确定这个二维码是否绑定商户，如果绑定，对应的sellerid和xianmai_shangid分别是多少
+		  __parse_alipay_normal_qrcode:function(qrcode_url){
+			var that = this;
+			
+			var post_url = that.abotapi.globalData.yanyubao_server_url + '/openapi/CloudPayData/get_normal_qrcode_info';
+			
+			var post_data = {
+				sellerid: that.abotapi.get_sellerid(),
+			};
+			
+			post_data.qrcode_url = encodeURIComponent(qrcode_url);
+			  
+			that.abotapi.abotRequest({
+			    url: post_url,
+				method: "POST",
+				data: post_data,
+				success: function (res001) {
+			  		console.log('网址===>>>>'+post_url+' ===>>> ', res001);
+			  		
+			  		//return;
+					
+					if(res001.data.code == 1){
+						//二维码已经绑定
+						var new_options = {};
+						new_options.sellerid = res001.data.data.cloudpay_suppliersn;
+						new_options.shangid =  res001.data.data.xianmaishang_id;
+						new_options.is_waimai =  0;
+						new_options.scan_qrcode_no =  res001.data.data.scan_qrcode_no;
+						
+						that.onLoad(new_options);
+						
+					}
+					else{
+						//二维码还没有绑定
+						
+						//准备跳转到哪个网址去绑定
+						var new_url = res001.data.data.new_url_to_bind;
+						
+						that.abotapi.call_h5browser_or_other_goto_url(new_url);
+						
+					}
+					
+					
+				},
+				fail: function (e) {
+					uni.showToast({
+						title: '网络连接错误~',
+						duration: 2000
+					});
+				},
+			});
+			
+			
+		  }
 		
 	}
 };

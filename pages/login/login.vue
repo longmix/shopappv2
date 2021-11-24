@@ -840,7 +840,7 @@
 								xiaochengxu_appid: that.abotapi.globalData.xiaochengxu_appid,
 								iv: e.detail.iv,
 								encryptedData: e.detail.encryptedData,
-								sellerid: that.abotapi.globalData.default_sellerid,
+								sellerid: that.abotapi.get_sellerid(),
 								parentid: that.abotapi.get_current_parentid(),
 							},
 							success: function (res) {
