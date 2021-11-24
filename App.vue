@@ -301,18 +301,6 @@
 		padding-bottom: 80rpx;
 	}
 
-
-	.container {
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: space-between;
-		padding: 200upx 0;
-		box-sizing: border-box;
-		font-family: '微软雅黑'
-	}
-
 	.df {
 		display: -webkit-box;
 		display: -webkit-flex;
