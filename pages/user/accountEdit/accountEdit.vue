@@ -187,11 +187,9 @@ page{
     -webkit-box-flex: 1;
     -webkit-flex: 1;
     flex: 1;
-	height:48rpx;
-	line-height:48px;
 	background-color:#fff;
-	border:1px solid #17A8E2;
-	border-radius:21px;
+	border:2rpx solid #17A8E2;
+	border-radius:42rpx;
 	padding: 5rpx;
 }
 
@@ -205,6 +203,8 @@ page{
     font-size: inherit;
     color: inherit;
 	padding-left: 20rpx;
+	height: 50rpx;
+	line-height: 50rpx;
 
 }
 

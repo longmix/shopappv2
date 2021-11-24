@@ -1,11 +1,14 @@
 <template>
 	<view>
-		<view class="section">
-		  <input placeholder="请输入昵称" v-model="nickname" auto-focus/>
+	
+		<view class="weui-cell">
+		      <view class="weui-cell__hd"><label class="weui-label">昵称</label></view>
+		      <view class="weui-cell__bd">
+		           <input class="weui-input" placeholder="请输入昵称" v-model="nickname" auto-focus/>
+		      </view>
 		</view>
 		
-		
-		<button class="keep_button" type="primary" @tap="keep_button"> 保存 </button>
+		<button class="keep_button" :style="{background:wxa_shop_nav_bg_color}" type="primary" @tap="keep_button"> 保存 </button>
 
 	</view>
 </template>
@@ -17,6 +20,7 @@
 				name:'',
 				nickname:'',
 				userAcountInfo: '',
+				wxa_shop_nav_bg_color:'',
 			};
 		},
 		onLoad(options) {
@@ -32,6 +36,14 @@
 			
 			this.nickname = this.userAcountInfo.fenxiao_info.nickname || '';
 			this.name = this.nickname;
+			
+			this.abotapi.set_option_list_str(this,
+				function(that001, option_list){
+					console.log('option_list',option_list);
+					that001.wxa_shop_nav_bg_color = option_list.wxa_shop_nav_bg_color
+				}
+			)
+			
 			
 		},
 		methods:{
@@ -140,32 +152,73 @@ page{
     margin-left:40%;
 }
 .button{
-    line-height:50px;
+    line-height:100rpx;
     display: inline-block;
     text-align: right;
     font-family: "微软雅黑";
     color:#fff;
     margin-left:40%;
-    font-size:16px;
+    font-size:32rpx;
 }
 .section{
     width:100%;
-    height:50px;
-    background-color:#fff;
-    margin:10px auto;
+  
 }
 .section input{
     width:100%;
-    height:50px;
+    height:100rpx;
+	line-height: 100rpx;
     background-color:#fff;
-    margin:10px auto;
-    padding-left:20px;
+    padding-left:40rpx;
+	margin-top: 40rpx;
+	margin-bottom: 40rpx;
 }
 
 .keep_button{
     width:70%;
-    height:40px;
-    margin:20px auto;
-    line-height:40px;
+    height:80rpx;
+    margin:160rpx auto;
+    line-height:80rpx;
+	color:#FFFFFF;
+}
+
+.weui-cell {
+    padding: 20rpx 30rpx;
+    position: relative;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+
+}
+.weui-label {
+    display: block;
+    width: 200rpx;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+.weui-cell__bd {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+	background-color:#fff;
+	border:2rpx solid #17A8E2;
+	border-radius:42rpx;
+	padding: 5rpx;
+}
+.weui-input {
+    width: 90%;
+    border: 0;
+    outline: 0;
+    -webkit-appearance: none;
+    background-color: transparent;
+    font-size: inherit;
+    color: inherit;
+	padding-left: 20rpx;
+	height: 50rpx;
+	line-height: 50rpx;
+
 }
 </style>

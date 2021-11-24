@@ -268,20 +268,21 @@ page{
 }
 
 .section1{
-width:90%;
-height:96rpx;
-line-height:48px;
-background-color:#fff;
-margin:40rpx auto 0;
-border-bottom:1px solid #ECECEC;
-border:1px solid #17A8E2;
-border-radius:21px;
+	width:90%;
+	height:96rpx;
+	line-height:96rpx;
+	background-color:#fff;
+	margin:40rpx auto 0;
+	border-bottom:2rpx solid #ECECEC;
+	border:2rpx solid #17A8E2;
+	border-radius:42rpx;
+	overflow: hidden;
 
 }
 .section1 input{
     width:80%;
     height:80rpx;
-    padding:3px 20px;
+    padding:6rpx 40rpx;
 }
 .section2{
     width:90%;
@@ -289,14 +290,16 @@ border-radius:21px;
     background-color:#fff;
     margin:40rpx auto 0;
     position:relative;
-    border:1px solid #17A8E2;
-    border-radius:21px;
+    border:2rpx solid #17A8E2;
+    border-radius:42rpx;
+	overflow: hidden;
 }
 .section2 input{
     width:71%;
     height:80rpx;
-    padding:3px 20px;
+    padding:6rpx 40rpx;
     margin:0 0 0;
+	
 }
 .send_btn{
     width:240rpx;
@@ -313,8 +316,9 @@ border-radius:21px;
     background-color:#fff;
     margin:40rpx auto 0;
     position:relative;
-    border:1px solid #17A8E2;
-    border-radius:21px;
+    border:2rpx solid #17A8E2;
+    border-radius:42rpx;
+	overflow: hidden;
 }
 .section3 image{
     width:25%;
@@ -322,22 +326,24 @@ border-radius:21px;
     line-height:60rpx;
     padding-top:13rpx;
     margin-left:-73rpx;
-
+	float: right;
+	margin-top: 5rpx;
+	margin-right: 20rpx;
     
 }
 .section3 input{
-    width:68%;
+    width:60%;
     height:80rpx;
-    margin:3px 20px;
+    margin:6rpx 30rpx;
     float:left;
 }
 
 .check_btn{
-    margin:50px auto;
+    margin:100rpx auto;
     width:85%;
-    height:50px;
+    height:100rpx;
     background-color:orange;
-    line-height:50px;
+    line-height:100rpx;
     color:#FFF;
 }
 
