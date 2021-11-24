@@ -1,16 +1,17 @@
 <template>
 	<view>
-		<view class="container">
+		<view class="container" :style="{height:canvas_height+'rpx'}">
 		    <!--画布区域-->
-		    <view class="canvas_area">
+		    <view class="canvas_area"  :style="{height:canvas_height}">
 		        <!--注意：同一页面中的 canvas-id 不可重复，如果使用一个已经出现过的 canvas-id，该 canvas 标签对应的画布将被隐藏并不再正常工作-->
-		        <canvas canvas-id="myCanvas" class="myCanvas"
-		            disable-scroll="false"
+
+		        <canvas canvas-id="myCanvas" class="myCanvas"  :style="{height:canvas_height}"
+		            disable-scroll="true"
 		            @touchstart="touchStart"
 		            @touchmove="touchMove"
-		           @touchend="touchEnd">
+		            @touchend="touchEnd">
 		        </canvas>
-				
+
 		    </view>
 		    <!--画布工具区域-->
 		    <view class="canvas_tools">
@@ -32,6 +33,9 @@
 				wxa_shop_nav_bg_color: '',
 				wxa_shop_nav_font_color: '',
 				
+				//画布的高度
+				canvas_height:'750',
+				
 				pen : 3, //画笔粗细默认值
 				color : '#cc0033' ,//画笔颜色默认值
 				startX: 0, //保存X坐标轴变量
@@ -41,6 +45,8 @@
 			}
 		},
 		
+		
+		
 		onLoad(options) {
 			var that = this;
 			
@@ -48,17 +54,43 @@
 				title: '涂鸦'
 			})
 			
-	
+			
 			
 			this.abotapi.set_option_list_str(that, function(that001, option_list) {
-	
+			
 				
 				console.log('option_list=====>>>>', option_list);
-	
+			
 				
 				
 			});
-	
+			
+			
+			uni.getSystemInfo({
+				success: function(res) {
+					console.log('res==', res)
+					console.log('res.model', res.model);
+					console.log('res.pixelRatio', res.pixelRatio);
+					console.log('res.windowWidth', res.windowWidth);
+					console.log('res.windowHeight', res.windowHeight);
+					console.log('res.language', res.language);
+					console.log('res.version', res.version);
+					console.log('res.platform', res.platform);
+					
+					//获取系统信息成功，将系统窗口的宽高赋给页面的宽高
+					var width = res.windowWidth;
+					var height = res.windowHeight;
+					
+					//计算画布的高度：手机屏幕的宽度为 750rpx，这是固定值。res.windowWidth 为实际屏幕的宽度，单位可能为rpx或者rem等。
+					that.canvas_height = 750 / width * height;
+					
+					that.canvas_height -= 100;
+					
+				}
+			});
+			
+			
+			
 		},
 		//onReady生命周期函数，监听页面初次渲染完成
 		onReady: function(){
@@ -68,12 +100,22 @@
 		onUnload:function(){
 			
 		},
+		
 		methods: {
 			touchStart: function (e) {
+				console.log('1111111111111111111');
+				
 			    //得到触摸点的坐标
-			    this.startX = e.changedTouches[0].x
-			    this.startY = e.changedTouches[0].y
-			    this.context = uni.createContext()
+			    this.startX = e.changedTouches[0].x;
+			    this.startY = e.changedTouches[0].y;
+				
+				// #ifdef MP-WEIXIN
+				this.context = wx.createContext()
+				// #endif
+				
+				// #ifndef MP-WEIXIN
+				this.context = uni.createCanvasContext('myCanvas', this);
+				// #endif
 			
 			    if(this.isClear){ //判断是否启用的橡皮擦功能  ture表示清除  false表示画画
 			        this.context.setStrokeStyle('#F8F8F8') //设置线条样式 此处设置为画布的背景颜色  橡皮擦原理就是：利用擦过的地方被填充为画布的背景颜色一致 从而达到橡皮擦的效果 
@@ -92,9 +134,12 @@
 						this.context.beginPath()
 			        
 			        }
-			    },
-			  //手指触摸后移动
+			},
+			
+			//手指触摸后移动
 			touchMove: function (e) {
+				
+				console.log('222222222222222');
 			      
 			    var startX1 = e.changedTouches[0].x
 			    var startY1 = e.changedTouches[0].y
@@ -110,27 +155,38 @@
 					this.startX = startX1;
 					this.startY = startY1;
 			       
-			        }else{
-						this.context.moveTo(this.startX, this.startY)
-						this.context.lineTo(startX1, startY1)
-						this.context.stroke()
-			
-						this.startX = startX1;
-						this.startY = startY1;
-						
-			        }
-			      //只是一个记录方法调用的容器，用于生成记录绘制行为的actions数组。context跟<canvas/>不存在对应关系，一个context生成画布的绘制动作数组可以应用于多个<canvas/>
-			wx.drawCanvas({
-				canvasId: 'myCanvas',
-				reserve: true,
-				actions: this.context.getActions() // 获取绘图动作数组
-			  })
+			    }else{
+					this.context.moveTo(this.startX, this.startY)
+					this.context.lineTo(startX1, startY1)
+					this.context.stroke()
+					
+					this.startX = startX1;
+					this.startY = startY1;
+					
+				}
+				
+			    //只是一个记录方法调用的容器，用于生成记录绘制行为的actions数组。context跟<canvas/>不存在对应关系，一个context生成画布的绘制动作数组可以应用于多个<canvas/>
+				// #ifdef MP-WEIXIN
+				wx.drawCanvas({
+				         canvasId: 'myCanvas',
+				         reserve: true,
+				         actions: this.context.getActions() // 获取绘图动作数组
+				      })
+				// #endif
+				
+				// #ifdef MP-WEIXIN
+				//这里的参数 true 非常重要，参考 https://uniapp.dcloud.io/api/canvas/CanvasContext?id=canvascontextdraw
+				this.context.draw(true);
+				// #endif
+					  
 			},
 			  //手指触摸动作结束
 			touchEnd: function () {
-			      
-			  },
-			  //启动橡皮擦方法
+			    console.log('3333333333333333333');
+			},
+			
+			
+			//启动橡皮擦方法
 			clearCanvas: function(){
 			    if(this.isClear){
 			        this.isClear = false;
