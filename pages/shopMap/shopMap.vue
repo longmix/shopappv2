@@ -6,9 +6,15 @@
 		</view> 
 		
 		<view class="btm">
-			<view class="adderss" style="font-weight: bold;">{{shopInfo.name}}</view>
+			<view class="adderss" style="font-weight: bold; font-size:32rpx;">{{shopInfo.name}}</view>
+			<view style="display: flex; padding-top:20rpx;  ">
+			<image src="https://yanyubao.tseo.cn/Tpl/static/images/location_map_new.png" mode="widthFix" style="width:30rpx;height:30rpx;"></image>
 			<view class="adderss">{{shopInfo.address}}</view>
+			</view>
+			<view style="display: flex; padding:40rpx  10rpx;">
+			<image src="https://yanyubao.tseo.cn/Tpl/static/images/location_mobile_new.png" mode="widthFix" style="width:30rpx;height:30rpx;"></image>
 			<view class="phone_number" @tap="call_seller">{{shopInfo.telephone}}</view>
+			</view>
 			<view v-if="from_page == 1 || from_page == 2" 
 				 :style="{background: btn_bg_color,color:frontColor}"
 				@tap="seeRoute" class="seeroute">到这去</view>
@@ -253,7 +259,7 @@
 						var lbs02 = that001.current_option;
 						
 						var lbs_json = encodeURIComponent(JSON.stringify(lbs02))
-						
+						//console.log('12312345345',locationData);
 						
 						//checkin_latitude  checkin_longitude 受助者的坐标地址
 						
@@ -263,10 +269,15 @@
 							checkstr: userInfo.checkstr,
 							latitude:locationData.latitude,
 							longitude:locationData.longitude,
-							city:locationData.addressComponent.city,
+							//city:locationData.addressComponent.city,
 							address:locationData.address,
 							lbs02:lbs_json,
 						}
+						
+						if(locationData.addressComponent && locationData.addressComponent.city){
+							post_data.city = locationData.addressComponent.city;
+						}
+						
 						
 						//签退的时候  目前没有用到这里  判断是签到签退在服务器端判断了
 						if(0){
@@ -351,12 +362,12 @@
 	.phone_number{
 	  color: #0f0f0f;
 	  font-size: 30rpx;
-	  margin-bottom: 10rpx;
+	
 	}
 	.adderss{
 	  color: #5d5d5d;
 	  font-size: 26rpx;
-	  margin-bottom: 20rpx;
+	  /* margin-bottom: 20rpx; */
 	}
 	.seeroute{
 	  text-align: center;
