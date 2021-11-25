@@ -239,9 +239,9 @@ export default {
 			if(this.abotapi.globalData.mp_alipay_query && this.abotapi.globalData.mp_alipay_query.qrCode){
 				console.log('有普通二维码扫描进入：' + this.abotapi.globalData.mp_alipay_query.qrCode);
 				
-				var myURL = new URL(this.abotapi.globalData.mp_alipay_query.qrCode);
+				//var myURL = new URL(this.abotapi.globalData.mp_alipay_query.qrCode);
 				
-				console.log('this.abotapi.globalData.qrcode_url ===>>> ', myURL);
+				//console.log('this.abotapi.globalData.qrcode_url ===>>> ', myURL);
 				
 				this.spec_business_type = 'alipay_saoma_diancan';
 				
@@ -270,7 +270,7 @@ export default {
 				}*/
 				
 				
-				this.__parse_alipay_normal_qrcode(myURL);
+				this.__parse_alipay_normal_qrcode(this.abotapi.globalData.mp_alipay_query.qrCode);
 				
 				
 				return;
