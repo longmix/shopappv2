@@ -2,10 +2,32 @@
 	<view>
 		<view class="container">
 		    <icon id="icon-about" type="info" size="28" color="#007aff" @click="showinput"/>
-				<view v-if="isShow" >
-					<input class="num" type="number" placeholder="排数" />
-					<input class="num" type="number" placeholder="列数" />
-					<input class="num" type="number" placeholder="雷数" />
+				<view v-if="isShowPopup" @tap="isShowPopup = false" class="show_modal_mask"></view>
+				<view v-if="isShowPopup" class="show_modal_pop" >
+					<form @submit="formSubmit">
+						<view class="pop-bg">
+							<view class="option">设置选项</view>
+							<view class="weui-cell">
+							           <view class="weui-cell__hd"><label class="weui-label">排数</label></view>
+							           <view class="weui-cell__bd">
+							               <input class="weui-input"  type="number" v-model="paishu" ></input>
+							           </view>
+							     </view>
+							<view class="weui-cell">
+							           <view class="weui-cell__hd"><label class="weui-label">列数</label></view>
+							           <view class="weui-cell__bd">
+							               <input class="weui-input"  type="number" v-model="lieshu" ></input>
+							           </view>
+							     </view>
+							<view class="weui-cell">
+							           <view class="weui-cell__hd"><label class="weui-label">雷数</label></view>
+							           <view class="weui-cell__bd">
+							               <input class="weui-input" type="number" v-model="leishu" ></input>
+							           </view>
+							     </view>
+							<button :style="{backgroundColor: wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" class="btn-row-submit" formType="submit">保存</button>
+						</view>
+					</form>
 				</view>
 		    <view class="hint">移动端无法标记雷，将不是雷的模块全部翻出为胜</view>
 		  
@@ -31,8 +53,9 @@
 		    </view>
 		  </view>
 		
-		  <button class="setbtn" type="primary" @click="goset">设置游戏难度</button>
+		  <button class="setbtn" type="primary" :style="{backgroundColor: wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" @click="goset">设置游戏难度</button>
 		</view>
+		
 	</view>
 </template>
 
@@ -58,7 +81,12 @@
 				app_column:10,
 				app_bomb:10,
 				
-				isShow:false,
+				isShowPopup:false,
+				
+				paishu:'',
+				lieshu:'',
+				leishu:'',
+				
 				
 			}
 		},
@@ -71,8 +99,9 @@
 			
 			
 			//读取设置项，如果没有设置项则使用默认的app_row,app_column,app_bomb,
-				
-				
+			
+			
+			this.abotapi.set_shop_option_data(this, this.callback_function_shop_option_data);
 	
 			
 			this.abotapi.set_option_list_str(that, function(that001, option_list) {
@@ -88,7 +117,7 @@
 		//onReady生命周期函数，监听页面初次渲染完成
 		onReady: function(){
 			var that = this
-			that.setgamearr(this.app_row, this.app_column, this.app_bomb)
+			that.setgamearr(this.app_row, this.app_column, this.app_bomb);
 			that.count = this.app_row*this.app_column;
 		},
 		//页面卸载，清除画布绘制计时器
@@ -96,6 +125,21 @@
 			
 		},
 		methods: {
+			
+			//根据后台动态渲染
+			callback_function_shop_option_data:function(that,cb_params){
+				
+				if(!cb_params){
+				    return;
+				   }
+				   
+				   
+				   console.log('cb_params====', cb_params);
+				   
+				   that.wxa_shop_nav_bg_color  = cb_params.option_list.wxa_shop_nav_bg_color;
+				   that.wxa_shop_nav_font_color = cb_params.option_list.wxa_shop_nav_font_color;
+			},
+			
 			  setgamearr:function(row,column,bomb){//根据行列设置游戏二维数组（地图）
 			    var that=this;
 			    var arrmap=[];//二维初始数组，全为空
@@ -193,40 +237,112 @@
 			      }}
 			      return arrmap;
 			  },
-			  goset:function(){//游戏设置
+			goset:function(){//游戏设置
 			      uni.switchTab({url: '../set/set'});
-			    },
-			    reset:function(){//console.log("重新开始")
-			      var that=this;
-			      that.setgamearr(this.app_row, this.app_column, this.app_bomb)
-			      that.count = this.app_row*this.app_column;
-				  that.gamewarn = false;
-				  that.gamesuccess = false;
-			    },
-				showinput:function(){
+			},
+			reset:function(){//console.log("重新开始")
+			  var that=this;
+			  that.setgamearr(this.app_row, this.app_column, this.app_bomb)
+			  that.count = this.app_row*this.app_column;
+			  that.gamewarn = false;
+			  that.gamesuccess = false;
+			},
+			showinput:function(){
+				
+				this.isShowPopup = !this.isShowPopup;
+				
+			},
+			formSubmit:function(e){
+				var that = this;
+				
+				console.log('1111111=========',that.app_row)
+				
+				if( (this.paishu >= 2) && (this.paishu <= 10)) {
 					
-					this.isShow = !this.isShow;
+					that.app_row = that.paishu;
 					
 				}
+				else{
+					uni.showModal({
+						
+						title:'提示',
+						content:"排数必须在2~10之间",
+						showCancel:false,
+						
+					});
+					
+					return;
+				}
+				
+				if( (this.lieshu >= 2) && (this.lieshu <= 10)) {
+					
+					that.column = that.lieshu;
+					
+				}else{
+					uni.showModal({
+						
+						title:'提示',
+						content:"列数必须在2~10之间",
+						showCancel:false,
+						
+					});
+					
+					return;
+				}
+				
+				if(this.leishu > 0){
+					
+					that.app_bomb = that.leishu;
+					
+				}
+				else{
+					uni.showModal({
+						
+						title:'提示',
+						content:"雷数必须大于0",
+						showCancel:false,
+						
+					});
+					
+					return;
+				}
+				
+				uni.showModal({
+					
+					title:'提示',
+					content:"设置成功",
+					showCancel:false,
+					
+				});
+				
+				that.isShowPopup = false;  //关闭窗口
+				
+				that.setgamearr(that.app_row, that.app_column, that.app_bomb);
+				that.count = that.app_row*that.app_column;
+				
+			}
 	
-			},
+		},
 	}
 </script>
 
 <style>
+	
 	.game { 
 		display: flex;
 		justify-content:center;
 		flex-direction:column;
 		position: relative;
-		border:Solid 1px #f5f5f5;
+		border:Solid 2rpx #f5f5f5;
+		align-items: center;
+		margin-bottom: 40rpx;
 		}
 	.game .tr{ 
 		display: flex; 
 		flex-direction:row; 
 		}
 	.game .td{  
-		border:Solid 2px #f5f5f5; 
+		border:Solid 4rpx #f5f5f5; 
 		width:50rpx; 
 		height:50rpx;
 		line-height:50rpx;
@@ -275,10 +391,13 @@
 	.setbtn{ 
 		display: block; 
 		margin: 50rpx 0;
+		width: 80%;
+		margin: 0 auto;
 		}
 	.num{
 		border: 1px solid #000000;
-		margin-bottom: 20rpx;
+		width: 100rpx;
+		margin: 20rpx 70rpx;
 	}
 	.hint{
 		margin-bottom: 40rpx;
@@ -287,5 +406,89 @@
 	  position: absolute; 
 	  right: 3vw;
 	  top: 3vw;
+	  top: -120rpx;
+	}
+	.show_modal_mask{
+		background-color: #000;
+		opacity: 0.7;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 999;
+	}
+	.show_modal_pop{
+		position: fixed;
+		z-index: 999;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%,-50%);
+	}
+	.pop-bg{
+		background-color: #FFFFFF;
+		width: 500rpx;
+		height: 540rpx;
+	}
+	.pop-up{
+		display: flex;
+		height: 100rpx;
+		line-height: 100rpx;
+		transform: translateX(25%);
+	}
+	.option{
+		text-align: center;
+		font-weight: bold;
+		padding-top: 20rpx;
+		margin-bottom: 40rpx;
+	}
+	.btn-row-submit {
+		width: 80%;
+	    margin-top: 22rpx;
+		background-color: #2e85d8;
+	}
+	.weui-cell {
+	    padding: 20rpx 30rpx;
+	    position: relative;
+	    display: -webkit-box;
+	    display: -webkit-flex;
+	    display: flex;
+	    -webkit-box-align: center;
+	    -webkit-align-items: center;
+	    align-items: center;
+	    font-size: 30rpx;
+	}
+	
+	.weui-label {
+	    display: block;
+	    width: 100rpx;
+	    word-wrap: break-word;
+	    word-break: break-all;
+		
+	}
+	.weui-cell__bd {
+	    -webkit-box-flex: 1;
+	    -webkit-flex: 1;
+	    flex: 1;
+		background-color:#fff;
+		border:2rpx solid #17A8E2;
+		border-radius:42rpx;
+		padding: 5rpx;
+	}
+	.weui-input {
+	    width: 90%;
+	    border: 0;
+	    outline: 0;
+	    -webkit-appearance: none;
+	    background-color: transparent;
+	    font-size: inherit;
+	    color: inherit;
+		padding-left: 20rpx;
+		height: 50rpx;
+		line-height: 50rpx;
+	}
+	.container{
+		margin: 200rpx 20rpx 0 20rpx;
+		text-align: center;
 	}
 </style>
