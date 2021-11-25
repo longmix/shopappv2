@@ -15,7 +15,7 @@
     "force_sellerid_flag": 1,
     "force_sellerid_value": "pNJNyxkkP",
     "shop_name": "陆家嘴电脑维修",
-    "version_number": "Ver 1.8.0 Build 361",
+    "version_number": "Ver 2.0.1 Build 390",
     "navigationBarBackgroundColor_fixed": 1,
     "navigationBar_font_color":"#ffffff",
     "navigationBar_bg_color":"#269ad7",
@@ -32,6 +32,26 @@
     "pages/tabbar/user": {
       "navigationBarTitleText": "个人中心"
     }
+  },
+  "tabBar": {
+    "color": "#515151",
+    "selectedColor": "#d81e06",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "static/img/tabBar/home.png",
+        "selectedIconPath": "static/img/tabBar/home-on.png",
+        "text": "Home"
+      },
+      {
+        "pagePath": "pages/tabbar/user",
+        "iconPath": "static/img/tabBar/user.png",
+        "selectedIconPath": "static/img/tabBar/user-on.png",
+        "text": "Mine"
+      }
+    ]
   },
   "window": {
     "backgroundTextStyle": "light",
