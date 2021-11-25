@@ -1,14 +1,14 @@
 <template>
 	<view>
 	
-		<view class="weui-cell">
+		<view class="weui-cell" style="padding-top: 100rpx;">
 		      <view class="weui-cell__hd"><label class="weui-label">昵称</label></view>
 		      <view class="weui-cell__bd">
 		           <input class="weui-input" placeholder="请输入昵称" v-model="nickname" auto-focus/>
 		      </view>
 		</view>
 		
-		<button class="keep_button" :style="{background:wxa_shop_nav_bg_color}" type="primary" @tap="keep_button"> 保存 </button>
+		<button class="weui-btn" :style="{background:wxa_shop_nav_bg_color}" type="primary" @tap="keep_button"> 保存 </button>
 
 	</view>
 </template>
@@ -137,6 +137,9 @@
 </script>
 
 <style lang="scss">
+	
+	@import url("../static/css/user.css");
+
 page{
     background-color:#F0F0F0;  
 }
@@ -172,14 +175,6 @@ page{
     padding-left:40rpx;
 	margin-top: 40rpx;
 	margin-bottom: 40rpx;
-}
-
-.keep_button{
-    width:70%;
-    height:80rpx;
-    margin:160rpx auto;
-    line-height:80rpx;
-	color:#FFFFFF;
 }
 
 .weui-cell {

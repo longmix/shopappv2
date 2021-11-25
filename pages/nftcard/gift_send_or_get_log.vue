@@ -26,9 +26,9 @@
 					<view style="margin-top: 10rpx;margin-left: 20rpx;width: 490rpx;" >
 						<view class="my_package_name" style="font-size: 35rpx;">{{current_coupon_item.card_name}}</view>
 						
-						<view class="my_package_name" style="color: #ecb36c;font-size: 30rpx;margin-top: 15rpx;">{{current_coupon_item.memo}}</view>
-						<view class="my_package_name" style="color: #666666;font-size: 30rpx;margin-top: 15rpx;">赠言：{{current_coupon_item.send_wish}}</view>
-						<view class="my_package_name" style="color: #666666;font-size: 25rpx;margin-top: 15rpx;">{{current_coupon_item.createtime}}</view>
+						<view class="my_package_name" style="color: #ecb36c;font-size: 30rpx;margin-top: 10rpx;">{{current_coupon_item.memo}}</view>
+						<view class="my_package_name" style="color: #666666;font-size: 30rpx;margin-top: 10rpx;">赠言：{{current_coupon_item.send_wish}}</view>
+						<view class="my_package_name" style="color: #666666;font-size: 25rpx;margin-top: 10rpx;">{{current_coupon_item.createtime}}</view>
 						
 						
 					</view>

@@ -330,5 +330,5 @@
 </script>
 
 <style>
-	@import url("../user/log");
+	@import url("./static/css/log");
 </style>

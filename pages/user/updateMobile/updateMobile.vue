@@ -1,5 +1,5 @@
 <template>
-	<view class="container" style='padding:0;'>
+	<view class="container" style="padding:100rpx 0 0 0;">
 	  
 	  <view class="section1">
 	    <input type="number" placeholder="请输入手机号"  v-model="mobile"  auto-focus/>
@@ -15,7 +15,7 @@
 	    <button type="primary" :disabled="disabled"  @tap="send_btn" class="send_btn">{{second}}</button>
 	  </view>
 	
-	  <button type="primary" @tap="check_button" class="check_btn" :style="{background:wxa_shop_nav_bg_color}">设置手机号码</button>
+	  <button type="primary" @tap="check_button" class="weui-btn" :style="{background:wxa_shop_nav_bg_color}">设置手机号码</button>
 	
 	</view>
 	
@@ -258,6 +258,9 @@
 </script>
 
 <style lang="scss">
+	@import url("../static/css/user.css");
+	
+	
 /* pages/update_mobile/update_mobile.wxss */
 page{
     background-color:#F0F0F0;  
@@ -338,13 +341,5 @@ page{
     float:left;
 }
 
-.check_btn{
-    margin:100rpx auto;
-    width:85%;
-    height:100rpx;
-    background-color:orange;
-    line-height:100rpx;
-    color:#FFF;
-}
 
 </style>

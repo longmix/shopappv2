@@ -1,6 +1,6 @@
 <template>
-	<view class="container" style='padding:0;'>
-	<form @submit="formSubmit" style="margin-top: 100rpx;">
+	<view class="container" style="padding:100rpx 0 0 0;">
+	<form @submit="formSubmit" style="">
 	    <view class="weui-cell">
 	          <view class="weui-cell__hd"><label class="weui-label">账号</label></view>
 	          <view class="weui-cell__bd">
@@ -150,6 +150,9 @@
 </script>
 
 <style lang="scss">
+	@import url("../static/css/user.css");
+	
+	
 page{
     background-color:#F0F0F0;  
 }	
@@ -212,22 +215,5 @@ page{
     background-color: #1AAD19;
 }
 
-.weui-btn {
-    position: relative;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 28rpx;
-    padding-right: 28rpx;
-	margin-top: 50rpx;
-    box-sizing: border-box;
-    font-size: 36rpx;
-    text-align: center;
-    text-decoration: none;
-    color: #FFFFFF;
-    line-height: 2.55555556;
-    border-radius: 10rpx;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    overflow: hidden;
-}
+
 </style>

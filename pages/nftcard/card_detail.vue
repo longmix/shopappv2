@@ -181,7 +181,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				</view>
 				
 				
-				<view style="color: #868686;">
+				<view >
 					<view v-if="current_card_detail.buy_limit == -1">
 						<text style="color: #ff0000;">此卡牌不可在线获取</text>
 					</view>
@@ -189,10 +189,18 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 						<text style="color: #ff0000;">每人限购{{current_card_detail.buy_limit}}张</text>
 					</view>
 					
-					<view v-if="current_card_detail.publish_counter == 0">
+					<!-- 2021.11.25 ========== 地图 -->
+					<view @tap="baidu_map_jump_btn" class="maidu_map_adress"
+					 v-if="current_card_detail.lbs_option_address">
+						<image class="baidu_map" src="../../static/img/addricon.png" mode="widthFix"></image>
+						<view class="" style="font-size:26rpx; color:#2a2a2a; margin-left: 10rpx;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{current_card_detail.lbs_option_address}}</view>
+					</view>
+					
+					
+					<view v-if="current_card_detail.publish_counter == 0" style="color: #868686;">
 						分发进度（{{current_card_detail.sale_counter}}/无限量）
 					</view>
-					<view v-else>
+					<view v-else style="color: #868686;">
 						分发进度（{{current_card_detail.sale_counter}}/{{current_card_detail.publish_counter}}）
 					</view>
 					
@@ -1794,7 +1802,14 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					},
 				});
 			},	
+			baidu_map_jump_btn:function(){
+				var that = this;
 				
+				uni.navigateTo({
+					url:'../shopMap/shopMap?latitude=' + that.current_card_detail.lbs_option_latitude
+					 + '&longitude=' + that.current_card_detail.lbs_option_longitude
+				})
+			},
 				
 				
 				
@@ -2185,7 +2200,15 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		padding-top: 20rpx;
 		padding-right: 5rpx;
 	}
-	
-	
+	.baidu_map{
+		height: 40rpx;
+		width: 40rpx;
+		margin-top: 6rpx;
+	}
+	.maidu_map_adress{
+		display: flex;
+		height: 50rpx;
+		line-height: 50rpx;
+	}
 	
 </style>

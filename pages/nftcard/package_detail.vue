@@ -292,7 +292,8 @@
 					
 		</view>
 		
-		<view class="package_recommend" >
+		<view class="package_recommend" 
+			v-if="current_package_list && (current_package_list.length > 0)">
 			<!-- 推荐的卡包 -->
 			
 				<view class="package_recommend1" >
@@ -454,6 +455,9 @@ export default {
 			
 			showModal_exchange_btn:false,
 			
+			//隐藏推荐卡包
+			hidden_tuijian_package: 0,
+			
 		};
 	},
 	onLoad: function (options) {
@@ -517,7 +521,10 @@ export default {
 			return;
 		}
 		
-		
+		//2021.11.25. jialong 是否隐藏推荐卡包
+		if(options.hidden_tuijian_package){
+			that.hidden_tuijian_package = options.hidden_tuijian_package;
+		}
 		
 		
 		that.current_package_detail = {'title':''};
@@ -1356,14 +1363,15 @@ export default {
 					packageid:that.current_packageid,
 					page: 1,
 					page_size:50,
+					action:'sort_card_list'
 			};
 			
 			
-			    var userInfo = that.abotapi.get_user_info();
-			    if (userInfo) {
-			    	post_data.userid = userInfo.userid;
-			    	post_data.checkstr = userInfo.checkstr;
-			   }
+			var userInfo = that.abotapi.get_user_info();
+			if (userInfo) {
+				post_data.userid = userInfo.userid;
+				post_data.checkstr = userInfo.checkstr;
+		   }
 			
 			
 			
@@ -1417,6 +1425,10 @@ export default {
 		
 		__nft_get_relate_package_list:function(){
 			var that = this;
+			
+			if(that.hidden_tuijian_package == 1){
+				return;
+			}
 		
 			// 获取推荐卡包但不获取自己
 			that.abotapi.abotRequest({
@@ -1431,10 +1443,10 @@ export default {
 			    success: function (res) {
 					
 					if(res.data.code != 1){
-						uni.showToast({
+						/*uni.showToast({
 							title:'卡包列表没数据',
 							duration: 2000,
-						});
+						});*/
 						
 						return;
 					}
