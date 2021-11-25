@@ -373,6 +373,7 @@
 
 	.shouquan-a {
 		width: 60rpx;
+		height:60rpx;
 	}
 
 	.shouquan-b {
