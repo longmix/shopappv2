@@ -276,7 +276,7 @@
 				
 				if( (this.lieshu >= 2) && (this.lieshu <= 10)) {
 					
-					that.column = that.lieshu;
+					that.app_column = that.lieshu;
 					
 				}else{
 					uni.showModal({
