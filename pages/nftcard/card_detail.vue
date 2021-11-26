@@ -192,8 +192,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					<!-- 2021.11.25 ========== 地图 -->
 					<view @tap="baidu_map_jump_btn" class="maidu_map_adress"
 					 v-if="current_card_detail.lbs_option_address">
-						<image class="baidu_map" src="../../static/img/addricon.png" mode="widthFix"></image>
-						<view class="" style="font-size:26rpx; color:#2a2a2a; margin-left: 10rpx;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{current_card_detail.lbs_option_address}}</view>
+						<image class="baidu_map" src="../../static/img/addricon.png" style="width: 40rpx;height: 40rpx;" ></image>
+						<view class="" style="font-size:26rpx; color:#2A2A2A; margin-left: 10rpx;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{current_card_detail.lbs_option_address}}</view>
 					</view>
 					
 					
@@ -1803,11 +1803,15 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				});
 			},	
 			baidu_map_jump_btn:function(){
+				
 				var that = this;
 				
 				uni.navigateTo({
 					url:'../shopMap/shopMap?latitude=' + that.current_card_detail.lbs_option_latitude
-					 + '&longitude=' + that.current_card_detail.lbs_option_longitude
+					 + '&longitude=' + that.current_card_detail.lbs_option_longitude 
+					 + '&address=' + that.current_card_detail.lbs_option_address
+					 + '&name=' + that.current_card_detail.supplier_item.name
+					 + '&telephone=' + that.current_card_detail.supplier_item.telephone
 				})
 			},
 				
@@ -2201,8 +2205,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		padding-right: 5rpx;
 	}
 	.baidu_map{
-		height: 40rpx;
-		width: 40rpx;
+		
 		margin-top: 6rpx;
 	}
 	.maidu_map_adress{

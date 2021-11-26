@@ -366,7 +366,11 @@
 	}
 	.adderss{
 	  color: #5d5d5d;
+	  width: 80%;
 	  font-size: 26rpx;
+	  overflow: hidden;
+	  text-overflow:ellipsis;
+	  white-space: nowrap;
 	  /* margin-bottom: 20rpx; */
 	}
 	.seeroute{

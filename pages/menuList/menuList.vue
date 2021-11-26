@@ -311,169 +311,43 @@ export default {
 			//================= End ==========================
 		// #endif
 		
-		if(options.title){
-			uni.setNavigationBarTitle({
-				title:options.title
-			})
-		}
-		
-		//如果有扫码的二维码编号，则存储，在创建订单时候会用到
-		//如果没有，则及时删除或清空这个缓存，以避免误统计
-		if(options.scan_qrcode_no){
-			uni.setStorage({
-				key:'current_scan_qrcode_no',
-				data:options.scan_qrcode_no
-			});
-			
-			console.log('扫描点餐，有二维码编号：' + options.scan_qrcode_no);
-		}
-		else{
-			uni.removeStorage({
-				key:'current_scan_qrcode_no'
-			})
-		}
-		
-
-		var last_url = '/pages/menuList/menuList';
-		
-		var arr = Object.keys(options);
-		var options_len = arr.length;
-		
-		if (options_len > 0){
-			var params_str = '';
-		
-			for(var key in options){
-				params_str += key+'='+options[key]+'&';
-			}
-			params_str = params_str.substr(0, params_str.length - 1);
-		
-			last_url = last_url+'?'+params_str;
-		}
-		
-		//this.last_url = last_url
-		var userInfo = this.abotapi.get_user_info();
-		
-		//2021.6.6. 将检测用户是否登录，转移到添加购物车的时候判读
-		/*
-		if(!userInfo || ! userInfo.userid){
-			this.abotapi.goto_user_login(last_url, 'normal');
-			return;
-		}*/
-		
-		
-		var shopId = options.xianmai_shangid;
-		var is_waimai = options.is_waimai;
-		
-		// var shopId = 133;
-		// var is_waimai = 1;
-	
-		console.log('ppppppppppppppppppppp', is_waimai);
-		console.log('ppppppppppppppppppppp', options);
-		
-		this.is_waimai = is_waimai;
-	
-		console.log('565656', shopId)
-		
-		var that = this;
-	
-		that.shopId = shopId;
-		
-		console.log('787878', shopId)
-		
-		
-		uni.showLoading({
-			title: '数据加载中……'
-		});
-		
-		setTimeout(function(){
-			uni.hideLoading();
-		}, 2000);
-	
-		
-		this.__get_product_list_all_data();
-		
-		this.__get_shang_detail();
-				
-				
-		
-		
-	
-		/* setTimeout(function() {
-			uni.stopPullDownRefresh();
-		}, 1000); */
-	
-		console.log('ffffifififififif', is_waimai);
-		
-		
-		if (is_waimai == 1){
-		  var cart_list = uni.getStorageSync('waimai_list_' + this.shopId);
-		  console.log('fffeeeeefififif', cart_list);
-		}else{
-		  var cart_list = uni.getStorageSync('cart_list_' + this.shopId);
-		  console.log('ffffifififififif', cart_list);
-		}
-	   
-	   
-		that.cartlist = cart_list
-	
-		that.sum();
-		
-	
-	
-	
-		//加载静态订单数据
-		var res = uni.getStorageSync('orderList');
-		if (res) {
-		  if (res.count < 0) res.count = 0;
-		  this.setData({
-			cart: {
-			  count: res.count == null ? 0 : res.count,
-			  total: res.total
-			}
-		  });
-		  console.log("shop---Loading");
-		  console.log(res.count, res.total, res.cartList);
-		  console.log(this.cart.count, this.cart.total);
-		  console.log("shop---end");
-		  if (!server.isEmptyObject(res.cartList)) {
-			  this.cartList = res.cartList;
-			  this.localList = server.filterEmptyObject(res.cartList);
-		  }
-		}
-	
-		//防止未定义数组的形式
-		if (typeof this.cartList[this.shopId] == 'undefined' || server.isEmptyObject(this.cartList[this.shopId])) {
-		  var cartList = this.cartList;
-		  cartList[this.shopId] = [];		  
-		  this.cartList = cartList
-		}
-		console.log(this.localList, this.cartList)
-	
-	
-	
-	
 		var that = this;
 		uni.getSystemInfo({// 获取页面的有关信息
 		  success: function (res) {
 			uni.setStorageSync('systemInfo', res)
 			var ww = res.windowWidth;
 			var hh = res.windowHeight;
-	
+			
 			that.ww = res.windowWidth;
 			that.hh = res.windowHeight;
 			
 			that.menuHeight = hh - 130.63;
-	
+			
 			
 		  }
 		});
-	
-	
 		
-		this.busPos = {};
-		this.busPos['x'] = 27.185;//购物车的位置
-		this.busPos['y'] = this.hh - 32;
+		if(options.title){
+			uni.setNavigationBarTitle({
+				title:options.title
+			})
+		}
+		
+		
+		
+		
+		
+		
+		
 	
+	
+		this.__load_data(options);
+		
+		this.__get_product_list_all_data();
+		
+		this.__get_shang_detail();
+				
+		
 		this.abotapi.set_option_list_str(that, function(that002, shop_option_data){
 			
 			
@@ -535,6 +409,147 @@ export default {
 	
 	methods: {
 		
+		__load_data:function(options){
+			var that = this;
+			
+			//如果有扫码的二维码编号，则存储，在创建订单时候会用到
+			//如果没有，则及时删除或清空这个缓存，以避免误统计
+			if(options.scan_qrcode_no){
+				uni.setStorage({
+					key:'current_scan_qrcode_no',
+					data:options.scan_qrcode_no
+				});
+				
+				console.log('扫描点餐，有二维码编号：' + options.scan_qrcode_no);
+			}
+			else{
+				uni.removeStorage({
+					key:'current_scan_qrcode_no'
+				})
+			}
+			
+			
+			var last_url = '/pages/menuList/menuList';
+			
+			var arr = Object.keys(options);
+			var options_len = arr.length;
+			
+			if (options_len > 0){
+				var params_str = '';
+			
+				for(var key in options){
+					params_str += key+'='+options[key]+'&';
+				}
+				params_str = params_str.substr(0, params_str.length - 1);
+			
+				last_url = last_url+'?'+params_str;
+			}
+			
+			//this.last_url = last_url
+			var userInfo = this.abotapi.get_user_info();
+			
+			//2021.6.6. 将检测用户是否登录，转移到添加购物车的时候判读
+			/*
+			if(!userInfo || ! userInfo.userid){
+				this.abotapi.goto_user_login(last_url, 'normal');
+				return;
+			}*/
+			
+			
+			var shopId = options.xianmai_shangid;
+			var is_waimai = options.is_waimai;
+			
+			// var shopId = 133;
+			// var is_waimai = 1;
+				
+			console.log('ppppppppppppppppppppp', is_waimai);
+			console.log('ppppppppppppppppppppp', options);
+			
+			this.is_waimai = is_waimai;
+				
+			console.log('565656', shopId)
+			
+			that.shopId = shopId;
+			
+			console.log('787878', shopId)
+			
+			
+			uni.showLoading({
+				title: '数据加载中……'
+			});
+			
+			setTimeout(function(){
+				uni.hideLoading();
+			}, 2000);
+			
+			
+			
+				
+			/* setTimeout(function() {
+				uni.stopPullDownRefresh();
+			}, 1000); */
+				
+			console.log('ffffifififififif', is_waimai);
+			
+			
+			if (is_waimai == 1){
+			  var cart_list = uni.getStorageSync('waimai_list_' + this.shopId);
+			  console.log('fffeeeeefififif', cart_list);
+			}else{
+			  var cart_list = uni.getStorageSync('cart_list_' + this.shopId);
+			  console.log('ffffifififififif', cart_list);
+			}
+				   
+				   
+			that.cartlist = cart_list
+				
+			that.sum();
+			
+				
+				
+				
+			//加载静态订单数据
+			var res = uni.getStorageSync('orderList');
+			if (res) {
+			  if (res.count < 0) res.count = 0;
+			  this.setData({
+				cart: {
+				  count: res.count == null ? 0 : res.count,
+				  total: res.total
+				}
+			  });
+			  console.log("shop---Loading");
+			  console.log(res.count, res.total, res.cartList);
+			  console.log(this.cart.count, this.cart.total);
+			  console.log("shop---end");
+			  if (!server.isEmptyObject(res.cartList)) {
+				  this.cartList = res.cartList;
+				  this.localList = server.filterEmptyObject(res.cartList);
+			  }
+			}
+				
+			//防止未定义数组的形式
+			if (typeof this.cartList[this.shopId] == 'undefined' || server.isEmptyObject(this.cartList[this.shopId])) {
+			  var cartList = this.cartList;
+			  cartList[this.shopId] = [];		  
+			  this.cartList = cartList
+			}
+			console.log(this.localList, this.cartList)
+				
+				
+				
+				
+			
+				
+				
+			
+			this.busPos = {};
+			this.busPos['x'] = 27.185;//购物车的位置
+			this.busPos['y'] = this.hh - 32;
+				
+				
+		},
+		
 		__get_product_list_all_data:function(){
 			var that = this;
 			
@@ -556,7 +571,7 @@ export default {
 				
 				var data = res.data.data;
 				
-				console.log('888888',data.menu);
+			//	console.log('888888',data.menu);
 				
 				
 				
@@ -1462,7 +1477,13 @@ export default {
 						new_options.is_waimai =  0;
 						new_options.scan_qrcode_no =  res001.data.data.scan_qrcode_no;
 						
-						that.onLoad(new_options);
+						
+						that.__load_data(new_options);
+						
+						that.__get_product_list_all_data();
+						that.__get_shang_detail();
+						
+						//that.onLoad(new_options);
 						
 					}
 					else{
