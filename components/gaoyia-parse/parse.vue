@@ -92,12 +92,14 @@ import wxParseTemplate from './components/wxParseTemplate0';
 			},
 			startHandler: {
 				type: Function,
+				default: null
+				/* 在百度小程序的iPhone版本中，这里的设置会抛异常
 				default () {
 					return node => {
 						node.attr.class = null;
 						node.attr.style = null;
 					};
-				}
+				}*/
 			},
 			endHandler: {
 				type: Function,
