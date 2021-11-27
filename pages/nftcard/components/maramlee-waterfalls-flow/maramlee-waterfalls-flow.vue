@@ -25,7 +25,13 @@
         @error="imageLoadHandle(index)"
         @click="$emit('image-click', item)"
       />
+	  
+	  <!-- #ifndef MP-BAIDU -->
+	  
       <slot name="slot{{index}}" />
+	  
+	  <!-- #endif -->
+	  
     </view>
     <!--  #endif -->
 

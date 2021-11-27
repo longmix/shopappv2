@@ -57,10 +57,18 @@
 import util from '../../common/util.js';
 
 //import waterfallsFlow from "@/components/maramlee-waterfalls-flow/maramlee-waterfalls-flow.vue";
+
+// #ifndef MP-BAIDU
 import waterfallsFlow from "./components/maramlee-waterfalls-flow/maramlee-waterfalls-flow.vue";
+// #endif
 	
 export default {
-	components: { waterfallsFlow },
+	
+	components: { 
+		// #ifndef MP-BAIDU
+		waterfallsFlow 
+		// #endif
+	},
 	data() {
 		return {
 			current_card_list:[],

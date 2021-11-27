@@ -215,9 +215,6 @@
         "uniStatistics" : {
             "enable" : false
         },
-		"optimization":{
-			"subPackages":true
-		},
         "appid" : "2021001187630273"
     },
     "mp-baidu" : {
