@@ -195,10 +195,13 @@
 			
 			<!-- 发行商图片及简介 12324-->
 			
-			<view v-if="current_package_detail.supplier_item != null" class="" style="display: flex;" @tap="goto_supplier_detail()">
+			<view v-if="current_package_detail.supplier_item != null" 
+				class="" 
+				style="display: flex;" 
+				@tap="goto_supplier_detail()">
 				<view class="">
 					<image class="" :src="current_package_detail.supplier_item.icon_image"
-						mode="" style="width: 120rpx;height: 120rpx;border-radius: 50%;margin: 15rpx;"></image>
+						mode="widthFix" style="width: 120rpx;height: 120rpx;border-radius: 50%;margin: 15rpx;"></image>
 				</view>
 				
 				<view class="package_card_publish">

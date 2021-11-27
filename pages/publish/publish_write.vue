@@ -110,7 +110,7 @@
 									</view>
 								</view>
 							</picker>
-							<input :name="item.fieldname" :value="item.options[item.index]" :hidden='true' />
+							<input :name="item.fieldname" :value="item.options[item.index]" :hidden='true' style="display:none;" />
 						</view>
 						
 						<view class="box-checkbox" v-if="item.inputtype == 'checkbox'">
@@ -263,6 +263,10 @@
 	import uParse from '@/components/gaoyia-parse/parse.vue'
 	
 	import md5 from '../../common/md5.min.js'
+	
+	// #ifdef MP-ALIPAY
+		import parseHtml from "../../common/html-parser.js"
+	// #endif
 	
 	export default {
 		components:{
@@ -1227,8 +1231,8 @@
 		padding: 20rpx 40rpx;
 		border-bottom: 1px solid #EEEEEE;
 		background: #FFFFFF;
-		height: 60rpx;
-		line-height: 60rpx;
+		height: 80rpx;
+		line-height: 80rpx;
 	}
 	
 	.box-file-upload {
@@ -1334,11 +1338,11 @@
 	}
 	
 	.queren {
-	position: relative;
-	height: 70rpx;
+	position: relative;	
 	width: 30%;
 	left: 35%;
 	font-size: 30rpx;
+	height: 70rpx;
 	line-height: 70rpx;
 	text-align: center;
 	color: white;

@@ -35,7 +35,7 @@
 			<view class="" style="background-color: #eceeef; padding-bottom: 400rpx;">
 				<!--放行商封面  -->
 				<view style="" >
-					<image :src="current_shang_detail.mendian_image" mode="" 
+					<image :src="current_shang_detail.mendian_image" mode="widthFix" 
 						style="width: 100%; height: 450rpx; position: absolute; "></image>
 				</view>
 				
@@ -55,7 +55,7 @@
 							<view style="color: #FFFFFF;margin-left:0rpx; margin-top: 5rpx; font-size: 30rpx;">已关注</view>
 						</view>
 					</view>
-					<image :src="current_shang_detail.icon_image" mode="" 
+					<image :src="current_shang_detail.icon_image" mode="widthFix" 
 						style="width: 180rpx;height: 180rpx; border-radius: 50%; background-color:#ffffff; padding: 20rpx;"></image>
 						
 						<view style="width: 500rpx;display: flex;margin-left: 40rpx;margin-top: 15rpx;">
@@ -320,7 +320,7 @@
 		<!-- 功能按钮-->
 		<view>
 			<!-- 按钮1 -->
-			<view class="paidui-con" v-if="shop_product_btn_show == 1">
+			<view class="paidui-con" v-if="shop_product_btn_show == 1888">
 				<image class="icon-a" :src="user_console_setting.shop_product_icon"></image>
 				<view class="paidui-a">
 					<view class="icon-title">
@@ -341,7 +341,7 @@
 			<!-- 按钮1   end -->
 
 			<!-- 按钮2 -->
-			<view class="paidui-con" v-if="waimai_product_btn_show == 1">
+			<view class="paidui-con" v-if="waimai_product_btn_show == 1888">
 				<image style="height: 85upx;" class="icon-a" :src="user_console_setting.waimai_product_icon"></image>
 				<view class="paidui-a">
 					<view class="icon-title">
@@ -352,8 +352,9 @@
 				</view>
 				<view class="yuding-a">
 					<view style="font-size:25rpx;">{{user_console_setting.waimai_product_ad}}</view>
-					<navigator style="background:#E86452;" :url="'../menuList/menuList?is_waimai=1&title='+ user_console_setting.waimai_product_list_title +'&xianmai_shangid=' + current_xianmai_shangid"
-					 hover-class="navigator-hover">
+					<navigator style="background:#E86452;" 
+						:url="'../menuList/menuList?is_waimai=1&title='+ user_console_setting.waimai_product_list_title +'&xianmai_shangid=' + current_xianmai_shangid"
+						hover-class="navigator-hover">
 						<view>{{user_console_setting.waimai_product_btn_ext}}</view>
 					</navigator>
 				</view>
@@ -799,7 +800,7 @@
 			
 			return {
 				title: that.current_shang_detail.name,
-				path: 'pages/shopDetail/shopDetail?shangid='+that.current_xianmai_shangid,
+				path: 'pages/nftcard/shopDetail?shangid='+that.current_xianmai_shangid,
 				imageUrl:'',
 				success: function(res) {
 				// 分享成功
@@ -857,7 +858,7 @@
 			
 			click_wxa_applet_share:function (){
 				
-				var path = 'pages/shopDetail/shopDetail?shangid='+ this.current_xianmai_shangid;
+				var path = 'pages/nftcard/shopDetail?shangid='+ this.current_xianmai_shangid;
 				var account = this.abotapi.globalData.xiaochengxu_account;
 				abotsharejs.click_wxa_applet_share(this.share_href, this.share_titles, path, this.share_imageUrl, account);
 			},
@@ -1127,80 +1128,80 @@
 				//========= 2021.8.4. 如果定义了 xianmai_shang_list_switch_to_supplier_list，则打开了开关 nft_package_list_show_flag ===============				
 				if(that.nft_package_list_show_flag == 1){
 				
-					//获取卡包列表
-					//将 xianmai_shangid 转为 supplierid，因为传入进来的就是supplierid (xianmai_shang_list_switch_to_supplier_list == 1)
-					//如果 xianmai_shang_list_switch_to_supplier_list != 1，目前还没有应用场景
-					// that.abotapi.globalData.default_sellerid  ===>>> that.current_xianmai_shangid
-					var post_data = {
-							sellerid:that.abotapi.globalData.default_sellerid,
-						
-							nft_supplierid : that.current_xianmai_shangid,
-							page_num: 1,
-							page_size: 10,
-							
-						};
-						
-					var userInfo = that.abotapi.get_user_info();	
-					if(userInfo){
-						post_data.userid = userInfo.userid;
-						post_data.checkstr = userInfo.checkstr;
-					}
-				
-				
-					that.abotapi.abotRequest({
-					    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_list',
-					    method: 'post',
-					    data: post_data,
-					    success: function (res) {
-							
-							if(res.data.code != 1){
-								uni.showToast({
-									title:'卡包列表没有数据',
-									duration: 2000,
-								});
-								
-								return;
-							}
-							
-							that.current_nft_package_list = res.data.data;
-							
-							console.log('current_nft_package_list ===>>> ', that.current_nft_package_list);
-							
-							
-							for(var i=0; i<that.current_nft_package_list.length; i++){
-								
-								//计算已经售出的备份比
-								that.current_nft_package_list[i].sale_percent = 50;
-								if(that.current_nft_package_list[i].packageid_card_count == 0){
-									that.current_nft_package_list[i].sale_percent = 100;
-								}
-								else{
-									
-									that.current_nft_package_list[i].sale_percent =
-										parseInt(that.current_nft_package_list[i].packageid_card_user_buy_count/that.current_nft_package_list[i].packageid_card_count*100);
-								}
-								
-								
-							}
-							
-							
-							
-						
-							
-							
-									
-							
-					    },
-					    fail: function (e) {
-							uni.showToast({
-								title: '网络异常！',
-								duration: 2000
-							});
-					    },
-					});
-					
 					
 				}//	
+				
+				//获取卡包列表
+				//将 xianmai_shangid 转为 supplierid，因为传入进来的就是supplierid (xianmai_shang_list_switch_to_supplier_list == 1)
+				//如果 xianmai_shang_list_switch_to_supplier_list != 1，目前还没有应用场景
+				// that.abotapi.globalData.default_sellerid  ===>>> that.current_xianmai_shangid
+				var post_data = {
+						sellerid:that.abotapi.globalData.default_sellerid,
+					
+						nft_supplierid : that.current_xianmai_shangid,
+						page_num: 1,
+						page_size: 10,
+						
+					};
+					
+				var userInfo = that.abotapi.get_user_info();	
+				if(userInfo){
+					post_data.userid = userInfo.userid;
+					post_data.checkstr = userInfo.checkstr;
+				}
+								
+								
+				that.abotapi.abotRequest({
+				    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_package_list',
+				    method: 'post',
+				    data: post_data,
+				    success: function (res) {
+						
+						if(res.data.code != 1){
+							uni.showToast({
+								title:'卡包列表没有数据',
+								duration: 2000,
+							});
+							
+							return;
+						}
+						
+						that.current_nft_package_list = res.data.data;
+						
+						console.log('current_nft_package_list ===>>> ', that.current_nft_package_list);
+						
+						
+						for(var i=0; i<that.current_nft_package_list.length; i++){
+							
+							//计算已经售出的备份比
+							that.current_nft_package_list[i].sale_percent = 50;
+							if(that.current_nft_package_list[i].packageid_card_count == 0){
+								that.current_nft_package_list[i].sale_percent = 100;
+							}
+							else{
+								
+								that.current_nft_package_list[i].sale_percent =
+									parseInt(that.current_nft_package_list[i].packageid_card_user_buy_count/that.current_nft_package_list[i].packageid_card_count*100);
+							}
+							
+							
+						}
+						
+						
+						
+					
+						
+						
+								
+						
+				    },
+				    fail: function (e) {
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+				    },
+				});
 					
 					
 				//获取卡牌列表

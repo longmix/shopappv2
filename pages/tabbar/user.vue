@@ -1,15 +1,20 @@
 <template>
 	<view>
-		<view v-if="showHeader" class="mystatusbar" :style="{position:headerPosition,top:statusTop,backgroundColor:wxa_shop_nav_bg_color,fontColor:wxa_shop_nav_font_color}"></view>
-		<view v-if="showHeader" class="header" :style="{position:headerPosition,top:headerTop,backgroundColor:wxa_shop_nav_bg_color,fontColor:wxa_shop_nav_font_color}">
+		<view v-if="showHeader" class="mystatusbar" 
+			:style="{position:headerPosition,top:statusTop,backgroundColor:wxa_shop_nav_bg_color,fontColor:wxa_shop_nav_font_color}">
+		</view>
+		<view v-if="showHeader" class="header" 
+			:style="{position:headerPosition,top:headerTop,backgroundColor:wxa_shop_nav_bg_color,fontColor:wxa_shop_nav_font_color}">
 			<view class="addr"></view>
 			<view class="input-box">
 
 			</view>
 			<view class="icon-btn">
-				<view class="icon tongzhi" @tap="toMsg" :style="{color: wxa_shop_nav_bg_color == '#FFFFFF' ? '#333' : ''}"></view>
+				<view v-if="wxa_hidden_to_msg_btn_in_usercenter != 1"
+					class="icon tongzhi" @tap="toMsg" 
+					:style="{color: wxa_shop_nav_bg_color == '#FFFFFF' ? '#333333' : '#FFFFFF'}"></view>
 				<!--下版本替换为: toMsg -->
-				<view class="icon setting" @tap="toSetting" :style="{color: wxa_shop_nav_bg_color == '#FFFFFF' ? '#333' : ''}"></view>
+				<view class="icon setting" @tap="toSetting" :style="{color: wxa_shop_nav_bg_color == '#FFFFFF' ? '#333333' : '#FFFFFF'}"></view>
 			</view>
 		</view>
 		<!-- 占位 -->
@@ -330,6 +335,9 @@
 				//是否隐藏扫码图标
 				wxa_hidden_qrcode_scan_btn_in_usercenter:0,
 				
+				//是否隐藏 右上角的  消息小图标
+				wxa_hidden_to_msg_btn_in_usercenter:0,
+				
 				//是否隐藏 余额和积分图标
 				wxa_hide_balance_in_usercenter:0,
 				wxa_hide_score_in_usercenter:0,
@@ -551,6 +559,11 @@
 				if(option_list.wxa_hidden_qrcode_scan_btn_in_usercenter){
 					that001.wxa_hidden_qrcode_scan_btn_in_usercenter = option_list.wxa_hidden_qrcode_scan_btn_in_usercenter;
 				}
+				
+				if(option_list.wxa_hidden_to_msg_btn_in_usercenter){
+					that001.wxa_hidden_to_msg_btn_in_usercenter = option_list.wxa_hidden_to_msg_btn_in_usercenter;
+				}
+				
 				//隐藏余额图标
 				if(option_list.wxa_hide_balance_in_usercenter){
 					that001.wxa_hide_balance_in_usercenter = option_list.wxa_hide_balance_in_usercenter;
