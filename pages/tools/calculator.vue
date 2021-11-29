@@ -4,11 +4,13 @@
 		  <view class="panel-display" style="position: relative;">
 		  <view>
 		    <icon id="icon-about" type="info" size="28" color="#aaa" @click="showAbout"/></view>
+			<view>
+				<view id="display-num">{{calc.displayNum}}</view>
+			</view>
 			
-			<view id="display-num">{{calc.displayNew}}</view>
 			
-		    <view id="display-num">{{calc.displayNum}}</view>
-		    <view id="display-op">{{calc.displayOp}}</view>
+			<view id="display-num">{{calc.displayNum}}</view>
+			<view id="display-op">{{calc.displayOp}}</view>
 		  </view>
 		  <view class="panel-btns">
 		    <view class="btns-rows">
@@ -112,12 +114,12 @@
 				btnClicked: function(e){
 					var code = e.target.dataset.op
 					calc.addOp(code)
-
+					console.log('111')
 					console.log(calc.getVars())
 					
 					//this.setData({calc: calc.getVars()})
 					this.calc =  calc.getVars();
-
+					console.log('111111111111111111111',calc)
 				},
 				
 				btnTouchStart: function(e){

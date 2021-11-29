@@ -1,7 +1,6 @@
 <template>
 	<view>
 		<view class="container">
-		    <icon id="icon-about" type="info" size="28" color="#007aff" @click="showinput"/>
 				<view v-if="isShowPopup" @tap="isShowPopup = false" class="show_modal_mask"></view>
 				<view v-if="isShowPopup" class="show_modal_pop" >
 					<form @submit="formSubmit">
@@ -53,7 +52,7 @@
 		    </view>
 		  </view>
 		
-		  <button class="setbtn" type="primary" :style="{backgroundColor: wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" @click="goset">设置游戏难度</button>
+		  <button class="setbtn" type="primary" :style="{backgroundColor: wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" @click="showinput">设置游戏难度</button>
 		</view>
 		
 	</view>
@@ -97,8 +96,13 @@
 				title: '扫雷'
 			})
 			
+			//获取数据缓存
+			var app_setting = uni.getStorageSync('mine_chlearing_app_setting')
+			that.app_bomb = app_setting.app_bomb
+			that.app_column = app_setting.app_column
+			that.app_row = app_setting.app_row
+			console.log('8888',app_setting)
 			
-			//读取设置项，如果没有设置项则使用默认的app_row,app_column,app_bomb,
 			
 			
 			this.abotapi.set_shop_option_data(this, this.callback_function_shop_option_data);
@@ -314,6 +318,19 @@
 					showCancel:false,
 					
 				});
+				
+				//缓存数据
+				var setting = {
+					app_row : that.app_row,
+					app_column : that.app_column,
+					app_bomb : that.app_bomb,
+				};
+				
+				uni.setStorage({
+					key:'mine_chlearing_app_setting',
+					data:setting
+				})
+				
 				
 				that.isShowPopup = false;  //关闭窗口
 				
