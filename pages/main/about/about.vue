@@ -16,6 +16,8 @@
 				<view class="li_title">客服电话</view>
 				<view class="li_info" @tap="callKefuTel">{{kefu_telephone}}</view>
 			</view>
+			
+			<!-- #ifndef MP-BAIDU -->
 			<view class="list_li" v-if="kefu_qq">
 				<view class="li_title">客服QQ</view>
 				<view class="li_info" @tap="callKefuQQ">{{kefu_qq}}</view>
@@ -24,8 +26,9 @@
 				<view class="li_title">官方网站</view>
 				<view class="li_info" @tap="callWebsite">{{kefu_website}}</view>
 			</view>
+			<!-- #endif -->
 			
-			<!-- #ifndef MP-ALIPAY -->
+			<!-- #ifndef MP-ALIPAY | MP-BAIDU -->
 			<view class="list_li" v-if="kefu_gongzhonghao">
 				<view class="li_title">微信公众号</view>
 				<view class="li_info" @tap="callWeixinMp">{{kefu_gongzhonghao}}</view>
