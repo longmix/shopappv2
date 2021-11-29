@@ -221,9 +221,6 @@
         "uniStatistics" : {
             "enable" : false
         },
-		"optimization":{
-			"subPackages":true
-		},
         "appid" : "21847450",
         "setting" : {
             "urlCheck" : true
