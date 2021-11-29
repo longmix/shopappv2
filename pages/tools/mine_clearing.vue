@@ -98,10 +98,18 @@
 			
 			//获取数据缓存
 			var app_setting = uni.getStorageSync('mine_chlearing_app_setting')
-			that.app_bomb = app_setting.app_bomb
-			that.app_column = app_setting.app_column
-			that.app_row = app_setting.app_row
-			console.log('8888',app_setting)
+			
+			console.log('888888888888',app_setting)
+			//判断app_setting是否有值
+			if(app_setting != null){
+				that.app_bomb = app_setting.app_bomb
+				that.app_column = app_setting.app_column
+				that.app_row = app_setting.app_row
+			}else{
+				return;
+			}
+			
+			
 			
 			
 			

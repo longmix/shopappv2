@@ -3,18 +3,16 @@
 		<view class="container">
 		  <view class="panel-display" style="position: relative;">
 		  <view>
-		    <icon id="icon-about" type="info" size="28" color="#aaa" @click="showAbout"/></view>
-			<view>
-				<view id="display-num">{{calc.displayNum}}</view>
-			</view>
+		    <icon class="icon-about" type="info" size="28" color="#aaa" @click="showAbout"/></view>
 			
+			<view class="display-num1">{{display_num_op}}</view>
 			
-			<view id="display-num">{{calc.displayNum}}</view>
-			<view id="display-op">{{calc.displayOp}}</view>
+			<view class="display-num3">{{calc.curResult}}</view>
+			
 		  </view>
 		  <view class="panel-btns">
 		    <view class="btns-rows">
-		      <view id="btn-c" class="btn" :class="tapped['c']" @click="btnClicked" bindtouchstart="btnTouchStart"  bindtouchend="btnTouchEnd" data-op="c">AC</view>
+		      <view class="btn btn-c" :class="tapped['c']" @click="btnClicked" bindtouchstart="btnTouchStart"  bindtouchend="btnTouchEnd" data-op="c">AC</view>
 		      <view class="btn" :class="tapped['d']" @click="btnClicked" bindtouchstart="btnTouchStart"  bindtouchend="btnTouchEnd"  data-op="d">DEL</view>
 		      <view class="btn" :class="tapped['/']" @click="btnClicked" bindtouchstart="btnTouchStart"  bindtouchend="btnTouchEnd"  data-op="/" style="font-size: 24px;">÷</view>
 		      <view class="btn" :class="tapped['x']" @click="btnClicked" bindtouchstart="btnTouchStart"  bindtouchend="btnTouchEnd"  data-op="x">×</view>
@@ -31,8 +29,8 @@
 		      <view class="btn" :class="tapped['6']" @click="btnClicked" bindtouchstart="btnTouchStart"  bindtouchend="btnTouchEnd"  data-op="6">6</view>
 		      <view class="btn" :class="tapped['+']" @click="btnClicked" bindtouchstart="btnTouchStart"  bindtouchend="btnTouchEnd"  data-op="+">+</view>
 		    </view>
-		    <view id="btns2" class="btns-rows">
-		      <view id="btns2-left">
+		    <view class="btns-rows btns2">
+		      <view class="btns2-left">
 		        <view class="btns2-left-part">
 		          <view class="btn" :class="tapped['1']" @click="btnClicked" bindtouchstart="btnTouchStart"  bindtouchend="btnTouchEnd"  data-op="1">1</view>
 		          <view class="btn" :class="tapped['2']" @click="btnClicked" bindtouchstart="btnTouchStart"  bindtouchend="btnTouchEnd"  data-op="2">2</view>
@@ -44,7 +42,7 @@
 		          <view class="btn" :class="tapped['.']" @click="btnClicked" bindtouchstart="btnTouchStart"  bindtouchend="btnTouchEnd"  data-op=".">.</view>
 		        </view>
 		      </view>
-		      <view id="btns2-right" class="btn" :class="tapped['=']" @click="btnClicked" bindtouchstart="btnTouchStart"  bindtouchend="btnTouchEnd" data-op="=">=</view>
+		      <view class="btn btns2-right" :class="tapped['=']" @click="btnClicked" bindtouchstart="btnTouchStart"  bindtouchend="btnTouchEnd" data-op="=">=</view>
 		    </view>
 		  </view>
 		</view>
@@ -65,6 +63,9 @@
 				tapped: {},
 				
 				isShow:'block',
+				
+				
+				display_num_op:'',
 			}
 		},
 		onLoad(options) {
@@ -120,6 +121,16 @@
 					//this.setData({calc: calc.getVars()})
 					this.calc =  calc.getVars();
 					console.log('111111111111111111111',calc)
+					
+					//追加数字和符号
+					if(this.calc.displayOp){
+						this.display_num_op = this.display_num_op + this.calc.displayOp;
+					}
+					if(this.calc.displayNum){
+						this.display_num_op = this.display_num_op + this.calc.displayNum;
+					}
+					
+					console.log('111111',this.calc.displayNum)
 				},
 				
 				btnTouchStart: function(e){
@@ -193,31 +204,44 @@
 	  border-right: 1px solid #c3c6c7;
 	}
 	
-	#btns2-right{
-	  border-left: 1px solid #c3c6c7;
+	.btns2-right{
+	  border-left: 2rpx solid #c3c6c7;
 	}
 	
-	#display-num{
+	.display-num1{
 	  display: inline-block;
-	  font-size: 36px;
+	  font-size: 72rpx;
 	  position: absolute; 
-	  bottom: 5vh; 
-	  right: 3vw; 
+	  bottom: 90rpx; 
+	  right: 120rpx;
 	}
-	
-	#display-op{
+	.display-num2{
 	  display: inline-block;
-	  font-size: 16px;
+	  font-size: 72rpx;
 	  position: absolute; 
-	  bottom: 1vh; 
-	  right: 3vw; 
+	  bottom: 90rpx; 
+	  right: 20rpx;
+	}
+	.display-num3{
+	  display: inline-block;
+	  font-size: 72rpx;
+	  position: absolute; 
+	  bottom: 25rpx; 
+	  right: 20rpx;
+	}
+	.display-op{
+	  display: inline-block;
+	  font-size: 72rpx;
+	  bottom: 90rpx; 
+	  position: absolute;
+	  right: 70rpx;
 	}
 	
-	#btns2{
+	.btns2{
 	  flex: 2;display: flex;flex-direction: row;
 	}
 	
-	#btns2-left{
+	.btns2-left{
 	  flex: 3;display: flex;flex-direction: column;
 	}
 	
@@ -225,11 +249,11 @@
 	  display: flex; flex-direction: row;flex-grow: 1;
 	}
 	
-	#btn-c{
+	.btn-c{
 	  color: #f00;
 	}
 	
-	#icon-about{
+	.icon-about{
 	  position: absolute; 
 	  right: 3vw;
 	  top: 3vw;
