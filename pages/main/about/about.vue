@@ -24,10 +24,14 @@
 				<view class="li_title">官方网站</view>
 				<view class="li_info" @tap="callWebsite">{{kefu_website}}</view>
 			</view>
+			
+			<!-- #ifndef MP-ALIPAY -->
 			<view class="list_li" v-if="kefu_gongzhonghao">
 				<view class="li_title">微信公众号</view>
 				<view class="li_info" @tap="callWeixinMp">{{kefu_gongzhonghao}}</view>
 			</view>
+			<!-- #endif -->
+			
 			<!--
 	  <view class="list_li" bindtap="openChat">
 		<view class="li_title">意见反馈</view>

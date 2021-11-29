@@ -339,6 +339,7 @@ export default {
 				post_data.tag_of_editor = that.tag_of_editor;
 			}
 			else if(that.searchValue02){
+				post_data.action = 'search';
 				post_data.keywords = that.searchValue02;
 			}
 			

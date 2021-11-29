@@ -339,6 +339,11 @@ import uParse from '@/components/gaoyia-parse/parse.vue'
 
 import swiperBanner from '../../components/swiper-banner.vue';
 
+
+//2021.11.20. 这个函数在ES6中不兼容，需要使用ES5模式编译
+import md5 from '../../common/md5.min.js'
+
+
 const isNullOrUndefined = obj=>obj===null || obj === undefined  || obj === '';
 
 export default {
@@ -495,6 +500,8 @@ export default {
 			 show_rich_html_in_index:0,
 			 index_rich_html_type:'static',
 			 index_rich_html_content:'<div></div>',
+			 index_rich_html_cache_id:'',
+			 
 			 //传给uParse组件的属性值
 			 u_parse_imageProp:{mode:'widthFix', padding:0, lazyLoad:true, domain:''},
 
@@ -740,7 +747,7 @@ export default {
 		that.abotapi.get_xianmaishang_setting_list_remove();
 		
 		if(that.show_rich_html_in_index == 1){
-			uni.removeStorageSync('index_rich_html_content' + that.abotapi.get_sellerid())
+			uni.removeStorageSync('index_rich_html_cache_' + that.index_rich_html_cache_id)
 		}
 		
 		
@@ -2388,7 +2395,7 @@ export default {
 			var that = this;
 			
 			//判断登录，并且拼接替换这个参数
-			 if(rich_html_url.indexOf("%current_userid%") != -1) {
+			if(rich_html_url.indexOf("%current_userid%") != -1) {
 				var userInfo = that.abotapi.get_user_info();
 				console.log('userid===',userInfo);
 				if(!userInfo){
@@ -2406,10 +2413,12 @@ export default {
 				rich_html_url = rich_html_url.replace('%current_userid%', userInfo.userid);
 			}
 			
-			console.log('888888888url=',rich_html_url);
+			console.log('888888888url=', rich_html_url);
 			
 			//读取缓存
-			var detail_data = uni.getStorageSync('index_rich_html_content' + that.abotapi.get_sellerid())
+			that.index_rich_html_cache_id = md5(rich_html_url);
+			
+			var detail_data = uni.getStorageSync('index_rich_html_cache_' + that.index_rich_html_cache_id);
 			
 			if(detail_data){
 				that.__index_rich_html_content_handle(detail_data);
@@ -2430,7 +2439,7 @@ export default {
 					///console.log('aaaa111==', res.data);
 					
 					uni.setStorage({
-						key: 'index_rich_html_content' + that.abotapi.get_sellerid(),
+						key: 'index_rich_html_cache_' + that.index_rich_html_cache_id,
 						data: res.data
 					})
 					
