@@ -230,22 +230,23 @@
 			<view class="title">
 				{{goods_detail.name}}
 			</view>
-		</view>
-		
-		
-		<!-- 2021.11.10商品海报 -->
-		
-	
-		<view>
+			
+			<!-- 2021.11.10商品海报 -->
 			<view class="show_modal_mask" v-if="to_poster" @tap="to_poster=false"></view>
 			<view class="show_modal_pop" v-if="to_poster">
-				
 				<image :src="current_poster_modal.img_url" mode="heightFix" style="height: 1000rpx;"></image>
 				<view class="show_poster_baocun" @tap="poster_baocun">保存</view>
 			</view>
-
-			<image class="image_poster" src="static/img/xiangji.png" mode="widthFix" @tap="toPoster"></image>
+			<view style="width: 100%;height: 50rpx;line-height: 50rpx;"> 
+				<view style="display: flex;float: right;" @tap="toPoster">
+					
+					<image class="image_poster"  src="static/img/xiangji.png"  ></image>
+					<view style="color:#666;font-size: 28rpx;margin-left: 10rpx;">海报</view>
+				</view>
+			</view>
 		</view>
+		
+	
 		
 		
 		<!-- 供货商跳转 -->
@@ -3664,9 +3665,8 @@
 	}
 	.image_poster{
 		width: 40rpx;
-		float: right;
-		margin-top: -14px;
-		margin-right: 20px;
+		height:40rpx;
+		margin-top:6rpx
 	}
 	.show_poster_baocun{
 		color: #FFFFFF;

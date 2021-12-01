@@ -14,48 +14,56 @@
 	
 	 </view>
 	 <view class="body">
-		 <view class="kongkong" v-if="menu_list.length == 0">
-		 			<image style="width:50%;" mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/empty_cart.png"></image>
-		 			<view style="font-size: 28upx;color: #666;">这个商家真的很懒，暂时还没有商品上架~</view>   
-		 </view>
-		 <block v-else>
-	  <scroll-view  class="body-col" scroll-y="true" :style="{height:menuHeight + 'px'}">
-	    <view class="body-section" :class="[selectOrder==m1.id?'active':'']" v-for="(m1, index) in menu_list" :key="index" :data-cate="'z' + m1.id" :data-selectorder="m1.id" @tap="clickMenu">
-	     <view>{{m1.package}}</view>
-	    </view>
-	  </scroll-view>
-	  <scroll-view scroll-y="true" class="body-block" @scroll="onGoodsScroll" :style="{height:menuHeight + 'px'}" :scroll-into-view="toView"  scroll-with-animation="true">
+		<view class="kongkong" v-if="menu_list.length == 0">
+		 	<image style="width:50%;" mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/empty_cart.png"></image>
+		 	<view style="font-size: 28upx;color: #666;">这个商家真的很懒，暂时还没有商品上架~</view>   
+		</view>
+	<block v-else>
+		<scroll-view  class="body-col" scroll-y="true" :style="{height:menuHeight + 'px'}">
+			<view class="body-section" :class="[selectOrder==m1.id?'active':'']" v-for="(m1, index) in menu_list" :key="index" :data-cate="'z' + m1.id" :data-selectorder="m1.id" @tap="clickMenu">
+				<view>{{m1.package}}</view>
+			</view>
+		</scroll-view>
+		<scroll-view scroll-y="true" class="body-block" @scroll="onGoodsScroll" :style="{height:menuHeight + 'px'}" :scroll-into-view="toView"  scroll-with-animation="true">
 		  
-		   
+			<view  class="body-content"  v-for="(m1,idx1) in menu_list" :key="idx1">
+				<view class="title" :id="'z' + m1.id">{{m1.package}}</view>
+				<view class="content-item" v-for="(m2, idx2) in m1.menu" :key="idx2">
+					<image :src="m2.img"  class="content-item-img"></image>
+					<view class="item-txt">
+					<!-- <text bindtap="shopdetail" class="item-txt-name">{{m2.name}}</text> -->
+						<text class="item-txt-name">{{m2.name}}</text>
+						<view class="txt-message">
+							<view>{{m2.brief}}</view>              
+							<!-- <view><i class='like'></i>({{m2.like > 0 ? m2.like : 0}})</view>           -->
+						</view>
+						<view class="txt-price">¥<text>{{m2.price}}</text>
+							<text class="txt-zhekoprice"><span>¥{{m2.price2}}</span></text>
+						</view>
+					</view>
+					<!-- 飞入图标 -->
 		  
-	     <view  class="body-content"  v-for="(m1,idx1) in menu_list" :key="idx1">
-	      <view class="title" :id="'z' + m1.id">{{m1.package}}</view>
-	        <view class="content-item" v-for="(m2, idx2) in m1.menu" :key="idx2">
-	          <image :src="m2.img"  class="content-item-img"></image>
-	          <view class="item-txt">
-	            <!-- <text bindtap="shopdetail" class="item-txt-name">{{m2.name}}</text> -->
-	            <text class="item-txt-name">{{m2.name}}</text>
-	            <view class="txt-message">
-	              <view>{{m2.brief}}</view>              
-	              <!-- <view><i class='like'></i>({{m2.like > 0 ? m2.like : 0}})</view>           -->
-	            </view>
-	            <view class="txt-price">¥<text>{{m2.price}}</text><text class="txt-zhekoprice"><span>¥{{m2.price2}}</span></text></view>
-	          </view>
-	            <!-- 飞入图标 -->
-	          
-	        <view v-if="m2.spec_list.length"  class="chooseSpecs" @tap="chooseSpecs" :data-idx1="idx1" :data-idx2="idx2" :data-productid="m2.productid" :data-price="m2.price" :data-name="m2.name" :data-pic="m2.img" :style="{background:basic_set.o2o_set_cart_bg_color}">
-	              选规格   
-	          </view>
-	
-	          <view v-else class="addCart" @tap="tapAddCart" :data-goodsId="m2.productid" :data-idx1="idx1" :data-idx2="idx2" :data-productid="m2.productid" :data-price="m2.price" :data-name="m2.name" :data-pic="m2.img">
+					<view v-if="m2.spec_list.length"  class="chooseSpecs" 
+						@tap="chooseSpecs" :data-idx1="idx1" :data-idx2="idx2" 
+						:data-productid="m2.productid" :data-price="m2.price"
+						:data-name="m2.name" :data-pic="m2.img" 
+						:style="{background:basic_set.o2o_set_cart_bg_color}">
+							选规格   
+					</view>
+
+					<view v-else class="addCart" @tap="tapAddCart" 
+						:data-goodsId="m2.productid" :data-idx1="idx1" 
+						:data-idx2="idx2" :data-productid="m2.productid" 
+						:data-price="m2.price" :data-name="m2.name" 
+						:data-pic="m2.img">
 							+
-	            <!-- <image src="../../images/s.png"></image> -->
-						</view> 
-	        </view>
-	    </view>
-	  </scroll-view>
-	  </block>
-	 </view>
+					<!-- <image src="../../images/s.png"></image> -->
+					</view> 
+				</view>
+			</view>
+		</scroll-view>
+	</block>
+	</view>
 	
 	<view class="good_box" :hidden="hide_good_box"  :style="{left: bus_x + 'px',top:bus_y + 'px'}"> </view>
 		
@@ -203,6 +211,8 @@ export default {
 			
 			spec_business_type:null,
 			
+			current_sellerid:'',
+			
 		};
 	},
 	/**
@@ -217,6 +227,34 @@ export default {
 	 * 
 	 */
 	onLoad(options) {
+		
+		
+		var that = this;
+		uni.getSystemInfo({// 获取页面的有关信息
+		  success: function (res) {
+			uni.setStorageSync('systemInfo', res)
+			var ww = res.windowWidth;
+			var hh = res.windowHeight;
+			
+			that.ww = res.windowWidth;
+			that.hh = res.windowHeight;
+			that.menuHeight = hh - 130.63;
+			
+			
+		  }
+		});
+		
+		
+		this.current_sellerid = this.abotapi.get_sellerid();
+		
+		
+		this.abotapi.set_option_list_str(that, function(that002, shop_option_data){
+			
+			
+			that002.wxa_shop_nav_bg_color = shop_option_data.wxa_shop_nav_bg_color;
+			
+			console.log('that002.wxa_shop_nav_bg_color==>>',that002.wxa_shop_nav_bg_color);
+		});
 		
 		// const oMeta = document.createElement('meta');
 		// oMeta.name = "referrer";
@@ -288,9 +326,11 @@ export default {
 				if(this.abotapi.globalData.mp_alipay_query.sellerid){
 					options.sellerid = this.abotapi.globalData.mp_alipay_query.sellerid;
 									
-					this.abotapi.globalData.force_sellerid = 0;
-					this.abotapi.globalData.default_sellerid = options.sellerid
-					this.abotapi.set_sellerid(options.sellerid);
+					//this.abotapi.globalData.force_sellerid = 0;
+					//this.abotapi.globalData.default_sellerid = options.sellerid
+					//this.abotapi.set_sellerid(options.sellerid);
+					
+					this.current_sellerid = options.sellerid;
 				}
 				
 				if(this.abotapi.globalData.mp_alipay_query.shangid){
@@ -311,32 +351,13 @@ export default {
 			//================= End ==========================
 		// #endif
 		
-		var that = this;
-		uni.getSystemInfo({// 获取页面的有关信息
-		  success: function (res) {
-			uni.setStorageSync('systemInfo', res)
-			var ww = res.windowWidth;
-			var hh = res.windowHeight;
-			
-			that.ww = res.windowWidth;
-			that.hh = res.windowHeight;
-			
-			that.menuHeight = hh - 130.63;
-			
-			
-		  }
-		});
+		
 		
 		if(options.title){
 			uni.setNavigationBarTitle({
 				title:options.title
 			})
 		}
-		
-		
-		
-		
-		
 		
 		
 	
@@ -347,17 +368,7 @@ export default {
 		
 		this.__get_shang_detail();
 				
-		
-		this.abotapi.set_option_list_str(that, function(that002, shop_option_data){
-			
-			
-			that002.wxa_shop_nav_bg_color = shop_option_data.wxa_shop_nav_bg_color;
-			
-			console.log('that002.wxa_shop_nav_bg_color==>>',that002.wxa_shop_nav_bg_color);
-		});
-		
-		
-		
+
 		
 	},
 	onPageScroll(e) {
@@ -554,15 +565,16 @@ export default {
 			var that = this;
 			
 			// 获取商品分类及下属商品
-			
+			//that.abotapi.globalData.o2owaimai_server_url + '/openapi/ProductData/get_product_list_all_data'
 			// http://192.168.0.205/hahading/server/index.php/openapi/ProductData/get_product_list_all_data
 			//获取商家点餐分类信息
+			
 			that.abotapi.abotRequest({
 			  url: that.abotapi.globalData.o2owaimai_server_url + '/openapi/ProductData/get_product_list_all_data',
 			  data: {
 				xianmai_shangid: that.shopId,
 				is_waimai: that.is_waimai,
-				sellerid: that.abotapi.get_sellerid(),
+				sellerid: that.current_sellerid,
 			  },
 			  success: function (res) {
 				
@@ -1473,7 +1485,14 @@ export default {
 						//二维码已经绑定
 						var new_options = {};
 						new_options.sellerid = res001.data.data.cloudpay_suppliersn;
-						new_options.shangid =  res001.data.data.xianmaishang_id;
+						
+						//that.abotapi.globalData.force_sellerid = 0;
+						//that.abotapi.globalData.default_sellerid = new_options.sellerid
+						//that.abotapi.set_sellerid(new_options.sellerid);
+						that.current_sellerid = new_options.sellerid;
+						
+						
+						new_options.xianmai_shangid =  res001.data.data.xianmaishang_id;
 						new_options.is_waimai =  0;
 						new_options.scan_qrcode_no =  res001.data.data.scan_qrcode_no;
 						
@@ -1701,8 +1720,8 @@ export default {
 .addCart{
 width:40rpx;
 height:40rpx;
-margin-top:30rpx;
-position:absolute;
+margin-top:80rpx;
+
 right:30rpx;
 background:#feb70f;
 border-radius:50%;
