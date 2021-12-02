@@ -1589,17 +1589,23 @@ module.exports = {
 				
 				var is_domain_in_allow_list = false;
 				
-				if(!this.globalData.option_list.wxa_domain_allow_list){
-					is_domain_in_allow_list = true;
-				}
-				else{
+				console.log('call_h5browser_or..==>>this.globalData==>>', this.globalData);
+				
+				
+				if(this.globalData.option_list 
+					&& (this.globalData.option_list.wxa_domain_allow_list)){
+						
 					for(var ii=0; ii<this.globalData.option_list.wxa_domain_allow_list.length; ii++){
 						if(url.indexOf(this.globalData.option_list.wxa_domain_allow_list[ii]) == 0){
 							is_domain_in_allow_list = true;
 							break;
 						}
-					}
+					}	
 				}
+				else{
+					is_domain_in_allow_list = true;
+				}
+				
 				
 				if(!is_domain_in_allow_list){
 					uni.setClipboardData({

@@ -211,7 +211,7 @@ export default {
 			
 			spec_business_type:null,
 			
-			current_sellerid:'',
+			global_sellerid:'',
 			
 		};
 	},
@@ -245,7 +245,7 @@ export default {
 		});
 		
 		
-		this.current_sellerid = this.abotapi.get_sellerid();
+		this.global_sellerid = this.abotapi.get_sellerid();
 		
 		
 		this.abotapi.set_option_list_str(that, function(that002, shop_option_data){
@@ -326,11 +326,10 @@ export default {
 				if(this.abotapi.globalData.mp_alipay_query.sellerid){
 					options.sellerid = this.abotapi.globalData.mp_alipay_query.sellerid;
 									
-					//this.abotapi.globalData.force_sellerid = 0;
-					//this.abotapi.globalData.default_sellerid = options.sellerid
-					//this.abotapi.set_sellerid(options.sellerid);
+					this.abotapi.globalData.force_sellerid = 0;
+					this.abotapi.globalData.default_sellerid = options.sellerid
+					this.abotapi.set_sellerid(options.sellerid);
 					
-					this.current_sellerid = options.sellerid;
 				}
 				
 				if(this.abotapi.globalData.mp_alipay_query.shangid){
@@ -574,7 +573,7 @@ export default {
 			  data: {
 				xianmai_shangid: that.shopId,
 				is_waimai: that.is_waimai,
-				sellerid: that.current_sellerid,
+				sellerid: that.abotapi.get_sellerid(),
 			  },
 			  success: function (res) {
 				
@@ -1467,7 +1466,8 @@ export default {
 			var post_url = that.abotapi.globalData.yanyubao_server_url + '/openapi/CloudPayData/get_normal_qrcode_info';
 			
 			var post_data = {
-				sellerid: that.abotapi.get_sellerid(),
+				//sellerid: that.abotapi.get_sellerid(),
+				sellerid : that.global_sellerid,
 			};
 			
 			post_data.qrcode_url = encodeURIComponent(qrcode_url);
@@ -1486,10 +1486,9 @@ export default {
 						var new_options = {};
 						new_options.sellerid = res001.data.data.cloudpay_suppliersn;
 						
-						//that.abotapi.globalData.force_sellerid = 0;
-						//that.abotapi.globalData.default_sellerid = new_options.sellerid
-						//that.abotapi.set_sellerid(new_options.sellerid);
-						that.current_sellerid = new_options.sellerid;
+						that.abotapi.globalData.force_sellerid = 0;
+						that.abotapi.globalData.default_sellerid = new_options.sellerid
+						that.abotapi.set_sellerid(new_options.sellerid);
 						
 						
 						new_options.xianmai_shangid =  res001.data.data.xianmaishang_id;

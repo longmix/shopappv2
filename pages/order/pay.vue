@@ -1677,7 +1677,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 								url_to_payment += '&user_coupon_dikou=' + that.youhui_diko_price;
 								
 								console.log('准备跳转到支付页面：' + url_to_payment);
-								
+						
 								if(that.cuxiao_huodong && (that.cuxiao_huodong == 'aipingou')){
 									//写爱拼购活动的选项
 									that.__cuxiao_aipingou_add_order_option(url_to_payment);
@@ -2031,10 +2031,14 @@ extraData = 'xxxxxxxxxxxxxxx'
 				that.zitidian_status_type = !that.zitidian_status_type;
 				if(that.zitidian_status_type == false){
 					that.zitidian_status_flag = 0;
-				}
-				if(that.zitidian_status_type == true){
+				}else{
 					that.zitidian_status_flag = 1;
 				}
+				console.log('88888888888=======>>>',that.zitidian_status_type)
+				console.log('that.zitidian_status_flag=======>>>',that.zitidian_status_flag)
+				/* if(that.zitidian_status_type == true){
+					that.zitidian_status_flag = 1;
+				} */
 				
 			},
 			get_zitidian_list:function(){
@@ -2068,6 +2072,8 @@ extraData = 'xxxxxxxxxxxxxxx'
 						
 						if(that.current_zitidian_data.global_status == 1 && that.current_zitidian_data.all_global_status == 1){
 							that.zitidian_status_flag  = 1;
+						}else{
+							that.zitidian_status_flag  = 0;
 						}
 						
 						
