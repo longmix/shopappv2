@@ -5,9 +5,9 @@
 		  <view>
 		    <icon class="icon-about" type="info" size="28" color="#aaa" @click="showAbout"/></view>
 			
-			<view class="display-num1">{{display_num_op}}</view>
-			
-			<view class="display-num3">{{calc.curResult}}</view>
+			<view class="display-str">{{my_display_str}}</view>
+			<view class="display-num">{{calcResult.displayNum}}</view>
+			<view class="display-op">{{calcResult.displayOp}}</view>
 			
 		  </view>
 		  <view class="panel-btns">
@@ -50,7 +50,7 @@
 </template>
 <script>
 	
-	import calc from './utils/calc.js'
+	import calcUtil from './utils/calc.js'
 
 	export default {
 		data() {
@@ -59,13 +59,13 @@
 				wxa_shop_nav_bg_color: '',
 				wxa_shop_nav_font_color: '',
 				
-				calc: {},
+				calcResult: {},
 				tapped: {},
 				
-				isShow:'block',
 				
-				
-				display_num_op:'',
+				my_display_str:'',
+				my_display_str_last_num:'',
+				my_display_str_reset_flag:0,
 			}
 		},
 		onLoad(options) {
@@ -89,8 +89,10 @@
 			
 
 			console.log('onLoad')
-			calc.reset()
-			var that = this
+			
+			calcUtil.reset()
+			
+			//var that = this
 
 			
 
@@ -107,50 +109,79 @@
 		methods: {
 			showAbout: function(e){
 				uni.showModal({
-				  title: '关于',
-				  content: '一个简单的计算器 @V1.0',
+				  title: '关于计算器',
+				  content: '延誉宝免费计算器 @V1.0',
 				  showCancel: false  
 				})
-				},
-				btnClicked: function(e){
-					var code = e.target.dataset.op
-					calc.addOp(code)
-					console.log('111')
-					console.log(calc.getVars())
-					
-					//this.setData({calc: calc.getVars()})
-					this.calc =  calc.getVars();
-					console.log('111111111111111111111',calc)
-					
-					//追加数字和符号
-					if(this.calc.displayOp){
-						this.display_num_op = this.display_num_op + this.calc.displayOp;
-					}
-					if(this.calc.displayNum){
-						this.display_num_op = this.display_num_op + this.calc.displayNum;
-					}
-					
-					console.log('111111',this.calc.displayNum)
-				},
+			},
+			btnClicked: function(e){
+				var code = e.target.dataset.op
 				
-				btnTouchStart: function(e){
-
-					var code = e.target.dataset.op
-
-					var tapped = {[code]: 'active'}
-					
-					this.tapped =  tapped;
-					
-				},
+				console.log('click 点击的op ===>>> ', code);
 				
-				btnTouchEnd: function(e){
-					var code = e.target.dataset.op
-					var tapped = {}
-					this.tapped = tapped;
-
-				},
+				calcUtil.addOp(code)
+				
+				//this.setData({calcResult: calcUtil.getVars()})
+				this.calcResult =  calcUtil.getVars();
+				
+				console.log('计算后的结果', this.calcResult)
+				
+				//追加数字和符号
+				var op_list = ['+', '-', '*', '/'];
+				var op_eq_list = ['='];
+				var num_list = ['0', '1', '2', '3', '4','5', '6', '7', '8', '9', '.', '%'];
+				var fn_list = ['c', 'd'];
+				
+				
+				if(this.my_display_str_reset_flag){
+					this.my_display_str_reset_flag = 0;
+					this.my_display_str = '';
+				}
+				
+				if(op_list.indexOf(code) != -1){
+					this.my_display_str += this.calcResult.displayNum;
+					
+					this.my_display_str += this.calcResult.displayOp;
+				}
+				else if(num_list.indexOf(code) != -1){
+					this.my_display_str_last_num = this.calcResult.displayNum;
+				}
+				else if(op_eq_list.indexOf(code) != -1){
+					this.my_display_str += this.my_display_str_last_num;
+					
+					this.my_display_str += this.calcResult.displayOp;
+					
+					this.my_display_str += this.calcResult.displayNum;
+					
+					this.my_display_str_reset_flag = 1;
+				}
+				
+				console.log('displayOp ==>> ',this.calcResult.displayOp)
+				
+				console.log('displayNum ==>> ',this.calcResult.displayNum)
+				
+				console.log('my_display_str ==>> ',this.my_display_str)
 				
 			},
+			
+			btnTouchStart: function(e){
+
+				var code = e.target.dataset.op
+
+				var tapped = {[code]: 'active'}
+				
+				this.tapped =  tapped;
+				
+			},
+			
+			btnTouchEnd: function(e){
+				var code = e.target.dataset.op
+				var tapped = {}
+				this.tapped = tapped;
+
+			},
+			
+		},
 	}
 </script>
 
@@ -208,33 +239,28 @@
 	  border-left: 2rpx solid #c3c6c7;
 	}
 	
-	.display-num1{
+	.display-num{
 	  display: inline-block;
 	  font-size: 72rpx;
 	  position: absolute; 
 	  bottom: 90rpx; 
-	  right: 120rpx;
-	}
-	.display-num2{
-	  display: inline-block;
-	  font-size: 72rpx;
-	  position: absolute; 
-	  bottom: 90rpx; 
-	  right: 20rpx;
-	}
-	.display-num3{
-	  display: inline-block;
-	  font-size: 72rpx;
-	  position: absolute; 
-	  bottom: 25rpx; 
 	  right: 20rpx;
 	}
 	.display-op{
 	  display: inline-block;
 	  font-size: 72rpx;
-	  bottom: 90rpx; 
+	  bottom: 20rpx; 
 	  position: absolute;
-	  right: 70rpx;
+	  right: 20rpx;
+	}
+	
+	
+	.display-str{
+	  display: inline-block;
+	  font-size: 50rpx;
+	  position: absolute; 
+	  bottom: 190rpx; 
+	  right: 20rpx;
 	}
 	
 	.btns2{
