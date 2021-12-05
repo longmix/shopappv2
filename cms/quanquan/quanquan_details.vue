@@ -91,18 +91,23 @@
 		<view style="margin:50rpx 0 50rpx 0;" v-if="video_data.describe != null">
 			
 			<!-- #ifdef MP-ALIPAY -->
-						<rich-text :nodes="index_rich_html_content"></rich-text>
-			<!-- #endif -->		
+						<rich-text :nodes="content_array_html"></rich-text>
+			<!-- #endif -->
+			
 			<!-- #ifdef H5 -->
-					<view v-html="index_rich_html_content" ></view>
+						<view v-html="content_v_html" ></view>
 			<!-- #endif -->
 			
 			<!-- #ifndef MP-ALIPAY | H5 -->
-					<u-parse 
-						:content="index_rich_html_content" 
-						@preview="index_rich_html_preview_image" 
-						@navigate="index_rich_html_click_link" />
+						<!-- 富媒体组件 2021.1.18. -->
+						<!-- rich-text  和 v-html 都有各自的优缺点 -->
+						<u-parse v-if="content_html" 
+							:content="content_html" 
+							@preview="index_rich_html_preview_image" 
+							@navigate="index_rich_html_click_link" />
 			<!-- #endif -->
+			
+			
 			
 		</view>
 		
@@ -145,11 +150,14 @@
 	import abotshare from '../../components/abot_share_api/abot_share_api.vue';
 	import abotsharejs from '../../common/abot_share_api.js';
 	
-	import uParse from '@/components/gaoyia-parse/parse.vue'
-	
 	// #ifdef MP-ALIPAY
 		import parseHtml from "../../common/html-parser.js"
 	// #endif
+	
+	
+	import uParse from '@/components/gaoyia-parse/parse.vue'
+	
+	import md5 from '../../common/md5.min.js'
 	
 	
 	export default {
@@ -171,7 +179,15 @@
 				
 				current_params_str:'',
 				
-				index_rich_html_content:'<div></div>'
+				//2021.12.5. 增加缓存机制
+				http_data_cache_id:null, 
+				http_option_data_cache_id:null,
+				
+				content_html:'<div></div>',	//文章的html内容
+				
+				content_v_html:'',	//文章的html内容（经过Filter过滤的，在H5中使用
+				content_array_html:'',//文章的html内容（经过分析，转成array的。
+				
 			};
 		},
 		onLoad(options) {
@@ -199,81 +215,17 @@
 			  }
 			}
 			//===== End ======
-			
-			var userInfo = this.abotapi.get_user_info();
-			
-			    
-			var videoid = options.videoid;
-			
+						
 			this.abotapi.set_option_list_str(null, this.abotapi.getColor());
 			
 			if(options.videoid){
-				this.videoid = videoid;
+				this.videoid = options.videoid;
 			}
 			
-			    
-			this.abotapi.abotRequest({
-				url:this.abotapi.globalData.yanyubao_server_url + '/openapi/VideoListRemarkData/get_video_detail',
-				method: 'post',
-				data: {
-				  appid: this.abotapi.globalData.xiaochengxu_appid,
-				  sellerid: this.abotapi.globalData.default_sellerid,
-				  userid: userInfo ? userInfo.userid : '',
-				  videoid: that.videoid,
-				},
-				success: function (res) {
-				  
-				  console.log(res);
-				  var data = res.data.data;
-							
-				  if(res.data.code == 1){
-				    that.video_data = data.video_data;
-					that.video_remark_list = data.video_remark_list;
-					
-					if(data.video_data.describe){
-						that.index_rich_html_content = data.video_data.describe;
-						
-						
-						// #ifdef MP-ALIPAY
-							console.log('that.index_rich_html_content====>>>>', that.index_rich_html_content);
-							
-							const filter = that.$options.filters["formatRichText"];
-							that.index_rich_html_content = filter(that.index_rich_html_content);
-							
-							console.log('that.index_rich_html_content====>>>>', that.index_rich_html_content);
-							
-							let data001 = that.index_rich_html_content;
-							let newArr = [];
-							let arr = parseHtml(data001);
-							arr.forEach((item, index)=>{
-								newArr.push(item);
-							});
-							
-							//console.log('arr arr arr====>>>>', arr);
-							//console.log('newArr newArr newArr====>>>>', newArr);
-							
-							that.index_rich_html_content = newArr;
-						// #endif
-						
-						
-					}
-							
-				    uni.setNavigationBarTitle({
-				      title: data.video_data.title
-				    })
-				  }        
-							
-				},
-				fail: function (e) {
-				  uni.showToast({
-				    title: '网络异常！',
-				    duration: 2000
-				  });
-				},
-			})
+			this.__get_video_detail();
 			
 			
-			this.get_video_list_option();
+			this.__get_video_list_option();
 			
 		},
 		
@@ -327,19 +279,188 @@
 		* 页面相关事件处理函数--监听用户下拉动作
 		*/
 		onPullDownRefresh: function () {
-			this.getVideoList();
-			console.log('下拉刷新==')
-			this.onLoad();
-			this.onShow();
-			console.log('下拉刷新==============')
-			// app.set_option_list_str(this, this.getShopOptionAndRefresh);
-			//停止当前页面的下拉刷新
-			uni.stopPullDownRefresh();
+			
+			var that = this;
+			
+			console.log('onPullDownRefresh=====>>>>>');
+			
+			uni.showLoading({
+				title: '加载中...',
+			})
+			
+			
+			
+			//===== 删除设置选项 Begin ====
+			uni.removeStorage({
+				key: 'video_option_data_cache_' + that.http_option_data_cache_id,
+				success: (res) => {
+					this.__get_video_list_option();
+				},
+			});
+			//========== End ============
+			
+			
+			
+			
+			//如果没有缓存ID，则直接刷新
+			if(!that.http_data_cache_id){
+				
+				that.__get_video_detail();
+				
+				uni.hideLoading();
+				
+				uni.stopPullDownRefresh();
+				return;
+			}
+			
+			//如果有缓存，则删除后再刷新
+			uni.removeStorage({
+				key: 'quanquan_detail_data_cache_' + that.http_data_cache_id,
+				success: (res) => {
+					
+					that.__get_video_detail();
+					
+					uni.hideLoading();
+					uni.stopPullDownRefresh();
+				},
+				fail: () => {
+					uni.hideLoading();
+					uni.stopPullDownRefresh();
+				}
+			})
+			
+			
+			
+			
+			
+			
+			
+			
 		},
 	  
 	
 		
 		methods: {
+			__get_video_detail:function(){
+				var that = this;
+				
+				var userInfo = this.abotapi.get_user_info();
+				
+				var post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/VideoListRemarkData/get_video_detail';
+				var post_data = {
+					  appid: this.abotapi.globalData.xiaochengxu_appid,
+					  sellerid: this.abotapi.globalData.default_sellerid,
+					  userid: userInfo ? userInfo.userid : '',
+					  videoid: that.videoid,
+				};
+				
+				//====== 缓存机制 Begin ==============
+				that.http_data_cache_id = md5(post_url + JSON.stringify(post_data));
+				
+				console.log('md5 ===>>> ', that.http_data_cache_id);
+				
+				var http_data = uni.getStorageSync('quanquan_detail_data_cache_' + that.http_data_cache_id);
+				if(http_data){
+					that.__handle_http_response_data(http_data);
+					
+					return;
+				}
+				
+				//====== 缓存机制 End ==============
+				
+				
+				uni.showLoading({
+				  title: '数据加载中……',
+				});
+				    
+				this.abotapi.abotRequest({
+					url: post_url ,
+					method: 'post',
+					data: post_data ,
+					success: function (res) {
+						
+						uni.hideLoading();
+						
+						console.log('get_video_detail ===>>>', res);
+						
+						if(res.data.code == 1){
+							that.__handle_http_response_data(res.data.data);
+						}
+						
+						uni.setStorage({
+							key: 'quanquan_detail_data_cache_' + that.http_data_cache_id,
+							data: res.data.data
+						})
+					
+								
+					},
+					fail: function (e) {
+						uni.hideLoading();
+						
+						
+					  uni.showToast({
+					    title: '网络异常！',
+					    duration: 2000
+					  });
+					},
+				})
+				
+				
+				
+			},
+			__handle_http_response_data:function(http_data){
+				
+				var that = this;
+				
+				that.video_data = http_data.video_data;
+				that.video_remark_list = http_data.video_remark_list;
+				
+				uni.setNavigationBarTitle({
+				  title: http_data.video_data.title
+				})
+				
+				
+				if(!http_data.video_data.describe){
+					return;
+				}
+				
+				
+				that.content_html = http_data.video_data.describe;
+						
+				//v-html使用
+				that.content_v_html = that.content_html;
+				
+				//console.log('that.content_v_html====>>>>111', that.content_v_html);
+				
+				const filter = that.$options.filters["formatRichText"];
+				that.content_v_html = filter(that.content_v_html);
+				
+				//设置百度小程序中的页面SEO信息
+				// #ifdef MP-BAIDU				
+					//2021.7.22. 删除所有的超链接和对应的超链文本
+					that.content_html = that.content_html.replace(/(<\/?a.*?>)[^>]*<\/a>/g, '');
+							
+				// #endif	
+								
+								
+				// #ifdef MP-ALIPAY						
+					let data001 = that.content_html;
+					let newArr = [];
+					let arr = parseHtml(data001);
+					arr.forEach((item, index)=>{
+						newArr.push(item);
+					});
+					
+					//console.log('arr arr arr====>>>>', arr);
+					//console.log('newArr newArr newArr====>>>>', newArr);
+					
+					//rich-text使用
+					that.content_array_html = newArr;
+				// #endif					
+				
+				
+			},
+			
 			check_user_login:function(){
 				//判断登录
 				var userInfo = this.abotapi.get_user_info();		
@@ -354,25 +475,56 @@
 				return 1;
 			},
 			
-			get_video_list_option:function(){
+			__get_video_list_option:function(){
 				
 			    var that = this;
 				
-			    this.abotapi.abotRequest({
-			      url: this.abotapi.globalData.yanyubao_server_url + '/openapi/VideoListRemarkData/get_option_list',
-			      method: 'post',
-			      data: {
+				var post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/VideoListRemarkData/get_option_list';
+				var post_data = {
 			        sellerid: this.abotapi.globalData.default_sellerid,
-			      },
+			    };
+				
+				//====== 缓存机制 Begin ==============
+				that.http_option_data_cache_id = md5(post_url + JSON.stringify(post_data));
+				
+				console.log('md5 ===>>> ', that.http_option_data_cache_id);
+				
+				var option_list = uni.getStorageSync('video_option_data_cache_' + that.http_option_data_cache_id);
+				if(option_list){
+					if(option_list.faquan_one_click_to_save){
+						that.faquan_one_click_to_save = option_list.faquan_one_click_to_save;
+						that.file_one_click_download = option_list.file_one_click_download;
+					}
+					
+					return;
+				}
+				
+				//====== 缓存机制 End ==============
+				
+				
+			    this.abotapi.abotRequest({
+			      url: post_url  ,
+			      method: 'post',
+			      data: post_data ,
 			      success: function (res) {
 			        if(res.data.code == 1){
-						console.log('=======>res',res);
+						
+						console.log('/openapi/VideoListRemarkData/get_option_list =======>res',res);
+						
 						var option_list = res.data.data;
 									
 						if(option_list.faquan_one_click_to_save){
 							that.faquan_one_click_to_save = option_list.faquan_one_click_to_save;
 							that.file_one_click_download = option_list.file_one_click_download;
 						}
+						
+						uni.setStorage({
+							key: 'video_option_data_cache_' + that.http_option_data_cache_id,
+							data: res.data.data
+						})
+						
+						
+						
 			        }
 			      }
 			    });
@@ -616,156 +768,203 @@
 			        },
 			      })
 			  
-			    },
-			  
-			  
-			    collectVedio:function(e){
-					if(this.check_user_login() != 1){
-						return;
-					}
-					
-			      var that = this;
-			  
-			      var last_url = '/cms/quanquan/quanquan_details?videoid=' + that.videoid;
+			},
+		  
+		  
+			collectVedio:function(e){
+				if(this.check_user_login() != 1){
+					return;
+				}
+				
+			  var that = this;
+		  
+			  var last_url = '/cms/quanquan/quanquan_details?videoid=' + that.videoid;
 
-			      var userInfo = this.abotapi.get_user_info();
-			  
-			      if ('is_get_userinfo' in userInfo){
+			  var userInfo = this.abotapi.get_user_info();
+		  
+			  if ('is_get_userinfo' in userInfo){
 
-			        var is_get_userinfo = userInfo.is_get_userinfo;
-			      }
+				var is_get_userinfo = userInfo.is_get_userinfo;
+			  }
+			  
+			  if(!uni.getSystemInfoSync().platform == 'android' && !uni.getSystemInfoSync().platform == 'ios'){
+				  if (!is_get_userinfo) {
 				  
-				  if(!uni.getSystemInfoSync().platform == 'android' && !uni.getSystemInfoSync().platform == 'ios'){
-					  if (!is_get_userinfo) {
-					  
-					    uni.setStorageSync('get_userinfo_last_url', '/cms/quanquan/quanquan_details?videoid=' + that.videoid)
-					  			  
-					    uni.navigateTo({
-					      url: '/pages/login/login_get_userinfo',
-					    });
-					  
-					    return;
-					  }
+					uni.setStorageSync('get_userinfo_last_url', '/cms/quanquan/quanquan_details?videoid=' + that.videoid)
+							  
+					uni.navigateTo({
+					  url: '/pages/login/login_get_userinfo',
+					});
+				  
+					return;
 				  }
+			  }
 
-			      
+			  
 
-					this.abotapi.abotRequest({
-						url: this.abotapi.globalData.yanyubao_server_url + '/openapi/VideoListRemarkData/add_video_collect',
-						data: {
-							sellerid: this.abotapi.globalData.default_sellerid,
-							userid: userInfo.userid,
-							checkstr:userInfo.checkstr,
-							videoid: that.videoid,
-						},
-						success: function (res) {
+				this.abotapi.abotRequest({
+					url: this.abotapi.globalData.yanyubao_server_url + '/openapi/VideoListRemarkData/add_video_collect',
+					data: {
+						sellerid: this.abotapi.globalData.default_sellerid,
+						userid: userInfo.userid,
+						checkstr:userInfo.checkstr,
+						videoid: that.videoid,
+					},
+					success: function (res) {
 
-							if (that.video_data.has_video_collect == '0'){
-								that.video_data.has_video_collect = '1'
-								uni.showToast({
-								  title: '收藏成功',
-								})
-							}else{
-								that.video_data.has_video_collect = '0'
-								uni.showToast({
-								  title: '取消收藏成功',
-								})
-							}
-							
-							that.video_data = that.video_data;
-							return;
-						},
-						fail: function (e) {
-						  uni.showToast({
-							title: '网络异常！',
-							duration: 2000
-						  });
-						},
-					})
-			    },
-			  
-			    showRemarkInput:function(e){
-			      var that = this;
-			  
-			      var last_url = '/cms/quanquan/quanquan_details?videoid=' + that.videoid;
-			  
-			      
-			      var userInfo = this.abotapi.get_user_info();
-				  console.log('1111122222',userInfo);
-			      if ('is_get_userinfo' in userInfo) {
-			        var is_get_userinfo = userInfo.is_get_userinfo;
-					console.log('1111122222',is_get_userinfo);
-			      }
-				  
-				  
-				  if(!uni.getSystemInfoSync().platform == 'android' && !uni.getSystemInfoSync().platform == 'ios'){
-					  if (!is_get_userinfo) {
-					    uni.setStorageSync('get_userinfo_last_url', '/cms/quanquan/quanquan_details?videoid=' + this.videoid)
-					    uni.navigateTo({
-					      url: '/pages/login/login_get_userinfo',
-					    });
-					  					
-					    return;
-					  }
-				  }
-				  
-			      
-				  
-			      if (!this.showCostDetail){
-					  console.log(1);
-			        var animation = uni.createAnimation({
-			          duration: 200,
-			          timingFunction: "linear",
-			          delay: 0
-			        })
-					
-			        animation.translateY(100).step()
-			        
-					this.animationData = animation.export();
-					this.showCostDetail = true;
-					
-					
-			        setTimeout(function () {
-			          animation.translateY(0).step()
-			          this.animationData = animation.export();
-			        }.bind(this), 200)
-			      } else {
-					  console.log(2);
-			        var animation = uni.createAnimation({
-			          duration: 200,
-			          timingFunction: "linear",
-			          delay: 0
-			        })
-			        animation.translateY(100).step()
-			        this.animationData = animation.export();
-			        
-					setTimeout(function () {
+						if (that.video_data.has_video_collect == '0'){
+							that.video_data.has_video_collect = '1'
+							uni.showToast({
+							  title: '收藏成功',
+							})
+						}else{
+							that.video_data.has_video_collect = '0'
+							uni.showToast({
+							  title: '取消收藏成功',
+							})
+						}
 						
-			          animation.translateY(0).step()
-			          this.showCostDetail = false;
-					  
-			        }.bind(this), 200)
-			      }
-			    },
+						that.video_data = that.video_data;
+						return;
+					},
+					fail: function (e) {
+					  uni.showToast({
+						title: '网络异常！',
+						duration: 2000
+					  });
+					},
+				})
+			},
+		  
+			showRemarkInput:function(e){
+			  var that = this;
+		  
+			  var last_url = '/cms/quanquan/quanquan_details?videoid=' + that.videoid;
+		  
+			  
+			  var userInfo = this.abotapi.get_user_info();
+			  console.log('1111122222',userInfo);
+			  if ('is_get_userinfo' in userInfo) {
+				var is_get_userinfo = userInfo.is_get_userinfo;
+				console.log('1111122222',is_get_userinfo);
+			  }
+			  
+			  
+			  if(!uni.getSystemInfoSync().platform == 'android' && !uni.getSystemInfoSync().platform == 'ios'){
+				  if (!is_get_userinfo) {
+					uni.setStorageSync('get_userinfo_last_url', '/cms/quanquan/quanquan_details?videoid=' + this.videoid)
+					uni.navigateTo({
+					  url: '/pages/login/login_get_userinfo',
+					});
+									
+					return;
+				  }
+			  }
+			  
+			  
+			  
+			  if (!this.showCostDetail){
+				  console.log(1);
+				var animation = uni.createAnimation({
+				  duration: 200,
+				  timingFunction: "linear",
+				  delay: 0
+				})
 				
-				//富媒体 图片被点击
-				index_rich_html_preview_image:function(img_src, e){
-				},
+				animation.translateY(100).step()
 				
-				//富媒体 链接点击事件
-				index_rich_html_click_link:function(new_url, e){
+				this.animationData = animation.export();
+				this.showCostDetail = true;
+				
+				
+				setTimeout(function () {
+				  animation.translateY(0).step()
+				  this.animationData = animation.export();
+				}.bind(this), 200)
+			  } else {
+				  console.log(2);
+				var animation = uni.createAnimation({
+				  duration: 200,
+				  timingFunction: "linear",
+				  delay: 0
+				})
+				animation.translateY(100).step()
+				this.animationData = animation.export();
+				
+				setTimeout(function () {
 					
-					console.log('index_rich_html_click_link====>>>>>', new_url);
-					
-					this.abotapi.call_h5browser_or_other_goto_url(new_url);
-					
-					
-				},
+				  animation.translateY(0).step()
+				  this.showCostDetail = false;
+				  
+				}.bind(this), 200)
+			  }
+			},
+
+			
+			//富媒体 图片被点击
+			index_rich_html_preview_image:function(img_src, e){
+			},
+			
+			//富媒体 链接点击事件
+			index_rich_html_click_link:function(new_url, e){
+				
+				console.log('index_rich_html_click_link====>>>>>', new_url);
+				
+				this.abotapi.call_h5browser_or_other_goto_url(new_url);
+				
+				
+			},
+			
+			
+			
 		},
+		
+		filters: {
+			/**
+			 * 处理富文本里的图片宽度自适应
+			 * 1.去掉img标签里的style、width、height属性
+			 * 2.img标签添加style属性：max-width:100%;height:auto
+			 * 3.修改所有style里的width属性为max-width:100%
+			 * 4.去掉<br/>标签
+			 * @param html
+			 * @returns {void|string|*}
+			 */
+			formatRichText (html) { //控制小程序中图片大小
+				let newContent= html.replace(/<img[^>]*>/gi,function(match,capture){
+					match = match.replace(/style="[^"]+"/gi, '').replace(/style='[^']+'/gi, '');
+					match = match.replace(/width="[^"]+"/gi, '').replace(/width='[^']+'/gi, '');
+					match = match.replace(/height="[^"]+"/gi, '').replace(/height='[^']+'/gi, '');
+					return match;
+				});
+				newContent = newContent.replace(/style="[^"]+"/gi,function(match,capture){
+					match = match.replace(/width:[^;]+;/gi, 'max-width:100%;').replace(/width:[^;]+;/gi, 'max-width:100%;');
+					return match;
+				});
+				//newContent = newContent.replace(/<br[^>]*\/>/gi, '');
+				
+				newContent = newContent.replace(/<p[^>]*>/gi, '<p style="margin:10px;">');
+				
+				newContent = newContent.replace(/\<img/gi, '<img style="max-width:100%;height:auto;display:inline-block;margin:10rpx auto;vertical-align: middle;"');
+				
+				newContent = newContent.replace(/<h1[^>]*>/gi, '<h1 class="wxParse-h1">');
+				newContent = newContent.replace(/<h2[^>]*>/gi, '<h2 class="wxParse-h2">');
+				newContent = newContent.replace(/<h3[^>]*>/gi, '<h3 class="wxParse-h3">');
+				newContent = newContent.replace(/<h4[^>]*>/gi, '<h4 class="wxParse-h4">');
+				newContent = newContent.replace(/<h5[^>]*>/gi, '<h5 class="wxParse-h5">');
+				newContent = newContent.replace(/<h6[^>]*>/gi, '<h6 class="wxParse-h6">');
+				
+				return newContent;
+			}
+			
+		},
+		
+		
 	};
 </script>
 
 <style>
+	@import url("@/components/gaoyia-parse/parse.css");
+	
 	/* cms/quanquan/quanquan_details.wxss */
 	.a-1{
 	  width:100%;
@@ -843,11 +1042,11 @@
 	    color: #999;
 	}
 	.share_box{
-	/* width:220rpx; */
-	height:60rpx;
-	float:right;
-	position:relative;
-	left:37px;
+		/* width:220rpx; */
+		height:60rpx;
+		float:right;
+		position:relative;
+		left:74rpx;
 	}
 	.share_hide{
 	  width:220rpx;
@@ -905,4 +1104,95 @@
 	  padding:center;
 	  border-radius:60rpx;
 	}
+	
+	
+	
+	/* 对 content_v_html 做特殊处理 */
+	.wxParse-h1{
+	  margin: 10rpx 0;
+	  font-size:36rpx;
+	  border-left:10rpx solid #e7141a;
+	  padding:2rpx 10rpx;
+	}
+	.wxParse-h2{
+	  margin: 12rpx 0;
+	  font-size:32rpx;
+	  border-left:10rpx solid #3369e8;
+	  padding:2rpx 10rpx;
+	}
+	.wxParse-h3{
+	  margin: 14rpx 0;
+	  font-size:28rpx;
+	  border-left:10rpx solid #f37404;
+	  padding:2rpx 10rpx;
+	}
+	.wxParse-h4{
+	  margin: 16rpx 0;
+	  font-size:24rpx;
+	  border-left:10rpx solid #228B22;
+	  padding:2rpx 10rpx;
+	}
+	.wxParse-h5{
+	  margin: 18rpx 0;
+	  font-size:20rpx;
+	  border-left:10rpx solid #3369e8;
+	  padding:2rpx 10rpx;
+	}
+	.wxParse-h6{
+	  margin: 20rpx 0;
+	  font-size:16rpx;
+	  border-left:10rpx solid #f37404;
+	  padding:2rpx 10rpx;
+	}
+	
+	/* 对 content_v_html 做特殊处理  End */ 
+	
+	.wxParse-p{
+	  font-size:36rpx;
+	  margin-bottom:0rpx;
+	  font-style: normal;
+	}
+	
+	.wxParse-strong{
+	  font-weight: bold;
+	}
+	
+	.wxParse-img{
+	  max-width: 100%;
+	}
+	
+	.wxParse-blockquote{
+	  font-style:italic;
+	}
+	
+	.wxParse-ul{
+	  overflow:visible;
+	}
+	
+	.wxParse-li-circle{
+	  margin-left:0rpx;
+	  margin-right:0rpx;
+	  border-radius:10rpx;
+	  overflow:visible;
+	}
+	
+	.wxParse-li{
+	  overflow:visible;
+	}
+	
+	.wxParse-li-inner{
+	  overflow:visible;
+	}
+	
+	.wxParse-li-text{
+	  margin-left:20rpx;
+	  overflow:visible;
+	  margin-right:0rpx;
+	}
+	
+	.wxParse-blockquote{
+	  font-family: none;
+	}
+	
+
 </style>

@@ -397,10 +397,18 @@
 		onPullDownRefresh: function () {
 			var that = this;
 			
+			console.log('onPullDownRefresh=====>>>>>');
+			
+			uni.showLoading({
+				title: '加载中...',
+			})
+			
 			//如果没有缓存ID，则直接刷新
 			if(!that.http_data_cache_id){
 				
 				that.__load_welcome_page_date(that.current_options);
+				
+				uni.hideLoading();
 				
 				uni.stopPullDownRefresh();
 				return;
@@ -413,29 +421,15 @@
 					
 					that.__get_img_from_weiduke(that.wz_id, that);
 					
+					uni.hideLoading();
 					uni.stopPullDownRefresh();
 				},
 				fail: () => {
+					uni.hideLoading();
 					uni.stopPullDownRefresh();
 				}
 			})
 			
-			
-			
-			
-			
-			
-			console.log('onPullDownRefresh=====>>>>>');
-			
-			uni.showLoading({
-				title: '加载中...',
-			})
-			
-			setTimeout(function () {
-				uni.stopPullDownRefresh();
-				
-				uni.hideLoading()
-			}, 1000);
 			
 			that.get_remark_list();
 		},

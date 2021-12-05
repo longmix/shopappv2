@@ -207,12 +207,13 @@
 			
 		},
 		onShow(){
-			this.page = 1;
+			
+			/*this.page = 1;
 			var cata001 = uni.getStorageSync('current_quanquan_cata');
 			if(cata001){
 				this.cata = cata001;
 				this.getVideoList();
-			}
+			}*/
 		},
 		onReady(){
 			

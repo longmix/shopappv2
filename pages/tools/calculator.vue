@@ -139,7 +139,8 @@
 				}
 				
 				if(op_list.indexOf(code) != -1){
-					this.my_display_str += this.calcResult.displayNum;
+					//this.my_display_str += this.calcResult.displayNum;
+					this.my_display_str += this.my_display_str_last_num;
 					
 					this.my_display_str += this.calcResult.displayOp;
 				}
@@ -159,6 +160,8 @@
 				console.log('displayOp ==>> ',this.calcResult.displayOp)
 				
 				console.log('displayNum ==>> ',this.calcResult.displayNum)
+				
+				console.log('my_display_str_last_num ==>> ',this.my_display_str_last_num)
 				
 				console.log('my_display_str ==>> ',this.my_display_str)
 				
