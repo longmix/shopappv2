@@ -201,7 +201,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 						分发进度（{{current_card_detail.sale_counter}}/无限量）
 					</view>
 					<view v-else style="color: #868686;">
-						分发进度（{{current_card_detail.sale_counter}}/{{current_card_detail.publish_counter}}）
+						分发进度（{{current_card_detail.sale_counter}}/{{current_card_detail.publish_counter_and_sale_counter}}）
 					</view>
 					
 					<!-- 进度条 -->
@@ -629,6 +629,8 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			that.current_card_detail.publish_counter = 0; //发售的数量
 			
 			that.current_card_detail.sale_percent = 50;
+			
+			that.current_card_detail.publish_counter_and_sale_counter = 0;
 			
 			that.current_nftcard_poster = {};
 			
