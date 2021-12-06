@@ -165,6 +165,9 @@
 								console.log('一键获取头像和昵称完成',  res);
 						
 								if (res.data && (res.data.code == 1)) {
+									
+									//保存openid
+									that.abotapi.set_current_openid(res.data.openid);
 						
 									that.abotapi.globalData.userInfo = that.abotapi.get_user_info();
 						

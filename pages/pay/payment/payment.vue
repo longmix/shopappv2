@@ -184,9 +184,9 @@
 				pageBackgroundColor: '',
 				orderData: '',
 				orderno: '',
-				balance_dikou: '',
-				balance_zengsong_dikou: '',
-				pay_price: '',
+				balance_dikou: '',				// 余额抵扣
+				balance_zengsong_dikou: '',		// 赠款抵扣
+				pay_price: '',					// 支付的费用
 				
 				show_weixin_pay: 0,
 				show_ali_pay: 0,
@@ -719,11 +719,7 @@
 
 				that.abotapi.abotRequest({
 					url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=order_buy',
-					data: data_params,
-					method: 'POST',
-					header: {
-						'Content-Type': 'application/x-www-form-urlencoded'
-					}, // 设置请求的 header
+					data: data_params,					
 					success: function(res) {
 						if (res.data.code == 1) {
 
@@ -781,7 +777,7 @@
 						orderid: that.orderid,
 						payment_type: 3,						//支付类型，将来作为函数参数传入。3代表微信支付   2 代表支付宝支付
 						
-						sellerid: that.abotapi.get_sellerid()
+						sellerid: that.abotapi.get_sellerid(),
 						/*
 						appid:
 						mch_id:
@@ -792,6 +788,15 @@
 						sign:
 						sub_mch_id:
 						*/
+					   
+					   user_coupon_dikou:that.user_coupon_dikou,
+					   yue_amount: that.balance_dikou,
+					   zengkuan_amount: that.balance_zengsong_dikou,
+					   
+					   time: that.date + ' ' + that.time,
+					   
+					   body: "在线支付订单",
+					   subject: "在线支付订单",
 				};
 				
 				var userInfo = that.abotapi.get_user_info();
@@ -986,7 +991,7 @@
 								
 								var msg001 = '支付失败';
 								if(res && res.errMsg){
-									if(res.errMsg.indexOf('canceled') > 0){
+									if(res.errMsg.indexOf('cancel') > 0){
 										msg001 = '支付已经取消';
 									}
 									else{

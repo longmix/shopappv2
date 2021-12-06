@@ -577,7 +577,7 @@
 				//that001.wxa_hide_balance_in_usercenter = 1;
 				//that001.wxa_hide_score_in_usercenter = 1;
 				
-				that001.get_current_userinfo();
+				//that001.get_current_userinfo();
 				
 				that001.get_user_function_list();
 			},
@@ -609,6 +609,9 @@
 									success: (res02) => {
 										if(res02.confirm){
 											that.abotapi.globalData.userInfo.is_get_userinfo = 1;
+											
+											//that.abotapi.globalData.userInfo.is_get_userinfo = 1;
+											that.abotapi.set_user_info(that.abotapi.globalData.userInfo);
 										}
 									}
 								})

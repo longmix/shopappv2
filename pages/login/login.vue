@@ -54,12 +54,16 @@
 				
 				<!-- #ifdef MP-WEIXIN -->
 					<!-- <button type="primary"  formType="submit" 
-						open-type="getUserInfo" @getuserinfo="btnWxaGetUserinfo"
+						
 						class="btn-row-submit"
 						:style="{background:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" 
-						style="width: 84%;background: #228B22;margin: auto;">登陆/注册</button>-->
-					<button type="primary"  formType="submit"
+						style="width: 84%;background: #228B22;margin: auto;">登陆/注册</button>
+						
 						@tap="btnWxaLogin"
+						
+						-->
+					<button type="primary"  formType="submit"
+						open-type="getUserInfo" @getuserinfo="btnWxaLoginBind"						
 						class="btn-row-submit"
 						:style="{background:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color}" 
 						style="width: 84%;background: #228B22;margin: auto;">登陆/注册</button>
@@ -200,6 +204,8 @@
 				
 				//2021.9.19. 将  获取 js code的过程提前
 				current_weixin_js_code:null,
+				//2021.12.6. 如果是来自微信的登陆，则同时获取openid
+				btnWxaLogin_obj:null,
 			}
 		},
 		onLoad:function(){
@@ -438,6 +444,15 @@
 					//ShopAppWxa 里面增加了对 jscode的处理逻辑
 					login_url = that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=login';
 					
+					if(that.btnWxaLogin_obj){
+						post_data.iv = that.btnWxaLogin_obj.iv;
+						post_data.encryptedData = that.btnWxaLogin_obj.encryptedData;
+						
+						post_data.js_code = that.current_weixin_js_code;
+						
+						post_data.xiaochengxu_appid = that.abotapi.globalData.xiaochengxu_appid;
+						post_data.appid = that.abotapi.globalData.xiaochengxu_appid;
+					}
 					
 					
 				//#endif
@@ -806,14 +821,22 @@
 				
 				
 				
-			},	
-			btnWxaLogin:function(e){
+			},
+			//获取用户的头像和昵称信息
+			btnWxaLoginBind:function(e){
 				var that = this;
+				
+				
+				that.btnWxaLogin_obj = {};
+				that.btnWxaLogin_obj.iv = e.detail.iv;
+				that.btnWxaLogin_obj.encryptedData = e.detail.encryptedData;
+				
 				
 				that.login_after_get_userinfo = 0;
 				that.btn_user_login();
-			},
-			//获取用户的头像和昵称信息
+				
+				
+			},			
 			//2021.9.19. 这个方法已经不再使用了，微信使用 getUserProfile替代了
 			btnWxaGetUserinfo:function(e){
 				var that = this;
@@ -838,8 +861,7 @@
 							data: {
 								js_code: res.code,
 								xiaochengxu_appid: that.abotapi.globalData.xiaochengxu_appid,
-								iv: e.detail.iv,
-								encryptedData: e.detail.encryptedData,
+								
 								sellerid: that.abotapi.get_sellerid(),
 								parentid: that.abotapi.get_current_parentid(),
 							},

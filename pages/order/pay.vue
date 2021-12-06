@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="a-dikou" v-if="current_zitidian_data && current_zitidian_data.global_status == 1 && current_zitidian_data.all_global_status == 0">
+		<view class="a-dikou" v-if="current_zitidian_data && (current_zitidian_data.global_status == 1) && (current_zitidian_data.all_global_status == 0)">
 			<view class="b-dikou">
 				<view>商品自提</view>
 			</view>
@@ -9,7 +9,7 @@
 		<!--收货地址 -->
 		<block v-if="zitidian_status_flag == 0">
 			<view v-if="wxa_order_queren_hide_address != 1"
-				class="mt10 font_14" style="padding: 3%;">选择收货地址</view>
+				class="mt10 font_14" style="padding: 3%;">收货地址</view>
 			<view v-if="wxa_order_queren_hide_address != 1" 
 				style="border-bottom:1px dashed #e5e5e5;">
 				<view class="p_all bg_white mt10 font_14" v-if="addemt==0">
@@ -47,7 +47,7 @@
 		</block>
 		<block  v-else>
 			<!--商品自提    =======  模态框 -->
-			<view class="mt10 font_14" style="padding: 3%;">选择自提点</view>
+			<view class="mt10 font_14" style="padding: 3%;">商品自提点</view>
 			<view style="border-bottom:1px dashed #e5e5e5;">
 				<view class="show_modal_mask" v-if="showShangModal" @tap="showShangModal=false"></view>
 				<view class="show_modal_pop" v-if="showShangModal">
@@ -146,7 +146,7 @@
 
 
 		<view class="w100">
-			<view class="a-dikou" :hidden="(wxa_order_hide_balance_zengsong==1) || (!coupon_list)">
+			<view class="a-dikou" :hidden=" (!coupon_list)">
 				<view class="b-dikou">
 					<view>优惠券</view>
 				</view>
@@ -164,7 +164,8 @@
 				</view>
 			</view>
 
-			<view class="a-dikou" :hidden="(wxa_order_hide_balance_zengsong==1) || (balance_zengsong == 0)">
+			<!--   <view class="a-dikou" :hidden="(wxa_order_hide_balance_zengsong==1) || (balance_zengsong == 0)">   -->
+			<view class="a-dikou" :hidden="(wxa_order_hide_balance_zengsong==1)">
 				<view class="b-dikou">
 					<view>赠款抵扣</view>
 					<view class="c-dikou">使用￥<span class="c-dikou_amount">{{balance_zengsong_dikou}}</span> 可用￥{{balance_zengsong}}</view>
@@ -172,8 +173,8 @@
 				<switch class='d-dikou' :checked="isSwitch1" @change="switch1Change($event)" data-type="1" />
 			</view>
 
-
-			<view class="a-dikou" :hidden="(wxa_order_hide_balance==1) || (balance == 0)">
+			<!-- <view class="a-dikou" :hidden="(wxa_order_hide_balance==1) || (balance == 0)">  -->
+			<view class="a-dikou" :hidden="(wxa_order_hide_balance==1)">
 				<view class="b-dikou">
 					<view>余额抵扣</view>
 					<view class="c-dikou">使用￥<span class="c-dikou_amount">{{balance_dikou}}</span> 可用￥{{balance}}</view>
@@ -1076,11 +1077,22 @@ extraData = 'xxxxxxxxxxxxxxx'
 							
 							that.traffic_price = res.data.traffic_price;
 							that.all_product_take_score = res.data.all_product_take_score;
-							that.balance = res.data.balance;
 							
+							
+							that.balance = res.data.balance;
+							that.balance_zengsong = res.data.balance_zengsong;
 							console.log('wwwwwwwwwwwwwww',that.balance);
 							
-							that.balance_zengsong = res.data.balance_zengsong;
+							
+							
+							if(parseInt(that.balance_zengsong) == 0){
+								that.wxa_order_hide_balance_zengsong = 1;
+							}
+							
+							if(parseInt(that.balance) == 0){
+								that.wxa_order_hide_balance = 1;
+							}
+							
 							
 							
 							//2021.8.7. 订单是否不需要填写收货地址
