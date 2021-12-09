@@ -200,7 +200,7 @@
 				style="display: flex;" 
 				@tap="goto_supplier_detail()">
 				<view class="">
-					<image class="" :src="current_package_detail.supplier_item.icon_image"
+					<image class="" :src="current_package_detail.supplier_item.icon"
 						mode="widthFix" style="width: 120rpx;height: 120rpx;border-radius: 50%;margin: 15rpx;"></image>
 				</view>
 				
@@ -1830,7 +1830,7 @@ export default {
 		font-size: 25rpx;
 		display: -webkit-box;
 		-webkit-box-orient: vertical;
-		-webkit-line-clamp: 2;
+		-webkit-line-clamp: 1;
 		text-align: justify;
 		overflow: hidden;
 	}

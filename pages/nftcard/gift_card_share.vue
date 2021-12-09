@@ -1,111 +1,89 @@
 <template>
-	<view style="padding: 20rpx;" v-if="is_page_show_to_user == 1">
-		<!-- 卡牌封面 卡牌名称及简介 -->
-		<view style="display: flex;">
-			<view @tap="go_to_card_detail(current_packageid,current_cardid)">
-				<image :src="current_card_detail.cover_img_url_2x3_stand"
-					style="border-radius: 15rpx;width: 340rpx;">
-				</image>
-			</view>
-			<view style="padding-left: 20rpx;width: 350rpx;">
-				<view class="card_detail_title">
-					{{current_card_detail.card_name}}
+	<view style="background-color: 	#DCDCDC;padding: 40rpx;">
+		<view style="padding: 20rpx;background-color: #FFFFFF;border-radius: 20rpx;" v-if="is_page_show_to_user == 1">
+			<!-- 卡牌封面 卡牌名称及简介 -->
+			<view style="display: flex;">
+				<view style="padding-left: 20rpx;width: 350rpx;margin-top: 30rpx;">
+					<view class="card_detail_title">
+						{{current_card_detail.card_name}}
+					</view>
+					<!-- <view class="gift_card_brief">
+						{{current_card_detail.brief}}
+					</view> -->
+					<view style="display: flex;margin-top: 20rpx;">
+						<image :src="current_card_detail.supplier_item.icon" style="width: 40rpx;height: 40rpx;"></image>
+						<view style="margin-left: 20rpx;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;font-size: 28rpx;color:#C0C0C0;">{{current_card_detail.supplier_item.name}}</view>
+					</view>
+					
 				</view>
-				<view class="gift_card_brief">
-					{{current_card_detail.brief}}
-				</view>
-			</view>
-		</view>
-		
-		
-		<block v-if="is_sender">
-		
-			<view>
-				<view style="padding: 20rpx 0px 5px 0px;">转赠的卡牌</view>
-				<view class="" style="display: flex;">
-					<view v-for="(current_card_cpl_item,index) in current_card_cpl_list" :key="index" 
-						style="display: flex;">
-					
-						<view class="card_cpl_transfer" style="">
-							{{current_card_cpl_item.text}} 
-						</view>
-			
-					
-					
+				<view>
+					<view @tap="go_to_card_detail(current_packageid,current_cardid)">
+						<image :src="current_card_detail.cover_img_url_2x3_stand"
+							style="margin-left: 20rpx;border-radius: 20rpx; width: 150rpx;" mode="widthFix" >
+						</image>
 					</view>
 				</view>
-				<!-- 复选框按钮 -->
-				<!-- <uni-data-checkbox
-					mode="tag" 
-					selectedColor="#65b847"
-					v-model="checkbox_value_cplid" 
-					:localdata="checkbox_range_card_publish_list" 
-					@change="checkbox_change_cplid" disabled>
-				</uni-data-checkbox> -->
 			</view>
-				
+			<view style="border: 1px solid #f0f5f7;"></view>
 			
-			<view style="padding: 30rpx 0px 10px 0px">
-				<view>赠言</view>
-				<view style="font-size: 40rpx;padding: 30rpx;">
-					 {{current_send_wish}}
-				</view>  
-			</view>
-			<view>方式</view>
-			<!-- 单选框按钮 -->
-			<view style="padding-left: 2.5%;margin-top: 10rpx;">
-				
-				<view class="checkbox_receive" v-if="current_get_type == 0" >
-					全部领取
+			<block v-if="is_sender">
+			
+				<view>
+					<view style="padding: 20rpx 0px 5px 0px;color: #A9A9A9;">转赠的卡牌</view>
+					<view class="" style="display: flex;">
+						<view v-for="(current_card_cpl_item,index) in current_card_cpl_list" :key="index" 
+							style="display: flex;">
+						
+							<view class="card_cpl_transfer" style="">
+								{{current_card_cpl_item.text}} 
+							</view>
+						</view>
+					</view>
+					<!-- 复选框按钮 -->
+					<!-- <uni-data-checkbox
+						mode="tag" 
+						selectedColor="#65b847"
+						v-model="checkbox_value_cplid" 
+						:localdata="checkbox_range_card_publish_list" 
+						@change="checkbox_change_cplid" disabled>
+					</uni-data-checkbox> -->
 				</view>
-				<view class="checkbox_receive" v-if="current_get_type ==1" >
-					限领一张
+					
+				
+				<view style="padding: 30rpx 0px 10px 0px">
+					<view style="color: #A9A9A9;">赠言</view>
+					<view style="font-size: 40rpx;padding: 30rpx;">
+						 {{current_send_wish}}
+					</view>  
 				</view>
-				<!-- <uni-data-checkbox
-					mode="tag" 
-					v-model="checkbox_value_get_type"
-					selectedColor="#65b847"
-					:localdata="checkbox_range_get_type" 
-					@change="checkbox_change_get_type" disabled>
-				</uni-data-checkbox> -->
-			</view>
-			
-			
-			<view style="padding-top: 50rpx;">
-					<!-- <button type="default"
-						class="gift_card_button_zengsong"
-						:style="{background:wxa_shop_nav_bg_color}">
-						赠送
-					</button> -->
-				
-				<!-- #ifdef MP -->
-					<button open-type="share"
-						class="button_fenxiang_border gift_card_button_zengsong" :style="{background:wxa_shop_nav_bg_color}">
-						赠送给好友
-					</button>
-				<!-- #endif -->
-				
-				<!-- #ifdef APP-PLUS -->
-					<button @click="is_show" class="gift_card_button_zengsong" :style="{background:wxa_shop_nav_bg_color}">
-						赠送给好友
-					</button>
-				<!-- #endif -->
-				
-				<!-- #ifdef H5 -->
-					<button @tap="share_cpl_from_h5" class="gift_card_button_zengsong" :style="{background:wxa_shop_nav_bg_color}">
-						赠送给好友
-					</button>
-				<!-- #endif -->
-			</view>
+				<view style="color: #A9A9A9;">方式</view>
+				<!-- 单选框按钮 -->
+				<view style="padding-left: 2.5%;margin-top: 10rpx;">
+					
+					<view class="checkbox_receive" v-if="current_get_type == 0" >
+						全部领取
+					</view>
+					<view class="checkbox_receive" v-if="current_get_type ==1" >
+						限领一张
+					</view>
+					<!-- <uni-data-checkbox
+						mode="tag" 
+						v-model="checkbox_value_get_type"
+						selectedColor="#65b847"
+						:localdata="checkbox_range_get_type" 
+						@change="checkbox_change_get_type" disabled>
+					</uni-data-checkbox> -->
+				</view>
+				<view>
+					<image :src="current_card_detail.supplier_item.card_share_big_image" mode="widthFix"></image>
+				</view>
 		</block>
 		
 			
 		<block v-else>
 			
-			
-			
 			<view>
-				<view style="line-height:60rpx ;">来自于</view>
+				<view style="line-height:60rpx ;color: #A9A9A9;">来自于</view>
 		
 				<view class="" style="display: flex;">
 					<image :src="current_card_item.headimgurl" mode="widthFix" style="width: 80rpx; margin:20rpx 10rpx;border-radius: 50%;"></image>
@@ -113,7 +91,7 @@
 				</view>
 				
 				
-				<view style="line-height:60rpx ;">转赠的卡牌</view>
+				<view style="line-height:60rpx ;color: #A9A9A9;">转赠的卡牌</view>
 		
 			
 				<view class="" v-for="(current_card_item_list , index) in current_card_item.cplid" 
@@ -133,7 +111,7 @@
 				</uni-data-checkbox> -->
 				
 				
-				<view>赠言：</view>
+				<view style="color: #A9A9A9;">赠言：</view>
 				<view class="card_cpl_gift"  :style="{color:wxa_shop_nav_bg_color}">
 					{{current_card_item.send_wish}}
 				</view>
@@ -143,7 +121,7 @@
 					 {{current_card_item.createtime}}
 				</view> 				
 				
-				<view style="padding-top: 50rpx;">
+				<view style="padding-top: 50rpx; color: #A9A9A9;">
 					<button class="gift_card_button_zengsong" 
 						:style="{background:wxa_shop_nav_bg_color}" 
 						@tap="receiver_get_card_cpl(cplid)">
@@ -151,15 +129,35 @@
 					</button>
 				</view>
 				
-				
 			</view>
-				
-			
-			
-			
-			
 		</block>
-		
+		</view>
+		<view style="padding-top: 50rpx;">
+				<!-- <button type="default"
+					class="gift_card_button_zengsong"
+					:style="{background:wxa_shop_nav_bg_color}">
+					赠送
+				</button> -->
+			
+			<!-- #ifdef MP -->
+				<button open-type="share"
+					class="button_fenxiang_border gift_card_button_zengsong" :style="{background:wxa_shop_nav_bg_color}">
+					赠送给好友
+				</button>
+			<!-- #endif -->
+			
+			<!-- #ifdef APP-PLUS -->
+				<button @click="is_show" class="gift_card_button_zengsong" :style="{background:wxa_shop_nav_bg_color}">
+					赠送给好友
+				</button>
+			<!-- #endif -->
+			
+			<!-- #ifdef H5 -->
+				<button @tap="share_cpl_from_h5" class="gift_card_button_zengsong" :style="{background:wxa_shop_nav_bg_color}">
+					赠送给好友
+				</button>
+			<!-- #endif -->
+		</view>
 	</view>
 </template>
 

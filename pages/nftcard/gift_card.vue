@@ -1,65 +1,73 @@
 <template>
-	<view style="padding: 20rpx;">
-		<!-- 卡牌封面 卡牌名称及简介 -->
-		<view style="display: flex;padding-top: 10rpx;">
-			<view @tap="go_to_card_detail(current_packageid,current_cardid)">
-				<image :src="current_card_detail.cover_img_url_2x3_stand"
-					style="border-radius: 15rpx;width: 340rpx;">
-				</image>
+	<view style="background-color: 	#DCDCDC;padding: 40rpx;">
+		<view style="padding: 20rpx;background-color: #FFFFFF;border-radius: 20rpx;">
+			<!-- 卡牌封面 卡牌名称及简介 -->
+			<view style="display: flex;">
+				<view style="padding-left: 20rpx;width: 350rpx;margin-top: 30rpx;">
+					<view class="card_detail_title">
+						{{current_card_detail.card_name}}
+					</view>
+					<!-- <view class="gift_card_brief">
+						{{current_card_detail.brief}}
+					</view> -->
+					<view style="display: flex;margin-top: 20rpx;">
+						<image :src="current_card_detail.supplier_item.icon" style="width: 40rpx;height: 40rpx;"></image>
+						<view style="margin-left: 20rpx;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;font-size: 28rpx;color:#C0C0C0;">{{current_card_detail.supplier_item.name}}</view>
+					</view>
+					
+				</view>
+				<view>
+					<view @tap="go_to_card_detail(current_packageid,current_cardid)">
+						<image :src="current_card_detail.cover_img_url_2x3_stand"
+							style="margin-left: 20rpx;border-radius: 20rpx; width: 150rpx;" mode="widthFix" >
+						</image>
+					</view>
+				</view>
+			</view>
+			<view style="border: 1px solid #f0f5f7;"></view>
+			<view class="content_block">
+				<view class="block_title">想要转赠的卡牌</view>
+				<!-- 复选框按钮 -->
+				<uni-data-checkbox
+					min="1"
+					multiple 
+					mode="tag" 
+					selectedColor="#65b847"
+					v-model="checkbox_value_cplid" 
+					:localdata="checkbox_range_card_publish_list" 
+					@change="checkbox_change_cplid">
+				</uni-data-checkbox>
+			</view>
 				
-			</view>
-			<view style="padding-left: 20rpx;width: 350rpx;">
-				<view class="card_detail_title">
-					{{current_card_detail.card_name}}
-				</view>
-				<view class="gift_card_brief">
-					{{current_card_detail.brief}}
-				</view>
-			</view>
-		</view>
-		
-		
-		<view class="content_block">
-			<view class="block_title">想要转赠的卡牌</view>
-			<!-- 复选框按钮 -->
-			<uni-data-checkbox
-				min="1"
-				multiple 
-				mode="tag" 
-				selectedColor="#65b847"
-				v-model="checkbox_value_cplid" 
-				:localdata="checkbox_range_card_publish_list" 
-				@change="checkbox_change_cplid">
-			</uni-data-checkbox>
-		</view>
 			
-		
-		<view class="content_block">
-			<view class="block_title">赠言，建议不超过20个汉字</view>
-			<view class="gift_card_textarea">
-				<textarea
-				placeholder-style="color: #30c478"
-				maxlength="70"
-				placeholder="请输入赠言" 
-				@blur="bindTextAreaBlur"
-				v-model="tkinfotest"/>
+			<view class="content_block">
+				<view class="block_title">赠言，建议不超过20个汉字</view>
+				<view class="gift_card_textarea">
+					<textarea
+					placeholder-style="color:#A9A9A9"
+					maxlength="70"
+					placeholder="请输入赠言" 
+					@blur="bindTextAreaBlur"
+					v-model="tkinfotest"/>
+				</view>
 			</view>
-		</view>
-		
-		<!-- 单选框按钮 -->
-		<view class="content_block">
-			<view class="block_title">赠送方式</view>
 			
-			<uni-data-checkbox
-				mode="tag" 
-				v-model="checkbox_value_get_type"
-				selectedColor="#30c478"
-				:localdata="checkbox_range_get_type" 
-				@change="checkbox_change_get_type">
-			</uni-data-checkbox>
-		</view>
-		
-		
+			<!-- 单选框按钮 -->
+			<view class="content_block">
+				<view class="block_title">赠送方式</view>
+				
+				<uni-data-checkbox
+					mode="tag" 
+					v-model="checkbox_value_get_type"
+					selectedColor="#30c478"
+					:localdata="checkbox_range_get_type" 
+					@change="checkbox_change_get_type">
+				</uni-data-checkbox>
+			</view>
+			<view>
+				<image :src="current_card_detail.supplier_item.card_share_big_image" mode="widthFix"></image>
+			</view>
+		</view>	
 		<view class="content_block" style="padding-top: 50rpx;">
 			<button type="default" @tap="go_to_gift_card_share"
 				class="gift_card_button_zengsong"
@@ -67,24 +75,25 @@
 				保存赠送信息
 			</button>
 		</view>
-		<!-- <block v-else>
-			<view style="display: flex;padding-top: 20rpx;">
-				<view style="">
-					<image style="width: 150rpx; height: 150rpx;border-radius: 50%;" :src="current_card_item.headimgurl" mode="heightFix"></image>
+			<!-- <block v-else>
+				<view style="display: flex;padding-top: 20rpx;">
+					<view style="">
+						<image style="width: 150rpx; height: 150rpx;border-radius: 50%;" :src="current_card_item.headimgurl" mode="heightFix"></image>
+					</view>
+					
+					<view>
+						<view style="padding: 30rpx;font-size: 40rpx;">{{current_card_item.nickname}}</view>
+					</view>
 				</view>
-				
-				<view>
-					<view style="padding: 30rpx;font-size: 40rpx;">{{current_card_item.nickname}}</view>
+				<view style="font-size: 40rpx;padding: 30rpx;">{{current_card_item.send_wish}}</view>
+				<view style="text-align: right;">{{current_card_item.createtime}}</view>
+				<view style="padding-top: 50rpx;">
+					<button class="gift_card_button_zengsong" :style="{background:wxa_shop_nav_bg_color}">
+						领取卡牌
+					</button>
 				</view>
-			</view>
-			<view style="font-size: 40rpx;padding: 30rpx;">{{current_card_item.send_wish}}</view>
-			<view style="text-align: right;">{{current_card_item.createtime}}</view>
-			<view style="padding-top: 50rpx;">
-				<button class="gift_card_button_zengsong" :style="{background:wxa_shop_nav_bg_color}">
-					领取卡牌
-				</button>
-			</view>
-		</block> -->
+			</block> -->
+			
 		
 	</view>
 </template>
@@ -630,7 +639,7 @@ export default {
 	
 	.block_title {
 		font-size:28rpx;
-		font-weight: bold;
+		color: 	#A9A9A9;
 	}
 	
 	
@@ -643,12 +652,11 @@ export default {
 		}
 	}
 	.gift_card_textarea{
-		width: 90%;
-		border: 4rpx #9f9f9f solid;
+		width: 93%;
 		padding: 10rpx;
 		margin-top: 10rpx;
 		margin-left: 2.5%;
-		border-radius: 18rpx;
+		background-color: #f6f9f8;
 	}
 	.selfRadio{
 		cursor: pointer;
@@ -679,4 +687,5 @@ export default {
 	// table tr:nth-child(even){
 	// 	background: #ffffff;
 	// }
+	
 </style>
