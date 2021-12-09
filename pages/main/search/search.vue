@@ -7,7 +7,7 @@
 				@input="searchValueInput($event)" 
 				:focus="focus"  
 				@confirm="doSearch($event)"/><!--  -->
-			<button @tap="doSearch"><image class="searchcion" src="../../../static/img/search.png" style="width: 50rpx;height:50rpx;"></image></button>
+			<button @tap="doSearch(sousuo)"><image class="searchcion" src="../../../static/img/search.png" style="width: 50rpx;height:50rpx;"></image></button>
 		</view>
 		<view class="cont" v-if="hotKeyShow">
 			<text class="font_14">热门搜索</text>
@@ -208,7 +208,10 @@
 				console.log('e',e);
 				var that = this;
 			    var value = e.detail.value;
-				that.searchValue = value,
+				
+				that.searchValue = value.replace(/\s/g,""),
+				
+				console.log('that.searchValue',that.searchValue)
 				that.page = 1
 			    if (!value && this.shopList.length == 0) {
 					that.hotKeyShow = true;
@@ -219,6 +222,10 @@
 				console.log('e1',e);
 				var that = this;
 			    var searchKey = that.searchValue;
+				if(searchKey == ''){
+					return
+				}
+				console.log('searchKey',searchKey);
 			
 			    var historyKeyList = that.historyKeyList;
 			    this.remove(searchKey);
@@ -236,23 +243,21 @@
 				that.hotKeyShow = false;
 				that.historyKeyShow = false;
 				that.shopList.length = 0;
-				that.searchProductData();
-			},
-			
-			searchProductData: function () {
-			
-			    var that = this;
-			    console.log('66666666666', that.cataid)
-			    uni.request({
+				
+				var post_data={
+					sellerid: this.abotapi.get_sellerid(),
+					keyword: that.searchValue ? that.searchValue : '',
+					sort: 1,
+					page:1,
+					cataid: that.cataid ? that.cataid : ''
+				};
+				
+				uni.request({
 					url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=product_list',
 					method: 'post',
-					data: {
-						sellerid: this.abotapi.get_sellerid(),
-						keyword: that.searchValue ? that.searchValue : '',
-						sort: 1,
-						page: that.page,
-						cataid: that.cataid ? that.cataid : ''
-					},
+					data: post_data,
+						
+					
 					header: {
 						'Content-Type': 'application/x-www-form-urlencoded'
 					},
@@ -267,7 +272,53 @@
 							return false;
 						}
 						that.shopList = that.shopList.concat(data)
-						that.page = that.page + 1
+						
+						that.is_more = true
+					},
+					fail: function (e) {
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+					},
+				});
+			},
+			
+			searchProductData: function () {
+			
+			    var that = this;
+				
+			    console.log('66666666666', that.cataid)
+				
+				that.page = that.page + 1
+				
+			    uni.request({
+					url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=product_list',
+					method: 'post',
+					data: {
+						sellerid: this.abotapi.get_sellerid(),
+						keyword: that.searchValue ? that.searchValue : '',
+						sort: 1,
+						page : that.page,
+						cataid: that.cataid ? that.cataid : ''
+					},
+						
+					
+					header: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					},
+					success: function (res) {
+						var data = res.data.product_list;
+						if (data == '') {
+							uni.showToast({
+								title: '没有更多数据！',
+								duration: 2000
+							});
+							that.is_more = false;
+							return false;
+						}
+						that.shopList = that.shopList.concat(data)
+						
 						that.is_more = true
 					},
 					fail: function (e) {

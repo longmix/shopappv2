@@ -27,7 +27,7 @@
 				"pagePath": "pages/tabbar/user",
 				"iconPath": "static/img/tabBar/user.png",
 				"selectedIconPath": "static/img/tabBar/user-on.png",
-				"text": "个人中心"
+				"text": "我的"
 			}
 		]
 	},

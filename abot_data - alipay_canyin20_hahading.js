@@ -4,8 +4,8 @@ const globalData = {
 		o2owaimai_server_url: 'https://app.tseo.cn/o2owaimai/index.php',
 		socket_server: 'https://socketio.tseo.cn',
 		
-		version_number:'Ver 2.0.1 Build 290',
-		version_code:290,
+		version_number:'Ver 2.0.3 Build 293',
+		version_code:293,
 		
 		force_sellerid:1,
 	
@@ -24,7 +24,7 @@ const globalData = {
 		//通版商城
 		default_shopname: '哈哈订',
 		default_sellerid: 'fimmUPUPV',				//  这个账号是 hahading，服务器上会根据 current_platform 转为 hahading02
-		default_copyright_text:'上海哈哈订 (C) 版权所有',
+		default_copyright_text:'哈哈订 (C) 版权所有',
 		
 		//=======以下配置项在发布版本的时候确定，服务器端配置无效===
 		
