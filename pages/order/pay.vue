@@ -51,14 +51,21 @@
 			<view style="border-bottom:1px dashed #e5e5e5;">
 				<view class="show_modal_mask" v-if="showShangModal" @tap="showShangModal=false"></view>
 				<view class="show_modal_pop" v-if="showShangModal">
-					<view v-for="(item,index) in paixu_shanglist" @tap="show_paixu_list(index)" style="border-bottom:1px dashed #e5e5e5;">
-						<view class="df_1 c6 show_paixu" style="padding: 5rpx 20rpx;">
-							<view style=''>
-								<view class="l_h20" style="font-size:25rpx;margin-right:56rpx;">{{item.value_arr.zitidian_name}}</view>
-								<view class="l_h20 " style="font-size:25rpx;">{{item.key}}</view>
-							</view>
-							<view class="l_h20 mt5" style="font-size:20rpx;margin-top:22rpx;">
-								{{item.value_arr.zitidian_address}}
+					<view class="show_modal_pop_main" >
+						<view class="show_modal_pop_content" >
+							<view v-for="(item,index) in paixu_shanglist" @tap="show_paixu_list(index)" 
+								style="border-bottom:1px dashed #999999;">
+								
+								<view class="df_1 c6 show_paixu" style="padding: 20rpx 10rpx 20rpx 40rpx;">
+									<view style=''>
+										<view class="l_h20" style="font-size:25rpx;">{{item.value_arr.zitidian_name}}</view>
+										<view class="l_h20 " style="font-size:25rpx;">自提点电话：<text>{{item.value_arr.zitidian_phone}}</text></view>
+									</view>
+									
+									<view class="l_h20 mt5" style="font-size:20rpx;">
+										{{item.value_arr.zitidian_address}}
+									</view>
+								</view>
 							</view>
 						</view>
 					</view>
@@ -68,7 +75,7 @@
 						<view class="df_1 c6" style="padding: 5rpx 20rpx;">
 							<view style=''>
 								<view class="l_h20" style="font-size:40rpx;margin-right:56rpx;">{{paixu_shanglist[0].value_arr.zitidian_name}}</view>
-								<view class="l_h20 " style="font-size:25rpx;">{{paixu_shanglist[0].key}}</view>
+								<view class="l_h20 " style="font-size:30rpx;margin-top: 10rpx;">自提点电话：<text>{{paixu_shanglist[0].value_arr.zitidian_phone}}</text></view>
 							</view>
 							<view class="l_h20 mt5" style="font-size:32rpx;margin-top:22rpx;">
 								{{paixu_shanglist[0].value_arr.zitidian_address}}
@@ -2991,7 +2998,12 @@ extraData = 'xxxxxxxxxxxxxxx'
 		left: 50%;
 		transform: translate(-50%,-50%);
 	}
-	.show_paixu{
+	.show_modal_pop_main{
 		background-color: #FFFFFF;
+		width: 600rpx;
+		padding:20rpx;
+	}
+	.show_modal_pop_content{
+		border:2rpx solid #666;
 	}
 </style>

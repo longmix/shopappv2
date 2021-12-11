@@ -469,16 +469,16 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					</view>
 				</view>
 				
-				
-				<view class="show_modal_mask" v-if="show_nftcard_collection_certificate == true" 
+				<!-- 收藏证明模态框 -->
+				<!-- <view class="show_modal_mask" v-if="show_nftcard_collection_certificate == true" 
 					@tap="show_nftcard_collection_certificate = false" style="z-index: 1001;"></view>
 				<view class="show_modal_pop" v-if="show_nftcard_collection_certificate == true"
 					style="z-index: 1001;">
 					<view class="" style="width: 700rpx;background-color: #FFFFFF;">
 						<image src="" mode=""></image>
-						<button>保存到相册</button>
+						<button @tap="poster_baocun">保存到相册</button>
 					</view>
-				</view>
+				</view> -->
 				
 				
 				<!-- 卡牌明细记录模态框 -->
@@ -1421,6 +1421,39 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				
 				that.show_nftcard_collection_certificate = true;
+			},
+			
+			//保存到相册
+			poster_baocun(){
+				var that = this;
+				
+				
+				uni.downloadFile({
+					url:that.current_poster_modal.img_url,
+							
+					success: (res) =>{
+						console.log('uni.downloadFile======>>>>', res);
+						
+						//if (res.statusCode === 200){
+						if(res.tempFilePath){
+							uni.saveImageToPhotosAlbum({
+								filePath: res.tempFilePath,
+								success: function() {
+									uni.showModal({
+										title: "提示",
+										content: '保存成功！',
+									});
+								},
+								fail: function() {
+									uni.showModal({
+										title: "提示",
+										content: '保存失败！',
+									});
+								}
+							});
+						}
+					}
+				})
 			},
 			
 			__nftcard_gift_or_discard:function(cplid, data_type, wish='', mobile=''){

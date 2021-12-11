@@ -5,6 +5,16 @@
 	 <view class="abb" :style="{background:wxa_shop_nav_bg_color}">
 	        <view class="tctb" :style="{color:wxa_shop_nav_font_color}">订单编号：{{orderData.orderno}}</view>
 	</view>
+	
+	<view class="show_modal_mask" v-if="show_zitidian_tihuoma_qrcode == true" @tap="show_zitidian_tihuoma_qrcode = false"></view>
+	<view class="show_modal_pop" v-if="show_zitidian_tihuoma_qrcode == true">
+		<view style="background-color: #FFFFFF;width: 500rpx;height: 500rpx;">
+			<image :src="zitidian_tihuoma_qrcode" mode="widthFix" style="width: 400rpx;margin-left: 50rpx;margin-top: 50rpx;"></image>
+		</view>
+	</view>
+	
+	
+	
 	<view class="w100">
 			
 		<!-- 普通商品订单的商品列表 -->
@@ -53,8 +63,34 @@
 			<view class="p_all bg_white mt10 font_14" v-if="zitidian_order.zitidian_name">
 				<view class="df">
 					<view class="df_1 c6">
-					<view class="l_h20" style="font-weight: bold;color: #333;">{{zitidian_order.zitidian_name}}    <text style="margin-left: 10rpx;">{{zitidian_order.tihuoma}}</text> </view>
-					<view class="l_h20 mt5" style="font-size: 25rpx;" @tap="baidu_map_jump_btn">地址：{{zitidian_order.zitidian_address}}</view>
+						<view>
+							<view class="l_h20" style="font-weight: bold;color: #333;">提货码：<text style="margin-left: 10rpx;font-size: 40rpx;">{{zitidian_order.tihuoma}}</text></view>
+							
+						</view>
+						<view>
+							<view class="l_h20" style="font-weight: bold;color: #333;">提货点:</view><br/>
+							<image src="https://yanyubao.tseo.cn/Tpl/static/images/qrcode.png" 
+								mode="widthFix" 
+								style="width: 50rpx;height:50rpx;margin-top: -4rpx;margin-right: 20rpx;float: right;" 
+								@tap="show_zitidian_tihuoma_qrcode = true"></image>			
+							<view class="l_h20" style="font-weight: bold;color: #333;">{{zitidian_order.zitidian_name}} </view>
+						</view>
+						<view>
+							<image class="image_mobile_new" 
+								src="https://yanyubao.tseo.cn/Tpl/static/images/location_map_new.png" 
+								mode="widthFix" 
+								@tap="baidu_map_jump_btn"></image>			
+							<view class="l_h20 mt5" style="font-size: 25rpx;" 
+								@tap="baidu_map_jump_btn">{{zitidian_order.zitidian_address}}</view>
+						</view>
+						<view style="margin-top: 10rpx;">
+							<image class="image_mobile_new" 
+								src="https://yanyubao.tseo.cn/Tpl/static/images/location_mobile_new.png" 
+								mode="widthFix" 
+								@tap="call_mobile_new" ></image>
+							<view class="l_h20">自提点电话：<text>{{zitidian_order.zitidian_phone}}</text></view>
+							
+						</view>
 					</view>
 				</view>
 			</view>
@@ -409,6 +445,8 @@
 					zitidian_name:'',
 					zitidian_telephone:'',
 				},
+				zitidian_tihuoma_qrcode:'',
+				show_zitidian_tihuoma_qrcode:false,
 			}
 		},
 		
@@ -572,6 +610,7 @@
 							
 						if(orderData.order_option &&(orderData.order_option.zitidian_order)){
 							that.zitidian_order = JSON.parse(orderData.order_option.zitidian_order);
+							that.zitidian_tihuoma_qrcode = orderData.order_option.zitidian_tihuoma_qrcode;
 						}
 						console.log('zitidian_order',that.zitidian_order)
 						} else {
@@ -923,7 +962,11 @@
 						}
 					});
 				},
-				
+				call_mobile_new:function(){
+					var that = this;
+					
+					that.abotapi.call_h5browser_or_other_goto_url('tel:'+that.zitidian_order.zitidian_phone);
+				},
 				//确认收货
 				queren_shouhuo:function(){
 					
@@ -1260,7 +1303,27 @@
 		font-size: 50rpx;
 		margin-top: 2rpx;
 	}
-	
-	
+	.show_modal_mask{
+		background-color: #000;
+		opacity: 0.7;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 998;
+	}
+	.show_modal_pop{
+		position: fixed;
+		z-index: 998;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%,-50%);
+	}
+	.image_mobile_new{
+		width: 40rpx;
+		float: right;
+		margin-right: 24rpx;
+	}
 	
 </style>
