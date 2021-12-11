@@ -11,7 +11,7 @@
 						{{current_card_detail.brief}}
 					</view> -->
 					<view style="display: flex;margin-top: 20rpx;">
-						<image :src="current_card_detail.supplier_item.icon" style="width: 40rpx;height: 40rpx;"></image>
+						<image :src="current_card_detail.supplier_item.icon" style="width: 40rpx;height: 40rpx;border-radius: 50%;"></image>
 						<view style="margin-left: 20rpx;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;font-size: 28rpx;color:#C0C0C0;">{{current_card_detail.supplier_item.name}}</view>
 					</view>
 					
@@ -47,7 +47,7 @@
 					placeholder-style="color:#A9A9A9"
 					maxlength="70"
 					placeholder="请输入赠言" 
-					@blur="bindTextAreaBlur"
+					@input="bindTextAreaBlur"
 					v-model="tkinfotest"/>
 				</view>
 			</view>
@@ -68,7 +68,7 @@
 				<image :src="current_card_detail.supplier_item.card_share_big_image" mode="widthFix"></image>
 			</view>
 		</view>	
-		<view class="content_block" style="padding-top: 50rpx;">
+		<view class="content_block" style="padding-top: 60rpx;padding-bottom: 100rpx;">
 			<button type="default" @tap="go_to_gift_card_share"
 				class="gift_card_button_zengsong"
 				:style="{background:wxa_shop_nav_bg_color, color:wxa_shop_nav_font_color}">
@@ -423,9 +423,10 @@ export default {
 		
 		
 		bindTextAreaBlur: function (e) {
-			console.log(e.detail.value);
+			console.log('send_wish',e.detail.value);
 			
 			this.send_wish = e.detail.value;
+			
 			
 		},
 		
@@ -473,7 +474,7 @@ export default {
 			data001.cplid_list_str = cplid_list_str;
 		
 			data001.send_wish = that.send_wish;
-			
+			console.log('send_wish',data001.send_wish)
 
 			data001.get_type = that.checkbox_value_get_type;
 			data001.cpl_list = [];

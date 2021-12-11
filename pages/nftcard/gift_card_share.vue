@@ -11,7 +11,7 @@
 						{{current_card_detail.brief}}
 					</view> -->
 					<view style="display: flex;margin-top: 20rpx;">
-						<image :src="current_card_detail.supplier_item.icon" style="width: 40rpx;height: 40rpx;"></image>
+						<image :src="current_card_detail.supplier_item.icon" style="width: 40rpx;height: 40rpx;border-radius: 50%;"></image>
 						<view style="margin-left: 20rpx;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;font-size: 28rpx;color:#C0C0C0;">{{current_card_detail.supplier_item.name}}</view>
 					</view>
 					
@@ -52,7 +52,7 @@
 				
 				<view style="padding: 30rpx 0px 10px 0px">
 					<view style="color: #A9A9A9;">赠言</view>
-					<view style="font-size: 40rpx;padding: 30rpx;">
+					<view style="font-size: 40rpx;padding: 30rpx;word-wrap: break-word;">
 						 {{current_send_wish}}
 					</view>  
 				</view>
@@ -120,19 +120,15 @@
 				<view style="font-size: 30rpx; padding: 20rpx 10rpx;">
 					 {{current_card_item.createtime}}
 				</view> 				
-				
-				<view style="padding-top: 50rpx; color: #A9A9A9;">
-					<button class="gift_card_button_zengsong" 
-						:style="{background:wxa_shop_nav_bg_color}" 
-						@tap="receiver_get_card_cpl(cplid)">
-						领取卡牌
-					</button>
+				<view>
+					<image :src="current_card_detail.supplier_item.card_share_big_image" mode="widthFix"></image>
 				</view>
+				
 				
 			</view>
 		</block>
 		</view>
-		<view style="padding-top: 50rpx;">
+		<view style="padding-top: 60rpx;padding-bottom: 100rpx;" v-if="is_sender">
 				<!-- <button type="default"
 					class="gift_card_button_zengsong"
 					:style="{background:wxa_shop_nav_bg_color}">
@@ -158,6 +154,21 @@
 				</button>
 			<!-- #endif -->
 		</view>
+		
+		<view style="padding-top: 60rpx;padding-bottom: 100rpx;" v-else>
+			<view style="padding-top: 50rpx; color: #A9A9A9;">
+				<button class="gift_card_button_zengsong" 
+					:style="{background:wxa_shop_nav_bg_color}" 
+					@tap="receiver_get_card_cpl(cplid)">
+					领取卡牌
+				</button>
+			</view>
+		</view>
+		
+		
+		
+		
+		
 	</view>
 </template>
 
@@ -800,7 +811,7 @@ export default {
 	
 	.card_cpl_transfer{
 		border: 1rpx #999 solid;
-		width: 250rpx;
+		width: 260rpx;
 		height: 50rpx;
 		line-height: 50rpx;
 		text-align: center;
@@ -812,12 +823,7 @@ export default {
 	.card_cpl_gift{
 		padding: 20rpx 10rpx; 
 		font-size:40rpx;
-		overflow: hidden;
-		
-		display:-webkit-box;
-		-webkit-line-clamp:3;
-		-webkit-box-orient:vertical;
-		word-wrap: break-word;
+
 	}
 	.checkbox_receive{
 		background: #30c478;

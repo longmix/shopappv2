@@ -469,6 +469,18 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					</view>
 				</view>
 				
+				
+				<view class="show_modal_mask" v-if="show_nftcard_collection_certificate == true" 
+					@tap="show_nftcard_collection_certificate = false" style="z-index: 1001;"></view>
+				<view class="show_modal_pop" v-if="show_nftcard_collection_certificate == true"
+					style="z-index: 1001;">
+					<view class="" style="width: 700rpx;background-color: #FFFFFF;">
+						<image src="" mode=""></image>
+						<button>保存到相册</button>
+					</view>
+				</view>
+				
+				
 				<!-- 卡牌明细记录模态框 -->
 				<view class="show_modal_pop card_detail_showmodal_fenxiangjilv" 
 					v-if="showModal_liuzhuanjilv">
@@ -481,15 +493,15 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 									@click="showModal_liuzhuanjilv_zengsong=true">
 									
 									<view style="display: flex;">
-										<view class="card_detail_modal_kapaimingxi">ID：</view>
+										<view class="card_detail_modal_kapaimingxi">编号：</view>
 										<view class="card_detail_modal_kapai_value">{{card_publish_item.cplno}}</view>
 									</view>
 									<view style="display: flex;">
-										<view class="card_detail_modal_kapaimingxi">NO：</view>
+										<view class="card_detail_modal_kapaimingxi">序号：</view>
 										<view class="card_detail_modal_kapai_value">{{card_publish_item.cplseq}}</view>
 									</view>
 									<view style="display: flex;">
-										<view class="card_detail_modal_kapaimingxi">TT：</view>
+										<view class="card_detail_modal_kapaimingxi">日期：</view>
 										<view class="card_detail_modal_kapai_value">{{card_publish_item.updatetime_str}}</view>
 									</view>
 									<view style="display:none;">
@@ -497,14 +509,27 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 										<view class="card_detail_modal_kapai_value">{{card_publish_item.is_private_str}}</view>
 									</view>
 									
-									<view style="float: right;margin-top: -160rpx;">
-										<!-- 2021.08.20销毁  丢弃 -->
-										<view class="card_detail_showmodal_zengsong">
-											<image class="card_detail_showmodal_tupian"
-												src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xiaohui.png"
-												@tap="nftcard_discard(card_publish_item.cplid)"></image>
-										</view>
-											
+									
+									
+									<view style="display: flex;height: 100rpx;line-height: 100rpx;">
+										<!-- 2021.08.20销毁  丢弃  收藏证明 -->
+										
+											<view class="card_detail_showmodal_zengsong" style="display: flex;">
+												<image class="card_detail_showmodal_tupian"
+													src="https://yanyubao.tseo.cn/Tpl/static/nft_card/certification-64px.png"
+													@tap="nftcard_collection_certificate()"></image>
+											</view>
+											<view style="margin-top: 5rpx;margin-right: 10rpx;color: #2a2a2a;"
+												@tap="nftcard_collection_certificate(card_publish_item.cplid)">收藏证明</view>
+										
+											<view class="card_detail_showmodal_zengsong" style="display: flex;">
+												<image class="card_detail_showmodal_tupian"
+													src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xiaohui.png"
+													@tap="nftcard_discard(card_publish_item.cplid)"></image>	
+											</view>
+											<view style="margin-top: 5rpx;color: #2A2A2A;"
+												@tap="nftcard_discard(card_publish_item.cplid)">丢弃卡牌</view>
+										
 									</view>
 								</view>
 								
@@ -592,6 +617,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				current_sender_wish: null,
 				
 				openSettingBtnHidden:true,
+				
+				
+				show_nftcard_collection_certificate:false,//收藏证书模态框
 			};
 		},
 		onLoad: function(options) {
@@ -1386,7 +1414,14 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			},
 			//丢弃
 			nftcard_discard:function(cplid){				var that = this;								uni.showModal({					title: '',					content: '是否确认丢弃',					cancelText: '取消',					confirmText: '确认',					success: function (res){						if(res.confirm){							console.log('用户点击了确认');							that.__nftcard_gift_or_discard(cplid, 'discard');						} else if (res.cancel) {							console.log('用户点击取消');						}					}				})											},
-
+			nftcard_collection_certificate:function(){
+				var that = this;
+				
+				
+				
+				
+				that.show_nftcard_collection_certificate = true;
+			},
 			
 			__nftcard_gift_or_discard:function(cplid, data_type, wish='', mobile=''){
 				var that = this;

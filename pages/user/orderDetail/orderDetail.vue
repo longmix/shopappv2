@@ -50,9 +50,16 @@
 		
 		
 		<!-- 收货地址 -->
-	
-	
-			<view class="p_all bg_white mt10 font_14" v-if="orderData.realname">
+			<view class="p_all bg_white mt10 font_14" v-if="zitidian_order.zitidian_name">
+				<view class="df">
+					<view class="df_1 c6">
+					<view class="l_h20" style="font-weight: bold;color: #333;">{{zitidian_order.zitidian_name}}    <text style="margin-left: 10rpx;">{{zitidian_order.tihuoma}}</text> </view>
+					<view class="l_h20 mt5" style="font-size: 25rpx;" @tap="baidu_map_jump_btn">地址：{{zitidian_order.zitidian_address}}</view>
+					</view>
+				</view>
+			</view>
+			
+			<view class="p_all bg_white mt10 font_14" v-if="orderData.realname && zitidian_order.zitidian_name == ''">
 				<view class="df">
 					<view class="df_1 c6">
 					<view class="l_h20" style="font-weight: bold;color: #333;">{{orderData.realname}}    <text style="margin-left: 10rpx;">{{orderData.mobile}}</text> </view>
@@ -60,6 +67,7 @@
 					</view>
 				</view>
 			</view>
+			
 			
 			
 			
@@ -390,6 +398,17 @@
 				 */
 				
 				current_option:null,
+				
+				
+				
+				zitidian_order:{
+					latitude:'',
+					longitude:'',
+					tihuoma:'',
+					zitidian_address:'',
+					zitidian_name:'',
+					zitidian_telephone:'',
+				},
 			}
 		},
 		
@@ -452,6 +471,24 @@
 				console.log(this.input_autocomplete_Obj);
 			},
 			
+			baidu_map_jump_btn:function(){
+				
+				var that = this;
+				console.log('123456555',that.zitidian_order.latitude)
+				console.log('123456555',that.zitidian_order.longitude )
+				console.log('123456555',that.zitidian_order.zitidian_address)
+				console.log('123456555',that.zitidian_order.zitidian_name)
+				console.log('123456555',that.zitidian_order.zitidian_telephone)
+				uni.navigateTo({
+					url:'../../shopMap/shopMap?latitude=' + that.zitidian_order.latitude
+					 + '&longitude=' + that.zitidian_order.longitude 
+					 + '&address=' + that.zitidian_order.zitidian_address
+					 + '&name=' + that.zitidian_order.zitidian_name
+					 + '&telephone=' + that.zitidian_order.zitidian_telephone
+				})
+			},
+			
+			
 			callback_set_option: function (that, option_list){
 			    console.log('getShopOptionAndRefresh+++++:::', option_list)
 			
@@ -502,6 +539,7 @@
 			        success: function (res) {
 			          var code = res.data.code;
 					  var orderData = res.data.orderinfo;
+					  
 			          if (code == 1) {
 						  
 						if(orderData.order_option && (orderData.order_option.order_xianmai_shangdata)){
@@ -530,6 +568,12 @@
 						
 						
 						console.log('current_order_product_list ====>>>>>', that.current_order_product_list);
+						
+							
+						if(orderData.order_option &&(orderData.order_option.zitidian_order)){
+							that.zitidian_order = JSON.parse(orderData.order_option.zitidian_order);
+						}
+						console.log('zitidian_order',that.zitidian_order)
 						} else {
 						uni.showToast({
 							title: res.data.msg,
