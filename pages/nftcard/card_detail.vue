@@ -12,6 +12,9 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 
 		
 -->
+		
+		
+		
 		<view class="main_body" v-if="page_show_flag == 1">
 			<view :style="{width: card_bg_img_width+'rpx', height: card_bg_img_height+'rpx'}">
 				<!-- 背景模糊图片 -->
@@ -327,7 +330,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			
 		</view>
 		
-
+		
 		<!-- 悬浮 -->
 		<view class="card_detail_footer" v-if="page_show_flag == 1">
 			<!-- 线索按钮 -->
@@ -470,15 +473,16 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				</view>
 				
 				<!-- 收藏证明模态框 -->
-				<!-- <view class="show_modal_mask" v-if="show_nftcard_collection_certificate == true" 
+				<view class="show_modal_mask" v-if="show_nftcard_collection_certificate == true" 
 					@tap="show_nftcard_collection_certificate = false" style="z-index: 1001;"></view>
 				<view class="show_modal_pop" v-if="show_nftcard_collection_certificate == true"
 					style="z-index: 1001;">
-					<view class="" style="width: 700rpx;background-color: #FFFFFF;">
-						<image src="" mode=""></image>
-						<button @tap="poster_baocun">保存到相册</button>
+					<view class="" style="">
+						<image :src="current_nftcard_collection_prove.img_url" mode=""></image>
+						<button  @tap="poster_baocun" type="primary"
+						 :style="{background:wxa_shop_nav_bg_color}" style="color: #FFFFFF;margin-top: 20rpx;">保存到相册</button>
 					</view>
-				</view> -->
+				</view>
 				
 				
 				<!-- 卡牌明细记录模态框 -->
@@ -514,20 +518,20 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 									<view style="display: flex;height: 100rpx;line-height: 100rpx;">
 										<!-- 2021.08.20销毁  丢弃  收藏证明 -->
 										
-											<view class="card_detail_showmodal_zengsong" style="display: flex;">
-												<image class="card_detail_showmodal_tupian"
+											<view class="card_detail_showmodal_zengsong" style="display: flex;width: 70rpx;height: 70rpx;">
+												<image class="card_detail_showmodal_tupian" style="width: 40rpx;height: 40rpx;padding: 18rpx;padding-left: 20rpx;"
 													src="https://yanyubao.tseo.cn/Tpl/static/nft_card/certification-64px.png"
-													@tap="nftcard_collection_certificate()"></image>
+													@tap="nftcard_collection_certificate(card_publish_item.cplid)"></image>
 											</view>
-											<view style="margin-top: 5rpx;margin-right: 10rpx;color: #2a2a2a;"
+											<view class="card_detail_modal_kapai_value" style="margin-top: 5rpx;margin-right: 10rpx;"
 												@tap="nftcard_collection_certificate(card_publish_item.cplid)">收藏证明</view>
 										
-											<view class="card_detail_showmodal_zengsong" style="display: flex;">
-												<image class="card_detail_showmodal_tupian"
+											<view class="card_detail_showmodal_zengsong" style="display: flex;width: 70rpx;height: 70rpx;">
+												<image class="card_detail_showmodal_tupian" style="width: 40rpx;height: 40rpx;padding: 18rpx;padding-left: 20rpx;"
 													src="https://yanyubao.tseo.cn/Tpl/static/nft_card/xiaohui.png"
 													@tap="nftcard_discard(card_publish_item.cplid)"></image>	
 											</view>
-											<view style="margin-top: 5rpx;color: #2A2A2A;"
+											<view class="card_detail_modal_kapai_value" style="margin-top: 5rpx;" 
 												@tap="nftcard_discard(card_publish_item.cplid)">丢弃卡牌</view>
 										
 									</view>
@@ -539,6 +543,34 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					</view>
 					<view v-else class="card_detail_xiansuo">您还没有获取记录哦~</view>
 				</view>
+			</view>
+		</view>
+		
+		
+		
+		
+		<!-- 扫描收藏码进入弹窗 -->
+		<view class="show_modal_mask" v-if="show_collect_cert_nftcard == true" @tap="show_collect_cert_nftcard = false"></view>
+		<view class="show_modal_pop" v-if="show_collect_cert_nftcard == true">
+			<view class="" style="width: 600rpx;background-color: #FFFFFF;padding: 20rpx;">
+				<view class="" style="border: 1rpx solid #666666;">
+					<view style="display: flex;">
+						<view class="" style="padding: 20rpx;">
+							<view style="display: flex;">持卡人：<view class="chikaren_cert" style="font-weight: bold;font-size: 40rpx;">{{current_cert_chikaren_info.nickname}}</view></view>
+
+							<view>持卡人电话：<text style="font-weight: bold;">{{current_cert_chikaren_info.mobile_str}}</text></view>
+							
+							<view style="display: flex;">所属卡牌：<view class="chikaren_cert">{{current_cert_chikaren_info.card_name}}</view></view>							
+
+							<view>序号：#{{current_cert_chikaren_info.cplseq}} {{current_cert_chikaren_info.cplno}}</view>						
+							<view style="display: flex;">发行商:<view class="chikaren_cert">{{current_cert_chikaren_info.name}}</view></view>
+							<view>获取时间：{{current_cert_chikaren_info.getTime}}</view>
+							
+						</view>
+						
+					</view>
+				</view>
+				
 			</view>
 		</view>
 
@@ -620,6 +652,10 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				
 				show_nftcard_collection_certificate:false,//收藏证书模态框
+				
+				current_nftcard_collection_prove:null,
+				show_collect_cert_nftcard:false,
+				current_cert_chikaren_info:null,
 			};
 		},
 		onLoad: function(options) {
@@ -735,6 +771,38 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				
 				return;
+				
+				
+			}
+			else if(options.scene && (options.scene.indexOf('cert_') != -1) ){
+				
+				console.log('通过小程序码扫描进入（持有证书小程序码）====>>>>>');
+				var temp001 = options.scene.replace('cert_', '');
+				console.log('temp001',options.scene)
+				var tt002 = temp001.split('_');
+				
+				if(tt002 && (tt002.length >= 2) ){
+					
+					options.cardid = tt002[0];
+					
+					var cplid = tt002[1];
+					
+					//
+				}
+				
+				
+				
+				console.log('通过小程序码扫描进入（持有证书小程序码），卡牌ID====>>>>>'+options.cardid);
+				console.log('通过小程序码扫描进入（持有证书小程序码），卡牌ID====>>>>>'+cplid);
+				
+				this.current_cardid = options.cardid;
+				
+				//
+				this.__handle_cert_get_card(cplid)
+				
+				
+				
+				//return;
 				
 				
 			}
@@ -1414,13 +1482,79 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 			},
 			//丢弃
 			nftcard_discard:function(cplid){				var that = this;								uni.showModal({					title: '',					content: '是否确认丢弃',					cancelText: '取消',					confirmText: '确认',					success: function (res){						if(res.confirm){							console.log('用户点击了确认');							that.__nftcard_gift_or_discard(cplid, 'discard');						} else if (res.cancel) {							console.log('用户点击取消');						}					}				})											},
-			nftcard_collection_certificate:function(){
+			nftcard_collection_certificate:function(cplid){
 				var that = this;
 				
-				
-				
-				
+			
 				that.show_nftcard_collection_certificate = true;
+				
+				//======= 判断用户是否登录 ============
+				
+				var last_url = '/pages/nftcard/card_detail?'+ that.current_params_str;
+				
+				var userInfo = that.abotapi.get_user_info();
+				if (!userInfo) {
+					that.abotapi.goto_user_login(last_url);
+				
+					return;
+				}
+				//============= End ================
+				
+					
+				var post_data = {
+					sellerid:that.abotapi.globalData.default_sellerid,
+					packageid:that.current_packageid,
+					cardid:that.current_cardid,
+					data_type:'card_publish',
+					cplid:cplid,
+				};
+				
+				
+				var userInfo = that.abotapi.get_user_info();
+				if(userInfo){
+					post_data.userid = userInfo.userid;
+					post_data.checkstr = userInfo.checkstr;
+				}
+					
+					
+				
+				that.abotapi.abotRequest({
+					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_nftcard_poster',
+					method: 'post',
+					data:post_data,
+					success: function (res) {
+						
+						if(res.data.code != 1){
+							uni.showToast({
+								title:'没数据',
+								duration: 2000,
+							});
+							
+							return;
+						}
+				
+						that.current_nftcard_collection_prove = res.data;
+						
+						console.log('current_nftcard_poster ===>>> ', that.current_nftcard_collection_prove);
+					
+					
+					
+								
+						
+					},
+					fail: function (e) {
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+					},
+				});
+			
+		
+				
+				
+				
+				
 			},
 			
 			//保存到相册
@@ -1429,7 +1563,7 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 				
 				uni.downloadFile({
-					url:that.current_poster_modal.img_url,
+					url:that.current_nftcard_collection_prove.img_url,
 							
 					success: (res) =>{
 						console.log('uni.downloadFile======>>>>', res);
@@ -1824,7 +1958,57 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 					
 					
 			},
+			__handle_cert_get_card:function(cplid){
+				
+				var that = this;
+				
+				var cardid = that.current_cardid;
+				
+				var last_url = '/pages/nftcard/card_detail?' + that.current_params_str;
+				var userInfo = that.abotapi.get_user_info();
+				
+				if(!userInfo){
+					that.abotapi.goto_user_login(last_url);
+					
+					return;
+				}
 			
+				
+				console.log('cplid',cplid)	
+				var post_data = {
+					sellerid:that.abotapi.globalData.default_sellerid,
+					userid:userInfo.userid,
+					checkstr: userInfo.checkstr,
+					cardid:that.current_cardid,
+					cplid:cplid,
+				}
+				
+				that.abotapi.abotRequest({
+					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/get_chikaren_info',
+					method: 'post',
+					data: post_data,
+					success: function (res) {
+						console.log('')
+						
+						that.current_cert_chikaren_info = res.data.data;
+						
+						//跳转到卡牌详情页
+						if(res.data.code == 0){
+			
+							
+							that.show_collect_cert_nftcard = true;
+											
+							
+						}
+						else{
+							that.abotapi.call_h5browser_or_other_goto_url('/pages/index/index');
+						}
+						
+						
+						
+					} 
+				})			
+			},
 			//发圈举报
 			nftCardJubao:function(e){
 				console.log('e=======', e)
@@ -2283,5 +2467,10 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 		height: 50rpx;
 		line-height: 50rpx;
 	}
-	
+	.chikaren_cert{
+		width: 360rpx;
+		overflow: hidden;
+		text-overflow:ellipsis;
+		white-space: nowrap;
+	}
 </style>

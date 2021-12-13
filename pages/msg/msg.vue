@@ -8,7 +8,7 @@
 		</view>
 		<view class="chat-list" v-else>
 			<view class="chat" v-for="(chat,index) in latestMsgList" :key="index" v-if="chat.chat_type == 1">
-				<view class="row" @tap888="toChat(chat)">
+				<view class="row" @tap="toChat(chat)">
 					<view class="left">
 						<image v-if="!chat.from_person_detail" src="http://yanyubao.tseo.cn/Tpl/static/images/VIP.png"></image>
 						<image v-if="chat.from_person_detail" :src="chat.from_person_detail.headimgurl"></image>
@@ -217,7 +217,7 @@
 				
 				var userInfo = that.abotapi.get_user_info();
 				
-				uni.request({
+				that.abotapi.abotRequest({
 				     url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ChatData/chat_history',
 				     data: {
 						action: 'latest_list',
@@ -226,10 +226,7 @@
 						sellerid: that.abotapi.globalData.default_sellerid, //'fmXJPaVea',
 						chat_type: '0,4,1', //0普通，4群聊，1系统
 				     },
-				     header: {
-				       "Content-Type": "application/x-www-form-urlencoded"
-				     },
-				     method: "POST",
+				    
 				     success: function (res) {
 				       console.log('ddd', res);
 					       
@@ -240,13 +237,13 @@
 							
 							that.latestMsgList_count = that.latestMsgList.length;
 							
-						 } else {
-							 that.latestMsgList = [];
+						}else {
+							that.latestMsgList = [];
 							 
-							 that.latestMsgList_count = 0;
-						 }
+							that.latestMsgList_count = 0;
+						}
 						 
-						 uni.setStorageSync('latestMsgList_cache',that.latestMsgList);
+						uni.setStorageSync('latestMsgList_cache',that.latestMsgList);
 						 
 				     }
 				   })
@@ -257,7 +254,11 @@
 				var url = 'chat/chat?type=' + chat.chat_type;
 				if(chat.chat_type == 0){
 					url = url + '&userid=' + chat.from_person_detail.userid + '&name=' + chat.from_person_detail.nickname;					
-				} else {
+					
+				}else if(chat.chat_type == 1){
+					url = url +'&userid=' +chat.from_person_detail.userid;
+				}
+				 else {
 					url = url + '&groupid=' + chat.groupid;
 				}
 						

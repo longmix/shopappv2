@@ -835,8 +835,8 @@
 					   action: 'add',
 				       sellerid: that.abotapi.globalData.default_sellerid,
 					   chat_msg: content,
-					   from: '11111'
-				     }
+					   from: 'shopappv2'
+					}
 				
 				if(!that.groupid){
 					data_params.userid01 = userInfo.userid;
@@ -848,18 +848,14 @@
 					data_params.chat_type = 4;
 				}
 				
+				// 发送消息
+				that.screenMsg(msg);
 				
 				
-				
-				
-				
-				uni.request({
+				that.abotapi.abotRequest({
 				     url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ChatData/chat_history',
 				     data:data_params,
-				     header: {
-				       "Content-Type": "application/x-www-form-urlencoded"
-				     },
-				     method: "POST",
+				    
 				     success: function (res) {
 				       console.log('chat_history=====add', res);
 				      
@@ -870,8 +866,7 @@
 							icon: 'none'
 						  })
 					  }else{
-						  // 发送消息
-						  that.screenMsg(msg);
+						
 					  }
 					 
 					  
