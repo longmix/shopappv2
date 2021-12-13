@@ -44,18 +44,18 @@
         "iconPath": "static/img/tabBar/home.png",
         "selectedIconPath": "static/img/tabBar/home-on.png",
         "text": "首页"
-      },      
+      },
+      {
+        "pagePath": "pages/category/index2",
+        "iconPath": "static/img/tabBar/category.png",
+        "selectedIconPath": "static/img/tabBar/category-on.png",
+        "text": "分类"
+      },  
       {
         "pagePath": "pages/shopList/shopList",
         "iconPath": "static/img/tabBar/category.png",
         "selectedIconPath": "static/img/tabBar/category-on.png",
         "text": "附近"
-      },
-      {
-        "pagePath": "cms/discover/discover",
-        "iconPath": "static/img/tabBar/imglist.png",
-        "selectedIconPath": "static/img/tabBar/imglist-on.png",
-        "text": "随拍"
       },
       {
         "pagePath": "pages/tabbar/user",

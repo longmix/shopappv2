@@ -825,10 +825,12 @@
 										
 										
 										
-									} else {
-										uni.showToast({
-											title: res.data.msg,
-											duration: 2000
+									} 
+									else {
+										uni.showModal({
+											title: '提示',
+											content: res.data.msg,
+											showCancel: false,
 										});
 									}
 								},

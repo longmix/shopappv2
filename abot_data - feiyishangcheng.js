@@ -13,7 +13,7 @@ const globalData = {
 		xiaochengxu_account: 'gh_9ce57f06449f',				//微信小程序的账号
 		weixin_open_platform_appid: '',	//微信开放平台中登记的APP对应的appid（务必与manifest中的配置一致）
 		
-		//卡扑小程序，确保  xiaochengxu_appid == wxd4ab638ad39a3fe4， xianmai_shang_list_switch_to_supplier_list == 1
+		//小程序，确保  xiaochengxu_appid == wxd4ab638ad39a3fe4， xianmai_shang_list_switch_to_supplier_list == 1
 		default_shopname: '云阳礼好',    
 		default_sellerid: 'fzzNPkaVg',
 		default_copyright_text:'云阳礼好 @ 版权所有',
