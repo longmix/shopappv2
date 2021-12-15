@@ -1,0 +1,78 @@
+{
+  "extEnable": true,
+  "extAppid": "wxd4ab638ad39a3fe4",
+  "directCommit": true,
+  "ext": {
+    "name": "wechat",
+    "attr": {
+      "host": "open.weixin.qq.com",
+      "users": [
+        "user_1",
+        "user_2"
+      ]
+    },
+    "xiaochengxu_appid": "wx1a6eb6e5b95d488a",
+    "force_sellerid_flag": 1,
+    "force_sellerid_value": "fzzNPkaVg",  
+    "shop_name": "云阳礼好",
+    "version_number": "Ver 1.0.5 Build 207",
+    "navigationBarBackgroundColor_fixed": 1,
+    "navigationBar_font_color":"#ffffff",
+    "navigationBar_bg_color":"#2d96ff",
+    "kefu_telephone": "",
+    "kefu_qq": "",
+    "kefu_website": "",
+    "kefu_gongzhonghao": "",
+    "default_copyright_text": "云阳礼好 @ 技术支持"
+  },
+  "extPages": {
+    "pages/publish/publish_list": {
+      "navigationBarTitleText": "分类信息"
+    },
+    "pages/tabbar/user": {
+      "navigationBarTitleText": "个人中心"
+    }
+  },
+  "tabBar": {
+    "color": "#515151",
+    "selectedColor": "#d81e06",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "static/img/tabBar/home.png",
+        "selectedIconPath": "static/img/tabBar/home-on.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/category/category",
+        "iconPath": "static/img/tabBar/category.png",
+        "selectedIconPath": "static/img/tabBar/category-on.png",
+        "text": "商品分类"
+      },
+      {
+        "pagePath": "pages/shopList/shopList",
+        "iconPath": "static/img/tabBar/shang.png",
+        "selectedIconPath": "static/img/tabBar/shang-on.png",
+        "text": "本地生活"
+      },
+      {
+        "pagePath": "pages/tabbar/user",
+        "iconPath": "static/img/tabBar/user.png",
+        "selectedIconPath": "static/img/tabBar/user-on.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#2d96ff",
+    "navigationBarTitleText": "云阳礼好",
+    "navigationBarTextStyle": "white"
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "downloadFile": 10000
+  }
+}
