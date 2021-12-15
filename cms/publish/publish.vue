@@ -138,7 +138,7 @@
 				}
 				
 			}
-			
+			console.log('123456789',options)
 			if (options.xianmai_shangid){
 				this.xianmai_shangid = options.xianmai_shangid
 				//授权头像的参数拼接
@@ -330,7 +330,7 @@
 			__goto_homepage:function()  {
 				if(this.page_not_in_tabbar){
 					uni.navigateTo({
-						url: '/cms/discover/discover?display_type=my',
+						url: '/cms/discover/discover?display_type=my' + '&xianmai_shangid=' +this.xianmai_shangid,
 					})
 				}
 				else{
@@ -423,7 +423,7 @@
 						var faquanid = res.data.faquanid
 							
 						that.faquanid = faquanid;
-												
+											
 						if (that.publishtype == "image") {
 							//发布图片
 							console.log('1111111111111111111111111111111111111',that.faquanid);
@@ -441,6 +441,7 @@
 							}
 							console.log('1111111111111111111111111111111111111',that.imgList);				
 							that.upLoadImg(0);
+						
 												
 						} 
 						else if(that.publishtype == "video") {

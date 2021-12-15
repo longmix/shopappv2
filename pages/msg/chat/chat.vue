@@ -3,45 +3,76 @@
 		<view class="content" @touchstart="hideEmoji">
 			<scroll-view class="msg-list" scroll-y="true" :scroll-with-animation="scrollAnimation" :scroll-top="scrollTop" :scroll-into-view="scrollToView">
 				<view class="row" v-for="(row,index) in my_msgList" :key="index" :id="'msg'+row.id">
-					<!-- 自己发出的消息 -->
-					<view class="my" v-if="row.uid==myuid">
-						<view class="left">
-							<view v-if="row.type=='text'" class="bubble">
-								<rich-text :nodes="row.msg.content.text"></rich-text>
+					<!-- 系统消息 -->
+					<block v-if="row.type == 'system'">
+						<view class="system">
+							<!-- 文字消息 -->
+							<view v-if="row.msg.type == 'text'" class="bubble">{{ row.msg.content.text }}</view>
+							<!-- 领取红包消息 -->
+							<view v-if="row.msg.type == 'redEnvelope'" class="red-envelope">
+								<image src="/static/img/red-envelope-chat.png"></image>
+								{{ row.msg.content.text }}
 							</view>
-							<view v-if="row.type=='voice'" class="bubble voice" @tap="playVoice(row)" :class="playMsgid == row.id?'play':''">
-								<view class="length">{{row.msg.length}}</view>
-								<view class="icon my-voice"></view>
+							<!-- 产品信息 -->
+							<view v-if="row.msg.type=='product'" class="product">
+								<image src="https://img.alicdn.com/imgextra/i1/1022655798/O1CN014niH5s1shWtdza5fQ_!!1022655798.jpg_430x430q90.jpg"></image>
+								<view class="info">
+									安卓 产品 优化 承接各种手机app应用需求 定制化服务
+								</view>
+								<view class="price">
+									$238.00 <text>$526.00</text>
+								</view>
+								<button size="mini">发送给TA</button>
 							</view>
-							<view v-if="row.type=='img'" class="bubble img" @tap="showPic(row)">
-								<image :src="row.msg.content.text" :style="{'width': row.msg.content.w+'px','height': row.msg.content.h+'px'}"></image>
-							</view>
-						</view>
-						<view class="right">
-							<image :src="row.face"></image>
-						</view>
-					</view>
-					<!-- 别人发出的消息 -->
-					<view class="other" v-if="row.uid!=myuid">
-						<view class="left">
-							<image :src="row.face"></image>
-						</view>
-						<view class="right">
-							<view class="username">
-								<view class="name">{{row.username}}</view> <view class="time">{{row.time}}</view>
-							</view>
-							<view v-if="row.type=='text'" class="bubble">
-								<rich-text :nodes="row.msg.content.text"></rich-text>
-							</view>
-							<view v-if="row.type=='voice'" class="bubble voice" @tap="playVoice(row)" :class="playMsgid == row.id?'play':''">
-								<view class="icon other-voice"></view>
-								<view class="length">{{row.msg.length}}</view>
-							</view>
-							<view v-if="row.type=='img'" class="bubble img" @tap="showPic(row)">
-								<image :src="row.msg.content.text" :style="{'width': row.msg.content.w+'px','height': row.msg.content.h+'px'}"></image>
+								
+							<!-- 会话时间 -->
+							<view v-if="row.msg.type=='time'" class="time">
+								{{row.msg.content.text}}
 							</view>
 						</view>
-					</view>
+					</block>
+					
+					<block v-if="row.type == 'user'">
+						<!-- 自己发出的消息 -->
+						<view class="my" v-if="row.uid==myuid">
+							<view class="left">
+								<view v-if="row.msg.type=='text'" class="bubble">
+									<rich-text :nodes="row.msg.content.text"></rich-text>
+								</view>
+								<view v-if="row.msg.type=='voice'" class="bubble voice" @tap="playVoice(row)" :class="playMsgid == row.id?'play':''">
+									<view class="length">{{row.msg.length}}</view>
+									<view class="icon my-voice"></view>
+								</view>
+								<view v-if="row.msg.type=='img'" class="bubble img" @tap="showPic(row)">
+									<image :src="row.msg.content.text" :style="{'width': row.msg.content.w+'px','height': row.msg.content.h+'px'}"></image>
+								</view>
+							</view>
+							<view class="right">
+								<image :src="row.face"></image>
+							</view>
+						</view>
+						<!-- 别人发出的消息 -->
+						<view class="other" v-if="row.uid!=myuid">
+							<view class="left">
+								<image :src="row.face"></image>
+							</view>
+							<view class="right">
+								<view class="username">
+									<view class="name">{{row.username}}</view> <view class="time">{{row.time}}</view>
+								</view>
+								<view v-if="row.msg.type=='text'" class="bubble">
+									<rich-text :nodes="row.msg.content.text"></rich-text>
+								</view>
+								<view v-if="row.msg.type=='voice'" class="bubble voice" @tap="playVoice(row)" :class="playMsgid == row.id?'play':''">
+									<view class="icon other-voice"></view>
+									<view class="length">{{row.msg.length}}</view>
+								</view>
+								<view v-if="row.msg.type=='img'" class="bubble img" @tap="showPic(row)">
+									<image :src="row.msg.content.text" :style="{'width': row.msg.content.w+'px','height': row.msg.content.h+'px'}"></image>
+								</view>
+							</view>
+						</view>
+					</block>
 				</view>
 			</scroll-view>
 		</view>
@@ -152,7 +183,7 @@
 		onLoad(option) {
 			var that = this;
 			var userInfo = that.abotapi.get_user_info();
-			
+			console.log('options',option)
 			this.abotapi.set_option_list_str(this, this.abotapi.getColor());
 			// this.getMsgList();
 			//语音自然播放结束
@@ -172,6 +203,7 @@
 			
 			this.myuid = userInfo.userid;
 			this.userid = option.userid;
+			this.sellerid = option.sellerid;
 			this.chat_type = option.type;
 			
 			uni.setNavigationBarTitle({
@@ -225,10 +257,15 @@
 			var userInfo = that.abotapi.get_user_info();
 			if(that.userid){
 				var cache_msglist = uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+that.userid);			
+				console.log('cache_msglist========2',cache_msglist)
 			}
-			
+			if(that.sellerid){
+				var cache_msglist = uni.getStorageSync('cache_msglist_sellerid_');	
+				console.log('cache_msglist========4',cache_msglist)
+			}
 			if(that.groupid){
 				var cache_msglist = uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_groupid_'+that.groupid);
+				console.log('cache_msglist========3',cache_msglist)
 			}
 			
 			console.log('cache_msglist========0',cache_msglist)
@@ -379,6 +416,10 @@
 				
 				
 				this.my_msgList = list;
+				
+				
+				console.log('my_msgList',this.my_msgList)
+				
 				// 滚动到底部
 				this.$nextTick(function() {
 					this.scrollTop = 9999;
@@ -409,16 +450,29 @@
 				if(msg.uid!=this.myuid){
 					uni.vibrateLong();
 				}
-				switch (msg.type){
-					case 'text':
-						this.addTextMsg(msg);
-						break;
-					case 'voice':
-						this.addVoiceMsg(msg);
-						break;
-					case 'img':
-						this.addImgMsg(msg);
-						break;
+				if (msg.type == 'system') {
+					// 系统消息
+					switch (msg.msg.type) {
+						case 'text':
+							this.addSystemTextMsg(msg);
+							break;
+						case 'redEnvelope':
+							this.addSystemRedEnvelopeMsg(msg);
+							break;
+					}
+				} else if (msg.type == 'user') {
+				
+					switch (msg.msg.type){
+						case 'text':
+							this.addTextMsg(msg);
+							break;
+						case 'voice':
+							this.addVoiceMsg(msg);
+							break;
+						case 'img':
+							this.addImgMsg(msg);
+							break;
+					}
 				}
 				this.$nextTick(function() {
 					this.scrollToView = 'msg'+msg.id
@@ -554,7 +608,7 @@
 				// 			});
 				// 		}
 				// 	}
-				// });
+				// }); 
 			},
 			// 发送消息
 			sendMsg(content,type){
@@ -567,19 +621,21 @@
 				
 				
 				lastid++;
-				let msg = {
-							id:lastid,
-							uid:userInfo.userid,
-							username:userAcountInfo.nickname,
-							face:userAcountInfo.headimgurl,
-							time:nowDate.getHours()+":"+nowDate.getMinutes(),
-							type:type,
-							msg:{
-								content: content,
-								type: type
-							},
-							
-						 };
+				let msg = { 
+					id:lastid,
+					uid:userInfo.userid,
+					username:userAcountInfo.nickname,
+					face:userAcountInfo.headimgurl,
+					time:nowDate.getHours()+":"+nowDate.getMinutes(),
+					type:'user', 
+					msg:{
+						content: content,
+						type: type
+					},
+					
+				 };
+						 
+				console.log('msg',msg)
 				// this.screenMsg(msg);
 				this.send_text_to_service(msg, type)
 				// 定时器模拟对方回复,三秒
@@ -594,6 +650,7 @@
 			// 处理文字消息
 			addTextMsg(msg){
 				var userInfo = this.abotapi.get_user_info();
+				console.log('1111111msg',msg)
 				this.my_msgList.push(msg);
 				
 				if(this.chat_type==0){
@@ -626,6 +683,17 @@
 					console.log('test===================1',uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_groupid_'+this.userid))
 				}
 			},
+			// 添加系统文字消息到列表
+			addSystemTextMsg(msg) {
+				var that = this;
+				
+				var userInfo = that.abotapi.get_user_info();
+				
+				that.my_msgList.push(msg);
+				
+				
+			},
+			
 			// 预览图片
 			showPic(row){
 				uni.previewImage({

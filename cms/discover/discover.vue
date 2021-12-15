@@ -325,7 +325,7 @@
 			}
 
 
-
+			console.log('userInfo========1', this.is_my_discover)
 
 			var userInfo = this.abotapi.get_user_info();
 			console.log('userInfo========2', userInfo)
@@ -360,13 +360,6 @@
 
 
 			})
-
-
-
-
-
-
-
 
 
 
@@ -956,7 +949,8 @@
 
 				//帖子列表
 				var post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/FaquanData/get_faquan_list';
-
+				
+				console.log('post_url0',this.is_my_discover)
 				if (this.is_my_discover) {
 					//我的发布
 					post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/FaquanData/get_faquan_list_by_userid';
@@ -999,8 +993,6 @@
 					}
 				}
 
-
-
 				var post_data = {
 					faquan_wxa_appid: this.abotapi.globalData.xiaochengxu_appid,
 					sellerid: this.abotapi.get_sellerid(),
@@ -1016,8 +1008,9 @@
 				}
 
 				if (this.xianmai_shangid) {
-					post_data.extend_id = this.xianmai_shangid;
+					//post_data.extend_id = this.xianmai_shangid;
 					post_data.faquan_type = 1;
+					post_data.status = 'all';
 				}
 
 				this.abotapi.abotRequest({
@@ -1195,7 +1188,7 @@
 
 			//点击收藏、发布、点赞按钮
 			my_publish_and_collect: function(e) {
-
+				console.log('post_url1',this.is_my_discover)
 				console.log('eeeee', e);
 				
 				if (e.currentTarget.dataset.type == 'my_publish') {
@@ -1266,7 +1259,7 @@
 
 					
 				}
-				
+				console.log('post_url2',this.is_my_discover)
 				
 				//修改标题 为  最近更新  或其他
 				/*uni.setNavigationBarTitle({

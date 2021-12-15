@@ -189,7 +189,7 @@
 					class="font_12 fl_r mr_5 btn_min mg_l" 
 					@click="pingjia" 
 					:data-orderid='orderData.orderid' 
-					:data-xianmaishangid='orderData.order_option.hahading_order_xianmai_shangid'>立即评价</view>
+					:data-xianmaishangid='orderData.xianmai_shangid'>立即评价</view>
 				<view v-if="orderData.status_str=='待收货' && xianmai_shang_order_remark" 
 					class="font_12 fl_r mr_5 btn_min mg_l" 
 					@click="go_to_page" 
@@ -204,7 +204,7 @@
 					class="font_12 fl_r mr_5 btn_min mg_l" 
 					@click="pingjia" 
 					:data-orderid='orderData.orderid' 
-					:data-xianmaishangid='orderData.order_option.hahading_order_xianmai_shangid'>立即评价</view>
+					:data-xianmaishangid='orderData.xianmai_shangid'>立即评价</view>
 				<view v-if="xianmai_shang_order_remark" 
 					class="font_12 fl_r mr_5 btn_min mg_l" 
 					@click="go_to_page" 
@@ -729,7 +729,7 @@
 					var faquanid = e.currentTarget.dataset.faquanid;
 					
 					uni.navigateTo({
-						url: '/cms/discover/discover?faquanid=' + faquanid +'&xianmai_shangid=' + this.orderData.order_option.hahading_order_xianmai_shangid,
+						url: '/cms/discover/discover?faquanid=' + faquanid +'&xianmai_shangid=' + this.orderData.xianmai_shangid,
 					})
 					//#ifdef MP-WEIXIN
 					uni.switchTab({
