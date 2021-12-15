@@ -175,7 +175,7 @@
 					@confirm="submitRemark" :data-imgid="wz_text.id" v-model="inputValue" type="text"></input> <!--  -->
 		        
 		        <image class="comment_img comment_right_img" src="../../static/img/help/comment.png" @tap='toReamrkList'  ></image><!--  @click="get_input_focus()" -->
-		        <view class="comment_num" :hidden="!comment_num">{{comment_num}}</view>
+		        <view class="comment_num_point" :hidden="!comment_num">{{comment_num}}</view>
 		        
 				
 		        <image class="comment_img comment_right_img"  :style="comment_num ? 'margin-left:0':''"
@@ -1617,15 +1617,18 @@
 	  height:40rpx;
 	}
 	
-	.comment_num{
+	.comment_num_point{
 	  font-size:20rpx;
 	  background-color:#f00;
 	  height:30rpx;
+	  width:30rpx;
+	  line-height: 30rpx;
 	  color:#fff;
-	  border-radius:50rpx;
-	  padding:0 10rpx;
+	  border-radius:15rpx;
+	  padding:0 0rpx;
 	  left:-18rpx;
 	  position:relative;
+	  text-align: center;
 	
 	}
 	.article_bottom{

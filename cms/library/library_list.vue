@@ -61,7 +61,7 @@
 				//uni.set_option_list_str(null, app.getColor());
 				
 				this.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/ProductAlbumData/get_product_album_list',
+					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ProductAlbumData/get_product_album_list',
 					method: 'post',
 					data: {
 						sellerid: that.abotapi.get_sellerid(),
@@ -155,7 +155,7 @@
 			onReachBottom: function () {
 			    var that = this;
 			    this.abotapi.abotRequest({
-			        url: that.abotapi.globalData.yanyubao_server_url + 'index.php/openapi/ProductAlbumData/get_product_album_list',
+			        url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ProductAlbumData/get_product_album_list',
 			        method: 'post',
 			        data: {
 						sellerid: that.abotapi.get_sellerid(),

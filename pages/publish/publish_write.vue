@@ -1276,6 +1276,7 @@
 	}
 	.uni-textarea002{
 		background: #FFFFFF;
+		height: 430rpx;
 	}
 	
 	.uni-textarea002 textarea{

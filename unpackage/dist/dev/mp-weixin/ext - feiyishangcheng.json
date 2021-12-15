@@ -1,6 +1,6 @@
 {
   "extEnable": true,
-  "extAppid": "wxd4ab638ad39a3fe4",
+  "extAppid": "wx1a6eb6e5b95d488a",
   "directCommit": true,
   "ext": {
     "name": "wechat",
@@ -74,5 +74,11 @@
   "networkTimeout": {
     "request": 10000,
     "downloadFile": 10000
+  },
+  "plugins": {
+    "live-player-plugin": {
+        "version": "1.3.2",
+        "provider": "wx2b03c6e691cd7370" 
+    }
   }
 }
