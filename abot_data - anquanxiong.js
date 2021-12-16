@@ -4,12 +4,12 @@ const globalData = {
 		o2owaimai_server_url: 'https://app.tseo.cn/o2owaimai/index.php',
 		socket_server: 'https://socketio.tseo.cn',
 		
-		version_number:'Ver 1.7.8 Build 256',
+		version_number:'Ver 1.7.9 Build 258',
 		version_code:256,
 		
 		force_sellerid:1,
 	
-		xiaochengxu_appid: 'wx6576af86ad5d4804',			//微信小程序的appid
+		xiaochengxu_appid: 'wx00cf4388d2842342',			//微信小程序的appid
 		xiaochengxu_account: 'gh_74c59a54559c',				//微信小程序的账号
 		weixin_open_platform_appid: 'wx6939a00416c5d3aa--',	//微信开放平台中登记的APP对应的appid（务必与manifest中的配置一致）
 		
