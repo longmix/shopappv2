@@ -127,7 +127,7 @@
 		onLoad: function (options) {
 			//1、获取选项
 			var last_url = '/cms/publish/publish'; //跳转授权头像之后再跳转的页面
-			
+			console.log('options',options)
 			if (options.publishtype) {
 				this.publishtype = options.publishtype;
 				//授权头像的参数拼接
@@ -159,7 +159,9 @@
 			  }
 			}
 			
-			
+			if(options.productid){
+				this.productid = options.productid;
+			}
 			
 			
 			
@@ -302,6 +304,7 @@
 						
 						// 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
 						var imgList = res.tempFilePaths;
+						console.log('imgList',imgList)
 						
 						that.imgList = imgList;
 					}
@@ -404,6 +407,11 @@
 					data_params.faquan_type = 1;
 					data_params.extend_id = that.xianmai_shangid;
 					data_params.xianmai_shang_orderid = that.orderid;
+				}
+				
+				if(that.productid){
+					data_params.productid = that.productid;
+					data_params.faquan_type = 2;
 				}
 						
 				that.abotapi.abotRequest({
@@ -553,18 +561,18 @@
 			},
 			  
 			upLoadImg: function (i) {
-			      console.log('i=======', i)
-				  var userInfo = this.abotapi.get_user_info();
-			      var that = this;
-			      uni.showLoading({
-			        title: '正在上传第' + (i + 1) + '张',
-			      })
-
-			      uni.uploadFile({
-			        url: that.abotapi.globalData.yanyubao_server_url + '/openapi/FaquanData/add_faquan_video_or_img',
-			        filePath: that.imgList[i],
+			    console.log('i=======', i)
+				var userInfo = this.abotapi.get_user_info();
+			    var that = this;
+			    uni.showLoading({
+					title: '正在上传第' + (i + 1) + '张',
+				})
+		
+		      uni.uploadFile({
+				url: that.abotapi.globalData.yanyubao_server_url + '/openapi/FaquanData/add_faquan_video_or_img',
+				filePath: that.imgList[i],
 					fileType:'image',
-			        header: {
+					header: {
 			         /*如果加了这里的代码，在H5中上传图片就无效了
 					  "Content-Type": "multipart/form-data",
 			          'elem': '#up-image',
@@ -574,14 +582,12 @@
 			        name: "image",
 					
 			        formData: {
-			          sellerid: that.abotapi.globalData.default_sellerid,
-			          
-					  userid: userInfo.userid,
-			          checkstr:userInfo.checkstr,
-					  
-			          faquanid: that.faquanid,
-			          type: 0
-			        },
+						sellerid: that.abotapi.globalData.default_sellerid,
+						userid: userInfo.userid,
+						checkstr:userInfo.checkstr,
+						faquanid: that.faquanid,
+						type: 0
+					},
 			        success: function (res) {
 			          i++;
 			          uni.hideLoading();

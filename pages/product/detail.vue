@@ -436,26 +436,41 @@
 		</view>
 		
 		<!-- 评价 -->
-		<!-- <view class="info-box comments" id="comments">
+		<view class="info-box comments" id="comments">
+			
 			<view class="row">
-				<view class="text">商品评价({{goodsData.comment.number}})</view>
+				<view class="text">商品评价</view>
 				<view class="arrow" @tap="toRatings">
-					<view class="show" @tap="showComments(goodsData.id)">
+					<view class="show" @tap="showComments()">
 						查看全部
 						<view class="icon xiangyou"></view>
 					</view>
 				</view>
 			</view>
-			<view class="comment" @tap="toRatings">
+			
+			<view v-for="(goodsData_item , index) in faquanList" :key="index">
+			<view class="comment">
+				<view style="position: absolute;right: 60rpx;font-size: 24rpx;color: #999;">{{goodsData_item.createtime}}</view>
 				<view class="user-info">
-					<view class="face"><image :src="goodsData.comment.userface"></image></view>
-					<view class="username">{{goodsData.comment.username}}</view>
+					<view class="face"><image :src="goodsData_item.headlogo"></image></view>
+					<view class="username">{{goodsData_item.username}}</view>
+					
 				</view>
 				<view class="content">
-					{{goodsData.comment.content}}
+					{{goodsData_item.text}}
+				</view> 
+				<view v-if="goodsData_item.type == 0" v-for="(item001 ,index) in goodsData_item.img_or_video_list" :key="index" style="display: flex;">
+					<image :src="item001.url" mode="widthFix" style="width:200rpx;padding: 20rpx;"></image>
+				</view>
+				<view v-if="goodsData_item.type == 1" v-for="(item001 ,index) in goodsData_item.img_or_video_list" :key="index" style="display: flex;">
+					<video id="myVideo" class="myVideo" :src="item001.url" 
+						autoplay controls show-fullscreen-btn
+						style="width: 300rpx;height: 200rpx;">
+					</video>
 				</view>
 			</view>
-		</view> -->
+			</view>
+		</view>
 		<!-- 详情 -->
 
 		<view class="re-commend" v-if="recommend_product_list.length != 0">
@@ -704,6 +719,7 @@
 				//2021.11.10
 				to_poster:false,
 				current_poster_modal:null,
+				faquanList:null,
 				
 			};
 		},
@@ -721,6 +737,7 @@
 			console.log('/pages/product/detail=====', options);
 
 			var that = this;
+			
 			
 			//========== 2021.10.22. 如果是通过带参二维码进来的 =========
 			if(options.scene && (options.scene.indexOf('pro_') != -1) ){
@@ -753,7 +770,7 @@
 				options_str += 'productid=' + options.productid + '&';
 			}
 
-
+			
 			//不知道这个参数有什么用处
 			if (options.price_type) {
 				that.price_type = options.price_type;
@@ -998,7 +1015,8 @@
 				},
 
 			});
-
+			
+			that.getFaquanList();
 
 			this.get_yanyubao_goods_recommend('recommend');
 			this.get_yanyubao_goods_recommend('hot');
@@ -1756,9 +1774,60 @@
 			//商品评论
 			toRatings() {
 				uni.navigateTo({
-					url: 'ratings/ratings'
+					url: 'ratings/ratings?productid=' + this.goods_detail.productid,
 				})
 			},
+			getFaquanList: function() {
+				
+				var that = this;
+				
+				var userInfo = that.abotapi.get_user_info();
+				console.log('that.productid',that.goods_detail)
+				var post_data = {
+					faquan_wxa_appid: that.abotapi.globalData.xiaochengxu_appid,
+					sellerid: that.abotapi.get_sellerid(),
+					page: 1,
+					faquan_type : 2,
+					status : 'all',
+					productid:that.productid,
+				};
+			
+				if (userInfo) {
+					post_data.userid = userInfo.userid;
+					post_data.checkstr = userInfo.checkstr;
+				}
+			
+				that.abotapi.abotRequest({
+					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/FaquanData/get_faquan_list',
+					method: 'post',
+					data: post_data,
+					header: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					},
+					success: function(res) {
+						that.faquanList = res.data.data;
+						
+						console.log('8888====11>>', res.data);
+						console.log('__getFaquanList===>>>>faquanList====>>>', that.faquanList);
+			
+						if (res.data.code == 0) {
+							
+			
+						}
+						
+					},
+					fail: function(e) {
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+					},
+				})
+			
+			
+			},
+			
+			
 			//跳转确认订单页面
 			toConfirmation() {
 				let tmpList = [];

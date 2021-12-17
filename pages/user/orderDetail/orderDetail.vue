@@ -20,23 +20,34 @@
 		<!-- 普通商品订单的商品列表 -->
 	    <navigator v-if="waimai_order_type != 1" 
 			:open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" 
-			:url="'../../product/detail?productid=' + item.productid"  
+			
 			class="p_all bg_white df item" 
 			v-for="(item,index) in current_order_product_list" :key="index">
-	
-				<view class="cp_photo">			
-					<image :src="item.picture?item.picture:item.img"></image>
-				</view>
-				<view class="df_1">	
-					<view class="font_14 mt5 ovh1">
-			           {{item.name}}
-			        </view>
-					<view class="gm_ovh_1h pt10" style="font-size:20rpx;color: #666;">
-						单价 ¥{{item.price}} x 数量 {{item.amount?item.amount:item.count}}</view>
-					<view class="gm_ovh_1h pt10" style="font-weight:bold;color: #333;">
-						{{item.price2?item.price2:item.price}}
+				<view style="display: flex;width: 550rpx;" @tap="commodity_detail(item.productid)">
+					<view class="cp_photo">
+						<image :src="item.picture?item.picture:item.img"></image>
 					</view>
+					
+					
+					
+					<view class="df_1">	
+						<view class="font_14 mt5 ovh1">
+					       {{item.name}}
+					    </view>
+						<view class="gm_ovh_1h pt10" style="font-size:20rpx;color: #666;">
+							单价 ¥{{item.price}} x 数量 {{item.amount?item.amount:item.count}}</view>
+						<view class="gm_ovh_1h pt10" style="font-weight:bold;color: #333;">
+							{{item.price2?item.price2:item.price}}
+						</view>
+					</view>
+					<view v-if=""></view>
 				</view>
+				<view v-if="orderData.status_str=='订单已完成'"
+					class="font_12 fl_r mr_5 btn_min mg_l" style="position: absolute;right: 20rpx;margin-top: 20rpx;"
+					@click="pingjia" 
+					:data-productid='item.productInfo.productid'
+					:data-orderid='orderData.orderid' 
+					:data-xianmaishangid='orderData.xianmai_shangid'>立即评价</view>
 	    </navigator>
 		
 		<!-- 外卖订单的商品列表 -->
@@ -185,6 +196,7 @@
 					@click="recOrder" 
 					:data-orderid="orderData.orderid" 
 					class="font_12 fl_r mr_5 btn_min mg_l">确认收货</view>
+				
 				<view v-if="orderData.status_str=='待收货' && xianmai_shang_order_remark == ''" 
 					class="font_12 fl_r mr_5 btn_min mg_l" 
 					@click="pingjia" 
@@ -194,6 +206,7 @@
 					class="font_12 fl_r mr_5 btn_min mg_l" 
 					@click="go_to_page" 
 					:data-faquanid='xianmai_shang_order_remark'>查看评价</view>
+				
 				
 				<view v-if="orderData.status_str=='订单已完成'" 
 					class="font_12 fl_r mr_5 btn_min mg_l" 
@@ -210,6 +223,7 @@
 					@click="go_to_page" 
 					:data-faquanid='xianmai_shang_order_remark'>查看评价</view>
 			</view>
+			
 			
 		<!-- 商家订单 -->	
 			
@@ -447,6 +461,9 @@
 				},
 				zitidian_tihuoma_qrcode:'',
 				show_zitidian_tihuoma_qrcode:false,
+				
+				
+				orderProduct_productinfo_productid:0,
 			}
 		},
 		
@@ -604,6 +621,9 @@
 						}
 						
 						
+						if(orderData.orderProduct && (orderData.orderProduct[0].productInfo)){
+							that.orderProduct_productinfo_productid = orderData.orderProduct[0].productInfo;
+						}
 						
 						console.log('current_order_product_list ====>>>>>', that.current_order_product_list);
 						
@@ -729,7 +749,9 @@
 					var faquanid = e.currentTarget.dataset.faquanid;
 					
 					uni.navigateTo({
-						url: '/cms/discover/discover?faquanid=' + faquanid +'&xianmai_shangid=' + this.orderData.xianmai_shangid,
+						url: '/cms/discover/discover?faquanid=' + faquanid +'&xianmai_shangid='
+						 + this.orderData.xianmai_shangid 
+						 +'&productid=' + this.orderProduct_productinfo_productid.productid,
 					})
 					//#ifdef MP-WEIXIN
 					uni.switchTab({
@@ -756,24 +778,40 @@
 						}
 					});
 				},
-				
+				commodity_detail:function(productid){
+					uni.navigateTo({
+						url:'../../product/detail?productid=' + productid,
+					})
+				},
 				//立即评价
 				pingjia:function(e){
 					console.log('eeeeeeeeeeeee',e);
 					var orderid = e.currentTarget.dataset.orderid;
 					var xianmaishangid = e.currentTarget.dataset.xianmaishangid;
-					
+					var productid = e.currentTarget.dataset.productid;
 					uni.showActionSheet({
 					    itemList: ['照片', '视频'],
 					    success(res) {
 					        console.log(res.tapIndex)
 					        if ((res.tapIndex == 0)) {
-					          uni.navigateTo({
-					            url: '../../../cms/publish/publish?publishtype=image&orderid=' + orderid + '&xianmai_shangid=' + xianmaishangid,
-					          })
-					        } else {
+								var new_url = '../../../cms/publish/publish?publishtype=image&orderid=' + orderid + '&xianmai_shangid=' + xianmaishangid;
+								if(productid){
+									new_url += '&productid=' + productid;
+								}
+								console.log('跳转商品评价',new_url)
 								uni.navigateTo({
-					            url: '../../../cms/publish/publish?publishtype=video&orderid=' + orderid + '&xianmai_shangid=' + xianmaishangid,
+									url: new_url
+								})
+							  
+							  
+					        } else {
+								var new_url = '../../../cms/publish/publish?publishtype=video&orderid=' + orderid + '&xianmai_shangid=' + xianmaishangid;
+								if(productid){
+									new_url += '&productid=' + productid;
+								}
+								console.log('跳转商品评价',new_url)
+								uni.navigateTo({
+									url: new_url
 								})
 					        }
 					    },

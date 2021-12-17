@@ -18,8 +18,8 @@
 							<view class="username">系统消息</view>
 							<view class="time">{{chat.latest_time}}</view>
 						</view>
-						<view class="bottom">
-							<view class="msg" v-if="chat.msg_type == 'text'" v-html="chat.latest_msg"></view>
+						<view class="bottom" style="width: 500rpx;overflow: hidden;">
+							<view class="msg" v-if="chat.msg_type == 'text'" v-html="chat.latest_msg" style="height: 30rpx;margin-top: 10rpx;"></view>
 							<view class="msg" v-else-if="chat.msg_type == 'img'">[图片]</view>
 							<view class="msg" v-else-if="chat.msg_type == 'redEnvelope'">[红包]</view>
 							<view class="msg" v-else-if="chat.msg_type == 'voice'">[语音]</view>
@@ -259,6 +259,7 @@
 										type: that.latestMsgList[i].msg_type,
 										userinfo: { uid: userInfo.userid, username: userAcountInfo.nickname, face: userAcountInfo.headimgurl },
 										content: msg001,
+									
 									},
 									
 								};
@@ -285,7 +286,7 @@
 					url = url + '&userid=' + chat.from_person_detail.userid + '&name=' + chat.from_person_detail.nickname;					
 					
 				}else if(chat.chat_type == 1){
-					url = url +'&sellerid=' +chat.sellerid;
+					url = url +'&userid01=' +chat.userid01 + '&userid02=' + chat.userid02 + '&key=test';
 				}
 				 else {
 					url = url + '&groupid=' + chat.groupid;

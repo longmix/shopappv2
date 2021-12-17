@@ -7,7 +7,7 @@
 					<block v-if="row.type == 'system'">
 						<view class="system">
 							<!-- 文字消息 -->
-							<view v-if="row.msg.type == 'text'" class="bubble">{{ row.msg.content.text }}</view>
+							<view v-if="row.msg.type == 'text'" class="system_notification">{{ row.msg.content.text }}</view>
 							<!-- 领取红包消息 -->
 							<view v-if="row.msg.type == 'redEnvelope'" class="red-envelope">
 								<image src="/static/img/red-envelope-chat.png"></image>
@@ -24,7 +24,7 @@
 								</view>
 								<button size="mini">发送给TA</button>
 							</view>
-								
+							
 							<!-- 会话时间 -->
 							<view v-if="row.msg.type=='time'" class="time">
 								{{row.msg.content.text}}
@@ -203,8 +203,10 @@
 			
 			this.myuid = userInfo.userid;
 			this.userid = option.userid;
-			this.sellerid = option.sellerid;
+			this.userid01 = option.userid01;
+			this.userid02 = option.userid02;
 			this.chat_type = option.type;
+			this.key = option.key;
 			
 			uni.setNavigationBarTitle({
 				title: option.name
@@ -290,7 +292,7 @@
 			
 			that.abotapi.abotRequest({
 			     url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ChatData/chat_history',
-			     data: data_params,
+			     data: data_params, 
 			     header: {
 			       "Content-Type": "application/x-www-form-urlencoded"
 			     },
@@ -317,39 +319,35 @@
 							  
 							setTimeout(function() {
 								
-					
 								that.getMsgList();
 								
 								// that.getMsgList(option.sesstion);
 							}, 100); 
 							  
-							  var data_params = {
+							var data_params = {
 								action: 'control',
 								control: 'read',
 								sellerid: that.abotapi.globalData.default_sellerid,
-							  }
+							}
 								
-							  if(!that.groupid){
+							if(!that.groupid){
 								data_params.userid01 = userInfo.userid;
 								data_params.userid02 = that.userid;
 								data_params.chat_type = 0;
-							  } else {
+							} else {
 								data_params.userid01 =  userInfo.userid;
 								data_params.userid02 = that.groupid;
 								data_params.chat_type = 4;
-							  }
+							}
 							  
 							  
-							  uni.request({
-									 url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ChatData/chat_history',
-									 data: data_params,
-									 header: {
-									   "Content-Type": "application/x-www-form-urlencoded"
-									 },
-									 method: "POST",
-									 success: function (res) {
-									   
-									}
+							that.abotapi.abotRequest({
+								url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ChatData/chat_history',
+								data: data_params,
+								
+								success: function (res) {
+								   
+							}
 						})
 							  
 					}
@@ -494,6 +492,16 @@
 			sendText(){
 				this.hideEmoji();
 				if(!this.textMsg){
+					return;
+				}
+				
+				if(this.key == 'test'){
+					uni.showModal({
+						title:'提示',
+						content:'系统账户无法接收您发的消息！',
+						
+					})
+					this.textMsg = '';
 					return;
 				}
 				let content = this.replaceEmoji(this.textMsg);
@@ -866,7 +874,15 @@
 						data_params.userid01 = that.userid;
 						data_params.userid02 = userInfo.userid;
 						data_params.chat_type = 0;
-					} else {
+					}
+					 else if(that.key == 'test'){
+						data_params.userid01 = that.userid01;
+						data_params.userid02 = that.userid02;
+			
+						data_params.chat_type = 1;
+						 
+					 }
+					 else {
 						data_params.userid01 = that.groupid;
 						data_params.userid02 = userInfo.userid;
 						data_params.chat_type = 4;
@@ -1294,5 +1310,16 @@ page{
 			}
 		}
 	}
+}
+</style>
+<style>
+.system_notification{
+	background-color: #F06C7a;
+	/* min-width: 100rpx; */
+	padding: 15rpx 20rpx;
+	border-radius: 10rpx;
+	/* max-width: 700rpx; */
+	text-align: center;
+	color: #fffffff;
 }
 </style>

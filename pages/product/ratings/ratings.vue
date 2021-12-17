@@ -11,10 +11,10 @@
 				</view>
 			</view>
 			<view class="list">
-				<view class="row" v-for="(row,Rindex) in ratingsList" :key="Rindex">
+				<view class="row" v-for="(row,index) in faquanList" :key="index">
 					<view class="left">
 						<view class="face">
-							<image :src="row.face"></image>
+							<image :src="row.headlogo"></image>
 						</view>
 					</view>
 					<view class="right">
@@ -23,29 +23,30 @@
 								{{row.username}}
 							</view>
 							<view class="date">
-								{{row.date}}
+								{{row.createtime}}
 							</view>
 						</view>
-						<view class="spec">
+						<!-- <view class="spec">
 							{{row.spec}}
-						</view>
+						</view> -->
 						<view class="first">
 							<view class="rat">
-								{{row.first.content}}
+								{{row.text}}
 							</view>
+							
 							<view class="img-video">
-								<view class="box" v-for="item in row.first.video" @tap="playVideo(item.path)" :key="item.path">
-									<image mode="aspectFill" :src="item.img"></image>
+								<view class="box" v-if="row.type == 1" v-for="(item001 ,index) in row.img_or_video_list"  @tap="playVideo(item001.url)" :key="item001.url">
+									<image mode="aspectFill" :src="item001.video_img"></image>
 									<view class="playbtn">
 										<view class="icon bofang"></view>
 									</view>
 								</view>
-								<view class="box" v-for="item in row.first.img" @tap="showBigImg(item,row.first.img)" :key="item">
-									<image mode="aspectFill" :src="item"></image>
+								<view class="box" v-if="row.type == 0"  v-for="(item001 ,index) in row.img_or_video_list" @tap="showBigImg(item,row.first.img)" :key="item">
+									<image mode="aspectFill" style="width: 200rpx;" :src="item001.url"></image>     
 								</view>
 							</view>
 						</view>
-						<view class="append" v-if="row.append">
+						<!-- <view class="append" v-if="row.append">
 							<view class="date">
 								{{row.append.date}}天后追加
 							</view>
@@ -63,7 +64,7 @@
 									<image mode="aspectFill" :src="item"></image>
 								</view>
 							</view>
-						</view>
+						</view> -->
 					</view>
 				</view>
 			</view>
@@ -119,9 +120,21 @@
 				showFullscreenBtn:true,
 				showPlayBtn:true,
 				isPlayVideo:true,
-				videoSrc:''
-
+				videoSrc:'',
+				
+				
+				productid:0,
+				page:1,
+				faquanList:null,
 			};
+		},
+		onLoad(options){
+			var that = this;
+			
+			that.productid =options.productid;
+			
+			
+			that.getFaquanList();
 		},
 		onReady: function (res) {
 			this.videoContext = uni.createVideoContext('myVideo')
@@ -131,6 +144,8 @@
 			setTimeout(function() {
 				uni.stopPullDownRefresh();
 			}, 1000);
+			
+			that.getFaquanList();
 		},
 		//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
 		onReachBottom() {
@@ -175,7 +190,63 @@
 					current:src,
 					urls: srclist
 				});
-			}
+			},
+			
+			
+			getFaquanList: function() {
+				
+				var that = this;
+				
+				var userInfo = this.abotapi.get_user_info();
+			
+				var post_data = {
+					faquan_wxa_appid: this.abotapi.globalData.xiaochengxu_appid,
+					sellerid: this.abotapi.get_sellerid(),
+					page: that.page,
+					faquan_type : 2,
+					status : 'all',
+					productid:that.productid,
+				};
+			
+				if (userInfo) {
+					post_data.userid = userInfo.userid;
+					post_data.checkstr = userInfo.checkstr;
+				}
+			
+				this.abotapi.abotRequest({
+					url: this.abotapi.globalData.yanyubao_server_url + '/openapi/FaquanData/get_faquan_list',
+					method: 'post',
+					data: post_data,
+					header: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					},
+					success: function(res) {
+						that.faquanList = res.data.data;
+						
+						console.log('8888====11>>', res.data);
+						console.log('__getFaquanList===>>>>faquanList====>>>', that.faquanList);
+						that.page = that.page + 1;
+						
+						if (res.data.code == 0) {
+							uni.showToast({
+								title: res.data.msg,
+								duration: 2000,
+								icon: 'none'
+							})
+			
+						}
+						
+					},
+					fail: function(e) {
+						uni.showToast({
+							title: '网络异常！',
+							duration: 2000
+						});
+					},
+				})
+			
+			
+			},
 		},
 	}
 </script>

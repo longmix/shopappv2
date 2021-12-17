@@ -247,7 +247,9 @@
 				user_account_info:null,
 				nav_title:'',
 				type:0,
-				current_video_id_playing:0
+				current_video_id_playing:0,
+				
+				productid:0,
 			};
 		},
 		onLoad(options) {
@@ -259,6 +261,7 @@
 			console.log('discover options====>>>>', options);
 			
 			var that = this;
+			
 			
 			
 			var box_info = uni.getSystemInfoSync();
@@ -309,7 +312,10 @@
 
 
 				}
-
+				
+				if(options.productid){
+					this.productid = options.productid;
+				}
 
 				//订单跳转查看订单评价
 				if (options.xianmai_shangid) {
@@ -1011,6 +1017,8 @@
 					//post_data.extend_id = this.xianmai_shangid;
 					post_data.faquan_type = 1;
 					post_data.status = 'all';
+					//post_data.productid = this.productid;
+					
 				}
 
 				this.abotapi.abotRequest({
