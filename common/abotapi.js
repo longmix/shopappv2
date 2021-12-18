@@ -366,7 +366,7 @@ module.exports = {
 	},
 	goLogin:function(){
 		uni.navigateTo({
-			url:"../../pages/login/index"
+			url:"/pages/login/login.vue"
 		})
 	},
 	goH5WeiXin:function(backurl){
@@ -590,10 +590,13 @@ module.exports = {
 				post_data.current_template_name = that002.globalData.current_template_name;
 			}
 			
+			if(!that002.globalData.yanyubao_basic_config_url){
+				that002.globalData.yanyubao_basic_config_url = '/openapi/WordpressData/get_option_list';
+			}
 				
 			this.abotRequest({
 				//url: this.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=get_shop_option',
-				url: that002.globalData.yanyubao_server_url + '/openapi/ShopAppV2Data/get_shop_option',
+				url: that002.globalData.yanyubao_server_url + that002.globalData.yanyubao_basic_config_url,
 				method: 'post',
 				data: post_data,
 				header: {
@@ -603,7 +606,7 @@ module.exports = {
 					var option_data = res.data;
 					
 					if(option_data.code != 1){
-						console.log('/openapi/ShopAppV2Data/get_shop_option 错误！！！！！！！======>>>>', res);
+						console.log(that002.globalData.yanyubao_basic_config_url + '错误！！！！！！！======>>>>', res);
 						return;
 					}
 					
@@ -818,7 +821,7 @@ module.exports = {
 	   * page_type normal/switchTab
 	   * 获取用户的头像和昵称
 	   */
-	  goto_get_userinfo: function (last_url){
+	goto_get_userinfo: function (last_url){
 	    var userInfo = this.get_user_info();
 	    if (!userInfo){
 	      return false;
@@ -879,7 +882,7 @@ module.exports = {
 	    }
 	
 	    return false;
-	  },
+	},
 	
 	getUserInfo: function (cb) {
 	    var that = this
