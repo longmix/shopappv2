@@ -195,6 +195,8 @@ export default {
 		}
 		//===== End ======
 		
+		this.current_options = options;
+		
 		this.abotapi.set_option_list_str(this, this.__handle_option_list);
 		
 		if (options.scene != null) {
@@ -237,7 +239,7 @@ export default {
 			
 		}
 		
-		this.current_options = options;
+		
 		
 		this.__load_welcome_page_date(options);
 		
@@ -365,9 +367,10 @@ export default {
 			
 		},
 		__handle_option_list:function(that, option_list){
-		    that.abotapi.getColor();
+		    //that.abotapi.getColor();
 			
 			console.log('1222dsfsd23456',option_list);
+			console.log('that.current_options ==>>', that.current_options);
 			
 			//获取自定义页面导航图标
 			if(option_list && option_list.welcome_page_bottom_icon_list){
@@ -386,6 +389,10 @@ export default {
 					
 				that.welcome_page_bottom_icon_list = option_list.welcome_page_bottom_icon_list;
 				that.welcome_page_btn_count = option_list.welcome_page_bottom_icon_list.length;
+				
+				if(that.current_options.hidden_bottom_icon_list){
+					that.welcome_page_btn_count = 0;
+				}
 				
 				
 				if(option_list.welcome_page_bottom_icon_list.length == 1){
