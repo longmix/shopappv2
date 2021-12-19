@@ -1,6 +1,7 @@
 const globalData = {
 		weiduke_server_url: 'https://cms.weiduke.com',
 		yanyubao_server_url: 'https://yanyubao.tseo.cn',
+		yanyubao_basic_config_url: '/openapi/ShopAppV2Data/get_shop_option',
 		o2owaimai_server_url: 'https://app.tseo.cn/o2owaimai/index.php',
 		socket_server: 'https://socketio.tseo.cn',
 		

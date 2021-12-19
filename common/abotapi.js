@@ -1686,11 +1686,179 @@ module.exports = {
 		}
 		else if (url.indexOf('tel:') == 0) {
 		  url = url.replace(/tel:/, '');
-	
+			
 		  uni.makePhoneCall({
 			phoneNumber: url,
 		  })
 		}
+		else if (url.indexOf('wxa_api') == 0){
+			//如果是执行微信小程序的api接口
+			var arr = url.split(" ");
+			if (arr.length < 2) {
+				return;
+			}
+			
+			// #ifdef APP-PLUS
+				//通过plus向微信小程序跳转
+				
+				//跳转到小程序中的网址
+				var wxa_path = 'pages/h5browser/h5browser';
+				
+				//读取所有的参数
+				wxa_path = wxa_path + '?url=' + encodeURIComponent(url);
+				
+				console.log('即将跳转到微信小程序中去执行接口===>>>>'+ url);
+				
+				plus.share.getServices(
+					function(res){ 
+						var sweixin = null;  
+						for(var i=0;i<res.length;i++){  
+							var t = res[i];  
+							if(t.id == 'weixin'){  
+								sweixin = t;
+								
+								uni.showModal({
+									title:'提示',
+									content:'即将跳转到微信',
+									showCancel:false,
+									success(res) {
+										//唤醒微信小程序  type 可取值： 0-正式版； 1-测试版； 2-体验版。 默认值为0。 
+										sweixin.launchMiniProgram({
+											id: that.abotapi.globalData.xiaochengxu_account,
+											path:wxa_path,
+											type: 0,
+											webUrl:'https://www.abot.cn'
+										});
+										
+										uni.navigateBack({
+											delta:1
+										})
+									}
+								});
+								
+								return;
+							}  
+						}
+						
+						if(!sweixin){
+							uni.showModal({
+								title:'没有找到微信服务',
+								content:'唤起手机中的微信',
+								success(res) {
+									if(res.confirm){
+									}
+								}
+							});
+							
+						}  
+					},
+					function(res){  
+						console.log('没有检测到微信' + JSON.stringify(res));
+						
+						uni.showToast({
+							title:'没有检测到微信'
+						})
+					}
+				);
+				
+			// #endif
+			
+			// #ifdef MP-WEIXIN
+				var api_name = arr[1];
+				//var api_params = JSON.parse(arr[2]);
+				
+				if(api_name == 'openChannelsActivity'){
+					//打开视频号视频
+					var finderUserName = arr[2];
+					var feedId = arr[3];
+					
+					wx.openChannelsActivity({
+						finderUserName: finderUserName,
+						feedId: arr[3],
+						success:function(){
+							console.log('打开视频号视频成功');
+						},
+						fail:function(){
+							console.log('打开视频号视频失败');
+						}
+						complete:function(){
+							console.log('打开视频号视频结束');
+						}
+						
+					});
+				}
+				else if(api_name == 'openChannelsEvent'){
+					//打开视频号活动页
+					var finderUserName = arr[2];
+					var feedId = arr[3];
+					
+					wx.openChannelsEvent({
+						finderUserName: finderUserName,
+						eventId: arr[3],
+						success:function(){
+							console.log('打开视频号活动页成功');
+						},
+						fail:function(){
+							console.log('打开视频号活动页失败');
+						}
+						complete:function(){
+							console.log('打开视频号活动页结束');
+						}
+						
+					});
+				}
+				else if(api_name == 'openChannelsLive'){
+					//打开视频号直播
+					var finderUserName = arr[2];
+					var feedId = arr[3];
+					
+					wx.openChannelsLive({
+						finderUserName: finderUserName,
+						success:function(){
+							console.log('打开视频号直播成功');
+						},
+						fail:function(){
+							console.log('打开视频号直播失败');
+						}
+						complete:function(){
+							console.log('打开视频号直播结束');
+						}
+						
+					});
+				}
+				else if(api_name == 'openChannelsUserProfile'){
+					//打开视频号主页
+					var finderUserName = arr[2];
+					var feedId = arr[3];
+					
+					wx.openChannelsUserProfile({
+						finderUserName: finderUserName,
+						success:function(){
+							console.log('打开视频号主页成功');
+						},
+						fail:function(){
+							console.log('打开视频号主页失败');
+						}
+						complete:function(){
+							console.log('打开视频号主页结束');
+						}
+						
+					});
+				}
+			// #endif
+			
+			// #ifndef APP-PLUS | MP-MP-WEIXIN
+				uni.showModal({
+					title: '提示',
+					content: '暂不支持此功能',
+					showCancel:false
+				})
+			// #endif
+			
+			
+			
+		}
+		
 		else {
 			uni.navigateTo({
 				url: url

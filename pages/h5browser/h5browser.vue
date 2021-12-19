@@ -119,6 +119,26 @@
 				console.log('微信小程序中做特殊判断，多加一次转换后的参数：', options);
 				
 				// #endif
+				
+				
+				//判断特殊的url网址格式：
+				//2021.12.19. http://127.0.0.1/yanyubao_server/index.php?g=Supplier&m=ShopWxaMgr&a=index&setting_type=shopappv2
+				//定义了一组视频号相关的网址，例如
+				// wxa_api openChannelsLive [视频号 id]
+				if ((options.url.indexOf('http://') == 0)
+					||(options.url.indexOf('https://') == 0)
+					||(options.url.indexOf('/hybrid/html/') == 0)){
+					//不需要拦截	
+				}
+				else{
+					//如果不是网址，则拦截
+					console.log('h5browser：这不是http开头或者hybrid的网址，所以跳转：' + options.url);
+					
+					this.abotapi.call_h5browser_or_other_goto_url(options.url);
+					return;
+				}
+				
+				
 		
 		
 		        //判断分享转发的特殊参数，即带了分享转发的文字和图片
@@ -155,6 +175,9 @@
 				this.url = decodeURIComponent(options.url)
 				
 				console.log('111111111 decodeURIComponent======>>>>' + this.url);
+				
+				
+				
 				
 				
 		        
