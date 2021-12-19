@@ -118,6 +118,11 @@
 					//that.initProductData(data);
 					that.banner_swiper_list = banner;
 					//endInitData
+					
+					// #ifdef MP-BAIDU
+					that.banner_swiper_list = null;
+					// #endif
+					
 				},
 				fail: function (e) {
 					uni.showToast({

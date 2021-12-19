@@ -1778,9 +1778,16 @@ module.exports = {
 						success:function(){
 							console.log('打开视频号视频成功');
 						},
-						fail:function(){
+						fail:function(res){
 							console.log('打开视频号视频失败');
-						}
+							
+							uni.showModal({
+								title:'失败',
+								content:JSON.stringify(res),
+								showCancel:false
+								
+							});
+						},
 						complete:function(){
 							console.log('打开视频号视频结束');
 						}
@@ -1798,9 +1805,16 @@ module.exports = {
 						success:function(){
 							console.log('打开视频号活动页成功');
 						},
-						fail:function(){
+						fail:function(res){
 							console.log('打开视频号活动页失败');
-						}
+							
+							uni.showModal({
+								title:'失败',
+								content:JSON.stringify(res),
+								showCancel:false
+								
+							});
+						},
 						complete:function(){
 							console.log('打开视频号活动页结束');
 						}
@@ -1817,9 +1831,16 @@ module.exports = {
 						success:function(){
 							console.log('打开视频号直播成功');
 						},
-						fail:function(){
+						fail:function(res){
 							console.log('打开视频号直播失败');
-						}
+							
+							uni.showModal({
+								title:'失败',
+								content:JSON.stringify(res),
+								showCancel:false
+								
+							});
+						},
 						complete:function(){
 							console.log('打开视频号直播结束');
 						}
@@ -1836,9 +1857,16 @@ module.exports = {
 						success:function(){
 							console.log('打开视频号主页成功');
 						},
-						fail:function(){
+						fail:function(res){
 							console.log('打开视频号主页失败');
-						}
+							
+							uni.showModal({
+								title:'失败',
+								content:JSON.stringify(res),
+								showCancel:false
+								
+							});
+						},
 						complete:function(){
 							console.log('打开视频号主页结束');
 						}
@@ -1847,7 +1875,7 @@ module.exports = {
 				}
 			// #endif
 			
-			// #ifndef APP-PLUS | MP-MP-WEIXIN
+			// #ifndef APP-PLUS | MP-WEIXIN
 				uni.showModal({
 					title: '提示',
 					content: '暂不支持此功能',

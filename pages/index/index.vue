@@ -230,7 +230,7 @@
 		<!-- 实体商家结束 -->
 		
 		<!-- 论坛发帖列表 -->
-		<publishList v-if="index_list" :index_list="index_list" 
+		<publishList v-if="index_publish_list" :index_list="index_publish_list" 
 			@goForum="goForum" @previewImage="previewImage"
 			@goToPublishList="goToPublishList"
 			:show_zhuanti_title = 1></publishList>
@@ -425,7 +425,7 @@ export default {
 			city: '北京',
 			
 			coordinate:'',
-			index_list:[],
+			index_publish_list:[],
 			Promotion: [],
 			
 			
@@ -741,9 +741,12 @@ export default {
 		locationapi.get_location_remove();
 		
 		that.abotapi.get_shop_info_from_server_remove();
+		
 		that.abotapi.set_shop_option_data_remove();
 		that.abotapi.set_shop_option_data(that, that.callback_function_shop_option_data);
+		
 		that.abotapi.get_shop_info_from_server(that.callback_func_for_shop_info);
+		
 		that.abotapi.get_xianmaishang_setting_list_remove();
 		
 		if(that.show_rich_html_in_index == 1){
@@ -878,9 +881,9 @@ export default {
 		// 预览图片
 		previewImage:function(index) {
 			
-			var index_list = this.index_list;
+			var index_publish_list = this.index_publish_list;
 			
-			var index_item = index_list[index];
+			var index_item = index_publish_list[index];
 			
 			var img_list = index_item['picture_list'];
 			
@@ -1308,6 +1311,7 @@ export default {
 				that.cataid = 0; 
 				that.current_page = 0;
 				that.current_page_size = cb_params.option_list.default_publish_list_count_in_front_page;
+				that.is_get_article_list = true;
 				
 				publish_list_api.get_publish_list(that, that.get_api_publish_list);
 			}
@@ -1386,7 +1390,7 @@ export default {
 			console.log('publishData====>>>>',publishData);
 			
 			for(var i in publishData.index_list){
-				that.index_list.push(publishData.index_list[i]);
+				that.index_publish_list.push(publishData.index_list[i]);
 			}
 		},
 		
@@ -1892,6 +1896,8 @@ export default {
 			that.cms_token_001 = option_list.weiduke_token_to_toutiao;
 			that.cataid = option_list.weiduke_classid_to_toutiao; 
 			that.page = 0;
+			
+			that.is_get_article_list = true;
 			
 			if(that.cms_token && that.cataid){
 				publish_list_api.get_publish_list(that, function(that003, res_data){
