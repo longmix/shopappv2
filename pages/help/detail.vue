@@ -118,12 +118,14 @@
 					<!-- 点赞 -->
 					<view style="display: flex;">
 						<view @tap='doArticleDianzan' :data-zantype="1" style='margin-right: 20rpx;'>
-							<image style="width:30rpx;height:30rpx;margin-right:15rpx"  :src="dianzan_status == 0 || dianzan_status == 2 ? '../../static/img/help/dianzan_grey.png':'../../static/img/help/dianzan_red.png'"></image>
+							<image style="width:30rpx;height:30rpx;margin-right:15rpx"  
+								:src="(dianzan_01_status == 1)? '../../static/img/help/dianzan_red.png':'../../static/img/help/dianzan_grey.png'"></image>
 							<text style="font-size:30rpx">{{wz_text.dianzan_num}}</text>
 						</view>
 						
 						<view @tap='doArticleDianzan' :data-zantype="2">
-							<image style="width:30rpx;height:30rpx;margin-right:15rpx"  :src="dianzan_status == 0 || dianzan_status == 1 ? '../../static/img/help/dianzan02_grey.png':'../../static/img/help/dianzan02_red.png'"></image>
+							<image style="width:30rpx;height:30rpx;margin-right:15rpx"  
+								:src="(dianzan_02_status == 1)? '../../static/img/help/dianzan02_red.png':'../../static/img/help/dianzan02_grey.png'"></image>
 							<text style="font-size:30rpx">{{wz_text.dianzan_num2}}</text>
 						</view>
 					</view>
@@ -219,7 +221,8 @@
 				headlineItem_img:'',
 				content:'',
 				title:'',
-				dianzan_status:'', //点赞状态  1为点赞 2位踩 0都没有
+				dianzan_01_status:'', //点赞状态  1为点赞 2位不点赞 0都没有
+				dianzan_02_status:'', //点赞状态  1为点赞 2位不点赞 0都没有
 				id:0,
 				listid:0,
 				sellerid:'',//如何获取listid和sellerid？？？
@@ -346,7 +349,6 @@
 			
 			this.options_str = options_str;
 			
-			this.abotapi.set_option_list_str(that, that.callback_set_option);
 			
 			if(that.form_page == 'spec_cms_token'){
 				
@@ -357,6 +359,12 @@
 			else{
 				that.current_cms_token = this.abotapi.get_current_weiduke_token();
 			}
+			
+			
+			
+			this.abotapi.set_option_list_str(that, that.callback_set_option);
+			
+			
 			
 			
 			var userInfo = this.abotapi.get_user_info();
@@ -495,6 +503,12 @@
 					that.hidden_remark = option_list.publish_hiddend_btn_for_write; //是否显示发帖按钮
 				}
 				
+				if(!that.current_cms_token && option_list.cms_token){
+					that.current_cms_token = option_list.cms_token;
+				}
+				
+				console.log('当前 cms_token ===>>>'+ that.current_cms_token);
+				
 				//临时测试，打开评论开关
 				//that.hidden_remark = 0;
 				
@@ -585,7 +599,11 @@
 				that.wz_text = http_data;
 				that.wz_keyword2 = wz_keyword;
 				that.wz_title = http_data.title;
-				that.dianzan_status = http_data.dianzan_status;
+				
+				
+				that.dianzan_01_status = http_data.dianzan_01_status;
+				that.dianzan_02_status = http_data.dianzan_02_status;
+				
 				
 				that.share_href = http_data.h5_url;
 				that.share_titles = http_data.title;
@@ -778,7 +796,7 @@
 				
 			    that.isShoucang = isShoucang;
 				
-				var url = this.abotapi.globalData.weiduke_server_url + 'index.php/openapi/ArticleImgApi/collect_my_update';
+				var url = this.abotapi.globalData.weiduke_server_url + '/index.php/openapi/ArticleImgApi/collect_my_update';
 				var data = {
 					userid:userInfo.userid,
 					checkstr:userInfo.checkstr,
@@ -788,7 +806,18 @@
 				};
 				var cbSuccess = function (res) {
 					if (res.data.code == 1) {
-						that.__get_img_from_weiduke(that.wz_id, that);
+						
+						//删除后再刷新
+						uni.removeStorage({
+							key: 'help_detail_data_cache_' + that.http_data_cache_id,
+							success: (res) => {
+								//that.__get_img_from_weiduke(that.wz_id, that);
+							},
+							fail: () => {
+							
+							}
+						});
+						
 					}
 				};
 				var cbError = function (res) {
@@ -858,6 +887,20 @@
 							that.openid = that.abotapi.get_current_openid()
 			        
 						}
+						
+						
+						//删除后再刷新
+						uni.removeStorage({
+							key: 'help_detail_data_cache_' + that.http_data_cache_id,
+							success: (res) => {
+								//that.__get_img_from_weiduke(that.wz_id, that);
+							},
+							fail: () => {
+							
+							}
+						});
+						
+						
 					}
 				})
 			},
@@ -915,6 +958,20 @@
 								that.get_remark_list();
 												   
 								that.inputValue = '';
+								
+								
+								//删除后再刷新
+								uni.removeStorage({
+									key: 'help_detail_data_cache_' + that.http_data_cache_id,
+									success: (res) => {
+										//that.__get_img_from_weiduke(that.wz_id, that);
+									},
+									fail: () => {
+									
+									}
+								});
+								
+								
 							}
 						}
 					});
@@ -955,7 +1012,7 @@
 				
 				var that = this;
 				this.abotapi.abotRequest({
-					url: this.abotapi.globalData.weiduke_server_url + 'index.php/openapi/ArticleImgApi/remark_img',
+					url: this.abotapi.globalData.weiduke_server_url + '/index.php/openapi/ArticleImgApi/remark_img',
 					method: 'post',
 					data: {
 						sellerid : that.abotapi.get_sellerid(),
@@ -980,6 +1037,20 @@
 								title: res.data.msg,
 								duration: 2000
 							})
+							
+							
+							//删除后再刷新
+							uni.removeStorage({
+								key: 'help_detail_data_cache_' + that.http_data_cache_id,
+								success: (res) => {
+									//that.__get_img_from_weiduke(that.wz_id, that);
+								},
+								fail: () => {
+								
+								}
+							});
+							
+							
 						}
 					},
 					fail: function (res) {
@@ -1026,21 +1097,18 @@
 				
 				var tongjiid = e.currentTarget.dataset.tongjiid;
 				var dianzan_type = e.currentTarget.dataset.zantype;
+				
 				console.log('eeeeeeee',e);
 				
-				if(that.dianzan_status && that.dianzan_status != 0){
-					if(that.dianzan_status == 1 && dianzan_type == 2){
-						var action = 'add';
-					}else if (that.dianzan_status == 2 && dianzan_type == 1){
-						var action = 'add';
-					}else{
-						var action = 'del';
-					}
-					
-					
-				}else{
-					var action = 'add';
+				var action = 'del';
+				if((dianzan_type == 1) && (that.dianzan_01_status != 1) ){
+					action = 'add';
 				}
+				
+				if((dianzan_type == 2) && (that.dianzan_02_status != 1) ){
+					action = 'add';
+				}				
+				
 				this.abotapi.abotRequest({
 					url: this.abotapi.globalData.weiduke_server_url + '/openapi/ArticleImgApi/dianzan_img',
 					method: 'post',
@@ -1058,10 +1126,48 @@
 					},
 					success: function (res) {
 						console.log('opopop',res);
+						
 						var data = res.data;
+						
 						if (data.code == 1) {
-							that.dianzan_status = dianzan_type;
-							that.__get_img_from_weiduke(that.wz_id, that);
+							
+							if(dianzan_type == 1){
+								if(action == 'add'){
+									that.wz_text.dianzan_num ++;
+									that.dianzan_01_status = 1;
+								}
+								else if(action == 'del'){
+									that.wz_text.dianzan_num --;
+									that.dianzan_01_status = 2;
+								}
+							}
+							else if(dianzan_type == 2){
+								if(action == 'add'){
+									that.wz_text.dianzan_num2 ++;
+									that.dianzan_02_status = 1;
+								}
+								else if(action == 'del'){
+									that.wz_text.dianzan_num2 --;
+									that.dianzan_02_status = 2;
+								}
+							}
+							
+							
+							
+							
+							
+							//删除后再刷新
+							uni.removeStorage({
+								key: 'help_detail_data_cache_' + that.http_data_cache_id,
+								success: (res) => {
+									//that.__get_img_from_weiduke(that.wz_id, that);
+								},
+								fail: () => {
+								
+								}
+							});
+							
+							
 						}
 					}
 				})
@@ -1073,7 +1179,7 @@
 			getArticleDianzan:function(){
 				var that = this;
 				this.abotapi.abotRequest({
-					url: this.abotapi.globalData.weiduke_server_url + 'index.php/openapi/ArticleImgApi/dianzan_img',
+					url: this.abotapi.globalData.weiduke_server_url + '/index.php/openapi/ArticleImgApi/dianzan_img',
 					method: 'post',
 					data: {
 						token: this.current_cms_token,      
@@ -1100,6 +1206,20 @@
 			        
 						}
 			     
+				 
+						//删除后再刷新
+						uni.removeStorage({
+							key: 'help_detail_data_cache_' + that.http_data_cache_id,
+							success: (res) => {
+								//that.__get_img_from_weiduke(that.wz_id, that);
+							},
+							fail: () => {
+							
+							}
+						});
+						
+				 
+				 
 						console.log('4545454', res);
 			      
 					}

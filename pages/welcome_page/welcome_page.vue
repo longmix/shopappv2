@@ -131,9 +131,15 @@ export default {
 			wxa_default_imgid_in_welcome_page:0,
 			content_type:'cms',
 			video_autoplay:false,
+			
+			//普通类型的文章，对应的标题和图片
 			current_title : '',
-			content_pic_image:'',
-			content_pic_url:'',
+			current_pic: '',
+			
+			//如果内容类型为图片，则图片的URL和对应点击后跳转网址
+			content_pic_image:'',	// 图片的URL
+			content_pic_url:'',		// 点击后跳转网址
+			
 			video_cover_url:'',
 			video_url:'',
 			wxa_show_latest_product_in_welcome_page:'',
@@ -284,17 +290,28 @@ export default {
 		
 	},
 	onShareAppMessage: function () {
-		console.log('app.globalData.shop_name : ' + app.globalData.shop_name);
+		var that = this;
+		
+		console.log('app.globalData.shop_name : ' + this.abotapi.globalData.shop_name);
 		
 		var last_url = '/pages/welcome_page/welcome_page';
 		if(that.current_params_str.length > 5){
 			last_url = '/pages/welcome_page/welcome_page?'+that.current_params_str;
 		}
 		
+		var share_img = that.current_pic;
+		if(!share_img){
+			share_img = that.wxa_share_img;
+		}
+		
+		console.log('onShareAppMessage ==>> ' + this.current_title);
+		console.log('onShareAppMessage ==>> ' + last_url);
+		console.log('onShareAppMessage ==>> ' + share_img);
 		
 		return {
-		  title: '' + this.data.current_title,
+		  title: '' + this.current_title,
 		  path: last_url,
+		  imageUrl: share_img,
 		  success: function (res) {
 			// 分享成功
 		  },
@@ -305,15 +322,28 @@ export default {
 		
 	},
 	onShareTimeline: function () {
+		var that = this;
+		
+		console.log('app.globalData.shop_name : ' + this.abotapi.globalData.shop_name);
+		
+		
 		var last_url = '';
+		
 		if(that.current_params_str.length > 5){
 			last_url = ''+that.current_params_str;
 		}
 		
-		var share_img = that.wxa_share_img;
+		var share_img = that.current_pic;
+		if(!share_img){
+			share_img = that.wxa_share_img;
+		}
+		
+		console.log('onShareAppMessage ==>> ' + this.current_title);
+		console.log('onShareAppMessage ==>> ' + last_url);
+		console.log('onShareAppMessage ==>> ' + share_img);
 		
 		return {
-		    title: '' + this.data.current_title,
+		    title: '' + this.current_title,
 		    query: last_url,
 		    imageUrl:share_img,
 		}
@@ -538,6 +568,11 @@ export default {
 			})
 			  
 			that.current_title = http_data.title;
+			
+			//当前文章对应的图片
+			if(http_data.pic){
+				that.current_pic = http_data.pic;
+			}
 			  		          
 			that.index_rich_html_content = http_data.info;
 			

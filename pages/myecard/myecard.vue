@@ -476,7 +476,7 @@
 				
 				
 				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + 'index.php?g=Yanyubao&m=Xiaochengxu&a=about_supplier',
+					url: that.abotapi.globalData.yanyubao_server_url + '/index.php?g=Yanyubao&m=Xiaochengxu&a=about_supplier',
 					data: {
 						sellerid: that.abotapi.get_sellerid(),
 						checkstr: userInfo.checkstr,
