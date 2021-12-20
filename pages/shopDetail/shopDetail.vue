@@ -197,7 +197,7 @@
 
 			<block v-if="current_shang_detail.youhui_title != ''">
 				<view style="text-align: left;padding-left:8px;color:#666;font-size:16px;text-align:center;padding:6rpx;font-weight:bold;">{{current_shang_detail.youhui_title}}</view>
-				<view style="padding-top:5px;padding-bottom: 24rpx;color: #666;width: 94%;margin: 0 auto;font-size:14px;text-indent: 54rpx;">
+				<view style="padding-top:5px;padding-bottom: 24rpx;color: #666;width: 94%;margin: 0 auto;font-size:14px;text-indent: 0rpx;">
 					<text>{{current_shang_detail.youhui_detail}}</text>
 				</view>
 			</block>
@@ -217,7 +217,7 @@
 			</block>
 
 			<block v-if="current_shang_detail.brief != ''">
-				<view style="padding-top:5px;padding-bottom: 24rpx;color: #666;width: 94%;margin: 0 auto;font-size:14px;text-indent: 54rpx;">
+				<view style="padding-top:5px;padding-bottom: 24rpx;color: #666;width: 94%;margin: 0 auto;font-size:14px;text-indent: 0rpx;">
 					<text>{{current_shang_detail.brief}}</text>
 				</view>
 			</block>
@@ -301,7 +301,7 @@
 			</view>
 			<view style="width: 25%;background: #FFFFFF;text-align: center;font-size:32rpx;" class="icons">
 				<!-- <image src="../../static/img/addricon.png"></image> -->
-				<!-- #ifdef MP-WEIXIN --> 
+				<!-- #ifdef MP-WEIXIN | MP-BAIDU --> 
 				<!-- <button style="padding-left: 0;padding-right: 0;" open-type="share">分享</button> -->
 				<button class="box share-btn btn_box" open-type="share">
 					<image style="width:40rpx;height:40rpx;padding-right:10rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/xianmaishang_icon_share.png"></image>
@@ -329,6 +329,7 @@
 				</button>
 				
 				<!-- #endif -->
+				
 				<!-- #ifdef H5 --> 
 				<!-- <button style="padding-left: 0;padding-right: 0;" @click="share_shang_detail">分享</button> -->
 				<button @click="share_shang_detail" class="box share-btn btn_box">
@@ -580,20 +581,20 @@
 				path: 'pages/shopDetail/shopDetail?shangid='+that.current_xianmai_shangid,
 				imageUrl:'',
 				success: function(res) {
-				// 分享成功
+					// 分享成功
 					uni.showToast({
-						title: '转发成功',
+						title: '分享成功',
 						icon: 'success',
 						duration: 2000
 					})
 				},
 				fail: function(res) {
 					// 分享失败
-					uni.showToast({
-						title: '转发失败',
+					/*uni.showToast({
+						title: '分享完成',
 						icon: 'success',
 						duration: 2000
-					})
+					})*/
 				}
 			}
 			

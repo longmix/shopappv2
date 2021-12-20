@@ -666,6 +666,11 @@
 					success: function (res) {
 						console.log('ppppppp===>>',res);
 						that.productLists = res.data.data;
+						
+						// #ifdef MP-BAIDU
+						that.productLists = null;
+						// #endif
+						
 					}
 				})
 			},

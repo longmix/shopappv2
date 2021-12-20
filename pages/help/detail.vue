@@ -444,18 +444,18 @@
 				success: function(res) {
 				// 分享成功
 					uni.showToast({
-						title: '分享完成',
+						title: '分享成功',
 						icon: 'success',
 						duration: 2000
 					})
 				},
 				fail: function(res) {
 					// 分享失败
-					uni.showToast({
-						title: '分享失败',
+					/*uni.showToast({
+						title: '分享完成',
 						icon: 'success',
 						duration: 2000
-					})
+					})*/
 				}
 			}
 		},

@@ -591,7 +591,7 @@ module.exports = {
 			}
 			
 			if(!that002.globalData.yanyubao_basic_config_url){
-				that002.globalData.yanyubao_basic_config_url = '/openapi/WordpressData/get_option_list';
+				that002.globalData.yanyubao_basic_config_url = '/openapi/ShopAppV2Data/get_shop_option';
 			}
 				
 			this.abotRequest({
@@ -1824,33 +1824,68 @@ module.exports = {
 				else if(api_name == 'openChannelsLive'){
 					//打开视频号直播
 					var finderUserName = arr[2];
-					var feedId = arr[3];
 					
-					wx.openChannelsLive({
+					wx.getChannelsLiveInfo({
 						finderUserName: finderUserName,
-						success:function(){
-							console.log('打开视频号直播成功');
+						success:function(res){
+							console.log('获取直播信息成功', res);
+							
+							if(res && (res.status == 2)){
+								//直播进行中
+								
+								
+								wx.openChannelsLive({
+									finderUserName: finderUserName,
+									success:function(){
+										console.log('打开视频号直播成功');
+									},
+									fail:function(res){
+										console.log('打开视频号直播失败');
+										
+										uni.showModal({
+											title:'失败',
+											content:JSON.stringify(res),
+											showCancel:false
+											
+										});
+									},
+									complete:function(){
+										console.log('打开视频号直播结束');
+									}
+									
+								});
+								
+								
+								
+							}
+							else{
+								uni.showModal({
+									title:'提示',
+									content:'直播已经结束',
+									showCancel:false
+								})
+							}
+							
+							
 						},
 						fail:function(res){
-							console.log('打开视频号直播失败');
+							console.log('获取直播信息失败', res);
 							
 							uni.showModal({
 								title:'失败',
-								content:JSON.stringify(res),
+								content:'没有获取到直播信息',
 								showCancel:false
 								
 							});
-						},
-						complete:function(){
-							console.log('打开视频号直播结束');
 						}
-						
 					});
+					
+					
+					
 				}
 				else if(api_name == 'openChannelsUserProfile'){
 					//打开视频号主页
 					var finderUserName = arr[2];
-					var feedId = arr[3];
 					
 					wx.openChannelsUserProfile({
 						finderUserName: finderUserName,
