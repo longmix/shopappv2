@@ -13,7 +13,7 @@
 				</view>
 			</view>
 			<!-- 头部-滚动渐变显示 -->
-			<view class="after" :style="{ opacity: afterHeaderOpacity, zIndex: afterHeaderzIndex }">
+			<view class="after" :style="{ opacity: afterHeaderOpacity, zIndex: afterHeaderzIndex }" >
 				<view class="back" ><view class="icon xiangqian" @tap="back_return" v-if="showBack"></view></view>
 				
 				<!--
@@ -28,15 +28,13 @@
 				</view>
 			</view>
 		</view>
-		
+	
 		
 		<!--NTF卡包卡牌  头部显示======begin  -->
 		<block v-if="(use_theme_nft_package == 1) &&  current_shang_detail">
 			<view class="" style="background-color: #eceeef; padding-bottom: 400rpx;">
 				<!--放行商封面  -->
-				<view style="" >
-					<image :src="current_shang_detail.mendian_image" mode="widthFix" 
-						style="width: 100%; height: 450rpx; position: absolute; "></image>
+				<view :style="'background-image: url(\'' + current_shang_detail.mendian_image + '\');width: 100%; position: absolute; height: 400rpx;'">
 				</view>
 				
 				
@@ -55,8 +53,8 @@
 							<view style="color: #FFFFFF;margin-left:0rpx; margin-top: 5rpx; font-size: 30rpx;">已关注</view>
 						</view>
 					</view>
-					<image :src="current_shang_detail.icon_image" mode="widthFix" 
-						style="width: 180rpx;height: 180rpx; border-radius: 50%; background-color:#ffffff; padding: 20rpx;"></image>
+					<image :src="current_shang_detail.faxingshang_logo_url" mode="widthFix" 
+						style="width: 180rpx;height: 180rpx; border-radius: 50%; background-color:#ffffff;s"></image>
 						
 						<view style="width: 500rpx;display: flex;margin-left: 40rpx;margin-top: 15rpx;">
 							<image src="https://yanyubao.tseo.cn/Tpl/static/nft_card/authentication.png"
@@ -559,7 +557,7 @@
 				
 				//是否显示返回按钮
 				// #ifndef MP
-					showBack:true,
+				showBack:true,
 				// #endif
 				
 				

@@ -200,7 +200,7 @@
 				style="display: flex;" 
 				@tap="goto_supplier_detail()">
 				<view class="">
-					<image class="" :src="current_package_detail.supplier_item.icon"
+					<image class="" :src="current_package_detail.supplier_item.faxingshang_logo_url"
 						mode="widthFix" style="width: 120rpx;height: 120rpx;border-radius: 50%;margin: 15rpx;"></image>
 				</view>
 				
