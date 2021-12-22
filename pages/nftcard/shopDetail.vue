@@ -34,11 +34,10 @@
 		<block v-if="(use_theme_nft_package == 1) &&  current_shang_detail">
 			<view class="" style="background-color: #eceeef; padding-bottom: 400rpx;">
 				<!--放行商封面  -->
-				<view class="mendian" :style="{backgroundImage: 'url(' + current_shang_detail.mendian_image + ')'}">
+				<view class="mendian" :style="{backgroundImage: 'url(' + current_shang_detail.faxingshang_logo_url_3x2 + ')'}">
 				</view>
 				
-				
-				
+
 				<!-- 发行商头像和名称 -->
 				<view style="margin-left: 20rpx; position: relative;top: 350rpx;">
 					<view class="supplier_follow_num_icon01" >
@@ -3065,5 +3064,6 @@
 		width: 100%; 
 		position: absolute; 
 		height: 400rpx;
+		background-size:100% 100%;
 	}
 </style>

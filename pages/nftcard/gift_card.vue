@@ -11,7 +11,7 @@
 						{{current_card_detail.brief}}
 					</view> -->
 					<view style="display: flex;margin-top: 20rpx;">
-						<image :src="current_card_detail.supplier_item.icon" style="width: 40rpx;height: 40rpx;border-radius: 50%;"></image>
+						<image :src="current_card_detail.supplier_item.faxingshang_logo_url" style="width: 40rpx;height: 40rpx;border-radius: 50%;"></image>
 						<view style="margin-left: 20rpx;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;font-size: 28rpx;color:#C0C0C0;">{{current_card_detail.supplier_item.name}}</view>
 					</view>
 					
