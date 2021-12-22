@@ -445,7 +445,9 @@
 		onShareAppMessage: function () {
 			console.log('==================>>>');
 			var that = this;
-			return {
+			
+			
+			var share_data = {
 				title: '' + that.wz_text.title,
 				path: 'pages/help/detail?id='+that.id,
 				imageUrl:that.wz_text.pic,
@@ -465,7 +467,13 @@
 						duration: 2000
 					})*/
 				}
-			}
+			};
+			
+			//#ifdef MP-BAIDU
+				share_data.content = share_data.title;
+			//#endif
+			
+			return share_data;
 		},
 		onShareTimeline: function () {
 			

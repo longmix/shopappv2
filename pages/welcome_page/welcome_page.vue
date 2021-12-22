@@ -308,7 +308,7 @@ export default {
 		console.log('onShareAppMessage ==>> ' + last_url);
 		console.log('onShareAppMessage ==>> ' + share_img);
 		
-		return {
+		var share_data = {
 		  title: '' + this.current_title,
 		  path: last_url,
 		  imageUrl: share_img,
@@ -318,7 +318,13 @@ export default {
 		  fail: function (res) {
 			// 分享失败
 		  }
-		}
+		};
+		
+		//#ifdef MP-BAIDU
+			share_data.content = share_data.title;
+		//#endif
+		
+		return share_data;
 		
 	},
 	onShareTimeline: function () {

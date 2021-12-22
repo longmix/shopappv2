@@ -1709,9 +1709,14 @@ module.exports = {
 				
 				console.log('即将跳转到微信小程序中去执行接口===>>>>'+ url);
 				
+				var __this = this; 
+				
 				plus.share.getServices(
 					function(res){ 
-						var sweixin = null;  
+						var sweixin = null; 
+						
+						
+						 
 						for(var i=0;i<res.length;i++){  
 							var t = res[i];  
 							if(t.id == 'weixin'){  
@@ -1724,9 +1729,9 @@ module.exports = {
 									success(res) {
 										//唤醒微信小程序  type 可取值： 0-正式版； 1-测试版； 2-体验版。 默认值为0。 
 										sweixin.launchMiniProgram({
-											id: that.abotapi.globalData.xiaochengxu_account,
+											id: __this.globalData.xiaochengxu_account,
 											path:wxa_path,
-											type: 0,
+											type: 2,
 											webUrl:'https://www.abot.cn'
 										});
 										
