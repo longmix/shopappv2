@@ -58,6 +58,7 @@
 								
 								<view class="df_1 c6 show_paixu" style="padding: 20rpx 10rpx 20rpx 40rpx;">
 									<view style=''>
+										<view class="l_h20" style="float: right;font-size:25rpx;margin-right: 10rpx;">距离{{item.dis_str}}</view>
 										<view class="l_h20" style="font-size:25rpx;">{{item.value_arr.zitidian_name}}</view>
 										<view class="l_h20 " style="font-size:25rpx;">自提点电话：<text>{{item.value_arr.zitidian_phone}}</text></view>
 									</view>

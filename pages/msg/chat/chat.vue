@@ -2,7 +2,7 @@
 	<view>
 		<view class="content" @touchstart="hideEmoji">
 			<scroll-view class="msg-list" scroll-y="true" :scroll-with-animation="scrollAnimation" :scroll-top="scrollTop" :scroll-into-view="scrollToView">
-				<view class="row" v-for="(row,index) in my_msgList" :key="index" :id="'msg'+ index">
+				<view class="row" v-for="(row,index) in my_msgList" :key="index" :id="'msg' + row.id">
 					<!-- 系统消息 -->
 					<block v-if="row.type == 'system'">
 						<view class="system">
@@ -43,7 +43,7 @@
 									<view class="length">{{row.msg.length}}</view>
 									<view class="icon my-voice"></view>
 								</view>
-								<view v-if="row.msg.type=='img'" class="bubble img" @tap="showPic(row)">
+								<view v-if="row.msg.type=='img'" class="bubble img" @tap="showPic(row.msg)">
 									<image :src="row.msg.content.text" :style="{'width': row.msg.content.w+'px','height': row.msg.content.h+'px'}"></image>
 								</view>
 							</view>
@@ -67,7 +67,7 @@
 									<view class="icon other-voice"></view>
 									<view class="length">{{row.msg.length}}</view>
 								</view>
-								<view v-if="row.msg.type=='img'" class="bubble img" @tap="showPic(row)">
+								<view v-if="row.msg.type=='img'" class="bubble img" @tap="showPic(row.msg)">
 									<image :src="row.msg.content.text" :style="{'width': row.msg.content.w+'px','height': row.msg.content.h+'px'}"></image>
 								</view>
 							</view>
@@ -513,8 +513,11 @@
 							break;
 					}
 				}
+				console.log('$nextTick',msg)
 				this.$nextTick(function() {
-					this.scrollToView = 'msg'+msg.id
+					console.log('$nextTick',msg)
+					this.scrollToView = 'msg' + msg.id;
+					console.log('123456789123456',this.scrollToView)
 				});
 			},
 			// 选择表情
@@ -583,9 +586,28 @@
 				 // count: 1, // 默认9
 				  sizeType: ['compressed'], //可以指定是原图还是压缩图，默认二者都有
 				  success: function (res) {		
-					console.log(res,'ddd')								
+	
+					console.log('ddddddddddddddddddddddddddddddd',res)								
 					// 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
 					var tempFilePaths = res.tempFilePaths;
+					
+					let msg = {
+							
+						};
+					
+					
+					uni.getImageInfo({
+					 	src: tempFilePaths,  
+					 	success: (image) => {  
+					 		console.log('image====',image)
+					 		msg.w = image.width;
+					 		msg.h = image.height;
+							
+					 	}							  
+					 }); 		
+					
+					
+					
 					for(let i=0;i<tempFilePaths.length;i++){
 						uni.uploadFile({
 						  url: that.abotapi.globalData.yanyubao_server_url + '/Yanyubao/ShopApp/upload_image_file_without_user', 				 
@@ -602,7 +624,12 @@
 							sellerid: that.abotapi.globalData.default_sellerid,
 						  },
 						  success: (res) => {
+							  
 							var data = JSON.parse(res.data);
+							
+							
+							console.log('5555555555555',res)
+							console.log('5555555555555',data)
 							if(data.code != 1){
 							  uni.showToast({
 								title: data.msg,
@@ -614,31 +641,31 @@
 						
 							//msg为图片地址
 							var img_url = data.img_url;
-							let msg = {
-									text: img_url
-								};
-								console.log('ceshi---',img_url);
-								uni.getImageInfo({  
-									src: img_url,  
-									success: (image) => {  
-										console.log('image====',image)
-										msg.w = image.width;
-										msg.h = image.height;
-										that.sendMsg(msg, 'img')
-									}							  
-								}); 						
+							msg.text = img_url;
+								
+							console.log('ceshi---',img_url);
+							that.sendMsg(msg, 'img')
+							// uni.getImageInfo({ 
+							// 	src: img_url,  
+							// 	success: (image) => {  
+							// 		console.log('image====',image)
+							// 		msg.w = image.width;
+							// 		msg.h = image.height;
+									
+							// 	}							  
+							// }); 						
 								
 							
 							
 						  },
-						  fail: function (res) {
+							fail: function (res) {
 							  
 							console.log('fail');
 										
-						  }
+							}
 						})
 					  }
-				  }
+					}
 				})
 				
 							
@@ -722,7 +749,7 @@
 				msg.msg.content = this.setPicSize(msg.msg.content);
 				this.msgImgList.push(msg.msg.content.text);
 				this.my_msgList.push(msg);
-				
+				console.log('')
 				if(this.chat_type==0){
 					uni.setStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+this.userid, this.my_msgList);	
 					console.log('test===================0',uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+this.userid))	
@@ -744,10 +771,11 @@
 			},
 			
 			// 预览图片
-			showPic(row){
+			showPic(msg){
+				
 				uni.previewImage({
-					indicator:"none",
-					current:row.msg.url,
+					indicator:'none',
+					current:msg.content.text,
 					urls: this.msgImgList
 				});
 			},

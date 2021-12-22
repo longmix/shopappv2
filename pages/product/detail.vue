@@ -2162,9 +2162,9 @@
 				var youhui_url = e.currentTarget.dataset.youhuiurl;
 				
 				if(!youhui_url){
-					uni.showToast({
-						title:'无效活动链接'
-					})
+					// uni.showToast({
+					// 	title:'无效活动链接'
+					// })
 					
 					return;
 				}

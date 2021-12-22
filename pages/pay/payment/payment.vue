@@ -269,6 +269,7 @@
 				}
 				
 				console.log('即将跳转到微信小程序中去支付===>>>>'+ that.abotapi.globalData.xiaochengxu_account);
+				console.log('即将跳转到微信小程序中去支付===>>>>'+ wxa_path);
 				
 				plus.share.getServices(
 					function(res){ 
@@ -602,9 +603,14 @@
 							}
 
 						} else {
-							uni.showToast({
-								title: res.data.msg,
-								duration: 2000
+							uni.showModal({
+								title:'提示',
+								content:res.data.msg,
+								success(res001) {
+									
+									that.abotapi.call_h5browser_or_other_goto_url('/pages/tabbar/user');
+									
+								}
 							});
 						}
 					},

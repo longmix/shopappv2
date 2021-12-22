@@ -1650,15 +1650,16 @@ export default {
 		
 		// 建立socket连接
 		linkSocket: function(){
-			 var that = this;
+			var that = this;
 			var userInfo = that.abotapi.get_user_info();
 			const socket_io = io(that.abotapi.globalData.socket_server, {path: '/socketio/'})
 		   
 			// socket连接后以uid登录
 			
-			var uid = 'chat_app_userid_' + that.supplierid + '_' + userInfo.userid;
-						
-						
+			//var uid = 'chat_app_userid_' + that.supplierid + '_' + userInfo.userid;
+			
+			var uid = 'chat_app_userid_' +that.abotapi.globalData.default_sellerid + '_' + userInfo.userid;		
+			//console.log('chat_app_userid_',that.abotapi.globalData.default_sellerid)		
 			console.log('chat_app_userid_=============',uid);
 			
 						

@@ -1731,7 +1731,7 @@ module.exports = {
 										sweixin.launchMiniProgram({
 											id: __this.globalData.xiaochengxu_account,
 											path:wxa_path,
-											type: 2,
+											type: 0,
 											webUrl:'https://www.abot.cn'
 										});
 										
