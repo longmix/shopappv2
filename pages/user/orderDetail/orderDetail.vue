@@ -42,12 +42,17 @@
 					</view>
 					<view v-if=""></view>
 				</view>
-				<view v-if="orderData.status_str=='订单已完成'"
+				<view v-if="(orderData.status_str=='订单已完成')&& (is_shop_admin != 1) && (item.is_pingjia == 0)"
 					class="font_12 fl_r mr_5 btn_min mg_l" style="position: absolute;right: 20rpx;margin-top: 20rpx;"
 					@click="pingjia" 
 					:data-productid='item.productInfo.productid'
-					:data-orderid='orderData.orderid' 
-					:data-xianmaishangid='orderData.xianmai_shangid'>立即评价</view>
+					:data-orderid='orderData.orderid'>立即评价</view>
+					
+				<view v-if="(xianmai_shang_order_remark) && (is_shop_admin != 1) && (item.is_pingjia == 1)"
+					class="font_12 fl_r mr_5 btn_min mg_l" style="position: absolute;right: 20rpx;margin-top: 20rpx;"
+					@click="go_to_page" 
+					:data-faquanid='xianmai_shang_order_remark'
+					:data-productid='item.productInfo.productid'>查看评价</view>
 	    </navigator>
 		
 		<!-- 外卖订单的商品列表 -->
@@ -166,7 +171,29 @@
 				</view>
 			</view>
 			
-			
+			<view class="show_modal_mask" v-if="show_agree_refund_model == true" @tap="show_agree_refund_model = false"></view>
+			<view class="show_modal_pop" v-if="show_agree_refund_model == true">
+				<view style="width: 600rpx;background-color: #FFFFFF;padding-bottom: 20rpx;">
+					<view class="" style="text-align: center;">退款说明</view>
+					<view style="margin-left: 10rpx;">退款理由
+						<textarea
+							placeholder-style="color:#A9A9A9"
+							maxlength="70"
+							placeholder="退款理由" 
+							style="border: 1rpx solid #999999;width: 500rpx;margin: 20rpx 50rpx;"
+							@input="tuikuan_reason"/>
+					</view>
+					<view style="margin-left: 10rpx;">退货物流信息
+						<textarea
+							placeholder-style="color:#A9A9A9"
+							maxlength="70"
+							placeholder="快递信息" 
+							style="border: 1rpx solid #999999;width: 500rpx;margin: 20rpx 50rpx;"
+							@input="express_information"/>
+					</view>
+					<button style="margin: 20rpx;" type="primary" @tap="queren_return_goods">确认退货</button>
+				</view>
+			</view>
 			
 			
 			
@@ -174,7 +201,7 @@
 		
 			<view style="overflow: hidden;margin-right: 3%;">
 				<view class="font_12 btn_min fl_r mr_5 mg_l" @tap="refundOrder" 
-					v-if="(wxa_order_hide_daishouhuo_refund != 1) && (orderData.status == 1)" 
+					v-if="(wxa_order_hide_daishouhuo_refund != 1) && (orderData.status == 1) && (is_shop_admin != 1)" 
 					:data-orderid="orderData.orderid">
 					申请退款
 				</view>
@@ -190,9 +217,9 @@
 				
 				
 				<view class="font_12 btn_min fl_r mr_5 mg_l" @tap="refundOrder" 
-					v-if="(wxa_order_hide_daishouhuo_refund_after != 1) && ((orderData.status == 2) || (orderData.status == 3)  || (orderData.status == 4))" 
+					v-if="(is_shop_admin != 1) && (wxa_order_hide_daishouhuo_refund_after != 1) && ((orderData.status == 2) || (orderData.status == 3)  || (orderData.status == 4)) " 
 					:data-orderid="orderData.orderid">申请退款</view>
-				<view v-if="orderData.status_str=='待收货'" 
+				<view v-if="(orderData.status_str=='已发货待收货' ) && (is_shop_admin != 1) " 
 					@click="recOrder" 
 					:data-orderid="orderData.orderid" 
 					class="font_12 fl_r mr_5 btn_min mg_l">确认收货</view>
@@ -201,27 +228,35 @@
 					class="font_12 fl_r mr_5 btn_min mg_l" 
 					@click="pingjia" 
 					:data-orderid='orderData.orderid' 
-					:data-xianmaishangid='orderData.xianmai_shangid'>立即评价</view>
+					:data-xianmaishangid='orderData.order_option.hahading_order_xianmai_shangid'
+					>立即评价</view>
 				<view v-if="orderData.status_str=='待收货' && xianmai_shang_order_remark" 
 					class="font_12 fl_r mr_5 btn_min mg_l" 
 					@click="go_to_page" 
 					:data-faquanid='xianmai_shang_order_remark'>查看评价</view>
 				
 				
-				<view v-if="orderData.status_str=='订单已完成'" 
+				<view v-if="(orderData.status_str=='订单已完成')" 
 					class="font_12 fl_r mr_5 btn_min mg_l" 
 					style="background-color: #E3170D;"
 					@click="cancelOrder" :data-orderid='orderData.orderid' 
 					:data-action-type='1'>删除订单</view>
-				<view v-if="orderData.status_str=='订单已完成' && xianmai_shang_order_remark == ''" 
+				<view v-if="(orderData.status_str=='订单已完成') && (xianmai_shang_order_remark == '') && (is_shop_admin != 1) && (waimai_order_type == 1)" 
 					class="font_12 fl_r mr_5 btn_min mg_l" 
 					@click="pingjia" 
 					:data-orderid='orderData.orderid' 
-					:data-xianmaishangid='orderData.xianmai_shangid'>立即评价</view>
-				<view v-if="xianmai_shang_order_remark" 
+					:data-xianmaishangid='orderData.order_option.hahading_order_xianmai_shangid'>立即评价</view>
+				<view v-if="(xianmai_shang_order_remark) && (is_shop_admin != 1) && (waimai_order_type == 1)" 
 					class="font_12 fl_r mr_5 btn_min mg_l" 
 					@click="go_to_page" 
 					:data-faquanid='xianmai_shang_order_remark'>查看评价</view>
+					
+					
+					<view v-if="(orderData.status_str=='已申请退款') 
+						&& (orderData.tuikuan_list) && (orderData.tuikuan_list[0].statusname == '同意退货')"
+						@tap="agree_refund_order" :data-orderid="orderData.orderid"
+						class="font_12 fl_r mr_5 btn_min mg_l"
+						style="background-color: #999;">退换货处理</view>
 			</view>
 			
 			
@@ -464,6 +499,11 @@
 				
 				
 				orderProduct_productinfo_productid:0,
+				
+				show_agree_refund_model:false,
+				tuikuan_reason_list:'',
+				express_information_list:'',
+				tuikuanid:0,
 			}
 		},
 		
@@ -632,6 +672,12 @@
 							that.zitidian_order = JSON.parse(orderData.order_option.zitidian_order);
 							that.zitidian_tihuoma_qrcode = orderData.order_option.zitidian_tihuoma_qrcode;
 						}
+						
+						if((orderData.tuikuan_list) && (orderData.tuikuan_list[0].tuikuanid)){
+							that.tuikuanid = orderData.tuikuan_list[0].tuikuanid;
+						}
+						
+						
 						console.log('zitidian_order',that.zitidian_order)
 						} else {
 						uni.showToast({
@@ -749,10 +795,17 @@
 					var faquanid = e.currentTarget.dataset.faquanid;
 					
 					uni.navigateTo({
-						url: '/cms/discover/discover?faquanid=' + faquanid +'&xianmai_shangid='
-						 + this.orderData.xianmai_shangid 
-						 +'&productid=' + this.orderProduct_productinfo_productid.productid,
+						url: '/cms/discover/discover?faquanid=' + faquanid +'&xianmai_shangid=' + this.orderData.order_option.hahading_order_xianmai_shangid,
+						
 					})
+					if(this.waimai_order_type == 0){
+						uni.navigateTo({
+							url: '/cms/discover/discover?faquanid=' + faquanid + '&productid=' + this.orderProduct_productinfo_productid.productid,
+							
+						})
+					}
+					
+					
 					//#ifdef MP-WEIXIN
 					uni.switchTab({
 						url: '/cms/discover/discover',
@@ -760,6 +813,63 @@
 					//#endif
 					
 				},
+				
+				
+				//退换货弹窗信息
+				agree_refund_order:function(){
+					var that = this;
+					that.show_agree_refund_model = true;
+				},
+				//退款理由
+				tuikuan_reason:function(e){
+					var that = this;
+					that.tuikuan_reason_list = e.detail.value;
+				},
+				//快递信息
+				express_information:function(e){
+					var that = this;
+					that.express_information_list = e.detail.value;
+				},
+				//退货信息确认
+				queren_return_goods:function(){
+					var that = this;
+					var userInfo = that.abotapi.get_user_info();
+					var post_data = {
+						tuikuanid: that.tuikuanid,
+						memo01: that.tuikuan_reason_list,
+						memo03: that.express_information_list,
+						userid: userInfo.userid,
+						checkstr: userInfo.checkstr,
+					};
+					
+					that.abotapi.abotRequest({
+					    url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=order_tuikuan_add_info',
+					 
+					    data: post_data,
+					    success: function (res) {
+							if(res.data.code == 1){
+								uni.showToast({
+									title:'退款成功！',
+									duration: 2000,
+								});
+								that.show_agree_refund_model = false;
+								
+							}
+					
+					    },
+					    fail: function (e) {
+							uni.showToast({
+								title: '网络异常！',
+								duration: 2000
+							});
+					    },
+					});
+					
+					
+					
+					
+				},
+				
 				
 				//复制剪切板
 				Clipboard_text:function(text){
@@ -784,7 +894,9 @@
 					})
 				},
 				//立即评价
+				
 				pingjia:function(e){
+					var that = this;
 					console.log('eeeeeeeeeeeee',e);
 					var orderid = e.currentTarget.dataset.orderid;
 					var xianmaishangid = e.currentTarget.dataset.xianmaishangid;
@@ -795,9 +907,11 @@
 					        console.log(res.tapIndex)
 					        if ((res.tapIndex == 0)) {
 								var new_url = '../../../cms/publish/publish?publishtype=image&orderid=' + orderid + '&xianmai_shangid=' + xianmaishangid;
-								if(productid){
-									new_url += '&productid=' + productid;
+								
+								if(that.waimai_order_type == 0){
+									var new_url = '../../../cms/publish/publish?publishtype=image&orderid=' + orderid + '&productid=' + productid;
 								}
+								
 								console.log('跳转商品评价',new_url)
 								uni.navigateTo({
 									url: new_url
@@ -1002,6 +1116,7 @@
 						}
 					});
 				},
+				
 				call_mobile_new:function(){
 					var that = this;
 					

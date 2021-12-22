@@ -2,16 +2,16 @@
 	<view>
 		<view class="content" @touchstart="hideEmoji">
 			<scroll-view class="msg-list" scroll-y="true" :scroll-with-animation="scrollAnimation" :scroll-top="scrollTop" :scroll-into-view="scrollToView">
-				<view class="row" v-for="(row,index) in my_msgList" :key="index" :id="'msg'+row.id">
+				<view class="row" v-for="(row,index) in my_msgList" :key="index" :id="'msg'+ index">
 					<!-- 系统消息 -->
 					<block v-if="row.type == 'system'">
 						<view class="system">
 							<!-- 文字消息 -->
-							<view v-if="row.msg.type == 'text'" class="system_notification">{{ row.msg.content.text }}</view>
+							<view v-if="row.msg.type == 'text'" class="system_notification">{{row.msg.content}}</view>
 							<!-- 领取红包消息 -->
 							<view v-if="row.msg.type == 'redEnvelope'" class="red-envelope">
 								<image src="/static/img/red-envelope-chat.png"></image>
-								{{ row.msg.content.text }}
+								{{row.msg.content.text}}
 							</view>
 							<!-- 产品信息 -->
 							<view v-if="row.msg.type=='product'" class="product">
@@ -203,10 +203,9 @@
 			
 			this.myuid = userInfo.userid;
 			this.userid = option.userid;
-			this.userid01 = option.userid01;
-			this.userid02 = option.userid02;
+			
 			this.chat_type = option.type;
-			this.key = option.key;
+			this.key = option.key;//判断系统通知携带参数
 			
 			uni.setNavigationBarTitle({
 				title: option.name
@@ -259,32 +258,37 @@
 			var userInfo = that.abotapi.get_user_info();
 			if(that.userid){
 				var cache_msglist = uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+that.userid);			
-				console.log('cache_msglist========2',cache_msglist)
+				console.log('cache_msglist========0',cache_msglist)
 			}
-			if(that.sellerid){
-				var cache_msglist = uni.getStorageSync('cache_msglist_sellerid_');	
-				console.log('cache_msglist========4',cache_msglist)
+			if(that.key){
+				var cache_msglist = uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_system_100000001');
+				console.log('cache_msglist========1',cache_msglist)
 			}
 			if(that.groupid){
 				var cache_msglist = uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_groupid_'+that.groupid);
-				console.log('cache_msglist========3',cache_msglist)
+				console.log('cache_msglist========4',cache_msglist)
 			}
 			
-			console.log('cache_msglist========0',cache_msglist)
+			console.log('cache_msglist========',cache_msglist)
 			
 			that.cache_msglist = cache_msglist ? cache_msglist : [];
 			
 			
 			var data_params = {
-				action: 'unread',
+				action: 'unread',//查询未读消息
 				sellerid: that.abotapi.globalData.default_sellerid,
 			}
 						
-			if(!that.groupid){
+			if(that.userid){
 				data_params.userid01 = that.userid;
 				data_params.userid02 = userInfo.userid;
 				data_params.chat_type = 0;
-			} else {
+			}else if(that.key == 'test'){
+				data_params.userid01 = 100000001;
+				data_params.userid02 = userInfo.userid;
+				data_params.chat_type = 1;
+			}
+			else {
 				data_params.userid01 = that.groupid;
 				data_params.userid02 = userInfo.userid;
 				data_params.chat_type = 4;
@@ -300,19 +304,51 @@
 			     success: function (res) {
 					  var data = res.data;
 					  if(data.code == 1){
-						  var lastMsgList = data.data;
+						  var lastMsgList =[];
+						  lastMsgList = data.data;
+						  
+						  console.log('123456789555555',lastMsgList)
+						  
 						  if(lastMsgList.length>0){
-							  for(var i=0; i<lastMsgList.length; i++){
-																	  
-								that.cache_msglist.push(JSON.parse(lastMsgList[i].chat_msg));
+							  
+							for(var i=0; i<lastMsgList.length; i++){
 								
-								console.log('向本地缓存的消息记录中追加（http request /openapi/ChatData/chat_history）：', lastMsgList[i].chat_msg);
-											  
-							   }
+								
+								if(that.chat_type == 1){
+									var msg001	= JSON.parse(lastMsgList[i].chat_msg);
+									let msg = {
+										type: 'system',
+										msg: {
+											id: '',
+											time:lastMsgList[i].createtime,
+											type: 'text',
+											
+											content: msg001,
+										},
+										
+									};
+									
+									that.cache_msglist.push(msg);
+									
+								}
+								if(that.chat_type == 0){
+									that.cache_msglist.push(JSON.parse(lastMsgList[i].chat_msg));
+								
+								}
+							
+								
+								}
+								
+								console.log('向本地缓存的消息记录中追加', that.cache_msglist);
 																						
 							if(that.chat_type == 0){
 								uni.setStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+that.userid, that.cache_msglist);
-							}else{
+								
+							}else if(that.chat_type == 1){
+								uni.setStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_system_100000001', that.cache_msglist);
+								
+							}
+							else{
 								uni.setStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_groupid_'+that.groupid, that.cache_msglist);
 							}
 							
@@ -330,11 +366,17 @@
 								sellerid: that.abotapi.globalData.default_sellerid,
 							}
 								
-							if(!that.groupid){
+							if(that.userid){
 								data_params.userid01 = userInfo.userid;
 								data_params.userid02 = that.userid;
 								data_params.chat_type = 0;
-							} else {
+								
+							} else if(that.key == 'test'){
+								data_params.userid01 = userInfo.userid;
+								data_params.userid02 = 100000001;
+								data_params.chat_type = 1;
+							}
+							else {
 								data_params.userid01 =  userInfo.userid;
 								data_params.userid02 = that.groupid;
 								data_params.chat_type = 4;
@@ -379,7 +421,7 @@
 				
 				let ylist = this.cache_msglist;
 				
-				console.log('cache_msglist========1',ylist)
+				console.log('cache_msglist========9',ylist)
 				
 				var list = [];
 				// 获取消息中的图片,并处理显示尺寸
@@ -390,16 +432,16 @@
 				// 		this.msgImgList.push(list[i].msg.url);
 				// 	}
 				// }
-				
+			
 				for (var i = 0; i < ylist.length; i++) {
 					list.push(ylist[i]);
 				}
-				
+				console.log('list000000000000',list)
+					
 				
 				for (var i = 0; i < list.length; i++) {
 					list[i].msg.id = i;
 				}
-				
 				// 获取消息中的图片,并处理显示尺寸
 				for(let i=0;i<list.length;i++){
 					if(list[i].type=='img'){
@@ -408,7 +450,6 @@
 						this.msgImgList.push(list[i].msg.url);
 					}
 				}
-				
 				
 				
 				
@@ -870,14 +911,14 @@
 						   sellerid: that.abotapi.globalData.default_sellerid,
 					}
 					
-					if(!that.groupid){
+					if(that.userid){
 						data_params.userid01 = that.userid;
 						data_params.userid02 = userInfo.userid;
 						data_params.chat_type = 0;
 					}
 					 else if(that.key == 'test'){
-						data_params.userid01 = that.userid01;
-						data_params.userid02 = that.userid02;
+						data_params.userid01 = 100000001;
+						data_params.userid02 = userInfo.userid;
 			
 						data_params.chat_type = 1;
 						 
@@ -926,7 +967,7 @@
 					data_params.userid01 = userInfo.userid;
 					data_params.userid02 = that.userid;
 					data_params.chat_type = 0;
-				} else {
+				}else {
 					data_params.userid01 = userInfo.userid;
 					data_params.userid02 = that.groupid;
 					data_params.chat_type = 4;
@@ -1318,8 +1359,9 @@ page{
 	/* min-width: 100rpx; */
 	padding: 15rpx 20rpx;
 	border-radius: 10rpx;
+	margin: 20rpx 10rpx;
 	/* max-width: 700rpx; */
 	text-align: center;
-	color: #fffffff;
+	color: #ffffff;          
 }
 </style>

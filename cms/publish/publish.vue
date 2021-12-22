@@ -161,6 +161,12 @@
 			
 			if(options.productid){
 				this.productid = options.productid;
+				//授权头像的参数拼接
+				if(last_url.indexOf("?") != -1){
+					last_url += '&productid=' + options.productid;
+				}else{
+					last_url += '?productid=' + options.productid;
+				}
 			}
 			
 			
@@ -332,8 +338,13 @@
 			  
 			__goto_homepage:function()  {
 				if(this.page_not_in_tabbar){
+					var new_url = '/cms/discover/discover?display_type=my';
+					 if(this.productid){
+						var new_url = '/cms/discover/discover?display_type=my' + '&my_discover_list=1';
+					 	
+					 }
 					uni.navigateTo({
-						url: '/cms/discover/discover?display_type=my' + '&xianmai_shangid=' +this.xianmai_shangid,
+						url: new_url,
 					})
 				}
 				else{
@@ -412,6 +423,7 @@
 				if(that.productid){
 					data_params.productid = that.productid;
 					data_params.faquan_type = 2;
+					data_params.xianmai_shang_orderid = that.orderid;
 				}
 						
 				that.abotapi.abotRequest({

@@ -250,6 +250,7 @@
 				current_video_id_playing:0,
 				
 				productid:0,
+				my_discover_list:0,
 			};
 		},
 		onLoad(options) {
@@ -315,6 +316,16 @@
 				
 				if(options.productid){
 					this.productid = options.productid;
+					
+				}
+				if(options.my_discover_list){
+					this.my_discover_list = options.my_discover_list;
+					this.is_search = false;
+					this.is_my_discover = 1;
+					this.is_my_fabu_show = 0;
+					this.is_like_show = 0;
+					this.is_collection_show = 0;
+					this.is_recently_show = 0;
 				}
 
 				//订单跳转查看订单评价
@@ -1014,11 +1025,21 @@
 				}
 
 				if (this.xianmai_shangid) {
-					//post_data.extend_id = this.xianmai_shangid;
+					post_data.extend_id = this.xianmai_shangid;
 					post_data.faquan_type = 1;
+				
+					
+				}
+					
+				if(this.my_discover_list == 1){
+					post_data.faquan_type = 2;
 					post_data.status = 'all';
 					//post_data.productid = this.productid;
-					
+				}
+				if(this.productid){
+					post_data.faquan_type = 2;
+					post_data.status = 'all';
+					post_data.productid = this.productid;
 				}
 
 				this.abotapi.abotRequest({

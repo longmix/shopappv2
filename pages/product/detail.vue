@@ -1365,6 +1365,7 @@
 				this.shop_userid = shop_info.userid;
 				this.shop_name = shop_info.shop_name;
 				this.shop_telephone = shop_info.telephone;
+				console.log('111111111111111111111111111',shop_info)
 
 			},
 
@@ -1773,8 +1774,12 @@
 
 			//商品评论
 			toRatings() {
+				// uni.navigateTo({
+				// 	url: 'ratings/ratings?' + this.goods_detail.productid,
+				// })
+				
 				uni.navigateTo({
-					url: 'ratings/ratings?productid=' + this.goods_detail.productid,
+					url: '/cms/discover/discover?productid=' + this.goods_detail.productid,
 				})
 			},
 			getFaquanList: function() {

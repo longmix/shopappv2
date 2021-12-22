@@ -243,36 +243,6 @@
 							that.latestMsgList_count = 0;
 						}
 					
-						var nowDate = new Date();
-						var msgList001 = [];
-					
-						for(var i=0;i<that.latestMsgList.length; i++){
-							if(that.latestMsgList[i].chat_type == 1){
-								
-								let msg001 = {text:that.latestMsgList[i].latest_msg};
-								
-								let msg = {
-									type: 'system',
-									msg: {
-										id: that.latestMsgList[i].latestid,
-										time: nowDate.getHours() + ':' + nowDate.getMinutes(),
-										type: that.latestMsgList[i].msg_type,
-										userinfo: { uid: userInfo.userid, username: userAcountInfo.nickname, face: userAcountInfo.headimgurl },
-										content: msg001,
-									
-									},
-									
-								};
-								console.log('msg',msg)
-								msgList001.push(msg);
-								console.log('msgList001',msgList001)
-								uni.setStorageSync('cache_msglist_sellerid_',msgList001);	
-								
-							
-							}
-						}
-						 
-						 
 						uni.setStorageSync('latestMsgList_cache',that.latestMsgList);
 						 
 				     }
@@ -286,7 +256,7 @@
 					url = url + '&userid=' + chat.from_person_detail.userid + '&name=' + chat.from_person_detail.nickname;					
 					
 				}else if(chat.chat_type == 1){
-					url = url +'&userid01=' +chat.userid01 + '&userid02=' + chat.userid02 + '&key=test';
+					url = url + '&key=test';
 				}
 				 else {
 					url = url + '&groupid=' + chat.groupid;
