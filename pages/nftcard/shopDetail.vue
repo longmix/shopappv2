@@ -34,8 +34,9 @@
 		<block v-if="(use_theme_nft_package == 1) &&  current_shang_detail">
 			<view class="" style="background-color: #eceeef; padding-bottom: 400rpx;">
 				<!--放行商封面  -->
-				<view :style="'background-image: url(\'' + current_shang_detail.mendian_image + '\');width: 100%; position: absolute; height: 400rpx;'">
+				<view class="mendian" :style="{backgroundImage: 'url(' + current_shang_detail.mendian_image + ')'}">
 				</view>
+				
 				
 				
 				<!-- 发行商头像和名称 -->
@@ -3059,5 +3060,10 @@
 		font-weight: bold;
 		font-size: 35rpx;
 	
+	}
+	.mendian{
+		width: 100%; 
+		position: absolute; 
+		height: 400rpx;
 	}
 </style>
