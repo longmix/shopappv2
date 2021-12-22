@@ -96,17 +96,15 @@
 				title: '扫雷'
 			})
 			
-			//获取数据缓存
+			//同步获取数据缓存
 			var app_setting = uni.getStorageSync('mine_chlearing_app_setting')
 			
 			console.log('888888888888',app_setting)
 			//判断app_setting是否有值
-			if(app_setting != null){
+			if(app_setting){
 				that.app_bomb = app_setting.app_bomb
 				that.app_column = app_setting.app_column
 				that.app_row = app_setting.app_row
-			}else{
-				return;
 			}
 			
 			
@@ -334,6 +332,7 @@
 					app_bomb : that.app_bomb,
 				};
 				
+				//异步缓存接口
 				uni.setStorage({
 					key:'mine_chlearing_app_setting',
 					data:setting
