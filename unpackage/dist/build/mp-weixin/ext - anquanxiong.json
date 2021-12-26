@@ -1,6 +1,6 @@
 {
   "extEnable": true,
-  "extAppid": "wx6576af86ad5d4804",
+  "extAppid": "wx00cf4388d2842342",
   "directCommit": true,
   "ext": {
     "name": "wechat",
@@ -11,10 +11,10 @@
         "user_2"
       ]
     },
-    "xiaochengxu_appid": "wx6576af86ad5d4804",
+    "xiaochengxu_appid": "wx00cf4388d2842342",
     "force_sellerid_flag": 1,
     "force_sellerid_value": "fSmyUPkjj",
-    "shop_name": "安全熊广告码",
+    "shop_name": "微产品码",
     "version_number": "Ver 1.7.9 Build 258",
     "navigationBarBackgroundColor_fixed": 1,
 	"navigationBar_font_color":"#ffffff",
@@ -56,7 +56,7 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#ff8040",
-    "navigationBarTitleText": "安全熊",
+    "navigationBarTitleText": "微产品码",
     "navigationBarTextStyle": "white"
   },
   "networkTimeout": {
