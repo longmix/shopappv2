@@ -42,7 +42,7 @@
 					</view>
 					<view v-if=""></view>
 				</view>
-				<view v-if="(orderData.status_str=='订单已完成')&& (is_shop_admin != 1) && (item.is_pingjia == 0)"
+				<view v-if="(orderData.status_str=='订单已完成')&& (is_shop_admin != 1)"
 					class="font_12 fl_r mr_5 btn_min mg_l" style="position: absolute;right: 20rpx;margin-top: 20rpx;"
 					@click="pingjia" 
 					:data-productid='item.productInfo.productid'

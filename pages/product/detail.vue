@@ -436,9 +436,9 @@
 		</view>
 		
 		<!-- 评价 -->
-		<view class="info-box comments" id="comments">
+		<view class="info-box comments" id="comments" v-if="faquanList">
 			
-			<view class="row">
+			<view class="row" style="margin: 0;" >
 				<view class="text">商品评价</view>
 				<view class="arrow" @tap="toRatings">
 					<view class="show" @tap="showComments()">
@@ -1637,6 +1637,7 @@
 						} else if (info == "取消成功") {
 							this.isKeep = false;
 						}
+						console.log('111111111111111111111111111111113')
 						uni.showToast({
 							title: info,
 							icon: 'success',
@@ -2122,6 +2123,7 @@
 							
 							
 						} else {
+							console.log('111111111111111111111111111111112')
 							uni.showToast({
 								title: res.data.msg,
 								duration: 2000,

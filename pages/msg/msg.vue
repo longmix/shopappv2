@@ -19,7 +19,7 @@
 							<view class="time">{{chat.latest_time}}</view>
 						</view>
 						<view class="bottom" style="width: 500rpx;overflow: hidden;">
-							<view class="msg" v-if="chat.msg_type == 'text'" v-html="chat.latest_msg" style="height: 30rpx;margin-top: 10rpx;"></view>
+							<view class="msg" v-if="chat.msg_type == 'text'" v-html="chat.latest_msg" style="height: 30rpx;margin-top: 10rpx;width: 400rpx;overflow:hidden;"></view>
 							<view class="msg" v-else-if="chat.msg_type == 'img'">[图片]</view>
 							<view class="msg" v-else-if="chat.msg_type == 'redEnvelope'">[红包]</view>
 							<view class="msg" v-else-if="chat.msg_type == 'voice'">[语音]</view>
@@ -34,13 +34,13 @@
 					<view class="left">
 						<image v-if="chat.from_person_detail" :src="chat.from_person_detail.headimgurl"></image>
 					</view>
-					<view class="right">
+					<view class="right">  
 						<view class="top">
 							<view v-if="chat.from_person_detail" class="username">{{chat.from_person_detail.nickname}}</view>
 							<view class="time">{{chat.latest_time}}</view>
 						</view>
 						<view class="bottom">
-							<view class="msg" v-if="chat.msg_type == 'text'" v-html="chat.latest_msg"></view>
+							<view class="msg" v-if="chat.msg_type == 'text'" v-html="chat.latest_msg" style="width: 400rpx;overflow:hidden;"></view>
 							<view class="msg" v-else-if="chat.msg_type == 'img'">[图片]</view>
 							<view class="msg" v-else-if="chat.msg_type == 'redEnvelope'">[红包]</view>
 							<view class="msg" v-else-if="chat.msg_type == 'voice'">[语音]</view>
@@ -190,6 +190,20 @@
 		    setTimeout(function () {
 		        uni.stopPullDownRefresh();
 		    }, 1000);
+		},
+		onShow: function() {
+			var that = this;
+			
+			var userInfo =that.abotapi.get_user_info();
+			console.log('acadawuserinfo',userInfo);
+			if(userInfo == null){
+				uni.redirectTo({
+				url: '/pages/login/login'
+				 });
+			}
+			
+			that.getLastMsg();
+		
 		},
 		onLoad() {
 			var that = this;

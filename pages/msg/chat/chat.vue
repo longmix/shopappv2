@@ -6,6 +6,12 @@
 					<!-- 系统消息 -->
 					<block v-if="row.type == 'system'">
 						<view class="system">
+							
+							<!-- 会话时间 -->
+							<view v-if="row.msg.time" class="time" style="text-align: center;color: #666;font-size: 26rpx;margin-top: 20rpx;">
+								{{row.msg.time}}
+							</view>
+							
 							<!-- 文字消息 -->
 							<view v-if="row.msg.type == 'text'" class="system_notification">{{row.msg.content}}</view>
 							<!-- 领取红包消息 -->
@@ -25,10 +31,7 @@
 								<button size="mini">发送给TA</button>
 							</view>
 							
-							<!-- 会话时间 -->
-							<view v-if="row.msg.type=='time'" class="time">
-								{{row.msg.content.text}}
-							</view>
+							
 						</view>
 					</block>
 					
@@ -100,7 +103,9 @@
 			</view>
 			<!-- #endif -->
 			<view class="textbox">
-				<view class="voice-mode" :class="[isVoice?'':'hidden',recording?'recording':'']" @touchstart="voiceBegin" @touchmove.stop.prevent="voiceIng" @touchend="voiceEnd" @touchcancel="voiceCancel">{{voiceTis}}</view>
+				<view class="voice-mode" :class="[isVoice?'':'hidden',recording?'recording':'']" 
+				 @touchstart="voiceBegin" @touchmove.stop.prevent="voiceIng" @touchend="voiceEnd"
+				 @touchcancel="voiceCancel">{{voiceTis}}</view>
 				<view class="text-mode"  :class="isVoice?'hidden':''">
 					<view class="box">
 						<textarea auto-height="true" v-model="textMsg" id="textMsg" />
@@ -177,7 +182,12 @@
 				pageOn: false,
 				emojiList:parameter.emojiList,
 				//表情图片图床名称
-				onlineEmoji:{"100.gif":"AbNQgA.gif","101.gif":"AbN3ut.gif","102.gif":"AbNM3d.gif","103.gif":"AbN8DP.gif","104.gif":"AbNljI.gif","105.gif":"AbNtUS.gif","106.gif":"AbNGHf.gif","107.gif":"AbNYE8.gif","108.gif":"AbNaCQ.gif","109.gif":"AbNN4g.gif","110.gif":"AbN0vn.gif","111.gif":"AbNd3j.gif","112.gif":"AbNsbV.gif","113.gif":"AbNwgs.gif","114.gif":"AbNrD0.gif","115.gif":"AbNDuq.gif","116.gif":"AbNg5F.gif","117.gif":"AbN6ET.gif","118.gif":"AbNcUU.gif","119.gif":"AbNRC4.gif","120.gif":"AbNhvR.gif","121.gif":"AbNf29.gif","122.gif":"AbNW8J.gif","123.gif":"AbNob6.gif","124.gif":"AbN5K1.gif","125.gif":"AbNHUO.gif","126.gif":"AbNIDx.gif","127.gif":"AbN7VK.gif","128.gif":"AbNb5D.gif","129.gif":"AbNX2d.gif","130.gif":"AbNLPe.gif","131.gif":"AbNjxA.gif","132.gif":"AbNO8H.gif","133.gif":"AbNxKI.gif","134.gif":"AbNzrt.gif","135.gif":"AbU9Vf.gif","136.gif":"AbUSqP.gif","137.gif":"AbUCa8.gif","138.gif":"AbUkGQ.gif","139.gif":"AbUFPg.gif","140.gif":"AbUPIS.gif","141.gif":"AbUZMn.gif","142.gif":"AbUExs.gif","143.gif":"AbUA2j.gif","144.gif":"AbUMIU.gif","145.gif":"AbUerq.gif","146.gif":"AbUKaT.gif","147.gif":"AbUmq0.gif","148.gif":"AbUuZV.gif","149.gif":"AbUliF.gif","150.gif":"AbU1G4.gif","151.gif":"AbU8z9.gif","152.gif":"AbU3RJ.gif","153.gif":"AbUYs1.gif","154.gif":"AbUJMR.gif","155.gif":"AbUadK.gif","156.gif":"AbUtqx.gif","157.gif":"AbUUZ6.gif","158.gif":"AbUBJe.gif","159.gif":"AbUdIO.gif","160.gif":"AbU0iD.gif","161.gif":"AbUrzd.gif","162.gif":"AbUDRH.gif","163.gif":"AbUyQA.gif","164.gif":"AbUWo8.gif","165.gif":"AbU6sI.gif","166.gif":"AbU2eP.gif","167.gif":"AbUcLt.gif","168.gif":"AbU4Jg.gif","169.gif":"AbURdf.gif","170.gif":"AbUhFS.gif","171.gif":"AbU5WQ.gif","172.gif":"AbULwV.gif","173.gif":"AbUIzj.gif","174.gif":"AbUTQs.gif","175.gif":"AbU7yn.gif","176.gif":"AbUqe0.gif","177.gif":"AbUHLq.gif","178.gif":"AbUOoT.gif","179.gif":"AbUvYF.gif","180.gif":"AbUjFU.gif","181.gif":"AbaSSJ.gif","182.gif":"AbUxW4.gif","183.gif":"AbaCO1.gif","184.gif":"Abapl9.gif","185.gif":"Aba9yR.gif","186.gif":"AbaFw6.gif","187.gif":"Abaiex.gif","188.gif":"AbakTK.gif","189.gif":"AbaZfe.png","190.gif":"AbaEFO.gif","191.gif":"AbaVYD.gif","192.gif":"AbamSH.gif","193.gif":"AbaKOI.gif","194.gif":"Abanld.gif","195.gif":"Abau6A.gif","196.gif":"AbaQmt.gif","197.gif":"Abal0P.gif","198.gif":"AbatpQ.gif","199.gif":"Aba1Tf.gif","200.png":"Aba8k8.png","201.png":"AbaGtS.png","202.png":"AbaJfg.png","203.png":"AbaNlj.png","204.png":"Abawmq.png","205.png":"AbaU6s.png","206.png":"AbaaXn.png","207.png":"Aba000.png","208.png":"AbarkT.png","209.png":"AbastU.png","210.png":"AbaB7V.png","211.png":"Abafn1.png","212.png":"Abacp4.png","213.png":"AbayhF.png","214.png":"Abag1J.png","215.png":"Aba2c9.png","216.png":"AbaRXR.png","217.png":"Aba476.png","218.png":"Abah0x.png","219.png":"Abdg58.png"}
+				onlineEmoji:{"100.gif":"AbNQgA.gif","101.gif":"AbN3ut.gif","102.gif":"AbNM3d.gif","103.gif":"AbN8DP.gif","104.gif":"AbNljI.gif","105.gif":"AbNtUS.gif","106.gif":"AbNGHf.gif","107.gif":"AbNYE8.gif","108.gif":"AbNaCQ.gif","109.gif":"AbNN4g.gif","110.gif":"AbN0vn.gif","111.gif":"AbNd3j.gif","112.gif":"AbNsbV.gif","113.gif":"AbNwgs.gif","114.gif":"AbNrD0.gif","115.gif":"AbNDuq.gif","116.gif":"AbNg5F.gif","117.gif":"AbN6ET.gif","118.gif":"AbNcUU.gif","119.gif":"AbNRC4.gif","120.gif":"AbNhvR.gif","121.gif":"AbNf29.gif","122.gif":"AbNW8J.gif","123.gif":"AbNob6.gif","124.gif":"AbN5K1.gif","125.gif":"AbNHUO.gif","126.gif":"AbNIDx.gif","127.gif":"AbN7VK.gif","128.gif":"AbNb5D.gif","129.gif":"AbNX2d.gif","130.gif":"AbNLPe.gif","131.gif":"AbNjxA.gif","132.gif":"AbNO8H.gif","133.gif":"AbNxKI.gif","134.gif":"AbNzrt.gif","135.gif":"AbU9Vf.gif","136.gif":"AbUSqP.gif","137.gif":"AbUCa8.gif","138.gif":"AbUkGQ.gif","139.gif":"AbUFPg.gif","140.gif":"AbUPIS.gif","141.gif":"AbUZMn.gif","142.gif":"AbUExs.gif","143.gif":"AbUA2j.gif","144.gif":"AbUMIU.gif","145.gif":"AbUerq.gif","146.gif":"AbUKaT.gif","147.gif":"AbUmq0.gif","148.gif":"AbUuZV.gif","149.gif":"AbUliF.gif","150.gif":"AbU1G4.gif","151.gif":"AbU8z9.gif","152.gif":"AbU3RJ.gif","153.gif":"AbUYs1.gif","154.gif":"AbUJMR.gif","155.gif":"AbUadK.gif","156.gif":"AbUtqx.gif","157.gif":"AbUUZ6.gif","158.gif":"AbUBJe.gif","159.gif":"AbUdIO.gif","160.gif":"AbU0iD.gif","161.gif":"AbUrzd.gif","162.gif":"AbUDRH.gif","163.gif":"AbUyQA.gif","164.gif":"AbUWo8.gif","165.gif":"AbU6sI.gif","166.gif":"AbU2eP.gif","167.gif":"AbUcLt.gif","168.gif":"AbU4Jg.gif","169.gif":"AbURdf.gif","170.gif":"AbUhFS.gif","171.gif":"AbU5WQ.gif","172.gif":"AbULwV.gif","173.gif":"AbUIzj.gif","174.gif":"AbUTQs.gif","175.gif":"AbU7yn.gif","176.gif":"AbUqe0.gif","177.gif":"AbUHLq.gif","178.gif":"AbUOoT.gif","179.gif":"AbUvYF.gif","180.gif":"AbUjFU.gif","181.gif":"AbaSSJ.gif","182.gif":"AbUxW4.gif","183.gif":"AbaCO1.gif","184.gif":"Abapl9.gif","185.gif":"Aba9yR.gif","186.gif":"AbaFw6.gif","187.gif":"Abaiex.gif","188.gif":"AbakTK.gif","189.gif":"AbaZfe.png","190.gif":"AbaEFO.gif","191.gif":"AbaVYD.gif","192.gif":"AbamSH.gif","193.gif":"AbaKOI.gif","194.gif":"Abanld.gif","195.gif":"Abau6A.gif","196.gif":"AbaQmt.gif","197.gif":"Abal0P.gif","198.gif":"AbatpQ.gif","199.gif":"Aba1Tf.gif","200.png":"Aba8k8.png","201.png":"AbaGtS.png","202.png":"AbaJfg.png","203.png":"AbaNlj.png","204.png":"Abawmq.png","205.png":"AbaU6s.png","206.png":"AbaaXn.png","207.png":"Aba000.png","208.png":"AbarkT.png","209.png":"AbastU.png","210.png":"AbaB7V.png","211.png":"Abafn1.png","212.png":"Abacp4.png","213.png":"AbayhF.png","214.png":"Abag1J.png","215.png":"Aba2c9.png","216.png":"AbaRXR.png","217.png":"Aba476.png","218.png":"Abah0x.png","219.png":"Abdg58.png"},
+			
+			
+				//2021.12.23
+				
+				record_flag:false,
 			};
 		},
 		onLoad(option) {
@@ -187,19 +197,21 @@
 			this.abotapi.set_option_list_str(this, this.abotapi.getColor());
 			// this.getMsgList();
 			//语音自然播放结束
-			this.AUDIO.onEnded((res)=>{
-				this.playMsgid=null;
+			this.AUDIO.onEnded(res => {
+				this.playMsgid = null;
 			});
-			// #ifndef H5
-			//录音开始事件
-			this.RECORDER.onStart((e)=>{
-				this.recordBegin(e);
-			})
-			//录音结束事件
-			this.RECORDER.onStop((e)=>{
-				this.recordEnd(e);
-			})
-			// #endif
+			// // #ifndef H5
+			// //录音开始事件
+			// this.RECORDER.onStart((e)=>{
+			// 	console.log('123456789876asdasdasdas543251')
+			// 	this.recordBegin(e);
+			// })
+			// //录音结束事件
+			// this.RECORDER.onStop((e)=>{
+			// 	console.log('123456789876543251')
+			// 	this.recordEnd(e);
+			// })
+			// // #endif
 			
 			this.myuid = userInfo.userid;
 			this.userid = option.userid;
@@ -308,7 +320,7 @@
 						  lastMsgList = data.data;
 						  
 						  console.log('123456789555555',lastMsgList)
-						  
+						  var nowDate = new Date();
 						  if(lastMsgList.length>0){
 							  
 							for(var i=0; i<lastMsgList.length; i++){
@@ -320,7 +332,7 @@
 										type: 'system',
 										msg: {
 											id: '',
-											time:lastMsgList[i].createtime,
+											time:nowDate.getHours()+":"+nowDate.getMinutes(),
 											type: 'text',
 											
 											content: msg001,
@@ -440,7 +452,7 @@
 					
 				
 				for (var i = 0; i < list.length; i++) {
-					list[i].msg.id = i;
+					list[i].id = i;
 				}
 				// 获取消息中的图片,并处理显示尺寸
 				for(let i=0;i<list.length;i++){
@@ -576,7 +588,7 @@
 						}
 					}
 				});
-				return '<div style="display: flex;align-items: center;">'+replacedStr+'</div>';
+				return '<div style="display: flex;align-items: center;word-wrap:break-word;flex-wrap: wrap;">'+replacedStr+'</div>';
 			},
 			// 选择图片发送
 			chooseImage(){
@@ -704,7 +716,7 @@
 					face:userAcountInfo.headimgurl,
 					time:nowDate.getHours()+":"+nowDate.getMinutes(),
 					type:'user', 
-					msg:{
+					msg:{ 
 						content: content,
 						type: type
 					},
@@ -788,12 +800,45 @@
 			},
 			// 录音开始
 			voiceBegin(e){
+				this.recordBegin(e);
+				this.record_flag = true;
+				this.doRecordIng();
+				console.log('录音开始000',e);
+				
 				if(e.touches.length>1){
 					return ;
 				}
 				this.initPoint.Y = e.touches[0].clientY;
 				this.initPoint.identifier = e.touches[0].identifier;
-				this.RECORDER.start({format:"aac"});//录音开始,
+				this.RECORDER.start({ format: 'mp3' });//录音开始,
+				
+			},
+			doRecordIng:function(e){
+				var that = this;
+				
+				// #ifndef H5
+				//录音开始事件
+				// this.RECORDER.onStart(e => {
+				// 	that.record_flag = true;
+					
+						// console.log('录音开始回调');
+						// this.recordBegin(e);				
+				// 		console.log('录音开始回调2', this.recordCount);
+					
+					
+				// });
+				//录音结束事件
+				this.RECORDER.onStop(e => {
+					if(that.record_flag){
+						that.record_flag = false;
+						
+						console.log('录音结束回调');
+						this.recordEnd(e);
+					}
+			
+					
+				});
+				// #endif
 			},
 			//录音开始UI效果
 			recordBegin(e){
@@ -840,58 +885,59 @@
 			
 			//录音结束(回调文件)
 			recordEnd(e){
+				console.log('12345678980',e.tempFilePath)
 				var that = this;
 				clearInterval(this.recordTimer);
 				if(!this.willStop){
-					// plus.io.resolveLocalFileSystemURL( e.tempFilePath, function( entry ) {
-					// 	// 可通过entry对象操作test.html文件 
-					// 	entry.file( function(file){
-					// 		console.log(file.size + '--' + file.name);
-					// 	} );
-					// }, function ( e ) {
-					// 	alert( "Resolve file URL failed: " + e.message );
-					// } );
-					console.log("e: " + JSON.stringify(e));
 					
+					var msg = {
+						length: 0,
+						url: e.tempFilePath
+					};
+					
+					let min = parseInt(this.recordLength / 60);
+					let sec = this.recordLength % 60;
+					min = min < 10 ? '0' + min : min;
+					sec = sec < 10 ? '0' + sec : sec;
+					msg.length = min + ':' + sec;
+					
+					var msg_length = msg.length
 					
 					uni.uploadFile({
 					    url: that.abotapi.globalData.yanyubao_server_url + '/Yanyubao/ShopApp/upload_image_file_without_user',
 					    filePath: e.tempFilePath,
 					    name: 'file',
 					    header: {
-					      contentType: "multipart/form-data",//按需求增加
-					      'elem': '#up-image',
-					      'accept': 'application/json',
-					      'exts': 'jpg|jpeg|png|gif|mp3'
+							contentType: "multipart/form-data",//按需求增加
+							'elem': '#up-image',
+							'accept': 'application/json',
+							'exts': 'jpg|jpeg|png|gif|mp3'
 					    },
 					    formData: {
-					      //supplierid: app.globalData.current_supplierid,
-					      sellerid: that.abotapi.globalData.default_sellerid,
+							//supplierid: app.globalData.current_supplierid,
+							sellerid: that.abotapi.globalData.default_sellerid,
 					    },
 					    success: function (res) {
-					      var data = JSON.parse(res.data);
-					      if (data.code != 1) {
-					        uni.showToast({
-					          title: data.msg,
-					          duration: 2000
-					        });
-							return;
-						}				
-							 //msg为语音地址
-							var img_url = data.img_url;	
+							var data = JSON.parse(res.data);
+							if (data.code != 1) {
+								uni.showToast({
+									title: data.msg,
+									duration: 2000
+								});
+								return;
+							}				
+							
+							//msg为语音地址
+							var img_url = data.img_url;
+							
 							
 							let msg = {
-								length:0,
-								url:img_url
-							}
-							let min = parseInt(this.recordLength/60);
-							let sec = this.recordLength%60;
-							min = min<10?'0'+min:min;
-							sec = sec<10?'0'+sec:sec;
-							msg.length = min+':'+sec;
-													
+								text: img_url,
+								length: msg_length
+							};
+								
 							that.sendMsg(msg, 'voice');
-					     }
+						}
 						
 					})
 					
@@ -1386,8 +1432,8 @@ page{
 	background-color: #F06C7a;
 	/* min-width: 100rpx; */
 	padding: 15rpx 20rpx;
-	border-radius: 10rpx;
-	margin: 20rpx 10rpx;
+	border-radius: 6rpx;
+	margin: 10rpx 10rpx 20rpx 10rpx;
 	/* max-width: 700rpx; */
 	text-align: center;
 	color: #ffffff;          

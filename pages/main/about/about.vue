@@ -98,10 +98,7 @@
 					<button class="xg_button" style="width:90%;margin: 0 auto;" @tap="call_seller" type="primary">联系客服</button>
 					<!-- #endif -->
 				</view>
-				<view style="width: 50%;float:left;text-align:center;">
-					<button :data-url="jubao_link_url" @tap="mytiaozhuan" class="xg_button" style="width:90%;margin: 0 auto;background-color: #eee;color:#222;"
-					 type="primary">问题反馈</button>
-				</view>
+				
 			</view>
 		</view>
 		

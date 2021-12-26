@@ -504,7 +504,12 @@ export default {
 			 
 			 //传给uParse组件的属性值
 			 u_parse_imageProp:{mode:'widthFix', padding:0, lazyLoad:true, domain:''},
-
+			
+			
+			
+			
+			//2021.12.23客服消息重复
+			last_msg_chongfu:'',
 		};
 	},
 	onLoad: function (options) {
@@ -655,10 +660,12 @@ export default {
 	onShow:function(){
 		console.log('call onShow function (/pages/index/index)');
 		
-		
-		
-		
-		
+		var userInfo = this.abotapi.get_user_info();
+	
+		if(userInfo && userInfo.userid){
+			console.log('88888====')
+			this.linkSocket();
+		}
 		
 		var city_name = uni.getStorageSync('city_name');
 		if(city_name){
@@ -1683,6 +1690,31 @@ export default {
 				msg = msg.replace(/&quot;/g,'"');
 				msg = JSON.parse(msg);
 				msg = JSON.parse(decodeURIComponent(msg));
+				
+				if((msg.msg.type == 'text') ||(msg.msg.type == 'img') 
+					|| (msg.msg.type == 'voice')) {
+					var msg_text = JSON.stringify(msg.msg.content);
+					
+					if(msg_text == that.last_msg_chongfu){
+						
+						console.log('重复消息处理')
+						
+						return;
+					}
+					
+					that.last_msg_chongfu = msg_text;
+				}
+				
+				var userInfo = that.abotapi.get_user_info();
+				console.log('userInfo',userInfo)
+				
+				if(msg.uid == userInfo.userid){
+					return;
+				}
+				
+				
+				
+				
 				//发的消息只在当前房间显示
 				console.log('msg===main',msg)
 				if(msg){
