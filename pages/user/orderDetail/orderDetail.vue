@@ -158,7 +158,8 @@
 					<view @tap="deliver_goods()" class="button_fahuo" >发货</view>
 					
 				</view>
-				<view v-if="orderData.status == '0' || orderData.status == '3' || orderData.status == '4' || orderData.status == '5' ">
+				<view v-if="(orderData.status != '-1') && (orderData.status != '0') && (orderData.status != '1')
+				 && (orderData.status != '2') ">
 				<view class="manage_express" style="margin-bottom: 0;">管理员选项</view>
 				<view class="order_item_desc_name" style="margin-left: 20rpx;">快递公司
 					<view class="order_item_desc_value" style="margin-right: 20rpx;" v-if="orderData.delivery_company != null">{{orderData.delivery_company}}</view>

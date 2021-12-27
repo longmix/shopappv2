@@ -558,7 +558,7 @@
 	   
 		//点击加载更多
 		onReachBottom: function () {
-			var that = this;
+			
 			var userInfo = that.abotapi.get_user_info();
 			console.log('加载更多')
 			var that = this;

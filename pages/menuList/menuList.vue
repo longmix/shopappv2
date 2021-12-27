@@ -230,6 +230,7 @@ export default {
 		
 		
 		var that = this;
+		
 		uni.getSystemInfo({// 获取页面的有关信息
 		  success: function (res) {
 			uni.setStorageSync('systemInfo', res)
@@ -238,7 +239,7 @@ export default {
 			
 			that.ww = res.windowWidth;
 			that.hh = res.windowHeight;
-			that.menuHeight = hh - 130.63;
+			that.menuHeight = hh - 210;
 			
 			
 		  }
@@ -349,6 +350,27 @@ export default {
 			}
 			//================= End ==========================
 		// #endif
+		
+		
+		//#ifdef MP-WEIXIN
+		
+		
+		if(options.scene){
+			
+			this.spec_business_type = 'alipay_saoma_diancan';
+			
+			var options_scene = decodeURIComponent(options.scene)
+			console.log('options_scene',options_scene)
+			this.__parse_alipay_normal_qrcode(options_scene);
+			
+			
+			return;
+			
+			
+		}
+		
+		
+		//#endif
 		
 		
 		

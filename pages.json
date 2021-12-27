@@ -1,8 +1,8 @@
 {	
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
-		"navigationBarTitleText" : "延誉电商",
-		"navigationBarBackgroundColor" : "#f37404",
+		"navigationBarTitleText" : "哈哈订",
+		"navigationBarBackgroundColor" : "#073892",
 		"backgroundColor" : "#ffffff",
 		"backgroundColorTop":"#ffffff",
 		"backgroundColorBottom":"#ffffff"
@@ -12,31 +12,24 @@
 		"selectedColor": "#d81e06",
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
-		"list": [
-			{
-				"pagePath": "pages/yanyubao/my_module_list",
-				"iconPath": "static/img/tabBar/shang.png",
-				"selectedIconPath": "static/img/tabBar/shang-on.png",
-				"text": "开店"
-			},
-			{
-				"pagePath": "pages/publish/publish_list",
-				"iconPath": "static/img/tabBar/imglist.png",
-				"selectedIconPath": "static/img/tabBar/imglist-on.png",
-				"text": "创业与开业"
-			},
-			{
+		"list": [{
 				"pagePath": "pages/index/index",
-				"iconPath": "static/img/tabBar/publish.png",
-				"selectedIconPath": "static/img/tabBar/publish-on.png",
-				"text": "发现"
+				"iconPath": "static/img/tabBar/home.png",
+				"selectedIconPath": "static/img/tabBar/home-on.png",
+				"text": "首页"
 			},
 			{
 				"pagePath": "pages/shopList/shopList",
-				"iconPath": "static/img/tabBar/category.png",
-				"selectedIconPath": "static/img/tabBar/category-on.png",
-				"text": "城市合伙人"
+				"iconPath": "static/img/tabBar/shang.png",
+				"selectedIconPath": "static/img/tabBar/shang-on.png",
+				"text": "附近"
 			},
+			{
+				"pagePath": "cms/discover/discover",
+				"iconPath": "static/img/tabBar/imglist.png",
+				"selectedIconPath": "static/img/tabBar/imglist-on.png",
+				"text": "随拍"
+			},					
 			{
 				"pagePath": "pages/tabbar/user",
 				"iconPath": "static/img/tabBar/user.png",
@@ -45,7 +38,7 @@
 			}
 		]
 	},
-
+	
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{	//主页
 			"path": "pages/index/index",
