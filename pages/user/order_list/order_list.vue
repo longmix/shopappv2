@@ -559,9 +559,15 @@
 		//点击加载更多
 		onReachBottom: function () {
 			
+			var that = this;
+			
+			that.loadOrderList();
+			
+			/*
+			
 			var userInfo = that.abotapi.get_user_info();
 			console.log('加载更多')
-			var that = this;
+			
 			var page = that.page;
 			
 			// next_page++;
@@ -629,16 +635,7 @@
 					}
 					
 					
-					/*
-					var order_list = [];
-					if (list || list != null) {
-						for (var i = 0; i < list.length; i++) {
-							//var pro_list = list[i].orderProduct;
-							//console.log(pro_list);
-							order_list.push(list[i].orderProduct);
-						}
-					}
-					*/
+
 					console.log('that.orderList0===>>>',that.orderList0);
 					
 					if (list == null) {
@@ -710,6 +707,8 @@
 					});
 				}
 			})
+			
+			*/
 		},
 		
 		

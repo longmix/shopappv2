@@ -149,6 +149,10 @@
 		 * product_source_channel
 		 * product_channel_name
 		 * 
+		 * 
+		 * /pages/product/goods-list?factoryid=123456
+		 * 
+		 * 
 		 */
 		onLoad: function (option) { //option为object类型，会序列化上个页面传递的参数
 			console.log('option',option); //打印出上个页面传递的参数。
@@ -277,18 +281,25 @@
 				
 				that.current_page ++;
 				
+				
+				
+				var post_data = {
+				  sellerid: this.abotapi.globalData.default_sellerid,
+				  keyword:'', 
+				  sort: that.sorts,
+				  page: current_page_temp,
+				  cataid:that.cataid,
+				  platform: that.abotapi.globalData.current_platform,
+				};
+				
+				if(this.factoryid){
+					post_data.factoryid = this.factoryid;
+				}
+				
 				if(that.product_source_channel == 0){
 					that.abotapi.abotRequest({
 					    url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=product_list',
-					    data: {
-					      sellerid: this.abotapi.globalData.default_sellerid,
-					      keyword:'', 
-					      sort: that.sorts,
-					      page: current_page_temp,
-						  cataid:that.cataid,
-						  platform: that.abotapi.globalData.current_platform,
-						  factoryid: this.factoryid,
-					    },
+					    data: ,
 					    success: function (res) {
 							uni.hideLoading();
 							that.loadingText = '';
