@@ -694,7 +694,9 @@
 			"pages": [
 				{	//资料库收藏
 					"path": "mycollection",
-					"style": {}
+					"style": {
+						"enablePullDownRefresh": true
+					}
 				},		
 				{	//资料库列表
 					"path": "quanquanlist",
@@ -704,7 +706,9 @@
 				},
 				{	//资料库详情
 					"path": "quanquan_details",
-					"style": {}
+					"style": {
+						"enablePullDownRefresh": true
+					}
 				}
 			]
 			
