@@ -299,7 +299,7 @@
 				if(that.product_source_channel == 0){
 					that.abotapi.abotRequest({
 					    url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=product_list',
-					    data: ,
+					    data:post_data ,
 					    success: function (res) {
 							uni.hideLoading();
 							that.loadingText = '';

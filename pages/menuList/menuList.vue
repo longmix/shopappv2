@@ -37,8 +37,9 @@
 							<view>{{m2.brief}}</view>              
 							<!-- <view><i class='like'></i>({{m2.like > 0 ? m2.like : 0}})</view>           -->
 						</view>
-						<view class="txt-price">¥<text>{{m2.price}}</text>
-							<text class="txt-zhekoprice"><span>¥{{m2.price2}}</span></text>
+						<view class="txt-price">¥<text>{{m2.price}}/{{m2.unit}}</text>
+						
+							<text class="txt-zhekoprice" v-if="m2.price2 != 0.00"><span>¥{{m2.price2}}</span></text>
 						</view>
 					</view>
 					<!-- 飞入图标 -->

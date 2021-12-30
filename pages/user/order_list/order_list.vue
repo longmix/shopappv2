@@ -476,7 +476,8 @@
 				order_list_filter_keywords:'',
 				
 				//2021.8.18. 管理员订单
-				is_shop_admin:0
+				is_shop_admin:0,
+				
 			}
 		},
 		
@@ -529,7 +530,7 @@
 			
 			
 			//加载订单列表
-			this.loadOrderList();
+			//this.loadOrderList();
 			
 			
 			
@@ -558,157 +559,12 @@
 	   
 		//点击加载更多
 		onReachBottom: function () {
-			
+			console.log('eeeeeeeeeeeeeeeeeeeeeeeeeee2222')
 			var that = this;
 			
 			that.loadOrderList();
 			
-			/*
 			
-			var userInfo = that.abotapi.get_user_info();
-			console.log('加载更多')
-			
-			var page = that.page;
-			
-			// next_page++;
-			
-			uni.showLoading({
-				title:'加载中'
-			}) 
-			
-			
-			that.abotapi.abotRequest({
-				url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=order_index',
-				method: 'post',
-				data: {
-					order_sort: that.isStatus,
-					sellerid: that.abotapi.get_sellerid(),
-					checkstr: userInfo.checkstr,
-					userid: userInfo.userid,
-					page: page + 1
-				},
-				header: {
-					'Content-Type': 'application/x-www-form-urlencoded'
-				},
-				success: function (res) {
-					
-					uni.hideLoading();
-		
-					console.log('11111111');
-					var list = res.data.orderList;
-					
-					
-					
-					if(list){
-									
-						for (var i = 0; i < list.length; i++) {
-						  
-						  if (list[i].order_option && ('hahading_order_product_list' in list[i].order_option) && list[i].order_option.hahading_order_product_list) {
-							console.log(i, list[i].order_option.hahading_order_product_list)
-							list[i].order_option.hahading_order_product_list = JSON.parse(list[i].order_option.hahading_order_product_list)
-							
-							if(list[i].order_option.order_xianmai_shangdata){
-								list[i].order_option.order_xianmai_shangdata = JSON.parse(list[i].order_option.order_xianmai_shangdata)
-							}
-							
-							list[i].order_option.hahading_order_product_list_length = list[i].order_option.hahading_order_product_list.length;
-							
-						  }else{
-							  
-							console.log('ddd88', list[i]);
-							
-							if(!list[i].order_option){
-								list[i].order_option = {};	
-							}
-							
-							list[i].order_option.hahading_order_product_list_length = 0;
-							
-						  }
-						}
-				
-				
-						for (var i=0; i<list.length; i++){
-						  if (list[i].order_option && ('hahading_order_xianmai_shangdata' in list[i].order_option) && list[i].order_option.hahading_order_xianmai_shangdata){
-							list[i].order_option.hahading_order_xianmai_shangdata = JSON.parse(list[i].order_option.hahading_order_xianmai_shangdata)
-						  }
-						}
-					}
-					
-					
-
-					console.log('that.orderList0===>>>',that.orderList0);
-					
-					if (list == null) {
-						console.log('2222222');
-						that.isHideLoadMore = true
-						return false;
-						
-					}else{
-						switch (that.currentTab) {
-							case 0:
-								console.log('3333333');
-								setTimeout(() => {
-									that.orderList = that.orderList.concat(list)
-									that.page = page + 1
-								}, 100)
-								break;
-							case 1:
-								setTimeout(() => {
-									that.orderList0 = that.orderList0.concat(list)
-									that.page = page + 1
-								}, 100)
-								break;
-							case 2:
-								setTimeout(() => {
-									that.orderList1 = that.orderList1.concat(list);
-									that.page = page + 1;
-								}, 100)
-								break;
-							case 3:
-								setTimeout(() => {
-									that.orderList2 = that.orderList2.concat(list);
-									that.page = page + 1;
-								}, 100)
-								break;
-							case 4:
-								setTimeout(() => {
-									that.orderList3 = that.orderList3.concat(list);
-									that.page = page + 1;
-								}, 100)
-								break;
-						}
-						
-						if (list && list != null && list.length > 5) {
-							var winHeight = that.winHeight;
-							
-							console.log('888888888=====',that.page);
-							
-							var Height = winHeight * (winHeight / 370) * (that.page+1);
-							
-							console.log('height====>>>>',Height);
-							
-							that.order_list_swiper_height = Height*3
-							
-							console.log('888888888=====',that.order_list_swiper_height);
-						} 
-						else  {
-							that.order_list_swiper_height = that.winHeight + 370;
-							that.isHideLoadMore = true;
-						} 
-						
-					}
-				},
-				//that.initProductData(data);
-				fail: function (e) {
-					console.log("22222");
-					uni.showToast({
-						title: '网络异常！',
-						duration: 2000
-					});
-				}
-			})
-			
-			*/
 		},
 		
 		
@@ -821,6 +677,7 @@
 							},
 							success: function (res) {
 								//--init data
+								
 								var code = res.data.code;
 								if(code == 1){
 									uni.showToast({
@@ -959,14 +816,17 @@
 				console.log('loadOrderList!!!!!!!')
 				
 				var that = this;
+				
+				var page = that.page;
 				var userInfo = that.abotapi.get_user_info();
 				var post_data = {
 					order_sort: that.isStatus,
-					page:	1,
+					page : page,
 					sellerid: that.abotapi.get_sellerid(),
 					checkstr: userInfo.checkstr,
 					userid: userInfo.userid
 				}
+					
 				
 				console.log('888888888',this.order_list_filter_keywords);
 				
@@ -989,7 +849,7 @@
 					success: function (res) {
 						//--init data        
 						//console.log('list_res',res);
-						
+						uni.hideLoading();
 						var code = res.data.code;
 						
 						if(code != 1){
@@ -1001,12 +861,6 @@
 						
 						
 						var list = res.data.orderList;
-						
-						if(!list){
-							list = [];
-						}
-						
-						
 						
 					   if(list){
 				
@@ -1057,60 +911,87 @@
 						console.log('that.currentTab====', that.currentTab);
 						//console.log('listlist',list);
 						
-						switch(that.currentTab){
-							case 0:
-								console.log('ddddddd');
+						if (list == null) {
+							console.log('2222222');
+							
+							that.isHideLoadMore = true;
+							return false;
+							
+						}else{
+							switch(that.currentTab){
+								case 0:
+									console.log('ddddddd');
+									
+									that.order_list_swiper_height = Height;
+									
+									that.orderList = that.orderList.concat(list)
+											
+									that.page = page
+									
+									break;
+								case 1:
 								
-								that.isHideLoadMore = false;
-								that.orderList = list;
-								that.order_list_swiper_height = Height;
-								that.page = 1;
+									that.order_list_swiper_height = Height;
+									
+									that.orderList0 = that.orderList0.concat(list)
+											
+									that.page = page
+									
+									break;
+								case 2:
 								
-								break;
-							case 1:
-								that.isHideLoadMore = false;
-								that.orderList0 = list;
-								that.order_list_swiper_height = Height;
-								that.page = 1;
-								break;
-							case 2:
-								that.isHideLoadMore = false;
-								that.orderList1 = list;
-								that.order_list_swiper_height = Height;
-								that.page = 1;
-								break;  
-							case 3:
-								that.isHideLoadMore = false;
-								that.orderList2 = list;
-								that.order_list_swiper_height = Height;
-								that.page = 1;
-								break;
-							case 4:
-								that.isHideLoadMore = false;
-								that.orderList3 = list;
-								that.order_list_swiper_height = Height;
-								that.page = 1;
-								break;
+									that.order_list_swiper_height = Height;
+									
+									that.orderList1 = that.orderList1.concat(list)
+											
+									that.page = page
+								
+									break;  
+								case 3:
+									
+									that.order_list_swiper_height = Height;
+								
+									that.orderList2 = that.orderList2.concat(list)
+											
+									that.page = page
+								
+									break;
+								case 4:
+									
+									that.order_list_swiper_height = Height;
+								
+									that.orderList3 = that.orderList3.concat(list)
+											
+									that.page = page
+								
+									break;
+							}
 						}
-						
 						
 						//if (list && list != null && list.length>5){
 						if (list && list != null){
 							var winHeight = that.winHeight;
 							
-							var Height = winHeight * 2 * that.page;
-							
+							var Height = winHeight * 2 * (that.page+1);
+							console.log('winHeight',Height)						
 							that.order_list_swiper_height = Height;
 							
-							that.isHideLoadMore = true;
+							if(list.length > 5){
+								var Height = winHeight * (winHeight / 370) * (that.page+1);
+								
+								that.order_list_swiper_height = Height*3;
+							}
+							
 							
 							console.log('orderlistorderlist的高度：', that.order_list_swiper_height);
 							
 						} else {
 				
-							that.order_list_swiper_height = that.winHeight+370;
-							that.isHideLoadMore = false;
+							that.order_list_swiper_height = that.winHeight + 370;
+							that.isHideLoadMore = true;
 						}
+						that.page = that.page +1;
+						
 						
 					},
 					fail: function () {
@@ -1176,11 +1057,14 @@
 			
 			
 			bindChange: function(e) {  
+				console.log('eeeeeeeeeeeeeeeeeeeeeee',e)
 				var that = this; 
 				var currentTab = e.detail.current;
-				var isStatus = "";
+				var isStatus = '';
 				
 				switch (currentTab){
+					case 0: isStatus = 0;
+						break;
 					case 1: isStatus = 1;
 						break;
 					case 2: isStatus = 2;
