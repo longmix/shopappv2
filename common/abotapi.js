@@ -1177,11 +1177,12 @@ module.exports = {
 			this.globalData.is_shop_cart_in_tabbar = 0;
 		}
 		
-		if ((this.globalData.is_category_index_in_tabbar == -1) && !isNullOrUndefined(option_list.is_category_index_in_tabbar)) {
+		//商品分类 这个页面的标记，服务器端和VUE端的变量名称不一致
+		if ((this.globalData.is_category_category_in_tabbar == -1) && !isNullOrUndefined(option_list.is_category_index_in_tabbar)) {
 		  this.globalData.is_category_category_in_tabbar = option_list.is_category_index_in_tabbar;
 		}
-		if(!this.globalData.is_category_index_in_tabbar){
-			this.globalData.is_category_index_in_tabbar = 0;
+		if(!this.globalData.is_category_category_in_tabbar){
+			this.globalData.is_category_category_in_tabbar = 0;
 		}
 		
 		if ((this.globalData.is_publish_index_in_tabbar == -1) && !isNullOrUndefined(option_list.is_publish_index_in_tabbar)) {
