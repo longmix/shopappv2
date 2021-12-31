@@ -120,12 +120,15 @@
 					<text class="gm_ovh_1h pt10">数量</text>
 					<text class="gm_ovh_1h pt10">x {{item.amount}}</text>
 				</view>-->
-
+			
 				<view class="danji_shulian" v-if="item.product_take_score">
 					<text class="gm_ovh_1h pt10">积分变动</text>
 					<text class="gm_ovh_1h pt10">{{item.product_take_score}}</text>
 				</view>
-
+				<view class="danji_shulian" v-if="item.product_give_score">
+					<text class="gm_ovh_1h pt10">换购商品</text>
+					<text class="gm_ovh_1h pt10">{{item.product_give_score}}</text>
+				</view>
 			</view>
 
 		</view>
@@ -2728,7 +2731,6 @@ extraData = 'xxxxxxxxxxxxxxx'
 	  display:flex;
 	  justify-content:space-between;
 	  border-bottom: 1rpx solid #e5e5e5;
-	  padding:0 20rpx;
 	  height:70rpx;
 	  margin-top: 10rpx;
 	}
@@ -2830,7 +2832,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 	  align-items:flex-end;
 	}
 	.p_all {
-		padding: 5%;
+		padding: 5% 3%;
 	}
 	.photo_name {
 		display: flex;

@@ -910,10 +910,12 @@
 						console.log('窗体高度：', Height);
 						console.log('that.currentTab====', that.currentTab);
 						//console.log('listlist',list);
-						
+						if(that.page == 1 && list == null){
+							that.order_list_swiper_height = Height;
+						}
 						if (list == null) {
 							console.log('2222222');
-							
+							list = [];
 							that.isHideLoadMore = true;
 							return false;
 							
@@ -923,17 +925,25 @@
 									console.log('ddddddd');
 									
 									that.order_list_swiper_height = Height;
+									if(that.page == 1){
+										that.orderList = list;
+									}else{
+										that.orderList = that.orderList.concat(list)
+									}
 									
-									that.orderList = that.orderList.concat(list)
 											
-									that.page = page
+									that.page = page 
 									
 									break;
 								case 1:
 								
 									that.order_list_swiper_height = Height;
+									if(that.page == 1){
+										that.orderList0 = list;
+									}else{
+										that.orderList0 = that.orderList0.concat(list)
+									}
 									
-									that.orderList0 = that.orderList0.concat(list)
 											
 									that.page = page
 									
@@ -941,8 +951,12 @@
 								case 2:
 								
 									that.order_list_swiper_height = Height;
+									if(that.page == 1){
+										that.orderList1 = list;
+									}else{
+										that.orderList1 = that.orderList1.concat(list)
+									}
 									
-									that.orderList1 = that.orderList1.concat(list)
 											
 									that.page = page
 								
@@ -950,8 +964,12 @@
 								case 3:
 									
 									that.order_list_swiper_height = Height;
-								
-									that.orderList2 = that.orderList2.concat(list)
+									if(that.page == 1){
+										that.orderList2 = list;
+									}else{
+										that.orderList2 = that.orderList2.concat(list)
+									}
+									
 											
 									that.page = page
 								
@@ -959,8 +977,12 @@
 								case 4:
 									
 									that.order_list_swiper_height = Height;
-								
-									that.orderList3 = that.orderList3.concat(list)
+									if(that.page == 1){
+										that.orderList3 = list;
+									}else{
+										that.orderList3 = that.orderList3.concat(list)
+									}
+									
 											
 									that.page = page
 								
@@ -971,16 +993,19 @@
 						//if (list && list != null && list.length>5){
 						if (list && list != null){
 							var winHeight = that.winHeight;
-							
-							var Height = winHeight * 2 * (that.page+1);
-							console.log('winHeight',Height)						
-							that.order_list_swiper_height = Height;
-							
-							if(list.length > 5){
-								var Height = winHeight * (winHeight / 370) * (that.page+1);
-								
-								that.order_list_swiper_height = Height*3;
+							if(that.page == 1){
+								var Height = winHeight *2* (that.page);
+											
+								that.order_list_swiper_height = Height;
+							}else{
+								if(list.length > 5){
+									var Height = winHeight * (winHeight / 370) * (that.page+1);
+									
+									that.order_list_swiper_height = Height*3;
+								}
 							}
+							 
+							console.log('winHeight',Height)	
 							
 							
 							console.log('orderlistorderlist的高度：', that.order_list_swiper_height);
@@ -990,9 +1015,9 @@
 							that.order_list_swiper_height = that.winHeight + 370;
 							that.isHideLoadMore = true;
 						}
-						that.page = that.page +1;
 						
-						
+						that.page = page + 1;
+												
 					},
 					fail: function () {
 						// fail

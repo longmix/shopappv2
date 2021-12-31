@@ -230,6 +230,9 @@
 			<view class="title">
 				{{goods_detail.name}}
 			</view>
+			<view class="title" style="color: #666;font-size: 14px;margin-top: 5rpx;">
+				{{goods_detail.product_take_score}}<text v-if="(goods_detail.product_take_score) && (goods_detail.product_give_score)">,</text>{{goods_detail.product_give_score}}
+			</view>
 			
 			<!-- 2021.11.10商品海报 -->
 			<view class="show_modal_mask" v-if="to_poster" @tap="to_poster=false"></view>
