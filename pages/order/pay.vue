@@ -427,7 +427,7 @@
 				paixu_shanglist:null,
 				showShangModal:false,
 				
-				
+				coupon_list_length:0,
 			};
 		},
 		
@@ -1031,6 +1031,19 @@ extraData = 'xxxxxxxxxxxxxxx'
 							if(res.data.coupon_list){
 								that.coupon_list = res.data.coupon_list
 								
+								//2021.12.31======status==
+								var feiyi_coupon_list001 = [];
+								for(var key in that.coupon_list){
+									
+									var feiyi_coupon_list = that.coupon_list[key];
+									feiyi_coupon_list001.push(feiyi_coupon_list);
+									
+								}
+								console.log('555555555555555555555555',feiyi_coupon_list001)
+								that.coupon_list = feiyi_coupon_list001;
+								//2021.12.31=====end====
+								
+								
 								for(var i=0; i<that.coupon_list.length; i++){
 									that.coupon_list[i].youhui_start_time = util.formatTime(new Date(that.coupon_list[i].expiretime01 * 1000));
 									that.coupon_list[i].youhui_end_time = util.formatTime(new Date(that.coupon_list[i].expiretime02 * 1000));
@@ -1079,7 +1092,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 							that.pay_price_origin = res.data.pay_price;
 							
 							
-						
+							
 							that.order_address_detail = order_address_detail;
 							that.productData = res.data.orderlist;
 							
@@ -2492,7 +2505,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 				
 				//如果之前选过优惠券，先恢复之前的价格
 				if(that.youhui_diko_price > 0){
-					that.pay_price = that.pay_price + that.youhui_diko_price;
+					that.pay_price = that.all_price;
 				}
 				
 				
@@ -2505,8 +2518,10 @@ extraData = 'xxxxxxxxxxxxxxx'
 				
 				
 				//将优惠券抵扣的金额从要支付的金额中减去，为后面的赠款和余额抵扣做准备
+				console.log('1231231321',that.pay_price)
 				that.pay_price = that.pay_price - that.youhui_diko_price;
-				
+				console.log('1231231321',that.pay_price)
+				console.log('1231231321',that.youhui_diko_price)
 				//如果抵扣的金额比要支付的金额还要大，则最多抵扣要支付的金额
 				/*if(that.youhui_diko_price > that.pay_price){
 					that.youhui_diko_price = that.pay_price;
