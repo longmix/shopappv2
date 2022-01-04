@@ -265,7 +265,7 @@
 						<p>订单满{{item.price2}}元</p></view>
 						
 						<view class="copy">{{item.youhui_memo_str}}<p>{{item.youhui_start_time}} ~ {{item.youhui_end_time}}</p>
-						<a @tap="user_coupon_dikou_handle(item.dikou_amount, item.ucid)">立即使用</a></view>
+						<a @tap="user_coupon_dikou_handle(item,item.dikou_amount, item.ucid)">立即使用</a></view>
 						<!-- <i></i> -->
 					</view>
 									 
@@ -1063,7 +1063,9 @@ extraData = 'xxxxxxxxxxxxxxx'
 									
 									//实际抵扣 10.00
 									that.coupon_list[i].dikou_amount = util.sprintf("%0.2f", that.coupon_list[i].coupon_item.dikou_amount/100);
-									
+								
+									//金额和折扣抵减选项
+									that.coupon_list[i].coupon_dikou_type = that.coupon_list[i].coupon_item.coupon_dikou_type;
 									
 									if(that.coupon_list[i].coupon_item.productid && (that.coupon_list[i].coupon_item.productid != 0)){
 										that.coupon_list[i].youhui_memo_str = '限定商品可以使用';
@@ -1073,6 +1075,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 									}
 									
 								}
+								
 								//console.log('order_address_detail==>',coupon_list);
 							}
 							
@@ -2487,9 +2490,9 @@ extraData = 'xxxxxxxxxxxxxxx'
 			    });
 			},
 			//点击优惠券立即使用
-			user_coupon_dikou_handle(price, ucid){
+			user_coupon_dikou_handle(coupon_item,price, ucid){
 				var that = this;
-				
+				console.log('123456789746546513',coupon_item)
 				if(isNaN(price)){
 					uni.showModal({
 						title:'错误',
@@ -2513,15 +2516,31 @@ extraData = 'xxxxxxxxxxxxxxx'
 				
 				//that.youhui_diko_price = util.sprintf("%0.2f", price/100);
 				
-				that.youhui_diko_price = price;
 				
 				
 				
-				//将优惠券抵扣的金额从要支付的金额中减去，为后面的赠款和余额抵扣做准备
-				console.log('1231231321',that.pay_price)
-				that.pay_price = that.pay_price - that.youhui_diko_price;
-				console.log('1231231321',that.pay_price)
-				console.log('1231231321',that.youhui_diko_price)
+				//coupon_dikou_type
+				//  0  为金额
+				//  1  为折扣
+				if(coupon_item.coupon_dikou_type == 0){
+					
+					that.youhui_diko_price = price;
+					
+					//将优惠券抵扣的金额从要支付的金额中减去，为后面的赠款和余额抵扣做准备
+					
+					that.pay_price = that.pay_price - that.youhui_diko_price;
+					console.log('1231231321',that.pay_price)
+								
+				}
+				console.log('coupon_dikou_type',coupon_item.coupon_dikou_type)
+				if(coupon_item.coupon_dikou_type == 1){
+					
+					that.youhui_diko_price =that.pay_price - that.pay_price * price;
+					that.pay_price = that.pay_price - that.youhui_diko_price;
+					
+				console.log('coupon_dikou_type12311321',that.pay_price)
+				
+				}
 				//如果抵扣的金额比要支付的金额还要大，则最多抵扣要支付的金额
 				/*if(that.youhui_diko_price > that.pay_price){
 					that.youhui_diko_price = that.pay_price;
