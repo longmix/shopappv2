@@ -25,10 +25,10 @@
 				"text": "商品分类"
 			},
 			{
-				"pagePath": "pages/shopList/shopList",
-				"iconPath": "static/img/tabBar/shang.png",
-				"selectedIconPath": "static/img/tabBar/shang-on.png",
-				"text": "本地生活"
+				"pagePath": "pages/cart/cart",
+				"iconPath": "static/img/tabBar/cart.png",
+				"selectedIconPath": "static/img/tabBar/cart-on.png",
+				"text": "购物车"
 			},
 			{
 				"pagePath": "pages/tabbar/user",
