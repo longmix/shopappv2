@@ -220,7 +220,7 @@
 				
 				
 				<!-- <view class="heji_con" v-if='is_waimai == 1'> -->
-				<view class="heji_con" v-if="traffic_price > 0">
+				<view class="heji_con" v-if="(traffic_price > 0) && (zitidian_status_flag == 0)">
 					<text class="gm_ovh_1h pt10">运费</text>
 					<text class="gm_ovh_1h pt10">¥ {{traffic_price}}</text>
 				</view>
@@ -347,6 +347,7 @@
 				
 				single_price:0,	//指定商品的单价
 				traffic_price:0,
+				traffic_price_item:0,
 				pay_price:'',
 				util:'',
 				// recinfo:{id:1,name:"大黑哥",head:"大",tel:"18816881688",address:{region:{"label":"广东省-深圳市-福田区","value":[18,2,1],"cityCode":"440304"},detailed:'深南大道1111号无名摩登大厦6楼A2'},isDefault:true}
@@ -564,6 +565,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 				that.order_type_001 = options.order_type_001;
 			}
 			console.log('5555555555555555 参数：',options.order_type_001);
+			console.log('55555555555555555555',that.order_type_001)
 			//根据不同的类型带的参数
 			if(that.order_type_001 == 'shopmall'){
 				if(options.productid){
@@ -1103,6 +1105,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 							
 							
 							that.traffic_price = res.data.traffic_price;
+							that.traffic_price_item = that.traffic_price;
 							that.all_product_take_score = res.data.all_product_take_score;
 							
 							
@@ -1575,7 +1578,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 				}
 				
 				// this.btnDisabled = true
-				
+		
 			    var that = this;
 				var userInfo = that.current_userinfo;
 				
@@ -2073,11 +2076,21 @@ extraData = 'xxxxxxxxxxxxxxx'
 				}else{
 					that.zitidian_status_flag = 1;
 				}
-				console.log('88888888888=======>>>',that.zitidian_status_type)
-				console.log('that.zitidian_status_flag=======>>>',that.zitidian_status_flag)
-				/* if(that.zitidian_status_type == true){
-					that.zitidian_status_flag = 1;
-				} */
+				
+				
+				
+				if(that.zitidian_status_flag == 1){
+					
+					that.pay_price = that.all_price;
+					that.traffic_price = 0.00;
+					that.switch1Change(null, 1, false, that);
+					that.switch1Change(null, 2, false, that);
+					that.user_coupon_dikou_not_use();
+				}else{
+					that.traffic_price = that.traffic_price_item;
+					that.pay_price = (parseFloat(that.pay_price)+ parseFloat(that.traffic_price)).toFixed(2);
+					
+				} 
 				
 			},
 			get_zitidian_list:function(){
@@ -2492,6 +2505,10 @@ extraData = 'xxxxxxxxxxxxxxx'
 			//点击优惠券立即使用
 			user_coupon_dikou_handle(coupon_item,price, ucid){
 				var that = this;
+				
+				that.switch1Change(null, 1, false, that);
+				that.switch1Change(null, 2, false, that);
+				
 				console.log('123456789746546513',coupon_item)
 				if(isNaN(price)){
 					uni.showModal({
@@ -2508,7 +2525,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 				
 				//如果之前选过优惠券，先恢复之前的价格
 				if(that.youhui_diko_price > 0){
-					that.pay_price = that.all_price;
+					that.pay_price = that.all_price +that.traffic_price;
 				}
 				
 				
@@ -2527,17 +2544,18 @@ extraData = 'xxxxxxxxxxxxxxx'
 					that.youhui_diko_price = price;
 					
 					//将优惠券抵扣的金额从要支付的金额中减去，为后面的赠款和余额抵扣做准备
-					
-					that.pay_price = that.pay_price - that.youhui_diko_price;
+					// parseFloat(that.all_price) + parseFloat(that.traffic_price)
+					that.pay_price =parseFloat(that.pay_price) - parseFloat(that.youhui_diko_price) + parseFloat(that.traffic_price);
 					console.log('1231231321',that.pay_price)
 								
 				}
 				console.log('coupon_dikou_type',coupon_item.coupon_dikou_type)
 				if(coupon_item.coupon_dikou_type == 1){
 					
-					that.youhui_diko_price =that.pay_price - that.pay_price * price;
-					that.pay_price = that.pay_price - that.youhui_diko_price;
+					that.youhui_diko_price =that.all_price - that.all_price * price;
 					
+					that.pay_price = parseFloat(that.all_price) - parseFloat(that.youhui_diko_price) + parseFloat(that.traffic_price);
+
 				console.log('coupon_dikou_type12311321',that.pay_price)
 				
 				}
@@ -2560,14 +2578,14 @@ extraData = 'xxxxxxxxxxxxxxx'
 				
 				var that = this;
 				
+				that.switch1Change(null, 1, false, that);
+				that.switch1Change(null, 2, false, that);
+				
 				//this.switch1Change(null, 1, false, this);
 				//this.switch1Change(null, 2, false, this);
 				
-				console.log('parseFloat(that.pay_price) ====>>>> ', parseFloat(that.pay_price))
-				console.log('that.youhui_diko_price ====>>>> ', that.youhui_diko_price)
-				
-				that.pay_price = parseFloat(that.pay_price) + parseFloat(that.youhui_diko_price);
-				
+				that.pay_price = parseFloat(that.all_price) + parseFloat(that.traffic_price);
+				console.log('parseFloat',that.pay_price)
 				that.youhui_diko_price = 0;
 				that.current_ucid = 0;
 				
