@@ -256,12 +256,12 @@
 			<view class="open_alert_abot_basic">
 			
 				<view class="youhuiquan_title"> 
-					<view @tap="user_coupon_dikou_not_use()">不使用优惠券</view>
+					<view class="bushiyong_youhuiquan" @tap="user_coupon_dikou_not_use()">不使用优惠券</view>
 				</view>
 				<view class="youhuiquan_list"> 
 				
 					<view class="stamp stamp04" v-for=" (item,idx) in coupon_list" :key="idx" >
-						<view class="par"><p>{{item.coupon_item.name}}</p><span class="sign">￥</span><span>{{item.price}}</span><sub></sub>
+						<view class="par"><p>{{item.coupon_item.name}}</p><span class="sign" v-if="item.coupon_item.coupon_dikou_type == 0">￥</span><span>{{item.price}}</span><sub></sub>
 						<p>订单满{{item.price2}}元</p></view>
 						
 						<view class="copy">{{item.youhui_memo_str}}<p>{{item.youhui_start_time}} ~ {{item.youhui_end_time}}</p>
@@ -1612,7 +1612,8 @@ extraData = 'xxxxxxxxxxxxxxx'
 						traffic_price: that.traffic_price,
 						pay_price: that.pay_price,
 						sellerid: that.abotapi.get_sellerid(),
-						payment: 3
+						payment: 3,
+						zitidian_status_flag:that.zitidian_status_flag,
 					};
 					
 					
@@ -2532,33 +2533,15 @@ extraData = 'xxxxxxxxxxxxxxx'
 				that.current_ucid = ucid;
 				
 				//that.youhui_diko_price = util.sprintf("%0.2f", price/100);
-				
-				
-				
-				
-				//coupon_dikou_type
-				//  0  为金额
-				//  1  为折扣
-				if(coupon_item.coupon_dikou_type == 0){
 					
-					that.youhui_diko_price = price;
-					
-					//将优惠券抵扣的金额从要支付的金额中减去，为后面的赠款和余额抵扣做准备
-					// parseFloat(that.all_price) + parseFloat(that.traffic_price)
-					that.pay_price =parseFloat(that.pay_price) - parseFloat(that.youhui_diko_price) + parseFloat(that.traffic_price);
-					console.log('1231231321',that.pay_price)
-								
-				}
-				console.log('coupon_dikou_type',coupon_item.coupon_dikou_type)
-				if(coupon_item.coupon_dikou_type == 1){
-					
-					that.youhui_diko_price =that.all_price - that.all_price * price;
-					
-					that.pay_price = parseFloat(that.all_price) - parseFloat(that.youhui_diko_price) + parseFloat(that.traffic_price);
-
-				console.log('coupon_dikou_type12311321',that.pay_price)
+				that.youhui_diko_price = price;
 				
-				}
+				//将优惠券抵扣的金额从要支付的金额中减去，为后面的赠款和余额抵扣做准备
+				// parseFloat(that.all_price) + parseFloat(that.traffic_price)
+				
+				that.pay_price =parseFloat(that.all_price) - parseFloat(that.youhui_diko_price) + parseFloat(that.traffic_price);
+				console.log('1231231321',that.pay_price)
+				
 				//如果抵扣的金额比要支付的金额还要大，则最多抵扣要支付的金额
 				/*if(that.youhui_diko_price > that.pay_price){
 					that.youhui_diko_price = that.pay_price;
@@ -2580,9 +2563,6 @@ extraData = 'xxxxxxxxxxxxxxx'
 				
 				that.switch1Change(null, 1, false, that);
 				that.switch1Change(null, 2, false, that);
-				
-				//this.switch1Change(null, 1, false, this);
-				//this.switch1Change(null, 2, false, this);
 				
 				that.pay_price = parseFloat(that.all_price) + parseFloat(that.traffic_price);
 				console.log('parseFloat',that.pay_price)
@@ -2924,10 +2904,18 @@ extraData = 'xxxxxxxxxxxxxxx'
 		padding-right: 40rpx;
 		background-color: #50ADD3;
 		color: #fff;
-		text-align: right;
 		border-radius: 5rpx;
+		padding-bottom: 5rpx;
+		padding-top: 5rpx;
 	}
-
+	.bushiyong_youhuiquan{
+		border: 1px solid #FFFFFF;
+		float: right;
+		padding-left: 10rpx;
+		padding-right: 10rpx;
+		margin-right: 0rpx;
+		border-radius: 2rpx;
+	}
 	.demo {
 		width:420rpx;
 		margin:0 auto;
@@ -2943,7 +2931,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 		padding: 0 20rpx;
 		position: relative;
 		overflow: hidden;
-		margin-top: 10rpx;
+		margin-bottom: 10rpx;
 	}
 	.stamp:before {
 		content: '';
