@@ -2535,11 +2535,15 @@ extraData = 'xxxxxxxxxxxxxxx'
 				//that.youhui_diko_price = util.sprintf("%0.2f", price/100);
 					
 				that.youhui_diko_price = price;
+				console.log('youhui_diko_price',that.youhui_diko_price)
+				console.log('抵扣',parseFloat(that.youhui_diko_price))
+				console.log('总价',parseFloat(that.all_price))
+			
 				
 				//将优惠券抵扣的金额从要支付的金额中减去，为后面的赠款和余额抵扣做准备
 				// parseFloat(that.all_price) + parseFloat(that.traffic_price)
 				
-				that.pay_price =parseFloat(that.all_price) - parseFloat(that.youhui_diko_price) + parseFloat(that.traffic_price);
+				that.pay_price = (parseFloat(that.all_price) -that.youhui_diko_price + parseFloat(that.traffic_price)).toFixed(2);
 				console.log('1231231321',that.pay_price)
 				
 				//如果抵扣的金额比要支付的金额还要大，则最多抵扣要支付的金额
