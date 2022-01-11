@@ -46,7 +46,7 @@
 			<!--平铺广告图片end-->
 			
 			
-			<view class="main-body">
+			<view class="main-body" v-if="show_input_list == 1">
 				
 				<form @submit="formSubmit">
 					<block v-for="item in input_field_list" :key="item.fieldname">
@@ -297,6 +297,7 @@
 				
 				inputtype:'',
 				
+				show_input_list:0,
 				input_field_list:[],
 				
 				red:'red',
@@ -850,6 +851,7 @@
 								
 							that.input_field_list = list;
 							
+							that.show_input_list = 1;
 								
 						}
 										
