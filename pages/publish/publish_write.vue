@@ -224,7 +224,7 @@
 					
 					
 					<!-- <upimg-box></upimg-box> -->
-					<view class="fabu_xuzhi_block" v-if="shop_option_data"> 
+					<view class="fabu_xuzhi_block" v-if="publish_write_fabu_xuzhi"> 
 					
 						<checkbox-group name='fabu_xuzhi' style="zoom:70%;margin-right: 8rpx;">
 								<checkbox value="1">
@@ -420,6 +420,11 @@
 				console.log('======>>>>>that002.wxa_shop_nav_bg_color ====>>>'+that002.wxa_shop_nav_bg_color);
 				
 				
+				if(!that002.cms_token){					
+					that002.cms_token = shop_option_data.cms_token;
+				}
+				
+				
 				that.getWriteFormInputList();
 				
 			});
@@ -427,7 +432,8 @@
 			
 			
 			//判断登录（如果不是 2 万能表单，其他情况都要求用户登录后才能进入填写表单）
-			var userInfo = that.abotapi.get_user_info();		
+			var userInfo = that.abotapi.get_user_info();
+				
 			if(( (this.form_type != 2) || ((this.form_type == 2) && options.mustlogin && (options.mustlogin == 1) ) ) 
 				&& (!userInfo || !userInfo.userid)){
 				
@@ -710,15 +716,17 @@
 			},
 			getWriteFormInputList:function(){
 				
-				if(!this.cms_token){
-					var shop_option_data = uni.getStorageSync('shop_option_data_' + this.abotapi.globalData.default_sellerid);
-					var json_shop_option_data = JSON.parse(shop_option_data);
-					
-					this.cms_token = json_shop_option_data.option_list.cms_token;
-				}
+				
 				
 				
 				var that = this;
+				
+				
+				//console.log('that.formid ===>>>', that.formid);
+				
+				if( (that.form_type == 3) && (!that.formid) ){
+					return;
+				}
 				
 				//form_type 判断那个url
 				var url = '';
