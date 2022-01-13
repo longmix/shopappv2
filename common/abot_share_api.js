@@ -22,7 +22,7 @@ module.exports = {
 		console.log('我是微信朋友圈分享',href);
 		uni.share({
 		    provider: "weixin",
-		    scene: "WXSenceTimeline",
+		    scene: "WXSceneTimeline",
 		    type: 0,
 		    href: href,
 		    title: title,
