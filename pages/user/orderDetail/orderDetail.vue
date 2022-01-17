@@ -15,6 +15,36 @@
 	
 	
 	
+	
+	<view class="show_modal_mask" v-if="show_wuliu_xinxi == true" @tap="show_wuliu_xinxi = false"  @touchmove.stop.prevent="disabledScroll"></view>
+	<view class="show_modal_pop" v-if="show_wuliu_xinxi == true"  @touchmove.stop.prevent="disabledScroll">
+	
+			<scroll-view  scroll-y="true" :scroll-top="scrollTop" class="scroll-Y" style="background-color: #FFFFFF;width: 600rpx;height: 700rpx;padding:20rpx">
+				
+				<view style="display: flex;line-height: 50rpx;margin-bottom: 20rpx;margin-bottom: 30rpx;">
+				
+					<image :src="current_kuaidi_xinxi.logo" mode=""  style="width: 50rpx;height: 50rpx;border-radius: 50%;"></image>
+					<view style="margin-left:20rpx ;">{{orderData.delivery_company}}    {{orderData.delivery_no}}</view>
+				</view>
+				<view style="font-weight: bold;">状态记录：</view>
+				<view v-for="(current_msg_kuaidi_xinxi_item,index) in current_msg_kuaidi_xinxi">
+					<view style="padding-bottom: 50rpx;font-weight: 400;color: #666666;padding-left: 20rpx;">
+						<view>
+							{{current_msg_kuaidi_xinxi_item.time}}
+						</view>
+						<view style="font-size: 26rpx;">
+							{{current_msg_kuaidi_xinxi_item.status}}
+						</view>
+					</view>
+					
+				</view>
+			</scroll-view >
+			
+	</view>
+	
+	
+	
+	
 	<view class="w100">
 			
 		<!-- 普通商品订单的商品列表 -->
@@ -351,7 +381,7 @@
 			  <view v-if="orderData.delivery_no">
 				  物流编号
 				  <view class="fuzhi" @click="Clipboard_text(orderData.delivery_no)" style="">复制</view>
-				  <view class="order_item_desc_value">{{orderData.delivery_no}}</view>
+				  <view class="order_item_desc_value" @tap="wuliu_xinxi()">{{orderData.delivery_no}}</view>
 				  
 		      </view>
 	      </view>
@@ -505,6 +535,14 @@
 				tuikuan_reason_list:'',
 				express_information_list:'',
 				tuikuanid:0,
+				
+				
+				
+				
+				show_wuliu_xinxi:false,
+				current_msg_kuaidi_xinxi:null,
+				current_kuaidi_xinxi:null,
+				scrollTop:0,
 			}
 		},
 		
@@ -562,6 +600,9 @@
 		methods:{
 			input_autocomplete_selectItemS(data) {
 				console.log('收到数据了:', data);
+			},
+			 disabledScroll(){
+			    return
 			},
 			printLog(){
 				console.log(this.input_autocomplete_Obj);
@@ -887,6 +928,45 @@
 								title:'复制失败',
 							})
 						}
+					});
+				},
+				wuliu_xinxi:function(){
+					var that = this;
+					
+					var userInfo = that.abotapi.get_user_info();
+					that.abotapi.abotRequest({
+					  url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ExpressDeliveryData/query',
+					  data: {
+					    checkstr: userInfo.checkstr,
+					    sellerid: that.abotapi.get_sellerid(),
+						orderid: that.orderData.orderid,
+						userid:userInfo.userid,
+					  },
+					  success: function (res) {
+						
+						if(res.data.code == 1){
+							that.show_wuliu_xinxi = true;
+							that.current_kuaidi_xinxi = res.data.data;
+							that.current_msg_kuaidi_xinxi = res.data.data.list;
+						}
+						else{
+							that.show_wuliu_xinxi = false;
+							
+							wx.showModal({
+							 title:'提示',
+							 content:'没有物流信息',
+							 showCancel:false,
+							});
+						}
+							
+						
+					  },
+					  fail: function () {
+						  wx.showToast({
+						    title: '网络异常！',
+						    duration: 2000
+						  });
+					  }
 					});
 				},
 				commodity_detail:function(productid){
