@@ -26,10 +26,10 @@
 					<image :src="current_kuaidi_xinxi.logo" mode=""  style="width: 50rpx;height: 50rpx;border-radius: 50%;"></image>
 					<view style="margin-left:20rpx ;">{{orderData.delivery_company}}    {{orderData.delivery_no}}</view>
 				</view>
-				<view style="font-weight: bold;">状态记录：</view>
+				<view style="font-weight: bold;">状态记录：</view> 
 				<view v-for="(current_msg_kuaidi_xinxi_item,index) in current_msg_kuaidi_xinxi">
 					<view style="padding-bottom: 50rpx;font-weight: 400;color: #666666;padding-left: 20rpx;">
-						<view>
+						<view style="margin-bottom: 10rpx;">
 							{{current_msg_kuaidi_xinxi_item.time}}
 						</view>
 						<view style="font-size: 26rpx;">
