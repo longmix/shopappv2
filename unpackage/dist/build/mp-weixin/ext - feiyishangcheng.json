@@ -15,7 +15,7 @@
     "force_sellerid_flag": 1,
     "force_sellerid_value": "fzzNPkaVg",  
     "shop_name": "云阳县技艺商品经营部",
-    "version_number": "Ver 1.1.3 Build 171",
+    "version_number": "Ver 1.2.1 Build 175",
     "navigationBarBackgroundColor_fixed": 1,
     "navigationBar_font_color":"#ffffff",
     "navigationBar_bg_color":"#2d96ff",
@@ -52,10 +52,10 @@
         "text": "商品分类"
       },
       {
-        "pagePath": "pages/shopList/shopList",
-        "iconPath": "static/img/tabBar/shang.png",
-        "selectedIconPath": "static/img/tabBar/shang-on.png",
-        "text": "本地生活"
+        "pagePath": "pages/cart/cart",
+        "iconPath": "static/img/tabBar/cart.png",
+        "selectedIconPath": "static/img/tabBar/cart-on.png",
+        "text": "购物车"
       },
       {
         "pagePath": "pages/tabbar/user",
