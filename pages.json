@@ -56,6 +56,10 @@
 				}
 			}
 		},
+		{	//用于兼容 xiaochengxu/shopapp 项目的默认页面
+			"path": "pages/tabbar/Liar",
+			"style": {}
+		},
 		{	//商品分类
 			"path": "pages/category/category",
 			"style": {
