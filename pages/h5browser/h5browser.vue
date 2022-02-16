@@ -80,27 +80,27 @@
 						code: short_code,
 					};
 					var cbSuccess = function (res) {
-					uni.hideLoading();
-		
-		            if (res.data.code == 1) {
-							url = res.data.longurl
-							console.log('dizhizaina',url);
-		            }
-		            else {
-						uni.showModal({
-							title: '错误',
-							content: '网址不存在',
-							success(res) {
-								uni.navigateBack({
-									delta: 2
-								})
-							}
-						})
-					}
-				};
-				var cbError = function (res) {
-					uni.hideLoading();
-				};
+						uni.hideLoading();
+			
+						if (res.data.code == 1) {
+								url = res.data.longurl
+								console.log('dizhizaina',url);
+						}
+						else {
+							uni.showModal({
+								title: '错误',
+								content: '网址不存在',
+								success(res) {
+									uni.navigateBack({
+										delta: 2
+									})
+								}
+							})
+						}
+					};
+					var cbError = function (res) {
+						uni.hideLoading();
+					};
 					this.abotapi.httpPost(url, data, cbSuccess, cbError);
 		
 					return;
