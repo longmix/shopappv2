@@ -90,10 +90,13 @@
 				
 					
 				<div class="flex mgb-20">
-					<div class="cl-black pointer flex-1" style="color: #a2a2a2;font-size: 26rpx;">手机号码首次登录自动注册</div>
+					<div class="cl-black pointer flex-1" 
+						style="color: #a2a2a2;font-size: 26rpx;">手机号码首次登录自动注册</div>
 				</div>
 				<div class="flex mgb-20">
-					<navigator class="cl-black pointer flex-1" open-type="navigate" url="/pages/login/login_by_password">手机不在身边？账号密码登录</navigator>
+					<navigator class="cl-black pointer flex-1" 
+						open-type="navigate" 
+						url="/pages/login/login_by_password">手机不在身边？账号密码登录</navigator>
 				</div>
 			</view>
 			<view class="home-p" :style="{background:wxa_shop_nav_bg_color}" @tap="goHome()">
@@ -113,6 +116,20 @@
 				<button open-type="getPhoneNumber" plain="true" 
 					class="btn-round bg-success icon weixin-icon" 
 					@getphonenumber="btn_wxa_one_click_login"></button>
+			</div>
+			<!-- #endif -->
+			
+			<!-- #ifdef MP-BAIDU -->
+			<div class="otherBox mgb-20">
+				<div class="otherBox-line"></div>
+				<div class="otherBox-text">一键登录</div>
+			</div>
+			<div class="flex flex-center" style="margin-bottom: 200rpx;">				
+				<button open-type="getPhoneNumber"
+					@getphonenumber="btn_baidu_one_click_login"
+					type="primary"
+					class="btn-row-submit"
+					style="width: 92%;background: #2E85D8;">百度手机号快速登录</button>
 			</div>
 			<!-- #endif -->
 			
@@ -542,90 +559,10 @@
 							  
 							that.abotapi.set_user_info(that.abotapi.globalData.userInfo);
 							
-							var post_data = {
-							       sellerid: that.abotapi.globalData.default_sellerid,
-							       checkstr: request_res.data.checkstr,
-							       userid: request_res.data.userid,
-								   parentid: that.abotapi.get_current_parentid(),
-							}
 							
+							that.getUserInfoFromYanyubao(request_res.data.msg);
 							
-							// #ifdef MP-WEIXIN
-								post_data.xiaochengxu_appid = that.abotapi.globalData.xiaochengxu_appid,
-								post_data.xiaochengxu_openid = that.abotapi.get_current_openid();
-							// #endif
-							
-							
-							
-							that.abotapi.abotRequest({
-							     url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopApp&a=get_user_info',
-							     data: post_data,
-							     header: {
-							       "Content-Type": "application/x-www-form-urlencoded"
-							     },
-							     method: "POST",
-							     success: function (res) {
-							       console.log('g=Yanyubao&m=ShopApp&a=get_user_info===>>>>手机验证码登录===>>>', res);
-									
-									var	data = res.data;						      
-									 
-									if(data.code == 1){
-										that.abotapi.set_user_account_info(data.data);
-									
-									}
-									
-									
-									//========显示登录成功的提示================
-									
-									uni.showModal({
-										title: '提示',
-										content: request_res.data.msg,
-										showCancel: false,
-										success: function (res) {
-											//console.log("回调结果"+res.code);
-											if (res.confirm) {		 
-												
-												
-											}
-											
-											//=======检查登录成功之后的跳转=======
-											var login_last_url = uni.getStorageSync('login_last_url');
-											var var_list = null;
-											var ret_page = '';
-											
-											if (login_last_url) {
-												var_list = uni.getStorageSync('login_var_list');
-												ret_page = uni.getStorageSync('login_ret_page');
-												
-												
-												
-												uni.removeStorageSync('login_last_url');
-												uni.removeStorageSync('login_var_list');
-												uni.removeStorageSync('login_ret_page');
-												
-											}									
-											else{
-												login_last_url = '/pages/index/index';
-											}
-											
-											that.abotapi.call_h5browser_or_other_goto_url(login_last_url, var_list, ret_page);
-											
-											return;
-											
-											//===========End================
-											
-										}
-									});
-									
-									//================= End ====================
-									
-									
-									
-									
-									
-	
-							     }
-							   })
+
 							  
 				 
 				        
@@ -716,66 +653,15 @@
 							console.log(that.abotapi.globalData.userInfo);
 									  
 							that.abotapi.set_user_info(that.abotapi.globalData.userInfo);
-							
-							
-							var post_data = {
-							       sellerid: that.abotapi.globalData.default_sellerid,
-							       checkstr: res.data.checkstr,
-							       userid: res.data.userid,
-								   parentid: that.abotapi.get_current_parentid(),
-							}
-							
-							
-							// #ifdef MP-WEIXIN
-								post_data.xiaochengxu_appid = that.abotapi.globalData.xiaochengxu_appid,
-								post_data.xiaochengxu_openid = that.abotapi.get_current_openid('userid_openid_' + res.data.userid);
-							// #endif
-							
-							
-							that.abotapi.abotRequest({
-							     url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopApp&a=get_user_info',
-							     data: post_data,
-							     success: function (res) {
-							       console.log('g=Yanyubao&m=ShopApp&a=get_user_info===>>>微信一键登录===>>>', res);
-									
-									var	data = res.data;						      
-									 
-									 if(data.code == 1){
-										 
-										 that.abotapi.set_user_account_info(data.data);
-										 
-										 //=======检查登录成功之后的跳转=======
-										 
-										 var login_last_url = uni.getStorageSync('login_last_url');
-										 
-										 if (login_last_url) {
-										 	var var_list = uni.getStorageSync('login_var_list');
-										 	var ret_page = uni.getStorageSync('login_ret_page');
-											
-											uni.removeStorageSync('login_last_url');
-											uni.removeStorageSync('login_var_list');
-											uni.removeStorageSync('login_ret_page');
-										 	
-										 	that.abotapi.call_h5browser_or_other_goto_url(login_last_url, var_list, ret_page);
-										 	
-										 	
-										 }
-										 else{
-										 	that.abotapi.call_h5browser_or_other_goto_url('/pages/index/index');
-										 }
-										 
-									 }
 								
-							     }
-							   })
-							
+							that.getUserInfoFromYanyubao(res.data.msg);
 							// that.getUserInfo();
 							
-							uni.showToast({
+							/*uni.showToast({
 								title: res.data.msg,
 								icon: 'success',
 								duration: 2000
-							})
+							})*/
 								  
 							
 							
@@ -1048,7 +934,191 @@
 				
 				
 				
-			}
+			},
+			
+			//2022.3.18. 百度一键登录，从wordpress项目的login.vue文件中移植过来的
+			/*
+			detail
+			:
+			encryptedData
+			:
+			"rkbCbHbCwRGZvJhtmUcPtlQNyq4X8X0l/+oTKUa8BHVcc5lmXGbdK1nnssfSLoT26JWh7T5GRcOuFPKYY7rd3WR9WYT4lQrl1FjziibJ+Mk="
+			errMsg
+			:
+			"getPhoneNumber:ok"
+			iv
+			:
+			"07bcfd5f66103efba3790Q=="*/
+			btn_baidu_one_click_login:function(e){
+				var that = this;
+				
+				console.log('uni.login <<<==== btn_baidu_one_click_login', e);
+				
+				console.log(e.detail.errMsg)
+				console.log(e.detail.iv)
+				console.log(e.detail.encryptedData)
+				
+				if(e.detail.errMsg != 'getPhoneNumber:ok'){
+					uni.showModal({
+						title:'失败',
+						content:'获取手机号码失败',
+						showCancel:false
+					});
+					
+					return;
+				}
+					  
+				uni.login({
+					success: function (res) {
+						console.log("btn_baidu_one_click_login 获取到的jscode是:" + res.code);
+					  
+						//如果拒绝授权， e.detail.errMsg
+						//console.log(e.detail.errMsg);return;
+					  
+						that.abotapi.abotRequest({
+							url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppBaiduSmartApp&a=wxa_one_click_login',
+							method: "POST",
+							dataType: 'json',
+							data: {
+								js_code: res.code,
+								baidu_smartapp_appid: that.abotapi.globalData.baidu_smartapp_appid,
+								iv: e.detail.iv,
+								encryptedData: e.detail.encryptedData,
+								sellerid: that.abotapi.globalData.default_sellerid,
+								parentid: 0,
+							},
+							success: function (res) {
+								console.log(res);
+			  
+								if (res.data && (res.data.code == 1)) {
+									//更新checkstr和uwid，
+									that.abotapi.globalData.userInfo.userid = res.data.userid;
+									//this.abotapi.globalData.userInfo.checkstr = res.data.checkstr;
+				  
+									console.log('一键登录成功，userid:' + res.data.userid);
+									console.log('一键登录成功，userid:' + res.data.openid);
+				  
+									that.abotapi.globalData.userInfo.user_openid = res.data.openid;
+									that.abotapi.globalData.userInfo.userid = res.data.userid;
+									that.abotapi.globalData.userInfo.checkstr = res.data.checkstr;
+									that.abotapi.globalData.userInfo.is_get_userinfo = res.data.is_get_userinfo;
+				  
+									//保存openid
+									that.abotapi.set_current_openid(res.data.openid);
+					  
+									console.log(that.abotapi.globalData.userInfo);
+					  
+									that.abotapi.set_user_info(that.abotapi.globalData.userInfo);
+									
+									that.getUserInfoFromYanyubao(res.data.msg);
+									
+									
+			
+								}else {
+									//一键登录返回错误代码
+									uni.showModal({
+										title: '提示',
+										content: res.data.msg,
+										showCancel:false,
+										success(res) {
+											if (res.confirm) {
+												console.log('用户点击确定')
+											}
+										}
+									})		  
+								}
+							}
+						});
+					  
+					},
+					fail: function (login_res) {
+						console.log('login.js  uni.login失败。');
+					}
+				});
+			},
+			
+			//获取用户信息
+			getUserInfoFromYanyubao: function (msg_text) {
+				var that = this;
+				
+				var userInfo = that.abotapi.get_user_info();
+				
+				if (!userInfo || !userInfo.userid) {
+					return;
+				}
+				
+				var post_data = {
+				       sellerid: that.abotapi.globalData.default_sellerid,
+				       checkstr: userInfo.checkstr,
+				       userid: userInfo.userid,
+					   parentid: that.abotapi.get_current_parentid(),
+				}
+				
+				
+				// #ifdef MP-WEIXIN
+					post_data.xiaochengxu_appid = that.abotapi.globalData.xiaochengxu_appid,
+					post_data.xiaochengxu_openid = that.abotapi.get_current_openid('userid_openid_' + userInfo.userid);
+				// #endif
+				
+				
+				that.abotapi.abotRequest({
+				     url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopApp&a=get_user_info',
+				     data: post_data,
+				     success: function (res) {
+						console.log('g=Yanyubao&m=ShopApp&a=get_user_info===>>> getUserInfoFromYanyubao ===>>>', res);
+						
+						if(res.data.code == 1){ 
+							 that.abotapi.set_user_account_info(res.data.data);
+						}
+						
+						
+						//========显示登录成功的提示================
+															
+						uni.showModal({
+							title: '提示',
+							content: msg_text,
+							showCancel: false,
+							success: function (res003) {
+								//console.log("回调结果"+res.code);
+								if (res003.confirm) {		 
+									
+									
+								}
+								
+								
+								//=======检查登录成功之后的跳转=======
+								
+								var login_last_url = uni.getStorageSync('login_last_url');
+								
+								if (login_last_url) {
+									var var_list = uni.getStorageSync('login_var_list');
+									var ret_page = uni.getStorageSync('login_ret_page');
+																
+									uni.removeStorageSync('login_last_url');
+									uni.removeStorageSync('login_var_list');
+									uni.removeStorageSync('login_ret_page');
+									
+									that.abotapi.call_h5browser_or_other_goto_url(login_last_url, var_list, ret_page);
+									
+									
+								}
+								else{
+									that.abotapi.call_h5browser_or_other_goto_url('/pages/index/index');
+								}
+								
+								
+							},  // end of  success
+						}); // end of uni.showModal
+					
+					
+					 
+				   },
+				});   // end of  that.abotapi.abotRequest
+				
+				
+			},  // end of  function getUserInfoFromYanyubao
+			
+			
 		}
 	}
 </script>

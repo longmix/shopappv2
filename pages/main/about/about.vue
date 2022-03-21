@@ -92,7 +92,8 @@
 					<button class="xg_button" style="width:90%;margin: 0 auto;" open-type="contact" type="primary">小程序客服</button>
 					<!-- #endif -->
 					<!-- #ifdef MP-BAIDU -->
-					<button class="xg_button" style="width:90%;margin: 0 auto;" @tap="call_seller" type="primary">联系客服</button>
+					<!-- <button class="xg_button" style="width:90%;margin: 0 auto;" @tap="call_seller" type="primary">联系客服</button> -->
+					<button class="xg_button" style="width:90%;margin: 0 auto;" open-type="contact"  bindcontact="baidu_mp_contactCB" type="primary">小程序客服</button>
 					<!-- #endif -->
 					<!-- #ifdef MP-ALIPAY -->
 					<button class="xg_button" style="width:90%;margin: 0 auto;" @tap="call_seller" type="primary">联系客服</button>
@@ -493,6 +494,14 @@
 					  content: '打开浏览器，输入“'+that.kefu_website+'”访问',
 					})
 				// #endif
+				
+				
+			},
+			
+			//百度小程序客服按钮被点击后的回调函数
+			baidu_mp_contactCB:function(e){
+				console.log('baidu_mp_contactCB====>>>>', e);
+				
 				
 				
 			},

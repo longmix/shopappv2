@@ -16,7 +16,7 @@
 		
 		</view>
 		
-		<view class="mid-img">
+		<view class="mid-img" v-if="my_module_list001 != ''">
 			<view class="head1" :style="{'border-left-color':my_module_list_001_title_color}">{{my_module_list_001_title_name}}</view>
 			<view class="icn-con" v-for="item2 in my_module_list001" :key="item2.index" 
 				:data-module_name="item2.name"
@@ -32,7 +32,7 @@
 				<view class="txt-h">{{item2.name}}</view>
 			</view>
 		</view>
-		<view class="mid-img">
+		<view class="mid-img" v-if="my_module_list002 != ''">
 			<view class="head1" :style="{'border-left-color':my_module_list_002_title_color}">{{my_module_list_002_title_name}}</view>
 			<view class="icn-con" v-for="item2 in my_module_list002" :key="item2.index" 
 				:data-module_name="item2.name"
@@ -74,10 +74,12 @@
 				title:'我的功能模块列表'
 			})
 			
-			this.abotapi.set_option_list_str(this, this.callback_set_option_list_str);
+			var that = this;
+			
+			that.abotapi.set_option_list_str(that, that.callback_set_option_list_str);
 			
 			
-			this.get_module_list_of_supplier();
+			that.get_module_list_of_supplier();
 		},
 		//下拉刷新
 		onPullDownRefresh: function () {
@@ -92,7 +94,7 @@
 				success:function(res008){
 					console.log('success ===>>> ', res008);
 					
-					that.abotapi.set_option_list_str(this, this.callback_set_option_list_str);
+					that.abotapi.set_option_list_str(that, that.callback_set_option_list_str);
 					
 					that.get_module_list_of_supplier();
 				}
@@ -140,8 +142,14 @@
 					
 					that.content_list = my_module_list.content_list;
 					
-					that.my_module_list001 = my_module_list.list001;
-					that.my_module_list002 = my_module_list.list002;
+					if(my_module_list.list001){
+						that.my_module_list001 = my_module_list.list001;
+					}
+					
+					if(my_module_list.list002){
+						that.my_module_list002 = my_module_list.list002;
+					}
+					
 					
 					// #ifdef MP-BAIDU
 					//that.my_module_list001 = that.__filter_no_plugin_module(my_module_list.list001);
@@ -160,6 +168,9 @@
 					post_data.userid = userInfo.userid;
 					post_data.checkstr = userInfo.checkstr;
 				}
+				
+				post_data.platform = that.abotapi.globalData.current_platform;
+				post_data.version_code = that.abotapi.globalData.version_code;
 				
 				
 				this.abotapi.abotRequest({
