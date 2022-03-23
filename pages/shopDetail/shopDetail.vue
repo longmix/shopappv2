@@ -224,6 +224,29 @@
 		</view>
 		
 		
+		<view style="border-bottom:6px solid #eee;" v-if="current_shang_detail.detail != ''">
+			<view class="icon-title2">
+				<image :src="user_console_setting.user_console_icon_jianjie" mode="widthFix"></image>
+				<view class='biaoti'>商家详情</view>
+			</view>
+			<!-- 富媒体文本展示商家详情 -->
+			<view class="card_detail_xiangqing">
+				<view class="description001">
+					<view class="content">
+						<!-- #ifdef MP-ALIPAY -->
+						<rich-text :nodes="shangjia_detail"></rich-text>
+						<!-- #endif -->
+						<!-- #ifndef MP-ALIPAY -->
+						<rich-text :nodes="shangjia_detail|formatRichText"></rich-text>
+						<!-- #endif -->
+					</view>
+				</view>
+			</view>
+		</view>
+		
+		
+		
+		
 		
 		<!-- 发圈发现随拍 （关联商家的） -->
 		<discoverList 
@@ -370,6 +393,13 @@
 	import abotshare from '../../components/abot_share_api/abot_share_api.vue';
 	import abotsharejs from '../../common/abot_share_api.js';
 	
+	
+	// #ifdef MP-ALIPAY
+	import parseHtml from "../../common/html-parser.js"
+	// #endif
+	
+	
+	
 	export default {
 		components:{
 			discoverList,
@@ -477,6 +507,11 @@
 				vip_card_list:'',
 				
 				default_copyright_text:'',
+				
+				show_shang_detail_conent_btn:0,
+				
+				
+				shangjia_detail:'',
 			};
 		},
 		
@@ -675,6 +710,10 @@
 				if(user_console_setting.shop_product_hidden && (user_console_setting.shop_product_hidden == 1)){
 					this.shop_product_btn_show = 0;
 				}				
+				
+				if(user_console_setting.show_shang_detail_conent && (user_console_setting.show_shang_detail_conent == 1)){
+					this.show_shang_detail_conent_btn = 0;
+				}
 				
 				if(user_console_setting.waimai_product_hidden && (user_console_setting.waimai_product_hidden == 1)){
 					this.waimai_product_btn_show = 0;
@@ -963,6 +1002,11 @@
 							that.abotapi.globalData.default_sellerid = data.sellersn;
 						}
 						
+						
+					
+						
+						
+						
 
 						var spec = data.spec;
 						if (spec) {
@@ -978,6 +1022,34 @@
 						}
 						
 						that.current_shang_detail = data;
+						
+						
+						
+						
+						//处理商家详情
+						that.shangjia_detail = that.current_shang_detail.detail;
+										
+										
+						// #ifdef MP-ALIPAY		
+										
+						const filter = that.$options.filters["formatRichText"];
+						that.shangjia_detail = filter(that.shangjia_detail);
+										
+						//console.log('that.shangjia_detail====>>>>', that.shangjia_detail);
+										
+						let data001 = that.shangjia_detail;
+						let newArr = [];
+						let arr = parseHtml(data001);
+						arr.forEach((item, index) => {
+							newArr.push(item);
+						});
+										
+						that.shangjia_detail = newArr;
+										
+						// #endif	
+						
+						
+						
 						
 						//2020.11.17. 商家的发圈列表（暂无数据返回）
 						that.shang_faquan_list = data.shang_faquan_list;
@@ -1429,6 +1501,46 @@
 			}
 					
 			
+		},
+		
+		
+		
+		filters: {
+			/**
+			 * 处理富文本里的图片宽度自适应
+			 * 1.去掉img标签里的style、width、height属性
+			 * 2.img标签添加style属性：max-width:100%;height:auto
+			 * 3.修改所有style里的width属性为max-width:100%
+			 * 4.去掉<br/>标签
+			 * @param html
+			 * @returns {void|string|*}
+			 */
+			formatRichText(html) { //控制小程序中图片大小
+		
+				let newContent = html.replace(/<img[^>]*>/gi, function(match, capture) {
+					match = match.replace(/style="[^"]+"/gi, '').replace(/style='[^']+'/gi, '');
+					match = match.replace(/width="[^"]+"/gi, '').replace(/width='[^']+'/gi, '');
+					match = match.replace(/height="[^"]+"/gi, '').replace(/height='[^']+'/gi, '');
+					return match;
+				});
+				newContent = newContent.replace(/style="[^"]+"/gi, function(match, capture) {
+					match = match.replace(/width:[^;]+;/gi, 'max-width:100%;').replace(/width:[^;]+;/gi,
+						'max-width:100%;');
+					return match;
+				});
+				//newContent = newContent.replace(/<br[^>]*\/>/gi, '');
+		
+				newContent = newContent.replace(/<p[^>]*>/gi, '<p style="margin:10px;">');
+		
+				newContent = newContent.replace(/\<img/gi,
+					'<img style="max-width:100%;height:auto;display:inline-block;margin:10rpx auto;vertical-align: middle;"'
+					);
+		
+				newContent = newContent.replace(/<h1[^>]*>/gi, '<h1 class="wxParse-h1">');
+				newContent = newContent.replace(/<h2[^>]*>/gi, '<h2 class="wxParse-h2">');
+		
+				return newContent;
+			}
 		}
 	};
 </script>
@@ -2317,5 +2429,30 @@
 		border: 1rpx dotted #666;
 		margin: 20rpx auto;		
 		border-radius: 5rpx;
+	}
+	
+	
+	
+	/* 富媒体样式 */
+	.card_detail_xiangqing{
+		word-wrap:break-word;  
+		word-break:break-all;
+		background-color: #FFFFFF;
+		border-radius: 15rpx;
+		padding: 15rpx;
+		margin: 15rpx;
+	}
+	.description001 .title {
+		width: 100%;
+		height: 80upx;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 26upx;
+		color: #999;
+		position: relative;
+	}	
+	.description001 .content {
+		padding-bottom: 50rpx;
 	}
 </style>

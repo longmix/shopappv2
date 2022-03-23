@@ -15,7 +15,13 @@
 			</view>
 		
 		</view>
-		
+		<view class="show_modal_mask" v-if="showModal_exchange_btn" @tap="showModal_exchange_btn=false"></view>
+		<view class="show_modal_pop"  v-if="showModal_exchange_btn">
+			<view style="border: #5DD300 2rpx solid;border-radius: 10rpx;background: #ffffff;width: 500rpx;height:500rpx;text-align: center;">
+				<image  class="" :src="tanchuang_icon" style="width: 160rpx;height: 160rpx;margin-top: 20rpx;margin-bottom: 20rpx;border-radius:20rpx":style="{'background-color':tanchuang_background}"></image>
+				<view style="text-align: center;">{{tanchuang_plugin_name}}</view>
+			</view>
+		</view>
 		<view class="mid-img" v-if="my_module_list001 != ''">
 			<view class="head1" :style="{'border-left-color':my_module_list_001_title_color}">{{my_module_list_001_title_name}}</view>
 			<view class="icn-con" v-for="item2 in my_module_list001" :key="item2.index" 
@@ -24,12 +30,17 @@
 				:data-plugin_name="item2.plugin_name"
 				:data-plugin_desc_basic="item2.plugin_desc_basic" 
 				:data-link="item2.new_link"
+				:data-icon="item2.icon"
+				:data-background="item2.background_color"
 				@tap="goto_my_module">
 				<image v-if="item2.plugin_flag" class="tips" src="https://yanyubao.tseo.cn/Tpl/static/images/bbq.png"></image>
 				
 				<image class="img-h" :src="item2.icon" :style="{'background-color':item2.background_color}"></image>
 				
 				<view class="txt-h">{{item2.name}}</view>
+				
+				
+				
 			</view>
 		</view>
 		<view class="mid-img" v-if="my_module_list002 != ''">
@@ -40,6 +51,8 @@
 				:data-plugin_name="item2.plugin_name"
 				:data-plugin_desc_basic="item2.plugin_desc_basic"
 				:data-link="item2.new_link"
+				:data-icon="item2.icon"
+				:data-background="item2.background_color"
 				@tap="goto_my_module">
 				<image v-if="item2.plugin_flag" class="tips" src="https://yanyubao.tseo.cn/Tpl/static/images/bbq.png"></image>
 				
@@ -67,6 +80,13 @@
 				
 				//是否跳转到功能模块，还是不响应点击事件
 				goto_my_module_pc_web_flag:0,
+				
+				
+				
+				showModal_exchange_btn:false,
+				tanchuang_icon:null,
+				tanchuang_plugin_name:null,
+				tanchuang_background:null,
 			}
 		},
 		onLoad(option){
@@ -256,27 +276,28 @@
 			},
 			//模态弹窗事件
 			block_tanchuang:function(e){
-				
+				this.showModal_exchange_btn = true;
 				console.log('block_tanchuang=======>>>>>', e);
 				
 				var plugin_flag = e.currentTarget.dataset.plugin_flag;
-				
-				var plugin_name = e.currentTarget.dataset.module_name;
-				var plugin_desc_basic = '提供' + plugin_name +'相关及扩展的功能。';
+				this.tanchuang_icon = e.currentTarget.dataset.icon;
+				this.tanchuang_background = e.currentTarget.dataset.background;
+				this.tanchuang_plugin_name = e.currentTarget.dataset.module_name;
+				//var plugin_desc_basic = '提供' + plugin_name +'相关及扩展的功能。';
 				
 				if(plugin_flag && (plugin_flag == 1) ){
 					plugin_name = e.currentTarget.dataset.plugin_name;
 					plugin_desc_basic = e.currentTarget.dataset.plugin_desc_basic;				
 				}
 				
-				uni.showModal({
+				/* uni.showModal({
 				    title: plugin_name,
 				    content: plugin_desc_basic,
 					showCancel: false,
 				    success: function (res) {
 				        
 				    }
-				});
+				}); */
 				
 			},
 			
@@ -347,5 +368,22 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+	}
+	.show_modal_pop{
+		position: fixed;
+		z-index: 998;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%,-50%);
+	}
+	.show_modal_mask{
+		background-color: #000;
+		opacity: 0.7;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 998;
 	}
 </style>

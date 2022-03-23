@@ -87,7 +87,8 @@
 			<view class="list" v-if="wxa_hidden_order_index_in_usercenter != 1">
 				<view class="box" style="width: 25%;" v-for="(row,index) in order_icon_list" :key="index" @tap="toOrderList(row.otype,index)">
 					<view class="img order_icon_msg">
-						<view class="icon" :class="row.icon"></view>
+						<!-- <view class="icon" :class="row.icon"></view> -->
+						<image :src="row.img" mode="widthFix" style="width:50rpx ;height: 50rpx;"></image>
 						<div class="order_icon_alarm" v-if="row.order_num">
 						  {{row.order_num}}
 						</div>
@@ -288,24 +289,28 @@
 						icon: "jianpan",
 						otype: 0,
 						order_num:0,
+						img:"../../static/img/jianpan.png"
 					},
 					{
 						text: '待付款',
 						icon: "fukuan",
 						otype: 1,
 						order_num:0,
+						img:"../../static/img/daifukuan.png"
 					},
 					{
 						text: '待发货',
 						icon: "fahuo",
 						otype: 2,
 						order_num:0,
+						img:"../../static/img/fahuo.png"
 					},
 					{
 						text: '待收货',
 						icon: "shouhuo",
 						otype: 6,
 						order_num:0,
+						img:"../../static/img/shouhuo.png"
 					},
 
 				],
