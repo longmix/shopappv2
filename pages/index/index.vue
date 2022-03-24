@@ -129,6 +129,30 @@
 		</view>
 		
 		
+		<!-- 客服大图标功能按钮 -->
+		<view v-if="show_usercenter_contact_in_index == 1">
+			<!-- #ifdef MP-WEIXIN | MP-BAIDU -->
+				<view v-if="usercenter_contact_btn_type == 0">
+					<button type="default" style="width: 80%;margin: 10rpx auto;"
+						:style="{backgroundColor:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}" 
+						open-type="contact" show-message-card="usercenter_contact_wxa_extend == 1 ? 'true' : 'false'" 
+						:send-message-title="usercenter_contact_wxa_title"  :send-message-path="usercenter_contact_wxa_path" 
+						:send-message-img="usercenter_contact_wxa_img" >{{usercenter_contact_btn_text}}</button>
+				</view>
+				<view v-if="usercenter_contact_btn_type == 1">
+					<button type="default" style="width: 80%;margin: 10rpx auto;padding: 0;border: 0;" 
+						open-type="contact" show-message-card="usercenter_contact_wxa_extend == 1 ? 'true' : 'false'"
+						:send-message-title="usercenter_contact_wxa_title"  :send-message-path="usercenter_contact_wxa_path" 
+						:send-message-img="usercenter_contact_wxa_img" plain="true">
+						<image style="width: 100%;" :src="usercenter_contact_btn_img" mode="widthFix"></image>
+						</button>
+				</view>
+			<!-- #endif -->
+			
+			
+		</view>
+		
+		
 		
 		<!-- 富媒体组件 2021.1.18. -->
 		<!-- rich-text  和 v-html 都有各自的优缺点 -->
@@ -510,6 +534,17 @@ export default {
 			
 			//2021.12.23客服消息重复
 			last_msg_chongfu:'',
+			
+			
+			//客服大图标功能相关 2022.3.24.
+			show_usercenter_contact_in_index:0,
+			usercenter_contact_btn_type:0,
+			usercenter_contact_btn_text:'',
+			usercenter_contact_btn_img:'',
+			usercenter_contact_wxa_extend:0,
+			usercenter_contact_wxa_title:'',
+			usercenter_contact_wxa_path:'',
+			usercenter_contact_wxa_img:'',
 		};
 	},
 	onLoad: function (options) {
@@ -1255,6 +1290,36 @@ export default {
 				that.show_address_card_in_index = 1;
 				//地址名片的内容
 				that.address_card_in_index = cb_params.option_list.address_card_in_index;
+			}
+			
+			if(cb_params.option_list.show_usercenter_contact_in_index){
+				that.show_usercenter_contact_in_index = cb_params.option_list.show_usercenter_contact_in_index;
+				
+				if(cb_params.option_list.usercenter_contact_btn_type){
+					that.usercenter_contact_btn_type = cb_params.option_list.usercenter_contact_btn_type;
+				}
+				if(cb_params.option_list.usercenter_contact_btn_text){
+					that.usercenter_contact_btn_text = cb_params.option_list.usercenter_contact_btn_text;
+				}
+				if(cb_params.option_list.usercenter_contact_btn_img){
+					that.usercenter_contact_btn_img = cb_params.option_list.usercenter_contact_btn_img;
+				}
+				if(cb_params.option_list.usercenter_contact_wxa_extend){
+					that.usercenter_contact_wxa_extend = cb_params.option_list.usercenter_contact_wxa_extend;
+					
+					if(cb_params.option_list.usercenter_contact_wxa_title){
+						that.usercenter_contact_wxa_title = cb_params.option_list.usercenter_contact_wxa_title;
+					}
+					if(cb_params.option_list.usercenter_contact_wxa_path){
+						that.usercenter_contact_wxa_path = cb_params.option_list.usercenter_contact_wxa_path;
+					}
+					if(cb_params.option_list.usercenter_contact_wxa_img){
+						that.usercenter_contact_wxa_img = cb_params.option_list.usercenter_contact_wxa_img;
+					}
+					
+					
+				}
+				
 			}
 			
 			//显示富媒体组件

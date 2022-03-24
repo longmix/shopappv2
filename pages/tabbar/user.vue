@@ -157,18 +157,18 @@
 			 mode="widthFix"></image>
 		</view>
 		
-		<!-- 客服功能按钮 -->
+		<!-- 客服大图标功能按钮 -->
 		<view v-if="usercenter_contact_status == 1">
-			<!-- #ifdef MP-WEIXIN -->
+			<!-- #ifdef MP-WEIXIN | MP-BAIDU -->
 				<view v-if="usercenter_contact_btn_type == 0">
-					<button type="default" style="width: 80%;margin-top: 10rpx;"
+					<button type="default" style="width: 80%;margin: 10rpx auto;"
 						:style="{backgroundColor:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}" 
 						open-type="contact" show-message-card="usercenter_contact_wxa_extend == 1 ? 'true' : 'false'" 
 						:send-message-title="usercenter_contact_wxa_title"  :send-message-path="usercenter_contact_wxa_path" 
 						:send-message-img="usercenter_contact_wxa_img" >{{usercenter_contact_btn_text}}</button>
 				</view>
 				<view v-if="usercenter_contact_btn_type == 1">
-					<button type="default" style="width: 80%;padding: 0;border: 0;" 
+					<button type="default" style="width: 80%;margin: 10rpx auto;padding: 0;border: 0;" 
 						open-type="contact" show-message-card="usercenter_contact_wxa_extend == 1 ? 'true' : 'false'"
 						:send-message-title="usercenter_contact_wxa_title"  :send-message-path="usercenter_contact_wxa_path" 
 						:send-message-img="usercenter_contact_wxa_img" plain="true">
@@ -289,28 +289,28 @@
 						icon: "jianpan",
 						otype: 0,
 						order_num:0,
-						img:"../../static/img/jianpan.png"
+						img:"https://yanyubao.tseo.cn/Tpl/static/images/user_order_icon/jianpan.png"
 					},
 					{
 						text: '待付款',
 						icon: "fukuan",
 						otype: 1,
 						order_num:0,
-						img:"../../static/img/daifukuan.png"
+						img:"https://yanyubao.tseo.cn/Tpl/static/images/user_order_icon/daifukuan.png"
 					},
 					{
 						text: '待发货',
 						icon: "fahuo",
 						otype: 2,
 						order_num:0,
-						img:"../../static/img/fahuo.png"
+						img:"https://yanyubao.tseo.cn/Tpl/static/images/user_order_icon/fahuo.png"
 					},
 					{
 						text: '待收货',
 						icon: "shouhuo",
 						otype: 6,
 						order_num:0,
-						img:"../../static/img/shouhuo.png"
+						img:"https://yanyubao.tseo.cn/Tpl/static/images/user_order_icon/shouhuo.png"
 					},
 
 				],
@@ -349,7 +349,7 @@
 				wxa_hide_balance_in_usercenter_icon:'',
 				wxa_hide_score_in_usercenter_icon:'',
 				
-				//客服功能相关
+				//客服大图标功能相关
 				usercenter_contact_status:0,
 				usercenter_contact_btn_type:0,
 				usercenter_contact_btn_text:'',

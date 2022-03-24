@@ -5,14 +5,16 @@ const globalData = {
 		o2owaimai_server_url: 'https://app.tseo.cn/o2owaimai/index.php',
 		socket_server: 'https://socketio.tseo.cn',
 		
-		version_number:'Ver 2.0.3 Build 395',
-		version_code:395,
+		version_number:'Ver 2.0.5 Build 398',
+		version_code:398,
 		
 		force_sellerid:1,
 	
 		xiaochengxu_appid: 'wx3b96d83a469ad710',			//微信小程序的appid
 		xiaochengxu_account: 'gh_76248f4dc988',				//微信小程序的账号
 		weixin_open_platform_appid: 'wx029e1ddb38b4c630--',	//微信开放平台中登记的APP对应的appid（务必与manifest中的配置一致）
+		
+		baidu_smartapp_appid:'21847450',		//延誉数码养护
 		
 		//通版商城
 		default_shopname: '陆家嘴电脑维修',
