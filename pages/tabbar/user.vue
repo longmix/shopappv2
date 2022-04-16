@@ -774,7 +774,7 @@
 							var var_list = Object();
 
 							//这个地方不能调用 decodeURIComponent， 
-							//因为此时的网址中还包含 %oneclicklogin%，遇到  % 都有转为 %25 才可以。
+							//因为此时的网址中还包含 %oneclicklogin%（扫码登录的场景），遇到  % 都有转为 %25 才可以。
 							//result = decodeURIComponent(result);							
 							//console.log('条码内容==>>decodeURIComponent==>>：' + result);
 

@@ -1,8 +1,8 @@
 {	
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
-		"navigationBarTitleText" : "云阳礼好",
-		"navigationBarBackgroundColor" : "#2d96ff",
+		"navigationBarTitleText" : "延誉电商",
+		"navigationBarBackgroundColor" : "#f37404",
 		"backgroundColor" : "#ffffff",
 		"backgroundColorTop":"#ffffff",
 		"backgroundColorBottom":"#ffffff"
@@ -58,6 +58,10 @@
 		},
 		{	//用于兼容 xiaochengxu/shopapp 项目的默认页面
 			"path": "pages/index/Liar",
+			"style": {}
+		},
+		{	//用于兼容 pages/index/index 在tabbar不能带参数在内部跳转的需求
+			"path": "pages/index/goto_index",
 			"style": {}
 		},
 		{	//商品分类
