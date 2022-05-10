@@ -240,13 +240,40 @@
 						<image mode="widthFix" :src="wxa_video_screen_url" @load="videometa_auto_set($event)"></image>
 					</view>
 				</view>
+
 		<!-- #endif -->
 		
+	
 		<!-- 爆款商品 hot_product_list_in_index  -->
-		<block v-if="wxa_show_hot_products_in_index == 1">
-			
-		</block>
-		
+		<!-- <block v-if="wxa_show_hot_products_in_index == 1"> -->
+			<view style="padding-top: 10upx;padding-bottom: 5upx;">
+				<view style="background-color: #f4f4f4;padding: 1px 0px 1px 0px;"></view>
+				<view class="zhuanti_title">   ———— ※ 爆款商品 ※ ————   </view>
+				<scroll-view scroll-x="true">
+					
+					<view style="display: flex;">
+						<view class=""
+							v-for="(item01,index) in hot_product_list_in_index"
+							:key="index">
+							<view class="hot_product_item" @tap="toGoods(item01)" >
+								<image class="hot_product_image"
+									:src="item01.picture" >
+								</image>
+								<view class="hot_product_name" >
+									{{item01.name}}
+								</view>
+								<view class="" style="color:red;">
+									￥{{item01.price}}
+								</view>
+							</view>
+							
+						</view>
+					</view>
+					
+				</scroll-view>
+			</view>
+		<!-- </block> -->
+		<!-- 爆款商品结束 -->
 		
 		
 		<!-- 实体商家列表 -->
@@ -550,6 +577,7 @@ export default {
 			usercenter_contact_wxa_title:'',
 			usercenter_contact_wxa_path:'',
 			usercenter_contact_wxa_img:'',
+			
 			
 			//2022.5.10. 增加首页的爆款商品的控件
 			wxa_show_hot_products_in_index:0,
@@ -1131,7 +1159,22 @@ export default {
 			if (cb_params.option_list.wxa_show_video_player) {			  
 			   that.wxa_show_video_player = cb_params.option_list.wxa_show_video_player			
 			}
-
+			
+			
+			//20222.5.10. 显示爆款商品的组件
+			if (cb_params.option_list.wxa_show_hot_products_in_index) {
+			   that.wxa_show_hot_products_in_index = cb_params.option_list.wxa_show_hot_products_in_index;
+					  console.log('123456789',cb_params)
+				//如果需要显示爆款商品，则读取爆款商品列表
+				if(that.wxa_show_hot_products_in_index == 1){
+					that.__get_hot_product_list_in_index();
+				}
+			}
+			
+			
+			
+			
+			
 			if (cb_params.option_list.wxa_show_video_autoplay == 1) {			  
 			   that.wxa_show_video_autoplay = true
 			}		
@@ -1207,18 +1250,7 @@ export default {
 				that.wxa_kefu_bg_no_color_flag = cb_params.option_list.wxa_kefu_bg_no_color_flag;
 				that.wxa_kefu_bg_color = '';
 			}
-			
-			//20222.5.10. 显示爆款商品的组件
-			if (cb_params.option_list.wxa_show_hot_products_in_index) {
-			   that.wxa_show_hot_products_in_index = cb_params.option_list.wxa_show_hot_products_in_index;
-					   
-				//如果需要显示爆款商品，则读取爆款商品列表
-				if(that.wxa_show_hot_products_in_index == 1){
-					that.__get_hot_product_list_in_index();
-				}
-			}
-			
-			
+		
 			
 			
 			//更多选项（ShopAppV2）
@@ -1934,7 +1966,7 @@ export default {
 			var post_data = {
 					sellerid:this.abotapi.globalData.default_sellerid,
 					sort: 1,
-					page: 1,
+					page: 0,
 					page_size: 10,
 					is_hot : 1,
 			    };
@@ -2047,6 +2079,7 @@ export default {
 				},
 			});
 		},
+		
 		
 		
 		initArticleList: function (option_list) {
@@ -3269,5 +3302,34 @@ page{position: relative;background-color: #fff;}
 	} */
 	.copyright_info {
 		padding: 40rpx 0 80rpx 0;
+	}
+	
+	//2022.05.10
+	.zhuanti_title_more {
+		display:block;
+		float:right;
+		font-size:26rpx;
+	}
+	.hot_product_image{
+		width:  200rpx;
+		height: 200rpx;
+		
+	}
+	.hot_product_name{
+		width: 200rpx;
+		
+		text-overflow:ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+		text-align: center;
+	}
+	.hot_product_item{
+		width:200rpx;
+		background-color: #ffffff;
+		border-radius:10rpx;
+		margin-left:20rpx;
+		overflow: hidden;
+		margin-bottom: 20rpx;
+		box-shadow: 0rpx 5rpx 10rpx rgba(0, 0, 0, 0.1);
 	}
 </style>
