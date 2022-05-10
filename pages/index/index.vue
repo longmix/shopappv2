@@ -242,6 +242,11 @@
 				</view>
 		<!-- #endif -->
 		
+		<!-- 爆款商品 hot_product_list_in_index  -->
+		<block v-if="wxa_show_hot_products_in_index == 1">
+			
+		</block>
+		
 		
 		
 		<!-- 实体商家列表 -->
@@ -545,6 +550,11 @@ export default {
 			usercenter_contact_wxa_title:'',
 			usercenter_contact_wxa_path:'',
 			usercenter_contact_wxa_img:'',
+			
+			//2022.5.10. 增加首页的爆款商品的控件
+			wxa_show_hot_products_in_index:0,
+			hot_product_list_in_index:''
+			
 		};
 	},
 	onLoad: function (options) {
@@ -1198,6 +1208,19 @@ export default {
 				that.wxa_kefu_bg_color = '';
 			}
 			
+			//20222.5.10. 显示爆款商品的组件
+			if (cb_params.option_list.wxa_show_hot_products_in_index) {
+			   that.wxa_show_hot_products_in_index = cb_params.option_list.wxa_show_hot_products_in_index;
+					   
+				//如果需要显示爆款商品，则读取爆款商品列表
+				if(that.wxa_show_hot_products_in_index == 1){
+					that.__get_hot_product_list_in_index();
+				}
+			}
+			
+			
+			
+			
 			//更多选项（ShopAppV2）
 			that.copyright_text = cb_params.option_list.copyright_text;
 			that.wxa_share_title = cb_params.option_list.wxa_share_title;
@@ -1804,7 +1827,7 @@ export default {
 		},
 		
 		
-		//猜你喜欢
+		//加载商品列表，触底自动加载下一页
 		get_product_list:function(){
 			console.log('get_product_list=====>>>>>');
 			
@@ -1901,6 +1924,54 @@ export default {
 			    },
 			});
 		},
+		
+		//2022.5.10. 加载爆款商品列表
+		__get_hot_product_list_in_index:function(){
+			console.log('__get_hot_product_list_in_index=====>>>>>');
+			
+			var that = this;
+			
+			var post_data = {
+					sellerid:this.abotapi.globalData.default_sellerid,
+					sort: 1,
+					page: 1,
+					page_size: 10,
+					is_hot : 1,
+			    };
+
+			
+			this.abotapi.abotRequest({
+			    url: this.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=product_list',
+			    method: 'post',
+			    data: post_data,
+			    success: function (res) {
+					if(!res.data){
+						return;
+					}
+					
+					if(res.data.code != 1){
+						uni.showToast({
+							title: '没有爆款商品~',
+							duration: 2000
+						});
+						
+						return;
+					}
+					
+					console.log('第一页');
+					
+					that.hot_product_list_in_index = res.data.product_list;	
+					
+			    },
+			    fail: function (e) {
+					uni.showToast({
+						title: '网络异常！',
+						duration: 2000
+					});
+			    },
+			});
+		},
+		
 		
 		//顶部轮播图片请求
 		get_flash_ad_list:function(){
