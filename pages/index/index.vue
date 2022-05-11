@@ -248,7 +248,8 @@
 		<!-- <block v-if="wxa_show_hot_products_in_index == 1"> -->
 			<view style="padding-top: 10upx;padding-bottom: 5upx;">
 				<view style="background-color: #f4f4f4;padding: 1px 0px 1px 0px;"></view>
-				<view class="zhuanti_title">   ———— ※ 爆款商品 ※ ————   </view>
+				<view class="zhuanti_title" v-if="show_hot_products_tishi == ''">   ———— ※ 爆款商品 ※ ————   </view>
+				<view class="zhuanti_title" v-if="show_hot_products_tishi != ''">{{show_hot_products_tishi}}</view>
 				<scroll-view scroll-x="true">
 					
 					<view style="display: flex;">
@@ -281,7 +282,8 @@
 			:xianmaishangList="twoArr" 
 			@toShangDetail="toShangDetail"
 			@toShangList="toShangList"
-			:show_zhuanti_title = 1></shopList>
+			:show_zhuanti_title = 1
+			:hidden_product_list_tishi="hidden_product_list_tishi"></shopList>
 		
 		<!-- 实体商家结束 -->
 		
@@ -293,7 +295,8 @@
 			
 		<!-- 商品列表 -->
 		<block v-if="current_product_list && (wxa_hidden_product_list ==0)">
-			<view class="zhuanti_title">   ———— ※ 最新上架 ※ ————   </view>
+			<view class="zhuanti_title" v-if="hidden_product_list_tishi == ''">   ———— ※ 最新上架 ※ ————   </view>
+			<view class="zhuanti_title" v-if="hidden_product_list_tishi != ''">{{hidden_product_list_tishi}}</view>
 			<productList  
 				:productsList="current_product_list" 
 				:loadingText="loadingText" 
@@ -581,8 +584,12 @@ export default {
 			
 			//2022.5.10. 增加首页的爆款商品的控件
 			wxa_show_hot_products_in_index:0,
-			hot_product_list_in_index:''
+			hot_product_list_in_index:'',
 			
+			//2022.05.11 增加提示文字
+			show_hot_products_tishi:'',
+			shang_list_count_tishi:'',
+			hidden_product_list_tishi:''
 		};
 	},
 	onLoad: function (options) {
@@ -1171,6 +1178,12 @@ export default {
 				}
 			}
 			
+			//爆款商品的提示文字
+			if (cb_params.option_list.show_hot_products_tishi){
+				that.show_hot_products_tishi = cb_params.option_list.show_hot_products_tishi;
+			console.log('that.show_hot_products_tishi',that.show_hot_products_tishi)
+			}
+			
 			
 			
 			
@@ -1205,7 +1218,11 @@ export default {
 				console.log('that.wxa_hidden_product_list=====>>>>', that.wxa_hidden_product_list);
 			  
 			}
-			
+			//提示文字
+			if(cb_params.option_list.hidden_product_list_tishi) {
+				that.hidden_product_list_tishi =cb_params.option_list.hidden_product_list_tishi
+			console.log('that.hidden_product_list_tishi=====>>>>',that.hidden_product_list_tishi)
+			}
 			
 			
 			if(cb_params.option_list.wxa_product_list_show_type){
@@ -1281,6 +1298,13 @@ export default {
 			else{
 				that.abotapi.globalData.default_shang_list_count_in_front_page = 0;
 			}
+			 
+			 
+			 if (cb_params.option_list.shang_list_count_tishi){
+				 that.shang_list_count_tishi = cb_params.option_list.shang_list_count_tishi;
+				 console.log('15847shang_list_count_tishi',that.shang_list_count_tishi)
+			 }
+			 
 			 
 			if(cb_params.option_list.cms_token){
 				that.cms_token = cb_params.option_list.cms_token;

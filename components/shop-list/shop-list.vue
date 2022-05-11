@@ -1,10 +1,12 @@
 <template>
 	
 	<view style='background-color: #f4f4f4;padding-top: 10upx;padding-bottom: 5upx;'>
-		<view v-if="show_zhuanti_title == 1" class="zhuanti_title">※ 附近商家 
+		<view v-if="show_zhuanti_title == 1 && hidden_product_list_tishi ==''" class="zhuanti_title">※ 附近商家 
 			<view class="zhuanti_title_more" @click="toShangList($event)">查看更多&gt;&gt;</view>
 		</view>
-		
+		<view v-if="show_zhuanti_title == 1 && hidden_product_list_tishi !=''" class="zhuanti_title">{{hidden_product_list_tishi}}
+			<view class="zhuanti_title_more" @click="toShangList($event)">查看更多&gt;&gt;</view>
+		</view>
 	<block v-for="(item, index) in xianmaishangList" :key="index" style='background-color: #ffffff;'>
 	<view @click="toShangDetail($event)" 
 		:data-shangid="item.xianmai_shangid" 
@@ -62,6 +64,7 @@
 		props: {
 			xianmaishangList:'',
 			show_zhuanti_title: 0,
+			hidden_product_list_tishi:'',
 		},
 		onLoad() {
 			var that = this;
