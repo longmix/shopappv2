@@ -1,4 +1,10 @@
-<template>
+<!--
+此界面用于在APP和小程序中内部跳转https开头的网址的时候使用，主要在abotapi.call_h5browser_
+同时，在后台挂接的时候，也可以指定路径和参数：
+
+/pages/h5browser/h5browser?url=网址&share_title=分享时候的文字&share_image=分享时候显示的图片
+
+--><template>
 	<view>
 		<web-view :src="url"></web-view>
 	</view>
