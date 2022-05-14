@@ -231,15 +231,15 @@
 									
 								</checkbox>
 						</checkbox-group>
-						<view>我已阅读并同意<text @click="knows" style="color: #007AFF;">《内容规范》</text></view>
+						<view>我已阅读并同意<text @click="show_knows" style="color: #007AFF;">《内容规范》</text></view>
 					</view>
 					<button formType="submit" class="btn-row-submit"
 						:style="{backgroundColor:wxa_shop_nav_bg_color}">{{submit_text}}</button>
 				</form>
 				
 				<!-- 发布须知的弹层 -->
-				<view class="zhezhao" v-if="know==true"></view>
-				<view class="kcrzxy" v-if="know==true">
+				<view class="zhezhao" v-if="is_know_showed==true"></view>
+				<view class="kcrzxy" v-if="is_know_showed==true">
 				    <view class="kcrzxyhd" :style="{background:wxa_shop_nav_bg_color, fontSize:'26rpx'}">内容规范</view>
 				    <scroll-view scrollY class="kcrzxybd" style="height: 600rpx;">
 				        <textarea :value="publish_write_fabu_xuzhi" 
@@ -248,7 +248,7 @@
 							auto-height='true' 
 							maxlength="-1"></textarea>
 				    </scroll-view>
-				    <view @click="knows" class="queren" :style="{background:wxa_shop_nav_bg_color, fontSize:'26rpx'}">确定</view>
+				    <view @click="show_knows" class="queren" :style="{background:wxa_shop_nav_bg_color, fontSize:'26rpx'}">确定</view>
 				</view>
 				
 			</view><!-- End of main-body -->
@@ -285,7 +285,7 @@
 				
 				formid:'',
 				
-				know:false,
+				is_know_showed:false,
 				
 				hezuodiqu: [],
 				tigongziyuan:[],
@@ -708,10 +708,10 @@
 				
 			},
 			//关闭发布须知的遮罩层
-			knows: function(e) {
-					var know = this.know;
+			show_knows: function(e) {
+					var is_know_showed = this.is_know_showed;
 					
-					this.know = !know;
+					this.is_know_showed = !is_know_showed;
 					
 			},
 			getWriteFormInputList:function(){
