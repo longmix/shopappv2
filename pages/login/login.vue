@@ -242,24 +242,25 @@
 			this.click_check();
 			
 			// #ifdef MP-WEIXIN
-			this.login_after_get_userinfo = 1;
 			
-			console.log('uni.login <<<==== btn_wxa_one_click_login');
-				  
-			uni.login({
-				success: function (res) {
-					console.log("btn_wxa_one_click_login 获取到的jscode是:" + res.code);
-				  
-					//如果拒绝授权， e.detail.errMsg
-					//console.log(e.detail.errMsg);return;
-				  
-					that.current_weixin_js_code = res.code;
-				  
-				},
-				fail: function (login_res) {
-					console.log('login.js  uni.login失败。');
-				}
-			});
+				this.login_after_get_userinfo = 1;
+				
+				console.log('uni.login <<<==== btn_wxa_one_click_login');
+					  
+				uni.login({
+					success: function (res) {
+						console.log("btn_wxa_one_click_login 获取到的jscode是:" + res.code);
+					  
+						//如果拒绝授权， e.detail.errMsg
+						//console.log(e.detail.errMsg);return;
+					  
+						that.current_weixin_js_code = res.code;
+					  
+					},
+					fail: function (login_res) {
+						console.log('login.js  uni.login失败。');
+					}
+				});
 			
 			
 			// #endif
@@ -590,121 +591,123 @@
 				
 				
 			btn_wxa_one_click_login:function(e){
+				// #ifdef MP-WEIXIN
 				
-				var that = this;
-				
-				console.log(e.detail.errMsg)
-				console.log(e.detail.iv)
-				console.log(e.detail.encryptedData)
-					  
-				if(!that.current_weixin_js_code){
-					uni.showModal({
-						title:'提示',
-						content:'微信一键登录异常，是否重启小程序？',
-						success: (res) => {
-							if(res.confirm){
-								uni.reLaunch({
-									url:'/pages/index/index'
-								})
-							}
-						}
-					})
-					return;
-				}
-				
-				
-				that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=wxa_one_click_login',
-					method: "POST",
-					dataType: 'json',
-					data: {
-						js_code: that.current_weixin_js_code,
-						xiaochengxu_appid: that.abotapi.globalData.xiaochengxu_appid,
-						iv: e.detail.iv,
-						encryptedData: e.detail.encryptedData,
-						sellerid: that.abotapi.globalData.default_sellerid,
-						parentid: that.abotapi.get_current_parentid(),
-					},
-					success: function (res) {
-						console.log(res);
-							  
-						if (res.data && (res.data.code == 1)) {
-							//更新checkstr和uwid，
-							
-							that.abotapi.globalData.userInfo = that.abotapi.get_user_info();
-							if(!that.abotapi.globalData.userInfo){
-								that.abotapi.globalData.userInfo = {};
-							}
-							
-							that.abotapi.globalData.userInfo.userid = res.data.userid;
-							//this.abotapi.globalData.userInfo.checkstr = res.data.checkstr;
-								  
-							console.log('一键登录成功，userid:' + res.data.userid);
-							console.log('一键登录成功，openid:' + res.data.openid);
-								  
-							that.abotapi.globalData.userInfo.user_openid = res.data.openid;
-							that.abotapi.globalData.userInfo.userid = res.data.userid;
-							that.abotapi.globalData.userInfo.checkstr = res.data.checkstr;
-							that.abotapi.globalData.userInfo.is_get_userinfo = res.data.is_get_userinfo;
-								  
-							//保存openid
-							that.abotapi.set_current_openid(res.data.openid);
-									  
-							console.log(that.abotapi.globalData.userInfo);
-									  
-							that.abotapi.set_user_info(that.abotapi.globalData.userInfo);
-								
-							that.getUserInfoFromYanyubao(res.data.msg);
-							// that.getUserInfo();
-							
-							/*uni.showToast({
-								title: res.data.msg,
-								icon: 'success',
-								duration: 2000
-							})*/
-								  
-							
-							
-							
-						}
-						else {
-							//一键登录返回错误代码
-							uni.showModal({
-								title: '提示',
-								content: res.data.msg,
-								showCancel:false,
-								success(res) {
-									if (res.confirm) {
-										console.log('用户点击确定');
-										
-										
-										//重新获取js_code
-										uni.login({
-											success: function (res) {
-												console.log("btn_wxa_one_click_login 获取到的jscode是:" + res.code);
-											  
-												//如果拒绝授权， e.detail.errMsg
-												//console.log(e.detail.errMsg);return;
-											  
-												that.current_weixin_js_code = res.code;
-											  
-											},
-											fail: function (login_res) {
-												console.log('login.js  uni.login失败。');
-											}
-										});
-										
-										
-										
-									}
+					var that = this;
+					
+					console.log(e.detail.errMsg)
+					console.log(e.detail.iv)
+					console.log(e.detail.encryptedData)
+						  
+					if(!that.current_weixin_js_code){
+						uni.showModal({
+							title:'提示',
+							content:'微信一键登录异常，是否重启小程序？',
+							success: (res) => {
+								if(res.confirm){
+									uni.reLaunch({
+										url:'/pages/index/index'
+									})
 								}
-							})		  
-						}
+							}
+						})
+						return;
 					}
-				});
-				
-				
-				
+					
+					
+					that.abotapi.abotRequest({
+						url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=wxa_one_click_login',
+						method: "POST",
+						dataType: 'json',
+						data: {
+							js_code: that.current_weixin_js_code,
+							xiaochengxu_appid: that.abotapi.globalData.xiaochengxu_appid,
+							iv: e.detail.iv,
+							encryptedData: e.detail.encryptedData,
+							sellerid: that.abotapi.globalData.default_sellerid,
+							parentid: that.abotapi.get_current_parentid(),
+						},
+						success: function (res) {
+							console.log(res);
+								  
+							if (res.data && (res.data.code == 1)) {
+								//更新checkstr和uwid，
+								
+								that.abotapi.globalData.userInfo = that.abotapi.get_user_info();
+								if(!that.abotapi.globalData.userInfo){
+									that.abotapi.globalData.userInfo = {};
+								}
+								
+								that.abotapi.globalData.userInfo.userid = res.data.userid;
+								//this.abotapi.globalData.userInfo.checkstr = res.data.checkstr;
+									  
+								console.log('一键登录成功，userid:' + res.data.userid);
+								console.log('一键登录成功，openid:' + res.data.openid);
+									  
+								that.abotapi.globalData.userInfo.user_openid = res.data.openid;
+								that.abotapi.globalData.userInfo.userid = res.data.userid;
+								that.abotapi.globalData.userInfo.checkstr = res.data.checkstr;
+								that.abotapi.globalData.userInfo.is_get_userinfo = res.data.is_get_userinfo;
+									  
+								//保存openid
+								that.abotapi.set_current_openid(res.data.openid);
+										  
+								console.log(that.abotapi.globalData.userInfo);
+										  
+								that.abotapi.set_user_info(that.abotapi.globalData.userInfo);
+									
+								that.getUserInfoFromYanyubao(res.data.msg);
+								// that.getUserInfo();
+								
+								/*uni.showToast({
+									title: res.data.msg,
+									icon: 'success',
+									duration: 2000
+								})*/
+									  
+								
+								
+								
+							}
+							else {
+								//一键登录返回错误代码
+								uni.showModal({
+									title: '提示',
+									content: res.data.msg,
+									showCancel:false,
+									success(res) {
+										if (res.confirm) {
+											console.log('用户点击确定');
+											
+											
+											//重新获取js_code
+											uni.login({
+												success: function (res) {
+													console.log("btn_wxa_one_click_login 获取到的jscode是:" + res.code);
+												  
+													//如果拒绝授权， e.detail.errMsg
+													//console.log(e.detail.errMsg);return;
+												  
+													that.current_weixin_js_code = res.code;
+												  
+												},
+												fail: function (login_res) {
+													console.log('login.js  uni.login失败。');
+												}
+											});
+											
+											
+											
+										}
+									}
+								})		  
+							}
+						}
+					});
+					
+					
+					
+				// #endif
 				
 				
 			},
@@ -952,7 +955,7 @@
 			btn_baidu_one_click_login:function(e){
 				var that = this;
 				
-				console.log('uni.login <<<==== btn_baidu_one_click_login', e);
+				console.log('百度一键登录 <<<==== btn_baidu_one_click_login  ====>>> 手机号码授权登录：', e);
 				
 				console.log(e.detail.errMsg)
 				console.log(e.detail.iv)
@@ -968,9 +971,9 @@
 					return;
 				}
 					  
-				uni.login({
+				swan.getLoginCode({
 					success: function (res) {
-						console.log("btn_baidu_one_click_login 获取到的jscode是:" + res.code);
+						console.log("btn_baidu_one_click_login 获取到的getLoginCode ==>> jscode是:", res);
 					  
 						//如果拒绝授权， e.detail.errMsg
 						//console.log(e.detail.errMsg);return;
