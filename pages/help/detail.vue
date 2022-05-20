@@ -90,7 +90,7 @@
 				<!-- 收藏和分享 -->
 				<view class="article_bottom" v-if="1">
 					<view style="color:#bfbfbf;">
-						<image class="comment_img comment_right_img"
+						<image class="comment_img "
 							:src="isShoucang==true ?  '../../static/img/help/star_on.png': '../../static/img/help/star_off.png'" @tap='shoucang' ></image>
 					</view>
 					
