@@ -12,7 +12,9 @@
 		<view class="weui-panel weui-panel_access">
 			<view class="weui-panel__bd">
 				<block v-for="(item, artlist_for) in articlelist" :key="artlist_for">
-					<view class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active"
+					<!-- 左侧图标，右侧标题和简介 -->
+					<view v-if="article_list_style == 'list'"
+						class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active"
 							@tap="showDetail" :data-id="item.id"
 							:data-url="item.url">
 						<view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
@@ -25,12 +27,24 @@
 							<view class="weui-media-box__desc">{{item.text}}</view>
 						</view>
 					</view>
+					
+					<!-- 上方图标，下方标题 -->
+					<view v-if="article_list_style == 'icon'"
+						class="icn-con"
+						@tap="showDetail"
+						:data-id="item.id"
+						:data-url="item.url">
+						<image class="img-h" :src="item.pic"></image>
+						<view class="txt-h">{{item.title}}</view>
+					</view>
+					
+					
 				</block>
 				
 			</view>
 			<view class="weui-panel__ft" style="display:none;">
 				<view class="weui-cell weui-cell_access weui-cell_link">
-					<view class="weui-cell__bd">查看更多</view>
+					<view class="weui-cell__bd" @tap="get_article_list">查看更多</view>
 					<view class="weui-cell__ft weui-cell__ft_in-access"></view>
 				</view>
 			</view>
@@ -60,32 +74,32 @@
 				is_get_article_list:1,
 				cms_token:'',
 				current_page:1,
-				current_page_size:50,
+				current_page_size:10,
 				cms_cataid:0,
 				//========== End ==============
 				
+				//2022.5.20 显示文章列表的方式
+				article_list_style:'list',   // list  / icon
+				
 			}
 		},
-		onShow: function () {
-			
-		},
-		// 生命周期函数--监听页面初次渲染完成
-		onReady: function () {
-			
-		},
-		// 生命周期函数--监听页面显示
-		// 生命周期函数--监听页面隐藏
-		onHide: function () {
-			
-		},
-		// 生命周期函数--监听页面卸载
-		onUnload: function () {
-			
-		},
+		
 		// 生命周期函数--监听页面加载
 		onLoad: function (options) {
 			console.log('options==>>',options);
 			
+			//this.article_list_style = 'icon';
+			
+			if(options.article_list_style){
+				this.article_list_style = options.article_list_style;
+			}
+			
+			if(options.cms_token){
+				this.cms_token = options.cms_token;
+			}
+			if(options.cms_cataid){
+				this.cms_cataid = options.cms_cataid;
+			}
 			
 			var that = this
 			
@@ -136,6 +150,30 @@
 			
 			
 		},
+		onShow: function () {
+			
+		},
+		// 生命周期函数--监听页面初次渲染完成
+		onReady: function () {
+			
+		},
+		// 生命周期函数--监听页面显示
+		// 生命周期函数--监听页面隐藏
+		onHide: function () {
+			
+		},
+		// 生命周期函数--监听页面卸载
+		onUnload: function () {
+			
+		},
+		
+		//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
+		onReachBottom: function () {
+			
+			this.get_article_list();
+			
+		},
+		
 		onShareAppMessage: function () {
 		},
 		onShareTimeline: function () {
@@ -169,14 +207,47 @@
 			initArticleList_new: function (that002, option_list) {
 				console.log('initArticleList_new initArticleList_new', option_list);
 				
-				if(!option_list || !option_list.weiduke_token_to_toutiao || !option_list.weiduke_classid_to_toutiao){
-					console.log('缺少 weiduke_token_to_toutiao 或 weiduke_classid_to_toutiao');
+				if(!this.cms_token || !this.cms_cataid){
+					if(!option_list || !option_list.weiduke_token_to_toutiao || !option_list.weiduke_classid_to_toutiao){
+						console.log('缺少 weiduke_token_to_toutiao 或 weiduke_classid_to_toutiao');
+						
+						uni.showModal({
+							title:'小提示',
+							content:'这个商户很懒，连头条都不设置！'
+						})
+						
+						
+						return;
+					}
+					
+					
+					this.cms_token = option_list.weiduke_token_to_toutiao;
+					this.cms_cataid = option_list.weiduke_classid_to_toutiao; 
+					this.cms_cataid = 0;
+					
+				}
+								
+				
+				this.get_article_list();
+				
+			},
+			
+			//获取文章列表
+			get_article_list:function(){
+				
+				if(this.is_OK){
+					/*uni.showToast({
+						title: '已经到底了~',
+						duration: 2000
+					});*/
+					
 					return;
 				}
 				
+				this.is_OK = true;
 				
-				that002.cms_token = option_list.weiduke_token_to_toutiao;
-				that002.cataid = option_list.weiduke_classid_to_toutiao; 
+				
+				var that002 = this;
 				
 				publish_list_api.get_publish_list(that002, function(that003, res_data){
 					
@@ -184,13 +255,29 @@
 					if(!res_data.index_list){
 						console.log('res_data=====>>>>', res_data);
 						
+						uni.showToast({
+							title:'到底了~'
+						})
+						
 						return;
 					}
 					
 					
+					that003.is_OK = false;
+					that003.current_page ++;
+					
+					
+					
+					
 					//为显示加载动画添加3秒延时
 					setTimeout(function () {
-						that003.articlelist = res_data.index_list;
+						if(!that003.articlelist){
+							that003.articlelist = res_data.index_list;
+						}
+						else{
+							that003.articlelist = that003.articlelist.concat( res_data.index_list );
+						}
+						
 					}, 500)
 					
 					
@@ -198,7 +285,10 @@
 					
 				});
 				
+				
 			},
+			
+			
 			articleBack: function (res) {
 				console.log(res);
 				var that = this;
@@ -256,6 +346,36 @@
 </script>
 
 <style>
+	
+	/* 图标风格显示文章列表 Begin */
+	.icn-con{
+		float: left;
+		text-align: center;
+		width: 33%;
+		margin-top: 40upx;
+		position: relative;
+		padding-bottom: 30upx;
+	}
+	.icn-con .tips{
+		width: 40upx;
+		height: 40upx;
+		position: absolute;
+		right: 66upx;
+		top: -20upx;
+		z-index: 2;
+	}
+	.img-h{
+		width:100upx;
+		height:100upx;
+		border-radius:20upx;
+		padding: 15upx;
+	}
+	.txt-h{
+		font-size: 30upx;
+		margin-top: 10upx;
+	}
+	/* 图标风格显示文章列表 End */
+	
 	
 	
 	

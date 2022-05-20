@@ -151,8 +151,10 @@
 				</view>
 			</view>
 		</view>
+		
+		
 		<!-- 平铺图片 -->
-		<view style="width: 96%;margin-left: 2%;" v-if="wxa_usercenter_ad_list">
+		<view style="width: 100%;margin: 0;" v-if="wxa_usercenter_ad_list">
 			<image style="width: 100%;" @tap="toUrl(item.url)" v-for="(item,index) in wxa_usercenter_ad_list" :key="index" :src="item.image"
 			 mode="widthFix"></image>
 		</view>

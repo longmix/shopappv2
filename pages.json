@@ -526,7 +526,8 @@
 				    "path" : "list",
 				    "style": {
 				    	"navigationBarTitleText": "文章列表",
-				    	"softinputNavBar":"none"
+				    	"softinputNavBar":"none",
+						"onReachBottomDistance":50
 				    }
 				},
 				{

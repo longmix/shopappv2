@@ -245,7 +245,7 @@
 		
 	
 		<!-- 爆款商品 hot_product_list_in_index  -->
-		<!-- <block v-if="wxa_show_hot_products_in_index == 1"> -->
+		<block v-if="wxa_show_hot_products_in_index == 1">
 			<view style="padding-top: 10upx;padding-bottom: 5upx;">
 				<view style="background-color: #f4f4f4;padding: 1px 0px 1px 0px;"></view>
 				<view class="zhuanti_title" v-if="show_hot_products_tishi == ''">   ———— ※ 爆款商品 ※ ————   </view>
@@ -273,7 +273,7 @@
 					
 				</scroll-view>
 			</view>
-		<!-- </block> -->
+		</block>
 		<!-- 爆款商品结束 -->
 		
 		
@@ -1462,6 +1462,8 @@ export default {
 				that.cataid = 0; 
 				that.current_page = 0;
 				that.current_page_size = cb_params.option_list.default_publish_list_count_in_front_page;
+				
+				//开关：是否要请求文章列表（请求到最后一页的时候不请求）
 				that.is_get_article_list = true;
 				
 				publish_list_api.get_publish_list(that, that.get_api_publish_list);

@@ -1,7 +1,9 @@
 <template>
 	<view>
-		 <view class="mid-img" v-for="(item,index) in module_icon_list" :key="index">
-		 <view class="head1" :style="{'border-left-color':item.left_color}">{{item.name}}</view>
+		<view class="mid-img" v-for="(item,index) in module_icon_list" :key="index">
+			
+			<view class="head1" :style="{'border-left-color':item.left_color}">{{item.name}}</view>
+		 
 			<view class="icn-con" v-for="item2 in item.subs" :key="item2.index" 
 				:data-plugin_flag="item2.plugin_flag"
 				:data-plugin_name="item2.plugin_name"

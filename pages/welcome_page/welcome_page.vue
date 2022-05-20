@@ -452,10 +452,12 @@ export default {
 			    that.wxa_share_img = option_list.wxa_share_img;
 			}
 			
+			console.log('usercenter_contact_show_in_welcome_page 000===>>> ' + option_list.usercenter_contact_show_in_welcome_page);
 			
-			
-			if(option_list.usercenter_contact_status){
-				that.usercenter_contact_status = option_list.usercenter_contact_status;
+			if(option_list.usercenter_contact_show_in_welcome_page){
+				that.usercenter_contact_status = option_list.usercenter_contact_show_in_welcome_page;
+				
+				console.log('usercenter_contact_show_in_welcome_page 111===>>> ' + that.usercenter_contact_status);
 				
 				if(option_list.usercenter_contact_btn_type){
 					that.usercenter_contact_btn_type = option_list.usercenter_contact_btn_type;

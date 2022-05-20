@@ -1784,6 +1784,11 @@ extraData 扩展数据，由服务器返回，在卡牌详情中
 				
 						that.current_card_detail = res.data.data;
 						
+						//2022.5.20. 如果没有渠道商的商品ID，则不显示购买按钮
+						if(!that.current_card_detail.productid){
+							that.nft_card_hidden_buy_button = 1;
+						}
+						
 				
 						console.log('current_card_detail ===>>> ', that.current_card_detail);
 						
