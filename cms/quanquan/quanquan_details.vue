@@ -6,71 +6,65 @@
 		<image v-if="video_data.video_type == 'file'" :src="video_data.img_url" style='width:100%;'></image>
 		<video  v-else  :src="video_data.video_url" style='width:100%;'></video>
 		
-		<view class='a-1' style="display: flex;">
+		<view class='a-1' style="display: block;">
 		  <!-- 观看人数和评论 -->
-		  <view style="width: 40%;">
+		  <view style="width: 20%; float:left;">
 		    
 		    <text style='font-size:12px;color:#666;margin-left:12px;'>{{video_data.number}}人观看</text>
-		    
+		  </view>
+		  <view style="width: 20%; float:left;">  
 		
 		    <image src="../../static/img/help/write.png"  style='width:30rpx;height:30rpx;margin-left:18rpx;' @click='showRemarkInput'></image>
 		    <text style='font-size:26rpx;' @click='showRemarkInput'>评论</text>
 		  </view>
-		
-		  <!-- 收藏下载转发功能按钮 -->
-		  <view style="width: 50%; display: flex;align-items: center;align-content: flex-end; text-align: right;">
-		    
-		    <view style="align-items: center; justify-content: center;">
-		      <image :src="video_data.has_video_collect == '0' ? '../../static/img/help/star_off.png' : '../../static/img/help/star_on.png'"  @click='collectVedio' 
-					style='width:30rpx;height:30rpx;margin-left:10rpx;margin-right:10rpx;'></image>
-		      <text style='font-size:26rpx;' @click="collectVedio">收藏</text>
-		    </view>
-			
-		    <view style="align-items: center; justify-content: center;">
-		      <block v-if="video_data.video_type == 'video'">
-		      <image v-if="faquan_one_click_to_save == 1" src="../../static/img/download.png"  
-					style='width:30rpx;height:30rpx;margin-left:10rpx;margin-right:10rpx;' 
-					@click="disabled ? '' : saveVedio(video_data.video_type)"></image>
-		      <text  v-if="faquan_one_click_to_save == 1" style='font-size:26rpx;' 
-					@click="disabled ? '' : saveVedio(video_data.video_type)" >下载</text>
-		      </block>
-		      <block v-if="video_data.video_type == 'file'">
-			
-		      <image v-if="file_one_click_download == 1" :src="video_data.file_can_be_open_in_wxa == '1' ? '../../static/img/help/click_view.png' : '../../static/img/download.png'"  
-					style='width:30rpx;height:30rpx;margin-left:10rpx;margin-right:10rpx;'  
-					@click="disabled ? '' : 'saveVedio'" :data-video-type="video_data.video_type"></image>
-			
-		      <text  v-if="file_one_click_download == 1" style='font-size:26rpx;'  @click="disabled ? '' : saveVedio(video_data.video_type)">
-		        <block v-if="video_data.file_can_be_open_in_wxa == 1">查看 </block>
-		        <block v-else>下载</block>
-				
-		      </text>
-		      </block>
-		    </view>
-		   
-			<!-- #ifdef MP-WEIXIN -->
-			
-			<view style="align-items: center; position: relative;">
-			        <image src="../../static/img/help/share.png"  style='width:30rpx;height:30rpx;margin-left:10rpx;margin-right:10rpx;'></image>
-			        <text style='font-size:26rpx;'>转发</text>
-			        <button class="share" open-type="share"></button>
-			</view>
-			
-			<!-- #endif -->
-			
-			<!-- #ifdef APP-PLUS -->
-			<view style="align-items: center; position: relative;" @click="is_show()">
-			        <image src="../../static/img/help/share.png"  style='width:30rpx;height:30rpx;margin-left:10rpx;margin-right:10rpx;'></image>
-			        <text style='font-size:26rpx;'>转发</text>
-			        <button class="share"></button>
-			</view>
-			
-			<!-- #endif -->
-		
+		  <view style="width: 20%; float:left;">
+			  <image :src="video_data.has_video_collect == '0' ? '../../static/img/help/star_off.png' : '../../static/img/help/star_on.png'"  @click='collectVedio'
+			  					style='width:30rpx;height:30rpx;margin-left:10rpx;margin-right:10rpx;'></image>
+			  <text style='font-size:26rpx;' @click="collectVedio">收藏</text>
 		  </view>
-		
-		
-		   
+		  <view style="width: 20%; float:left;">
+			  <!-- 收藏下载转发功能按钮 -->
+			  <block v-if="video_data.video_type == 'video'">
+				  <image v-if="faquan_one_click_to_save == 1" src="../../static/img/download.png"  
+									style='width:30rpx;height:30rpx;margin-left:10rpx;margin-right:10rpx;' 
+									@click="disabled ? '' : saveVedio(video_data.video_type)"></image>
+				  <text  v-if="faquan_one_click_to_save == 1" style='font-size:26rpx;' 
+									@click="disabled ? '' : saveVedio(video_data.video_type)" >下载</text>
+			  </block>
+			  <block v-if="video_data.video_type == 'file'">
+							
+				  <image v-if="file_one_click_download == 1" :src="video_data.file_can_be_open_in_wxa == '1' ? '../../static/img/help/click_view.png' : '../../static/img/download.png'"  
+									style='width:30rpx;height:30rpx;margin-left:10rpx;margin-right:10rpx;'  
+									@click="disabled ? '' : 'saveVedio'" :data-video-type="video_data.video_type"></image>
+							
+				  <text  v-if="file_one_click_download == 1" style='font-size:26rpx;'  @click="disabled ? '' : saveVedio(video_data.video_type)">
+					<block v-if="video_data.file_can_be_open_in_wxa == 1">查看 </block>
+					<block v-else>下载</block>
+								
+				  </text>
+			  </block>
+			  
+		  </view>
+		  <view style="width: 20%; float:left;">
+			  <!-- #ifdef MP-WEIXIN||MP-BAIDU -->
+			  
+			  <button class="share" open-type="share"></button>
+			  <image src="../../static/img/help/share.png"  
+				style="width:30rpx;height:30rpx;margin-left:10rpx;margin-right:10rpx;"
+				open-type="share"></image>
+			
+			  <text style='font-size:26rpx;'>转发</text>
+		  
+			  <!-- #endif -->
+			  
+			  <!-- #ifdef APP-PLUS -->
+			  <image src="../../static/img/help/share.png"  style='width:30rpx;height:30rpx;margin-left:10rpx;margin-right:10rpx;'></image>
+			  <text style='font-size:26rpx;'>转发</text>
+			  <button class="share"></button>
+			  <!-- #endif -->
+			  
+		  </view>
+
 		  
 		  <!-- <image src="../../images/share.png"  style='width:23px;height:23px;margin-left:9px;'></image>
 		  <text style='font-size:15px;'>转发</text> -->
@@ -1066,31 +1060,32 @@
 	  width:200rpx;
 	  height:70rpx;
 	  position: absolute;
-	  top:-5rpx;
-	  left:38rpx;
 	  background:transparent;
 	  opacity: 0;
 	}
 	
 	.remark-bar{
-	  display:flex;
-	  position:fixed;
-	  bottom:40rpx;
-	  font-size:30rpx;
-	  justify-content:space-between;
-	  width:90%;
-	  margin-left:5%;
-	  background: #fff;
-	  align-items:center;
+	      display: flex;
+	      position: fixed;
+	      bottom: 0rpx;
+	      font-size: 30rpx;
+	      justify-content: space-between;
+	      width: 100%;
+	      margin: 0%;
+	      background: #fff;
+	      align-items: center;
+	      padding: 20rpx 0px 40rpx;
+	      border-top: 1rpx solid #666;
 	}
 	
 	.remark-bar input{
-	  border:1px solid #999;
-	  border-radius:40px;
+	  border:1px solid #666;
+	  border-radius:10rpx;
 	  padding-left:20rpx;
 	  padding-right:20rpx;
 	  height:60rpx;
-	  padding-top:8rpx;
+	      margin-left: 40rpx;
+		  width: 450rpx;
 	}
 	
 	.sendbutton{
@@ -1101,8 +1096,8 @@
 	  text-align:center;
 	  height:60rpx;
 	  line-height:60rpx;
-	  padding:center;
-	  border-radius:60rpx;
+	  border-radius:10rpx;
+	  margin-right: 40rpx;
 	}
 	
 	
