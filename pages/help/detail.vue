@@ -113,7 +113,7 @@
 				</view>
 				
 				
-				<view class="article_bottom" v-if="1">
+				<view class="article_bottom_dianzan" v-if="1">
 					<view style="color:#bfbfbf;">阅读 {{wz_text.click}}</view>
 					<!-- 点赞 -->
 					<view style="display: flex;">
@@ -1503,6 +1503,7 @@
 	  background-color: #fff;
 	  width: 100%;
 	  height: 120rpx;
+		border-top: 1rpx #999 solid;
 	}
 	.shoucang{
 	 text-align: center;
@@ -1546,7 +1547,7 @@
 	  height:55rpx;
 	  position:absolute;
 	  background:transparent;
-	  right:10rpx;
+	 /* right:10rpx; */
 	
 	}
 	
@@ -1761,12 +1762,17 @@
 	}
 	.article_bottom{
 	  display:flex;
-	  justify-content:space-between;
+	  /* justify-content:space-between; */
 	  font-size:30rpx;
 	  margin-top:40rpx;
 	
 	}
-	
+	.article_bottom_dianzan{
+		display:flex;
+		justify-content:space-between;
+		font-size:30rpx;
+		margin-top:40rpx;
+	}
 	.title_box{
 		display: -webkit-flex;
 		display: flex;
