@@ -535,13 +535,15 @@
 				};
 				
 				
-				if(this.abotapi.get_current_openid()){
-					post_data.openid = this.abotapi.get_current_openid();
-				}
+				
 				
 				var userInfo = this.abotapi.get_user_info();
 				if(userInfo){
 					post_data.userid = userInfo.userid;
+					
+					if(this.abotapi.get_current_openid()){
+						post_data.openid = this.abotapi.get_current_openid();
+					}
 				}
 				
 				//====== 缓存机制 Begin ==============
@@ -1658,10 +1660,10 @@
 	  background-color: #F4F5F7;
 	  /* background-color: #F00; */
 	  height:60rpx;
-	  border-radius:50rpx;
-	  padding-left:78rpx;
-	  margin-left:32rpx;
-	  width:416rpx;
+	  border-radius:10rpx;
+	  padding-left:20rpx;
+	  margin-left:10rpx;
+	  width:400rpx;
 	}
 	
 	.comment_write_img{
@@ -1671,7 +1673,8 @@
 	
 	
 	.comment_right_img{
-	  margin-left: 30rpx;
+	  margin-left: 10rpx;
+	  margin-right: 15rpx;
 	}
 	
 	.comment_list{

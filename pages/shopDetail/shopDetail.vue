@@ -2062,11 +2062,11 @@
 	}
 	
 	.page_bottom {
-		margin-bottom: 200rpx;
+		margin-bottom: 100rpx;
 	}
 	
 	.copyright_info {
-		padding: 40rpx 0 380rpx 0;
+		padding: 40rpx 0 80rpx 0;
 	}
 
 	.ps-btn {
