@@ -92,6 +92,8 @@
 			
 			
 			//获取jscode，以备用
+			// #ifdef MP-WEIXIN
+			
 			uni.login({
 				success: (res) => {
 					console.log("btn_one_click_login 获取到的jscode是:" + res.code);
@@ -107,6 +109,7 @@
 			
 			});
 			
+			// #endif
 
 		},
 		onShow: function() {

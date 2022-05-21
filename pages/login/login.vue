@@ -735,6 +735,8 @@
 				//console.log(e.detail.encryptedData)
 					  
 				console.log('uni.login <<<==== btnWxaGetUserinfo');
+				
+				// #ifdef MP-WEIXIN
 					  
 				uni.login({
 					success: function (res) {
@@ -808,6 +810,8 @@
 						console.log('login.js  uni.login失败。');
 					}
 				});
+				
+				// #endif
 			},
 			
 			
