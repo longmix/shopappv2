@@ -88,6 +88,10 @@
 		onLoad: function (options) {
 			console.log('options==>>',options);
 			
+			uni.setNavigationBarTitle({
+				title: '内容列表'
+			})
+			
 			//this.article_list_style = 'icon';
 			
 			if(options.article_list_style){

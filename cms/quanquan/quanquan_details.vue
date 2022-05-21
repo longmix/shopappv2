@@ -107,19 +107,24 @@
 		</view>
 		
 		
-		<view class="userwords" v-for="(item,index) in video_remark_list" :key="index">
-		    <image class="userwords_img" :src="item.headlogo"></image>
-		    <view class="userwords_rit">
-		        <view class="flex-bet">
-		            <view>
-		                <view class="userwords_color">{{item.username}}</view>
-		                <view class="userwords_color2">{{item.createtime}}</view>
-		            </view>
-		        </view>
-		        <view class="userwords_content">
-		        {{item.text}}
-		        </view>
-		    </view>
+		<view class="userword_list">
+			
+			<view class="userwords" v-for="(item,index) in video_remark_list" :key="index">
+			    <image class="userwords_img" :src="item.headlogo"></image>
+			    <view class="userwords_rit">
+			        <view class="flex-bet">
+			            <view>
+			                <view class="userwords_color">{{item.username}}</view>
+			                <view class="userwords_color2">{{item.createtime}}</view>
+			            </view>
+			        </view>
+			        <view class="userwords_content">
+			        {{item.text}}
+			        </view>
+			    </view>
+			</view>
+			
+			
 		</view>
 		
 		
@@ -990,15 +995,19 @@
 	}
 	
 	
-	
+	.userword_list {
+		margin-bottom: 50rpx;
+		padding-bottom: 50rpx;
+	}
 	
 	.userwords {
 	    background-color: white;
-	    padding: 20rpx;
+	    padding: 10rpx;
 	    font-size: 26rpx;
 	    display: flex;
-	    border-bottom: 1rpx solid #eee;
-	    padding-top: 50rpx;
+	    border-top: 1rpx solid #eee;
+	    margin-top: 50rpx;
+		
 	}
 	
 	.userwords:last-child {
@@ -1006,8 +1015,8 @@
 	}
 	
 	.userwords_img {
-	    width: 100rpx;
-	    height: 100rpx;
+	    width: 70rpx;
+	    height: 70rpx;
 	    border-radius: 50%;
 	}
 	
@@ -1019,6 +1028,7 @@
 	.userwords_content {
 	    margin-top: 20rpx;
 	    color: #666;
+		font-size:28rpx;
 	}
 	
 	
