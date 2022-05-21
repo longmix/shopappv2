@@ -39,7 +39,7 @@
 		
 		<!-- 客服功能按钮 -->
 		<view v-if="usercenter_contact_status == 1">
-			<!-- #ifdef MP-WEIXIN -->
+			<!-- #ifdef MP-WEIXIN | MP-BAIDU -->
 				<view v-if="usercenter_contact_btn_type == 0">
 					<button type="default" style="width: 80%;margin-top: 10rpx;"
 						:style="{backgroundColor:wxa_shop_nav_bg_color,color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}" 

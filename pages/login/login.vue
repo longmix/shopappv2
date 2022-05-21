@@ -122,14 +122,14 @@
 			<!-- #ifdef MP-BAIDU -->
 			<div class="otherBox mgb-20">
 				<div class="otherBox-line"></div>
-				<div class="otherBox-text">一键登录</div>
+				<div class="otherBox-text">-- 快捷登录 --</div>
 			</div>
 			<div class="flex flex-center" style="margin-bottom: 200rpx;">				
 				<button open-type="getPhoneNumber"
 					@getphonenumber="btn_baidu_one_click_login"
 					type="primary"
 					class="btn-row-submit"
-					style="width: 92%;background: #2E85D8;">百度手机号快速登录</button>
+					style="width: 84%;background: #2E85D8;">百度账号快速登录</button>
 			</div>
 			<!-- #endif -->
 			
@@ -1237,11 +1237,11 @@
 }
 
 .mgb-20 {
-	margin-bottom: 48rpx!important;
+	margin-bottom: 30rpx!important;
 }
 .flex-center{
 	text-align: center;
-	margin: 60upx auto;
+	margin: 60rpx auto;
 }
 .flex-center2 {
 	text-align: center;

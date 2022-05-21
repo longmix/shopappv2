@@ -5,10 +5,10 @@ const globalData = {
 		o2owaimai_server_url: 'https://app.tseo.cn/o2owaimai/index.php',
 		socket_server: 'https://socketio.tseo.cn',
 		
-		version_number:'Ver 2.0.5 Build 398',
-		version_code:398,
+		version_number:'Ver 2.1.0 Build 402',
+		version_code:402,
 		
-		force_sellerid:1,
+		force_sellerid:0,
 	
 		xiaochengxu_appid: 'wx3b96d83a469ad710',			//微信小程序的appid
 		xiaochengxu_account: 'gh_76248f4dc988',				//微信小程序的账号
@@ -25,11 +25,13 @@ const globalData = {
 		//=======以下配置项在发布版本的时候确定，服务器端配置无效===
 		
 		//平台相关的配置
+		// 百度小程序的发行版记得在 app.json中增加  "useSwanNews": true
+		
 		//current_platform : 'app-android',
 		//current_platform : 'app-ios',
 		//current_platform : 'mp-weixin',
-		//current_platform : 'mp-baidu',
-		current_platform : 'mp-alipay',
+		current_platform : 'mp-baidu',
+		//current_platform : 'mp-alipay',
 		//current_platform : 'h5',
 		
 		//固定导航栏的背景色，如果为0，则使用服务器端的配置

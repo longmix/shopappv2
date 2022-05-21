@@ -18,9 +18,10 @@
 		    <text style='font-size:26rpx;' @click='showRemarkInput'>评论</text>
 		  </view>
 		  <view style="width: 20%; float:left;">
-			  <image :src="video_data.has_video_collect == '0' ? '../../static/img/help/star_off.png' : '../../static/img/help/star_on.png'"  @click='collectVedio'
-			  					style='width:30rpx;height:30rpx;margin-left:10rpx;margin-right:10rpx;'></image>
-			  <text style='font-size:26rpx;' @click="collectVedio">收藏</text>
+			  <image :src="video_data.has_video_collect == '0' ? '../../static/img/help/star_off.png' : '../../static/img/help/star_on.png'"  
+				@click='collectVideo'
+			  	style='width:30rpx;height:30rpx;margin-left:10rpx;margin-right:10rpx;'></image>
+			  <text style='font-size:26rpx;' @click="collectVideo">收藏</text>
 		  </view>
 		  <view style="width: 20%; float:left;">
 			  <!-- 收藏下载转发功能按钮 -->
@@ -46,7 +47,7 @@
 			  
 		  </view>
 		  <view style="width: 20%; float:left;">
-			  <!-- #ifdef MP-WEIXIN||MP-BAIDU -->
+			  <!-- #ifdef MP-WEIXIN | MP-BAIDU -->
 			  
 			  <button class="share" open-type="share"></button>
 			  <image src="../../static/img/help/share.png"  
@@ -243,9 +244,16 @@
 		onShareAppMessage: function (res) {
 			var userInfo = this.abotapi.get_user_info();
 			
+			
+			var share_url = '/cms/quanquan/quanquan_details?videoid=' + this.videoid;
+			
+			if(userInfo && userInfo.userid){
+				share_url += '&userid=' + userInfo.userid;
+			}
+			
 			return {
 			  title: '' + this.video_data.title,
-			  path: '/cms/quanquan/quanquan_details?videoid=' + this.videoid + '&userid=' + userInfo.userid,
+			  path: share_url,
 			  success: function (res) {
 				// 分享成功
 			  },
@@ -765,7 +773,7 @@
 			},
 		  
 		  
-			collectVedio:function(e){
+			collectVideo:function(e){
 				if(this.check_user_login() != 1){
 					return;
 				}
@@ -832,12 +840,25 @@
 		  
 			showRemarkInput:function(e){
 			  var that = this;
+			  
+			  if(this.check_user_login() != 1){
+			  	return;
+			  }
 		  
 			  var last_url = '/cms/quanquan/quanquan_details?videoid=' + that.videoid;
 		  
 			  
 			  var userInfo = this.abotapi.get_user_info();
+			  
 			  console.log('1111122222',userInfo);
+			  
+			  if(!userInfo){
+				  uni.showToast({
+				  	title:'请先登录'
+				  })
+				  return;
+			  }
+			  
 			  if ('is_get_userinfo' in userInfo) {
 				var is_get_userinfo = userInfo.is_get_userinfo;
 				console.log('1111122222',is_get_userinfo);

@@ -707,6 +707,7 @@
 					
 					uni.showModal({
 						title:'只有登录才可以评论',
+						showCancel:false,
 						success:function(res){
 							if(res.cancel){
 								//取消

@@ -134,7 +134,7 @@
 					//endInitData
 					
 					// #ifdef MP-BAIDU
-					that.banner_swiper_list = null;
+					//that.banner_swiper_list = null;
 					// #endif
 					
 				},
