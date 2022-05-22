@@ -755,13 +755,14 @@
 				// })
 				var that = this;
 
+				/*
 				var userInfo = that.abotapi.get_user_info();
 				if (!userInfo) {
 					uni.showToast({
 						title: '请登录再使用'
 					})
 					return;
-				}
+				}*/
 
 				uni.scanCode({
 					success: function(res) {

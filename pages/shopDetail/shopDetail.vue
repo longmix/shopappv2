@@ -2066,7 +2066,7 @@
 	}
 	
 	.copyright_info {
-		padding: 40rpx 0 80rpx 0;
+		padding: 40rpx 0 180rpx 0;
 	}
 
 	.ps-btn {

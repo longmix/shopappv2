@@ -1664,25 +1664,93 @@ module.exports = {
 				}
 	   
 				//console.log('1111111111111', extraData)
+				
+				// #ifdef APP-PLUS
+					plus.share.getServices(
+						function(res){ 
+							var sweixin = null;  
+							for(var i=0;i<res.length;i++){  
+								var t = res[i];  
+								
+								//查找服务名称为 weixin  的service
+								if(t.id != 'weixin'){  
+									continue;
+								}
+								
+								sweixin = t;
+								
+								var xiaochengxu_account = appid;
+								
+								uni.showModal({
+									title:'提示',
+									content:'即将跳转微信',
+									showCancel:false,
+									success(res) {
+										//唤醒微信小程序  type 可取值： 0-正式版； 1-测试版； 2-体验版。 默认值为0。 
+										sweixin.launchMiniProgram({
+											id: xiaochengxu_account,
+											path:pagepath,
+											type: 0,
+											webUrl:'https://www.abot.cn'
+										});
+										
+										uni.navigateBack({
+											delta:1
+										})
+									}
+								});
+								
+								return;
+								
+							}
+							
+							if(!sweixin){
+								uni.showModal({
+									title:'没有找到微信',
+									content:'唤起微信支付失败',
+									success(res) {
+										if(res.confirm){
+										}
+									}
+								});
+								
+							}  
+						},
+						function(res){  
+							console.log(JSON.stringify(res));
+							
+							uni.showToast({
+								title:'没有检测到微信'
+							})
+						}
+					);
+					
+				
+				// #endif
+				
+				// #ifdef MP
+					uni.navigateToMiniProgram({
+						appId: appid,
+						envVersion: 'release',
+						path: pagepath,
+						extraData: extraData_obj,
+						success(res) {
+							// 打开成功
+						},
+						fail: function (res) {
+							uni.showModal({
+								title: '跳转小程序失败',
+								content: res.errMsg,
+								showCancel: false
+							})
+						   
+							console.log('跳转小程序失败：', res);
+						}
+					})
+				
+				// #endif
 	   
-				uni.navigateToMiniProgram({
-					appId: appid,
-					envVersion: 'release',
-					path: pagepath,
-					extraData: extraData_obj,
-					success(res) {
-						// 打开成功
-					},
-					fail: function (res) {
-						uni.showModal({
-							title: '跳转小程序失败',
-							content: res.errMsg,
-							showCancel: false
-						})
-	   
-						console.log('跳转小程序失败：', res);
-					}
-				})
+				
 			}
 		}
 		else if (url.indexOf('tel:') == 0) {
