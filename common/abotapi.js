@@ -25,12 +25,14 @@ module.exports = {
 			  console.log('HTTP Request to ' + params.url);
 			  console.log('with data ', params.data);
 			  
-			  if(res && JSON.stringify(res.length) > 512){
-				  var res002 = JSON.stringify(res.length);
-				  console.log('get result', res002.substring(0, 500)+'......' );
+			  console.log('with data ', params.data);
+			  
+			  if(res && (JSON.stringify(res).length > 512) ){
+				  var res002 = JSON.stringify(res);
+				  console.log('get result 001 ==>>', res002.substring(0, 500)+'......' );
 			  }
-			  else{
-				  console.log('get result', res);
+			  else{				  
+				  console.log('get result 002 ==>>', res);
 			  }
 			  
 			  //== 2021.7.31. 统一拦拦截超时的接口 ==

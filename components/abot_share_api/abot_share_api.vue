@@ -20,7 +20,7 @@
 			<view style="width: 25%;text-align: center;" 
 				@click="click_wxa_command_copy"
 				v-if="flag_hidden_btn_command_copy != 1">
-				<image style="width: 100rpx;height: 100rpx;" src="../../static/img/share/koling.png"></image>
+				<image style="width: 100rpx;height: 100rpx;" src="https://yanyubao.tseo.cn/Tpl/static/images/app_icon/kouling.png"></image>
 				<view style="font-size: 28rpx;color: #333333;">分享口令</view>
 			</view>
 			

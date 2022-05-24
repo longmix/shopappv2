@@ -95,30 +95,7 @@
 			<view class="layer" @tap.stop="discard">
 				<view class="h1">分享</view>
 				<view class="list">
-					<!-- <view class="box">
-						<image src="../../static/img/share/uni.png"></image>
-						<view class="title">
-							微信好友
-						</view>
-					</view>
-					<view class="box">
-						<image src="../../static/img/share/pyq.png"></image>
-						<view class="title">
-							朋友圈
-						</view>
-					</view>
-					<view class="box">
-						<image src="../../static/img/share/wb.png"></image>
-						<view class="title">
-							新浪微博
-						</view>
-					</view>
-					<view class="box">
-						<image src="../../static/img/share/qq.png"></image>
-						<view class="title">
-							QQ
-						</view>
-					</view> -->
+					
 
 				</view>
 				<view class="btn" @tap="hideShare">
