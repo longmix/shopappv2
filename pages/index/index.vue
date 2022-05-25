@@ -180,6 +180,20 @@
 			
 <!-- #endif -->		
 		
+		
+		<view style="width:100%;">
+			<block v-for="(function_item, index) in function_images_list"
+				:key="index">
+				<view :style="{width: '' + function_item.width_percent+'%', 'float':'left'}"
+					@click="toAdDetails(function_item.url)">
+					<image :src="function_item.image" style="width: 100%;vertical-align: middle;" mode="widthFix"></image>
+				</view>
+			</block>
+		</view>
+		
+		
+		
+		
 		<!-- 平铺广告图 -->
 		<view v-if="wxa_show_pic_pinpu == 1"
 			v-for="(tab,index) in flash_img_list" :key="index" 
@@ -467,6 +481,9 @@ export default {
 			
 			// 轮播图片
 			flash_ad_list:null,
+			
+			function_images_list:null,  	//功能图片列表（与平铺图片不同，可以定义图片显示在屏幕上的宽度百分比）
+			
 			flash_img_list:null,
 			index_icon_list:null,
 			
@@ -1438,6 +1455,12 @@ export default {
 			
 			
 			that.get_flash_ad_list();
+			
+			if(cb_params.option_list.function_images_list){
+				that.function_images_list = cb_params.option_list.function_images_list;
+			}
+			
+			
 			that.get_flash_img_list();
 			that.initArticleList(cb_params.option_list);
 			that.get_shop_icon_index();
