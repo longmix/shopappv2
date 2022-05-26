@@ -830,6 +830,54 @@
 			
 		},
 		//======= 视频直播相关的分包 Begin  ====
+		//======= 分销中心和推广联盟 相关的分包 Begin  ====
+		{	
+			"root": "pages/fenxiao",
+			"pages": [
+				{
+					"path" : "fenxiao_center",
+					"style" :                                                                                    
+					{
+						"navigationBarTitleText": "分销中心",
+						"enablePullDownRefresh": true
+					}            
+				},
+				{
+					"path" : "fenxiao_order_list",
+					"style" :                                                                                    
+					{
+						"navigationBarTitleText": "分销订单列表",
+						"enablePullDownRefresh": true
+					}            
+				},
+				{
+					"path" : "fenxiao_order_detail",
+					"style" :                                                                                    
+					{
+						"navigationBarTitleText": "分销订单详情",
+						"enablePullDownRefresh": true
+					}            
+				},
+				{
+					"path" : "myteam",
+					"style" :                                                                                    
+					{
+						"navigationBarTitleText": "我的团队",
+						"enablePullDownRefresh": true
+					}            
+				},
+				{
+					"path" : "mybuyer",
+					"style" :                                                                                    
+					{
+						"navigationBarTitleText": "我的顾客",
+						"enablePullDownRefresh": true
+					}            
+				}
+		    ]
+			
+		},
+		//======= 分销中心和推广联盟 相关的分包 Begin  ====
 		//======= 小游戏小工具相关的分包 Begin  ====
 		{	
 			"root": "pages/tools",
