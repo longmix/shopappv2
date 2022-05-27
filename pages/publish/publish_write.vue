@@ -172,17 +172,17 @@
 								<label class="FH" v-if="item.require == 1">*</label>
 							</view>
 							<biaofun-datetime-picker
-								placeholder="请选择活动时间"
+								placeholder="请选择时间"
 								:defaultValue="time_start_end[item.fieldname]"
 								fields="minute"
-								:name="item.fieldname" 
+								:name="item.fieldname + '_time_picker'" 
 								:data-name="item.fieldname"
 								@change="changeDatetimePicker"
 								:change_name="item.fieldname"
 							></biaofun-datetime-picker>
-							<input type="hidden" style="display: none;" 
-							:name="item.fieldname" 
-							:value="time_start_end[item.fieldname]">
+							<input type="text" style="display: none;" 
+								:name="item.fieldname" 
+								:value="time_start_end[item.fieldname]">
 						</view>						
 						
 						<!-- <view class="input-flex" style="overflow: auto;border-bottom: #DDDDDD 1rpx solid;padding:17px 20px 10px" v-if="item.inputtype== 'date' || item.inputtype== 'text' && item.fieldname != 'imgimg_title'">
@@ -1125,6 +1125,8 @@
 				
 					//选择的时间
 					this.time_start_end[change_name] = date.f3;
+					
+					this.$forceUpdate();	// 强制刷新数组元素
 				
 					console.log('选择的日期时间的change_name：', change_name);
 					
