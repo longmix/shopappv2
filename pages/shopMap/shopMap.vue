@@ -6,14 +6,14 @@
 		</view> 
 		
 		<view class="btm">
-			<view class="adderss" style="font-weight: bold; font-size:32rpx;">{{shopInfo.name}}</view>
+			<view class="adderss" style="font-weight: bold; font-size:32rpx;margin-top:30rpx;">{{shopInfo.name}}</view>
 			<view style="display: flex; padding-top:20rpx;  ">
-			<image src="https://yanyubao.tseo.cn/Tpl/static/images/location_map_new.png" mode="widthFix" style="width:30rpx;height:30rpx;"></image>
-			<view class="adderss">{{shopInfo.address}}</view>
+				<image src="https://yanyubao.tseo.cn/Tpl/static/images/location_map_new.png" mode="widthFix" style="width:30rpx;height:30rpx;"></image>
+				<view class="adderss">{{shopInfo.address}}</view>
 			</view>
-			<view style="display: flex; padding:40rpx  10rpx;">
-			<image src="https://yanyubao.tseo.cn/Tpl/static/images/location_mobile_new.png" mode="widthFix" style="width:30rpx;height:30rpx;"></image>
-			<view class="phone_number" @tap="call_seller">{{shopInfo.telephone}}</view>
+			<view style="display: flex; padding:20rpx 0rpx;" v-if="shopInfo.telephone">
+				<image src="https://yanyubao.tseo.cn/Tpl/static/images/location_mobile_new.png" mode="widthFix" style="width:30rpx;height:30rpx;"></image>
+				<view class="phone_number" @tap="call_seller">{{shopInfo.telephone}}</view>
 			</view>
 			<view v-if="from_page == 1 || from_page == 2" 
 				 :style="{background: btn_bg_color,color:frontColor}"
@@ -381,6 +381,7 @@
 	  width: 92%;
 	  background: #FFD700;
 	  border-radius: 15rpx;
+	  margin-top:40rpx;
 	}
 	
 	
