@@ -5,30 +5,38 @@
 		"navigationBarBackgroundColor" : "#f37404",
 		"backgroundColor" : "#ffffff",
 		"backgroundColorTop":"#ffffff",
-		"backgroundColorBottom":"#ffffff"
+		"backgroundColorBottom":"#ffffff",
+		"rpxCalcBaseDeviceWidth": 750
 	},
 	"tabBar": {
 		"color": "#333333",
 		"selectedColor": "#d81e06",
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
-		"list": [{
-				"pagePath": "pages/index/index",
-				"iconPath": "static/img/tabBar/home.png",
-				"selectedIconPath": "static/img/tabBar/home-on.png",
-				"text": "首页"
+		"list": [
+			{
+				"pagePath": "pages/yanyubao/my_module_list",
+				"iconPath": "static/img/tabBar/shang.png",
+				"selectedIconPath": "static/img/tabBar/shang-on.png",
+				"text": "开店"
 			},
 			{
-				"pagePath": "pages/category/category",
+				"pagePath": "pages/publish/publish_list",
+				"iconPath": "static/img/tabBar/imglist.png",
+				"selectedIconPath": "static/img/tabBar/imglist-on.png",
+				"text": "创业与开业"
+			},
+			{
+				"pagePath": "pages/index/index",
+				"iconPath": "static/img/tabBar/publish.png",
+				"selectedIconPath": "static/img/tabBar/publish-on.png",
+				"text": "发现"
+			},
+			{
+				"pagePath": "pages/shopList/shopList",
 				"iconPath": "static/img/tabBar/category.png",
 				"selectedIconPath": "static/img/tabBar/category-on.png",
-				"text": "商品分类"
-			},
-			{
-				"pagePath": "pages/cart/cart",
-				"iconPath": "static/img/tabBar/cart.png",
-				"selectedIconPath": "static/img/tabBar/cart-on.png",
-				"text": "购物车"
+				"text": "城市合伙人"
 			},
 			{
 				"pagePath": "pages/tabbar/user",
