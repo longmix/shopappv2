@@ -1,5 +1,5 @@
 {
-  "desc": "通版商城V2小程序版 Powered By 延誉宝",
+  "desc": "智能建站2.0小程序版 Powered By 延誉宝",
   "rules": [{
     "action": "allow",
     "page": "pages/index/index"
@@ -68,6 +68,9 @@
       "page": "pages/welcome_page/welcome_page",
       "params": ["sellerid8888"],
       "matching": "exclusive"
+    },{
+      "action": "disallow",
+      "page": "pages/tabbar/quanquan"
     },{
       "action": "disallow",
       "page": "pages/tabbar/user"
