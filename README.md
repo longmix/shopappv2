@@ -35,6 +35,7 @@ Logo、滚动广告、平铺广告、导航图标，可以使用服务器上的�
   [https://github.com/longmix/shopappv2](https://github.com/longmix/shopappv2)
 
 
+
 * 考虑到Github在国内访问速度较慢，也可以通过国内的Gitee查看（该镜像正在审核中）。
 
   https://gitee.com/longmix/shopappv2
@@ -401,6 +402,9 @@ Logo、滚动广告、平铺广告、导航图标，可以使用服务器上的�
 ![在线预览](https://www.abot.cn/wp-content/themes/abotcn/uploads/2020/08/202008280733442920.png)
 
 
+### 5.1 项目功能示意图
+![在线预览](http://www.abot.cn/wp-content/themes/abotcn/uploads/2020/10/202011250313394316.png)
+
 ## 6 常见问题（FAQ）
 
 **是否支持App Store的苹果超级签名？**
@@ -410,5 +414,4 @@ Logo、滚动广告、平铺广告、导航图标，可以使用服务器上的�
 **支持上架安卓市场吗？**
 
   国内的安卓市场鱼龙混杂，各种上架要求各不相同，但是基本都要有与APP名称一致的软件著作权才可以申请上架，申请软件著作权请查看《[在上海也能直接申请软件著作权啦！](http://www.abot.cn/1804.html)》
-
 
