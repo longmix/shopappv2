@@ -598,6 +598,7 @@
 					console.log(e.detail.errMsg)
 					console.log(e.detail.iv)
 					console.log(e.detail.encryptedData)
+					console.log(that.current_weixin_js_code)
 						  
 					if(!that.current_weixin_js_code){
 						uni.showModal({

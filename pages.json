@@ -881,6 +881,30 @@
 						"navigationBarTitleText": "我的顾客",
 						"enablePullDownRefresh": true
 					}            
+				},
+				{
+					"path" : "profit_summary",
+					"style" :                                                                                    
+					{
+						"navigationBarTitleText": "收益汇总",
+						"enablePullDownRefresh": false
+					}            
+				},
+				{
+					"path" : "profit_center",
+					"style" :                                                                                    
+					{
+						"navigationBarTitleText": "收益中心",
+						"enablePullDownRefresh": false
+					}            
+				},
+				{
+					"path" : "agent_become",
+					"style" :                                                                                    
+					{
+						"navigationBarTitleText": "成为代理",
+						"enablePullDownRefresh": true
+					}            
 				}
 		    ]
 			

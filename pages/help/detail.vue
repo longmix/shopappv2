@@ -171,7 +171,10 @@
 		
 			<view class="comment">
 		     
-				<image class="comment_img comment_write_img" src="../../static/img/help/write.png"></image>
+				<image class="comment_img comment_write_img"
+					style="z-index: 100;"
+					src="/static/img/help/write.png"
+					></image>
 		        <input @focus="is_login" class="comment_input" 
 					placeholder="写评论..." confirm-type="send" 
 					@confirm="submitRemark" :data-imgid="wz_text.id" v-model="inputValue" type="text"></input> <!--  -->
@@ -1649,6 +1652,8 @@
 	.comment{
 	  display:flex;
 	  margin-top:14rpx;
+	  height:60rpx;
+	  line-height:60rpx;
 	
 	}
 	.comment_img{
@@ -1661,14 +1666,17 @@
 	  /* background-color: #F00; */
 	  height:60rpx;
 	  border-radius:10rpx;
-	  padding-left:20rpx;
+	  padding-left:80rpx;
 	  margin-left:10rpx;
-	  width:400rpx;
+	  width:630rpx;   /* 750 - 120 */
 	}
 	
 	.comment_write_img{
-	  left:45rpx;
+	  left:15rpx;
 	  position:absolute;
+	  width:50rpx;
+	  height: 50rpx;
+	  
 	}
 	
 	
