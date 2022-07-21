@@ -1,11 +1,11 @@
 <template>
-	<view class="loginBg" :style="{height:screenHeight + 'px'}" style="padding-bottom: 70upx;">
+	<view class="loginBg" :style="{height:screenHeight + 'px'}" style="padding-bottom: 70rpx;">
 		<div class="h30"></div>
 		<div class="flex-center ">
 			<div @click="goHome()" class="flex-center">
 				<image v-if="wxa_login_hide_shop_logo != 1" :src="wxa_shop_operation_logo_url"  
-					style="width: 150upx;height: 150upx;border-radius: 50%;"  mode="widthFix"></image>
-				<view v-if="wxa_login_show_shop_name && wxa_login_show_shop_name==1" style="margin: 30upx;">{{wxa_shop_new_name}}</view>
+					style="width: 150rpx;height: 150rpx;border-radius: 50%;"  mode="widthFix"></image>
+				<view v-if="wxa_login_show_shop_name && wxa_login_show_shop_name==1" style="margin: 30rpx;">{{wxa_shop_new_name}}</view>
 				<view v-if="wxa_login_show_memo_text && wxa_login_show_memo_text==1" style='text-align:left;margin:50rpx 30rpx;color:#666; font-size:32rpx;display:block;' >
 					<text>{{memo_text_content}}</text>
 				</view>
@@ -1134,10 +1134,10 @@
 <style>
 .send_btn{
 	float: right;
-	margin-top: -8upx;
-	font-size: 24upx;
-	padding: 0 40upx;
-	/* margin-right: 8upx; */
+	margin-top: -8rpx;
+	font-size: 24rpx;
+	padding: 0 40rpx;
+	/* margin-right: 8rpx; */
 	color:#007aff;	
 	background-color:#fff;
 }
@@ -1148,36 +1148,36 @@
 .img_checkcode{
 	width: 25%;
 	float: right;
-	margin-top: -4upx;
-	/* margin-right: 16upx; */
-	height: 56upx;
+	margin-top: -4rpx;
+	/* margin-right: 16rpx; */
+	height: 56rpx;
 }
 	
 	
 .otherBox {
 	position: relative;
-	height: 79.2upx;
+	height: 79.2rpx;
 }
 
 .otherBox-line {
 	width: 100%;
-	height: 2.2upx;
+	height: 2.2rpx;
 	/*background-color: #d0d0d0;
 	position: absolute;
 	*/
-	top: 39.6upx;
+	top: 39.6rpx;
 	
 }
 
 /* .otherBox-text {
 	background-color: #50a8db;
 	text-align: center;
-	padding: 0upx 22upx;
-	line-height: 79.2upx;
+	padding: 0rpx 22rpx;
+	line-height: 79.2rpx;
 	position: absolute;
-	width: 264upx;
+	width: 264rpx;
 	left: 50%;
-	margin-left: -132upx;
+	margin-left: -132rpx;
 	color: #fff;
 } */
 
@@ -1196,17 +1196,17 @@
 .flexIcon {
 	flex-direction: row;
 	background-color: #FFFFFF;
-	margin-bottom: 44upx;
-	border-radius: 44upx;
-	padding: 22upx 22upx;
+	margin-bottom: 44rpx;
+	border-radius: 44rpx;
+	padding: 22rpx 22rpx;
 	align-items: center;
 	width: 80%;
 	margin-left: 7%;	
 }
 
 .flexIcon-icon {
-	margin-right: 13.2upx;
-	font-size: 39.6upx;
+	margin-right: 13.2rpx;
+	font-size: 39.6rpx;
 	color: #fff;
 }
 
@@ -1215,17 +1215,17 @@
 	flex: 1;
 	background:inherit;
 	outline: 0;
-	font-size: 35.2upx;
+	font-size: 30rpx;
 }
  
 .loginBox {
 	/* position: absolute;
 	top: 50%;
-	left: 22upx;
-	right: 22upx;
-	margin-top: -330upx;
-	padding: 33upx 22upx;
-	border-radius: 44upx; */
+	left: 22rpx;
+	right: 22rpx;
+	margin-top: -330rpx;
+	padding: 33rpx 22rpx;
+	border-radius: 44rpx; */
 }
 
 
@@ -1235,10 +1235,10 @@
 	background:  #EEEEEE/*linear-gradient( #29cee8,#619ad6)*/;
 	background-color: ;
 	position: absolute;
-	top: 0upx;
-	bottom: 0upx;
-	left: 0upx;
-	right: 0upx;
+	top: 0rpx;
+	bottom: 0rpx;
+	left: 0rpx;
+	right: 0rpx;
 }
 
 .mgb-20 {
@@ -1259,8 +1259,8 @@
 }
 
 .btn-round {
-	width: 144upx;
-	height: 144upx;
+	width: 144rpx;
+	height: 144rpx;
 	background-color: #f60;
 	display: flex;
 	flex-direction: column;
@@ -1271,7 +1271,7 @@
 	font-family: iconfont;
 }
 .btn-round:before {
-	font-size: 57.6upx;
+	font-size: 57.6rpx;
 }
 .bg-success {
 	background-color: #28a745!important;
@@ -1285,15 +1285,15 @@
 	align-items: center;
 	justify-content: space-around;
 	background: #f00;
-	width: 130upx;
-	height: 130upx;
+	width: 130rpx;
+	height: 130rpx;
 	position: fixed;
 	z-index: 100;
-	right: 60upx;
+	right: 60rpx;
 	color: #fff;
 	font-size: 28rpx;
 	border-radius: 50%;
-	bottom: 120upx;
+	bottom: 120rpx;
 }
 
 .home-p image{
@@ -1329,6 +1329,7 @@ input::-moz-placeholder{
 .btn-row-submit {
 	height:100rpx;
 	line-height: 100rpx;
+	font-size:30rpx;
 }
 
 </style>

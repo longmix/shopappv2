@@ -17,9 +17,10 @@
 		</view>
 		<view class="show_modal_mask" v-if="showModal_exchange_btn" @tap="showModal_exchange_btn=false"></view>
 		<view class="show_modal_pop"  v-if="showModal_exchange_btn">
-			<view style="border: #5DD300 2rpx solid;border-radius: 10rpx;background: #ffffff;width: 500rpx;height:500rpx;text-align: center;">
+			<view style="border: #5DD300 2rpx solid;border-radius: 10rpx;background: #ffffff;width: 500rpx;text-align: center;">
 				<image  class="" :src="tanchuang_icon" style="width: 160rpx;height: 160rpx;margin-top: 20rpx;margin-bottom: 20rpx;border-radius:20rpx":style="{'background-color':tanchuang_background}"></image>
 				<view style="text-align: center;">{{tanchuang_plugin_name}}</view>
+				<view style="text-align: center;margin: 20rpx;font-size: 28rpx;color: #333333;">{{plugin_desc_basic}}</view>
 			</view>
 		</view>
 		<view class="mid-img" v-if="my_module_list001 != ''">
@@ -87,6 +88,7 @@
 				tanchuang_icon:null,
 				tanchuang_plugin_name:null,
 				tanchuang_background:null,
+				plugin_desc_basic:'',
 			}
 		},
 		onLoad(option){
@@ -283,11 +285,12 @@
 				this.tanchuang_icon = e.currentTarget.dataset.icon;
 				this.tanchuang_background = e.currentTarget.dataset.background;
 				this.tanchuang_plugin_name = e.currentTarget.dataset.module_name;
-				//var plugin_desc_basic = '提供' + plugin_name +'相关及扩展的功能。';
+				var plugin_name = e.currentTarget.dataset.module_name;
+				this.plugin_desc_basic = '提供' + plugin_name +'相关及扩展的功能。';
 				
 				if(plugin_flag && (plugin_flag == 1) ){
-					plugin_name = e.currentTarget.dataset.plugin_name;
-					plugin_desc_basic = e.currentTarget.dataset.plugin_desc_basic;				
+				//	plugin_name = e.currentTarget.dataset.plugin_name;
+					this.plugin_desc_basic = e.currentTarget.dataset.plugin_desc_basic;				
 				}
 				
 				/* uni.showModal({

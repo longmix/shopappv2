@@ -203,10 +203,15 @@
 		</view>
 		<!-- 标题 价格 -->
 		<view class="info-box goods-info">
-			<view class="price">￥{{goods_detail.price}}</view>
+			
 			<view class="title">
 				{{goods_detail.name}}
 			</view>
+			
+			<view class="price">￥{{goods_detail.price}}
+				<text class="price_unit" v-if="goods_detail.unit && (goods_detail.unit.length > 0)"> / {{goods_detail.unit}}</text>
+			</view>
+			
 			<view class="title" style="color: #666;font-size: 14px;margin-top: 5rpx;">
 				{{goods_detail.product_take_score}}<text v-if="(goods_detail.product_take_score) && (goods_detail.product_give_score)">,</text>{{goods_detail.product_give_score}}
 			</view>
@@ -217,7 +222,7 @@
 				<image :src="current_poster_modal.img_url" mode="heightFix" style="height: 1000rpx;"></image>
 				<view class="show_poster_baocun" @tap="poster_baocun">保存</view>
 			</view>
-			<view style="width: 100%;height: 50rpx;line-height: 50rpx;"> 
+			<view style="width: 100%;height: 50rpx;line-height: 50rpx;" v-if="product_detail_qrcode_poster == 1"> 
 				<view style="display: flex;float: right;" @tap="toPoster">
 					
 					<image class="image_poster"  src="static/img/xiangji.png"  ></image>
@@ -689,10 +694,11 @@
 				AlertClassKaijiang: 0,
 				AlertPositionKaijiang: '',
 				
-				
+				//在商品详情页展示咨询与留言
 				form_product_info:{form_show:0},
 				
-				
+				//2022.7.16. 在商品详情页展示生成二维码海报的功能按钮
+				product_detail_qrcode_poster:0,
 				
 				
 				
@@ -1312,12 +1318,19 @@
 					return;
 				}
 				
+				if(cb_params.product_ask_form_link_show){
+					that.form_product_info.form_text = cb_params.product_ask_form_link_text;
+					that.form_product_info.form_token = cb_params.product_ask_form_cms_token;
+					that.form_product_info.form_id = cb_params.product_ask_form_id;
+					that.form_product_info.form_subimt_url = cb_params.product_ask_submit_url;
+					that.form_product_info.form_show = cb_params.product_ask_form_link_show;
+				}
 				
-				that.form_product_info.form_text = cb_params.product_ask_form_link_text;
-				that.form_product_info.form_token = cb_params.product_ask_form_cms_token;
-				that.form_product_info.form_id = cb_params.product_ask_form_id;
-				that.form_product_info.form_subimt_url = cb_params.product_ask_submit_url;
-				that.form_product_info.form_show = cb_params.product_ask_form_link_show;
+				
+				
+				if(cb_params.product_detail_qrcode_poster){
+					that.product_detail_qrcode_poster = cb_params.product_detail_qrcode_poster;
+				}
 				
 				
 				console.log('adwadad', that.form_product_info);
@@ -1398,8 +1411,15 @@
 					success: function (res) {
 						
 						if(res.data.code != 1){
+							
+							var title001 = '没有数据';
+							if(res.data.msg){
+								title001 = res.data.msg;
+							}
+							
 							uni.showToast({
-								title:'没有数据',
+								title: title001,
+								icon: 'error',
 								duration: 2000,
 							});
 							
@@ -1411,11 +1431,7 @@
 				
 						that.current_poster_modal = res.data;
 						
-						console.log('current_poster_modal ===>>> ', that.current_poster_modal);
-					
-					
-					
-								
+						console.log('current_poster_modal ===>>> ', that.current_poster_modal);	
 						
 					},
 					fail: function (e) {
@@ -2773,13 +2789,20 @@
 
 	.goods-info {
 		.price {
-			font-size: 40upx;
+			font-size: 40rpx;
 			font-weight: bold;
 			color: #f47925;
+		}
+		
+		.price_unit {
+			font-size: 25rpx;
+			font-weight: normal;
+			color: #666666;
 		}
 
 		.title {
 			font-size: 30rpx;
+			margin:25rpx 0;
 		}
 	}
 

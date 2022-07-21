@@ -13,7 +13,7 @@
 			</view>
 		</view>
 		
-		<view v-if="current_subordinate_order_list == null" style="text-align: center;color: #999999;font-weight: bold;">
+		<view v-if="current_subordinate_order_list == ''" style="text-align: center;color: #999999;font-weight: bold;">
 			<image src="https://yanyubao.tseo.cn/Tpl/static/images/fenxiao_center_icon/zanwu_shuju.png" style="width: 400rpx;height: 400rpx;"></image>
 			<view>暂无联盟订单</view>
 			
@@ -37,14 +37,14 @@
 							<view style="color: #AAAAAA;">{{current_subordinate_item.createtime}}</view>
 						</view>
 						<view style="display: flex;">
-							<view style="margin: 20rpx 20rpx 20rpx 0rpx;">
+							<view style="margin: 20rpx 20rpx 20rpx 0rpx;text-align: center;">
 								<view class="equally_font_size_color">付款金额</view>
 								<view style="display: flex;">
 									<view class="equally_font_size_color" style="margin-top: 6rpx;">￥</view>
 									<view style="font-size: 32rpx;color: #333333;font-weight: bold;">{{current_subordinate_item.price}}</view>
 								</view>
 							</view>
-							<view style="margin: 20rpx;">
+							<view style="margin: 20rpx 90rpx;text-align: center;">
 								<view class="equally_font_size_color">我的分润</view>
 								<view style="display: flex;">
 									<view class="equally_font_size_color" style="margin-top: 6rpx;">￥</view>
@@ -55,7 +55,7 @@
 						</view>
 						<view class="equally_font_size_color" style="padding-bottom: 10rpx;display: flex;">
 							<view>分润说明：</view>
-							<view style="color: #797979;">第{{current_subordinate_item.level}}级推广，提成</view>
+							<view style="color: #797979;">{{current_subordinate_item.fenrun_shuoming}}</view>
 						</view>
 						
 					</view>
@@ -115,9 +115,8 @@
 				//duration:2000
 			 });
 			 // #endif
-			 
-			 this.onLoad();
-			 this.onShow();
+			 this.current_page = 1;
+			 this.get_fenxiao_myteam_list();
 			 
 			 console.log('下拉刷新==============')
 			 
@@ -133,6 +132,16 @@
 			 }, 2000);
 			 
 		},
+		
+		
+		//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
+		onReachBottom: function () {
+			
+			this.current_page ++;
+			
+			this.get_fenxiao_myteam_list();
+		}, 
+		
 			
 		methods: {
 			callback_function_shop_option_data:function(that, cb_params){
@@ -167,7 +176,7 @@
 						sellerid:that.abotapi.globalData.default_sellerid,
 						userid:userInfo.userid,
 						page: that.current_page,
-						
+						page_size: 10,
 					};
 				// #ifdef MP-WEIXIN
 					post_data.xiaochengxu_appid = that.abotapi.globalData.xiaochengxu_appid,
@@ -176,7 +185,7 @@
 					
 					
 					that.abotapi.abotRequest({
-							url: that.abotapi.globalData.yanyubao_server_url + '/openapi/FenxiaoData/get_Fenxiao_center_myteam_list',
+							url: that.abotapi.globalData.yanyubao_server_url + '/openapi/FenxiaoData/get_fenxiao_center_myteam_list',
 							method: 'post',
 							data: post_data,
 							success: function (res) {
@@ -189,20 +198,46 @@
 								
 								return;
 							}
+							
+							
 							that.user_info = res.data.data;
+							
+							
 							that.fenxiao_info = that.user_info.fenxiao_info;
 						
 						
-							that.current_subordinate_order_list = res.data.data.order_list;
-							/* 
-							for(var i=0; i< that.current_subordinate_order_list.length; i++){
-								if(that.current_subordinate_order_list[i].price){
-									that.current_subordinate_order_list[i].price = (that.current_subordinate_order_list[i].price/100).toFixed(2);
-									
-								}
+						//	that.current_subordinate_order_list = res.data.data.order_list;
+							
+							
+							
+							
+							if(!that.current_subordinate_order_list){
+								that.current_subordinate_order_list = [];
 							}
 							
-							console.log('that.current_subordinate_order_list.price  ===>>> ',that.current_subordinate_order_list.price ); */
+					
+							
+							
+							
+							for(var i=0; i<res.data.data.order_list.length; i++){
+								if(res.data.data.order_list[i].price){
+									res.data.data.order_list[i].price = (res.data.data.order_list[i].price/100).toFixed(2);
+									
+								}
+								if(res.data.data.order_list[i].fenrun_ret){
+									res.data.data.order_list[i].fenrun_ret = (res.data.data.order_list[i].fenrun_ret/100).toFixed(2);
+									
+								}
+								
+								
+								that.current_subordinate_order_list.push(res.data.data.order_list[i]);
+								
+							}
+							
+							
+							
+							
+							console.log('that.current_subordinate_order_list.price  ===>>> ',that.current_subordinate_order_list.price );
 							console.log('current_subordinate_order_list ===>>> ', that.current_subordinate_order_list);
 							
 									
@@ -238,12 +273,12 @@
 		border-radius: 50%;
 		width: 100rpx;
 		height: 100rpx;
-		border: 1rpx solid #999999;
+
 		margin: 10rpx;
 	}
 	.daili_text{
 		color: #ffffff;
-		font-size: 20rpx;
+		font-size: 26rpx;
 		margin: 10rpx;
 	}
 	.daili_shenfen{

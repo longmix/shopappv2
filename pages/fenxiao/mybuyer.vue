@@ -21,22 +21,22 @@
 					<image :src="current_myteam_item.headimgurl" class="" style="width: 50rpx;height: 50rpx;"></image>
 				</view>
 				<view style="width: 90%;line-height: 40rpx;margin-top: 25rpx;">
-					<view style="font-size: 20rpx;">{{current_myteam_item.nickname}}</view>	
+					<view style="font-size: 26rpx;">{{current_myteam_item.nickname}}</view>	
 					<view style="display: flex;">
 						<view class="font_color_unify">会员账号：{{current_myteam_item.account}}</view>
 						<view class="font_color_unify">手机号码：{{current_myteam_item.mobile}}</view>
 					</view>
 					<view style="display: flex;">
-						<view class="font_color_unify">普通订单：{{current_myteam_item.order_count}}</view>
-						<view class="font_color_unify" >消费金额：{{current_myteam_item.order_num}}</view>
+						<view class="font_color_unify">普通订单：{{current_myteam_item.order_putong_list}}</view>
+						<view class="font_color_unify" >消费金额：{{current_myteam_item.order_putong_num}}</view>
 					</view>	
 					<view style="display: flex;">
-						<view class="font_color_unify">代理订单：0</view>
-						<view class="font_color_unify" >消费金额：0</view>
+						<view class="font_color_unify">代理订单：{{current_myteam_item.order_data_tongji_count_xiaxia_num}}</view>
+						<view class="font_color_unify" >消费金额：{{current_myteam_item.xiaji_daili_order_jine_num}}</view>
 					</view>	
 					<view style="display: flex;">
-						<view class="font_color_unify">月代理订单：0</view>
-						<view class="font_color_unify" >消费金额：0</view>
+						<view class="font_color_unify">月代理订单：{{current_myteam_item.order_data_tongji_count_xiaxia_num_month}}</view>
+						<view class="font_color_unify" >消费金额：{{current_myteam_item.xiaji_daili_order_jine_num_month}}</view>
 					</view>	
 				</view>
 				
@@ -95,7 +95,7 @@ export default {
 		   	//duration:2000
 		   });
 		   // #endif
-		   
+		   this.current_page = 1;
 		   this.get_fenxiao_myteam_list();
 		   
 		   console.log('下拉刷新==============')
@@ -112,6 +112,16 @@ export default {
 		   }, 2000);
 		   
 		},
+		
+		//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
+		onReachBottom: function () {
+			
+			this.current_page ++;
+			
+			this.get_fenxiao_myteam_list();
+		}, 
+		
+		
 		
 		methods: {
 			callback_function_shop_option_data:function(that, cb_params){
@@ -146,7 +156,7 @@ export default {
 						sellerid:that.abotapi.globalData.default_sellerid,
 						userid:userInfo.userid,
 						page: that.current_page,
-						
+						page_size: 10,
 					};
 				// #ifdef MP-WEIXIN
 					post_data.xiaochengxu_appid = that.abotapi.globalData.xiaochengxu_appid,
@@ -154,7 +164,7 @@ export default {
 				// #endif
 					
 					that.abotapi.abotRequest({
-							url: that.abotapi.globalData.yanyubao_server_url + '/openapi/FenxiaoData/get_Fenxiao_center_myteam_list',
+							url: that.abotapi.globalData.yanyubao_server_url + '/openapi/FenxiaoData/get_fenxiao_center_myteam_list',
 							method: 'post',
 							data: post_data,
 							success: function (res) {
@@ -204,6 +214,7 @@ export default {
 	.daili_text{
 		color: #ffffff;
 		margin: 10rpx;
+		font-size: 26rpx;
 	}
 	.current_myteam_list_imformation{
 		display: flex;
@@ -217,10 +228,10 @@ export default {
 		width: 10%;
 		display: flex;
 		justify-content: center;
-		align-items: center;
+		margin-top: 20rpx;
 	}
 	.font_color_unify{
-		font-size: 20rpx;
+		font-size: 22rpx;
 		width: 50%;
 		color: #797979;
 	}

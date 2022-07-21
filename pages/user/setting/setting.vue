@@ -272,6 +272,8 @@
 											
 											if(res.data && res.data.data && (res.data.data.code == 1)){
 												that.abotapi.set_user_account_info(data.data);
+												
+												that.userAcountInfo = that.abotapi.get_user_account_info();
 											}
 										  }
 										});

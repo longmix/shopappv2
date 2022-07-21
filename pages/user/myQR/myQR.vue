@@ -9,8 +9,8 @@
 			<view class="myblock" v-if="!option_list || (option_list.hide_qrcode_img != 1)">
 				
 			</view>
-			<view class="QR" v-if="!option_list || (option_list.hide_qrcode_img != 1)">
-				<image :src="qrcode_url"></image>
+			<view  class="QR" v-if="!option_list || (option_list.hide_qrcode_img != 1)">
+				<image  :show-menu-by-longpress="true" :src="qrcode_url"  @click="previewImage"></image>
 			</view>
 			<view class="title" v-if="!option_list || (option_list.hide_qrcode_img != 1)"
 				:style="{backgroundColor:wxa_shop_nav_bg_color,fontColor:wxa_shop_nav_font_color}">
@@ -170,6 +170,32 @@
 					}
 				});
 			},
+			
+			
+			
+			previewImage:function(e) {
+				console.log('123456123456123',e)
+				//预览图片
+				uni.previewImage({
+					urls: this.qrcode_url,
+					indicator:'default',
+					loop:false,
+					longPressActions: {
+						itemList: ['发送给朋友', '保存图片', '收藏'],
+						success: function(data) {
+							console.log('选中了第' + (data.tapIndex + 1) + '个按钮,第' + (data.index + 1) + '张图片');
+						},
+						fail: function(err) {
+							console.log(err.errMsg);
+						}
+					}
+					
+					
+				});
+			},
+			
+			
+			
 			
 			
 			

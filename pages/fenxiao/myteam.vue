@@ -24,8 +24,8 @@
 					</view>
 					<view style="width: 90%;line-height: 40rpx;margin-top: 25rpx;">
 						<view style="display: flex;">
-							<view style="font-size: 22rpx;">{{current_myteam_item.nickname}}</view>
-							<view class="huiyuan_dengji" :style="{background:wxa_shop_nav_bg_color}">加盟商</view>
+							<view style="font-size: 26rpx;">{{current_myteam_item.nickname}}</view>
+							<view class="huiyuan_dengji" :style="{background:wxa_shop_nav_bg_color}">{{current_myteam_item.fenxiao_info.level_name}}</view>
 						</view>
 						<view style="display: flex;">
 							<view class="font_color_unify" style="width: 50%;">会员账号：{{current_myteam_item.account}}</view>
@@ -39,8 +39,8 @@
 					
 				</view>
 				<view style="display: flex;background-color: #fef2df;height: 64rpx;line-height: 64rpx;">
-					<view class="font_color_unify"  style="width: 55%;padding-left: 20rpx;">团队业绩</view>
-					<view class="font_color_unify"  style="width: 45%;">链路最高</view>
+					<view class="font_color_unify"  style="padding-left: 20rpx;">团队业绩</view>
+					<view class="font_color_unify"  style="margin-left: 190rpx;">{{current_myteam_item.supplier_balance_log_yeji_jine_xiaji_num}} pv</view>
 				</view>
 				
 			</view>
@@ -101,9 +101,8 @@ export default {
 			//duration:2000
 		});
 		// #endif
-		 
-		this.onLoad();
-		this.onShow();
+		this.current_page = 1;
+		this.get_fenxiao_myteam_list();
 		 
 		console.log('下拉刷新==============')
 		 
@@ -119,6 +118,17 @@ export default {
 		}, 2000);
 		   
 	},
+	
+	
+	//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
+	onReachBottom: function () {
+		
+		this.current_page ++;
+		
+		this.get_fenxiao_myteam_list();
+	}, 
+	
+	
 		
 	methods: {
 		
@@ -154,7 +164,7 @@ export default {
 				sellerid:that.abotapi.globalData.default_sellerid,
 				userid:userInfo.userid,
 				page: that.current_page,
-				
+				page_size: 10,
 			};
 			
 		// #ifdef MP-WEIXIN
@@ -164,7 +174,7 @@ export default {
 			
 			
 			that.abotapi.abotRequest({
-					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/FenxiaoData/get_Fenxiao_center_myteam_list',
+					url: that.abotapi.globalData.yanyubao_server_url + '/openapi/FenxiaoData/get_fenxiao_center_myteam_list',
 					method: 'post',
 					data: post_data,
 					success: function (res) {
@@ -212,7 +222,7 @@ export default {
 	}
 	.daili_text{
 		color: #ffffff;
-		
+		font-size: 26rpx;
 		margin: 10rpx;
 	}
 	.font_color_unify{
@@ -221,14 +231,14 @@ export default {
 	}
 	.myteam_list_information{
 		display: flex;
-		height: 160rpx;
+
 		background-color: #ffffff;
 	}
 	.pic_juzhong{
 		width: 10%;
 		display: flex;
 		justify-content: center;
-		align-items: center;
+		margin-top: 30rpx;
 	}
 	.huiyuan_dengji{
 		font-size: 20rpx;

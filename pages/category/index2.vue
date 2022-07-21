@@ -150,7 +150,7 @@
 			uni.getSystemInfo({
 			    success: function (res) {
 					
-			        this.app_top = parseInt(res.statusBarHeight) + 100;
+			        that.app_top = parseInt(res.statusBarHeight) + 100;
 					
 			    }
 			});

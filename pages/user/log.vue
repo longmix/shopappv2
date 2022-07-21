@@ -318,6 +318,7 @@
 					var url = this.tixian_url;
 					
 					var var_list = Object();
+					
 					console.log('redictToTopic to url ====>>>>>>', url);
 					this.abotapi.call_h5browser_or_other_goto_url(url, var_list, '');
 			},

@@ -49,7 +49,7 @@
 			<view class="main-body" v-if="show_input_list == 1">
 				
 				<form @submit="formSubmit">
-					<block v-for="item in input_field_list" :key="item.fieldname">
+					<block v-for="(item, index) in input_field_list" :key="item.fieldname">
 						<!-- 帖子的固定字段开始 -->
 						<block v-if="form_type == 3">
 							<view class="input_flex" v-if="item.fieldname == 'imgimg_title'" style="overflow: auto;padding:35rpx 40rpx 20rpx 40rpx;background-color: #FFFFFF;border-bottom: 1rpx solid #EEEEEE;">
@@ -141,26 +141,42 @@
 							</view>
 							
 							<image  
-								:src="image_list[item.fieldname]?image_list[item.fieldname]:img_upload_default_icon"
+								:src="image_upload_list[item.fieldname]?image_upload_list[item.fieldname]:img_upload_default_icon"
 								mode="widthFix" 
 								:name="item.fieldname" 
 								:data-name="item.fieldname"
+								@click="upLoadimgs888"
+								style="width: 200px;margin: 0px auto;display: none;"></image>
+								<!-- 以上这个控件不再使用，在小程序中有BUG，上传的图片不能刷新，H5中没有问题。下面这个兼容 -->
+								
+							<image
+								:src="item.image_upload_url?item.image_upload_url:img_upload_default_icon"
+								mode="widthFix" 
+								:name="item.fieldname" 
+								:data-name="item.fieldname"
+								:data-index="index"
 								@click="upLoadimgs"
 								style="width: 200px;margin: 0px auto;display: block;"></image>
 								
 								
 								<input type="hidden" :name="item.fieldname" 
-								:value="image_list[item.fieldname]"
-								style='display:none'>
+								:value="(item.image_upload_btn_is_del != 2)?item.image_upload_url:''"
+								style='display:none;'>
 								
 								
 							<view class="error_tips" v-if="item.errortip">
 								<view style="color:#cbcbcb ;font-size: 20rpx">{{item.errortip}}</view>
 							</view>
 							
-							<view @click="upLoadimgs" :data-name="item.fieldname"
-								:data-seq="item.image_list_seq" class="up_images"
-								:style="{backgroundColor:wxa_shop_nav_bg_color}">上传图片</view>
+							<view @click="upLoadimgs" 
+								:data-name="item.fieldname"
+								:data-index="index"
+								:data-seq="item.image_list_seq" 
+								:data-todel="item.image_upload_btn_is_del?item.image_upload_btn_is_del:0"
+								class="up_images"
+								:style="{backgroundColor:wxa_shop_nav_bg_color}">
+								{{item.image_upload_btn_txt?item.image_upload_btn_txt:'上传图片'}}
+							</view>
 							
 							
 						</view>	
@@ -233,6 +249,7 @@
 						</checkbox-group>
 						<view>我已阅读并同意<text @click="show_knows" style="color: #007AFF;">《内容规范》</text></view>
 					</view>
+					<!-- 提交信息的按钮，触发 formSubmit -->
 					<button formType="submit" class="btn-row-submit"
 						:style="{backgroundColor:wxa_shop_nav_bg_color}">{{submit_text}}</button>
 				</form>
@@ -340,7 +357,7 @@
 				
 				//图片和文件上传相关
 				img_upload_default_icon:'../../static/img/add.png',				
-				image_list:[],
+				image_upload_list:[],
 				//image_list_seq:0,
 				
 				time_start_end:[],
@@ -359,8 +376,6 @@
 			
 		onLoad: function (options) {
 			console.log('sssssss ===>>>',  options)
-			
-			//this.image_list['shenfenzhengzhengmian'] = 'http://saas.tseo.cn/staticsvc/uploads/2021/03/12/622af3fba321397b0b0a9761ba738c3a2211.jpg';
 			
 			this.current_options = options;
 			
@@ -466,6 +481,52 @@
 			  },
 			});
 			
+			//相应上传图片之后的界面变化
+			that.$on('update_image_upload_list', (res001)=>{
+				console.log('收到刷新界面数组的请求==>>', res001);
+				
+				var ttt = that.input_field_list[res001.key];
+				console.log('11111==>>', res001.key);
+				console.log('22222==>>', ttt);
+				
+				ttt.image_upload_url = res001.val;
+				
+				ttt.image_upload_btn_txt = '清除此图';
+				ttt.image_upload_btn_is_del = 1;
+				
+				console.log('33333==>>', ttt);
+				
+				that.$set(that.input_field_list, res001.key, ttt);
+				
+				console.log('4444==>>', that.input_field_list);
+				
+				that.$forceUpdate();
+			});
+			
+			//相应删除图片之后的界面变化
+			that.$on('delete_item_of_image_upload_list', (res001)=>{
+				console.log('收到删除上传的图片的请求==>>', res001);
+				
+				var ttt = that.input_field_list[res001.key];
+				console.log('11111==>>', res001.key);
+				console.log('22222==>>', ttt);
+				
+				ttt.image_upload_url = that.img_upload_default_icon;
+				
+				ttt.image_upload_btn_txt = '上传图片';
+				ttt.image_upload_btn_is_del = 2;
+				
+				console.log('33333==>>', ttt);
+				
+				that.$set(that.input_field_list, res001.key, ttt);
+				
+				console.log('4444==>>', that.input_field_list);
+				
+				that.$forceUpdate();
+				
+				
+			})
+			
 			
 		},
 		onShow: function(){
@@ -522,7 +583,13 @@
 				console.log('input-value', input_value_list);
 				//input_value_list.input_youxiaoshijian = this.date;
 				
-				var picture_list = encodeURIComponent(JSON.stringify(this.imgArray));
+				//论坛发帖的时候，脱离万能表单之外，上传的多张图片
+				var picture_list = null;
+				
+				if (this.imgArray && (this.imgArray.length > 0) ){
+					picture_list = encodeURIComponent(JSON.stringify(this.imgArray));
+				}
+				
 				
 				//将checkbox的值追加到要提交的数组上
 				
@@ -536,8 +603,11 @@
 				for(var form_key in e.detail.value){
 					
 					for(var keys in that.input_field_list){
-						console.log('456 form_key ===>>>',form_key);
-						console.log('123',that.input_field_list);
+						
+						//console.log('456 form_key ===>>>',form_key);
+						//console.log('123', that.input_field_list);
+						
+						
 						if(form_key == that.input_field_list[keys]['fieldname']){
 							if(that.input_field_list[keys]['require'] == 1){
 								//判断是否为必填（是）
@@ -606,7 +676,11 @@
 						checkstr: userInfo.checkstr,
 						token: that.cms_token,
 						input_value:input_value_list_json,
-						picture_list:picture_list,
+						//picture_list:picture_list,
+					}
+					
+					if(picture_list){
+						post_data.picture_list = picture_list;
 					}
 					
 				}
@@ -643,7 +717,7 @@
 						if(res.data.code == 1){
 							
 							uni.showModal({
-								title:'提交成功',
+								title:'提示',
 								content: res.data.msg,
 								showCancel:false,
 								success: function (res01) {
@@ -1023,13 +1097,41 @@
 				var current_fieldname = a.currentTarget.dataset.name;
 				var current_seq = a.currentTarget.dataset.seq;
 				
+				var current_index = a.currentTarget.dataset.index;
+				console.log('current_index====>>>>'+ current_index);
+				
 				console.log('current_fieldname====>>>>'+ current_fieldname);
 				console.log('current_fieldname====>>>>'+ typeof(current_fieldname));
+				
+				var current_todel = a.currentTarget.dataset.todel;
+				console.log('current_todel====>>>>'+ current_todel);
 				
 		
 				//return;
 				
 				var that = this;
+				
+				//如果是删除上传的图片
+				if(current_todel && (current_todel == 1)){
+					that.$emit('delete_item_of_image_upload_list', {'key':current_index, 'val':''});
+					
+					return;
+				}
+				
+				
+				//=======测试上传图片 Begin ===========
+				//var current_fieldname = 'paizhao';
+				//var new_img_url = 'http://saas.tseo.cn/staticsvc/uploads/2022/06/25/e54092fd8425305274e08022e7c652436646.png';
+				
+				//测试emit 和 on
+				//that.$emit('update_image_upload_list', {'key':current_index, 'val':new_img_url});
+				//return;
+				
+				//直接刷新视图
+				//that.$set(that.image_upload_list, current_fieldname, new_img_url);
+				//that.$forceUpdate();
+				//return;
+				//=======测试上传图片 End ===========
 				
 				var userInfo = this.abotapi.get_user_info();
 				
@@ -1042,16 +1144,6 @@
 				}
 				
 				//  
-				
-				/* that.image_list[current_fieldname] = 'http://saas.tseo.cn/staticsvc/uploads/2021/03/15/aab466fa19913d99c39f5fe8ee67aed44201.jpg';
-				
-				console.log('image_list ===>>', that.image_list);
-				console.log('image_list ===>>', that.image_list[current_fieldname]);
-				
-				that.$forceUpdate();
-				
-				return;
-				 */
 				
 				uni.chooseImage({
 					// count:  允许上传的照片数量
@@ -1078,11 +1170,10 @@
 								
 								var obj = JSON.parse(res.data);
 								
+								that.$emit('update_image_upload_list', {'key':current_index, 'val':obj.img_url});
 								
-								that.image_list[current_fieldname] = obj.img_url;
-								that.$forceUpdate();
-								console.log('image_list ===>>', that.image_list);
-								console.log('image_list ===>>', that.image_list[current_fieldname]);
+								console.log('image_upload_list 强制刷新界面 ==>>'+ current_fieldname + ' ==>> ' + obj.img_url);
+								
 								
 			
 							}
@@ -1225,7 +1316,7 @@
 	.input-flex-label{
 	    width: 26%;
 	    line-height: 60rpx;
-	    font-size: 30rpx;
+	    font-size: 28rpx;
 	}
 	.bk888888{
 		color: #333;
@@ -1274,7 +1365,7 @@
 	
 	.box_2{
 		float: left;
-		font-size: 30rpx;
+		font-size: 28rpx;
 	}
 	.box_3{
 		float: left;
@@ -1327,7 +1418,7 @@
 	
 	.kcrzxyhd {
 	text-align: center;
-	font-size: 30rpx;
+	font-size: 28rpx;
 	background: #f44444;
 	height: 70rpx;
 	line-height: 70rpx;
