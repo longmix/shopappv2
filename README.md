@@ -77,7 +77,7 @@
 
 
 
-**商城、商品相关**
+**商城商品相关**
 
   - 跳转商品详情 
     > /pages/product/detail?productid=1234
@@ -105,12 +105,6 @@
   - 跳转购物车 
     > /pages/cart/cart
 
-  - 跳转订单支付页 
-    > /pages/pay/payment/payment
-
-  - 跳转支付成功页 
-    > /pages/pay/success/success
-
   - 跳转充值页 
     > /pages/user/deposit/deposit
 
@@ -122,6 +116,34 @@
 
 
 ------
+
+**订单支付相关**
+
+  - 跳转确认订单界面 
+    > /pages/order/pay?productid=1234&total=12.34&extraData=abcdefg
+
+    > productid为必填参数，可以为商品的ID，也可以为多个商品ID，例如“[1234,2345]”。
+
+    > total和extraData为选填参数，total为总价格，extraData为任意扩展的参数。
+    
+    > 除此之外，选填参数还有：amount（商品数量）、ucid（优惠券ID） 
+
+    > 用户在不登录的情况下生成订单，使用参数（1）no_user_login=1；（2）no_user_login_ext_data_str = '{}'。
+
+
+  - 跳转订单支付页 
+    > /pages/pay/payment/payment?orderid=20201234567
+
+    > orderid为必填参数，值为系统中没有支付的订单的编号。
+
+    > 选填的参数包括：（1）balance_zengsong_dikou；（2）balance_dikou；（3）traffic_price；（3）user_coupon_dikou。
+
+
+  - 跳转支付成功页 
+    > /pages/pay/success/success
+
+------
+
 
 **个人信息相关**
 
