@@ -119,14 +119,14 @@
 
 **订单支付相关**
 
-  - 跳转确认订单界面 
+  - 跳转确认订单（下订单）界面 
     > /pages/order/pay?productid=1234&total=12.34&extraData=abcdefg
 
     > productid为必填参数，可以为商品的ID，也可以为多个商品ID，例如“[1234,2345]”。
 
     > total和extraData为选填参数，total为总价格，extraData为任意扩展的参数。
     
-    > 除此之外，选填参数还有：amount（商品数量）、ucid（优惠券ID） 
+    > 除此之外，选填参数还有：amount（商品数量）、single_price（商品单价）、all_price（总价格，同total）、ucid（优惠券ID） 
 
     > 用户在不登录的情况下生成订单，使用参数（1）no_user_login=1；（2）no_user_login_ext_data_str = '{}'。
 
@@ -259,14 +259,14 @@
 
     > 1234为CMS的文章ID，4321为推荐者的userid，可以设置为0，cms为平台标志，支持cms和pic两个值。
 
-    > 具体参数见“功能扩展>>自定义页面”。
+    > 具体参数见“SaaS云后台>>功能与扩展>>自定义页面”。
 
 **万能表单（CMS）相关**
 
   - 跳转自定义表单（万能表单） 
     > /pages/publish/publish_write?form_type=2&token=abcdefg&formid=1234
 
-    > 支持（1）会员的扩展属性；（2）CMS控制台的万能表单模块（3）发表带自定义属性的文章。具体的设置说明： “功能扩展>>万能表单>>智能建站2.0”。
+    > 支持（1）会员的扩展属性；（2）CMS控制台的万能表单模块（3）发表带自定义属性的文章。具体的设置说明： “SaaS云后台>>功能与扩展>>万能表单>>智能建站2.0”。
 
 **实体商家相关**
 
