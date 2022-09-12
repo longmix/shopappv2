@@ -722,7 +722,14 @@
 								showCancel:false,
 								success: function (res01) {
 									
-									that.abotapi.call_h5browser_or_other_goto_url('/pages/index/index')
+									var new_url = '/pages/index/index';
+									
+									// 2022.9.12. 如果指定了跳转地址，则不跳转到首页。
+									if(res.data.new_url){
+										new_url = res.data.new_url;
+									}
+									
+									that.abotapi.call_h5browser_or_other_goto_url(new_url)
 									
 								}
 							});

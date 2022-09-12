@@ -281,7 +281,25 @@
 </template>
 
 <script>
-	
+/**
+ * 确认订单页面，需要
+ * （1）选择收货地址，
+ * （2）查看要购买的商品，
+ * （3）是否使用余额和赠款抵扣，
+ * （4）是否使用优惠券，
+ * （5）填写备注信息
+ * 填写后，跳转到  /pages/pay/payment/payment
+ * 
+ * 可能会跳转到此页面的路径：
+ * 1. /pages/cart/cart   购物车
+ * 2. /pages/product/detail  商品详情页
+ * 3. /pages/menuList/menuList  O2O在线点餐页面
+ * 4. /pages/aipingou/aipingou  爱拼购
+ * 5. /pages/nftcard/card_detail  NFT卡牌详情页
+ * 
+ * 
+ * 
+ */	
 	import locationapi from '../../common/locationapi.js'; 
 	
 	
@@ -602,8 +620,7 @@ extraData = 'xxxxxxxxxxxxxxx'
 			}
 			
 			
-			//必带的参数	
-			console.log('options.all_price ===>>> ', options.all_price);
+			//必带的参数				
 				
 			if(!(options.total === null || options.total === undefined  || options.total === '')) {			
 				that.all_price = options.total;				
@@ -614,21 +631,28 @@ extraData = 'xxxxxxxxxxxxxxx'
 			
 			
 			if(options.all_price) {
-				that.all_price = options.all_price;				
+				that.all_price = options.all_price;		
+						
+				console.log('参数中指定了总价格 options.all_price ===>>> ', options.all_price);
 			}
 			
 			
 			//如果指定了单价
 			if(options.single_price) {
 				that.single_price = options.single_price;
-				that.all_price =that.single_price * options.amount;
+				that.all_price = that.single_price * options.amount;
+				
+				console.log('参数中指定了单价 options.single_price ===>>> ', options.single_price);
+				console.log('参数中的商品数量 options.amount ===>>> ', options.amount);
+				
 			}
+			
+			console.log('通过参数计算出来的总价：that.all_price ===>>> ', that.all_price);
 			
 			that.pay_price = that.all_price;
 			that.pay_price_origin = that.all_price;
 			that.address_total = that.all_price;
 			
-			console.log('that.all_price', that.all_price)
 					
 			if (options.cart_count) {				
 				that.cart_count = options.cart_count				
@@ -729,12 +753,14 @@ extraData = 'xxxxxxxxxxxxxxx'
 				console.log('本次下单有扩展字段：' + that.extraData);
 			}
 			
+			//获取自提点列表
 			//this.get_zitidian_list();
 			locationapi.get_location(that, that.cx_paixu_shang_list);
+			
 			//必须放在最后，否则读取不到userinfo信息！！！！！
 			this.abotapi.set_option_list_str(this, this.callback_function);
 			
-			
+			//console.log('通过参数计算出来的总价222222：that.all_price ===>>> ', that.all_price);
 		},
 		onShow() {
 			

@@ -595,6 +595,14 @@ module.exports = {
 			if(!that002.globalData.yanyubao_basic_config_url){
 				that002.globalData.yanyubao_basic_config_url = '/openapi/ShopAppV2Data/get_shop_option';
 			}
+			
+			//2022年9月3日 为了配合  个人中心 根据是否登录展示不同的图标而升级
+			var userInfo = this.get_user_info();
+			
+			if(userInfo && userInfo.userid){
+				post_data.userid = userInfo.userid;
+				post_data.checkstr = userInfo.checkstr;
+			}
 				
 			this.abotRequest({
 				//url: this.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=get_shop_option',

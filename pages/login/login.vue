@@ -595,6 +595,8 @@
 				
 					var that = this;
 					
+					console.log('微信一键登录按钮（获取手机号码）的返回结果：')
+					console.log(e)
 					console.log(e.detail.errMsg)
 					console.log(e.detail.iv)
 					console.log(e.detail.encryptedData)
