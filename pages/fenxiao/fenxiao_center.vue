@@ -18,7 +18,8 @@
 				</view>
 				<view style="width: 50%;">
 					<view style="font-size: 20rpx;">未结算</view>
-					<view>￥0.00</view>
+					<view style="font-size: 22rpx;" v-if="current_daili_fenrun_list.num_dongji_fenrun_wei_jiesuan != 0.00">奖金待结算</view>
+					<view v-if="current_daili_fenrun_list.num_dongji_fenrun_wei_jiesuan == 0.00">￥{{current_daili_fenrun_list.num_dongji_fenrun_wei_jiesuan}}</view>
 				</view>
 			</view>
 		</view>

@@ -16,10 +16,13 @@
 						<view>已结算￥{{current_jiangli_mulu_item.yijiesuan_jiangli}}元</view>
 						<image src="https://yanyubao.tseo.cn/Tpl/static/images/fenxiao_center_icon/right_black.png" class="fenxiao_fenrun_image"></image>
 					</view>
-					<view class="fenxiao_fenrun_weijiesuan">
+					<view class="fenxiao_fenrun_weijiesuan" v-if="current_jiangli_mulu_item.weijiesuan_jiangli == 0.00">
 						<view>未结算</view>
 						<view>￥{{current_jiangli_mulu_item.weijiesuan_jiangli}}元</view>
 						<image src="https://yanyubao.tseo.cn/Tpl/static/images/fenxiao_center_icon/right_black.png" class="fenxiao_fenrun_image"></image>
+					</view>
+					<view class="fenxiao_fenrun_weijiesuan" v-if="current_jiangli_mulu_item.weijiesuan_jiangli != 0.00">
+						<view>奖金待结算中</view>
 					</view>
 				</view>
 				

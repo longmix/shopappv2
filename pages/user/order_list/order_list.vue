@@ -443,12 +443,12 @@
 		
 	
 		
-	var apps = getApp();
+	//var apps = getApp();
 	// var userInfo = this.abotapi.get_user_info();
 	// var userAcountInfo = this.abotapi.get_user_account_info();
 	
 	
-	var next_page = 1;
+	//var next_page = 1;
 	export default {
 		
 		data() {
@@ -580,12 +580,18 @@
 				if (!option_list) {
 					return;
 				}
+				
 				// that.abotapi.getColor();
 				this.wxa_order_hide_daishouhuo_refund = option_list.wxa_order_hide_daishouhuo_refund;
 			    this.wxa_order_hide_daishouhuo_refund_after = option_list.wxa_order_hide_daishouhuo_refund_after;
 			    this.wxa_order_info_page_no_link_to_product = option_list.wxa_order_info_page_no_link_to_product;
 				
-				console.log('wxa_order_hide_daishouhuo_refund_after==', this.wxa_order_hide_daishouhuo_refund_after)
+				console.log('wxa_order_hide_daishouhuo_refund_after==', this.wxa_order_hide_daishouhuo_refund_after);
+				
+				
+				that.loadOrderList();
+				
+				
 			},
 			
 			goto_order_detail:function(orderid){

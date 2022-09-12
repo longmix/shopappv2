@@ -1,12 +1,12 @@
 <template>
 	<view>
-		<view style="display: flex;padding: 30rpx;justify-content: space-between;" :style="{background:wxa_shop_nav_bg_color}">
+		<!-- <view style="display: flex;padding: 30rpx;justify-content: space-between;" :style="{background:wxa_shop_nav_bg_color}">
 			<view style="display: flex;">
 				<view style="color: #ffffff;font-size: 32rpx;">{{array[index]}}</view>
 				
 			</view>
 			
-			<picker class="jiesuan_quanbu_weijiesuan_picker" @change="bindPickerChange" :value="index" :range="array">
+			 <picker class="jiesuan_quanbu_weijiesuan_picker" @change="bindPickerChange" :value="index" :range="array">
 				<view style="display: flex;">
 					<view class="uni-input">{{array[index]}}</view>
 					<image src="https://yanyubao.tseo.cn/Tpl/static/images/fenxiao_center_icon/right_jiantou.png" style="width: 42rpx;height: 42rpx;"></image>
@@ -14,7 +14,7 @@
 				
 			</picker>
 			
-		</view>
+		</view> -->
 		<view>
 			<scroll-view class="scroll-view_H" scroll-x="true" scroll-left="0">
 				
@@ -41,7 +41,7 @@
 					<view>
 						<view style="display: flex;">
 							<view>{{current_daili_fenrun_item.tag}}</view>
-							<view>({{current_daili_fenrun_item.orderno}})</view>
+							<view v-if="current_daili_fenrun_item.orderno !=0">({{current_daili_fenrun_item.orderno}})</view>
 						</view>
 						<view style="padding-top: 10rpx;">结算时间： {{current_daili_fenrun_item.datestr}}</view>
 					</view>
