@@ -82,17 +82,17 @@
   - 跳转商品详情 
     > /pages/product/detail?productid=1234
 
-    > productid为必填项，具体数字在商品列表中获取，获取方式请参考 http://yanyubao.abot.cn/861.html
+      * productid为必填项，具体数字在商品列表中获取，获取方式请参考 http://yanyubao.abot.cn/861.html
 
   - 跳转商品分类 
     > /pages/category/category 
 
-    > （可能会出现在底部导航中）
+      * （可能会出现在底部导航中）
 
   - 跳转商品列表 
     > /pages/product/goods-list/goods-list?cataid=1234&cataname=分类001
 
-    > cataid为商品分类ID，具体数字在商品分类列表中获取，获取方式请参考 http://yanyubao.abot.cn/861.html； 如果不填，则显示所有商品。
+      * cataid为商品分类ID，具体数字在商品分类列表中获取，获取方式请参考 http://yanyubao.abot.cn/861.html； 如果不填，则显示所有商品。
 
   - 跳转商品评论 
     > /pages/product/ratings/ratings （开发中）
@@ -100,7 +100,7 @@
   - 跳转商品搜索结果 
     > /pages/listdetail/listdetail?keyword=会员卡
 
-    > keyword为必填项，要搜索的商品关键词。
+      * keyword为必填项，要搜索的商品关键词。
 
   - 跳转购物车 
     > /pages/cart/cart
@@ -122,21 +122,21 @@
   - 跳转确认订单（下订单）界面 
     > /pages/order/pay?productid=1234&total=12.34&extraData=abcdefg
 
-    > productid为必填参数，可以为商品的ID，也可以为多个商品ID，例如“[1234,2345]”。
+      * productid为必填参数，可以为商品的ID，也可以为多个商品ID，例如“[1234,2345]”。
 
-    > total和extraData为选填参数，total为总价格，extraData为任意扩展的参数。
+      * total和extraData为选填参数，total为总价格；extraData为任意扩展的参数，如果参数值为json，建议做BASE64后URLEncode再传递。
     
-    > 除此之外，选填参数还有：amount（商品数量）、single_price（商品单价）、all_price（总价格，同total）、ucid（优惠券ID） 
+      * 除此之外，选填参数还有：amount（商品数量）、single_price（商品单价）、all_price（总价格，同total）、ucid（优惠券ID） 
 
-    > 用户在不登录的情况下生成订单，使用参数（1）no_user_login=1；（2）no_user_login_ext_data_str = '{}'。
+      * 用户在不登录的情况下生成订单，使用参数（1）no_user_login=1；（2）no_user_login_ext_data_str = '{}'。
 
 
   - 跳转订单支付页 
     > /pages/pay/payment/payment?orderid=20201234567
 
-    > orderid为必填参数，值为系统中没有支付的订单的编号。
+      * orderid为必填参数，值为系统中没有支付的订单的编号。
 
-    > 选填的参数包括：（1）balance_zengsong_dikou；（2）balance_dikou；（3）traffic_price；（3）user_coupon_dikou。
+      * 选填的参数包括：（1）balance_zengsong_dikou；（2）balance_dikou；（3）traffic_price；（3）user_coupon_dikou。
 
 
   - 跳转支付成功页 
@@ -150,7 +150,7 @@
   - 跳转个人中心 
     > /pages/tabbar/user 
     
-    > （可能会出现在底部导航中）
+      * （可能会出现在底部导航中）
 
   - 跳转用户设置（个人资料） 
     > /pages/user/setting/setting
@@ -158,7 +158,7 @@
   - 跳转我的收藏 
     > /pages/user/keep/keep 
 
-    > （包括实体商家收藏）
+      * （包括实体商家收藏）
 
   - 跳转收货地址 
     > /pages/user/address/address
@@ -167,7 +167,7 @@
 
     > /pages/user/address/edit/edit?addressid=1234 
 
-    > addressid为必填项，具体数字在收货地址列表中获取
+      * addressid为必填项，具体数字在收货地址列表中获取
 
   - 跳转我的二维码 
     > /pages/user/myQR/myQR
@@ -183,7 +183,7 @@
 	
   - 关于小程序/关于我们 
     > /pages/main/about/about
-	> 可以跳转到客服聊天功能
+      * 可以跳转到客服聊天功能
 
 
 
@@ -229,17 +229,17 @@
   - 跳转文章列表 
     > /pages/help/list?cms_token=abcdefg&cms_cataid=1234 
 
-    > （指定文章分类）
+      * （指定文章分类）
 
   - 跳转文章列表 
     > /pages/help/list?article_list_style=list
 
-    > （按照列表分类显示：左侧图片，右侧为标题和简介）
+      * （按照列表分类显示：左侧图片，右侧为标题和简介）
 
   - 跳转文章列表 
     > /pages/help/list?article_list_style=icon 
 
-    > （按照图标方式显示，上方为图片，下方为标题，建议标题不超过6个汉字）
+      * （按照图标方式显示，上方为图片，下方为标题，建议标题不超过6个汉字）
 
 ```
 1、文章列表默认显示“商城头条”中的内容，对应CMS控制台为“商户头条”这个分类，或者在“系统配置>>全局设置选项”中指定了商城头条的CMS Token和内容分类ID。
@@ -257,16 +257,16 @@
   - 跳转自定义页面 
     > /pages/welcome_page/welcome_page?scene=1234@4321@cms
 
-    > 1234为CMS的文章ID，4321为推荐者的userid，可以设置为0，cms为平台标志，支持cms和pic两个值。
+      * 1234为CMS的文章ID，4321为推荐者的userid，可以设置为0，cms为平台标志，支持cms和pic两个值。
 
-    > 具体参数见“SaaS云后台>>功能与扩展>>自定义页面”。
+      * 具体参数见“SaaS云后台>>功能与扩展>>自定义页面”。
 
 **万能表单（CMS）相关**
 
   - 跳转自定义表单（万能表单） 
     > /pages/publish/publish_write?form_type=2&token=abcdefg&formid=1234
 
-    > 支持（1）会员的扩展属性；（2）CMS控制台的万能表单模块（3）发表带自定义属性的文章。具体的设置说明： “SaaS云后台>>功能与扩展>>万能表单>>智能建站2.0”。
+      * 支持（1）会员的扩展属性；（2）CMS控制台的万能表单模块（3）发表带自定义属性的文章。具体的设置说明： “SaaS云后台>>功能与扩展>>万能表单>>智能建站2.0”。
 
 **实体商家相关**
 
@@ -292,22 +292,22 @@
   - 打开视频号视频
     > wxa_api openChannelsActivity [视频号 id] [视频 feedId]
 
-    > 举例：“wxa_api openChannelsActivity sphS4yv9ezcY4us export/UzFfAgtgekIEAQAAAAAAXCQsCSuQIAAAAAstQy6ubaLX4KHWvLEZgBPE1aM4WTRkOI79zNPgMJrZQ-qh4Sb9SjOQXokzylYT”。
+      * 举例：“wxa_api openChannelsActivity sphS4yv9ezcY4us export/UzFfAgtgekIEAQAAAAAAXCQsCSuQIAAAAAstQy6ubaLX4KHWvLEZgBPE1aM4WTRkOI79zNPgMJrZQ-qh4Sb9SjOQXokzylYT”。
 
   - 打开视频号活动页
     > wxa_api openChannelsEvent [视频号 id] [活动 id]
 
-    > 举例：“wxa_api openChannelsEvent sphS4yv9ezcY4us export/UzFfAgtgekIEAQAAAAAAXCQsCSuQIAAAAAstQy6ubaLX4KHWvLEZgBPE1aM4WTRkOI79zNPgMJrZQ-qh4Sb9SjOQXokzylYT”。
+      * 举例：“wxa_api openChannelsEvent sphS4yv9ezcY4us export/UzFfAgtgekIEAQAAAAAAXCQsCSuQIAAAAAstQy6ubaLX4KHWvLEZgBPE1aM4WTRkOI79zNPgMJrZQ-qh4Sb9SjOQXokzylYT”。
 
   - 打开视频号直播
     > wxa_api openChannelsLive [视频号 id]
 
-    > 举例：“wxa_api openChannelsLive sphS4yv9ezcY4us”。
+      * 举例：“wxa_api openChannelsLive sphS4yv9ezcY4us”。
 
   - 打开视频号主页（跳转到视频号主页）
     > wxa_api openChannelsUserProfile [视频号 id]
 
-    > 举例：“wxa_api openChannelsUserProfile sphS4yv9ezcY4us”。
+      * 举例：“wxa_api openChannelsUserProfile sphS4yv9ezcY4us”。
 
 
 ```
