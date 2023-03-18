@@ -270,41 +270,47 @@
 
 **实体商家相关**
 
-  - 查看路径： 行业模块>>实体/多商家入驻>>前端和商家入口>>导航图标挂接路径
+  - 查看路径： SaaS云控制台>>行业与应用>>实体/多商家入驻>>前端和商家入口>>
 
 **论坛发帖相关**
 
-  - 论坛发帖的数据管理在CMS控制台的“文章列表”或者“图文消息”模块，查看挂接路径： 行业模块>>智能建站2.0>>更多功能模块，关于“发帖与评论”的说明。
-
+  - 论坛发帖的数据管理在CMS控制台的“文章列表”或者“图文消息”模块，查看挂接路径： 行业模块>>智能建站2.0>>更多功能模块，关于“发帖与评论”的说明。  
+  
+  
 **小工具和小游戏**
 
   - 简约时钟 /pages/tools/clock
+  
   - 计算器 /pages/tools/calculator
+  
   - 掷骰子 /pages/tools/dice
+  
   - 扫雷 /pages/tools/mine_clearing
+  
   - 拼图 /pages/tools/puzzle （内测版）
+  
   - 涂鸦 /pages/tools/graffiti （微信小程序中正常，H5和APP中待验证）
 
 ----
 
 **跳转到视频号相关的功能**
 
-  - 打开视频号视频
+  - （1）打开视频号视频
     > wxa_api openChannelsActivity [视频号 id] [视频 feedId]
 
       * 举例：“wxa_api openChannelsActivity sphS4yv9ezcY4us export/UzFfAgtgekIEAQAAAAAAXCQsCSuQIAAAAAstQy6ubaLX4KHWvLEZgBPE1aM4WTRkOI79zNPgMJrZQ-qh4Sb9SjOQXokzylYT”。
 
-  - 打开视频号活动页
+  - （2）打开视频号活动页
     > wxa_api openChannelsEvent [视频号 id] [活动 id]
 
       * 举例：“wxa_api openChannelsEvent sphS4yv9ezcY4us export/UzFfAgtgekIEAQAAAAAAXCQsCSuQIAAAAAstQy6ubaLX4KHWvLEZgBPE1aM4WTRkOI79zNPgMJrZQ-qh4Sb9SjOQXokzylYT”。
 
-  - 打开视频号直播
+  - （3）打开视频号直播
     > wxa_api openChannelsLive [视频号 id]
 
       * 举例：“wxa_api openChannelsLive sphS4yv9ezcY4us”。
 
-  - 打开视频号主页（跳转到视频号主页）
+  - （4）打开视频号主页（跳转到视频号主页）
     > wxa_api openChannelsUserProfile [视频号 id]
 
       * 举例：“wxa_api openChannelsUserProfile sphS4yv9ezcY4us”。
