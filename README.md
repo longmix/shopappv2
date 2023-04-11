@@ -82,7 +82,7 @@
   - 跳转商品详情 
     > /pages/product/detail?productid=1234
 
-      * productid为必填项，具体数字在商品列表中获取，获取方式请参考 http://yanyubao.abot.cn/861.html
+      * productid为必填项，具体数字在商品列表中获取，获取方式请参考 http://yanyubao.tseo.cn/saasdocs/861.html
 
   - 跳转商品分类 
     > /pages/category/category 
@@ -92,7 +92,7 @@
   - 跳转商品列表 
     > /pages/product/goods-list/goods-list?cataid=1234&cataname=分类001
 
-      * cataid为商品分类ID，具体数字在商品分类列表中获取，获取方式请参考 http://yanyubao.abot.cn/861.html； 如果不填，则显示所有商品。
+      * cataid为商品分类ID，具体数字在商品分类列表中获取，获取方式请参考 http://yanyubao.tseo.cn/saasdocs/861.html； 如果不填，则显示所有商品。
 
   - 跳转商品评论 
     > /pages/product/ratings/ratings （开发中）
