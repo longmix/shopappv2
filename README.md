@@ -376,9 +376,9 @@
 
     - 跳转到H5页面，直接填写https://开头的网址，需要说明的是，对应的域名必须是在小程序登记的业务域名中，否则无法显示页面。
 
-    - HTTP链接中支持的变量有：%oneclicklogin%， %ensellerid%， %wxa_appid%， %wxa_openid%。
+    - HTTP链接中支持的变量有：%oneclicklogin%， %ensellerid%， %wxa_appid%， %wxa_openid%，%userid%。
 
-      - 1、%oneclicklogin%一键登录获取用户信息参数， %ensellerid%商户编码， %wxa_appid%小程序appid， %wxa_openid%微信公众号粉丝openid。
+      - 1、%oneclicklogin%一键登录获取用户信息参数， %ensellerid%商户编码， %wxa_appid%小程序appid， %wxa_openid%微信公众号粉丝openid，%userid%为当前登录用户的userid。
 
       - 2、调用示例如： https://yanyubao.tseo.cn/Home/Distributor/yaoqing_xiangqing/ensellerid/fimmUPUPV.html?oneclicklogin=%oneclicklogin%
 
