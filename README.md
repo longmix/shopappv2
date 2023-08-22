@@ -47,7 +47,7 @@
 
   - 使用上的问题和疑问，请用微信扫码查看其他开发者的提问和回复记录，也可以在文章末尾写留言。
 
-<img src="http://www.tseo.cn/wp-content/uploads/2020/04/9be115d08294dd9f1eb588d52d662dde.png" width="150px">
+<img src="https://www.tseo.cn/wp-content/uploads/2020/04/9be115d08294dd9f1eb588d52d662dde.png" width="150px">
 
 
 
@@ -299,6 +299,8 @@
   - 拼图 /pages/tools/puzzle （内测版）
   
   - 涂鸦 /pages/tools/graffiti （微信小程序中正常，H5和APP中待验证）
+
+  <img src="https://www.abot.cn/wp-content/themes/abotcn/uploads/2023/08/202308221425383986.jpg" width="1000px">
 
 ----
 
