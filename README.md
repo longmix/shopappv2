@@ -1,5 +1,7 @@
 # 智能建站2.0：APP/小程序/H5/PC商城 电商运营工具
 
+## 1 项目概述
+
   - 智能建站2.0项目源代码，支持安卓和苹果APP、微信支付宝百度等小程序平台。
 
   - 智能建站2.0属于定制开发类的项目，建议下载源代码自行开发，或联系我们协助开发。
@@ -11,6 +13,10 @@
   - 会员、商品、订单等，集成延誉宝SaaS云平台，支持大数据并发，性能稳定，不建议剥离。<div id="current_platform"></div>
 
   - 当前支持发布的平台有： app-ios，app-android， h5， mp-weixin， mp-alipay， mp-baidu。
+
+  <img src="A40_h1500px.jpg" width="100%">
+  <img src="A41_h1500px.jpg" width="100%">
+  <img src="A42_h1500px.jpg" width="100%">
 
 
 
@@ -47,7 +53,7 @@
 
   - 使用上的问题和疑问，请用微信扫码查看其他开发者的提问和回复记录，也可以在文章末尾写留言。
 
-<img src="https://www.tseo.cn/wp-content/uploads/2020/04/9be115d08294dd9f1eb588d52d662dde.png" width="150px">
+<img src="http://www.tseo.cn/wp-content/uploads/2020/04/9be115d08294dd9f1eb588d52d662dde.png" width="150px">
 
 
 
