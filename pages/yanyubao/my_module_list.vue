@@ -33,7 +33,7 @@
 				:data-link="item2.new_link"
 				:data-icon="item2.icon"
 				:data-background="item2.background_color"
-				@tap="goto_my_module">
+				@tap="goto_my_module_with_link">
 				<image v-if="item2.plugin_flag" class="tips" src="https://yanyubao.tseo.cn/Tpl/static/images/bbq.png"></image>
 				
 				<image class="img-h" :src="item2.icon" :style="{'background-color':item2.background_color}"></image>
@@ -67,6 +67,10 @@
 </template>
 
 <script>
+	/**
+	 * 此页面为 延誉电商APP和小程序定制，用于展示开通和未开通的功能模块。
+	 * 与 module_list.vue不同，这个界面上的图标可以直接点击打开PC端的网页。
+	 */
 	export default{
 		data(){
 			return{
@@ -81,6 +85,8 @@
 				
 				//是否跳转到功能模块，还是不响应点击事件
 				goto_my_module_pc_web_flag:0,
+				
+				share_data_from_server:null,
 				
 				
 				
@@ -129,12 +135,74 @@
 				
 			}, 1500);
 		},
-		
+		//====== 小程序分享  开始 ==========
+		onShareAppMessage: function () {
+			var share_data001 = this.__get_share_data();
+			
+			
+			var share_data = {
+			  title: '' + share_data001.share_title,
+			  path: share_data001.last_url,
+			  imageUrl: share_data001.share_img,
+			  success: function (res) {
+				// 分享成功
+			  },
+			  fail: function (res) {
+				// 分享失败
+			  }
+			};
+			
+			//#ifdef MP-BAIDU
+				share_data.content = share_data.title;
+			//#endif
+			
+			return share_data;
+			
+		},
+		onShareTimeline: function () {
+			var share_data001 = this.__get_share_data();
+			
+			return {
+			    title: '' + share_data001.share_title,
+			    query: share_data001.share_query,
+			    imageUrl:share_data001.share_img,
+			}
+			
+		},
+		onAddToFavorites: function () {
+			var share_data001 = this.__get_share_data();
+			
+			return {
+			    title: '' + share_data001.share_title,
+			    query: share_data001.share_query,
+			    imageUrl:share_data001.share_img,
+			}
+		},
+		//====== 小程序分享  结束 ==========
 		methods:{
+			//获取分享的数据
+			__get_share_data:function(){
+				
+				if(!this.share_data_from_server){
+					return;
+				}
+				
+				
+				var share_data = {};
+				
+				share_data.share_title = this.share_data_from_server.title;
+				share_data.share_img = this.share_data_from_server.image;
+				//当前页面 path ，必须是以 / 开头的完整路径
+				share_data.last_url = '/pages/yanyubao/my_module_list';
+				share_data.share_query = '';
+				
+				return share_data;
+			},
+			
 			callback_set_option_list_str:function(that, option_list){
 				//that.abotapi.getColor();
 				
-				//是否跳转到PC版本的控制台，这个选项在 延誉电商APP后台的“全局设置选项”中设置
+				//是否跳转到PC版本的控制台，这个选项在 延誉电商APP后台的“系统配置>>全局设置选项>>更多控制选项”中设置
 				if(option_list.yanyubao_goto_my_module_pc_web_flag){					
 					that.goto_my_module_pc_web_flag = option_list.yanyubao_goto_my_module_pc_web_flag;
 				}
@@ -203,9 +271,8 @@
 				    	console.log("show_yanyubao_module_list_for_tseo_cn ===>>> ",res)
 						
 						if(res.data.code == 1){
+							//res.data包含 code，content_list, list001, list002, share_data
 							var my_module_list = res.data;
-							
-							
 							
 							//缓存数据
 							uni.setStorage({
@@ -225,6 +292,11 @@
 							//that.my_module_list002 = that.__filter_no_plugin_module(my_module_list.list002);
 							// #endif
 							
+							
+							if(my_module_list.share_data){
+								// title image
+								that.share_data_from_server = my_module_list.share_data
+							}
 							
 						}
 				
@@ -259,7 +331,7 @@
 			},
 			
 			//跳转到功能模块
-			goto_my_module:function(e){
+			goto_my_module_with_link:function(e){
 				
 				console.log('block_tanchuang=======>>>>>', e);
 				console.log('this.goto_my_module_pc_web_flag=======>>>>>', this.goto_my_module_pc_web_flag);

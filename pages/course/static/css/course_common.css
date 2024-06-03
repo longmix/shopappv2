@@ -1,0 +1,71 @@
+	.letterpress_theme{
+		color: #555555;
+		font-weight: 800; 
+		font-size: 36rpx; 
+	}
+	.letterpress_title {
+		color: #7f7f7f;
+	}
+	.letterpress_text{
+		color: #958f8a;
+		float: right;
+	}
+	
+	.home_page{
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		text-align: center;
+		position: fixed; 
+		right: 5%;
+/* 		position: absolute; */
+		bottom: 25%;
+		width: 120rpx;
+		height: 120rpx;
+		background-color: red;
+		color: white;
+		border-radius: 100rpx;
+		z-index: 999;
+		 background: #00FF00;
+	}
+	.myself_page{
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		text-align: center;
+		position: fixed; 
+		right: 5%;
+/* 		position: absolute; */
+		bottom: 15%;
+		width: 120rpx;
+		height: 120rpx;
+		background-color: red;
+		color: white;
+		border-radius: 100rpx;
+		z-index: 999;
+		 background: #00FF00;
+	}
+	.home_page image{
+		width: 60rpx; 
+		height: 60rpx; 
+		display: block;
+		margin: 0 auto;
+	}
+	.myself_page image{
+		width: 60rpx; 
+		height: 60rpx; 
+		display: block;
+		margin: 0 auto;
+	}
+	
+	.nav_right_icon{
+		font-size: 24rpx;
+	}
+	
+	.loading_tips {
+		color:#958f8a;
+		font-size: 28rpx;
+		text-align: center;
+		margin-top: 5rpx;
+		padding-bottom: 5rpx;
+	}

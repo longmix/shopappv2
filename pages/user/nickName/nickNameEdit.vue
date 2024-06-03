@@ -8,7 +8,9 @@
 		      </view>
 		</view>
 		
-		<button class="weui-btn" :style="{background:wxa_shop_nav_bg_color}" type="primary" @tap="keep_button"> 保存 </button>
+		<button class="weui-btn" 
+			:style="{background:wxa_shop_nav_bg_color, color:wxa_shop_nav_font_color}" 
+			type="primary" @tap="keep_button"> 保存 </button>
 
 	</view>
 </template>
@@ -40,7 +42,8 @@
 			this.abotapi.set_option_list_str(this,
 				function(that001, option_list){
 					console.log('option_list',option_list);
-					that001.wxa_shop_nav_bg_color = option_list.wxa_shop_nav_bg_color
+					that001.wxa_shop_nav_bg_color = option_list.wxa_shop_nav_bg_color;
+					that001.wxa_shop_nav_font_color = option_list.wxa_shop_nav_font_color;
 				}
 			)
 			

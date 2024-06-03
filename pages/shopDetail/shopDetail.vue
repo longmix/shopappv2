@@ -175,6 +175,27 @@
 			<!-- 按钮2  end -->
 
 
+			<!-- 按钮3 -->
+			<view class="paidui-con" v-if="jiazhenggongsi_btn_show == 1">
+				<image class="icon-a" :src="user_console_setting.jiazhenggongsi_icon"></image>
+				<view class="paidui-a">
+					<view class="icon-title">
+
+						<text class='paidui-c'>{{user_console_setting.jiazhenggongsi_title}}</text>
+					</view>
+					<text class='paidui-d'>{{user_console_setting.jiazhenggongsi_tips}}</text>
+				</view>
+				<view class="yuding-a">
+					<view style="font-size:25rpx;">{{user_console_setting.jiazhenggongsi_ad}}</view>
+					<navigator style="background:#E86452;" :url="'../jiazhenggongsi/service_list?title='+ user_console_setting.jiazhenggongsi_list_title +'&adminuserid=' + current_shang_detail.userid"
+					 hover-class="navigator-hover">
+						<view>{{user_console_setting.jiazhenggongsi_btn_ext}}</view>
+					</navigator>
+				</view>
+
+			</view>
+			<!-- 按钮3  end -->
+
 		</view>
 
 		<!-- 功能按钮结束-->
@@ -491,6 +512,7 @@
 				
 				shop_product_btn_show: 0,
 				waimai_product_btn_show:0,
+				jiazhenggongsi_btn_show:0,
 				
 				shang_shop_wxa_qrcode_url:'',	//商家的小程序码
 				
@@ -613,7 +635,7 @@
 			
 			return {
 				title: that.current_shang_detail.name,
-				path: 'pages/shopDetail/shopDetail?shangid='+that.current_xianmai_shangid,
+				path: '/pages/shopDetail/shopDetail?shangid='+that.current_xianmai_shangid,
 				imageUrl:'',
 				success: function(res) {
 					// 分享成功
@@ -716,9 +738,23 @@
 				}
 				
 				if(user_console_setting.waimai_product_hidden && (user_console_setting.waimai_product_hidden == 1)){
+					
 					this.waimai_product_btn_show = 0;
+					
 				}
-								
+					
+				if(user_console_setting.jiazhenggongsi_hidden && (user_console_setting.jiazhenggongsi_hidden == 1)){
+					
+					this.jiazhenggongsi_btn_show = 0;
+					
+				}
+				
+				if(user_console_setting.jiazhenggongsi_hidden == 0){
+				
+					this.jiazhenggongsi_btn_show = 1;
+					
+				}			
+				
 				if(user_console_setting.show_shang_shop_wxa_qrcode){
 					this.shang_shop_wxa_qrcode_url = 'https://yanyubao.tseo.cn/openapi/SupplierInfo/getwxacodeunlimit?appid=';
 					this.shang_shop_wxa_qrcode_url += this.abotapi.globalData.xiaochengxu_appid;
@@ -747,13 +783,9 @@
 			},
 			//跳转到首页
 			toindex:function(){
-				console.log('toCart 向首页跳转')
+				console.log('toCart 向首页跳转');
 				
-				uni.switchTab({
-					url:'../index/index'
-				})
-				
-				
+				this.abotapi.call_h5browser_or_other_goto_url('/pages/index/index');
 			},
 			imageLoad: function(e) { //获取图片真实宽度  
 

@@ -99,6 +99,10 @@
 				this.citizen_detail_url = options.citizen_detail_url;
 				this.data_url_flag = 1;
 			}
+			else if(options.data_url){
+				this.citizen_detail_url = options.data_url;
+				this.data_url_flag = 1;
+			}
 			
 			
 			

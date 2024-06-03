@@ -14,11 +14,13 @@
 							
 							<!-- 文字消息 -->
 							<view v-if="row.msg.type == 'text'" class="system_notification">{{row.msg.content}}</view>
+							
 							<!-- 领取红包消息 -->
 							<view v-if="row.msg.type == 'redEnvelope'" class="red-envelope">
 								<image src="/static/img/red-envelope-chat.png"></image>
 								{{row.msg.content.text}}
 							</view>
+							
 							<!-- 产品信息 -->
 							<view v-if="row.msg.type=='product'" class="product">
 								<image src="https://img.alicdn.com/imgextra/i1/1022655798/O1CN014niH5s1shWtdza5fQ_!!1022655798.jpg_430x430q90.jpg"></image>
@@ -144,6 +146,11 @@
 	export default {
 		data() {
 			return {
+				chat_type: 0,
+				
+				myuid:0,  //当前操作的会员的userid
+				friend_user_id:0, // 聊天对话框中对方的userid
+				
 				//文字消息
 				
 				textMsg:'',
@@ -153,7 +160,7 @@
 				scrollToView:'',
 				my_msgList:[],
 				msgImgList:[],
-				myuid:0,
+				
 				//录音相关参数
 				// #ifndef H5
 				//H5不能录音
@@ -192,14 +199,23 @@
 		},
 		onLoad(option) {
 			var that = this;
+			
 			var userInfo = that.abotapi.get_user_info();
-			console.log('options',option)
+			
+			if(!userInfo){
+				return;
+			}
+			
+			console.log('options ===>>>', option)
+			
 			this.abotapi.set_option_list_str(this, this.abotapi.getColor());
 			// this.getMsgList();
+			
 			//语音自然播放结束
 			this.AUDIO.onEnded(res => {
 				this.playMsgid = null;
 			});
+			
 			// // #ifndef H5
 			// //录音开始事件
 			// this.RECORDER.onStart((e)=>{
@@ -214,7 +230,7 @@
 			// // #endif
 			
 			this.myuid = userInfo.userid;
-			this.userid = option.userid;
+			this.friend_user_id = option.userid;
 			
 			this.chat_type = option.type;
 			this.key = option.key;//判断系统通知携带参数
@@ -229,7 +245,7 @@
 				  data: {
 					action: 'user_detail',
 					userid01: userInfo.userid,
-					userid02: that.userid,
+					userid02: that.friend_user_id,
 					sellerid: that.abotapi.globalData.default_sellerid					
 				  },
 				  header: {
@@ -237,8 +253,10 @@
 				  },
 				  method: "POST",
 				  success: function (res) {
+					  console.log('获取对方的会员信息===>>>', res);
 					   
 					var	data = res.data;
+					
 					if(data.code == 1){
 						
 						that.friendInfo = data.data
@@ -266,16 +284,22 @@
 		
 		onShow(){
 			var that = this;
+			
 			that.pageOn = true;
+			
 			var userInfo = that.abotapi.get_user_info();
-			if(that.userid){
-				var cache_msglist = uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+that.userid);			
+			
+			if(that.friend_user_id){
+				var cache_msglist = uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+that.friend_user_id);			
 				console.log('cache_msglist========0',cache_msglist)
 			}
+			
 			if(that.key){
 				var cache_msglist = uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_system_100000001');
+				
 				console.log('cache_msglist========1',cache_msglist)
 			}
+			
 			if(that.groupid){
 				var cache_msglist = uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_groupid_'+that.groupid);
 				console.log('cache_msglist========4',cache_msglist)
@@ -290,43 +314,43 @@
 				action: 'unread',//查询未读消息
 				sellerid: that.abotapi.globalData.default_sellerid,
 			}
+			
+			data_params.chat_type = that.chat_type;
 						
-			if(that.userid){
-				data_params.userid01 = that.userid;
+			if(that.friend_user_id){
+				data_params.userid01 = that.friend_user_id;
 				data_params.userid02 = userInfo.userid;
-				data_params.chat_type = 0;
-			}else if(that.key == 'test'){
-				data_params.userid01 = 100000001;
-				data_params.userid02 = userInfo.userid;
-				data_params.chat_type = 1;
+				//data_params.chat_type = 0;
 			}
 			else {
 				data_params.userid01 = that.groupid;
 				data_params.userid02 = userInfo.userid;
-				data_params.chat_type = 4;
+				//data_params.chat_type = 4;
 			}
 			
 			that.abotapi.abotRequest({
 			     url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ChatData/chat_history',
-			     data: data_params, 
-			     header: {
-			       "Content-Type": "application/x-www-form-urlencoded"
-			     },
-			     method: "POST",
+			     data: data_params,			     
 			     success: function (res) {
+					 
 					  var data = res.data;
+					  
 					  if(data.code == 1){
 						  var lastMsgList =[];
+						  
 						  lastMsgList = data.data;
 						  
 						  console.log('123456789555555',lastMsgList)
+						  
 						  var nowDate = new Date();
+						  
 						  if(lastMsgList.length>0){
 							  
 							for(var i=0; i<lastMsgList.length; i++){
 								
 								
-								if(that.chat_type == 1){
+								if( (that.chat_type == 1) || (that.chat_type == 3) ){
+									//系统通知  或  合作消息
 									var msg001	= JSON.parse(lastMsgList[i].chat_msg);
 									let msg = {
 										type: 'system',
@@ -344,20 +368,21 @@
 									
 								}
 								if(that.chat_type == 0){
+									//普通的用户回话消息
 									that.cache_msglist.push(JSON.parse(lastMsgList[i].chat_msg));
 								
 								}
 							
 								
-								}
+							}
 								
-								console.log('向本地缓存的消息记录中追加', that.cache_msglist);
+							console.log('向本地缓存的消息记录中追加', that.cache_msglist);
 																						
-							if(that.chat_type == 0){
-								uni.setStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+that.userid, that.cache_msglist);
-								
-							}else if(that.chat_type == 1){
-								uni.setStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_system_100000001', that.cache_msglist);
+							if( (that.chat_type == 0) 
+									|| (that.chat_type == 1) 	//系统通知
+									|| (that.chat_type == 3)	//合作消息
+									){
+								uni.setStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+that.friend_user_id, that.cache_msglist);
 								
 							}
 							else{
@@ -372,33 +397,13 @@
 								// that.getMsgList(option.sesstion);
 							}, 100); 
 							  
-							var data_params = {
-								action: 'control',
-								control: 'read',
-								sellerid: that.abotapi.globalData.default_sellerid,
-							}
-								
-							if(that.userid){
-								data_params.userid01 = userInfo.userid;
-								data_params.userid02 = that.userid;
-								data_params.chat_type = 0;
-								
-							} else if(that.key == 'test'){
-								data_params.userid01 = userInfo.userid;
-								data_params.userid02 = 100000001;
-								data_params.chat_type = 1;
-							}
-							else {
-								data_params.userid01 =  userInfo.userid;
-								data_params.userid02 = that.groupid;
-								data_params.chat_type = 4;
-							}
-							  
+							//将未读消息数量设置为0
+							data_params.action = 'control';
+							data_params.control = 'read';
 							  
 							that.abotapi.abotRequest({
 								url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ChatData/chat_history',
 								data: data_params,
-								
 								success: function (res) {
 								   
 							}
@@ -741,13 +746,17 @@
 				console.log('1111111msg',msg)
 				this.my_msgList.push(msg);
 				
-				if(this.chat_type==0){
-					uni.setStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+this.userid, this.my_msgList);	
-					console.log('test===================0',uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+this.userid))	
+				if ((this.chat_type==0) || (this.chat_type == 1) || (this.chat_type == 3) ) {
+					uni.setStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+this.friend_user_id, this.my_msgList);	
+					console.log('test===================0',
+							uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+this.friend_user_id))	
 					
-				}else{
+				}
+				else{
+					//群组消息
 					uni.setStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_groupid_'+this.groupid, this.my_msgList);	
-					console.log('test===================1',uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_groupid_'+this.userid))
+					console.log('test===================1',
+						uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_groupid_'+this.groupid))
 				}
 			},
 			// 处理语音消息
@@ -762,13 +771,15 @@
 				this.msgImgList.push(msg.msg.content.text);
 				this.my_msgList.push(msg);
 				console.log('')
-				if(this.chat_type==0){
-					uni.setStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+this.userid, this.my_msgList);	
-					console.log('test===================0',uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+this.userid))	
+				if( (this.chat_type==0) || (this.chat_type == 1) || (this.chat_type == 3) ){
+					uni.setStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+this.friend_user_id, this.my_msgList);	
+					console.log('test===================0',
+						uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_friendid_'+this.friend_user_id))	
 					
 				}else{
 					uni.setStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_groupid_'+this.groupid, this.my_msgList);	
-					console.log('test===================1',uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_groupid_'+this.userid))
+					console.log('test===================1',
+						uni.getStorageSync('cache_msglist_userid_'+userInfo.userid+'_and_groupid_'+this.groupid))
 				}
 			},
 			// 添加系统文字消息到列表
@@ -974,7 +985,7 @@
 				
 				var is_not_self_msg = true;										
 				
-				if(is_not_self_msg && msg.uid == that.userid){
+				if(is_not_self_msg && msg.uid == that.friend_user_id){
 					console.log('getNewMsg ===>>> 是自己的消息，准备显示，并清除服务器上未读消息数量。 msg.uid ==>> '+ msg.uid)
 					
 					that.screenMsg(msg);
@@ -985,31 +996,20 @@
 						   sellerid: that.abotapi.globalData.default_sellerid,
 					}
 					
-					if(that.userid){
-						data_params.userid01 = that.userid;
+					data_params.chat_type = that.chat_type;
+					
+					if(that.friend_user_id){
+						data_params.userid01 = that.friend_user_id;
 						data_params.userid02 = userInfo.userid;
-						data_params.chat_type = 0;
 					}
-					 else if(that.key == 'test'){
-						data_params.userid01 = 100000001;
-						data_params.userid02 = userInfo.userid;
-			
-						data_params.chat_type = 1;
-						 
-					 }
-					 else {
+					else {
 						data_params.userid01 = that.groupid;
 						data_params.userid02 = userInfo.userid;
-						data_params.chat_type = 4;
 					}
 					
-					uni.request({
+					that.abotapi.abotRequest({
 						 url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ChatData/chat_history',
 						 data:data_params,
-						 header: {
-						   "Content-Type": "application/x-www-form-urlencoded"
-						 },
-						 method: "POST",
 						 success: function (res) {
 						   console.log('ddd', res);
 				
@@ -1020,8 +1020,11 @@
 			},
 			
 			send_text_to_service:function(msg, type){
+				
 				var userInfo = this.abotapi.get_user_info();
+				
 				var userAcountInfo = this.abotapi.get_user_account_info();
+				
 				console.log('myuid======00', this.myuid);
 				
 				console.log('msg====0',msg)
@@ -1036,15 +1039,16 @@
 					   chat_msg: content,
 					   from: 'shopappv2'
 					}
+					
+				data_params.chat_type = that.chat_type;
 				
-				if(!that.groupid){
+				if(that.friend_user_id){
 					data_params.userid01 = userInfo.userid;
-					data_params.userid02 = that.userid;
-					data_params.chat_type = 0;
-				}else {
+					data_params.userid02 = that.friend_user_id;
+				}
+				else {
 					data_params.userid01 = userInfo.userid;
 					data_params.userid02 = that.groupid;
-					data_params.chat_type = 4;
 				}
 				
 				// 发送消息
@@ -1053,8 +1057,7 @@
 				
 				that.abotapi.abotRequest({
 				     url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ChatData/chat_history',
-				     data:data_params,
-				    
+				     data:data_params,				    
 				     success: function (res) {
 				       console.log('chat_history=====add', res);
 				      
@@ -1429,13 +1432,13 @@ page{
 </style>
 <style>
 .system_notification{
-	background-color: #F06C7a;
+	background-color: #ffffff;
 	/* min-width: 100rpx; */
 	padding: 15rpx 20rpx;
 	border-radius: 6rpx;
 	margin: 10rpx 10rpx 20rpx 10rpx;
 	/* max-width: 700rpx; */
-	text-align: center;
-	color: #ffffff;          
+	text-align: left;
+	color: #333333;          
 }
 </style>

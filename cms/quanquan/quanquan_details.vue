@@ -8,22 +8,19 @@
 		
 		<view class='a-1' style="display: block;">
 		  <!-- 观看人数和评论 -->
-		  <view style="width: 20%; float:left;">
-		    
-		    <text style='font-size:12px;color:#666;margin-left:12px;'>{{video_data.number}}人观看</text>
-		  </view>
-		  <view style="width: 20%; float:left;">  
+		  
+		  <view style="width: 18%; float:left;">  
 		
 		    <image src="../../static/img/help/write.png"  style='width:30rpx;height:30rpx;margin-left:18rpx;' @click='showRemarkInput'></image>
 		    <text style='font-size:26rpx;' @click='showRemarkInput'>评论</text>
 		  </view>
-		  <view style="width: 20%; float:left;">
+		  <view style="width: 18%; float:left;">
 			  <image :src="video_data.has_video_collect == '0' ? '../../static/img/help/star_off.png' : '../../static/img/help/star_on.png'"  
 				@click='collectVideo'
 			  	style='width:30rpx;height:30rpx;margin-left:10rpx;margin-right:10rpx;'></image>
 			  <text style='font-size:26rpx;' @click="collectVideo">收藏</text>
 		  </view>
-		  <view style="width: 20%; float:left;">
+		  <view style="width: 18%; float:left;">
 			  <!-- 收藏下载转发功能按钮 -->
 			  <block v-if="video_data.video_type == 'video'">
 				  <image v-if="faquan_one_click_to_save == 1" src="../../static/img/download.png"  
@@ -46,7 +43,7 @@
 			  </block>
 			  
 		  </view>
-		  <view style="width: 20%; float:left;">
+		  <view style="width: 18%; float:left;">
 			  <!-- #ifdef MP-WEIXIN | MP-BAIDU -->
 			  
 			  <button class="share" open-type="share"></button>
@@ -65,6 +62,12 @@
 			  <!-- #endif -->
 			  
 		  </view>
+		  <view style="width: 28%; float:left;">
+			  <image src="../../static/img/help/click_view.png"
+			  	style='width:30rpx;height:30rpx;margin-left:10rpx;margin-right:10rpx;'></image>
+		    
+		    <text style='font-size:20rpx;color:#666;margin-left:24rpx;'>{{video_data.number}}</text>
+		  </view>
 
 		  
 		  <!-- <image src="../../images/share.png"  style='width:23px;height:23px;margin-left:9px;'></image>
@@ -75,8 +78,8 @@
 		
 		
 		
-		<view style='font-size:12px;color:#666;margin:6rpx 24rpx 0rpx 24rpx;'>{{video_data.ext_info}}</view>
-		<view style='font-size:12px;color:#666;margin:6rpx 24rpx 0rpx 24rpx;'>{{video_data.ext_info02}}</view>
+		<view style='font-size:24rpx;color:#666;margin:6rpx 24rpx 0rpx 24rpx;'>{{video_data.ext_info}}</view>
+		<view style='font-size:24rpx;color:#666;margin:6rpx 24rpx 0rpx 24rpx;'>{{video_data.ext_info02}}</view>
 		
 		
 		
@@ -962,7 +965,7 @@
 				});
 				//newContent = newContent.replace(/<br[^>]*\/>/gi, '');
 				
-				newContent = newContent.replace(/<p[^>]*>/gi, '<p style="margin:10px;">');
+				newContent = newContent.replace(/<p[^>]*>/gi, '<p style="margin:20rpx;">');
 				
 				newContent = newContent.replace(/\<img/gi, '<img style="max-width:100%;height:auto;display:inline-block;margin:10rpx auto;vertical-align: middle;"');
 				
@@ -988,7 +991,7 @@
 	/* cms/quanquan/quanquan_details.wxss */
 	.a-1{
 	  width:100%;
-	  border-bottom:2px solid red;
+	  border-bottom:4rpx solid red;
 	  height:82rpx;
 	  line-height:74rpx;
 	
@@ -1105,12 +1108,12 @@
 	      margin: 0%;
 	      background: #fff;
 	      align-items: center;
-	      padding: 20rpx 0px 40rpx;
+	      padding: 20rpx 0rpx 40rpx;
 	      border-top: 1rpx solid #666;
 	}
 	
 	.remark-bar input{
-	  border:1px solid #666;
+	  border:1rpx solid #666;
 	  border-radius:10rpx;
 	  padding-left:20rpx;
 	  padding-right:20rpx;

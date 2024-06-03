@@ -1,8 +1,18 @@
 <template>
 	<view>
-		<block v-if="video_url">
-			<video @tap='start_and_stop_other_videos()' :src="video_url"  :poster='video_cover_url' :controls="true" :autoplay="video_autoplay" :bindloadedmetadata="videometa" :style="{width:videometa_width_height[0]+'upx', height:videometa_width_height[1] + 'rpx'}">
-			</video>
+		<block v-if="wxa_video_player_url">
+			
+			
+			<video object-fit='fill' :src="wxa_video_player_url" :poster='wxa_video_screen_url'
+				controls="true" :autoplay="wxa_show_video_autoplay"
+				:style="{width:videometa_width_height[0] + 'rpx', height: videometa_width_height[1] + 'rpx'}"
+				@loadedmetadata="videometa_auto_set($event)"
+				enable-play-gesture="true"
+	
+				>
+				</video>
+				
+								
 		</block>
 		
 		
@@ -130,7 +140,7 @@ export default {
 			//get_default_imgid:false,
 			wxa_default_imgid_in_welcome_page:0,
 			content_type:'cms',
-			video_autoplay:false,
+			
 			
 			//普通类型的文章，对应的标题和图片
 			current_title : '',
@@ -140,8 +150,11 @@ export default {
 			content_pic_image:'',	// 图片的URL
 			content_pic_url:'',		// 点击后跳转网址
 			
-			video_cover_url:'',
-			video_url:'',
+			wxa_video_screen_url:'',	//视频封面图片
+			wxa_video_player_url:'',	//视频文件的URL
+			wxa_show_video_autoplay:false,	//控制视频是否自动播放
+			videometa_width_height:[0, 0],	//控制视频文件的宽和高
+			
 			wxa_show_latest_product_in_welcome_page:'',
 			is_more:'',
 			
@@ -290,28 +303,13 @@ export default {
 		
 	},
 	onShareAppMessage: function () {
-		var that = this;
+		var share_data001 = this.__get_share_data();
 		
-		console.log('app.globalData.shop_name : ' + this.abotapi.globalData.shop_name);
-		
-		var last_url = '/pages/welcome_page/welcome_page';
-		if(that.current_params_str.length > 5){
-			last_url = '/pages/welcome_page/welcome_page?'+that.current_params_str;
-		}
-		
-		var share_img = that.current_pic;
-		if(!share_img){
-			share_img = that.wxa_share_img;
-		}
-		
-		console.log('onShareAppMessage ==>> ' + this.current_title);
-		console.log('onShareAppMessage ==>> ' + last_url);
-		console.log('onShareAppMessage ==>> ' + share_img);
 		
 		var share_data = {
-		  title: '' + this.current_title,
-		  path: last_url,
-		  imageUrl: share_img,
+		  title: '' + share_data001.share_title,
+		  path: share_data001.last_url,
+		  imageUrl: share_data001.share_img,
 		  success: function (res) {
 			// 分享成功
 		  },
@@ -328,39 +326,65 @@ export default {
 		
 	},
 	onShareTimeline: function () {
-		var that = this;
-		
-		console.log('app.globalData.shop_name : ' + this.abotapi.globalData.shop_name);
-		
-		
-		var last_url = '';
-		
-		if(that.current_params_str.length > 5){
-			last_url = ''+that.current_params_str;
-		}
-		
-		var share_img = that.current_pic;
-		if(!share_img){
-			share_img = that.wxa_share_img;
-		}
-		
-		console.log('onShareAppMessage ==>> ' + this.current_title);
-		console.log('onShareAppMessage ==>> ' + last_url);
-		console.log('onShareAppMessage ==>> ' + share_img);
+		var share_data001 = this.__get_share_data();
 		
 		return {
-		    title: '' + this.current_title,
-		    query: last_url,
-		    imageUrl:share_img,
+		    title: '' + share_data001.share_title,
+		    query: share_data001.share_query,
+		    imageUrl:share_data001.share_img,
 		}
 		
 	},
 	onAddToFavorites: function () {
-		this.onShareTimeline();
+		var share_data001 = this.__get_share_data();
+		
+		return {
+		    title: '' + share_data001.share_title,
+		    query: share_data001.share_query,
+		    imageUrl:share_data001.share_img,
+		}
 	},
 	
 	
 	methods: {
+		//获取分享的数据
+		__get_share_data:function(){
+			var that = this;
+			
+			console.log('app.globalData.shop_name : ' + this.abotapi.globalData.shop_name);
+			
+			var last_url = '/pages/welcome_page/welcome_page';
+			if(that.current_params_str.length > 5){
+				last_url = '/pages/welcome_page/welcome_page?' + that.current_params_str;
+			}
+			
+			var share_img = that.current_pic;
+			if(!share_img){
+				share_img = that.wxa_share_img;
+			}
+			
+			console.log('onShareAppMessage ==>> ' + this.current_title);
+			console.log('onShareAppMessage ==>> ' + last_url);
+			console.log('onShareAppMessage ==>> ' + share_img);
+			
+			var share_data = {};
+			
+			share_data.share_title = this.current_title;
+			share_data.share_img = share_img;
+			
+			//当前页面 path ，必须是以 / 开头的完整路径
+			share_data.share_url = last_url;
+			
+			//朋友圈和收藏夹的分享，不需要带页面路径，只要参数
+			share_data.share_query = '';			
+			if(that.current_params_str){
+				share_data.share_query = that.current_params_str;
+			}
+			
+			
+			return share_data;
+		},
+		//====
 		__load_welcome_page_date:function(options){
 			
 			var parentid = options.parentid;
@@ -552,12 +576,12 @@ export default {
 			
 			//如果有视频文件，则渲染视频
 			if (http_data.video_url) {
-			  that.video_url = http_data.video_url;
-			  that.video_cover_url = http_data.video_cover_url;
+			  that.wxa_video_player_url = http_data.video_url;
+			  that.wxa_video_screen_url = http_data.video_cover_url;
 			  
 				
 			  if (http_data.video_autoplay) {
-				that.video_autoplay = true;
+				that.wxa_show_video_autoplay = true;
 			  }
 			}
 			
@@ -741,26 +765,35 @@ export default {
 		  },
 		  __get_img_from_data_url: function (data_url, that){
 		
-		    var data = {
+		    var post_data = {
 		      openid: this.abotapi.get_current_openid()
 		    };
-		
-			//读取缓存
-			that.http_data_cache_id = md5(data_url + JSON.stringify(data));
-			
-			console.log('md5 ===>>> ', that.http_data_cache_id);
-			
-			var http_data = uni.getStorageSync('welcome_page_data_cache_' + that.http_data_cache_id);
-			if(http_data){
-				that.__handle_http_response_data(http_data);
 				
-				return;
-			}
+				post_data.sellerid = this.abotapi.get_sellerid();
+				
+				var userInfo = this.abotapi.get_user_info();
+				if(userInfo && userInfo.userid){
+					//post_data.checkstr = userInfo.checkstr;
+					post_data.userid = userInfo.userid;
+				}
+				
 		
-		
-			uni.showLoading({
-			  title: '数据加载中……',
-			});
+				//读取缓存
+				that.http_data_cache_id = md5(data_url + JSON.stringify(post_data));
+				
+				console.log('md5 ===>>> ', that.http_data_cache_id);
+				
+				var http_data = uni.getStorageSync('welcome_page_data_cache_' + that.http_data_cache_id);
+				if(http_data){
+					that.__handle_http_response_data(http_data);
+					
+					return;
+				}
+			
+			
+				uni.showLoading({
+					title: '数据加载中……',
+				});
 			
 		    var cbSuccess = function (res) {
 		      uni.hideLoading();
@@ -783,7 +816,7 @@ export default {
 		      uni.hideLoading();
 		
 		    };
-		    this.abotapi.httpPost(data_url, data, cbSuccess, cbError);
+		    this.abotapi.httpPost(data_url, post_data, cbSuccess, cbError);
 		      //========End====================
 		  },
 		
@@ -849,34 +882,37 @@ export default {
 			var video_id = e.currentTarget.dataset.id;
 		},
 		
-		videometa:function(e){
-		    console.log('videometa======>>>>>', e);
-		
+		videometa_auto_set:function(e){
+		    console.log('videometa_auto_set======>>>>>', e);
+		    
 		    var imgwidth = e.detail.width;
 		    var imgheight = e.detail.height;
-		
-		
+		    		
+		    		
 		    //宽高比  
 		    var ratio = imgwidth / imgheight;
-		
+		    		
 		    console.log(imgwidth, imgheight)
-		
+		    		
 		    var current_view_width = 750;
-		
-		    current_view_width = current_view_width ;
-		
+		    		
+		    //current_view_width = current_view_width;
+		    
+		    console.log('current_view_width====>>>>', current_view_width);
+		    		
 		    //计算的高度值  
 		    var current_view_height = current_view_width / ratio;
-		
-		
+		    		
+		    		
 		    //赋值给前端
 		    var videometa_width_height = [current_view_width, current_view_height];
-		
-		    console.log('videometa_width_height====>>>>', videometa_width_height);
-		
-		    this.setData({
-		      videometa_width_height: videometa_width_height
-		    });
+		    		
+		    
+		    this.videometa_width_height = videometa_width_height;
+		    //this.wxa_show_video_meta_width = current_view_width;
+		    //this.wxa_show_video_meta_height = current_view_height;
+		    
+		    console.log('videometa_width_height====>>>>', this.videometa_width_height);
 		
 		},
 		
@@ -930,7 +966,7 @@ export default {
 			});
 			//newContent = newContent.replace(/<br[^>]*\/>/gi, '');
 			
-			newContent = newContent.replace(/<p[^>]*>/gi, '<p style="margin:40upx;">');
+			newContent = newContent.replace(/<p[^>]*>/gi, '<p style="margin:40rpx;">');
 			
 			newContent = newContent.replace(/\<img/gi, '<img style="max-width:100%;height:auto;display:inline-block;margin:10upx auto;vertical-align: middle;"');
 			

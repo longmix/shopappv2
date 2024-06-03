@@ -335,7 +335,7 @@
 			//}
 			
 			
-			this.abotapi.set_option_list_str(this, (that, option_list)=>{
+			this.abotapi.set_option_list_str(this, (that, cb_params)=>{
 				
 				//====1、更新界面的颜色
 				if(that.abotapi.globalData.navigationBarBackgroundColor_fixed == 1){

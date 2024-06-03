@@ -378,6 +378,7 @@
 	}
 	/*搜索框*/
 	.sou{
+		
 		display: flex;
 		align-items: center;
 		justify-content: space-between;

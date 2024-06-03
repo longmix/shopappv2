@@ -276,6 +276,7 @@
 <style lang="scss">
 	/*每个页面公共css */
 	@import "/static/iconfont/font.scss";
+	@import "@/uni_modules/uview-ui/index.scss";
 
 	/*覆盖文本编辑器里面的图片的大小*/
 	uni-rich-text img {
@@ -299,6 +300,7 @@
 		font-size: 25rpx;
 		color: #666;
 		padding-bottom: 80rpx;
+		clear: both;
 	}
 
 	.df {
@@ -554,6 +556,28 @@
 
 	.ble {
 		border-left: 1px solid #eee;
+	}
+	
+	
+	.weui-btn {
+		position: relative;
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+		padding-left: 28rpx;
+		padding-right: 28rpx;
+		margin-top: 50rpx;
+		box-sizing: border-box;
+		font-size: 36rpx;
+		text-align: center;
+		text-decoration: none;
+		color: #FFFFFF;
+		line-height: 2.55555556;
+		border-radius: 10rpx;
+		-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+		overflow: hidden;
+		width: 90%;
+		border: 0;
 	}
 
 	.footfixed {

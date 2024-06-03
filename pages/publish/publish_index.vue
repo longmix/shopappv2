@@ -1,7 +1,13 @@
 <template>
 	<view>	
 	<view class="header">
-		<view class="header_text">{{publish_write_mianze_shengming}}</view>
+		<view class="header_text">
+			<textarea :value="publish_write_mianze_shengming"
+				disabled="disabled"
+				style="width: 100%;font-size:26rpx;" 
+				auto-height='true' 
+				maxlength="-1"></textarea>			
+		</view>
 	</view>
 	<view style="width: 96%;margin-left: 2%;" v-if="publish_write_ad_list">
 		<image style="width: 100%;" @tap="toUrl(item.url)" v-for="(item,index) in publish_write_ad_list" :key="index" :src="item.image" mode="widthFix"></image>
@@ -159,16 +165,25 @@
 				this.abotapi.call_h5browser_or_other_goto_url(url);
 			},
 			form_issue:function(e,f){
+				console.log('aaaaaaaaaaaaaaaaaa');
 				
 				if(this.show_type && this.show_type == 'list'){
+					var new_url = '/pages/publish/publish_list?cataid=' + e + '&name=' + f;
+					
 					//跳转到帖子列表页面 （publish_list）
+					if(this.abotapi.globalData.is_publish_list_in_tabbar){
+						new_url = '/pages/publish/publish_home?cataid=' + e + '&name=' + f;
+					}
+					
+					console.log('new_url ===>>>' + new_url);
+					
 					uni.navigateTo({
-						url:'./publish_list?cataid=' + e + '&name=' + f,
+						url: new_url,
 					})
 				}else{
 					
 					uni.navigateTo({
-						url:'./publish_write?cataid=' + e + '&name=' + f ,
+						url:'/pages/publish/publish_write?cataid=' + e + '&name=' + f ,
 					})
 				}
 				

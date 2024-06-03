@@ -39,7 +39,7 @@
 				v-if="(ad_img_list != null)||(ad_img_list != '')">
 			     <block  v-for="item in ad_img_list" :key="item.swiperid">
 			      <image style='width:100%;vertical-align: middle;' 
-					mode="widthFix" bindtap="go_to_ad_img_url" 
+					mode="widthFix" @tap="go_to_ad_img_url" 
 					:src='item.image' :data-url="item.url"></image>
 			     </block>
 			</view>
@@ -62,7 +62,7 @@
 							
 							<view class="uni-textarea002" style="" v-if="item.fieldname == 'imgimg_content'">
 								<view style="padding: 16rpx 34rpx;font-size: 32rpx;background-color: #FFFFFF;">{{item.displayname}}</view>
-								<textarea style="padding: 16rpx 34rpx; border:1rpx solid #a2a2a2;" :name="item.fieldname" 
+								<textarea style="border:1rpx solid #a2a2a2;" :name="item.fieldname" 
 									maxlength="-1"
 									placeholder='请在此填写详细说明' /><!-- placeholder-style="color:#D3D3D3;font-size:15px;" -->
 							</view>
@@ -90,15 +90,16 @@
 						</block>
 						<!-- 帖子的固定字段结束 -->
 						
-						<view class="box_1" v-if="item.inputtype == 'text'">
+						<view class="box_1" v-if="item.fieldname != 'imgimg_title' && item.inputtype == 'text'">
 							<view class="input-flex-label w60" style="float: left;">{{item.displayname}}
 								<label class="FH" v-if="item.require == 1">*</label>
 							</view>
 							<input :name="item.fieldname" maxlength="40" placeholder-style="color:#c3c3c3" :placeholder="item.errortip" />
 						</view>
 						
+						<!-- 下拉单选 -->
 						<view class="box_1" v-if="item.inputtype == 'select'">
-							<picker @change="bindPickerChange" :value="index" :range="item.options" :data-fieldname="item.fieldname">
+							<picker @change="bindPickerChange" :value="item.index" :range="item.options" :data-fieldname="item.fieldname">
 								<view style="overflow: auto;">
 									<view class="box_2">
 										<text>{{item.displayname}}</text><label class="FH" v-if="item.require == 1">*</label>
@@ -113,6 +114,26 @@
 							<input :name="item.fieldname" :value="item.options[item.index]" :hidden='true' style="display:none;" />
 						</view>
 						
+						<!-- 单选按钮 -->
+						<view class="box-checkbox" v-if="item.inputtype == 'radio'">
+							<radio-group @change="radioChange" :name="item.fieldname" :data-name="item.fieldname">
+								<view style="overflow: auto;margin-bottom:40rpx;">
+									<view class="box_2">
+										<text>{{item.displayname}}</text>
+										<label class="FH" v-if="item.require == 1">*</label>
+									</view>
+								</view>
+								<label v-for="(item02,index) in item.options" :key="index">
+									<view style="margin-left: 34rpx;float: left;">
+										<radio :value="item02">
+											<view>{{item02}}</view>
+										</radio>
+									</view>
+								</label>
+							</radio-group>
+						</view>
+						
+						<!-- 多选按钮 -->
 						<view class="box-checkbox" v-if="item.inputtype == 'checkbox'">
 							<checkbox-group @change="checkboxChange" :name="item.fieldname" :data-name="item.fieldname">
 								<view style="overflow: auto;margin-bottom:40rpx;">
@@ -132,7 +153,7 @@
 						</view>
 						
 						<!-- 文件或图片类型 -->
-						<view class="box-file-upload" v-if="item.inputtype == 'file'" >							
+						<view class="box-file-upload" v-if="(item.inputtype == 'file') || (item.inputtype == 'multi_file')" >							
 							<view style="overflow: auto;margin-bottom:40rpx;">
 								<view class="box_2">
 									<text>{{item.displayname}}</text>
@@ -140,27 +161,37 @@
 								</view>
 							</view>
 							
-							<image  
+							<!-- <image  
 								:src="image_upload_list[item.fieldname]?image_upload_list[item.fieldname]:img_upload_default_icon"
 								mode="widthFix" 
 								:name="item.fieldname" 
 								:data-name="item.fieldname"
 								@click="upLoadimgs888"
-								style="width: 200px;margin: 0px auto;display: none;"></image>
-								<!-- 以上这个控件不再使用，在小程序中有BUG，上传的图片不能刷新，H5中没有问题。下面这个兼容 -->
+								style="width: 200rpx;margin: 0rpx auto;display: none;"></image>
+								以上这个控件不再使用，在小程序中有BUG，上传的图片不能刷新，H5中没有问题。下面这个兼容 -->
 								
-							<image
-								:src="item.image_upload_url?item.image_upload_url:img_upload_default_icon"
-								mode="widthFix" 
-								:name="item.fieldname" 
-								:data-name="item.fieldname"
-								:data-index="index"
-								@click="upLoadimgs"
-								style="width: 200px;margin: 0px auto;display: block;"></image>
+							<block v-if="item.upload_image_url_list">
+								<image v-for="(image_url, image_index) in item.upload_image_url_list" :key="image_index"
+									:src="image_url"
+									mode="widthFix"
+									style="width: 200rpx;margin: 0rpx auto;display: block; float: left;"></image>
+								
+							</block>
+							<block v-else>
+								<image
+									:src="img_upload_default_icon"
+									mode="widthFix" 
+									:name="item.fieldname" 
+									:data-name="item.fieldname"
+									:data-index="index"
+									@click="upLoadimgs"
+									style="width: 200rpx;margin: 0rpx auto;display: block; float: left;"></image>
+								
+							</block>
 								
 								
-								<input type="hidden" :name="item.fieldname" 
-								:value="(item.image_upload_btn_is_del != 2)?item.image_upload_url:''"
+							<input type="hidden" :name="item.fieldname" 
+								:value="(item.image_upload_btn_is_del != 2)?item.upload_image_url_str:''"
 								style='display:none;'>
 								
 								
@@ -274,6 +305,9 @@
 </template>
 
 <script>
+	/**
+	 * 万能表单的界面
+	 */
 	import util from '@/common/util.js';
 	import biaofunDatetimePicker from '@/components/biaofun-datetime-picker/biaofun-datetime-picker.vue';
 	
@@ -318,7 +352,7 @@
 				input_field_list:[],
 				
 				red:'red',
-				index:0,
+				//index:0,
 				data2:'',
 				imgArray:[],//存放上传图片的数组
 				submit_text:'提交信息',
@@ -337,6 +371,7 @@
 				current_params_str:'',
 				
 				//微读客CMS平台的万能表单中定义的表单的logo、简介和内容
+				form_title:'',	//页面的标题
 				form_logourl:'',
 				form_intro:'',
 				
@@ -361,6 +396,9 @@
 				//image_list_seq:0,
 				
 				time_start_end:[],
+				
+				//2024.3.14.新增自定义表单字段数据的接口  form_type == 4 的时候有效
+				form_field_list_data_url:''
 			}
 			
 		},
@@ -409,13 +447,38 @@
 			
 			if(options.submit_url){
 				this.submit_url = options.submit_url;
+				console.log('数据提交到这个网址：' + this.submit_url);
+				
+				this.submit_url = decodeURIComponent(this.submit_url);
+				console.log('解码后的网址：' + this.submit_url);
+				
 			}
 			
-			if(options.form_type && options.form_type == 2){
+			if(options.form_type && (options.form_type == 2) ){
 				this.formid = options.formid; //栏目页面跳转带过来的参数  栏目id
 			}
-			else{
+			else if(options.form_type && (options.form_type == 3) ){
 				this.formid = options.cataid; //栏目页面跳转带过来的参数  栏目id
+			}
+			else if(options.form_type && (options.form_type == 4)){
+				//自定义表单字段的数据来源
+				this.form_field_list_data_url = options.data_url;
+				if(!this.form_field_list_data_url){
+					uni.showModal({
+						title:'参数错误',
+						content:'没有指定表单字段数据接口',
+						showCancel:false,
+						success: (res001) => {
+							that.abotapi.call_h5browser_or_other_goto_url('/pages/index/index');
+						}
+					});
+					
+					return;
+				}
+			}
+			else{
+				//应该是自定义会员属性的编辑，暂时没有开发
+				this.formid = options.cataid;
 			}
 			
 			//2021.2.4.  如果参数设置了CMS token，则不适用系统设置的
@@ -424,6 +487,42 @@
 			}
 			
 			this.catename = options.name; //栏目页面跳转带过来的参数  栏目名称
+			
+			
+			//判断登录（如果不是 2 万能表单，其他情况都要求用户登录后才能进入填写表单）
+			var userInfo = that.abotapi.get_user_info();
+			
+			//2024.3.14. 改进判断用户是否需要登陆的机制
+			var need_user_login = false;
+			if(this.form_type == 1){
+				need_user_login = true;
+			}
+			else if(this.form_type == 2){
+				if(options.mustlogin && (options.mustlogin == 1)){
+					need_user_login = true;
+				}
+			}
+			else if(this.form_type == 3){
+				need_user_login = true;
+			}
+			else if(this.form_type == 4){
+				if(options.mustlogin && (options.mustlogin == 1)){
+					need_user_login = true;
+				}
+			}
+				
+			if(need_user_login && (!userInfo || !userInfo.userid)){
+				//var last_url = '/pages/publish/publish_write?classid='+this.formid+'&name='+this.catename+'&submit_url='+this.submit_url+'&form_type='+this.form_type;
+				var last_url = '/pages/publish/publish_write';
+				if(that.current_params_str.length > 5){
+					last_url = '/pages/publish/publish_write?'+that.current_params_str;
+				}
+				
+				this.abotapi.goto_user_login(last_url, 'normal');
+				return;				
+			}
+			
+			
 			
 			this.abotapi.set_option_list_str(that, function(that002, shop_option_data){
 				console.log('shop_option_data',shop_option_data);
@@ -446,22 +545,6 @@
 			
 			
 			
-			//判断登录（如果不是 2 万能表单，其他情况都要求用户登录后才能进入填写表单）
-			var userInfo = that.abotapi.get_user_info();
-				
-			if(( (this.form_type != 2) || ((this.form_type == 2) && options.mustlogin && (options.mustlogin == 1) ) ) 
-				&& (!userInfo || !userInfo.userid)){
-				
-				
-				//var last_url = '/pages/publish/publish_write?classid='+this.formid+'&name='+this.catename+'&submit_url='+this.submit_url+'&form_type='+this.form_type;
-				var last_url = '/pages/publish/publish_write';
-				if(that.current_params_str.length > 5){
-					last_url = '/pages/publish/publish_write?'+that.current_params_str;
-				}
-				
-				this.abotapi.goto_user_login(last_url, 'normal');
-								
-			}
 			
 			
 			//2020.5.7. 加载图片平铺广告
@@ -469,6 +552,8 @@
 			  url: that.abotapi.globalData.yanyubao_server_url + '/index.php/openapi/SelfformData/get_ad_list',
 			  data: {
 				sellerid: that.abotapi.get_sellerid(),
+				formid: that.formid,
+				form_type: that.form_type
 			  },
 			  success: function (res) {
 				if(res.data && (res.data.code == 1)){
@@ -489,9 +574,21 @@
 				console.log('11111==>>', res001.key);
 				console.log('22222==>>', ttt);
 				
-				ttt.image_upload_url = res001.val;
+				//判断增加多张图片
+				if(!ttt.upload_image_url_str){
+					ttt.upload_image_url_str = '';
+				}
 				
-				ttt.image_upload_btn_txt = '清除此图';
+				ttt.upload_image_url_str += res001.val + ',';
+				
+				
+				if(!ttt.upload_image_url_list){
+					ttt.upload_image_url_list = new Array();					
+				}
+				ttt.upload_image_url_list.push(res001.val);
+				
+				
+				ttt.image_upload_btn_txt = '清除图片';
 				ttt.image_upload_btn_is_del = 1;
 				
 				console.log('33333==>>', ttt);
@@ -511,7 +608,9 @@
 				console.log('11111==>>', res001.key);
 				console.log('22222==>>', ttt);
 				
-				ttt.image_upload_url = that.img_upload_default_icon;
+				//清空上传的图片
+				ttt.upload_image_url_str = '';
+				ttt.upload_image_url_list = null;
 				
 				ttt.image_upload_btn_txt = '上传图片';
 				ttt.image_upload_btn_is_del = 2;
@@ -541,7 +640,71 @@
 		onReady: function () {
 			
 		},
+		onShareAppMessage: function () {
+			console.log('==================>>>onShareAppMessage');
+			
+			return this.share_return(true);
+			
+		},
+		onShareTimeline: function () {
+			console.log('==================>>>onShareTimeline');
+			
+			return this.share_return();
+		},
+		onAddToFavorites: function () {
+			return this.share_return();
+		},
 		methods: {
+			share_return: function(is_share_app=false) {
+				
+				var that = this;
+				
+				var share_data = {
+					title: '' + that.form_title,
+					query: '' + that.current_params_str,
+					imageUrl: that.form_logourl,
+					success: function(res) {
+					// 分享成功
+						uni.showToast({
+							title: '分享成功',
+							icon: 'success',
+							duration: 2000
+						})
+					},
+					fail: function(res) {
+						// 分享失败
+						/*uni.showToast({
+							title: '分享完成',
+							icon: 'success',
+							duration: 2000
+						})*/
+					}
+				};
+				
+				//#ifdef MP-BAIDU
+					share_data.content = share_data.title;
+				//#endif
+				
+				if(is_share_app){
+					share_data.path = 'pages/publish/publish_write?'+ share_data.query;
+				}
+				
+				return share_data;
+				
+			},
+			
+			//go_to_ad_img_url:e=>{
+			go_to_ad_img_url:function(e){
+				var new_url = e.currentTarget.dataset.url;
+				
+				console.log('点击了广告图片，准备跳转到：'+new_url);
+				
+				if(!new_url){
+					return;
+				}
+				
+				this.abotapi.call_h5browser_or_other_goto_url(new_url);
+			},
 			
 			getDate(type) {
 				const date = new Date();
@@ -576,7 +739,7 @@
 					return;
 				}
 				
-				
+				console.log(e)
 				var that=this;
 				
 				var input_value_list = e.detail.value;
@@ -612,10 +775,19 @@
 							if(that.input_field_list[keys]['require'] == 1){
 								//判断是否为必填（是）
 								console.log('888889===>>', e.detail.value[form_key]);
+								
 								if(!e.detail.value[form_key]){
-									uni.showToast({
-										title:'请填写'+that.input_field_list[keys]['displayname']
-									})
+									
+									var error_tips = that.input_field_list[keys]['errortip'];
+									if(!error_tips){
+										error_tips = '请填写';
+									}
+									
+									uni.showModal({
+										title:'错误',
+										content: error_tips +that.input_field_list[keys]['displayname']
+									});
+									
 									return;
 								}
 							}
@@ -627,26 +799,23 @@
 				
 				
 				var input_value_list_json = encodeURIComponent(JSON.stringify(input_value_list));			
-				var userInfo = that.abotapi.get_user_info();
+				
 				
 				var submit_url =  '';
-				var post_data = {}
+				var post_data = {};
+				
+				
 				
 				if(that.form_type == 1){//延誉宝会员扩展属性
 					submit_url = that.abotapi.globalData.yanyubao_server_url+'/index.php/Yanyubao/ShopAppWxa/user_set_ext_info_list';
 					
 					post_data = {
 						sellerid:that.abotapi.get_sellerid(),
-						userid: userInfo.userid,
-						checkstr: userInfo.checkstr,
 					}
-					console.log('e.detail.value',e.detail.value);
-					for(var key in e.detail.value){
-						
-						post_data[key] = e.detail.value[key];
-					}
-					console.log('858899',post_data);
-				}else if(that.form_type == 2){//微读客的万能表单
+					
+					
+				}else if(that.form_type == 2){
+					//微读客的万能表单
 					submit_url = that.abotapi.globalData.weiduke_server_url+'/index.php/openapi/SelfformData/submit_data_url_selfform';
 					
 					post_data = {
@@ -656,24 +825,12 @@
 						openid:this.abotapi.get_current_openid(),
 					}
 					
-					var userInfo = that.abotapi.get_user_info();
-					if(userInfo){
-						post_data.userid = userInfo.userid;
-					}
-					
-					for(var key in e.detail.value){
-						
-						post_data[key] = e.detail.value[key];
-					}
-					console.log('858899',post_data);
 				}else if(that.form_type == 3){	//微读客的帖子
 					submit_url = that.abotapi.globalData.weiduke_server_url+'/index.php/openapi/ArticleImgApi/add_article_item';
 					
 					post_data = {
 						sellerid:that.abotapi.get_sellerid(),
 						classid:that.formid,
-						userid: userInfo.userid,
-						checkstr: userInfo.checkstr,
 						token: that.cms_token,
 						input_value:input_value_list_json,
 						//picture_list:picture_list,
@@ -683,6 +840,24 @@
 						post_data.picture_list = picture_list;
 					}
 					
+				}
+				
+				//组织form标签的输入字段
+				console.log('e.detail.value',e.detail.value);
+				
+				for(var key in e.detail.value){
+					
+					post_data[key] = e.detail.value[key];
+				}
+				
+				console.log('858899',post_data);
+				
+				
+				//如果用户登录了
+				var userInfo = that.abotapi.get_user_info();			
+				if(userInfo){
+					post_data.userid = userInfo.userid;
+					post_data.checkstr = userInfo.checkstr;
 				}
 				
 				//如果设置了提交地址，则以这个数据保存地址为准
@@ -810,20 +985,22 @@
 				}
 				
 				//form_type 判断那个url
-				var url = '';
+				var post_url = '';
+				var post_data = null;
+				
 				if(that.form_type == 1){
 					//会员扩展属性 延誉宝
-					url = that.abotapi.globalData.yanyubao_server_url+'/openapi/SupplierData/supplier_input_list';
+					post_url = that.abotapi.globalData.yanyubao_server_url+'/openapi/SupplierData/supplier_input_list';
 					
-					var post_data = {
+					post_data = {
 						sellerid: that.abotapi.globalData.default_sellerid,
 					};
 					
 				}else if(that.form_type == 2){
 					//CMS万能表单  微读客
-					url = that.abotapi.globalData.weiduke_server_url+'/openapi/SelfformData/get_selfform_option';
+					post_url = that.abotapi.globalData.weiduke_server_url+'/openapi/SelfformData/get_selfform_option';
 					
-					var post_data = {
+					post_data = {
 						selfform_type: 'selfform',
 						token: that.cms_token,
 						formid:that.formid
@@ -831,118 +1008,147 @@
 					
 				}else if(that.form_type == 3){
 					//帖子属性   微读客
-					url = that.abotapi.globalData.weiduke_server_url+'/openapi/SelfformData/get_selfform_option';
+					post_url = that.abotapi.globalData.weiduke_server_url+'/openapi/SelfformData/get_selfform_option';
 					
-					var post_data = {
+					post_data = {
 						selfform_type: 'img_classify',
 						token: that.cms_token,
 						formid:that.formid
 					};
 				}
+				else if(that.form_type == 4){
+					//自定义表单字段的内容
+					post_url = that.form_field_list_data_url;
+					
+					post_data = {
+						sellerid: that.abotapi.globalData.default_sellerid,
+					};
+				}
 				
+				//如有用户登录信息，带上userid
+				var userInfo = that.abotapi.get_user_info();
 				
-				
-				
+				if( userInfo && userInfo.userid ){
+					post_data.userid = userInfo.userid;
+				}
+								
 				
 				// 微读客获取文章列表  				
 				that.abotapi.abotRequest({
-					url:url,
+					url: post_url,
 					data:post_data,
-					success(res) {
-						
-						if(res.data.code == 1){
-							
-							
-							if(res.data.submit_text){
-								that.submit_text = res.data.submit_text;
-							}
-							if(res.data.title){
-								uni.setNavigationBarTitle({
-									title: res.data.title,
-								})
-							}
-							
-							if(res.data.logourl){
-							    that.form_logourl = res.data.logourl;
-							}
-							
-							if (res.data.intro) {
-								that.form_intro = res.data.intro;
-							}
-							
-							if(res.data.content){
-								
-								that.content_html = res.data.content;
-												
-								
-								//v-html使用
-								that.content_v_html = that.content_html;
-								
-								//console.log('that.content_v_html====>>>>111', that.content_v_html);
-								
-								const filter = that.$options.filters["formatRichText"];
-								that.content_v_html = filter(that.content_v_html);
-								
-								//设置百度小程序中的页面SEO信息
-								// #ifdef MP-BAIDU				
-									//2021.7.22. 删除所有的超链接和对应的超链文本
-									that.content_html = that.content_html.replace(/(<\/?a.*?>)[^>]*<\/a>/g, '');
-											
-								// #endif	
-								
-								
-								// #ifdef MP-ALIPAY						
-									let data001 = that.content_html;
-									let newArr = [];
-									let arr = parseHtml(data001);
-									arr.forEach((item, index)=>{
-										newArr.push(item);
-									});
-									
-									//console.log('arr arr arr====>>>>', arr);
-									//console.log('newArr newArr newArr====>>>>', newArr);
-									
-									//rich-text使用
-									that.content_array_html = newArr;
-								// #endif
-								
-							}
-							
-							var list = res.data.data;
-							
-							var image_list_seq = 0;
-							
-							for(var i=0; i<list.length; i++){
-								
-								if(list[i].options){
-									if(that.form_type != 1){
-										list[i].options = list[i].options.split('|');
-									}
-									
-									
-									list[i].index = 0;
-									
-									if(list[i].inputtype == 'select'){
-										list[i].options.unshift('');
-									}
-									else if(list[i].inputtype == 'checkbox'){
-										
-									}
-								}
-								
-								if(list[i].inputtype == 'file'){
-									list[i].image_list_seq = image_list_seq;
-									
-									image_list_seq ++;
-								}
-																					
-							}
-								
-							that.input_field_list = list;
-							
-							that.show_input_list = 1;
-								
+					fail(res){
+						uni.showModal({
+							title:'网络错误',
+							content: '网络请求失败',
+							showCancel:false
+						})
+						return;
+					},
+					success(res){
+						//如果返回错误
+						if(res.data.code != 1){
+							uni.showModal({
+								title:'数据错误',
+								content:res.data.msg,
+								showCancel:false
+							})
+							return;
 						}
+						
+						//开始渲染表单
+						if(res.data.submit_text){
+							that.submit_text = res.data.submit_text;
+						}
+						if(res.data.title){
+							uni.setNavigationBarTitle({
+								title: res.data.title,
+							})
+							
+							that.form_title = res.data.title;
+						}
+						
+						if(res.data.logourl){
+						    that.form_logourl = res.data.logourl;
+						}
+						
+						if (res.data.intro) {
+							that.form_intro = res.data.intro;
+						}
+						
+						if(res.data.content){
+							
+							that.content_html = res.data.content;
+											
+							
+							//v-html使用
+							that.content_v_html = that.content_html;
+							
+							//console.log('that.content_v_html====>>>>111', that.content_v_html);
+							
+							const filter = that.$options.filters["formatRichText"];
+							that.content_v_html = filter(that.content_v_html);
+							
+							//设置百度小程序中的页面SEO信息
+							// #ifdef MP-BAIDU				
+								//2021.7.22. 删除所有的超链接和对应的超链文本
+								that.content_html = that.content_html.replace(/(<\/?a.*?>)[^>]*<\/a>/g, '');
+										
+							// #endif	
+							
+							
+							// #ifdef MP-ALIPAY						
+								let data001 = that.content_html;
+								let newArr = [];
+								let arr = parseHtml(data001);
+								arr.forEach((item, index)=>{
+									newArr.push(item);
+								});
+								
+								//console.log('arr arr arr====>>>>', arr);
+								//console.log('newArr newArr newArr====>>>>', newArr);
+								
+								//rich-text使用
+								that.content_array_html = newArr;
+							// #endif
+							
+						}
+						
+						var data_input_list = res.data.data;
+						
+						var image_list_seq = 0;
+						
+						for(var i=0; i<data_input_list.length; i++){
+							
+							if(data_input_list[i].options){
+								if(that.form_type != 1){
+									data_input_list[i].options = data_input_list[i].options.split('|');
+								}
+								
+								
+								data_input_list[i].index = 0;
+								
+								if(data_input_list[i].inputtype == 'select'){
+									data_input_list[i].options.unshift('');
+								}
+								else if(data_input_list[i].inputtype == 'checkbox'){
+									
+								}
+							}
+							
+							if(data_input_list[i].inputtype == 'file'){
+								data_input_list[i].image_list_seq = image_list_seq;
+								
+								image_list_seq ++;
+							}
+																				
+						}
+							
+						that.input_field_list = data_input_list;
+						
+						console.log('that.input_field_list===>>>要填写的表单字段列表：', that.input_field_list)
+						
+						that.show_input_list = 1;
 										
 					}
 
@@ -1054,7 +1260,27 @@
 			
 			    })
 			},
-			
+			/**
+			 * 单选按钮组的点击事件，没有实际意义，因为不想多选按钮那样需要合并多个选择项
+			 * @param {Object} e
+			 */
+			radioChange: function (e) {
+				
+				var that = this;
+				var values = e.detail.value;				
+				
+				//组合checkbox的值，关键是xml中要加 data-name，这样才能取到name
+				
+				var fieldname = e.currentTarget.dataset.name;
+				
+				//that.radio_field_value_list[fieldname] = values;
+				
+				console.log('radioChange ===>>> ', values);
+				console.log('radioChange ===>>> ', fieldname);
+				console.log('radioChange ===>>> ', e);
+				
+				//console.log('radio_field_value_list ==>>> ', that.radio_field_value_list);
+			},			
 			checkboxChange: function (e) {
 				
 				var that = this;
@@ -1154,37 +1380,39 @@
 				
 				uni.chooseImage({
 					// count:  允许上传的照片数量
-					count: 1,
+					count: 9,
 					// sizeType:  original 原图，compressed 压缩图，默认二者都有
 					//sizeType: "original",
 					sizeType: "compressed",
 					success(res) {
 						console.log(res, 'aaaaa8888')
-			
-						var filepath = res.tempFilePaths[0];
 						
-						console.log('8888888888', res.tempFilePaths[0])
-						console.log('8888888888===>', that.abotapi.globalData.yanyubao_server_url);
-						
-						uni.uploadFile({
-							url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=upload_image_file_by_user',
-							filePath: filepath,
-							name: 'file',
-							formData: formData,
-							success: function(res) {
-			
-								console.log('res===>>', res.data);
-								
-								var obj = JSON.parse(res.data);
-								
-								that.$emit('update_image_upload_list', {'key':current_index, 'val':obj.img_url});
-								
-								console.log('image_upload_list 强制刷新界面 ==>>'+ current_fieldname + ' ==>> ' + obj.img_url);
-								
-								
-			
-							}
-						});
+						for(var i=0; i<res.tempFilePaths.length; i++){
+							var filepath = res.tempFilePaths[i];
+							
+							console.log('8888888888', res.tempFilePaths[0])
+							console.log('8888888888===>', that.abotapi.globalData.yanyubao_server_url);
+							
+							uni.uploadFile({
+								url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=upload_image_file_by_user',
+								filePath: filepath,
+								name: 'file',
+								formData: formData,
+								success: function(res) {
+										
+									console.log('res===>>', res.data);
+									
+									var obj = JSON.parse(res.data);
+									
+									that.$emit('update_image_upload_list', {'key':current_index, 'val':obj.img_url});
+									
+									console.log('image_upload_list 强制刷新界面 ==>>'+ current_fieldname + ' ==>> ' + obj.img_url);
+									
+									
+										
+								}
+							});
+						}						
 			
 					}
 			
@@ -1391,8 +1619,9 @@
 	
 	.uni-textarea002 textarea{
 		padding: 8rpx;
+		margin: 0 auto;
 		font-size: 30rpx;
-		width: 100%;
+		width: 90%;
 		
 	}
 	

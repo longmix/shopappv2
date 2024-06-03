@@ -53,7 +53,9 @@
 				<view class="show_modal_pop" v-if="showShangModal">
 					<view class="show_modal_pop_main" >
 						<view class="show_modal_pop_content" >
-							<view v-for="(item,index) in paixu_shanglist" @tap="show_paixu_list(index)" 
+							<view v-for="(item, index) in paixu_shanglist" 
+								:key="index"
+								@tap="show_paixu_list(index)" 
 								style="border-bottom:1px dashed #999999;">
 								
 								<view class="df_1 c6 show_paixu" style="padding: 20rpx 10rpx 20rpx 40rpx;">
@@ -447,6 +449,9 @@
 				showShangModal:false,
 				
 				coupon_list_length:0,
+				
+				order_option_key_and_value_str:''
+				
 			};
 		},
 		
@@ -524,6 +529,16 @@ extraData = 'xxxxxxxxxxxxxxx'
 			console.log('order/pay 参数：', options);
 			
 			
+			that.order_option_key_and_value_str = options.order_option_key_and_value_str;
+			
+			console.log('12121212112====>>>>',that.order_option_key_and_value_str);
+			
+		
+			
+			
+			console.log('当前解码后的数据为',that.order_option_key_and_value_str);
+			
+
 			that.current_option = options;
 					
 					
@@ -751,7 +766,15 @@ extraData = 'xxxxxxxxxxxxxxx'
 				that.extraData = options.extraData;
 				
 				console.log('本次下单有扩展字段：' + that.extraData);
+			}			
+			
+			//2022.10.22. 增加备注信息
+			if(options.buyer_memo){
+				that.remark = options.buyer_memo;
+				
+				that.remark = decodeURIComponent(that.remark);
 			}
+			
 			
 			//获取自提点列表
 			//this.get_zitidian_list();
@@ -1624,6 +1647,9 @@ extraData = 'xxxxxxxxxxxxxxx'
 					}
 				}
 				
+				
+				console.log('当前的11111111',that.order_option_key_and_value_str);
+				
 				var data_orderAdd = {}
 				
 				if(that.order_type_001 == 'shopmall'){
@@ -1640,6 +1666,8 @@ extraData = 'xxxxxxxxxxxxxxx'
 						sellerid: that.abotapi.get_sellerid(),
 						payment: 3,
 						zitidian_status_flag:that.zitidian_status_flag,
+						
+						order_option_key_and_value_str:that.order_option_key_and_value_str
 					};
 					
 					
@@ -1724,6 +1752,8 @@ extraData = 'xxxxxxxxxxxxxxx'
 				}
 				
 				that.abotapi.abotRequest({
+					
+					//url:'http://192.168.0.71/yanyubao_server/index.php'+'/?g=Yanyubao&m=ShopAppWxa&a=order_add',
 					url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=order_add',
 					data: data_orderAdd,
 					success: function (res) {

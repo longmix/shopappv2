@@ -36,8 +36,20 @@
 			
 		
 			if(options.ret_page){
-				ret_page = options.ret_page
+				this.ret_page = options.ret_page
 			}
+			
+			//设置浏览器的标题为APP名称，
+			//wordpress项目中为 wxa_website_name
+			//shopapp项目中为 default_shopname
+			//如果不设置，uniapp应该会自动使用html中的head里的title。
+			var default_shopname = this.abotapi.globalData.default_shopname;
+			if(!default_shopname){
+				default_shopname = this.abotapi.globalData.wxa_website_name;
+			}
+			uni.setNavigationBarTitle({
+				title: default_shopname
+			})
 		
 			var self = this;
 		
@@ -55,9 +67,10 @@
 		
 		        if (url_data.length < 2) {
 					//跳转到首页
-					uni.switchTab({
-						url: '/pages/index/index'
-					})
+					//uni.switchTab({
+					//	url: '/pages/index/index'
+					//})
+					this.abotapi.call_h5browser_or_other_goto_url('/pages/index/index');
 		        }
 		
 		        var url = 'https://www.abot.cn';
@@ -177,9 +190,14 @@
 				
 				
 				console.log('111111111111111111111======>>>>'+options.url);
-								
-				this.url = decodeURIComponent(options.url)
 				
+				try {
+					this.url = decodeURIComponent(options.url);
+				} catch (e) {
+					console.error(e);
+				}
+				//this.url = decodeURIComponent(options.url);
+								
 				console.log('111111111 decodeURIComponent======>>>>' + this.url);
 				
 				

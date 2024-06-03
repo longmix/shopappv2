@@ -4,13 +4,13 @@
 			
 			<!-- #ifdef H5AAAA --> 
 			<view class="aui-navBar aui-navBar-fixed b-line">
-				<a href="javascript:;" class="aui-navBar-item">
+				<a class="aui-navBar-item">
 					<i class="icon icon-return"></i>
 				</a>
 				<view class="aui-center">
 					<text class="aui-center-title">会员列表</text>
 				</view>
-				<a href="javascript:;" class="aui-navBar-item">
+				<a class="aui-navBar-item">
 					<i class="icon icon-sys"></i>
 				</a>
 			</view>
@@ -34,7 +34,8 @@
 							<block v-for="(item,index) in citizen_list" :key="index">
 								
 								<view class="aui-extreme-item">
-									<navigator :url="'detail?userid='+item.userid">
+									<!-- navigator :url="'detail?userid='+item.userid" -->
+									<view @click="item_header_click" :data-userid="item.userid">
 										<view class="aui-flex aui-flex-pic">
 											<view class="aui-flex-eme">
 												<image :src="item.head_icon"></image>
@@ -47,27 +48,27 @@
 												<!-- <image src="https://www.17sucai.com/preview/1268063/2018-12-05/extreme/images/icon-hot.png"></image> -->
 											</view>
 										</view>
-									</navigator>
+									</view>
 								    <view class="aui-palace" v-if="item.balance">
 										<!-- <navigator :url="'../user/log?userid002='+ item.userid"></navigator> -->
 										
-										<view href="javascript:;" class="aui-palace-grid">
+										<view class="aui-palace-grid">
 											<view class="aui-palace-grid-text">
-												<h2 class="red">￥{{item.balance}}</h2>
-												<p>现金余额(元)</p>
+												<h2 class="red">{{item.balance}}</h2>
+												<p>{{item.balance_str}}</p>
 											</view>
 										</view>
 										
-								        <view href="javascript:;" class="aui-palace-grid">
+								        <view class="aui-palace-grid">
 								            <view class="aui-palace-grid-text">
-								                <h2>￥{{item.balance_zengsong}}</h2>
-								                <p>可用赠款(元)</p>
+								                <h2>{{item.balance_zengsong}}</h2>
+								                <p>{{item.balance_zengsong_str}}</p>
 								            </view>
 								        </view>
-								        <view href="javascript:;" class="aui-palace-grid">
+								        <view class="aui-palace-grid">
 								            <view class="aui-palace-grid-text">
 								                <h2>{{item.score}}</h2>
-								                <p>积分账户余额</p>
+								                <p>{{item.score_str}}</p>
 								            </view>
 								        </view>
 								    </view>
@@ -127,6 +128,7 @@
 				 
 				search_text:'',
 				list_search_tips:'搜索会员手机号',
+				list_item_header_no_click:0,  //列表元素的头部是否可以点击
 				
 				option_title: null
 				
@@ -136,9 +138,25 @@
 		onLoad(options) {
 			console.log('options===>',options);
 			
+			// #ifdef MP-WEIXIN
+			if(options.title){
+				options.title = decodeURIComponent(options.title);
+			}
+			if(options.data_url){
+				options.data_url = decodeURIComponent(options.data_url);
+			}
+			
+			console.log('微信小程序中做特殊判断，多加一次转换后的参数：', options);
+			
+			// #endif
+			
 			if(options.title){
 				//如果带有title参数，则使用
+				
+				
+				
 				this.option_title = options.title;
+				console.log('011010101111111111111111111111',this.option_title);
 				
 				uni.setNavigationBarTitle({
 					title: options.title
@@ -194,6 +212,7 @@
 				
 				this.data_url_flag = 1;
 			}
+			console.log('555555555555',this.data_url);
 			
 			
 			
@@ -243,6 +262,7 @@
 				
 				//状态未固定或者不固定时候的导航条样式
 				console.log('====>',that.abotapi.globalData.navigationBarBackgroundColor_fixed);
+				
 				if(that.abotapi.globalData.navigationBarBackgroundColor_fixed == 1){
 					uni.setNavigationBarColor({
 						backgroundColor:that.abotapi.globalData.navigationBar_bg_color,
@@ -260,14 +280,29 @@
 					that.btn_bg_color = cb_params.wxa_shop_nav_bg_color;
 				}
 				
-				//配置项中的数据源网址
+				//配置项中的数据源网址，且 option 参数中没有 data_url。
 				if(cb_params.member_list_data_url && (that.data_url_flag == 0)){
 					that.data_url = cb_params.member_list_data_url;
 				}
 				
-				console.log('cb_params',cb_params);
+				console.log('cb_params', cb_params);
 				
 				this.get_citizen_list();
+			},
+			
+			item_header_click:function(e){
+				if(this.list_item_header_no_click == 1){
+					return;
+				}
+				
+				var detail_userid = e.currentTarget.dataset.userid;
+				
+				console.log('item_header_click ===>>> detail_userid ===>>> '+ detail_userid);
+				
+				var new_url = '/pages/member/detail?userid=' + detail_userid;
+				
+				this.abotapi.call_h5browser_or_other_goto_url(new_url, '', '');
+				
 			},
 			
 			go_to_url:function(e){
@@ -316,12 +351,18 @@
 						//如果没有设定标题，且服务器返回了新标题
 						if(!that.option_title && res.data.list_title){
 							uni.setNavigationBarTitle({
-								title: res.data.list_title
+								title: res.data.list_title,
+								
 							})
+							
 						}
 						
 						if(res.data.list_search_tips){
 							that.list_search_tips = res.data.list_search_tips;
+						}
+						
+						if(res.data.list_item_header_no_click){
+							that.list_item_header_no_click = res.data.list_item_header_no_click;
 						}
 						
 						if(res.data.code == 1){
@@ -378,6 +419,8 @@
 						keywords: this.search_text,
 					},
 					success: function (res) {
+						
+						//分页
 						
 						if(res.data.list_search_tips){
 							that.list_search_tips = res.data.list_search_tips;
@@ -575,6 +618,7 @@
 	    -webkit-flex-direction: column;
 	    -ms-flex-direction: column;
 	    flex-direction: column;
+		background-color: #f0f0f0;
 	}
 	
 	.aui-scrollView {
@@ -845,16 +889,16 @@
 		color:#fff;
 		text-align: center;
 		overflow: hidden;
-		margin: 0rpx 30rpx 20rpx 30rpx;
+		margin: 10rpx 30rpx 10rpx 30rpx;
 	}
 	.server_btn_style{
 		
-		margin-right: 1%;
+		margin: 10rpx;
 		border-radius: 6rpx;
 		background:#EC652F;
 		float: left;
 		height: 70rpx;
-		line-height: 60rpx;
+		line-height: 70rpx;
 		padding: 5rpx 20rpx;
 	}
 	//搜索样式

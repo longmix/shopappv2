@@ -8,6 +8,7 @@
 				:data-plugin_flag="item2.plugin_flag"
 				:data-plugin_name="item2.plugin_name"
 				:data-plugin_desc_basic="item2.plugin_desc_basic" 
+				:data-link="item2.link"
 				@tap="block_tanchuang">
 				<image v-if="item2.plugin_flag" class="tips" src="https://yanyubao.tseo.cn/Tpl/static/images/bbq.png"></image>
 				
@@ -36,6 +37,11 @@
 		data(){
 			return{
 				module_icon_list:'',
+				
+				//是否跳转到功能模块，还是不响应点击事件
+				goto_my_module_pc_web_flag:0,
+				
+				share_data_from_server:null,
 			}
 		},
 		onLoad(option){
@@ -72,10 +78,83 @@
 				
 			}, 1500);
 		},
-		
+		//====== 小程序分享  开始 ==========
+		onShareAppMessage: function () {
+			var share_data001 = this.__get_share_data();
+			
+			
+			var share_data = {
+			  title: '' + share_data001.share_title,
+			  path: share_data001.last_url,
+			  imageUrl: share_data001.share_img,
+			  success: function (res) {
+				// 分享成功
+			  },
+			  fail: function (res) {
+				// 分享失败
+			  }
+			};
+			
+			//#ifdef MP-BAIDU
+				share_data.content = share_data.title;
+			//#endif
+			
+			return share_data;
+			
+		},
+		onShareTimeline: function () {
+			var share_data001 = this.__get_share_data();
+			
+			return {
+			    title: '' + share_data001.share_title,
+			    query: share_data001.share_query,
+			    imageUrl:share_data001.share_img,
+			}
+			
+		},
+		onAddToFavorites: function () {
+			var share_data001 = this.__get_share_data();
+			
+			return {
+			    title: '' + share_data001.share_title,
+			    query: share_data001.share_query,
+			    imageUrl:share_data001.share_img,
+			}
+		},
+		//====== 小程序分享  结束 ==========
 		methods:{
+			//获取分享的数据
+			__get_share_data:function(){
+				
+				if(!this.share_data_from_server){
+					return;
+				}
+				
+				
+				var share_data = {};
+				
+				share_data.share_title = this.share_data_from_server.title;
+				share_data.share_img = this.share_data_from_server.image;
+				//当前页面 path ，必须是以 / 开头的完整路径
+				share_data.last_url = '/pages/yanyubao/module_list';
+				share_data.share_query = '';
+				
+				return share_data;
+			},
+			
 			callback_set_option_list_str:function(that, option_list){
 				that.abotapi.getColor();
+				
+				
+				//是否跳转到PC版本的控制台，这个选项在 延誉电商APP后台的“系统配置>>全局设置选项>>更多控制选项”中设置
+				if(option_list.yanyubao_goto_my_module_pc_web_flag){					
+					that.goto_my_module_pc_web_flag = option_list.yanyubao_goto_my_module_pc_web_flag;
+				}
+				else{
+					that.goto_my_module_pc_web_flag = 0;
+				}
+				
+				
 			},
 			
 			//调用接口
@@ -103,11 +182,11 @@
 				
 				this.abotapi.abotRequest({
 				    url:that.abotapi.globalData.yanyubao_server_url+'/Supplier/Login/show_yanyubao_module_list_for_tseo_cn',
-				    method: 'get',
+				    method: 'post',
 				    data:{
-				
-				    },
-					
+						platform : that.abotapi.globalData.current_platform,
+						version_code : that.abotapi.globalData.version_code				
+				    },					
 				    success(res) {
 				    	console.log("show_yanyubao_module_list_for_tseo_cn ===>>> ",res)
 						
@@ -156,6 +235,14 @@
 							})
 							
 							that.module_icon_list = module_icon_list
+
+
+							if(res.data.share_data){
+								// title image
+								that.share_data_from_server = res.data.share_data
+							}
+							
+							
 						}
 				
 				    },
@@ -170,10 +257,13 @@
 			
 			//模态弹窗事件
 			block_tanchuang:function(e){
+				var that = this;
 				
 				console.log('block_tanchuang=======>>>>>', e);
 				
 				var plugin_flag = e.currentTarget.dataset.plugin_flag;
+				
+				var link = e.currentTarget.dataset.link;
 				
 				if(plugin_flag && (plugin_flag == 1) ){
 					var plugin_name = e.currentTarget.dataset.plugin_name;
@@ -184,12 +274,20 @@
 					    content: plugin_desc_basic,
 						showCancel: false,
 					    success: function (res) {
-					        
+							//如果有链接且运行跳转，则跳转
+					        if(link && (that.goto_my_module_pc_web_flag == 1) ){
+								that.abotapi.call_h5browser_or_other_goto_url(link);
+							}
 					    }
 					});
+					
+					return;
 				}
 				
-				
+				//如果有链接且运行跳转，则跳转
+				if(link && (that.goto_my_module_pc_web_flag == 1) ){
+					that.abotapi.call_h5browser_or_other_goto_url(link);
+				}
 				
 				
 				  

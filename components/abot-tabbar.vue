@@ -1,8 +1,8 @@
 <template>
 	<view class="weui-tabbar" :class="extClass">
 		<!-- 选中的时候往weui-tabbar__item加class:weui-bar__item_on -->
-		<view  @click="tabChange(index)" v-for="(item, index) in list" :key="index" class="weui-tabbar__item" :class="{'weui-bar__item_on':index === current}">
-			<view style="position: relative;display:inline-block;"><image :src="current === index ? item.selectedIconPath : item.iconPath" class="weui-tabbar__icon"></image></view>
+		<view  @click="tabChange(index)" v-for="(item, index) in list" :key="index" class="weui-tabbar__item" :class="{'weui-bar__item_on':index === current_index}">
+			<view style="position: relative;display:inline-block;"><image :src="current_index === index ? item.selectedIconPath : item.iconPath" class="weui-tabbar__icon"></image></view>
 			<view class="weui-tabbar__label">{{ item.text }}</view>
 		</view>
 	</view>
@@ -14,38 +14,40 @@
  * 
  * 【测试  http://localhost:8080/h5/abotds/#/pages/help/detail?id=8066 】
  * 
- * import abotTabBar from '@/components/abot-tabbar.vue'
+ * 
+import abotTabBar from '@/components/abot-tabbar.vue'
+
 components:{
-            abotTabBar
-        },
-        data() {
-            return {
-                tabbar_list: [{
-                     "text": "未录入",
-                     "iconPath": '../../static/enter.png' ,
-                     "selectedIconPath": '../../static/enter-select.png'
-                   },
-                   {
-                     "text": "作业互评",
-                     "iconPath": '../../static/correct.png',
-                     "selectedIconPath":'../../static/correct-select.png'
-                     },
-                     {
-                       "text": "成绩分析",
-                       "iconPath": '../../static/analyse.png',
-                       "selectedIconPath": '../../static/analyse-select.png'
-                     }],
-            }
-        },
-        methods: {
-            tabChange(index) {
-                console.log(index)
-            }
-        }
-		
-		在 template 中使用组件
-		
-		<abot-tab-bar :list="tabbar_list" style="position:fixed;bottom:0;width:100%;left:0;right:0;" @tabChange="tabChange"></abot-tab-bar>
+	abotTabBar
+},
+data() {
+	return {
+		tabbar_list: [{
+			 "text": "未录入",
+			 "iconPath": '../../static/enter.png' ,
+			 "selectedIconPath": '../../static/enter-select.png'
+		   },
+		   {
+			 "text": "作业互评",
+			 "iconPath": '../../static/correct.png',
+			 "selectedIconPath":'../../static/correct-select.png'
+			 },
+			 {
+			   "text": "成绩分析",
+			   "iconPath": '../../static/analyse.png',
+			   "selectedIconPath": '../../static/analyse-select.png'
+			 }],
+	}
+},
+methods: {
+	tabChange(index) {
+		console.log(index)
+	}
+}
+
+在 template 中使用组件
+
+<abot-tab-bar :list="tabbar_list" style="position:fixed;bottom:0;width:100%;left:0;right:0;" @tabChange="tabChange"></abot-tab-bar>
  */	
 export default {
 	props: {
@@ -54,21 +56,28 @@ export default {
 			default: function() {
 				return []
 			}
-		}
+		},
+		current_index:{ type: Number, default: 0 }
 	},
 	data() {
 		return {
 			extClass: '',
-			current: 0
+			//current: 0
 		};
 	},
 	methods: {
 		tabChange(index) {
-			if (index === this.current) {
+			console.log('this.current_index ===>>> ' + this.current_index);
+			console.log('this.new index ===>>> ' + index);
+			
+			if (index === this.current_index) {
 				return;
 			}
-			this.current = index;
-			this.$emit('tabChange',index)
+			
+			//因为current_index是prop，所以不应该修改其值
+			//this.current_index = index;
+			
+			this.$emit('tabChange', index)
 		}
 	}
 };
@@ -87,7 +96,7 @@ export default {
 	left: 0;
 	top: 0;
 	right: 0;
-	height: 1px;
+	height: 1rpx;
 	border-top: 1rpx solid rgba(0, 0, 0, 0.1);
 	color: rgba(0, 0, 0, 0.1);
 }
@@ -117,13 +126,13 @@ export default {
 }
 .weui-tabbar__icon {
 	display: inline-block;
-	width: 28px;
-	height: 28px;
-	margin-bottom: 2px;
+	width: 56rpx;
+	height: 56rpx;
+	margin-bottom: 4rpx;
 }
 i.weui-tabbar__icon,
 .weui-tabbar__icon > i {
-	font-size: 24px;
+	font-size: 40rpx;
 	color: rgba(0, 0, 0, 0.5);
 }
 .weui-tabbar__icon image {
@@ -132,7 +141,7 @@ i.weui-tabbar__icon,
 }
 .weui-tabbar__label {
 	color: #bfbfbf;
-	font-size: 10px;
+	font-size: 24rpx;
 	line-height: 1.4;
 }
 </style>

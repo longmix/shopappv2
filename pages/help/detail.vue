@@ -37,7 +37,7 @@
 			<view class='datetime' v-if="wxa_show_article_detail_category == 1">
 				<view class='yuanchuang'>分类：{{wz_text.classname}}</view>
 				<view class='guge'>{{app_name_chat_title}}</view>
-				<view class='yuanchuang' style='margin-left:15px;'>{{wz_text.updatetime}}</view>
+				<view class='yuanchuang' style='margin-left:15rpx;'>{{wz_text.updatetime}}</view>
 			</view>
 			<view class='wenzhang_detail'>
 				<!-- <import src="../../wxParse/wxParse.wxml"/> -->
@@ -66,7 +66,7 @@
 						
 					</scroll-view>
 				</view>
-				<view style="margin-top: 10px;" v-for="img_item in wz_text.picture_list" :key="img_item" v-if="form_page == 'publish_list'">
+				<view style="margin-top: 10rpx;" v-for="img_item in wz_text.picture_list" :key="img_item" v-if="form_page == 'publish_list'">
 					<image style="width: 100%;" mode="widthFix" :src="img_item"></image>
 				</view>
 				
@@ -173,23 +173,29 @@
 		     
 				<image class="comment_img comment_write_img"
 					style="z-index: 100;"
+					 mode="widthFix"
 					src="/static/img/help/write.png"
 					></image>
 		        <input @focus="is_login" class="comment_input" 
 					placeholder="写评论..." confirm-type="send" 
 					@confirm="submitRemark" :data-imgid="wz_text.id" v-model="inputValue" type="text"></input> <!--  -->
 		        
-		        <image class="comment_img comment_right_img" src="../../static/img/help/comment.png" @tap='toReamrkList'  ></image><!--  @click="get_input_focus()" -->
+		        <image class="comment_img comment_right_img" 
+					mode="widthFix" 
+					src="../../static/img/help/comment.png" 
+					@tap='toReamrkList'  ></image><!--  @click="get_input_focus()" -->
 		        <view class="comment_num_point" :hidden="!comment_num">{{comment_num}}</view>
 		        
 				
-		        <image class="comment_img comment_right_img"  :style="comment_num ? 'margin-left:0':''"
-						@tap="toHomePage" src="../../static/img/help/home_page.png"></image>
+		        <image class="comment_img comment_right_img" 
+					mode="widthFix" :style="comment_num ? 'margin-left:0':''"
+					@tap="toHomePage" src="../../static/img/help/home_page.png"></image>
 				<!-- <image class="comment_img comment_right_img" src="../../../static/img/help/friends.png"></image> -->
 		     </view>
 		</view>
 		
 		<abot-tab-bar :list="tabbar_list" 
+			:current_index="0"
 			v-if="tabbar_list_test == 1"
 			style="position:fixed;bottom:0;width:100%;left:0;right:0;" 
 			@tabChange="tabChange"></abot-tab-bar>
@@ -446,45 +452,62 @@
 		},
 		
 		onShareAppMessage: function () {
-			console.log('==================>>>');
-			var that = this;
+			console.log('==================>>>onShareAppMessage');
 			
-			
-			var share_data = {
-				title: '' + that.wz_text.title,
-				path: 'pages/help/detail?id='+that.id,
-				imageUrl:that.wz_text.pic,
-				success: function(res) {
-				// 分享成功
-					uni.showToast({
-						title: '分享成功',
-						icon: 'success',
-						duration: 2000
-					})
-				},
-				fail: function(res) {
-					// 分享失败
-					/*uni.showToast({
-						title: '分享完成',
-						icon: 'success',
-						duration: 2000
-					})*/
-				}
-			};
-			
-			//#ifdef MP-BAIDU
-				share_data.content = share_data.title;
-			//#endif
-			
-			return share_data;
+			return this.share_return(true);
 		},
 		onShareTimeline: function () {
+			console.log('==================>>>onShareTimeline');
 			
+			return this.share_return();
 		},
 		onAddToFavorites: function () {
-			this.onShareTimeline();
+			console.log('==================>>>onAddToFavorites');
+			
+			return this.share_return();
 		},
 		methods: {
+			share_return: function(is_share_app=false) {
+				var that = this;
+								
+				console.log('that.id===>>>' + that.id);
+				
+				var share_data = {
+					title: '' + that.wz_text.title,
+					//path: 'pages/help/detail?id='+that.id,
+					query: 'id=' + that.id, 
+					imageUrl:that.wz_text.pic,
+					success: function(res) {
+					// 分享成功
+						uni.showToast({
+							title: '分享成功',
+							icon: 'success',
+							duration: 2000
+						})
+					},
+					fail: function(res) {
+						// 分享失败
+						/*uni.showToast({
+							title: '分享完成',
+							icon: 'success',
+							duration: 2000
+						})*/
+					}
+				};
+				
+				//#ifdef MP-BAIDU
+					share_data.content = share_data.title;
+				//#endif
+				
+				if(is_share_app){
+					share_data.path = 'pages/help/detail?'+ share_data.query;
+					
+					console.log('share_data.path ===>>> ' + share_data.path);
+				}
+				
+				return share_data;
+				
+			},
 			callback_set_option: function (that, cb_params) {
 				console.log('getShopOptionAndRefresh+++++:::' + cb_params)
 				
@@ -1336,13 +1359,14 @@
 					match = match.replace(/height="[^"]+"/gi, '').replace(/height='[^']+'/gi, '');
 					return match;
 				});
+				
 				newContent = newContent.replace(/style="[^"]+"/gi,function(match,capture){
 					match = match.replace(/width:[^;]+;/gi, 'max-width:100%;').replace(/width:[^;]+;/gi, 'max-width:100%;');
 					return match;
 				});
 				//newContent = newContent.replace(/<br[^>]*\/>/gi, '');
 				
-				newContent = newContent.replace(/<p[^>]*>/gi, '<p style="margin:10px;">');
+				newContent = newContent.replace(/<p[^>]*>/gi, '<p style="margin:10rpx;">');
 				
 				newContent = newContent.replace(/\<img/gi, '<img style="max-width:100%;height:auto;display:inline-block;margin:10rpx auto;vertical-align: middle;"');
 				
@@ -1377,7 +1401,7 @@
 	  width:45%;
 	  float:left;
 	  margin:2%;
-	  font-size:15px;
+	  font-size:15rpx;
 	  background-color: #a58904;
 	}
 	.wxParse-inline{
@@ -1392,29 +1416,29 @@
 	    font-size:0.8em;
 	}
 	.weui-article__section p{
-	  margin-top: 30px;
+	  margin-top: 30rpx;
 	  text-indent: 2em;
 	}
 	.weui-article {
-	  padding: 20px 15px;
+	  padding: 20rpx 15rpx;
 	  font-size: 40rpx;
 	}
 	.weui-article__section {
 	  margin-bottom: 1.5em;
 	}
 	.weui-article__h1 {
-	  font-size: 18px;
+	  font-size: 18rpx;
 	  font-weight: 400;
 	  margin-bottom: .9em;
 	}
 	.weui-article__h2 {
-	  font-size: 16px;
+	  font-size: 16rpx;
 	  font-weight: 400;
 	  margin-bottom: .34em;
 	}
 	.weui-article__h3 {
 	  font-weight: 400;
-	  font-size: 15px;
+	  font-size: 15rpx;
 	  margin-bottom: .34em;
 	}
 	.weui-article__p {
@@ -1474,7 +1498,7 @@
 	}
 	.datetime{
 	  margin-left:10rpx;
-	  height:20px;
+	  height:20rpx;
 	  margin-top:26rpx;
 	  margin-bottom:22rpx;
 	}
@@ -1688,6 +1712,7 @@
 	.comment_list{
 	  border-top:1px solid #EDEDED;
 	}
+	
 	.comment_list_bottom{
 	  height:150rpx;
 	}

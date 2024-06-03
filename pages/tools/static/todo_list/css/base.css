@@ -1,0 +1,52 @@
+@charset "utf-8";
+*{
+	margin:0;
+	padding:0;
+}
+
+ul,ol,dl{
+	list-style:none;
+}
+
+i,em{
+	font-style:normal;
+}
+
+b,strong,h1,h2,h3,h4,h5,h6{
+	font-weight:normal;
+}
+
+a,u{
+	text-decoration:none;
+}
+
+h1,h2,h3,h4,h5,h6{
+	font-size:16px;
+}
+
+input,button{
+	outline:none;
+	border:0;
+}
+
+.fl{
+	float:left;
+}
+.fr{
+	float:right;
+}
+
+.clearFix:after{
+	content:'';
+	display:block;
+	height:0;
+	overflow:hidden;
+	visibility:hidden;
+	clear:both;
+}
+
+
+
+
+
+

@@ -53,7 +53,7 @@
 
   - 使用上的问题和疑问，请用微信扫码查看其他开发者的提问和回复记录，也可以在文章末尾写留言。
 
-<img src="http://www.tseo.cn/wp-content/uploads/2020/04/9be115d08294dd9f1eb588d52d662dde.png" width="150px">
+<img src="https://www.tseo.cn/wp-content/uploads/2020/04/9be115d08294dd9f1eb588d52d662dde.png" width="150px">
 
 
 
@@ -84,11 +84,14 @@
 **首页 /pages/index/index **
 
   - 支持的参数：
-    > parentid 推荐人的userid
-	> scene 来自微信小程序扫码后的自带参数，如果内容为“parentid_”开头，则是推荐者ID，否则默认为sellerid。
-	> sellerid 商户编号（非ID）
-	> goto_new_index 跳转到新的界面，不同于SaaS云后台的高级选项中的“首页跳转”，这里不会加载服务器端的设置项，所以跳转速度更快。
-	支持以下的商城、会员、小程序、视频号等路径，路径中如果包含空格等，建议先做urlencode。
+    - parentid 推荐人的userid
+	- scene 来自微信小程序扫码后的自带参数，如果内容为“parentid_”开头，则是推荐者ID，否则默认为sellerid。
+	- sellerid 商户编号（非ID）
+	- goto_new_index 跳转到新的界面，不同于SaaS云后台的高级选项中的“首页跳转”，这里不会加载服务器端的设置项，所以跳转速度更快。支持下文的商城、会员、小程序、视频号等路径，路径中如果包含空格等，建议先做urlencode。
+	- 补充：关于首页的自动跳转到其他页面，有三种方式：
+	  - （1）abot_data.js中设置“goto_new_index”这个选项，优先级最高。
+	  - （2）通过参数“goto_new_index”，优先级较低，需要重新定义首页路径，例如“/pages/index/index?goto_new_index=xxxxxx”。
+	  - （3）在SaaS云后台的高级选项中设置“首页跳转”。
 
 
 
@@ -305,6 +308,14 @@
   - 拼图 /pages/tools/puzzle （内测版）
   
   - 涂鸦 /pages/tools/graffiti （微信小程序中正常，H5和APP中待验证）
+
+  - 记事本 /pages/tools/notepad
+
+  - Todo List /pages/tools/todo_list
+
+  - 火星文 /pages/tools/leetspeak
+
+  - 智能抠图 /pages/tools/remove_img_bg
 
   <img src="https://www.abot.cn/wp-content/themes/abotcn/uploads/2023/08/202308221425383986.jpg" width="1000px">
 

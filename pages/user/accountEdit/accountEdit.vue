@@ -19,7 +19,7 @@
 	              <input class="weui-input" v-model="new_password2" password="true" placeholder="请再次输入新密码"></input>
 	          </view>
 	    </view>
-	    <button class="weui-btn weui-btn_primary" :style="{background:wxa_shop_nav_bg_color}" formType="submit">确认修改</button>
+	    <button class="weui-btn weui-btn_primary" :style="{background:wxa_shop_nav_bg_color, color:wxa_shop_nav_font_color}" formType="submit">确认修改</button>
 	</form>
 	
 	</view>
@@ -35,6 +35,7 @@
 				new_password:'',
 				new_password2: '',
 				wxa_shop_nav_bg_color:'',
+				wxa_shop_nav_font_color:'',
 			};
 		},
 		onLoad(options) {
@@ -49,7 +50,8 @@
 			this.abotapi.set_option_list_str(this,
 				function(that001, option_list){
 					console.log('option_list',option_list);
-					that001.wxa_shop_nav_bg_color = option_list.wxa_shop_nav_bg_color
+					that001.wxa_shop_nav_bg_color = option_list.wxa_shop_nav_bg_color;
+					that001.wxa_shop_nav_font_color = option_list.wxa_shop_nav_font_color;
 				}
 				)
 		},

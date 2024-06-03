@@ -19,7 +19,7 @@
 							<view class="time">{{chat.latest_time}}</view>
 						</view>
 						<view class="bottom" style="width: 500rpx;overflow: hidden;">
-							<view class="msg" v-if="chat.msg_type == 'text'" v-html="chat.latest_msg" style="height: 30rpx;margin-top: 10rpx;width: 400rpx;overflow:hidden;"></view>
+							<view class="msg" v-if="chat.msg_type == 'text'" v-html="chat.latest_msg" style="height: 36rpx;margin-top: 10rpx;width: 400rpx;overflow:hidden;"></view>
 							<view class="msg" v-else-if="chat.msg_type == 'img'">[图片]</view>
 							<view class="msg" v-else-if="chat.msg_type == 'redEnvelope'">[红包]</view>
 							<view class="msg" v-else-if="chat.msg_type == 'voice'">[语音]</view>
@@ -185,26 +185,6 @@
 				latestMsgList_count: 0
 			}
 		},
-		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
-		onPullDownRefresh() {
-		    setTimeout(function () {
-		        uni.stopPullDownRefresh();
-		    }, 1000);
-		},
-		onShow: function() {
-			var that = this;
-			
-			var userInfo =that.abotapi.get_user_info();
-			console.log('acadawuserinfo',userInfo);
-			if(userInfo == null){
-				uni.redirectTo({
-				url: '/pages/login/login'
-				 });
-			}
-			
-			that.getLastMsg();
-		
-		},
 		onLoad() {
 			var that = this;
 			
@@ -218,12 +198,35 @@
 				return;
 			}
 			
-			that.getLastMsg();
+			//that.getLastMsg();
 			
 			that.abotapi.current_chat_gui = this;
 			that.abotapi.current_chat_handle = this;
 			that.abotapi.current_chat_page = '/pages/msg/msg';
+		},		
+		onShow: function() {
+			var that = this;
+			
+			/*var userInfo = that.abotapi.get_user_info();
+			
+			console.log('acadawuserinfo', userInfo);
+			
+			if(userInfo == null){
+				uni.redirectTo({
+					url: '/pages/login/login'
+				});
+			}*/
+			
+			that.getLastMsg();
+		
 		},
+		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
+		onPullDownRefresh() {
+		    setTimeout(function () {
+		        uni.stopPullDownRefresh();
+		    }, 1000);
+		},
+		
 		methods: {
 			
 			getLastMsg:function(){
@@ -231,6 +234,12 @@
 				
 				var userInfo = that.abotapi.get_user_info();
 				var userAcountInfo = this.abotapi.get_user_account_info();
+				
+				if(!userInfo){
+					return;
+				}
+				
+				
 				that.abotapi.abotRequest({
 				     url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ChatData/chat_history',
 				     data: {
@@ -239,12 +248,12 @@
 						checkstr: userInfo.checkstr,
 						sellerid: that.abotapi.globalData.default_sellerid, //'fmXJPaVea',
 						chat_type: '0,4,1', //0普通，4群聊，1系统
-				     },
-				    
+				     },				    
 				     success: function (res) {
-				       console.log('ddd', res);
+				       console.log('chat_history ===>>>', res);
 					       
 						var	data = res.data;
+						
 						if(data.code == 1){
 							
 							that.latestMsgList = data.data
@@ -266,13 +275,13 @@
 			toChat(chat){
 				
 				var url = 'chat/chat?type=' + chat.chat_type;
-				if(chat.chat_type == 0){
+				if( (chat.chat_type == 0) || (chat.chat_type == 1) ){
 					url = url + '&userid=' + chat.from_person_detail.userid + '&name=' + chat.from_person_detail.nickname;					
 					
-				}else if(chat.chat_type == 1){
+				}else if(chat.chat_type == 1111111){
 					url = url + '&key=test';
 				}
-				 else {
+				else {
 					url = url + '&groupid=' + chat.groupid;
 				}
 						

@@ -261,49 +261,51 @@
 				console.log('getNewMsg=====',msg)
 			    var that = this;			
 				var userInfo = that.abotapi.get_user_info();
-					if(that.pageOn){	
-						
-						// console.log('that.pageOn==',that.pageOn)
-						console.log('00000000')
-						
-						var is_not_self_msg = true;										
-						
-							if(is_not_self_msg && msg.uid == that.userid){
-								
-								that.screenMsg(msg);
-								
-								
-								console.log('4444444')
-								var data_params = {
-									   action: 'clear_couter_unread',
-								       sellerid: that.abotapi.globalData.default_sellerid,
-								     }
-								
-								if(!that.groupid){
-									data_params.userid01 = that.userid;
-									data_params.userid02 = userInfo.userid;
-									data_params.chat_type = 0;
-								} else {
-									data_params.userid01 = that.groupid;
-									data_params.userid02 = userInfo.userid;
-									data_params.chat_type = 4;
-								}
-								
-								uni.request({
-								     url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ChatData/chat_history',
-								     data:data_params,
-								     header: {
-								       "Content-Type": "application/x-www-form-urlencoded"
-								     },
-								     method: "POST",
-								     success: function (res) {
-								       console.log('ddd', res);
+				
+				
+				if(that.pageOn){	
+					
+					// console.log('that.pageOn==',that.pageOn)
+					console.log('00000000')
+					
+					var is_not_self_msg = true;										
+					
+						if(is_not_self_msg && msg.uid == that.userid){
 							
-								     }
-								   })	
-							}						
+							that.screenMsg(msg);
+							
+							
+							console.log('4444444')
+							var data_params = {
+								   action: 'clear_couter_unread',
+								   sellerid: that.abotapi.globalData.default_sellerid,
+								 }
+							
+							if(!that.groupid){
+								data_params.userid01 = that.userid;
+								data_params.userid02 = userInfo.userid;
+								data_params.chat_type = 0;
+							} else {
+								data_params.userid01 = that.groupid;
+								data_params.userid02 = userInfo.userid;
+								data_params.chat_type = 4;
+							}
+							
+							uni.request({
+								 url: that.abotapi.globalData.yanyubao_server_url + '/openapi/ChatData/chat_history',
+								 data:data_params,
+								 header: {
+								   "Content-Type": "application/x-www-form-urlencoded"
+								 },
+								 method: "POST",
+								 success: function (res) {
+								   console.log('ddd', res);
 						
-					}
+								 }
+							   })	
+						}						
+					
+				}
 						
 			},
 			

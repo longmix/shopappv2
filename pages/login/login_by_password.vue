@@ -69,6 +69,8 @@
 				
 			<div class="flex mgb-20">
 				<navigator class="cl-black pointer flex-1" open-type="redirect" url="/pages/login/login">忘记密码？手机验证码登录</navigator>
+				<navigator class="cl-black pointer flex-1" open-type="redirect" url="/pages/login/login_by_email_verifycode"
+					v-if="wxa_login_email_verifycode == 1">没有手机号？用Email试试</navigator>
 			</div>
 			<view class="home-p" :style="{background:wxa_shop_nav_bg_color}" @tap="goHome()">
 				<image src="../../static/img/shouye.svg"></image>
@@ -142,7 +144,10 @@
 				current_userinfo:null,
 				
 				//微信和支付宝小程序的 jscode 和 authcode 信息
-				login_data_from_wxa_or_alipay:null
+				login_data_from_wxa_or_alipay:null,
+				
+				//2023.2.5. 支持使用Email接收验证码登陆
+				wxa_login_email_verifycode:0,
 			}
 		},
 		onLoad:function(){
@@ -209,6 +214,11 @@
 				
 				that.wxa_shop_operation_logo_url = cb_params.wxa_shop_operation_logo_url;
 				that.wxa_shop_new_name = cb_params.wxa_shop_new_name;
+				
+				//2023.2.5. Email地址登陆
+				if(cb_params.wxa_login_email_verifycode){
+					that.wxa_login_email_verifycode = cb_params.wxa_login_email_verifycode;
+				}
 				
 			},
 			

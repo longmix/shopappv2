@@ -16,70 +16,82 @@
 			<view class="icon zhuye before" @click="toindex"></view>
 		</view>
 		
-
-
-		<!-- 左侧类型 -->
-		<scroll-view scroll-y="true" class="left" :style="{top: app_top + 'rpx'}">
-			<view v-for="(item,idx) in types" :key="idx" :data-idx='idx' @tap="tapType" :class="[idx == currType ? 'active' : '']"
-			 style="font-size:33rpx；">
-				{{item.name}}
-			</view>
-		</scroll-view>
-
-		<!-- 右侧数据 -->
-		<scroll-view scroll-y="true" class="right" @scrolltolower="scroll_view_event">
-			<view>
-				<image :src="typeTree_icon" mode="widthFix" style="max-width:95%;" v-if="typeTree_icon"></image>
-			</view>
-
-			<view class="typeTree">
-				<block v-if="wxa_product_super_list_style == 0">
-					<view class="brand" v-for="(data,index) in typeTree" :key="index">
-						<navigator :url="'../product/detail?productid=' + data.productid" wx:key="typeId" class="product_name_item">
-							<image :src="data.picture"></image>
-							<view class="product_name">{{data.name}}</view>
-						</navigator>
-						<view class="addcart-con">
-							<text>￥ {{data.price}}</text>
-							<image @tap.prevent="addCart" src="../../static/img/car.png" :data-productid="data.productid"></image>
-						</view>
-					</view>
-				</block>
-				<block v-if="wxa_product_super_list_style == 1">
-					<view class="logo_info navigator" v-for="(item,index) in typeTree" :key="index" open-type='navigate'>
-
-						<navigator style="" :url="'/pages/product/detail?productid=' + item.productid" open-type='navigate'>
-							<view class="logo_pic" style="margin-top:18rpx;">
-								<image :src="item.picture" style="width:100%;" mode="widthFix"></image>
+		
+		<view class="">
+			<!-- 左侧类型 -->
+			<scroll-view scroll-y="true" class="left" >
+				<view v-for="(item,idx) in types" :key="idx" :data-idx='idx' @tap="tapType" :class="[idx == currType ? 'active' : '']"
+				 style="font-size:33rpx；">
+					{{item.name}}
+				</view>				
+			</scroll-view>
+			<!-- 右侧数据 -->
+			<scroll-view scroll-y="true" class="right" @scrolltolower="scroll_view_event">
+				<view>
+					<image :src="typeTree_icon" mode="widthFix" style="max-width:95%;" v-if="typeTree_icon"></image>
+				</view>
+				<view class="typeTree">
+					<block v-if="wxa_product_super_list_style == 0">
+						<!--一行两个商品  -->
+						<view class="brand" v-for="(data,index) in typeTree" :key="index">
+							<navigator :url="'../product/detail?productid=' + data.productid" wx:key="typeId" class="product_name_item" style="position: relative;">
+								<image :src="data.picture" >
+								<image v-if="index.is_AR == 1" src="https://yanyubao.tseo.cn/Tpl/static/images/ar02.png" style="position: absolute; top: 0rpx; left: 150rpx; width: 50rpx; height: 40rpx;"></image>
+								</image>
+								<view class="product_name">{{data.name}}</view>
+							</navigator>
+							<view class="addcart-con">
+								<text>￥ {{data.price}}</text>
+								<image @tap.prevent="addCart" src="../../static/img/car.png" :data-productid="data.productid"></image>
 							</view>
+						</view>
+					</block>
+					<block v-if="wxa_product_super_list_style == 1">
+						<!-- 一行一个商品 -->
+						<view class="logo_info navigator" v-for="(item,index) in typeTree" :key="index" open-type='navigate'>
 
-							<view class="product_item_right_one_line_one">
-								<view class="right_one_line_one_title" style='text-align: left;'>
-									<text class="wenzi">{{item.name}}</text>
+							<navigator style="" :url="'/pages/product/detail?productid=' + item.productid" open-type='navigate'>
+								<view class="logo_pic" style="margin-top:18rpx;">
+									<image :src="item.picture" style="width:100%;" mode="widthFix"></image>
 								</view>
-								<view class="brief">
-									<view>
-										￥{{item.price}}
+
+								<view class="product_item_right_one_line_one">
+									<view class="right_one_line_one_title" style='text-align: left;'>
+										<text class="wenzi">{{item.name}}</text>
+									</view>
+									<view class="brief">
+										<view>
+											￥{{item.price}}
+										</view>
+									</view>
+									<view class='yueduliang' style="display: none;">
+										<text class="rexiao" style="color:red;font-size:30rpx;padding-left:20rpx;">{{item.product_take_score}}</text>
+									</view>
+									
+									<view style="float:right;margin-top: -8rpx;">
+										<image style="margin-right: 10rpx;width:36rpx;height:36rpx;" src="../../static/img/car.png"
+										 :data-productid="item.productid"></image>
 									</view>
 								</view>
-								<view class='yueduliang'>
-									<text class="rexiao" style="color:red;font-size:30rpx;padding-left:20rpx;">{{item.product_take_score}}</text>
-								</view>
+
 								
-								<view style="float:right;margin-top: -8rpx;">
-									<image style="margin-right: 10rpx;width:36rpx;height:36rpx;" src="../../static/img/car.png"
-									 :data-productid="item.productid"></image>
-								</view>
-							</view>
+							</navigator>
 
-							
-						</navigator>
+						</view>				
+						
+						<view style="clear:both"></view>
+					</block>
+				</view>
+			</scroll-view>
+		</view>
+		
 
-					</view>
-					<view style="clear:both"></view>
-				</block>
-			</view>
-		</scroll-view>
+
+		
+		
+
+
+		
 		<view class="good_box" :hidden="hide_good_box" :style="{left: bus_x + 'px',top:bus_y + 'px'}"> </view>
 	</view>
 </template>
@@ -150,7 +162,7 @@
 			uni.getSystemInfo({
 			    success: function (res) {
 					
-			        that.app_top = parseInt(res.statusBarHeight) + 100;
+			        that.app_top = parseInt(res.statusBarHeight) + 145;
 					
 			    }
 			});
@@ -271,6 +283,7 @@
 					},
 					success: function(res) {
 						
+						console.log('获取到商品数据--',res.data.data.sub_cata_list)
 						
 						uni.hideToast();
 						
@@ -388,6 +401,7 @@
 						},
 						success: function(res) {
 							_data.typeTree[currType] = res.data.data;
+							console.log('res.data.data',res.data.data)
 							me.setData({
 								typeTree: _data.typeTree,
 								typeTree_icon: null,
@@ -452,6 +466,7 @@
 							success: function(res) {
 								//--init data
 								var carts = res.data.data;
+								console.log('商品列表--',carts)
 								var total_amount = 0;
 								if (res.data.code == 1) {
 									for (var i = 0; i < carts.length; i++) {
@@ -555,14 +570,13 @@
 	.left {
 		position: absolute;
 		left: 0;
-		top: 100rpx;
 		height: 100%;
 		width: 180rpx;
 		background: #F6F6F6;
 		text-align: center;
 		font-size: 28rpx;
 		/*  #ifdef  APP-PLUS  */
-		top: 180rpx; //覆盖样式
+		//top: 180rpx; //覆盖样式
 		/*  #endif  */
 	}
 
@@ -589,11 +603,24 @@
 	}
 
 	.right {
-		margin-left: 180rpx;
+		position: absolute;
+		left: 180rpx;
+		top: 100rpx;
+		//margin-left: 180rpx;
 		height: 100%;
 		overflow: hidden;
 		width: auto;
-		background: #fff;
+		background: #ffffff;
+		bottom: 180rpx;
+		margin-bottom: 80rpx;
+	}
+	.right::before {
+		content: "";
+		position: absolute;
+		background: #666666;
+		right: 0;
+		top: 0;
+		height: 100%;
 	}
 
 	.right text {
@@ -601,7 +628,6 @@
 	}
 
 	.typeTree {
-		padding-top: 20rpx;
 		width: 100%
 	}
 

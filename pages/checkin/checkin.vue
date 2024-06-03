@@ -14,40 +14,45 @@
 				</a>
 			</view>
 			<!-- #endif -->
-		            <view class="aui-scrollView">
-		                <view class="aui-extreme">
-							<!-- 开始 -->
-							<block v-for="(item,index) in checkin_list" :key="index">
-								
-								<view class="aui-extreme-item">
-									<navigator :url="'detail?userid='+item.userid">
-										<view class="aui-flex aui-flex-pic">
-											
-											<view class="aui-flex-box">
-												<h2>{{item.checkin_name}}</h2>
-												<p>{{item.checkin_date}}——{{item.checkinout_date}}</p>
-												
-												<p>{{item.checkout_address}}</p>
-												<p>{{item.total_time}}(小时)</p>
-											</view>
-											<view class="aui-hot">
-												<!-- <image src="https://www.17sucai.com/preview/1268063/2018-12-05/extreme/images/icon-hot.png"></image> -->
-											</view>
-										</view>
-									</navigator>
-								    
+			
+			
+			<view class="aui-scrollView">
+				<view class="aui-extreme">
+					<!-- 开始 -->
+					<block v-for="(item,index) in checkin_list" :key="index">
+						
+						<view class="aui-extreme-item">
+							<navigator :url="'detail?userid='+item.userid">
+								<view class="aui-flex aui-flex-pic">
+									
+									<view class="aui-flex-box">
+										<h2>{{item.checkin_name}}</h2>
+										<p>{{item.checkin_date}}——{{item.checkinout_date}}</p>
+										
+										<p>{{item.checkout_address}}</p>
+										<p>{{item.total_time}}(小时)</p>
+									</view>
+									<view class="aui-hot">
+										<!-- <image src="https://www.17sucai.com/preview/1268063/2018-12-05/extreme/images/icon-hot.png"></image> -->
+									</view>
 								</view>
-								
-							</block>
+							</navigator>
 							
-							<view v-if="is_empty_msg_show == 1" style="text-align: center;margin-top: 100upx;">
-								<image style="width: 150upx;" mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/empty_order2.png"></image>
-								<text style="display: block;color: #8a8a8a;">暂无数据/(ㄒoㄒ)/~~</text>
-							</view>
-							
-							<!-- 结束 -->
-		                </view>
-		            </view>
+						</view>
+						
+					</block>
+					
+					<view v-if="is_empty_msg_show == 1" style="text-align: center;margin-top: 100upx;">
+						<image style="width: 150upx;" mode="widthFix" src="https://yanyubao.tseo.cn/Tpl/static/images/empty_order2.png"></image>
+						<text style="display: block;color: #8a8a8a;">暂无数据/(ㄒoㄒ)/~~</text>
+					</view>
+					
+					<!-- 结束 -->
+				</view>
+			</view>
+					
+					
+					
 		</view>
 	</view>
 </template>
@@ -59,9 +64,9 @@
 	export default {
 		data() {
 			return {
-				
-				citizen_list_url:'https://yanyubao.tseo.cn/fulaozhucan/index.php/openapi/UserApi/get_checkin_list',
-				//citizen_list_url:'http://192.168.0.206/yanyubao_web/yidaozhucan_server/index.php/openapi/UserApi/get_checkin_list', //获取数据的api
+				checkin_list_url:'https://app.tseo.cn/jiazhenggongsi/index.php/openapi/UserApi/get_checkin_list',
+				//checkin_list_url:'https://yanyubao.tseo.cn/fulaozhucan/index.php/openapi/UserApi/get_checkin_list',
+				//checkin_list_url:'http://192.168.0.206/yanyubao_web/yidaozhucan_server/index.php/openapi/UserApi/get_checkin_list', //获取数据的api
 				checkin_list :[], //数据
 				btn_bg_color:'', //按钮颜色
 				is_empty_msg_show: 0,
@@ -111,11 +116,10 @@
 			}
 			
 			
-			//如果带了citizen_list_url 参数就会覆盖data 的citizen_list_url
-			if(options.citizen_list_url){
-				this.citizen_list_url = options.citizen_list_url;
+			//如果带了checkin_list_url 参数就会覆盖data 的checkin_list_url
+			if(options.checkin_list_url){
+				this.checkin_list_url = options.checkin_list_url;
 			}
-			
 			
 		},
 		onReady(){
@@ -198,14 +202,16 @@
 				
 				console.log('wwwwas===', userInfo);
 				
-				this.abotapi.abotRequest({
-					url: this.citizen_list_url,
-					data: {
+				var post_data = {
 						sellerid: that.abotapi.globalData.default_sellerid,
 						checkstr: userInfo.checkstr,
 						userid: userInfo.userid,
 						page:this.page,
-					},
+					};			
+				
+				this.abotapi.abotRequest({
+					url: this.checkin_list_url,
+					data: post_data,
 					success: function (res) {
 						
 						

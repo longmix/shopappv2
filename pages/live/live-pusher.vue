@@ -3,7 +3,7 @@
 	        <!-- <live-pusher id='livePusher' ref="livePusher" class="livePusher" url="rtmp://101619.livepush.myqcloud.com/live/tengyumall?txSecret=e809b255904e3bce90dcadd1bab34018&txTime=5EFAECD4"
 	        mode="SD" :muted="true" :enable-camera="true" :auto-focus="true" :beauty="1" whiteness="2"
 	        aspect="9:16" @statechange="statechange" @netstatus="netstatus" @error = "error"
-	        ></live-pusher> -->
+	        ></live-pusher>
 			<view class="fun-btn">
 				<image class="btn" mode="widthFix" :src="is_push ? 'https://yanyubao.tseo.cn/Tpl/static/images/video_live/stop.png' : 'https://yanyubao.tseo.cn/Tpl/static/images/video_live/start.png'" @click="is_push ? stop() : start()"></image>
 				<!-- <view>{{is_push}}</view> -->
@@ -70,7 +70,7 @@ export default {
 		  },
 		  success: (res) => {
 			  console.log('set_plan_video_live=====',res)
-			  let data = res.data;
+			  let data = res.data; 
 			if(data.code == 1){
 					
 				console.log('data.pusher_url==',data.pusher_url)

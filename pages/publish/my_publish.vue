@@ -2,11 +2,12 @@
 	<view>
 		<view v-if="index_list.length == 0" style='text-align: center;color: #999;font-size: 32upx;margin-top: 100upx;'>暂无数据</view>
 		<publishList 
-		:index_list="index_list" 
-		@goForum="goForum" 
-		:action="my_publish"
-		@article_delete="article_delete"		
-		:show_zhuanti_title = 0
+			:index_list="index_list" 
+			:spec_list_type="spec_list_type"
+			@goForum="goForum" 
+			:action="my_publish"
+			@article_delete="article_delete"		
+			:show_zhuanti_title = "0"
 		></publishList>
 	</view>
 	
@@ -15,7 +16,8 @@
 <script>
 	import publishList from '../../components/publish-list/publish-list.vue';
 	import publish_list_api from '../../common/publish_list_api.js';
-	const isNullOrUndefined = obj=>obj===null || obj === undefined  || obj === '';
+	const isNullOrUndefined = (obj=>obj===null || obj === undefined  || obj === '');
+	
 	export default {
 		components:{
 			publishList
@@ -43,22 +45,33 @@
 				dianzan_num2:0,
 				num01:'',
 				click:'',
+				
 				cms_token:'',
+				cms_cataid:0,
+				
 				my_collect:'', //判断是不是收藏的
 				my_publish:'', //判断是不是我的
-				cms_cataid:0,
+
 				cms_cataname:'内容列表',
 				current_page:1,
 				list_title:'文章列表',
 				current_page_size:4,
 				is_get_article_list:true,//控制触底请求分页的文章列表接口 
 				search_text:'',//搜索的文案
+				
+				
+				//2022.11.1. 增加特殊的帖子显示类型
+				spec_list_type:'default',		// default 默认的列表类型， product_list 类似商品的列表类型
+				
+				
+				
 			}
 		},
 		
 		
 		onLoad:function(options){
 			console.log('options',options);
+			
 			if(options.action == 'my_collect'){
 				this.my_collect = options.action;
 				var last_url = '/pages/publish/publish_list?action=my_collect';
@@ -73,6 +86,7 @@
 				})
 				
 			}
+			
 			if(options.action == 'my_publish'){
 				this.my_publish = options.action;
 				var last_url = '/pages/publish/publish_list?action=my_publish';
@@ -153,6 +167,13 @@
 			
 				this.publish_img_cata_list = shop_option_data.option_list.publish_img_cata_list;
 				console.log('aaaaaaa====',this.publish_img_cata_list);
+				
+				
+				
+				//列表类型，product_list01  product_list02  default
+				if(shop_option_data.option_list.my_publish_spec_list_type){
+					that.spec_list_type = shop_option_data.option_list.my_publish_spec_list_type;
+				}
 			
 				
 			},
@@ -254,10 +275,15 @@
 			},
 			//发布按钮跳转
 			toPublish_index:function(){
-				uni.switchTab({
+				
+				/*uni.switchTab({
 					url:'./publish_index'
-				})
+				})*/
+				
 				console.log(this.abotapi.globalData.is_publish_index_in_tabbar);
+				
+				this.abotapi.call_h5browser_or_other_goto_url('/pages/publish/publish_index');
+				
 				// if(this.abotapi.globalData.is_publish_index_in_tabbar == 1){
 				// 	uni.switchTab({
 				// 		url:'./publish_index'
@@ -286,16 +312,18 @@
 				
 				var that = this;
 				
+				var action = '';
 				
 				if(this.my_collect == 'my_collect'){
 					
-					var action = 'my_collect';
+					action = 'my_collect';
 				}
 				
 				if(this.my_publish == 'my_publish'){
 					
-					var action = 'my_article';
+					action = 'my_article';
 				}
+				
 				console.log('action==========>',action);
 				//搜索的情况
 				publish_list_api.get_publish_list(that,that.get_api_publish_list,action);		
@@ -304,7 +332,8 @@
 			},
 			
 			get_api_publish_list:function(that,data){
-				console.log('datasdf',data);
+				console.log('get_api_publish_list===>>>', data);
+				
 				if(!isNullOrUndefined(data.msg)){
 					//没有收藏的情况
 					uni.showToast({

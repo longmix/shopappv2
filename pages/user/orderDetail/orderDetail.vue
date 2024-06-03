@@ -27,7 +27,7 @@
 					<view style="margin-left:20rpx ;">{{orderData.delivery_company}}    {{orderData.delivery_no}}</view>
 				</view>
 				<view style="font-weight: bold;">状态记录：</view> 
-				<view v-for="(current_msg_kuaidi_xinxi_item,index) in current_msg_kuaidi_xinxi">
+				<view v-for="(current_msg_kuaidi_xinxi_item, index) in current_msg_kuaidi_xinxi" :key="index">
 					<view style="padding-bottom: 50rpx;font-weight: 400;color: #666666;padding-left: 20rpx;">
 						<view style="margin-bottom: 10rpx;">
 							{{current_msg_kuaidi_xinxi_item.time}}
@@ -48,17 +48,14 @@
 	<view class="w100">
 			
 		<!-- 普通商品订单的商品列表 -->
-	    <navigator v-if="waimai_order_type != 1" 
-			:open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" 
-			
+	    <view v-if="waimai_order_type != 1"
 			class="p_all bg_white df item" 
-			v-for="(item,index) in current_order_product_list" :key="index">
-				<view style="display: flex;width: 550rpx;" @tap="commodity_detail(item.productid)">
+			v-for="(item,index) in current_order_product_list" 
+			:key="index">
+				<view style="display: flex;width: 550rpx;" @click="commodity_detail(item.productid)">
 					<view class="cp_photo">
 						<image :src="item.picture?item.picture:item.img"></image>
 					</view>
-					
-					
 					
 					<view class="df_1">	
 						<view class="font_14 mt5 ovh1">
@@ -83,7 +80,7 @@
 					@click="go_to_page" 
 					:data-faquanid='xianmai_shang_order_remark'
 					:data-productid='item.productInfo.productid'>查看评价</view>
-	    </navigator>
+	    </view>
 		
 		<!-- 外卖订单的商品列表 -->
 		<view v-if="waimai_order_type == 1" 
@@ -283,11 +280,17 @@
 					:data-faquanid='xianmai_shang_order_remark'>查看评价</view>
 					
 					
-					<view v-if="(orderData.status_str=='已申请退款') 
-						&& (orderData.tuikuan_list) && (orderData.tuikuan_list[0].statusname == '同意退货')"
-						@tap="agree_refund_order" :data-orderid="orderData.orderid"
-						class="font_12 fl_r mr_5 btn_min mg_l"
-						style="background-color: #999;">退换货处理</view>
+				<view v-if="(orderData.status_str=='已申请退款') 
+					&& (orderData.tuikuan_list) && (orderData.tuikuan_list[0].statusname == '同意退货')"
+					@tap="agree_refund_order" :data-orderid="orderData.orderid"
+					class="font_12 fl_r mr_5 btn_min mg_l"
+					style="background-color: #999;">退换货处理</view>
+					
+				<view class="font_12 btn_min fl_r mr_5 mg_l" @tap="show_order_offline_code_click"
+					v-if="(show_order_offline_code_btn == 1) && (orderData.status == 1)" 
+					:data-orderid="orderData.orderid">
+					核销码
+				</view>
 			</view>
 			
 			
@@ -417,6 +420,28 @@
 			</view>
 		</view>
 	</view>
+	
+	
+	
+	<!-- 点击兑换按钮的弹层 Begin -->
+	<view class="show_modal_mask" v-if="order_offline_code_showModal" @tap="order_offline_code_showModal=false"></view>
+	<view class="show_modal_pop" v-if="order_offline_code_showModal"
+		 style="width: 440rpx;background-color: #FFFFFF; overflow-y: auto;" >
+		<view style="margin: 20rpx; padding: 20rpx; border-radius: 5rpx;" >
+	
+			<view style="color:#3c3c3c;font-size: 25rpx;">
+				订单核销码：{{order_offline_code_value}}
+			</view>
+			
+			<view>
+				<image :src="order_offline_code_qrcode_url" mode="widthFix" style="width: 350rpx;"></image>
+			</view>
+				
+		</view>
+	</view>
+	<!-- 点击兑换按钮的弹层 End -->
+	
+	
 	</view>
 </template>
 
@@ -537,6 +562,16 @@
 				tuikuanid:0,
 				
 				
+				//2023.3.5. 订单核销码
+				show_order_offline_code_btn:0,
+				order_offline_code_showModal:false,
+				order_offline_code_value:'',
+				order_offline_code_qrcode_url:'',
+				
+				
+				
+				
+				
 				
 				
 				show_wuliu_xinxi:false,
@@ -649,9 +684,9 @@
 					that.wxa_shop_nav_font_color = option_list.wxa_shop_nav_font_color;
 			    }
 			
-					that.wxa_order_hide_sanji_address = option_list.wxa_order_hide_sanji_address;
-					that.wxa_order_info_page_no_link_to_product = option_list.wxa_order_info_page_no_link_to_product;
-			
+				that.wxa_order_hide_sanji_address = option_list.wxa_order_hide_sanji_address;
+				that.wxa_order_info_page_no_link_to_product = option_list.wxa_order_info_page_no_link_to_product;
+		
 			  },
 			  loadProductDetail:function(){
 				  var that = this;
@@ -674,10 +709,18 @@
 					  is_shop_admin : that.is_shop_admin
 			        },
 			        success: function (res) {
-			          var code = res.data.code;
-					  var orderData = res.data.orderinfo;
+						var code = res.data.code;
+						var orderData = res.data.orderinfo;
 					  
-			          if (code == 1) {
+						if (code != 1) {
+							uni.showToast({
+								title: res.data.msg,
+								duration: 2000
+							});
+							
+							return;
+						}
+							
 						  
 						if(orderData.order_option && (orderData.order_option.order_xianmai_shangdata)){
 							that.order_xianmai_shangdata = JSON.parse(orderData.order_option.order_xianmai_shangdata); //商家信息
@@ -721,12 +764,15 @@
 						
 						
 						console.log('zitidian_order',that.zitidian_order)
-						} else {
-						uni.showToast({
-							title: res.data.msg,
-							duration: 2000
-						});
+						
+						//2023.3.5. 
+						if( res.data.show_offline_code_btn 
+							&& (res.data.show_offline_code_btn == 1) ){
+								
+							that.show_order_offline_code_btn = 1;
+							
 						}
+						
 					},
 					fail: function () {
 						// fail
@@ -969,7 +1015,15 @@
 					  }
 					});
 				},
+				//跳转到商品详情页
 				commodity_detail:function(productid){
+					
+					//点击跳转到商品详情页
+					if(this.wxa_order_info_page_no_link_to_product == 1){
+						return;
+					}
+					
+					
 					uni.navigateTo({
 						url:'../../product/detail?productid=' + productid,
 					})
@@ -1243,7 +1297,49 @@
 					  fail: function () {}
 					});
 					
-				}
+				},
+				//查看订单核销码
+				show_order_offline_code_click:function(){
+					var that = this;
+					
+					var userInfo = that.abotapi.get_user_info();
+					
+					that.abotapi.abotRequest({
+					  url: that.abotapi.globalData.yanyubao_server_url + '/openapi/OrderOfflineHandleData/get_offline_code',
+					  data: {					    
+					    sellerid: that.abotapi.get_sellerid(),						
+						userid:userInfo.userid,
+						checkstr: userInfo.checkstr,
+						orderid: that.current_orderid,
+					  },
+					  success: function (res) {
+						  
+						console.log('res.data.offline_code_value ===>>>', res.data.offline_code_value);
+						  
+						uni.showModal({
+							title:'提示',
+							content: res.data.msg,
+							showCancel:false,
+							success(res001) {
+								console.log('准备显示核销二维码的图片');
+								
+								that.order_offline_code_showModal = true;
+								
+								that.order_offline_code_value = res.data.offline_code_value;
+								that.order_offline_code_qrcode_url = res.data.offline_code_qrcode_url;
+								
+								console.log('that.order_offline_code_value ===>>>', that.order_offline_code_value);
+							}
+						});
+						
+						
+					
+					  },
+					  fail: function () {}
+					});
+					
+				},
+				
 				
 		}
 		

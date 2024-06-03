@@ -2,25 +2,41 @@
 	<view>
 		<view class="map_container" :style="{height:mapHeight+'rpx'}"> 
 		  <!-- <map class="map" id="map" longitude="121.159498" latitude="31.24321" scale="14" show-location="true" markers="{{markers}}" bindmarkertap="makertap"></map>  -->
-		  <map class="map" id="map" :longitude="qqmap_longitude" :latitude="qqmap_latitude" scale="14" show-location="true" :markers="markers" bindmarkertap="map_tap"></map> 
+		  <map class="map" id="map" 
+			:longitude="qqmap_longitude" 
+			:latitude="qqmap_latitude" 
+			scale="14" show-location="true" 
+			:markers="markers" 
+			bindmarkertap="map_tap"></map> 
 		</view> 
 		
-		<view class="btm">
-			<view class="adderss" style="font-weight: bold; font-size:32rpx;margin-top:30rpx;">{{shopInfo.name}}</view>
-			<view style="display: flex; padding-top:20rpx;  ">
-				<image src="https://yanyubao.tseo.cn/Tpl/static/images/location_map_new.png" mode="widthFix" style="width:30rpx;height:30rpx;"></image>
-				<view class="adderss">{{shopInfo.address}}</view>
+		<view class="bottom001">
+			<view style="width: 90%; margin:20rpx auto;">
+				<view class="adderss" style="font-weight: bold; font-size:32rpx;margin-top:30rpx;">{{shopInfo.name}}</view>
+				<view style="display: flex; padding-top:20rpx;  ">
+					<image src="https://yanyubao.tseo.cn/Tpl/static/images/location_map_new.png" mode="widthFix" style="width:30rpx;height:30rpx;"></image>
+					<view class="adderss">{{shopInfo.address}}</view>
+				</view>
+				<view style="display: flex; padding:20rpx 0rpx;" v-if="shopInfo.telephone">
+					<image src="https://yanyubao.tseo.cn/Tpl/static/images/location_mobile_new.png" mode="widthFix" style="width:30rpx;height:30rpx;"></image>
+					<view class="phone_number" @tap="call_seller">{{shopInfo.telephone}}</view>
+				</view>
+				
+				<!--
+				<view v-if="from_page == 1 || from_page == 2" 
+					 :style="{background: btn_bg_color,color:frontColor}"
+					@tap="seeRoute" class="seeroute">到这去</view>
+				<view v-else-if="from_page == 3" 
+					:style="{background: btn_bg_color,color:frontColor}" 
+					@tap="seeRoute" class="seeroute">打卡</view>
+				-->
+				
+				<view :style="{background: btn_bg_color,color:frontColor}"
+					@tap="seeRoute" class="seeroute">{{btn_txt}}</view>
+					
 			</view>
-			<view style="display: flex; padding:20rpx 0rpx;" v-if="shopInfo.telephone">
-				<image src="https://yanyubao.tseo.cn/Tpl/static/images/location_mobile_new.png" mode="widthFix" style="width:30rpx;height:30rpx;"></image>
-				<view class="phone_number" @tap="call_seller">{{shopInfo.telephone}}</view>
-			</view>
-			<view v-if="from_page == 1 || from_page == 2" 
-				 :style="{background: btn_bg_color,color:frontColor}"
-				@tap="seeRoute" class="seeroute">到这去</view>
-			<view v-else-if="from_page == 3" 
-				:style="{background: btn_bg_color,color:frontColor}" 
-				@tap="seeRoute" class="seeroute">打卡</view>
+			
+				
 		</view>
 		
 	</view>
@@ -48,7 +64,8 @@
 				bmap_longitude: '',
 				
 				//来自哪个功能模块， 1 商家详情页面 2 会员卡页面 3 打开签到页面
-				from_page:1,  
+				from_page:1,
+				btn_txt:'',
 				
 				rgcData: {},
 				detail:[],
@@ -80,7 +97,8 @@
 		 * name  商户名称
 		 * telephone  商户电话
 		 * 
-		 * 
+		 * 2023.11.2.还可以追加其他参数，例如citizenid、adminuserid等，
+		 * 这些追加的参数，包括上面的参数，都打包在 lbs02 这个参数中。
 		 * 
 		 */
 		onLoad(options){
@@ -128,6 +146,16 @@
 			
 			console.log('this.from_page',  this.from_page);
 			
+			if( (this.from_page == 1) || (this.from_page == 2) ){
+				this.btn_txt = '到这去';
+			}
+			else if(this.from_page == 3){
+				this.btn_txt = '打卡';
+			}
+			
+			if(options.btn_txt){
+				this.btn_txt = options.btn_txt;
+			}
 			
 			this.mapWidth = 750;
 			
@@ -213,6 +241,8 @@
 			},
 			
 			seeRoute:function(e){
+				
+				var that = this;
 				  
 				if((this.from_page == 1) || (this.from_page == 2)  ){
 					//进图导航功能
@@ -249,14 +279,26 @@
 						//ajax请求，保存签到数据
 						var userInfo = that001.abotapi.get_user_info();
 						
+						
 						/*
 						var lbs02 = {
 							latitude:latitude,
 							longitude:longitude,
 							citizenid:that001.options_citizenid,
 						};*/
-						
+						//lbs的数据不再单独组织了，而是将进入这个界面时候的参数都带上去
+						//这些参数包括： citizenid，adminuserid，以及未来可能增加的其他参数
 						var lbs02 = that001.current_option;
+						
+						//2023.11.2 如果有adminuserid这个参数，则存储起来，供/pages/checkin/checkin调用
+						if(lbs02.adminuserid){
+							uni.setStorageSync('jiazhenggongsi_adminuserid', lbs02.adminuserid)
+						}
+						//============ End ==================
+						
+						lbs02.sellerid = that001.abotapi.globalData.default_sellerid;
+						lbs02.userid = userInfo.userid;
+						
 						
 						var lbs_json = encodeURIComponent(JSON.stringify(lbs02))
 						//console.log('12312345345',locationData);
@@ -264,7 +306,7 @@
 						//checkin_latitude  checkin_longitude 受助者的坐标地址
 						
 						var post_data = {
-							sellerid:that001.abotapi.globalData.default_sellerid,
+							sellerid: that001.abotapi.globalData.default_sellerid,
 							userid:userInfo.userid,
 							checkstr: userInfo.checkstr,
 							latitude:locationData.latitude,
@@ -294,16 +336,34 @@
 							method: 'post',
 							data: post_data,
 							success: function (res) {
-								console.log(res);
+								
+								console.log('打卡签到成功：', res);
+								
 								if(res.data.code == 1){
+									
 									uni.showModal({
 										title:'打卡成功',
 										content:res.data.msg,
 										showCancel:false,
 										success: (res) => {
-											uni.switchTab({
-												url:"/pages/checkin/checkin"
-											})
+											
+											var last_url = '/pages/jiazhenggongsi/checkin_list';
+											
+											//追加参数，说明具体哪个家政公司
+											if(lbs02.adminuserid){
+												last_url += '?adminuserid=' + lbs02.adminuserid;
+											}
+											
+											//如果在TabBar
+											//if(that.abotapi.globalData.is_member_list_in_tabbar == 1){
+											//	last_url = 'switchTab /pages/checkin/checkin';
+											//}
+											
+											that.abotapi.call_h5browser_or_other_goto_url(last_url);
+											
+											//uni.switchTab({
+											//	url:"/pages/checkin/checkin"
+											//})
 										}
 									})
 									
@@ -348,7 +408,7 @@
 	    width: 100%; 
 	}
 	
-	.btm{
+	.bottom001 {
 		position: fixed;
 		width: 100%;
 		bottom: 0;
@@ -356,7 +416,7 @@
 		left: 0;
 		z-index: 101;
 		background-color: #ffffff;
-		padding: 20rpx;
+		padding-bottom: 50rpx;
 	}
 	
 	.phone_number{
@@ -373,15 +433,15 @@
 	  white-space: nowrap;
 	  /* margin-bottom: 20rpx; */
 	}
-	.seeroute{
+	.seeroute {
 	  text-align: center;
 	  font-size: 36rpx;
 	  color: #333;
 	  line-height:80rpx;
-	  width: 92%;
+	  width: 100%;
 	  background: #FFD700;
 	  border-radius: 15rpx;
-	  margin-top:40rpx;
+	  margin-top:40rpx auto;
 	}
 	
 	

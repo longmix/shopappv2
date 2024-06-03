@@ -89,6 +89,9 @@
 </template>
 
 <script>
+	/**
+	 * 发圈发现随拍的界面
+	 */
 	
 	export default {
 		data(){
@@ -116,7 +119,7 @@
 				
 				video:'',
 				xianmai_shangid:'',
-				orderid:'',
+				current_orderid:'',
 				ideaText:'',
 				scrollLeft:'',
 				
@@ -125,9 +128,12 @@
 		},
 		
 		onLoad: function (options) {
+			
 			//1、获取选项
 			var last_url = '/cms/publish/publish'; //跳转授权头像之后再跳转的页面
+			
 			console.log('options',options)
+			
 			if (options.publishtype) {
 				this.publishtype = options.publishtype;
 				//授权头像的参数拼接
@@ -138,7 +144,11 @@
 				}
 				
 			}
+			
+			
 			console.log('123456789',options)
+			
+			
 			if (options.xianmai_shangid){
 				this.xianmai_shangid = options.xianmai_shangid
 				//授权头像的参数拼接
@@ -150,17 +160,26 @@
 			}
 			
 			if (options.orderid) {
-			  this.orderid = options.orderid;
+			  this.current_orderid = options.orderid;
+			  
 			  //授权头像的参数拼接
 			  if(last_url.indexOf("?") != -1){
-			  	last_url += '&orderid=' + options.orderid;
-			  }else{
-			  	last_url += '?orderid=' + options.orderid;
+			  	last_url += '&orderid=' + this.current_orderid;
 			  }
+			  else{
+			  	last_url += '?orderid=' + this.current_orderid;
+			  }
+			  
+			  uni.setNavigationBarTitle({
+			  	title:'评论订单商品'			  			
+			  })
+			  			  
 			}
 			
 			if(options.productid){
-				this.productid = options.productid;
+				
+				this.current_productid = options.productid;
+				
 				//授权头像的参数拼接
 				if(last_url.indexOf("?") != -1){
 					last_url += '&productid=' + options.productid;
@@ -228,6 +247,7 @@
 			// 页面关闭
 		},
 		methods: {
+			//初始化界面内容，包括设置标题和发布协议等
 			callback_xieyi_content: function (that, cms_faquan_setting) {
 				
 				console.log('cms_faquan_setting',cms_faquan_setting);
@@ -264,10 +284,14 @@
 				  
 				}
 				
-				uni.setNavigationBarTitle({
-					title:cms_faquan_setting.faquan_page_title
-			
-				})
+				
+				if(!that.current_orderid){
+					uni.setNavigationBarTitle({
+						title:cms_faquan_setting.faquan_page_title
+								
+					})
+				}
+				
 				
 				if(cms_faquan_setting.page_not_in_tabbar){
 					that.page_not_in_tabbar = cms_faquan_setting.page_not_in_tabbar;
@@ -277,6 +301,7 @@
 				
 				//读取标签
 				that.faquan_hot_tag_words = cms_faquan_setting.faquan_hot_tag_words;
+				
 				
 			},
 			
@@ -339,7 +364,7 @@
 			__goto_homepage:function()  {
 				if(this.page_not_in_tabbar){
 					var new_url = '/cms/discover/discover?display_type=my';
-					 if(this.productid){
+					 if(this.current_productid){
 						var new_url = '/cms/discover/discover?display_type=my' + '&my_discover_list=1';
 					 	
 					 }
@@ -417,13 +442,13 @@
 				if(that.xianmai_shangid){
 					data_params.faquan_type = 1;
 					data_params.extend_id = that.xianmai_shangid;
-					data_params.xianmai_shang_orderid = that.orderid;
+					data_params.xianmai_shang_orderid = that.current_orderid;
 				}
 				
-				if(that.productid){
-					data_params.productid = that.productid;
+				if(that.current_productid){
+					data_params.productid = that.current_productid;
 					data_params.faquan_type = 2;
-					data_params.xianmai_shang_orderid = that.orderid;
+					data_params.xianmai_shang_orderid = that.current_orderid;
 				}
 						
 				that.abotapi.abotRequest({
@@ -523,7 +548,7 @@
 														console.log('e=======456', e)
 														
 														that.ideaText = '';
-														if (that.orderid){
+														if (that.current_orderid){
 															that.order_finish();
 														}
 														console.log('e=======123')
@@ -615,41 +640,47 @@
 			          if (i == that.imgList.length) {
 						  
 			            if (res.errMsg == "uploadFile:ok") {
-			              var data = res.data;
+			              var ret_data = res.data;
 						  
-			              console.log('data===', data)
-			              data = JSON.parse(data);
+			              console.log('ret_data===', ret_data)
 						  
-			              if (data.code == 1) {
-							
-							uni.showModal({
-								title: '上传成功',
-								showCancel:false,
-								success: function (e) {
-									if (e.confirm) {
-										//确定
-										console.log('e=======', e)
-										
-										that.ideaText = '';
-										
-										if (that.orderid){
-										  that.order_finish();
-										}
-										
-										that.__goto_homepage();
+			              ret_data = JSON.parse(ret_data);
+						  
+						  if(!ret_data){
+							  uni.showToast({
+							  	title:'处理失败！'
+							  })
+							  return;
+						  }
+						  
+						  uni.showModal({
+						  	title: ret_data.msg,
+						  	showCancel:false,
+						  	success: function (e) {
+								
+								console.log('e=======', e)
+								
+						  		if (e.confirm) {
+						  			//确定
+						  		}
+								
+								if (ret_data.code == 1) {
+									that.ideaText = '';
+									
+									if (that.current_orderid){
+									  that.order_finish();
 									}
+									
+									that.__goto_homepage();	
 								}
-							})
-							
-			              } else {
-			               uni.showModal({
-			               	title: '提示',
-			               	content:'上传失败',
-			               	showCancel:false,
-			               });
-			                
-							that.disable = true;
-			              }
+								else{
+									that.disable = true;
+								}
+								
+						  	}
+						  });
+						  
+			               
 			            }
 			          } 
 					  else if (i < that.imgList.length) {
@@ -694,7 +725,7 @@
 			        url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=order_finish',
 			        method: 'post',
 			        data: {
-			          orderid: that.orderid,
+			          orderid: that.current_orderid,
 			          sellerid: that.abotapi.globalData.default_sellerid,
 			          checkstr: userInfo.checkstr,
 			          userid: userInfo.userid
@@ -779,23 +810,23 @@
 	}
 	
 	.a-textarea{
-	  height:110px; 
+	  height:200rpx; 
 	  width:100%;
-	  font-size: 28rpx;
+	  font-size: 36rpx;
 	  padding-left:20rpx;
 	  padding-right:20rpx;
 	}
 	
 	.a-con-textarea{
 	  width: 100%;
-	  /*border-top:1px solid #8888;*/
-	  border-bottom:1px solid #8888;
+	  /*border-top:1rpx solid #8888;*/
+	  border-bottom:1rpx solid #8888;
 	  margin-top: 50rpx;
 	}
 	
 	.camera-a{
-	  border:1px solid #ccc;
-	  border-radius:4px;
+	  border:1rpx solid #ccc;
+	  border-radius:8rpx;
 	  padding:18rpx;
 	  display:flex;
 	  flex-direction:column;
@@ -863,7 +894,7 @@
 		font-size: 25rpx;
 		padding: 10rpx 30rpx;
 		margin: 5rpx;
-		border: 1px solid #C6C6C6;
+		border: 1rpx solid #C6C6C6;
 		border-radius: 5%;
 	}
 	.biaoqian001{
@@ -871,7 +902,7 @@
 		font-size: 25rpx;
 		padding: 10rpx 30rpx;
 		margin: 5rpx;
-		border: 1px solid #C6C6C6;
+		border: 1rpx solid #C6C6C6;
 		border-radius: 5%;
 		color:#fff;
 		background-color: #0055FF;
@@ -951,7 +982,7 @@
 	}
 	
 	.wx-popup-content{
-	  height: 300px;
+	  height: 600rpx;
 	  text-align: center;
 	}
 </style>

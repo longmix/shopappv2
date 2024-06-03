@@ -1,6 +1,12 @@
-import Vue from 'vue'
-import App from './App'
+import Vue from 'vue';
+
+import uView from "@/uni_modules/uview-ui";
+Vue.use(uView);
+
+import App from './App';
 import $abotapi from './common/abotapi.js';
+
+
 
 //var abotapi001 = require('./common/abotapi.js');
 
@@ -24,6 +30,7 @@ Vue.config.productionTip = false
 //因为在App.vue中无法绘制xml，暂时不用。
 import openAlert from './components/open-alert/open-alert.vue';
 Vue.component('openAlert', openAlert);
+
 
 App.mpType = 'app'
 

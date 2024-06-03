@@ -35,7 +35,7 @@
 						placeholder-style="color: #999;" 
 						placeholder="请输入答案" />
 				</view>
-				<view class="flexIcon" :style="{border:'1px solid ' + wxa_shop_nav_bg_color}" style="overflow: hidden;">
+				<view class="flexIcon" :style="{border:'1px solid ' + wxa_shop_nav_bg_color}" style="overflow: unset;">
 					<view class="flexIcon-icon iconfont icon-password flexIcon-icon-current"></view>
 					<button type="primary"  @click="send_btn" 
 						:disabled="disabled" 
@@ -107,6 +107,7 @@
 			</view>
 			
 			<!-- #ifdef MP-WEIXIN -->
+			<block v-if="wxa_login_hidden_weixin != 1">
 			<div class="otherBox mgb-20">
 				<div class="otherBox-line"></div>
 				<div class="otherBox-text">一键登录</div>
@@ -117,9 +118,11 @@
 					class="btn-round bg-success icon weixin-icon" 
 					@getphonenumber="btn_wxa_one_click_login"></button>
 			</div>
+			</block>
 			<!-- #endif -->
 			
 			<!-- #ifdef MP-BAIDU -->
+			<block v-if="wxa_login_hidden_baidu != 1">
 			<div class="otherBox mgb-20">
 				<div class="otherBox-line"></div>
 				<div class="otherBox-text">-- 快捷登录 --</div>
@@ -131,6 +134,24 @@
 					class="btn-row-submit"
 					style="width: 84%;background: #2E85D8;">百度账号快速登录</button>
 			</div>
+			</block>
+			<!-- #endif -->
+			
+			<!-- #ifdef MP-TOUTIAO -->
+			<block v-if="wxa_login_hidden_douyin != 1">
+			<div class="otherBox mgb-20">
+				<div class="otherBox-line"></div>
+				<div class="otherBox-text">-- 一键登录 --</div>
+			</div>
+			<div class="flex flex-center">
+				<!-- <button open-type="getUserInfo" @getuserinfo="wxLogin" class="btn-round bg-success icon-weixin"></button> -->
+				<button open-type="getPhoneNumber" 
+					type="primary"
+					class="btn-row-submit" 
+					style="width: 92%;background: rgb(0, 0, 0, 0.8);"
+					@getphonenumber="btn_toutiao_one_click_login">抖音手机号一键登录</button>
+			</div>
+			</block>
 			<!-- #endif -->
 			
 			
@@ -216,6 +237,11 @@
 				current_userinfo:null,
 				wxa_login_only_weixin: 0,
 				
+				//2023.9.25.隐藏社交平台的登录按钮
+				wxa_login_hidden_weixin:0,
+				wxa_login_hidden_douyin:0,
+				wxa_login_hidden_baidu:0,
+				
 				//微信和支付宝小程序的 jscode 和 authcode 信息
 				login_data_from_wxa_or_alipay:null,
 				
@@ -227,6 +253,7 @@
 		},
 		onLoad:function(){
 			var that = this;
+			
 			uni.getSystemInfo({
 			    success: function (res) {
 					console.log('getSystemInfo==',res)
@@ -265,6 +292,27 @@
 			
 			// #endif
 			
+			// #ifdef MP-TOUTIAO
+			tt.login({
+				force: true,
+				success: function (res) {
+					console.log("btn_toutiao_one_click_login 获取到的getLoginCode ==>> jscode是:", res);
+				  
+					//如果拒绝授权， e.detail.errMsg
+					//console.log(e.detail.errMsg);return;
+					//2023.6.18. 抖音的这部分的接口说明：
+					// https://developer.open-douyin.com/docs/resource/zh-CN/mini-app/develop/api/open-interface/log-in/tt-login/
+				  
+					that.current_weixin_js_code = res.code;
+				  
+				},
+				fail: function (login_res) {
+					console.log('login.js  tt.login失败。');
+				}
+			});
+			
+			// #endif
+			
 			
 			
 			
@@ -286,7 +334,23 @@
 				if(cb_params.wxa_login_only_weixin){
 					that.wxa_login_only_weixin = cb_params.wxa_login_only_weixin
 				}
+				if(cb_params.wxa_login_hidden_weixin){
+					that.wxa_login_hidden_weixin = cb_params.wxa_login_hidden_weixin;
+				}
 				// #endif
+				
+				// #ifdef MP-TOUTIAO
+				if(cb_params.wxa_login_hidden_douyin){
+					that.wxa_login_hidden_douyin = cb_params.wxa_login_hidden_douyin;
+				}
+				// #endif
+				
+				// #ifdef MP-BAIDU
+				if(cb_params.wxa_login_hidden_baidu){
+					that.wxa_login_hidden_baidu = cb_params.wxa_login_hidden_baidu;
+				}
+				// #endif
+				
 				
 				if(cb_params.wxa_shop_nav_bg_color){
 					that.wxa_shop_nav_bg_color = cb_params.wxa_shop_nav_bg_color
@@ -971,7 +1035,7 @@
 				if(e.detail.errMsg != 'getPhoneNumber:ok'){
 					uni.showModal({
 						title:'失败',
-						content:'获取手机号码失败',
+						content:'获取手机号失败',
 						showCancel:false
 					});
 					
@@ -1046,6 +1110,133 @@
 					}
 				});
 			},
+			//2023.6.18. 头条一键登录
+			/*
+			detail
+			:
+			encryptedData
+			:
+			"rkbCbHbCwRGZvJhtmUcPtlQNyq4X8X0l/+oTKUa8BHVcc5lmXGbdK1nnssfSLoT26JWh7T5GRcOuFPKYY7rd3WR9WYT4lQrl1FjziibJ+Mk="
+			errMsg
+			:
+			"getPhoneNumber:ok"
+			iv
+			:
+			"07bcfd5f66103efba3790Q=="*/
+			btn_toutiao_one_click_login:function(e){
+				var that = this;
+				
+				console.log('抖音一键登录 <<<==== btn_toutiao_one_click_login  ====>>> 手机号码授权登录：', e);
+				
+				console.log(e.detail.errMsg)
+				console.log(e.detail.iv)
+				console.log(e.detail.encryptedData)
+				
+				if(e.detail.errMsg != 'getPhoneNumber:ok'){
+					uni.showModal({
+						title:'失败',
+						content:'获取手机号失败',
+						showCancel:false
+					});
+					
+					return;
+				}
+					  
+				
+				that.abotapi.abotRequest({
+					url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppDouyinWxa&a=wxa_one_click_login',
+					method: "POST",
+					dataType: 'json',
+					data: {
+						js_code: that.current_weixin_js_code,
+						toutiao_wxa_appid: that.abotapi.globalData.toutiao_wxa_appid,
+						iv: e.detail.iv,
+						encryptedData: e.detail.encryptedData,
+						sellerid: that.abotapi.globalData.default_sellerid,
+						parentid: 0,
+					},
+					success: function (res) {
+						console.log(res);
+							  
+						if (res.data && (res.data.code == 1)) {
+							//更新checkstr和uwid，
+							that.abotapi.globalData.userInfo.userid = res.data.userid;
+							//this.abotapi.globalData.userInfo.checkstr = res.data.checkstr;
+								  
+							console.log('一键登录成功，userid:' + res.data.userid);
+							console.log('一键登录成功，userid:' + res.data.openid);
+								  
+							that.abotapi.globalData.userInfo.user_openid = res.data.openid;
+							that.abotapi.globalData.userInfo.userid = res.data.userid;
+							that.abotapi.globalData.userInfo.checkstr = res.data.checkstr;
+							that.abotapi.globalData.userInfo.is_get_userinfo = res.data.is_get_userinfo;
+								  
+							//保存openid
+							that.abotapi.set_current_openid(res.data.openid);
+									  
+							console.log(that.abotapi.globalData.userInfo);
+									  
+							that.abotapi.set_user_info(that.abotapi.globalData.userInfo);
+							
+							that.getUserInfoFromYanyubao(res.data.msg);
+							
+							/*
+							uni.showToast({
+								title: res.data.msg,
+								icon: 'success',
+								duration: 2000
+							})
+								  
+							//=======检查登录成功之后的跳转=======
+							var last_url = uni.getStorageSync('last_url');
+								 
+							console.log('last_url-----', last_url)
+								 
+							var page_type = uni.getStorageSync('page_type');
+							if (last_url) {
+								if (page_type && (page_type == 'switchTab')) {
+								 
+									uni.switchTab({
+										url: last_url,
+									})
+								} else {
+									uni.redirectTo({
+										url: last_url,
+									})
+								}
+								 
+								uni.removeStorageSync('last_url');
+								uni.removeStorageSync('page_type');
+								 
+								return;
+							}
+							//===========End================
+							
+							uni.redirectTo({
+								url: '/pages/index/index'
+							})
+							*/
+							
+						}else {
+							//一键登录返回错误代码
+							uni.showModal({
+								title: '提示',
+								content: res.data.msg,
+								showCancel:false,
+								success(res) {
+									if (res.confirm) {
+										console.log('用户点击确定')
+									}
+								}
+							})		  
+						}
+					}
+				});
+				
+				
+				
+			},
+
 			
 			//获取用户信息
 			getUserInfoFromYanyubao: function (msg_text) {

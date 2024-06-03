@@ -18,3 +18,9 @@
 	width: 90%;
 	border: 0;
 }
+
+.container {
+	padding:80rpx 0 150rpx 0; 
+	background-color: #ffffff;
+	font-size: 32rpx;
+}

@@ -8,12 +8,12 @@
 			<view  class="scroll-txt" :style="'border:2rpx solid '+ wxa_shop_nav_bg_color + ';'">   
 				<input type="text" 
 					v-model="search_text" 
-					placeholder="搜索附近商家" 
+					placeholder="搜索附近" 
 					confirm-type="search" 
 					style="background: #e6e6e6;" 
-					@confirm="search()"/>
+					@confirm="to_search_shop_list()"/>
 				<icon type="search" size="15" style="margin: 0rpx 10rpx 0 0;position:absolute;right:30rpx;" 
-					@tap="search()"></icon>
+					@tap="to_search_shop_list()"></icon>
 				<!-- <text class="scroll-ads">搜索附近商家</text> -->
 			</view>
 		</view>
@@ -27,54 +27,59 @@
 		
 		
 		
-		<!-- -附近商家 -->
 		
-		<view class="label-line">
-		  <view class='label-line-a'></view>
-		  <view> ※ 附近商家 ※ </view>
-		  <view class='label-line-a'></view>
-		</view>
-		
-		<view  class="top-input-con" style="margin-top: 0rpx;" id="affix"> 
-		
-			<!-- 全部美食按钮 -->
-			<view class="ab" @click="shuaxin()" style="width:25%;float:left;">
-				<text>附近商家</text>
-				<!-- <image class='local-img' src="../../static/img/xiala.png"></image> -->
+		<block v-if="(show_type == 'default_xianmai_shang_list') || (show_type == 'nft_supplier_list')">
+			<!-- -附近商家 -->
+			<view class="label-line">
+			  <view class='label-line-a'></view>
+			  <view> ※ 附近商家 ※ </view>
+			  <view class='label-line-a'></view>
 			</view>
 			
-			<!-- 分类按钮 -->
-			<picker class="ab" style="width:25%;" @change="bindPickerChangeFloor($event)"  :range="cata_list" data-searchType="cataName">
-				<view  style="display: flex;justify-content: center;align-items: center;">
-					<view class="picker">
-						<text>{{fenlei_name}}</text>
-					</view>
-					<image class='local-img' src="../../static/img/xiala.png"></image> 
+			<view  class="top-input-con" style="margin-top: 0rpx;" id="affix"> 
+			
+				<!-- 全部美食按钮 -->
+				<view class="ab" @click="shuaxin()" style="width:25%;float:left;">
+					<text>附近商家</text>
+					<!-- <image class='local-img' src="../../static/img/xiala.png"></image> -->
 				</view>
-			</picker>
-			
-			<!-- 智能排序按钮 -->
-			<view class="ab" @click="bindPickerChangeFloor($event)" data-searchType="star_level" style='width: 25%;'>
-				<text>智能排序</text>
-				<!-- <image class='local-img' src="../../static/img/xiala.png"></image> --> 
-			</view>
+				
+				<!-- 分类按钮 -->
+				<picker class="ab" style="width:25%;" @change="bindPickerChangeFloor($event)"  :range="cata_list" data-searchType="cataName">
+					<view  style="display: flex;justify-content: center;align-items: center;">
+						<view class="picker">
+							<text>{{fenlei_name}}</text>
+						</view>
+						<image class='local-img' src="../../static/img/xiala.png"></image> 
+					</view>
+				</picker>
+				
+				<!-- 智能排序按钮 -->
+				<view class="ab" @click="bindPickerChangeFloor($event)" data-searchType="star_level" style='width: 25%;'>
+					<text>智能排序</text>
+					<!-- <image class='local-img' src="../../static/img/xiala.png"></image> --> 
+				</view>
 
-			<!-- 筛选按钮 -->
-			<picker class="ab" style="width:25%;" @change="bindPickerChangeFloor($event)"  :range="spec_list" data-searchType="spec">
-				<view style="display: flex;justify-content: center;align-items: center;">
-					<view class="picker" style="float:left;" >
-						<text>{{shaixuan_name}}</text>
+				<!-- 筛选按钮 -->
+				<picker class="ab" style="width:25%;" @change="bindPickerChangeFloor($event)"  :range="spec_list" data-searchType="spec">
+					<view style="display: flex;justify-content: center;align-items: center;">
+						<view class="picker" style="float:left;" >
+							<text>{{shaixuan_name}}</text>
+						</view>
+						<image class='local-img' src="../../static/img/xiala.png"></image> 
 					</view>
-					<image class='local-img' src="../../static/img/xiala.png"></image> 
-				</view>
-			</picker>
-		</view>
-		<!-- 筛选按钮结束 -->
+				</picker>
+			</view>
+			<!-- 筛选按钮结束 -->
+		</block>
+		
+		
 		
 		<!-- 实体商家列表 -->
 		<shopList :xianmaishangList="xianmaishang_list" 
 			@toShangDetail="toShangDetail"
 			@toShangList="toShangList"
+			:show_type="show_type"
 			:show_zhuanti_title = 0></shopList>
 
 		
@@ -88,6 +93,10 @@
 
 
 <script>
+	/**
+	 * 路径支持的参数：
+	 * show_type =  default_xianmai_shang_list | gps_checkin | nft_supplier_list
+	 */
 	import locationapi from '../../common/locationapi.js'; 
 	import shopList from '../../components/shop-list/shop-list.vue';
 	
@@ -180,12 +189,16 @@
 				
 				shangid_str:'',
 				
+				//2022.9.22. 设置显示的类型，以适应不同的商家列表显示方式
+				show_type:'default_xianmai_shang_list',
+				
+				
 			};
 		},
 		
 		onLoad(options) {
 			var that = this;
-			console.log('shopList / options', options);
+			console.log('shopList ==>> onLoad ==>> options', options);
 			
 			uni.getSystemInfo({
 			    success: function (res) {
@@ -196,7 +209,9 @@
 			    }
 			});
 			
-			//如果不是挂接在Tabbar，则可以读取以下参数
+			//如果不是挂接在Tabbar，则可以读取以下参数;如果挂接在TabBar，请使用shopList2.vue
+			
+			/* fenlei_name 的判断代码有错误， h_cata_lsit这个变量读取不到。 */
 			if(options.fenlei_name){
 				this.fenlei_name = options.fenlei_name;				
 				var xz_cataid = h_cata_lsit[options.fenlei_name]; // 选择的分类id
@@ -218,6 +233,11 @@
 			
 			if(options.cataid){
 				uni.setStorageSync('current_shang_cataid', options.cataid);
+			}
+			
+			// 商家列表显示的类型，默认为普通的商家列表，可以扩展为商家的打卡签到网址
+			if(options.show_type){
+				this.show_type = options.show_type;
 			}
 			
 			this.abotapi.set_option_list_str(this, function(that, option_list){
@@ -247,6 +267,14 @@
 			that.search_shang_list = [];
 			uni.removeStorageSync('search_shang_all_jingwei');
 			
+			if(options.search_text){
+				this.search_text = options.search_text;
+				
+				this.to_search_shop_list();
+				
+				return;
+			}
+			
 			locationapi.get_location(that, that.cx_paixu_shang_list);
 			
 		},
@@ -263,7 +291,9 @@
 			
 			this.get_cata_tag();
 			this.get_gundong_img();
+			
 			//this.shuaxin();
+			
 			console.log('imgheights2222',this.imgheights);
 			console.log('imgheights2222',this.current_swiper_img_seq);
 			
@@ -387,6 +417,9 @@
 				
 				//2021.8.5. 如果读取supplier的列表
 				if(that.abotapi.globalData.xianmai_shang_list_switch_to_supplier_list == 1){
+					//2022.10.8.
+					that.show_type = 'nft_supplier_list';
+					
 					post_url = that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/supplier_list';
 				}
 				
@@ -398,7 +431,7 @@
 						str:shangid_str,
 				    },
 				    success: function (res) {
-						
+											
 						
 						if (res.data.code != 1) {
 							
@@ -435,10 +468,10 @@
 							  break;
 							}
 						  }
-						 
-								
-						  res.data['xianmai_shang_list'][shangid].dis = disItem.dis_str;
-								
+						  
+						  if(disItem){
+							  res.data['xianmai_shang_list'][shangid].dis = disItem.dis_str;
+						  }	
 								
 						  var imgs = [];
 						  if (res.data['xianmai_shang_list'][shangid]['image_list']) {
@@ -451,13 +484,12 @@
 								
 								
 						}
-								
 						
 						for(var i = 0 ; i< res.data['xianmai_shang_list'].length;i++){
 							that.xianmaishang_list.push(res.data['xianmai_shang_list'][i]);
 						}
 						
-						
+						//console.log('that.xianmaishang_list ===>>>', that.xianmaishang_list);
 						
 						
 								
@@ -485,7 +517,73 @@
 				//经纬度  点方法获取
 				that.coordinate = coordinate; //经纬度
 				
-				that.set_paixu_shanglist();
+				//2024.5.24. 这里不直接使用，先判断 all_shang_jingwei_list 缓存是否不存在，如果不存在，先获取
+				//that.set_paixu_shanglist();
+				
+				//== 获取全部商家经纬度和ID的对应关系的逻辑 Begin ===
+				var arr = uni.getStorageSync('all_shang_jingwei_list');
+				var arr_save_time = uni.getStorageSync('all_shang_jingwei_list_save_time');
+				
+				var currentTime = (new Date()).getTime();//获取当前时间
+				
+				console.log('call_back_get_shang_list currentTime======>>>>'+currentTime);
+				
+				if(arr && ( (currentTime - arr_save_time) < 2*60*60*1000 ) ){
+					
+					console.log('call_back_get_shang_list 存在列表且在2小时内（arr_save_time）'+arr_save_time);
+					
+					
+					//locationapi.get_location(that, that.set_paixu_shanglist);
+					that.set_paixu_shanglist();
+				}
+				else{
+					
+					console.log('call_back_get_shang_list 超过2小时（arr_save_time），自动获取最新的列表======>>>>'+arr_save_time);
+					
+					var post_url = that.abotapi.globalData.yanyubao_server_url + '/openapi/XianmaiShangData/get_shang_all_jingwei';
+					
+					//2021.8.5. 如果读取supplier的列表
+					if(that.abotapi.globalData.xianmai_shang_list_switch_to_supplier_list == 1){
+						post_url = that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/supplier_all_jingwei';
+					}
+					
+					console.log('call_back_get_shang_list 超过2小时（post_url），请求网址为======>>>>'+post_url);
+					
+					
+					that.abotapi.abotRequest({
+					    url: post_url,
+					    method: 'post',
+					    data: {
+							sellerid:that.abotapi.globalData.default_sellerid,
+					    },
+					    success: function (res) {
+							console.log('get_shang_all_jingwei====>>>>>', res);
+							
+							if (res.data.code != 1) {
+							    //显示错误信息						
+								return;
+							}
+							
+							uni.setStorageSync("cata_list", res.data.all_cata_list);
+							uni.setStorageSync("spec_list", res.data.all_spec_list);
+							uni.setStorageSync('all_shang_jingwei_list', res.data.data);
+							uni.setStorageSync('all_shang_jingwei_list_save_time', currentTime);
+							
+							//调用排序算法
+							//locationapi.get_location(that, that.set_paixu_shanglist);
+							that.set_paixu_shanglist();
+					    },
+					    fail: function (e) {
+							uni.showToast({
+								title: '网络异常！',
+								duration: 2000
+							});
+					    },
+					}); 
+				}
+				//== 获取全部商家经纬度和ID的对应关系的逻辑 End ===
+				
+				
 				
 			},
 			
@@ -493,7 +591,13 @@
 			set_paixu_shanglist:function(){
 				
 				var that = this;
+				
 				var arr = uni.getStorageSync('all_shang_jingwei_list'); //获取商家经纬度
+				
+				
+				
+				
+				
 				var search_shang_all_jingwei = uni.getStorageSync("search_shang_all_jingwei");  //获取搜索之后的缓存
 				
 				
@@ -750,7 +854,8 @@
 					
 					
 					
-				}else if(searchtype == 'cataName'){
+				}
+				else if(searchtype == 'cataName'){
 					console.log('进入筛选');
 					this.shaixuan_name = '筛选';
 					
@@ -872,10 +977,46 @@
 			
 			//实体商家跳转
 			toShangDetail(e) {
-				console.log('toshangdetail',e)
+				console.log('toshangdetail ==>> ', e);
+				
 				var shangid = e.currentTarget.dataset.shangid;
+				
+				// show_type == default_xianmai_shang_list
+				var new_url = '/pages/shopDetail/shopDetail?shangid='+shangid;
+				
+				
+				console.log('show_type ==>> ', this.show_type);
+				
+				//2022.9.23. 如果是打卡签到地点列表，则组织打开的网址
+				if(this.show_type == 'gps_checkin'){
+					for (var ii=0; ii<this.xianmaishang_list.length; ii++) {
+						
+						//console.log('ii==>>'+ii + ',shangid ==>> ', this.xianmaishang_list[ii]['xianmai_shangid']);
+						
+						if(this.xianmaishang_list[ii]['xianmai_shangid'] == shangid){
+							console.log('找到当前商户对应记录，准备组织签到地址');
+							
+							var shangItem001 = this.xianmaishang_list[ii];
+							
+							//
+							new_url = '/pages/shopMap/shopMap?longitude='+shangItem001.longitude;
+							new_url += '&latitude='+shangItem001.latitude;
+							new_url += '&from_page=3&address='+shangItem001.address;
+							new_url += '&name='+shangItem001.name;
+							new_url += '&telephone='+shangItem001.telephone;
+							
+							break;
+						}
+					}
+					
+				}
+				else if(this.show_type == 'nft_supplier_list'){
+					new_url = '/pages/nftcard/shopDetail?shangid='+shangid;
+				}
+				
+				
 				uni.navigateTo({
-					url: '/pages/shopDetail/shopDetail?shangid='+shangid
+					url: new_url
 				});
 			},
 			toShangList(){
@@ -885,9 +1026,12 @@
 			},
 			
 			//搜索
-			search: function (view) {
+			to_search_shop_list: function (view) {
 				
 				var that = this;
+				
+				console.log('to_search_shop_list ==>> search_text ==>>> ',this.search_text);
+				
 				that.xianmaishang_list = [];
 				that.page = 1;
 				that.sx_shang_list = [];
@@ -906,7 +1050,6 @@
 					}
 				})
 				    
-				console.log('search_text',this.search_text);
 				
 				// var welfareId = view.currentTarget.dataset.value;
 				// var url = "/pages/listdetail/listdetail?name=" + welfareId;

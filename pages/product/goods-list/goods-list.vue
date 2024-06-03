@@ -15,19 +15,18 @@
 						{{factory_info_message.factory_name}}
 					</view>
 					<view class="gh-color">
-						供货商
+						{{factory_info_message.factory_title_show_name}}
 					</view>
 				</view>
 				
-				<view class="gonghuoshang_address">
+				<view class="gonghuoshang_address" v-if="factory_info_message.address">
 					地址：{{factory_info_message.address}}
 				</view>
 			</view>
 		</view>
 			<view class="gonghuoshang_zizhi" >
-				<view class="gh-image-siez">
-					<image v-if="factory_info_message.yingye_zhizhao"
-						
+				<view class="gh-image-size" v-if="factory_info_message.yingye_zhizhao">
+					<image
 						:src="factory_info_message.yingye_zhizhao" 
 						@tap="preview_factory_images" 
 						:data-url="factory_info_message.yingye_zhizhao"
@@ -36,8 +35,8 @@
 						class="factory_image"
 						:style="{width:yingye_zhizhao_width+'px',height:factory_image_height + 'px'}"></image>
 				</view>
-				<view class="gh-image-siez">				
-					<image v-if="factory_info_message.other_img_01"
+				<view class="gh-image-size" v-if="factory_info_message.other_img_01">				
+					<image
 						:src="factory_info_message.other_img_01" 
 						@tap="preview_factory_images" 
 						:data-url="factory_info_message.other_img_01"
@@ -48,9 +47,8 @@
 						></image>
 				</view>
 				
-				<view class="gh-image-siez">			
-					<image
-					v-if="factory_info_message.other_img_02" 
+				<view class="gh-image-size" v-if="factory_info_message.other_img_02" >			
+					<image					
 					:src="factory_info_message.other_img_02" 
 					@tap="preview_factory_images" 
 					:data-url="factory_info_message.other_img_02"
@@ -61,9 +59,8 @@
 					></image>
 				</view>
 				
-				<view class="gh-image-siez">			
+				<view class="gh-image-size" v-if="factory_info_message.other_img_03" >			
 					<image
-					v-if="factory_info_message.other_img_03" 
 					:src="factory_info_message.other_img_03"
 					 @tap="preview_factory_images"
 					  :data-url="factory_info_message.other_img_03"
@@ -112,6 +109,11 @@
 		data() {
 			return {
 				cataid:0,
+				
+				current_params_str:'',
+				wxa_share_img:'',
+				wxa_share_title:'',
+				
 				goodsList:'',
 				sorts:1,
 				current_page:1,
@@ -154,17 +156,15 @@
 		 * 
 		 * 
 		 */
-		onLoad: function (option) { //option为object类型，会序列化上个页面传递的参数
-			console.log('option',option); //打印出上个页面传递的参数。
+		onLoad: function (options) { //options为object类型，会序列化上个页面传递的参数
+			console.log('options',options); //打印出上个页面传递的参数。
 			
 			var title = '商品列表';
-			if(option.cata_name){
-				title += '—' + option.cata_name;
+			if(options.cata_name){
+				title += '—' + options.cata_name;
 			}
 			
-			if(option.factoryid){
-				this.factoryid = option.factoryid;
-			}
+			
 			
 			uni.setNavigationBarTitle({
 				title: title
@@ -172,17 +172,40 @@
 			
 			this.abotapi.set_option_list_str(this,this.callback_set_option_list_str);
 			
-			if(option.cataid){
-				this.cataid = option.cataid;
+			if(options.factoryid){
+				this.factoryid = options.factoryid;
 			}
 			
+			if(options.cataid){
+				this.cataid = options.cataid;
+			}			
 			console.log('this.cataid=====>>>>', this.cataid);
 			
+			
+			//=====分析参数=====
+			if(options){
+			  var arr = Object.keys(options);
+			  var options_len = arr.length;
+					
+			  if (options_len > 0){
+				var params_str = '';
+					
+				for(var key in options){
+				  params_str += key+'='+options[key]+'&';
+				}
+				params_str = params_str.substr(0, params_str.length - 1);
+					
+				this.current_params_str = params_str;
+			  }
+			}
+			//===== End ======
+			
+			
 			//渠道商品 2020.8.21.
-			if(!this.abotapi.isNullOrUndefined(option.product_source_channel)){
-				this.product_source_channel = option.product_source_channel;
+			if(!this.abotapi.isNullOrUndefined(options.product_source_channel)){
+				this.product_source_channel = options.product_source_channel;
 				
-				this.product_channel_name = option.product_channel_name;
+				this.product_channel_name = options.product_channel_name;
 			}
 			
 			
@@ -257,11 +280,73 @@
 			
 			
 		},
+		onShareAppMessage: function () {
+			
+			var share_data001 = this.__get_share_data();
+
+			var share_data = {
+			  title: '' + share_data001.share_title,
+			  path: share_data001.last_url,
+			  imageUrl: share_data001.share_img,
+			  success: function (res) {
+				// 分享成功
+			  },
+			  fail: function (res) {
+				// 分享失败
+			  }
+			};
+			
+			//#ifdef MP-BAIDU
+				share_data.content = share_data.title;
+			//#endif
+			
+			return share_data;
+			
+		},
+		onShareTimeline: function () {
+			var share_data001 = this.__get_share_data();
+			
+			return {
+			    title: '' + share_data001.share_title,
+			    query: share_data001.last_query,
+			    imageUrl:share_data001.share_img,
+			}
+			
+		},
+		onAddToFavorites: function () {
+			var share_data001 = this.__get_share_data();
+			
+			return {
+			    title: '' + share_data001.share_title,
+			    query: share_data001.last_query,
+			    imageUrl:share_data001.share_img,
+			}
+		},
 		methods:{
-			callback_set_option_list_str:function(that,cb_params){
+			//获取分享的数据
+			__get_share_data:function(){
 				var that = this;
 				
-				if(!cb_params){
+				console.log('app.globalData.shop_name : ' + this.abotapi.globalData.shop_name);
+				
+				var last_url = '/pages/product/goods-list/goods-list';
+				if(that.current_params_str.length > 5){
+					last_url += '?'+that.current_params_str;
+				}
+
+				var share_data = {};
+				
+				share_data.share_title = that.wxa_share_title;
+				share_data.share_img = that.wxa_share_img;
+				share_data.last_url = last_url;
+				share_data.last_query = that.current_params_str;
+				
+				return share_data;
+			},
+			callback_set_option_list_str:function(that, option_list){
+				var that = this;
+				
+				if(!option_list){
 					return;
 				}
 				
@@ -269,7 +354,16 @@
 				
 				that.default_copyright_text = that.abotapi.globalData.default_copyright_text;
 				
-				that.wxa_show_kucun_in_list = cb_params.wxa_show_kucun_in_list		
+				that.wxa_show_kucun_in_list = option_list.wxa_show_kucun_in_list;
+				
+				if (option_list.wxa_share_img) {
+					//分享转发图片
+				    that.wxa_share_img = option_list.wxa_share_img;
+				}
+				if (option_list.wxa_share_title) {
+					//分享转发标题
+				    that.wxa_share_title = option_list.wxa_share_title;
+				}
 			},
 			//获取商品列表
 			reload(){
@@ -308,9 +402,7 @@
 							
 							if(res.data.code == 1){
 								console.log('aaafff===', res);
-								that.factory_info_message = res.data.factory_info_message;
 								
-								console.log('that-----factory',that.factory_info_message);
 								console.log("that.goodsList", res.data.product_list);
 								
 								if(res.data.counter == 0){
@@ -327,11 +419,34 @@
 								//that.goodsList = res.data.product_list;
 								console.log("that.goodsList", that.goodsList);
 								
+								//如果存在供货商信息
+								if(res.data.factory_info_message){
+									that.factory_info_message = res.data.factory_info_message;
+									
+									console.log('that-----factory',that.factory_info_message);
+									
+									//改变页面标题
+									if(that.factory_info_message.factory_name){
+										uni.setNavigationBarTitle({
+											title: that.factory_info_message.factory_name
+										});
+										
+										that.wxa_share_title = that.factory_info_message.factory_name;
+									}
+									
+									if(that.factory_info_message.factory_logo){
+										that.wxa_share_img = that.factory_info_message.factory_logo;
+									}
+									
+									
+								}
 								
 								
 								
 								
-							}else if(res.data.code == 0){
+								
+							}
+							else if(res.data.code == 0){
 								// uni.showToast({
 								// 	title: '暂无商品',
 								// 	duration: 2000
@@ -619,8 +734,8 @@
 	align-items: center;
 	display: flex;
 }
-.gh-image-siez{
-	width: 25%;
+.gh-image-size{
+	/*width: 25%;*/
 	position: relative;
 }
 </style>

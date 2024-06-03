@@ -12,9 +12,12 @@
 			<view class="icon-btn">
 				<view v-if="wxa_hidden_to_msg_btn_in_usercenter != 1"
 					class="icon tongzhi" @tap="toMsg" 
+					style="float: left;"
 					:style="{color: wxa_shop_nav_bg_color == '#FFFFFF' ? '#333333' : '#FFFFFF'}"></view>
 				<!--下版本替换为: toMsg -->
-				<view class="icon setting" @tap="toSetting" :style="{color: wxa_shop_nav_bg_color == '#FFFFFF' ? '#333333' : '#FFFFFF'}"></view>
+				<view class="icon setting" @tap="toSetting" 
+					style="float: right;" 
+					:style="{color: wxa_shop_nav_bg_color == '#FFFFFF' ? '#333333' : '#FFFFFF'}"></view>
 			</view>
 		</view>
 		<!-- 占位 -->
@@ -23,8 +26,8 @@
 		<view class="user" :style="{backgroundColor:wxa_shop_nav_bg_color}">
 			<!-- 头像 -->
 			<view class="left">
-				<label v-if="user_info">
-					<image :src="user_info.headimgurl"></image>
+				<label v-if="user_current_info && user_current_info.headimgurl">
+					<image :src="user_current_info.headimgurl"></image>
 				</label>
 				<label v-else>
 					<image src="https://yanyubao.tseo.cn/Tpl/static/images/touxiang-white.png"></image>
@@ -32,9 +35,9 @@
 			</view>
 			<!-- 昵称,个性签名 -->
 			<view class="right">
-				<view v-if="user_info" class="username" 
+				<view v-if="user_current_info && user_current_info.headimgurl" class="username" 
 					:style="{color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}">
-					<label>{{fenxiao_info.nickname}}</label>
+					<label>{{user_current_info.nickname}}</label>
 				</view>
 				<view v-else @click="toLogin" class="username"
 					:style="{color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}">
@@ -42,7 +45,8 @@
 				</view>
 				
 				<view class="signature" :style="{color:wxa_shop_nav_font_color=='#000000' ? '#333' : wxa_shop_nav_font_color}">
-					<label v-if="user_info && user_info.signature !=null">{{user_info.signature}}</label><label v-if="user_info.signature == null"></label>
+					<label v-if="user_current_info && user_current_info.signature !=null">{{user_current_info.signature}}</label>
+					<label v-if="user_current_info.signature == null"></label>
 				</view>
 			</view>
 			<!-- 二维码按钮 -->
@@ -280,7 +284,7 @@
 				showHeader: true,
 				productid: 0,
 				//个人信息,
-				user_info: '',
+				user_current_info: '',
 				fenxiao_info: '',
 				wxa_shop_nav_bg_color: '',
 				wxa_shop_nav_font_color: '',
@@ -510,6 +514,9 @@
 				uni.hideToast();
 
 			}, 1000);
+			
+			//更新账号余额等信息
+			this.get_current_userinfo();
 
 			this.abotapi.set_option_list_str(this,
 				this.set_option_list_callback
@@ -592,17 +599,62 @@
 			get_current_userinfo: function() {
 				var that = this;
 				
+				// #ifdef MP-TOUTIAO
+				that.check_douyin_nickname_and_avatar();
+				// #endif
+				
+				
+				
 				var userInfo = that.abotapi.get_user_info();
 				
 				if (!userInfo || !userInfo.userid) {
 					return;
 				}
 				
+				//2022.11.29. 为了适应小程序对于头像和昵称的跳转，这里临时不再提示获取头像和昵称
+				//userInfo.is_get_userinfo = 1;
+				
 				// #ifdef MP-WEIXIN
 				if(userInfo.is_get_userinfo != 1){
 					uni.showModal({
 						title:'提示',
-						content:'需要获取头像和昵称以继续',
+						content:'需要获取头像和昵称以提供个性化服务',
+						cancelText:'拒绝',
+						confirmText:'同意',
+						success: (res) => {
+							if(res.confirm){
+								uni.navigateTo({
+									url: '/pages/login/login_get_userinfo'
+								})
+							}
+							else{
+								uni.showModal({
+									title:'提示',
+									content:'没有您的头像和昵称，个性化信息无法展示，是否不再提示？',
+									success: (res02) => {
+										if(res02.confirm){
+											that.abotapi.globalData.userInfo.is_get_userinfo = 1;
+											
+											//that.abotapi.globalData.userInfo.is_get_userinfo = 1;
+											that.abotapi.set_user_info(that.abotapi.globalData.userInfo);
+										}
+									}
+								})
+							}
+						}
+					})
+					
+				}
+				// #endif
+				
+				//2023.9.14. 
+				// #ifdef MP-TOUTIAO
+				if(userInfo.is_get_userinfo != 1){
+					uni.showModal({
+						title:'提示',
+						content:'需要获取头像和昵称以提供个性化服务',
+						cancelText:'拒绝',
+						confirmText:'同意',
 						success: (res) => {
 							if(res.confirm){
 								uni.navigateTo({
@@ -653,8 +705,6 @@
 					success: function(res) {
 						console.log('ddd', res);
 						
-						
-						
 						if (res.data.code == -1) {
 							//登录超时
 							that.abotapi.del_user_info();
@@ -667,20 +717,25 @@
 							var data = res.data;
 							
 							//渲染前端界面
-							that.user_info = data.data;
+							that.user_current_info = data.data;
 							
 							
-							that.fenxiao_info = that.user_info.fenxiao_info;
+							// #ifdef MP-TOUTIAO
+							that.check_douyin_nickname_and_avatar();
+							// #endif
+							
+							
+							that.fenxiao_info = that.user_current_info.fenxiao_info;
 							
 							
 							
-							console.log('data2==>>', that.user_info.status_count2);
+							console.log('data2==>>', that.user_current_info.status_count2);
 							console.log('fenxiao_userinfo==>>', that.fenxiao_info);
 							
 							
-							that.order_icon_list[1].order_num = that.user_info.status_count1;
-							that.order_icon_list[2].order_num = that.user_info.status_count2;
-							that.order_icon_list[3].order_num = that.user_info.status_count3;
+							that.order_icon_list[1].order_num = that.user_current_info.status_count1;
+							that.order_icon_list[2].order_num = that.user_current_info.status_count2;
+							that.order_icon_list[3].order_num = that.user_current_info.status_count3;
 							
 							console.log('fenxiao_userinfo==>>====', that.order_icon_list);
 							
@@ -699,8 +754,16 @@
 				console.log('user_center_function_list_icon_type=====>>>>>>>' + that.user_center_function_list_icon_type);
 
 				if (that.user_center_function_list_icon_type == -1) {
-					that.user_function_list = that.user_center_function_list_icon_list;
-
+					//that.user_function_list = that.user_center_function_list_icon_list;
+					
+					var user_icon_list = [];
+					for(var item in that.user_center_function_list_icon_list ){
+						var icon_list_item = that.user_center_function_list_icon_list[item];
+						user_icon_list.push(icon_list_item);								
+					}
+					that.user_function_list = user_icon_list;
+					console.log('user_function_list=====>>>>>>>' , user_icon_list)
+					
 					return;
 				}
 
@@ -823,6 +886,8 @@
 				
 			},
 			goto_user_function(url) {
+				
+				console.log('url123456',url)
 
 
 				var last_url = '/pages/tabbar/user';
@@ -864,7 +929,30 @@
 				uni.navigateTo({
 					url:'/pages/h5browser/h5browser?url=/hybrid/html/ecardh5/index.html'
 				})
-			}
+			},
+			//2023.9.14. 检查抖音的头像和昵称
+			//如果是来自抖音的，则优先使用本地缓存的头像和昵称，
+			//即使服务器上获取信息后，也调用这个函数替换成本地的
+			check_douyin_nickname_and_avatar:function(e){
+				var that = this;
+				
+				uni.getStorage({
+					key: 'douyin_nickname_and_avatar', 
+					success:(res)=>{
+						var douyin_nickname_and_avatar = JSON.parse(res.data);
+						
+						if(douyin_nickname_and_avatar){
+							if(!that.user_current_info){
+								that.user_current_info = {}
+							}
+							
+							that.user_current_info.headimgurl = douyin_nickname_and_avatar.avatar;
+							that.user_current_info.nickname = douyin_nickname_and_avatar.nickname;
+						}
+					},
+				});
+			},
+			//======== End of 2023.9.14. ====
 			
 				
 		}
@@ -909,7 +997,8 @@
 			width: 120upx;
 			height: 60upx;
 			flex-shrink: 0;
-			display: flex;
+			display: block;
+			text-align: right;
 
 			.icon {
 				color: #fff;

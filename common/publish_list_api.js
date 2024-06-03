@@ -86,8 +86,11 @@ module.exports = {
 			},
 			success: function (res) {
 				
+				console.log('ArticleImgApi===>>>>', res);
+				
 				if(res.data.list_title){
 					publishData['list_title'] = res.data.list_title;
+					publishData['title'] = res.data.list_title;
 				}
 				
 				if(res.data.code == 1){

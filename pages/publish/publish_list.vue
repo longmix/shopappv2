@@ -1,5 +1,7 @@
 <template>
 	<view style="background:#EFEFF4;border-top: 1px solid #EFEFF4;">
+		
+		<!-- 右侧下方的三个导航图标  Begin-->
 		<view class="fabu_button" :style="{background:wxa_shop_nav_bg_color}" @tap="toPublish_index('fabu')" v-if="publish_hiddend_btn_for_write != 1">
 			发布
 		</view>
@@ -9,13 +11,24 @@
 		<view class="shoucang_button" :style="{background:wxa_shop_nav_bg_color}" @tap="toPublish_index('shoucang')">
 			收藏
 		</view>
+		<!-- 右侧下方的三个导航图标  End-->
+		
+		<!-- 搜索框 -->
 		<view class="sou">
 			
 			<input style="background: #DFDFDF;" type="text" placeholder="请输入搜索条件" v-model="search_text"/>
 			<image @tap="search_article_list()" src="../../static/img/search.png"></image>
 		</view>
 		
-		<view class="nav-icon-con">
+		<!-- 滚动的图片广告 -->
+		<swiperBanner v-if="banner_swiper_list"
+			:imgUrls="banner_swiper_list" 
+			:border_radius="0"
+			:swiper_width_percent_value="100"
+			@goto_url="toAdDetails"></swiperBanner>
+		
+		<!-- 图标导航 -->
+		<view class="nav-icon-con" v-if="publish_hiddend_btn_for_icon_list != 1">
 				<view style="" v-for="(item,index) in publish_img_cata_list " 
 					:key="item.classid" 
 					:data-cataid="item.classid" 
@@ -23,25 +36,23 @@
 					data-from="icon" 
 					@click="get_publish_cata_list">
 					<image class="nav-icon-list" :src="item.icon"></image>
-					<view style="font-size: 24upx;">{{item.name}}</view>
+					<view style="font-size: 24rpx;">{{item.name}}</view>
 				</view>
 		</view>
 		
 		<!-- 文字导航 -->
-		<view style="display: flex;background-color: #FFFFFF;">
+		<view style="display: flex;background-color: #FFFFFF;"  v-if="publish_hiddend_btn_for_text_list != 1">
 			<view :data-cataid="0" @click="get_publish_cata_list" data-from="text" 
 			:data-index="-1"
-			:class="tap_index < 0 ? 'quanbu_color' : 'quanbu'"
-			
-			>
+			:class="tap_index < 0 ? 'quanbu_color' : 'quanbu'">
 				<view>全部</view>
 			</view>
-			<scroll-view scroll-x="true" enable-flex="true" class="kcrzxybd" style="height:60upx;display: flex;white-space: nowrap;width:83%">
+			<scroll-view scroll-x="true" enable-flex="true" class="kcrzxybd" style="height:60rpx;display: flex;white-space: nowrap;width:83%">
 				
 					<view v-for="(item,index) in publish_img_cata_list " 
 						:key="item.classid" 
 						v-if="!item.url" 
-						:class="tap_index == index ? 'changes_color':'scroll-view'" 
+						:class="tap_index == index ? 'scroll_view_item scroll_view_changes_color':'scroll_view_item'" 
 						:data-cataid="item.classid"
 						:data-index="index"
 						data-from="text"
@@ -49,9 +60,21 @@
 					
 			</scroll-view>
 		</view>
+
 		
-		<publishList :index_list="index_list" @goForum="goForum" @previewImage="previewImage"
-			:show_zhuanti_title = "0"
+		<!-- 顶部筛选 -->
+		<view class="nav_list" style="display: none;">
+			<a href="#index1">附近商家</a>
+			<a href="#index2">分类</a>
+			<a href="#index3">智能排序</a>
+			<a href="#index4">筛选</a>
+		</view>
+
+		<publishList :index_list="index_list" 
+					:spec_list_type="spec_list_type"
+					@goForum="goForum" 
+					@previewImage="previewImage"
+					:show_zhuanti_title = "0"
 		></publishList>
 	</view>
 </template>
@@ -59,9 +82,12 @@
 <script>
 	import publishList from '../../components/publish-list/publish-list.vue';
 	import publish_list_api from '../../common/publish_list_api.js';
+	import swiperBanner from '../../components/swiper-banner.vue';
+	
 	export default {
 		components:{
-			publishList
+			publishList,
+			swiperBanner,
 		},
 		data() {
 			return {
@@ -101,10 +127,26 @@
 				search_text:'',//搜索的文案
 				wxa_shop_nav_bg_color:'#f44444',
 				tap_index:'-1', //改变文字导航颜色
+				
+				//2022.11.1. 增加特殊的帖子显示类型
+				spec_list_type:'default',		// default 默认的列表类型， product_list01 类似商品的列表类型
+				
+				//2022.11.22. 增加滚动图片广告
+				banner_swiper_list: null,
+				
+				publish_hiddend_btn_for_icon_list:0,
+				publish_hiddend_btn_for_text_list:0,
+				
 			}
 		},
 		
-		
+		/**
+		 * 
+		 * /pages/publish/publish_list?spec_list_type=product_list
+		 * 
+		 * @param {Object} options
+		 * 
+		 */
 		onLoad:function(options){
 			console.log('publish_list ===>>> options ===>>>', options);
 			
@@ -171,18 +213,26 @@
 		},
 		
 		onPullDownRefresh:function(){
-			console.log(123465);
+			console.log('onPullDownRefresh.....');
+			
 			this.current_page = 1;
 			this.is_get_article_list = true;
 			this.index_list = []; 
 			
 			
-			publish_list_api.get_publish_list(this,this.get_api_publish_list);
+			var that = this;
+			
+			
+			//publish_list_api.get_publish_list(this,this.get_api_publish_list);
 			
 			
 			setTimeout(function() {
 				uni.stopPullDownRefresh();
 			}, 1000);
+			
+			that.abotapi.set_shop_option_data(that, that.callback_function);
+			
+			
 			
 		},
 		//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
@@ -227,10 +277,6 @@
 						title:that.abotapi.globalData.default_shopname
 					})
 				}
-				
-				
-				
-				
 				if(!that.index_list){
 					that.index_list = [];
 				}
@@ -265,7 +311,29 @@
 				else{
 					publish_list_api.get_publish_list(that,that.get_api_publish_list);
 				}
+				
+				//列表类型，product_list01  product_list02  default
+				if(shop_option_data.option_list.publish_list_spec_list_type){
+					that.spec_list_type = shop_option_data.option_list.publish_list_spec_list_type;
+				}
 			
+			
+				//2022.11.22. 广告图片
+				console.log('shop_option_data.option_list.publish_list_ad_list ===>>>', shop_option_data.option_list.publish_list_ad_list);
+				
+				if(shop_option_data.option_list.publish_list_ad_list){
+					that.banner_swiper_list = shop_option_data.option_list.publish_list_ad_list;
+				}
+				else{
+					that.banner_swiper_list = null;
+				}
+				
+				if(shop_option_data.option_list.publish_hiddend_btn_for_icon_list){
+					that.publish_hiddend_btn_for_icon_list = shop_option_data.option_list.publish_hiddend_btn_for_icon_list;
+				}
+				if(shop_option_data.option_list.publish_hiddend_btn_for_text_list){
+					that.publish_hiddend_btn_for_text_list = shop_option_data.option_list.publish_hiddend_btn_for_text_list;
+				}
 				
 			},
 			
@@ -278,7 +346,7 @@
 			},
 			
 			previewImage:function(index) {
-				
+				console.log('asdasdadadsa======>>>>')
 				var index_list = this.index_list;
 				
 				var index_item = index_list[index];
@@ -297,6 +365,7 @@
 					}
 				});
 			},
+			
 			//发布按钮跳转
 			toPublish_index:function(page){
 				console.log('page====>>',page);
@@ -417,6 +486,21 @@
 				}
 			},
 			
+			//轮播图、平面广告跳转
+			toAdDetails:function(url){
+				
+				// var home_url = '/pages/index/index';
+				// this.abotapi.goto_user_login(home_url, 'switchTab');
+				
+				var var_list = Object();
+			
+				console.log('toAdDetails- to url ====>>>>>>', url);
+				
+				this.abotapi.call_h5browser_or_other_goto_url(url, var_list, '');
+				
+			},
+			
+			
 			
 		}
 	}
@@ -429,22 +513,22 @@
 		align-items: center;
 	}
 	.head_img{
-		margin: 20upx;
+		margin: 20rpx;
 	}
 	.head_img image{
-		width: 100upx;
-		height: 100upx;
-		border-radius:5upx;
+		width: 100rpx;
+		height: 100rpx;
+		border-radius:5rpx;
 	}
 	.nickname{
 		color:#333;
 		font-weight:blod;
 	}
 	.cata_name{
-		margin-top: 10upx;
+		margin-top: 10rpx;
 		background-color: #18dba6;
 		color: #fff;
-		border-radius:6upx;
+		border-radius:6rpx;
 		padding: 2rpx 6rpx;
 		text-align: center;
 	}
@@ -455,26 +539,9 @@
 		word-break: break-all;
 		-webkit-box-orient: vertical;
 		-webkit-line-clamp: 3;
-		margin: 0 20upx;
+		margin: 0 20rpx;
 	}
-	.content_img_box{
-		display: flex;
-		flex-wrap:wrap;
-	}
-	.content_img{
-		width: 19%;
-		height: 160rpx;
-		
-		margin-right: 1%;
-		
-		margin: 10upx 20upx;
-	}
-	.content_img image{
-		width: 100%;
-		height: 160rpx;
-		border-radius: 10rpx;
-		
-	}
+	
 	.kuang{
 		position: absolute;
 		content: "";
@@ -482,8 +549,8 @@
 		border-style: solid;
 		border-color: transparent transparent #f2f2f2 #f2f2f2;
 		transform: rotate(135deg);
-		left: 35px;
-		top: -10px;
+		left: 70rpx;
+		top: -20rpx;
 
 	}
 	/*搜索框*/
@@ -493,32 +560,32 @@
 		justify-content: space-between;
 		background: #DFDFDF;
 		width: 96%;
-		border-radius: 50upx;
+		border-radius: 50rpx;
 		margin-left: 2%;
-		margin-top: 30upx;
-		margin-bottom: 20upx;
-		height: 70upx;
+		margin-top: 30rpx;
+		margin-bottom: 20rpx;
+		height: 70rpx;
 		color: #AAAAAA;
 		z-index: 99999;
 	}
 	.sou image{
-	    margin-right: 20upx;
-		width: 40upx;
-		height:40upx;
+	    margin-right: 20rpx;
+		width: 40rpx;
+		height:40rpx;
 	}
 	.sou input{
-	   margin-left: 20upx;
+	   margin-left: 20rpx;
 	}
 	.nav-icon-con{
-		margin-top: 30upx;
-		margin-bottom: 15upx;
+		margin-top: 30rpx;
+		margin-bottom: 15rpx;
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
-		font-size: 28upx;
+		font-size: 28rpx;
 		background-color: #FFFFFF;
 		padding:inherit;
-		padding: 20upx;
+		padding: 20rpx;
 	}
 	.nav-icon-con > view{
 		width: 20%;
@@ -527,19 +594,20 @@
 	
 	}
 	.nav-icon-list{		
-		width: 70upx;
-		height: 70upx;
+		width: 70rpx;
+		height: 70rpx;
 	}
 	.nav-icon-a{
 		text-align: center;
 	}
 	.nav-icon-a view{
-		/* margin-top: 20upx; */
+		/* margin-top: 20rpx; */
 		text-align: center;
-		font-size: 28upx;
+		font-size: 28rpx;
 	}
 	.fabu_button{
 		position: fixed;
+		z-index: 999;
 		bottom: 300rpx;
 		right: 16rpx;
 		border-radius: 54%;
@@ -554,6 +622,7 @@
 	}
 	.wode_button{
 		position: fixed;
+		z-index: 999;
 		bottom: 200rpx;
 		right: 16rpx;
 		border-radius: 54%;
@@ -568,6 +637,7 @@
 	}
 	.shoucang_button{
 		position: fixed;
+		z-index: 999;
 		bottom: 100rpx;
 		right: 16rpx;
 		border-radius: 54%;
@@ -580,40 +650,52 @@
 		line-height: 60rpx;
 	
 	}
-	.scroll-view{
+	.scroll_view_item{
 		color: #999;
-		font-size: 30upx;
+		font-size: 30rpx;
 		text-align: center;
 		min-width: 25%;
 		max-width:25%;
-		max-height:60upx;
-		min-height:60upx;
-		line-height: 60upx;
+		max-height:60rpx;
+		min-height:60rpx;
+		line-height: 60rpx;
+		float:left;
+		display: flex;
 	}
-	.changes_color{
+	.scroll_view_changes_color{
 		color:#0055ff;
-		font-size: 30upx;
-		text-align: center;
-		min-width: 25%;
-		max-width:25%;
-		max-height:60upx;
-		min-height:60upx;
-		line-height: 60upx;
+		font-size: 32rpx;
 	}
 	.quanbu{
 		color: #999;
-		font-size: 30upx;
+		font-size: 30rpx;
 		text-align: center;
 		width: 15%;
-		height:60upx;
-		line-height: 60upx;
+		height:60rpx;
+		line-height: 60rpx;
 	}
 	.quanbu_color{
 		color: #0055ff;
-		font-size: 30upx;
+		font-size: 30rpx;
 		text-align: center;
 		width: 15%;
-		height:60upx;
-		line-height: 60upx;
+		height:60rpx;
+		line-height: 60rpx;
 	}
+	
+	.nav_list {
+		width: 100%;
+		text-align: justify;
+		text-align-last: justify;
+	}
+	.nav_list a {
+		text-align: center !important;
+		display: inline-block;
+		padding: 20rpx 34rpx;
+		text-decoration: none;
+		color: #999;
+		font-size: 28rpx;
+	}
+    
+
 </style>

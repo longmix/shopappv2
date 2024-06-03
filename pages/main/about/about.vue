@@ -98,6 +98,9 @@
 					<!-- #ifdef MP-ALIPAY -->
 					<button class="xg_button" style="width:90%;margin: 0 auto;" @tap="call_seller" type="primary">联系客服</button>
 					<!-- #endif -->
+					<!-- #ifdef MP-TOUTIAO -->
+					<button class="xg_button" style="width:90%;margin: 0 auto;" @tap="call_seller" type="primary">联系客服</button>
+					<!-- #endif -->
 				</view>
 				
 				<view style="width: 50%;float:left;text-align:center;">

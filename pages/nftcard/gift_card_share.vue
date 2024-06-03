@@ -95,6 +95,7 @@
 		
 			
 				<view class="" v-for="(current_card_item_list , index) in current_card_item.cplid" 
+					:key="index"
 					style="margin: 20rpx 5rpx;">
 					<view class="card_cpl_transfer">
 						#{{current_card_item_list.cplseq}} {{current_card_item_list.cplno}}

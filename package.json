@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "miniprogram-sm-crypto": "^0.3.13"
+  },
+  "devDependencies": {
+    "node-loader": "^2.0.0",
+    "node-sass": "^9.0.0"
+  }
+}

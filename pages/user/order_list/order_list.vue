@@ -61,8 +61,10 @@
 						</block>
 						
 						<block v-else>
-							<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" 
-								:url="'../../product/detail?productid='+product_item.productid"  
+							<view 
+								:url="'../../product/detail?productid='+product_item.productid" 
+								@click="click_link_to_product_detail"
+								:data-productid="product_item.productid"
 								class="df_1 borb" style='display:flex;' 
 								v-for="(product_item,index2) in item.orderProduct" 
 								:key="index2">
@@ -72,7 +74,7 @@
 									<view class="sp_neb">¥{{product_item.price}}×{{product_item.amount}}</view>
 									<view class="sp_jg">¥{{product_item.price2}}</view>   
 								</view>
-							</navigator>
+							</view>
 							<view class="borderb bordert font_14">
 								<view class="font_12">共计{{item.total_num}}商品<view class='fl_r'></view></view>
 								<view style="clear: both;"><view class="font_12">商品金额：</view><view class='fl_r'>￥{{item.price}}</view></view>
@@ -138,14 +140,20 @@
 						</block>
 						<block v-else>
 							
-							<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../../product/detail?productid='+product_item.productid" class="df_1 borb" style='display:flex;' v-for="(product_item,index) in item.orderProduct"  :key="index">
+							<view
+								:url="'../../product/detail?productid='+product_item.productid" 
+								:data-productid="product_item.productid"
+								@click="click_link_to_product_detail"
+								class="df_1 borb" style='display:flex;' 
+								v-for="(product_item,index) in item.orderProduct"  
+								:key="index">
 								<image class="sh_slt" :src="product_item.picture"></image>             
 								<view class="sp_text">
 									<view class="sp_tit ovh1">{{product_item.name}}</view>
 									<view class="sp_neb">¥{{product_item.price}}×{{product_item.amount}}</view>
 									<view class="sp_jg">¥：{{product_item.price2}}</view>   
 								</view>
-							</navigator>
+							</view>
 							<view class="borderb bordert font_14" >
 								<view>共计{{item.total_num}}商品<view class='fl_r'></view></view>
 								<view>商品金额：<view class='fl_r'>￥{{item.price}}</view></view>
@@ -209,14 +217,20 @@
 						</block>
 						<block v-else>
 							
-							<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../../product/detail?productid='+product_item.productid" class="df_1 borb" style='display:flex;' v-for="(product_item,index) in item.orderProduct"  :key="index">
+							<view
+								:url="'../../product/detail?productid='+product_item.productid" 
+								:data-productid="product_item.productid"
+								@click="click_link_to_product_detail"
+								class="df_1 borb" style='display:flex;' 
+								v-for="(product_item,index) in item.orderProduct"  
+								:key="index">
 								<image class="sh_slt" :src="product_item.picture"></image>             
 								<view class="sp_text">
 									<view class="sp_tit ovh1">{{product_item.name}}</view>
 									<view class="sp_neb">¥{{product_item.price}}×{{product_item.amount}}</view>
 									<view class="sp_jg">¥：{{product_item.price2}}</view>   
 								</view>
-							</navigator>
+							</view>
 							<view class="borderb bordert font_14" >
 								<view>共计{{item.total_num}}商品<view class='fl_r'></view></view>
 								<view>商品金额：<view class='fl_r'>￥{{item.price}}</view></view>
@@ -284,7 +298,14 @@
 							</view>
 						</block>
 						<block v-else>
-							<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../../product/detail?productid='+product_item.productid" class="df_1 borb" style='display:flex;' v-for="(product_item,index) in item.orderProduct"  :key="index"> 
+							<view
+								:url="'../../product/detail?productid='+product_item.productid"
+								 :data-productid="product_item.productid"
+								 @click="click_link_to_product_detail"
+								class="df_1 borb" 
+								style='display:flex;' 
+								v-for="(product_item,index) in item.orderProduct"  
+								:key="index"> 
 								<image class="sh_slt" :src="product_item.picture"></image>           
 								<view class="sp_text">
 									<view class="sp_tit ovh1">{{product_item.name}}</view>
@@ -292,7 +313,7 @@
 									<view class="sp_jg">¥：{{product_item.price2}}</view>
 					
 								</view>
-							</navigator>
+							</view>
 							<view class="borderb bordert font_14">
 								<view>共计{{item.total_num}}商品<view class='fl_r'></view></view>
 								<view>商品金额：<view class='fl_r'>￥{{item.price}}</view></view>
@@ -359,7 +380,10 @@
 							
 						</block>
 						<block v-else>
-							<navigator :open-type="wxa_order_info_page_no_link_to_product == 1 ? '' : 'navigate'" :url="'../../product/detail?productid='+product_item.productid" 
+							<view
+								:url="'../../product/detail?productid='+product_item.productid"
+								 :data-productid="product_item.productid"
+								 @click="click_link_to_product_detail"
 								class="df_1 borb" style='display:flex;' 
 								v-for="(product_item,index) in item.orderProduct" 
 								:key="index">
@@ -369,7 +393,7 @@
 									<view class="sp_neb">¥{{product_item.price}}×{{product_item.amount}}</view>
 									<view class="sp_jg">¥：{{product_item.price2}}</view>  
 								</view>
-							</navigator>
+							</view>
 							<view class="borderb bordert font_14">
 								<view>共计{{item.total_num}}商品<view class='fl_r'></view></view>
 								<view>商品金额：<view class='fl_r'>￥{{item.price}}</view></view>
@@ -1125,6 +1149,26 @@
 					that.page = 1;
 			    // that.loadOrderList();
 				};
+			},
+			
+			//点击跳转到商品详情页
+			click_link_to_product_detail:function(e){
+				
+				console.log('click_link_to_product_detail e===>>>', e);
+				
+				if(this.wxa_order_info_page_no_link_to_product == 1){
+					return;
+				}
+				
+				//:data-productid="product_item.productid"
+				var productid = e.currentTarget.dataset.productid;
+				
+				var new_url = '/pages/product/detail?productid='+productid;
+				
+				console.log('准备跳转的链接：' + new_url);
+				
+				this.abotapi.call_h5browser_or_other_goto_url(new_url);
+				
 			},
 			
 			

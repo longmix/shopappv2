@@ -1,0 +1,38 @@
+page{
+	background-color: #F0F3F6;
+}
+.type_page {
+	height: 100%;
+	display: block;
+	padding-left:  20rpx;
+	padding-right: 20rpx;
+}
+
+input {
+	width:400rpx;
+	margin-top: 38rpx;
+	font-size: 36rpx;
+}
+
+.picker {
+	float: left;
+	width: 250rpx;
+	margin-top: 40rpx;
+}
+
+.forms {
+	float: left;
+	display: block;
+}
+
+.forms_text {
+	float: left;
+	font-size: 34rpx;
+	margin-right: 20rpx;
+	margin-left: 20rpx;
+	margin-top: 40rpx;
+	width: 200rpx;
+	text-align: left;
+}
+
+

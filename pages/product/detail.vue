@@ -13,8 +13,8 @@
 				</view>
 				<view class="middle"></view>
 				<view class="icon-btn">
-					<view class="icon tongzhi" @tap="toMsg"></view>
-					<view class="icon zhuye" @tap="toindex"></view> <!-- 跳转购物车 toCart -->
+					<view class="icon tongzhi" @tap="toMsg" v-if="wxa_hidden_to_msg_btn_in_usercenter != 1"></view>
+					<view class="icon zhuye" @tap="toindex" style="float: right;"></view> <!-- 跳转购物车 toCart -->
 				</view>
 			</view>
 			<!-- 头部-滚动渐变显示 -->
@@ -26,8 +26,8 @@
 					<view v-for="(anchor,index) in anchorlist" :class="[selectAnchor==index ?'on':'']" :key="index" @tap="toAnchor(index)">{{anchor.name}}</view>
 				</view>
 				<view class="icon-btn">
-					<view class="icon tongzhi" @tap="toMsg"></view> <!-- 下版本-> toMsg -->
-					<view class="icon zhuye" @tap="toindex"></view>
+					<view class="icon tongzhi" @tap="toMsg" v-if="wxa_hidden_to_msg_btn_in_usercenter != 1"></view> <!-- 下版本-> toMsg -->
+					<view class="icon zhuye" @tap="toindex" style="float: right;"></view>
 				</view>
 			</view>
 		</view>
@@ -210,6 +210,9 @@
 			
 			<view class="price">￥{{goods_detail.price}}
 				<text class="price_unit" v-if="goods_detail.unit && (goods_detail.unit.length > 0)"> / {{goods_detail.unit}}</text>
+				<view style="float: right;">
+					<image v-if="goods_detail.is_AR == 1" src="https://yanyubao.tseo.cn/Tpl/static/images/ar01.png" style="width: 60rpx; height: 60rpx;"></image>
+				</view>
 			</view>
 			
 			<view class="title" style="color: #666;font-size: 14px;margin-top: 5rpx;">
@@ -295,14 +298,14 @@
 
 			<!-- 规格开始 -->
 			<view class="specs" v-if="attr_list">商品选项 </view>
-			<view class="specs-a">
+			<view class="specs-a" v-if="option_list_arr">
 				<view :class="[option_list_arr[0] == item ? 'specs-e' : 'specs-d']" v-for="(item, index) in attr_key_arr" :key="index"
 				 :data-spec1="item" @click='changeSpec1($event)'>
 					{{item}}
 				</view>
 			</view>
 			<view class="specs-a" 
-				v-if="attr_list_arr[spec1] != null" 
+				v-if="option_list_arr && (attr_list_arr[spec1] != null)" 
 				style="border-top: 1rpx solid #e5e5e5;padding-top: 20rpx;">
 				<view :class="[option_list_arr[1] == item2 ? 'specs-e' : 'specs-d']" v-for="(item2, index) in attr_list_arr[spec1]"
 				 :key="index" :data-spec2="item2" @click="changeSpec2($event)">
@@ -489,7 +492,7 @@
 		</block>
 
 		<view class="description">
-			<view class="title">———— ※ 详情介绍 ※ ————</view>
+			<view class="title" style="display: none;">———— ※ 详情介绍 ※ ————</view>
 			<view class="content">
 				<!-- #ifdef MP-ALIPAY -->
 				<rich-text :nodes="describe"></rich-text>
@@ -706,6 +709,9 @@
 				to_poster:false,
 				current_poster_modal:null,
 				faquanList:null,
+
+				//2024.4.9.是否隐藏 右上角的  消息小图标
+				wxa_hidden_to_msg_btn_in_usercenter:0,
 				
 			};
 		},
@@ -1004,8 +1010,7 @@
 			
 			that.getFaquanList();
 
-			this.get_yanyubao_goods_recommend('recommend');
-			this.get_yanyubao_goods_recommend('hot');
+			
 
 			if (userInfo && userInfo.userid) {
 				this.abotapi.abotRequest({
@@ -1093,6 +1098,7 @@
 				share_title = share_title.substr(0, 20) + '...';
 			}
 
+			//当前页面 path ，必须是以 / 开头的完整路径
 			var share_path = '/pages/product/detail?productid=' + that.productid + '&sellerid' + this.abotapi.get_sellerid();
 
 			var userInfo = this.abotapi.get_user_info();
@@ -1350,6 +1356,18 @@
 				if(cb_params.app_kefu_msg_type){
 					that.app_kefu_msg_type = cb_params.app_kefu_msg_type;
 				}
+				
+				//2023.1.16. 决定是否展示热销商品和推荐商品的列表
+				if(cb_params.product_detail_hide_recommend_list != 1){
+					that.get_yanyubao_goods_recommend('recommend');
+				}
+				if(cb_params.product_detail_hide_hot_list != 1){
+					that.get_yanyubao_goods_recommend('hot');
+				}
+				
+				if(cb_params.wxa_hidden_to_msg_btn_in_usercenter){
+					that.wxa_hidden_to_msg_btn_in_usercenter = cb_params.wxa_hidden_to_msg_btn_in_usercenter;
+				}
 
 			},
 
@@ -1376,9 +1394,11 @@
 			},
 			//消息列表
 			toMsg() {
-				uni.navigateTo({
-					url: '../msg/msg'
-				})
+				//uni.navigateTo({
+				//	url: '../msg/msg'
+				//})
+				
+				this.abotapi.call_h5browser_or_other_goto_url('/pages/msg/msg');
 			},
 			
 			//商品海报
@@ -2596,7 +2616,7 @@
 	}
 
 	.icon {
-		font-size: 26upx;
+		font-size: 26rpx;
 	}
 
 	.status {
@@ -2616,7 +2636,7 @@
 	.header {
 		width: 100%;
 
-		height: 100upx;
+		height: 100rpx;
 		display: flex;
 		align-items: center;
 		position: fixed;
@@ -2630,7 +2650,7 @@
 		.after {
 			width: 92%;
 			padding: 0 4%;
-			height: 100upx;
+			height: 100rpx;
 			display: flex;
 			align-items: center;
 			position: fixed;
@@ -2641,18 +2661,18 @@
 			transition: opacity 0.05s linear;
 
 			.back {
-				width: 125upx;
-				height: 60upx;
+				width: 125rpx;
+				height: 60rpx;
 				flex-shrink: 0;
 
 				.icon {
 					margin-left: -10%;
-					width: 60upx;
-					height: 60upx;
+					width: 60rpx;
+					height: 60rpx;
 					display: flex;
 					align-items: center;
 					justify-content: center;
-					font-size: 42upx;
+					font-size: 42rpx;
 				}
 			}
 
@@ -2661,22 +2681,23 @@
 			}
 
 			.icon-btn {
-				width: 125upx;
-				height: 60upx;
+				width: 125rpx;
+				height: 60rpx;
 				flex-shrink: 0;
-				display: flex;
+				display: block;
+				text-align: right;
 
 				.icon {
 					&:first-child {
-						margin-right: 5upx;
+						margin-right: 5rpx;
 					}
 
-					width: 60upx;
-					height: 60upx;
+					width: 60rpx;
+					height: 60rpx;
 					display: flex;
 					justify-content: center;
 					align-items: center;
-					font-size: 42upx;
+					font-size: 42rpx;
 				}
 			}
 		}
@@ -2716,8 +2737,8 @@
 			}
 
 			.middle {
-				font-size: 32upx;
-				height: 90upx;
+				font-size: 32rpx;
+				height: 90rpx;
 				display: flex;
 				justify-content: center;
 				align-items: center;
@@ -2732,9 +2753,9 @@
 					align-items: center;
 
 					&.on {
-						margin-bottom: -4upx;
+						margin-bottom: -4rpx;
 						color: #f47952;
-						border-bottom: solid 4upx #f47952;
+						border-bottom: solid 4rpx #f47952;
 					}
 				}
 			}
@@ -2765,13 +2786,13 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			padding: 0 25upx;
-			height: 40upx;
-			border-radius: 40upx;
-			font-size: 22upx;
+			padding: 0 25rpx;
+			height: 40rpx;
+			border-radius: 40rpx;
+			font-size: 22rpx;
 			position: absolute;
-			bottom: 20upx;
-			right: 20upx;
+			bottom: 20rpx;
+			right: 20rpx;
 			color: #fff;
 			background-color: rgba(0, 0, 0, 0.2);
 		}
@@ -2811,32 +2832,32 @@
 			width: 100%;
 			display: flex;
 			align-items: center;
-			margin: 0 0 30upx 0;
+			margin: 0 0 30rpx 0;
 
 			.text {
-				font-size: 24upx;
+				font-size: 24rpx;
 				color: #a2a2a2;
-				margin-right: 20upx;
+				margin-right: 20rpx;
 			}
 
 			.content {
-				font-size: 24upx;
+				font-size: 24rpx;
 				display: flex;
 				flex-wrap: wrap;
 				color: #a2a2a2;
 
 				.serviceitem {
-					margin-right: 10upx;
+					margin-right: 10rpx;
 					overflow: hidden;
 					white-space: nowrap;
 					text-overflow: ellipsis;
 					width: 58%;
-					margin-top: 10upx;
+					margin-top: 10rpx;
 
 					view {
 						color: #000;
 						display: inline-block;
-						margin-right: 20upx;
+						margin-right: 20rpx;
 					}
 				}
 
@@ -2846,15 +2867,15 @@
 
 					view {
 						background-color: #f6f6f6;
-						padding: 5upx 10upx;
+						padding: 5rpx 10rpx;
 						color: #999;
-						margin-right: 10upx;
-						font-size: 20upx;
-						border-radius: 5upx;
+						margin-right: 10rpx;
+						font-size: 20rpx;
+						border-radius: 5rpx;
 
 						&.on {
-							border: solid 1upx #f47952;
-							padding: 4upx 8upx;
+							border: solid 1rpx #f47952;
+							padding: 4rpx 8rpx;
 						}
 					}
 				}
@@ -2875,17 +2896,17 @@
 	.comments {
 		.row {
 			width: 100%;
-			height: 40upx;
+			height: 40rpx;
 			display: flex;
 			align-items: center;
-			margin: 0 0 30upx 0;
+			margin: 0 0 30rpx 0;
 
 			.text {
-				font-size: 30upx;
+				font-size: 30rpx;
 			}
 
 			.arrow {
-				font-size: 28upx;
+				font-size: 28rpx;
 				position: absolute;
 				right: 4%;
 				color: #17e6a1;
@@ -2906,31 +2927,31 @@
 
 			.user-info {
 				width: 100%;
-				height: 40upx;
+				height: 40rpx;
 				display: flex;
 				align-items: center;
 
 				.face {
-					width: 40upx;
-					height: 40upx;
-					margin-right: 8upx;
+					width: 40rpx;
+					height: 40rpx;
+					margin-right: 8rpx;
 
 					image {
-						width: 40upx;
-						height: 40upx;
+						width: 40rpx;
+						height: 40rpx;
 						border-radius: 100%;
 					}
 				}
 
 				.username {
-					font-size: 24upx;
+					font-size: 24rpx;
 					color: #999;
 				}
 			}
 
 			.content {
-				margin-top: 10upx;
-				font-size: 26upx;
+				margin-top: 10rpx;
+				font-size: 26rpx;
 			}
 		}
 	}
@@ -2938,11 +2959,11 @@
 	.description {
 		.title {
 			width: 100%;
-			height: 80upx;
+			height: 80rpx;
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			font-size: 26upx;
+			font-size: 26rpx;
 			color: #999;
 			position: relative;
 		}
@@ -2954,11 +2975,11 @@
 
 	.footer {
 		position: fixed;
-		bottom: 0upx;
+		bottom: 0rpx;
 		width: 92%;
 		padding: 0 4%;
-		height: 99upx;
-		border-top: solid 1upx #eee;
+		height: 99rpx;
+		border-top: solid 1rpx #eee;
 		background-color: #fff;
 		z-index: 2;
 		display: flex;
@@ -2968,19 +2989,19 @@
 
 		.icons {
 			display: flex;
-			height: 80upx;
+			height: 80rpx;
 			margin-left: -4%;
 
 			.box {
-				width: 80upx;
-				height: 80upx;
+				width: 80rpx;
+				height: 80rpx;
 				display: flex;
 				justify-content: center;
 				flex-wrap: wrap;
 				position: relative;
 
 				.icon {
-					font-size: 40upx;
+					font-size: 40rpx;
 					color: #828282;
 				}
 
@@ -2988,7 +3009,7 @@
 					display: flex;
 					justify-content: center;
 					width: 100%;
-					font-size: 22upx;
+					font-size: 22rpx;
 					color: #666;
 				}
 
@@ -3009,8 +3030,8 @@
 		}
 
 		.btn {
-			height: 80upx;
-			border-radius: 40upx;
+			height: 80rpx;
+			border-radius: 40rpx;
 			overflow: hidden;
 			display: flex;
 			margin-right: -2%;
@@ -3032,21 +3053,21 @@
 
 			.joinCart-null {
 				background-color: #808080;
-				height: 80upx;
-				padding: 0 40upx;
+				height: 80rpx;
+				padding: 0 40rpx;
 				color: #fff;
 				display: flex;
 				align-items: center;
-				font-size: 28upx;
+				font-size: 28rpx;
 			}
 
 			.buy-null {
-				height: 80upx;
-				padding: 0 40upx;
+				height: 80rpx;
+				padding: 0 40rpx;
 				color: #fff;
 				display: flex;
 				align-items: center;
-				font-size: 28upx;
+				font-size: 28rpx;
 				background-color: #808080;
 				opacity: 0.4;
 			}
@@ -3076,7 +3097,7 @@
 			bottom: -40%;
 			width: 92%;
 			padding: 0 4%;
-			border-radius: 20upx 20upx 0 0;
+			border-radius: 20rpx 20rpx 0 0;
 			background-color: #fff;
 			display: flex;
 			flex-wrap: wrap;
@@ -3084,24 +3105,24 @@
 
 			.content {
 				width: 100%;
-				padding: 20upx 0;
+				padding: 20rpx 0;
 
 			}
 
 			.btn {
 				width: 100%;
-				height: 100upx;
+				height: 100rpx;
 
 				.button {
 					width: 100%;
-					height: 80upx;
-					border-radius: 40upx;
+					height: 80rpx;
+					border-radius: 40rpx;
 					color: #fff;
 					display: flex;
 					align-items: center;
 					justify-content: center;
 					background-color: #f47952;
-					font-size: 28upx;
+					font-size: 28rpx;
 				}
 			}
 		}
@@ -3112,7 +3133,7 @@
 			bottom: 0;
 			width: 92%;
 			padding: 0 4%;
-			border-radius: 20upx 20upx 0 0;
+			border-radius: 20rpx 20rpx 0 0;
 			background-color: #fff;
 			display: flex;
 			flex-wrap: wrap;
@@ -3120,29 +3141,29 @@
 
 			.content {
 				width: 100%;
-				padding: 20upx 0;
+				padding: 20rpx 0;
 
 				.text {
 					float: left;
-					font-size: 36upx;
+					font-size: 36rpx;
 				}
 
 			}
 
 			.btn {
 				width: 100%;
-				height: 100upx;
+				height: 100rpx;
 
 				.button {
 					width: 100%;
-					height: 80upx;
-					border-radius: 40upx;
+					height: 80rpx;
+					border-radius: 40rpx;
 					color: #fff;
 					display: flex;
 					align-items: center;
 					justify-content: center;
 					background-color: #f47952;
-					font-size: 28upx;
+					font-size: 28rpx;
 				}
 			}
 		}
@@ -3177,15 +3198,15 @@
 
 		&.service {
 			.row {
-				margin: 30upx 0;
+				margin: 30rpx 0;
 
 				.title {
-					font-size: 30upx;
-					margin: 10upx 0;
+					font-size: 30rpx;
+					margin: 10rpx 0;
 				}
 
 				.description {
-					font-size: 28upx;
+					font-size: 28rpx;
 					color: #999;
 				}
 			}
@@ -3193,37 +3214,37 @@
 
 		&.spec {
 			.title {
-				font-size: 30upx;
-				margin: 30upx 0;
+				font-size: 30rpx;
+				margin: 30rpx 0;
 			}
 
 			.sp {
 				display: flex;
 
 				view {
-					font-size: 28upx;
-					padding: 5upx 20upx;
-					border-radius: 8upx;
-					margin: 0 30upx 20upx 0;
+					font-size: 28rpx;
+					padding: 5rpx 20rpx;
+					border-radius: 8rpx;
+					margin: 0 30rpx 20rpx 0;
 					background-color: #f6f6f6;
 
 					&.on {
-						padding: 3upx 18upx;
-						border: solid 1upx #f47925;
+						padding: 3rpx 18rpx;
+						border: solid 1rpx #f47925;
 					}
 				}
 			}
 
 			.length {
-				margin-top: 30upx;
-				border-top: solid 1upx #aaa;
+				margin-top: 30rpx;
+				border-top: solid 1rpx #aaa;
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
-				padding-top: 20upx;
+				padding-top: 20rpx;
 
 				.text {
-					font-size: 30upx;
+					font-size: 30rpx;
 				}
 			}
 
@@ -3234,9 +3255,9 @@
 				align-items: center;
 
 				.input {
-					width: 80upx;
-					height: 60upx;
-					margin: 0 10upx;
+					width: 80rpx;
+					height: 60rpx;
+					margin: 0 10rpx;
 					background-color: #f3f3f3;
 					display: flex;
 					justify-content: center;
@@ -3244,27 +3265,27 @@
 					text-align: center;
 
 					input {
-						width: 80upx;
-						height: 60upx;
+						width: 80rpx;
+						height: 60rpx;
 						display: flex;
 						justify-content: center;
 						align-items: center;
 						text-align: center;
-						font-size: 26upx;
+						font-size: 26rpx;
 					}
 				}
 
 				.sub,
 				.add {
-					width: 60upx;
-					height: 60upx;
+					width: 60rpx;
+					height: 60rpx;
 					background-color: #f3f3f3;
-					border-radius: 5upx;
+					border-radius: 5rpx;
 
 					.icon {
-						font-size: 30upx;
-						width: 60upx;
-						height: 60upx;
+						font-size: 30rpx;
+						width: 60rpx;
+						height: 60rpx;
 						display: flex;
 						justify-content: center;
 						align-items: center;
@@ -3326,7 +3347,7 @@
 			.list {
 				width: 100%;
 				display: flex;
-				padding: 10upx 0 30upx 0;
+				padding: 10rpx 0 30rpx 0;
 
 				.box {
 					width: 25%;
@@ -3340,32 +3361,32 @@
 					}
 
 					.title {
-						margin-top: 10upx;
+						margin-top: 10rpx;
 						display: flex;
 						justify-content: center;
 						width: 100%;
-						font-size: 26upx;
+						font-size: 26rpx;
 					}
 				}
 			}
 
 			.btn {
 				width: 100%;
-				height: 100upx;
+				height: 100rpx;
 				display: flex;
 				justify-content: center;
 				align-items: center;
-				font-size: 28upx;
-				border-top: solid 1upx #666666;
+				font-size: 28rpx;
+				border-top: solid 1rpx #666666;
 			}
 
 			.h1 {
 				width: 100%;
-				height: 80upx;
+				height: 80rpx;
 				display: flex;
 				justify-content: center;
 				align-items: center;
-				font-size: 34upx;
+				font-size: 34rpx;
 			}
 
 			.rich-text .img {
@@ -3394,11 +3415,12 @@
 		margin: 2% 4% 2% 4%;
 		display:block;
 		float: left;
+		width: 100%;
 	}
 
 	.specs-b {
 		font-size: 28rpx;
-		border-top: 2px solid rgb(204, 204, 204);
+		border-top: 4rpx solid rgb(204, 204, 204);
 		padding-top: 14rpx;
 
 	}
@@ -3422,7 +3444,7 @@
 		margin: 10rpx;
 		font-size: 28rpx;
 		padding: 6rpx 14rpx;
-		border-radius: 5px;
+		border-radius: 10rpx;
 		float: left;
 		display: block;
 	}
@@ -3441,7 +3463,7 @@
 
 	.text_center {
 		width: 100%;
-		margin: 20px 0px;
+		margin: 40rpx 0rpx;
 	}
 
 	.mingcheng {
@@ -3464,7 +3486,7 @@
 	}
 
 	.re-h {
-		margin: 20upx;
+		margin: 20rpx;
 		font-size: 28rpx;
 		color:#666;
 	}
@@ -3476,26 +3498,26 @@
 	}
 
 	.re-goods image {
-		width: 200upx;
-		height: 200upx;
-		margin-left: 30upx;
-		border-radius: 20upx;
+		width: 200rpx;
+		height: 200rpx;
+		margin-left: 30rpx;
+		border-radius: 20rpx;
 	}
 
 	.re-txt {
-		font-size: 25upx;
+		font-size: 25rpx;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		overflow: hidden;
-		width: 200upx;
-		margin-left: 35upx;
+		width: 200rpx;
+		margin-left: 35rpx;
 	}
 
 	.re-price {
-		font-size: 28upx;
+		font-size: 28rpx;
 		text-align: left;
 		color: #f47925;
-		margin-left: 35upx;
+		margin-left: 35rpx;
 	}
 
 	.warm {
@@ -3505,9 +3527,9 @@
 		position: absolute;
 		z-index: 99;
 		position: fixed;
-		bottom: 120upx;
+		bottom: 120rpx;
 		width: 100%;
-		font-size: 35upx;
+		font-size: 35rpx;
 
 	}
 
@@ -3644,19 +3666,19 @@
 		display: flex;
 		align-items: center;
 		background-color: #fff;
-		margin-bottom: 5px;
+		margin-bottom: 10rpx;
 	}
 	.is_aipingou_tuan_list{
 		
 		
 	}
 	.is_aipingou_tuan_list .aipin_tuan{
-		margin-top: 10px;
+		margin-top: 20rpx;
 		height: 90rpx;
 	}
 	.tuan_info_name{
 		float: left;
-		line-height: 26px;
+		line-height: 52rpx;
 		margin-left: 15rpx;
 	}
 	.tuan_info_name img{
@@ -3713,7 +3735,7 @@
 	}
 	.form_submit_box{
 		margin-left: 10rpx;
-		font-size: 12px;
+		font-size: 24rpx;
 		color: #666;
 		
 	}

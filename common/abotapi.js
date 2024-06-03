@@ -18,9 +18,7 @@ module.exports = {
 			method: params.method || 'POST',
 			dataType: params.dataType || 'json',
 			data: params.data || {},
-			header: {
-			  'Content-Type': 'application/x-www-form-urlencoded',
-			},
+			header: params.header || {'Content-Type': 'application/x-www-form-urlencoded'},
 			success(res) {
 			  console.log('HTTP Request to ' + params.url);
 			  console.log('with data ', params.data);
@@ -51,7 +49,7 @@ module.exports = {
 					 	showCancel: false,
 					 	success: function (res) {
 							
-							var last_url = '/pages/index/index';
+							var last_url = 'reLaunch /pages/index/index';
 							
 							__this.goto_user_login(last_url, 'normal');
 						},
@@ -88,34 +86,49 @@ module.exports = {
 	current_chat_handle: "",
 	
 	
-		
+	/**
+	 * 
+	 * @param {Object} current_chat_gui  当前页面的句柄
+	 * @param {Object} current_chat_page  当前页面的路径
+	 * @param {Object} msg  接收的消息内容
+	 */
 	socketMsgHandle: function (current_chat_gui, current_chat_page, msg) {
-	   //缓存返回数据
-	   console.log('current_chat_gui',current_chat_gui)
-		  console.log('current_chat_page',current_chat_page)
-		  if(current_chat_gui ){		  
-			  if(current_chat_page=='/pages/msg/msg'){
+		
+		//缓存返回数据
+		console.log('current_chat_gui',current_chat_gui)
+	   
+		console.log('current_chat_page',current_chat_page)
+		
+		if(current_chat_gui ){		  
+		  if(current_chat_page=='/pages/msg/msg'){
+			  
+			  current_chat_gui.getLastMsg();
+			  
+		  }	 else if (current_chat_page=='/pages/msg/chat/chat'){
+			  
+			  current_chat_gui.getNewMsg(msg);
+			  
+		  } else if (current_chat_page=='/pages/friendInfo/friendList'){
+				
+			  if(msg.chat_type == 2 || msg.chat_type == 6){
 				  
-				  current_chat_gui.getLastMsg();
-				  
-			  }	 else if (current_chat_page=='/pages/msg/chat/chat'){
-				  
-				  current_chat_gui.getNewMsg(msg);
-				  
-			  } else if (current_chat_page=='/pages/friendInfo/friendList'){
-					
-				  if(msg.chat_type == 2 || msg.chat_type == 6){
-					  
-					  current_chat_gui.getFriendList(msg);
-				  }				  
-				  
-			  } else if (current_chat_page=='/pages/friendInfo/friendList') {
-					current_chat_gui.getNewMsg(msg);
-			  }
-				  
-		  }	
+				  current_chat_gui.getFriendList(msg);
+			  }				  
+			  
+		  } 
+		  else if (current_chat_page=='/pages/friendInfo/friendList') {
+				current_chat_gui.getNewMsg(msg);
+		  }
+		  else if (current_chat_page=='/pages/live_v2/live-player') {
+		  		current_chat_gui.screenMsg(msg);
+		  }
+		  else if (current_chat_page=='/pages/live_v2/live-pusher') {
+		  		current_chat_gui.screenMsg(msg);
+		  }
+			  
+		}
 		  
-	 },
+	},
 	 
 	 
 	/**
@@ -555,6 +568,9 @@ module.exports = {
 			// #ifdef H5
 			this.globalData.current_platform = 'h5'
 			// #endif
+			// #ifdef MP-TOUTIAO
+			this.globalData.current_platform = 'mp-toutiao'
+			// #endif
 		}
 		
 		console.log('当前调试开关：' + this.system_debug_flag);
@@ -585,9 +601,18 @@ module.exports = {
 					platform: that002.globalData.current_platform,
 					version_code: that002.globalData.version_code,	//2020.12.22.
 					xiaochengxu_appid: that002.globalData.xiaochengxu_appid,  //2021.6.10.
-					weixin_open_platform_appid:that002.globalData.weixin_open_platform_appid,	//2020.12.28. 
 				};
 				
+			//2020.12.28. 
+			if(that002.globalData.weixin_open_platform_appid){
+				post_data.weixin_open_platform_appid = that002.globalData.weixin_open_platform_appid;
+			}
+			
+			//2023.8.21. 抖音小程序的appid
+			if(that002.globalData.toutiao_wxa_appid){
+				post_data.toutiao_wxa_appid = that002.globalData.toutiao_wxa_appid;
+			}
+			
 			if(that002.globalData.current_template_name){
 				post_data.current_template_name = that002.globalData.current_template_name;
 			}
@@ -733,6 +758,17 @@ module.exports = {
 	del_user_info: function () {
 		//缓存返回数据
 		uni.removeStorageSync("wxa_user_info");
+		
+		//判断是否有其他的登录缓存
+		var user_login_sychronize_outer__setting = uni.getStorageSync('user_login_sychronize_outer__setting');
+		
+		console.log('user_login_sychronize_outer__setting===>>>' + user_login_sychronize_outer__setting);
+		
+		if(user_login_sychronize_outer__setting){
+			console.log('user_login_sychronize_outer__setting===>>>222222222222' );
+			
+			uni.removeStorageSync(user_login_sychronize_outer__setting);
+		}
 				   
 	},
 	
@@ -780,51 +816,49 @@ module.exports = {
 		
 		var userInfo = this.get_user_info();
 		
-		console.log('goto_user_login:');
-		console.log(userInfo);
+		console.log('goto_user_login当前的登录信息:', userInfo);
+		console.log('goto_user_login如果登录跳转到:', last_url);
  
-		if ((!userInfo) || (!userInfo.userid)) {
+		if (userInfo && userInfo.userid) {
+			this.call_h5browser_or_other_goto_url(last_url, var_list, ret_page);
+				
+			return;
+		}
  
-			uni.showModal({
-				title: '提示',
-				content:'请先登录',
-				showCancel: false,
-				success: function (res) {
+		uni.showModal({
+			title: '提示',
+			content:'请先登录',
+			showCancel: false,
+			success: function (res) {
+				
+				console.log('准备跳转到登录页面===>>>login_last_url===>>>', last_url);
+				console.log('准备跳转到登录页面===>>>login_var_list===>>>', var_list);
+				console.log('准备跳转到登录页面===>>>login_ret_page===>>>', ret_page);
+ 
+				if (last_url) {
+					//uni.setStorageSync('last_url', last_url);
+					//uni.setStorageSync('page_type', page_type);
 					
-					console.log('准备跳转到登录页面===>>>login_last_url===>>>', last_url);
-					console.log('准备跳转到登录页面===>>>login_var_list===>>>', var_list);
-					console.log('准备跳转到登录页面===>>>login_ret_page===>>>', ret_page);
-	 
-					if (last_url) {
-						//uni.setStorageSync('last_url', last_url);
-						//uni.setStorageSync('page_type', page_type);
-						
-						
-						
-						uni.setStorageSync('login_last_url', last_url);
-						uni.setStorageSync('login_var_list', var_list);
-						uni.setStorageSync('login_ret_page', ret_page);
-					}
-					/*
-					uni.redirectTo({
-						 url: '/pages/login/login',
-					});*/
 					
-					uni.navigateTo({
-						 url: '/pages/login/login',
-					});
-			
+					
+					uni.setStorageSync('login_last_url', last_url);
+					uni.setStorageSync('login_var_list', var_list);
+					uni.setStorageSync('login_ret_page', ret_page);
 				}
-			})
-			
-			return ;
-			
-		}; 
+				/*
+				uni.redirectTo({
+					 url: '/pages/login/login',
+				});*/
+				
+				uni.navigateTo({
+					 url: '/pages/login/login',
+				});
 		
+			}
+		})
 		
-		this.call_h5browser_or_other_goto_url(last_url, var_list, ret_page);
-	
-		return;
+		return ;
+
 	},
 	
 	 /**
@@ -1036,7 +1070,7 @@ module.exports = {
 	
 	    this.globalData.option_list = option_list;
 	
-	    console.log('111111111111111111111111111111::' + this.globalData.navigationBarBackgroundColor_fixed);
+	    //console.log('111111111111111111111111111111::' + this.globalData.navigationBarBackgroundColor_fixed);
 	
 	    if (this.globalData.navigationBarBackgroundColor_fixed != 1){
 	
@@ -1264,7 +1298,7 @@ module.exports = {
 				var currentTime = (new Date()).getTime();//获取当前时间
 				uni.setStorageSync("cms_faquan_setting_time", currentTime);
 		
-				console.log('保存乖乖兽选项：' + cms_faquan_setting_str);
+				console.log('保存发圈发现随拍的选项：' + cms_faquan_setting_str);
 		
 				//刷新界面
 				typeof callback_function == "function" && callback_function(that, cms_faquan_setting);
@@ -1391,6 +1425,24 @@ module.exports = {
 			url = url.replace('%wxa_openid%', this.get_current_openid());
 		}
 		
+		if (url.indexOf("%wxa_openid%") != -1) {
+			url = url.replace('%wxa_openid%', this.get_current_openid());
+		}
+		
+		//2023.5.10.  %userid%为当前登录用户的userid
+		if (url.indexOf("%userid%") != -1) {
+			var userInfo = this.get_user_info();
+			if(!userInfo){
+				
+				this.goto_user_login('/pages/index/index');
+				
+				return;
+			}
+			
+			url = url.replace('%userid%', userInfo.userid);
+			
+		}
+		
 		if((url.indexOf("%oneclicklogin%") != -1) || (url.indexOf("%refresh_token%") != -1)) {
 			var userInfo = this.get_user_info();
 			if(!userInfo){
@@ -1479,6 +1531,18 @@ module.exports = {
 			})
 		  }
 		}
+		else if (url.indexOf('reLaunch') == 0) {
+		  var arr = url.split(" ");
+			
+		  console.log('reLaunch ========>>>> ', arr);
+			
+		  if (arr.length >= 2) {
+			var new_url = arr[1];
+			uni.reLaunch({
+			  url: new_url,
+			})
+		  }
+		}
 		else if ((url == '/pages/index/index') || (url == '/pages/category/category') 
 			|| (url == '/pages/cart/cart') || (url == '/pages/tabbar/user') 
 			||(url == '/pages/publish/publish_index')||(url == '/pages/publish/publish_list')
@@ -1545,7 +1609,14 @@ module.exports = {
 				console.log('url=====不是switchTab，使用 navigateTo 跳转>>>>>>>'+url);
 				
 				uni.navigateTo({				
-					url:url
+					url:url,
+					success: (res) => {
+						console.log('跳转成功===>>>'+url);
+					},
+					fail: (res) => {
+						console.log('跳转失败===>>>'+url, res);
+					}
+					
 				})
 			}
 			
@@ -1772,6 +1843,9 @@ module.exports = {
 		}
 		else if (url.indexOf('wxa_api') == 0){
 			//如果是执行微信小程序的api接口
+			
+			console.log('收到视频号的跳转请求：' + url)
+			
 			var arr = url.split(" ");
 			if (arr.length < 2) {
 				return;
@@ -2004,11 +2078,29 @@ module.exports = {
 			
 			
 			
-		}
-		
+		}		
 		else {
+			//console.log('call_h5browser_or_other_goto_url 执行完毕');
+			
 			uni.navigateTo({
-				url: url
+				url: url,
+				success: (res) => {
+					console.log('跳转成功===>>>'+url);
+				},
+				fail: (res) => {
+					console.log('跳转失败===>>>'+url, res);
+					
+					if(res && res.errMsg && (res.errMsg.indexOf('limit exceeded') != -1) ){
+						uni.reLaunch({
+							url: '/pages/index/index'
+						});
+						
+						console.log('跳转失败===>>>reLaunch到首页');
+					}
+					else{
+						console.log('跳转失败===>>>见上面的具体错误');
+					}
+				}
 			})
 		}
 		

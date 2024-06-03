@@ -5,7 +5,7 @@
 				<view class="row"  @click="upLoadTouxiang()">
 					<view class="title">头像</view>
 					<view class="right"><view class="tis">
-					<image :src="userAcountInfo.headimgurl" style="width: 100upx;" mode="aspectFit"></image>
+					<image :src="userAcountInfo.headimgurl" style="width: 100rpx;" mode="aspectFit"></image>
 					</view><view class="icon xiangyou"></view></view>
 				</view>
 				
@@ -20,14 +20,18 @@
 					<view class="right"><view class="tis">{{userAcountInfo.account}}</view><view class="icon xiangyou"></view></view>
 				</navigator>
 				
-				<navigator url='/pages/user/updateMobile/updateMobile' class="row">
+				<navigator :url='"/pages/user/updateMobile/updateMobile?current="+userAcountInfo.mobile' class="row">
 					<view class="title">更换手机号</view>
 					<view class="right"><view class="tis">{{userAcountInfo.mobile}}</view><view class="icon xiangyou"></view></view>
+				</navigator>
+				<navigator :url='"/pages/user/updateMobile/updateEmail?current="+userAcountInfo.email' class="row">
+					<view class="title">更换Email</view>
+					<view class="right"><view class="tis">{{userAcountInfo.email}}</view><view class="icon xiangyou"></view></view>
 				</navigator>
 				
 				
 			</view>
-			<view class="list">			
+			<view class="list" v-if="wxa_hidden_shop_function_in_setting != 1">			
 				<navigator url='/pages/address/user-address/user-address' class="row">
 					<view class="title">收货地址</view>
 					<view class="right"><view class="tis"></view><view class="icon xiangyou"></view></view>
@@ -63,7 +67,7 @@
 					<view class="right"><view class="tis"></view><view class="icon xiangyou"></view></view>
 				</navigator>
 				<navigator url="/pages/main/about/about" class="row">
-					<view class="title">关于商城</view>
+					<view class="title">关于...</view>
 					<view class="right"><view class="tis"></view><view class="icon xiangyou"></view></view>
 				</navigator>
 			</view>
@@ -95,6 +99,12 @@
 				userAcountInfo:'',
 				jubao_link_url: '',
 				version_number: '',
+				
+				title:'',  //提示框标题
+				content:'', 
+				
+				//隐藏设置界面<br />的商城功能
+				wxa_hidden_shop_function_in_setting:0,
 			};
 		},
 		
@@ -105,6 +115,10 @@
 				console.log('aaaaaaaaaaaaa');
 				
 				that.abotapi.getColor();
+				
+				if(cb_params.wxa_hidden_shop_function_in_setting){
+					that.wxa_hidden_shop_function_in_setting = cb_params.wxa_hidden_shop_function_in_setting;
+				}
 			});
 			
 			that.version_number = that.abotapi.globalData.version_number;
@@ -128,7 +142,7 @@
 			    
 				var sellerid = this.abotapi.globalData.default_sellerid;
 				if(typeof(sellerid) != 'undefined'){
-			        if(sellerid.length > 15){
+			        if(sellerid.length > 10){
 						uni.clearStorageSync();
 						console.log('清空完成，sellerid：'+ this.abotapi.get_sellerid());
 					}
@@ -136,7 +150,12 @@
 			
 				//uni.clearStorageSync();
 				
-				this.abotapi.call_h5browser_or_other_goto_url('/pages/index/index');
+				//避免跳转层次太多导致的page limit exceeded：“10”的问题
+				//this.abotapi.call_h5browser_or_other_goto_url('/pages/index/index');
+				uni.reLaunch({
+					url:'/pages/index/index',
+					
+				})
 				
 				
 			},
@@ -215,10 +234,14 @@
 				var userInfo = that.abotapi.get_user_info();
 				uni.chooseImage({
 					success: function(chooseImageRes) {
-						count:1;
-						sizeType: ['compressed'];
+						
+						//count:1;
+						//sizeType: ['compressed'];
+						
 						console.log("chooseImageRes",chooseImageRes);
+						
 						var headimgurl = chooseImageRes.tempFilePaths[0];
+						
 						uni.uploadFile({
 							url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=upload_image_file',
 							filePath: headimgurl,
@@ -293,23 +316,74 @@
 			},
 			
 			Cancelaccount:function(){
-				var that= this;
+				var that = this;
+				var userInfo = that.abotapi.get_user_info();
+				
 				uni.showModal({
 				    title: '注销账号',
 				    content: '此操作将导致账号内的所有设置被删除，确认要注销此账号吗？',
 				    success: function (res) {
 				        if (res.confirm) {
 				            console.log('用户点击确定');
-							uni.showModal({
-							    title: ' 操作完成',
-							    content: '账号已经在注销中，请在30天内不要使用此账号做任何操作，以避免注销流程失效。',
-								showCancel: false,
-							    success: function (res) {
-							       if (res.confirm) {
-									   that.logout();
-								   }
-							    }
-							});
+							
+							//2023.5.5. 申请注销接口
+							that.abotapi.abotRequest({
+								
+								url: that.abotapi.globalData.yanyubao_server_url + '/?g=Yanyubao&m=ShopAppWxa&a=login_erase',
+								header: {
+									"Content-Type": "application/x-www-form-urlencoded"  
+								}, 
+								method: "POST",  
+								data:{
+									sellerid: that.abotapi.globalData.default_sellerid,
+									checkstr: userInfo.checkstr,
+									userid: userInfo.userid,
+								},
+								success:function(res){
+									
+									var title001 = '';
+									var msg001 = '';
+									
+									if(res.data.code == '1'){
+										title001 = '操作成功';
+										msg001 = res.data.msg;
+									}else{
+										title001 = '操作失败';
+										msg001 = res.data.msg;
+									}
+									
+									
+									uni.showModal({
+									    title: title001,
+									    content: msg001,
+										showCancel: false,
+									    success: function (res) {
+											
+									       if (res.confirm) {
+											   
+										   }
+										   
+										   that.logout();
+										   
+										   
+									    }
+									});
+									
+								},
+								fail:()=>{
+									uni.showToast({
+										title:'网络请求失败！'
+									});
+									
+								},
+								complete:()=>{
+									
+								}
+								
+								
+							})
+							
+							
 							
 				        } else if (res.cancel) {
 				            console.log('用户点击取消');
@@ -328,28 +402,28 @@ page{
 }
 
 .icon {
-	font-size: 30upx;
+	font-size: 30rpx;
 
 }
 .content{
-	padding-bottom: 20upx;
+	padding-bottom: 20rpx;
 	.list{
 		width: 96%;
 		padding-left: 4%;
 		background-color: #fff;
-		margin-bottom: 20upx;
+		margin-bottom: 20rpx;
 		.row{
 			widows: 100%;
-			min-height: 90upx;
+			min-height: 90rpx;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			border-bottom: solid 1upx #eee;
+			border-bottom: solid 1rpx #eee;
 			&:last-child{
 				border-bottom: none;
 			}
 			.title{
-				font-size: 32upx;
+				font-size: 32rpx;
 				color: #333;
 			}
 			.right{
@@ -357,18 +431,18 @@ page{
 				align-items: center;
 				color: #999;
 				.tis{
-					font-size: 26upx;
-					margin-right: 5upx;
-					max-height: 120upx;
+					font-size: 26rpx;
+					margin-right: 5rpx;
+					max-height: 120rpx;
 					image{
-						width: 100upx;
-						height: 100upx;
+						width: 100rpx;
+						height: 100rpx;
 						border-radius: 100%;
-						margin: 10upx 0;
+						margin: 10rpx 0;
 					}
 				}
 				.icon{
-					width: 40upx;
+					width: 40rpx;
 					color: #cecece;
 				}
 			}
@@ -382,11 +456,11 @@ page{
 .btm-list  view{
 	width: 90%;
 	margin-left: 5%;
-	border-radius: 5px;
+	border-radius: 10px;
 	background-color: #fff;
-	margin-bottom: 20upx;
-	height: 80upx;
-	line-height: 80upx;
+	margin-bottom: 20rpx;
+	height: 80rpx;
+	line-height: 80rpx;
 	background-color: #07c160;
 	color:#fff;
 }
@@ -396,11 +470,11 @@ page{
 .btm-list2 view{
 	width: 90%;
 	margin-left: 5%;
-	border-radius: 5px;
+	border-radius: 10rpx;
 	background-color: #fff;
-	margin-bottom: 20upx;
-	height: 80upx;
-	line-height: 80upx;
+	margin-bottom: 20rpx;
+	height: 80rpx;
+	line-height: 80rpx;
 	background-color: #fa5151;
 	color:#fff;
 }

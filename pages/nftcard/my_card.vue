@@ -30,8 +30,18 @@
 				</view>
 			</view>
 			<!--  #endif -->
+			
+			<!--  #ifdef  MP-TOUTIAO -->
+			<!-- 微信小程序自定义内容 -->
+			<view v-for="(item, index) of current_card_list" :key="index" slot="slot{{index}}">
+				<view class="cnt">
+					<view class="title">{{ item.title }}</view>
+					<view class="text">{{ item.text }}</view>
+				</view>
+			</view>
+			<!--  #endif -->
 				
-			<!-- #ifndef  MP-WEIXIN -->
+			<!-- #ifndef  MP-WEIXIN || MP-TOUTIAO -->
 			<!-- app、h5 自定义内容 --> 
 			<template v-slot:default="item">
 				<view class="cnt">
@@ -58,14 +68,14 @@ import util from '../../common/util.js';
 
 //import waterfallsFlow from "@/components/maramlee-waterfalls-flow/maramlee-waterfalls-flow.vue";
 
-// #ifndef MP-BAIDU
+// #ifndef MP-BAIDU || MP-TOUTIAO
 import waterfallsFlow from "./components/maramlee-waterfalls-flow/maramlee-waterfalls-flow.vue";
 // #endif
 	
 export default {
 	
 	components: { 
-		// #ifndef MP-BAIDU
+		// #ifndef MP-BAIDU || MP-TOUTIAO
 		waterfallsFlow 
 		// #endif
 	},
@@ -140,7 +150,7 @@ export default {
 		
 		uni.showLoading({
 			title: '数据加载中...',
-		})
+		});
 		
 		setTimeout(function() {
 			uni.hideLoading();

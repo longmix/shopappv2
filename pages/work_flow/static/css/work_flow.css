@@ -1,0 +1,53 @@
+page {
+	background-color: #E6E6E6;
+}
+
+
+.home_page {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	text-align: center;
+	position: fixed;
+	right: 5%;
+	/* 		position: absolute; */
+	bottom: 25%;
+	width: 120rpx;
+	height: 120rpx;
+	background-color: red;
+	color: white;
+	border-radius: 100rpx;
+	z-index: 999;
+	background: #00FF00;
+}
+
+.home_page image {
+	width: 60rpx;
+	height: 60rpx;
+	display: block;
+	margin: 0 auto;
+}
+
+.nav_right_icon {
+	font-size: 36rpx;
+}
+
+/* 按钮冻结底部 */
+
+.fixed-button-container {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	text-align: center;
+	border-top: #666 1rpx solid;
+}
+
+.fixed-button {
+	padding: 10px;
+	background-color: #007bff;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}

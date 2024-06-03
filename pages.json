@@ -1,379 +1,369 @@
-{	
-	"globalStyle": {
-		"navigationBarTextStyle": "white",
-		"navigationBarTitleText" : "延誉电商",
-		"navigationBarBackgroundColor" : "#f37404",
-		"backgroundColor" : "#ffffff",
-		"backgroundColorTop":"#ffffff",
-		"backgroundColorBottom":"#ffffff",
-		"rpxCalcBaseDeviceWidth": 750
-	},
-	"tabBar": {
-		"color": "#333333",
-		"selectedColor": "#d81e06",
-		"borderStyle": "black",
-		"backgroundColor": "#ffffff",
-		"list": [
-			{
-				"pagePath": "pages/yanyubao/my_module_list",
-				"iconPath": "static/img/tabBar/shang.png",
-				"selectedIconPath": "static/img/tabBar/shang-on.png",
-				"text": "开店"
-			},
-			{
-				"pagePath": "pages/publish/publish_list",
-				"iconPath": "static/img/tabBar/imglist.png",
-				"selectedIconPath": "static/img/tabBar/imglist-on.png",
-				"text": "创业与开业"
-			},
-			{
-				"pagePath": "pages/index/index",
-				"iconPath": "static/img/tabBar/publish.png",
-				"selectedIconPath": "static/img/tabBar/publish-on.png",
-				"text": "发现"
-			},
-			{
-				"pagePath": "pages/shopList/shopList",
-				"iconPath": "static/img/tabBar/category.png",
-				"selectedIconPath": "static/img/tabBar/category-on.png",
-				"text": "城市合伙人"
-			},
-			{
-				"pagePath": "pages/tabbar/user",
-				"iconPath": "static/img/tabBar/user.png",
-				"selectedIconPath": "static/img/tabBar/user-on.png",
-				"text": "我的"
-			}
-		]
-	},
-	
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		{	//主页
-			"path": "pages/index/index",
-			"style": {
-				"enablePullDownRefresh": true,
-				"onReachBottomDistance":50,
-				"app-plus": {
-					"titleNView":false,//禁用原生导航栏
-					"softinputNavBar":"none",
-					"navigationBarTextStyle":"black" //因为首页的背景是白色的，所以需要将状态栏文字改成黑色
-				},
-				"h5": {
-					"titleNView": false ,//禁用原生导航栏
-					"softinputNavBar":"none"
-				}
-			}
-		},
-		{	//用于兼容 xiaochengxu/shopapp 项目的默认页面
-			"path": "pages/index/Liar",
-			"style": {}
-		},
-		{	//用于兼容 pages/index/index 在tabbar不能带参数在内部跳转的需求
-			"path": "pages/index/goto_index",
-			"style": {}
-		},
-		{	//商品分类
-			"path": "pages/category/category",
-			"style": {
-				"navigationBarTitleText":"分类列表",
-				"enablePullDownRefresh": true,
-				"app-plus": {
-					"titleNView": false ,//禁用原生导航栏
-					"bounce":"none",
-					"navigationBarTextStyle":"black"
-					
-				}
-			}
-		},
-		{	//商品超级分类
-			"path": "pages/category/index2",
-			"style": {
-				"navigationBarTitleText":"商品分类导航",
-				"enablePullDownRefresh": true,
-				"app-plus": {
-					"titleNView": false ,//禁用原生导航栏
-					"bounce":"none",
-					"navigationBarTextStyle":"black"
-					
-				}
-			}
-		},
-		{	//购物车
-			"path": "pages/cart/cart",
-			"style": {
-				"navigationBarTitleText":"购物车",
-				"enablePullDownRefresh": true,
-				"app-plus888": {
-					"titleNView": false ,//禁用原生导航栏
-					"softinputNavBar":"none",
-					"subNVues8888":[{  
-						"id": "cartTitleNvue", // 唯一标识  
-						"path": "pages/cart/subNvue/cartTitleNvue", // 页面路径  
-						"type":"navigationBar"
-					}]
-				}
-			}
-		},
-		{	//用户主页
-			"path": "pages/tabbar/user",
-			"style": {
-				"enablePullDownRefresh": true,
-				"backgroundTextStyle":"light",
-				"backgroundColorTop":"#FFFFFF",
-				"titleNView": true,
-				"app-plus": {
-					"titleNView": false ,//禁用原生导航栏
-					"softinputNavBar":"none",
-					"subNVues888":[{  
-						"id": "userTitleNvue", //唯一标识  
-						"path": "pages/tabbar/userTitleNvue", //页面路径  
-						"type":"navigationBar"
-					}]
-				}
-			}
-		},	
-		{	//资料库带参数中转
-			"path": "pages/tabbar/quanquan",
-			"style": {}
-		},
-		
-		{	//超级相册
-		    "path" : "cms/library/library",
-		    "style" : {
-				"navigationBarTitleText" : "",
-				"usingComponents": {}
-			}
-		},
-		{	//相册详情
-		    "path" : "cms/library/library_list",
-		    "style" : {
-				  "navigationBarTitleText": "",
-				  "onReachBottomDistance": 50
-				}
-		},
-		{
+{    
+    "globalStyle": {
+    	"navigationBarTextStyle": "white",
+    	"navigationBarTitleText" : "延誉电商",
+    	"navigationBarBackgroundColor" : "#f37404",
+    	"backgroundColor" : "#ffffff",
+    	"backgroundColorTop":"#ffffff",
+    	"backgroundColorBottom":"#ffffff",
+    	"rpxCalcBaseDeviceWidth": 750
+    },
+    
+    
+    "pages" : [
+        //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+        {
+            //主页
+            "path" : "pages/index/index",
+            "style" : {
+                "enablePullDownRefresh" : true,
+                "onReachBottomDistance" : 50,
+                "backgroundTextStyle" : "dark",
+                "backgroundColorTop" : "#FFFFFF",
+                "titleNView" : true,
+                "app-plus888" : {
+                    "titleNView" : false, //禁用原生导航栏
+                    "softinputNavBar" : "none",
+                    "navigationBarTextStyle" : "black" //因为首页的背景是白色的，所以需要将状态栏文字改成黑色
+                },
+                "h5" : {
+                    "titleNView" : false, //禁用原生导航栏
+                    "softinputNavBar" : "none"
+                }
+            }
+        },
+        {
+            //用于兼容 xiaochengxu/shopapp 项目的默认页面
+            "path" : "pages/index/Liar",
+            "style" : {}
+        },
+        {
+            //用于兼容 pages/index/index 在tabbar不能带参数在内部跳转的需求
+            "path" : "pages/index/goto_index",
+            "style" : {}
+        },
+        {
+            //商品分类
+            "path" : "pages/category/category",
+            "style" : {
+                "navigationBarTitleText" : "分类列表",
+                "enablePullDownRefresh" : true,
+                "app-plus" : {
+                    "titleNView" : false, //禁用原生导航栏
+                    "bounce" : "none",
+                    "navigationBarTextStyle" : "black"
+                }
+            }
+        },
+        {
+            //商品超级分类
+            "path" : "pages/category/index2",
+            "style" : {
+                "navigationBarTitleText" : "商品分类导航",
+                "enablePullDownRefresh" : true,
+                "app-plus" : {
+                    "titleNView" : false, //禁用原生导航栏
+                    "bounce" : "none",
+                    "navigationBarTextStyle" : "black"
+                }
+            }
+        },
+        {
+            //购物车
+            "path" : "pages/cart/cart",
+            "style" : {
+                "navigationBarTitleText" : "购物车",
+                "enablePullDownRefresh" : true,
+                "app-plus888" : {
+                    "titleNView" : false, //禁用原生导航栏
+                    "softinputNavBar" : "none",
+                    "subNVues8888" : [
+                        {
+                            "id" : "cartTitleNvue", // 唯一标识  
+                            "path" : "pages/cart/subNvue/cartTitleNvue", // 页面路径  
+                            "type" : "navigationBar"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            //用户主页
+            "path" : "pages/tabbar/user",
+            "style" : {
+                "enablePullDownRefresh" : true,
+                "backgroundTextStyle" : "light",
+                "backgroundColorTop" : "#FFFFFF",
+                "titleNView" : true,
+                "app-plus" : {
+                    "titleNView" : false, //禁用原生导航栏
+                    "softinputNavBar" : "none",
+                    "subNVues888" : [
+                        {
+                            "id" : "userTitleNvue", //唯一标识  
+                            "path" : "pages/tabbar/userTitleNvue", //页面路径  
+                            "type" : "navigationBar"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            //资料库带参数中转
+            "path" : "pages/tabbar/quanquan",
+            "style" : {}
+        },
+        {
+            //超级相册
+            "path" : "cms/library/library",
+            "style" : {
+                "navigationBarTitleText" : "",
+                "usingComponents" : {}
+            }
+        },
+        {
+            //相册详情
+            "path" : "cms/library/library_list",
+            "style" : {
+                "navigationBarTitleText" : "",
+                "onReachBottomDistance" : 50
+            }
+        },
+        {
             "path" : "pages/msg/msg",
             "style" : {
-				"enablePullDownRefresh": true,
-				"navigationBarTitleText": "消息列表"
-			}
-        }
-        ,{
+                "enablePullDownRefresh" : true,
+                "navigationBarTitleText" : "消息列表"
+            }
+        },
+        {
             "path" : "pages/msg/chat/chat",
             "style" : {
-				"navigationBarTitleText": "对话",
-				"app-plus":{
-					"softinputNavBar":"none",
-					"bounce":"none"
-				}
-			}
+                "navigationBarTitleText" : "对话",
+                "app-plus" : {
+                    "softinputNavBar" : "none",
+                    "bounce" : "none"
+                }
+            }
         },
-		{
+        {
             "path" : "pages/h5browser/h5browser",
             "style" : {
-				"app-plus": {
-					"titleNView": {
-						"backgroundColor888":"#f37404",
-						"titlecolor888":"#ffffff",
-						"autoBackButton":true,
-						"homeButton888":true,
-						"splitLine888":{ "color":"#e9e9e9" },
-						"buttons":[
-							{
-								"text":"首页",
-								"type":"none",
-								"color":"#FFFFFF",
-								"background":"#000000",
-								"fontSize":"16px",
-								"float":"right"
-							}
-						]
-					} ,//禁用原生导航栏
-					"softinputNavBar":"none",
-					"subNVues888":[{
-						"id": "userTitleNvue", //唯一标识  
-						"path": "pages/h5browser/h5browserTitleNvue", //页面路径  
-						"type":"navigationBar"
-					}]
-				},
-				"h5": {
-					//"titleNView": false ,//禁用原生导航栏
-					"titleNView": {
-						"backgroundColor888":"#f37404",
-						"titlecolor888":"#ffffff",
-						"autoBackButton":true,
-						"homeButton888":true,
-						"splitLine888":{ "color":"#e9e9e9" },
-						"buttons":[
-							{
-								"text":"首页",
-								"type":"none",
-								"color":"#FFFFFF",
-								"background":"#000000",
-								"fontSize":"16px",
-								"float":"right"
-							}
-						]
-					} ,//禁用原生导航栏
-					"softinputNavBar":"none"
-				}
-			}
+                "app-plus" : {
+                    "titleNView" : {
+                        "backgroundColor888" : "#f37404",
+                        "titlecolor888" : "#ffffff",
+                        "autoBackButton" : true,
+                        "homeButton888" : true,
+                        "splitLine888" : {
+                            "color" : "#e9e9e9"
+                        },
+                        "buttons" : [
+                            {
+                                "text" : "首页",
+                                "type" : "none",
+                                "color" : "#FFFFFF",
+                                "background" : "#000000",
+                                "fontSize" : "16px",
+                                "float" : "right"
+                            }
+                        ]
+                    }, //禁用原生导航栏
+                    "softinputNavBar" : "none",
+                    "subNVues888" : [
+                        {
+                            "id" : "userTitleNvue", //唯一标识  
+                            "path" : "pages/h5browser/h5browserTitleNvue", //页面路径  
+                            "type" : "navigationBar"
+                        }
+                    ]
+                },
+                "h5" : {
+                    //"titleNView": false ,//禁用原生导航栏
+                    "titleNView" : {
+                        "backgroundColor888" : "#f37404",
+                        "titlecolor888" : "#ffffff",
+                        "autoBackButton" : true,
+                        "homeButton888" : true,
+                        "splitLine888" : {
+                            "color" : "#e9e9e9"
+                        },
+                        "buttons" : [
+                            {
+                                "text" : "首页",
+                                "type" : "none",
+                                "color" : "#FFFFFF",
+                                "background" : "#000000",
+                                "fontSize" : "16px",
+                                "float" : "right"
+                            }
+                        ]
+                    }, //禁用原生导航栏
+                    "softinputNavBar" : "none"
+                }
+            }
         },
-				
-		{
-		    "path" : "pages/shopList/shopList",
-		    "style": {
-		    	"navigationBarTitleText": "商家列表",
-				"enablePullDownRefresh": true,
-				"onReachBottomDistance":50,
-				"app-plus": {
-					"titleNView": false ,//禁用原生导航栏
-					"softinputNavBar":"none",
-					"navigationBarTextStyle":"black"
-				}
-		    }
-		},
-		{
-		    "path" : "pages/shopList/shopList2",
-		    "style": {
-		    }
-		},
-		{
-		    "path" : "pages/shopDetail/shopDetail",
-		    "style": {
-		    	"navigationBarTitleText": "商家详情",
-				"enablePullDownRefresh": true,
-		    	"softinputNavBar":"none",
-				"app-plus": {
-					"titleNView": false ,//禁用原生导航栏
-					"softinputNavBar":"none",
-					"navigationBarTextStyle":"black"
-				}
-		    }
-		},
-		{
-		    "path" : "pages/menuList/menuList",
-		    "style": {
-		    	"navigationBarTitleText": "菜单",
-		    	"softinputNavBar":"none"
-		    }
-		},
-		{
-		    "path" : "pages/shopMap/shopMap",
-		    "style" : {}
-		},{
-		    "path" : "pages/publish/publish_index",
-		    "style" : {
-				"navigationBarTitleText": "分类列表",
-				"softinputNavBar":"none"
-			}
-		},{
-		    "path" : "pages/publish/my_publish",
-		    "style" : {
-				"navigationBarTitleText": "帖子列表",
-				"softinputNavBar":"none"
-			}
-		},{
-		    "path" : "pages/publish/publish_write",
-		    "style" : {}
-		},
-		{
-		    "path" : "pages/publish/publish_detail",
-		    "style" : {}
-		},
-		{
-		    "path" : "pages/publish/publish_list",
-		    "style" : {
-		    	"navigationBarTitleText":"文章列表",
-		    	"enablePullDownRefresh": true,
-		    	"onReachBottomDistance":50
-		    }
-		},
-		{
-		    "path" : "pages/publish/publish_home",
-		    "style" : {
-				"navigationBarTitleText": "文章列表-分类",
-				"softinputNavBar":"none"
-			}
-		},
-		{
+        {
+            "path" : "pages/shopList/shopList",
+            "style" : {
+                "navigationBarTitleText" : "商家列表",
+                "enablePullDownRefresh" : true,
+                "backgroundTextStyle" : "light",
+                "backgroundColorTop" : "#FFFFFF",
+                "titleNView" : true,
+                "app-plus" : {
+                    "titleNView" : false, //禁用原生导航栏
+                    "softinputNavBar" : "none",
+                    "navigationBarTextStyle" : "black" //因为首页的背景是白色的，所以需要将状态栏文字改成黑色
+                }
+            }
+        },
+        {
+            "path" : "pages/shopList/shopList2",
+            "style" : {}
+        },
+        {
+            "path" : "pages/shopDetail/shopDetail",
+            "style" : {
+                "navigationBarTitleText" : "商家详情",
+                "enablePullDownRefresh" : true,
+                "backgroundTextStyle" : "light",
+                "backgroundColorTop" : "#FFFFFF",
+                "titleNView" : true,
+                "app-plus" : {
+                    "titleNView" : false, //禁用原生导航栏
+                    "softinputNavBar" : "none",
+                    "navigationBarTextStyle" : "black"
+                }
+            }
+        },
+        {
+            "path" : "pages/menuList/menuList",
+            "style" : {
+                "navigationBarTitleText" : "菜单",
+                "softinputNavBar" : "none"
+            }
+        },
+        {
+            "path" : "pages/shopMap/shopMap",
+            "style" : {}
+        },
+        {
+            "path" : "pages/publish/publish_index",
+            "style" : {
+                "navigationBarTitleText" : "分类列表",
+                "softinputNavBar" : "none"
+            }
+        },
+        {
+            "path" : "pages/publish/my_publish",
+            "style" : {
+                "navigationBarTitleText" : "帖子列表",
+                "softinputNavBar" : "none"
+            }
+        },
+        {
+            "path" : "pages/publish/publish_write",
+            "style" : {}
+        },
+        {
+            "path" : "pages/publish/publish_detail",
+            "style" : {}
+        },
+        {
+            "path" : "pages/publish/publish_list",
+            "style" : {
+                "navigationBarTitleText" : "文章列表",
+                "enablePullDownRefresh" : true,
+                "onReachBottomDistance" : 50
+            }
+        },
+        {
+            "path" : "pages/publish/publish_home",
+            "style" : {
+                "navigationBarTitleText" : "文章列表-分类",
+                "softinputNavBar" : "none"
+            }
+        },
+        {
             "path" : "pages/myecard/myecard",
             "style" : {
-				"navigationBarTitleText":"会员卡",
-				"enablePullDownRefresh": true
-			}
+                "navigationBarTitleText" : "会员卡",
+                "enablePullDownRefresh" : true
+            }
         },
-		{
-		    "path" : "pages/welcome_page/welcome_page",
-		    "style" : {
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-		    "path" : "cms/discover/discover",
-		    "style" : {
-		    	"navigationBarTitleText":"",
-		    	"enablePullDownRefresh": true
-		    }
-		}
-		,{
-			"path" : "cms/publish/publish",
-		    "style" : {}
-		},
-		
-		{
-			"path" : "pages/member/list",
-			"style" : {
-				"enablePullDownRefresh": true
-			}
-		},{
-			"path" : "pages/member/detail",
-			"style" : {}
-		},{
-			"path" : "pages/checkin/checkin",
-			"style" : {
-				"enablePullDownRefresh": true
-			}
-		},{
-			"path" : "pages/checkin/history",
-			"style" : {}
-		}
-        ,{
+        {
+            "path" : "pages/welcome_page/welcome_page",
+            "style" : {
+                "enablePullDownRefresh" : true
+            }
+        },
+        {
+            "path" : "cms/discover/discover",
+            "style" : {
+                "navigationBarTitleText" : "",
+                "enablePullDownRefresh" : true
+            }
+        },
+        {
+            "path" : "cms/publish/publish",
+            "style" : {}
+        },
+        {
+            "path" : "pages/member/list",
+            "style" : {
+                "enablePullDownRefresh" : true
+            }
+        },
+        {
+            "path" : "pages/member/detail",
+            "style" : {}
+        },
+        {
+            "path" : "pages/checkin/checkin",
+            "style" : {
+                "enablePullDownRefresh" : true
+            }
+        },
+        {
+            "path" : "pages/checkin/history",
+            "style" : {}
+        },
+        {
             "path" : "pages/aipingou/aipingou",
             "style" : {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": true
+                "navigationBarTitleText" : "",
+                "enablePullDownRefresh" : true
             }
-            
         },
-		{
-		    "path" : "pages/aipingou/mypingou",
-		    "style" : {
-				"onReachBottomDistance":5,
-		        "navigationBarTitleText": "我的拼购",
-		        "enablePullDownRefresh": true
-		    }
-		    
-		},
-		{
-		    "path" : "pages/yanyubao/module_list",
-		    "style": {
-		    	"navigationBarTitleText": "延誉宝功能模块列表",
-		    	"softinputNavBar":"none",
-				"enablePullDownRefresh": true
-		    }
-		},
-		{
-		    "path" : "pages/yanyubao/my_module_list",
-		    "style": {
-		    	"navigationBarTitleText": "我的功能模块",
-		    	"softinputNavBar":"none",
-				"enablePullDownRefresh": true
-		    }
-		}
-		//======= NFT卡包卡牌相关 Begin  ====
-		//这个可能会挂接在底部导航中，所有不放在分包里面
-		/*,
+        {
+            "path" : "pages/aipingou/mypingou",
+            "style" : {
+                "onReachBottomDistance" : 5,
+                "navigationBarTitleText" : "我的拼购",
+                "enablePullDownRefresh" : true
+            }
+        },
+        {
+            "path" : "pages/yanyubao/module_list",
+            "style" : {
+                "navigationBarTitleText" : "延誉宝功能模块列表",
+                "softinputNavBar" : "none",
+                "enablePullDownRefresh" : true
+            }
+        },
+        {
+            "path" : "pages/yanyubao/my_module_list",
+            "style" : {
+                "navigationBarTitleText" : "我的功能模块",
+                "softinputNavBar" : "none",
+                "enablePullDownRefresh" : true
+            }
+        }
+    ],
+    //======= NFT卡包卡牌相关 Begin  ====
+    //这个可能会挂接在底部导航中，所有不放在分包里面
+    /*,
 		{
 			"path":"pages/nftcard/package_list",
 			"style":
@@ -381,360 +371,636 @@
 				"navigationBarTitleText":"",
 				"enablePullDownRefresh":true
 			}
-		}*/
-		//======= NFT卡包卡牌相关 Begin  ====
-		
-
-    ],
-	"subPackages": [
-		//======= 一些内容详情页的分包 Begin  ====
-		{
-			"root": "pages/main",
-			"pages": [
-				{
-				    "path" : "shutdown_website/shutdown_website",
-				    "style" :                                                                                    
-					{
-						"navigationBarTitleText": "",
-						"enablePullDownRefresh": true
-					}
-				},
-				{
-				    "path" : "about/about",
-				    "style": {
-				    	"navigationBarTitleText": "关于",
-				    	"softinputNavBar":"none"
-				    }
-				},				
-				{	//商品搜索
-				    "path" : "search/search",
-				    "style" : {
-						"navigationBarTitleText" : "商品搜索",
-						"enablePullDownRefresh": true,
-						"app-plus": {
-							"bounce":"none"
-						}
-					}
-				},
-				{
-				    "path" : "locationList/locationList",
-				    "style" : {}
-				}
-			]
-			
-		},
-		//======= 一些内容详情页的分包 Begin  ====
-		//======= 商品详情相关的分包 Begin  ====
-		{
-			"root": "pages/product",
-			"pages": [
-				{	//商品详情
-				    "path" : "detail",
-				    "style" : {
-						"navigationBarTitleText" : "商品详情",
-						"onReachBottomDistance":50,
-						"h5":{
-							"titleNView":false
-						},
-						"app-plus": {
-							"titleNView": false ,//禁用原生导航栏
-							"bounce":"none"
-						}
-					}
-				},
-				{
-				    "path" : "ratings/ratings",
-				    "style" : {
-						"navigationBarTitleText":"商品评论",
-						"enablePullDownRefresh": true,
-						"onReachBottomDistance":50
-					}
-				},
-				{	//商品列表
-				    "path" : "goods-list/goods-list",
-				    "style" : {
-						"navigationBarTitleText" : "商品列表",
-						"enablePullDownRefresh": true,
-						"app-plus": {
-							"bounce":"none"
-						}
-					}
-				}
-			]
-			
-		},
-		//======= 商品详情相关的分包 Begin  ====
-		//======= 会员登录相关的分包 Begin  ====
-		{
-			"root": "pages/login",
-			"pages": [
-				{	//手机验证码登录页
-					"path": "login",
-					"style": {
-						"navigationBarTitleText": "手机账号登录",
-						"app-plus": {
-				            "bounce": "none" ,//关闭窗口回弹效果
-							"softinputNavBar":"none"
-				        }
-					}
-				},
-				{	//账号密码登录页
-					"path": "login_by_password",
-					"style": {
-						"navigationBarTitleText": "账号密码登录",
-						"app-plus": {
-				            "bounce": "none" ,//关闭窗口回弹效果
-							"softinputNavBar":"none"
-				        }
-					}
-				},
-				{	//账号注册页
-					"path": "register",
-					"style": {
-						"navigationBarTitleText": "注册账号",
-						"app-plus": {
-						    "bounce": "none" ,//关闭窗口回弹效果
-							"softinputNavBar":"none"
-						}
-					}
-				},
-				{
-					"path": "resetpasswd",
-					"style": {
-						"navigationBarTitleText": "重置密码",
-						"app-plus": {
-						    "bounce": "none" ,//关闭窗口回弹效果
-							"softinputNavBar":"none"
-						}
-					}
-				},
-				{
-					"path" : "login_get_userinfo",
-				    "style" : {}
-				},
-				{
-				    "path" : "login_with_openid",
-				    "style" : {
-						"onReachBottomDistance":5,
-				        "navigationBarTitleText": "授权登录",
-				        "enablePullDownRefresh": true
-				    }
-				    
-				}
-			]
-			
-		},
-		//======= 会员登录相关的分包 Begin  ====
-		
-		//======= address相关的分包 Begin  ====
-		{
-			"root": "pages/help",
-			"pages": [
-				{
-				    "path" : "list",
-				    "style": {
-				    	"navigationBarTitleText": "文章列表",
-				    	"softinputNavBar":"none",
-						"onReachBottomDistance":50
-				    }
-				},
-				{
-				    "path" : "detail",
-				    "style": {
-						"enablePullDownRefresh": true,
-				    	"navigationBarTitleText": "文章详情",
-				    	"softinputNavBar":"none"
-				    }
-				}
-			]
-			
-		},
-		//======= address相关的分包 Begin  ====
-		
-		//======= 个人中心相关的分包 Begin  ====
-		{
-			"root": "pages/user",
-			"pages": [
-				{	//订单列表
-					"path" : "order_list/order_list",
-					"style" : {
-						"navigationBarTitleText":"我的订单"
-					}
-				},
-				{	//订单列表
-					"path" : "orderDetail/orderDetail",
-					"style" : {
-						"navigationBarTitleText":"订单详情"
-					}
-				},
-				{	//用户设置
-					"path" : "setting/setting",
-					"style" : {
-						"navigationBarTitleText":"我的设置"
-					}
-				},
-				{	//用户设置
-					"path" : "logscore",
-					"style" : {
-						"navigationBarTitleText":"我的积分"
-					}
-				},
-				{	//用户设置
-					"path" : "log",
-					"style" : {
-						"navigationBarTitleText":"我的余额"
-					}
-				},
-				{
-					"path" : "myQR/myQR",
-					"style" : {
-						"navigationBarTitleText":"我的二维码",
-						"app-plus":{
-							"bounce":"none"
-						}
-					}
-				},
-				{
-					"path" : "coupon/coupon",
-					"style" : {
-						"navigationBarTitleText": "优惠券",
-						"app-plus":{
-							"bounce":"none"
-						}
-					}
-				},
-				{
-					"path" : "keep/keep",
-					"style" : {
-						"navigationBarTitleText": "我的收藏",
-						"app-plus":{
-							"bounce":"none"
-						}
-					}
-				},
-				{
-					"path" : "address/address",
-					"style" : {
-						"navigationBarTitleText":"地址管理"
-					}
-				},
-				{
-					"path" : "address/edit/edit",
-					"style" : {
-		
-						"navigationBarTitleText":"编辑收件人地址"
-					}
-				},
-				{
-					"path" : "deposit/deposit",
-					"style" : {
-						"navigationBarTitleText":"充值"
-					}
-				},
+		}*///======= NFT卡包卡牌相关 Begin  ====
+    "subPackages" : [
 				
-				{
-					"path" : "nickName/nickNameEdit",
-					"style" : {}
-				},
-				
-				{
-					"path" : "accountEdit/accountEdit",
-					"style" : {}
-				},
-				{
-					"path" : "updateMobile/updateMobile",
-					"style" : {}
-				}
-			]
-			
-		},
-		//======= 个人中心相关的分包 Begin  ====
-		//======= 支付流程相关的2个分包 Begin  ====
-		{
-			"root": "pages/order",
-			"pages": [
-				{
-				    "path" : "pay",
-				    "style": {
-				    	"navigationBarTitleText": "确认订单",
-				    	"softinputNavBar":"none"
-				    }
-				}
-			]
-			
-		},
-		{
-			"root": "pages/pay",
-			"pages": [
-				{
-				    "path" : "payment/payment",
-				    "style" : {
-						"navigationBarTitleText":"订单支付"
-					}
-				},
-				{
-				    "path" : "success/success",
-				    "style" : {
-				
-						"navigationBarTitleText":"支付完成"
-					}
-				}
-			]
-			
-		},
-		//======= 支付流程相关的2个分包 Begin  ====
-		//======= address相关的分包 Begin  ====
-		{
-			"root": "pages/address",
-			"pages": [
-				{
-				    "path" : "user-address/user-address",
-				    "style": {
-				    	"navigationBarTitleText": "地址管理",
-				    	"softinputNavBar":"none"
-				    }
-				},
-				{
-				    "path" : "address",
-				    "style": {
-				    	"navigationBarTitleText": "联系地址",
-				    	"softinputNavBar":"none"
-				    }
-				}
-			]
-			
-		},
-		//======= address相关的分包 Begin  ====
-		
-		{
-			"root": "cms/quanquan",
-			"pages": [
-				{	//资料库收藏
-					"path": "mycollection",
-					"style": {
-						"enablePullDownRefresh": true
-					}
-				},		
-				{	//资料库列表
-					"path": "quanquanlist",
-					"style": {
-						"enablePullDownRefresh": true
-					}
-				},
-				{	//资料库详情
-					"path": "quanquan_details",
-					"style": {
-						"enablePullDownRefresh": true
-					}
-				}
-			]
-			
-		},
-		
-		
-		//======= wordpress相关的分包 Begin  ====
-		//======= 2021.10.23. 合并的意义不大，而且abotapi.js读取基本配置的接口都不一样，准备扩展help和help_detail来适应
-		/*
+        //======= 一些内容详情页的分包 Begin  ====
+        {
+            "root" : "pages/main",
+            "pages" : [
+                {
+                    "path" : "shutdown_website/shutdown_website",
+                    "style" : {
+                        "navigationBarTitleText" : "",
+                        "enablePullDownRefresh" : true
+                    }
+                },
+                {
+                    "path" : "about/about",
+                    "style" : {
+                        "navigationBarTitleText" : "关于",
+                        "softinputNavBar" : "none"
+                    }
+                },
+                {
+                    //商品搜索
+                    "path" : "search/search",
+                    "style" : {
+                        "navigationBarTitleText" : "商品搜索",
+                        "enablePullDownRefresh" : true,
+                        "app-plus" : {
+                            "bounce" : "none"
+                        }
+                    }
+                },
+                {
+                    "path" : "locationList/locationList",
+                    "style" : {}
+                }
+            ]
+        },
+        //======= 一些内容详情页的分包 Begin  ====
+        //======= 商品详情相关的分包 Begin  ====
+        {
+            "root" : "pages/product",
+            "pages" : [
+                {
+                    //商品详情
+                    "path" : "detail",
+                    "style" : {
+                        "navigationBarTitleText" : "商品详情",
+                        "onReachBottomDistance" : 50,
+                        "h5" : {
+                            "titleNView" : false
+                        },
+                        "app-plus" : {
+                            "titleNView" : false, //禁用原生导航栏
+                            "bounce" : "none"
+                        }
+                    }
+                },
+                {
+                    "path" : "ratings/ratings",
+                    "style" : {
+                        "navigationBarTitleText" : "商品评论",
+                        "enablePullDownRefresh" : true,
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    //商品列表
+                    "path" : "goods-list/goods-list",
+                    "style" : {
+                        "navigationBarTitleText" : "商品列表",
+                        "enablePullDownRefresh" : true,
+                        "app-plus" : {
+                            "bounce" : "none"
+                        }
+                    }
+                }
+            ]
+        },
+        //======= 商品详情相关的分包 Begin  ====
+        //======= 会员登录相关的分包 Begin  ====
+        {
+            "root" : "pages/login",
+            "pages" : [
+                {
+                    //手机验证码登录页
+                    "path" : "login",
+                    "style" : {
+                        "navigationBarTitleText" : "手机账号登录",
+                        "app-plus" : {
+                            "bounce" : "none", //关闭窗口回弹效果
+                            "softinputNavBar" : "none"
+                        }
+                    }
+                },
+                {
+                    //账号密码登录页
+                    "path" : "login_by_password",
+                    "style" : {
+                        "navigationBarTitleText" : "账号密码登录",
+                        "app-plus" : {
+                            "bounce" : "none", //关闭窗口回弹效果
+                            "softinputNavBar" : "none"
+                        }
+                    }
+                },
+                {
+                    //Email验证码登录页
+                    "path" : "login_by_email_verifycode",
+                    "style" : {
+                        "navigationBarTitleText" : "Email验证码登录",
+                        "app-plus" : {
+                            "bounce" : "none", //关闭窗口回弹效果
+                            "softinputNavBar" : "none"
+                        }
+                    }
+                },
+                {
+                    //账号注册页
+                    "path" : "register",
+                    "style" : {
+                        "navigationBarTitleText" : "注册账号",
+                        "app-plus" : {
+                            "bounce" : "none", //关闭窗口回弹效果
+                            "softinputNavBar" : "none"
+                        }
+                    }
+                },
+                {
+                    "path" : "resetpasswd",
+                    "style" : {
+                        "navigationBarTitleText" : "重置密码",
+                        "app-plus" : {
+                            "bounce" : "none", //关闭窗口回弹效果
+                            "softinputNavBar" : "none"
+                        }
+                    }
+                },
+                {
+                    "path" : "login_get_userinfo",
+                    "style" : {}
+                },
+                {
+                    "path" : "login_with_openid",
+                    "style" : {
+                        "onReachBottomDistance" : 5,
+                        "navigationBarTitleText" : "授权登录",
+                        "enablePullDownRefresh" : true
+                    }
+                }
+            ]
+        },
+        //======= 会员登录相关的分包 Begin  ====
+        //======= course相关的分包 Begin  ====
+        {
+            "root" : "pages/course",
+            "pages" : [
+                {
+                    "path" : "index",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "在线课程",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "detail",
+                    "style" : {
+                        "navigationBarTitleText" : "课程详情",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "my",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "在线课程",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "pinke_index",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "拼课列表",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "pinke_detail",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "拼课详情",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "pinke_mine",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "我的拼课",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "pinke_address",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "上课地点",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "user_list",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "用户信息",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "xuexi_jilu",
+                    "style" : {
+                        "navigationBarTitleText" : "学习记录",
+                        "enablePullDownRefresh" : false
+                    }
+                }
+            ]
+        },
+        //======= course相关的分包 End  ====
+        //======= jiazhenggongsi相关的分包 Begin  ====
+        {
+            "root" : "pages/jiazhenggongsi",
+            "pages" : [
+                {
+                    "path" : "index",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "家政公司",
+                        "softinputNavBar" : "none"
+                    }
+                },
+                {
+                    "path" : "citizen_list",
+                    "style" : {
+                        "navigationBarTitleText" : "客户列表",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "citizen_edit",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "录入客户",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "worker_list",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "员工列表",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "worker_edit",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "录入员工",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "relevance_list",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "关联关系",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "relevance_edit",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "关联关系录入",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "checkin_list",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "考勤记录",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "result_edit",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "督导记录",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "admin_edit",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "添加管理员",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "group_edit",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "角色添加",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "result_list",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "服务督导",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "admin_list",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "后台人员",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "tongji_list",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "服务内容统计",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "group_list",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "分组列表",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "grouppower_list",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "权限设置",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "citizen_detail",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "客户详情",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "worker_detail",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "员工详情",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "service_detail",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "家政员简历",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "service_list",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "保姆员工列表",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                }
+            ]
+        },
+        //======= jiazhenggongsi相关的分包 End  ====
+        //======= address相关的分包 Begin  ====
+        {
+            "root" : "pages/help",
+            "pages" : [
+                {
+                    "path" : "list",
+                    "style" : {
+                        "navigationBarTitleText" : "文章列表",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "detail",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "文章详情",
+                        "softinputNavBar" : "none"
+                    }
+                }
+            ]
+        },
+        //======= address相关的分包 Begin  ====
+        //======= 个人中心相关的分包 Begin  ====
+        {
+            "root" : "pages/user",
+            "pages" : [
+                {
+                    //订单列表
+                    "path" : "order_list/order_list",
+                    "style" : {
+                        "navigationBarTitleText" : "我的订单"
+                    }
+                },
+                {
+                    //订单列表
+                    "path" : "orderDetail/orderDetail",
+                    "style" : {
+                        "navigationBarTitleText" : "订单详情"
+                    }
+                },
+                {
+                    //用户设置
+                    "path" : "setting/setting",
+                    "style" : {
+                        "navigationBarTitleText" : "我的设置"
+                    }
+                },
+                {
+                    //用户设置
+                    "path" : "logscore",
+                    "style" : {
+                        "navigationBarTitleText" : "我的积分"
+                    }
+                },
+                {
+                    //用户设置
+                    "path" : "log",
+                    "style" : {
+                        "navigationBarTitleText" : "我的余额"
+                    }
+                },
+                {
+                    "path" : "myQR/myQR",
+                    "style" : {
+                        "navigationBarTitleText" : "我的二维码",
+                        "app-plus" : {
+                            "bounce" : "none"
+                        }
+                    }
+                },
+                {
+                    "path" : "coupon/coupon",
+                    "style" : {
+                        "navigationBarTitleText" : "优惠券",
+                        "app-plus" : {
+                            "bounce" : "none"
+                        }
+                    }
+                },
+                {
+                    "path" : "keep/keep",
+                    "style" : {
+                        "navigationBarTitleText" : "我的收藏",
+                        "app-plus" : {
+                            "bounce" : "none"
+                        }
+                    }
+                },
+                {
+                    "path" : "address/address",
+                    "style" : {
+                        "navigationBarTitleText" : "地址管理"
+                    }
+                },
+                {
+                    "path" : "address/edit/edit",
+                    "style" : {
+                        "navigationBarTitleText" : "编辑收件人地址"
+                    }
+                },
+                {
+                    "path" : "deposit/deposit",
+                    "style" : {
+                        "navigationBarTitleText" : "充值"
+                    }
+                },
+                {
+                    "path" : "nickName/nickNameEdit",
+                    "style" : {}
+                },
+                {
+                    "path" : "accountEdit/accountEdit",
+                    "style" : {}
+                },
+                {
+                    "path" : "updateMobile/updateMobile",
+                    "style" : {}
+                },
+                {
+                    "path" : "updateMobile/updateEmail",
+                    "style" : {}
+                }
+            ]
+        },
+        //======= 个人中心相关的分包 Begin  ====
+        //======= 支付流程相关的2个分包 Begin  ====
+        {
+            "root" : "pages/order",
+            "pages" : [
+                {
+                    "path" : "pay",
+                    "style" : {
+                        "navigationBarTitleText" : "确认订单",
+                        "softinputNavBar" : "none"
+                    }
+                }
+            ]
+        },
+        {
+            "root" : "pages/pay",
+            "pages" : [
+                {
+                    "path" : "payment/payment",
+                    "style" : {
+                        "navigationBarTitleText" : "订单支付"
+                    }
+                },
+                {
+                    "path" : "success/success",
+                    "style" : {
+                        "navigationBarTitleText" : "支付完成"
+                    }
+                }
+            ]
+        },
+        //======= 支付流程相关的2个分包 Begin  ====
+        //======= address相关的分包 Begin  ====
+        {
+            "root" : "pages/address",
+            "pages" : [
+                {
+                    "path" : "user-address/user-address",
+                    "style" : {
+                        "navigationBarTitleText" : "地址管理",
+                        "softinputNavBar" : "none"
+                    }
+                },
+                {
+                    "path" : "address",
+                    "style" : {
+                        "navigationBarTitleText" : "联系地址",
+                        "softinputNavBar" : "none"
+                    }
+                }
+            ]
+        },
+        //======= 资料文库相关的分包 Begin  ====
+        {
+            "root" : "cms/quanquan",
+            "pages" : [
+                {
+                    //资料库收藏
+                    "path" : "mycollection",
+                    "style" : {
+                        "enablePullDownRefresh" : true
+                    }
+                },
+                {
+                    //资料库列表
+                    "path" : "quanquanlist",
+                    "style" : {
+                        "enablePullDownRefresh" : true
+                    }
+                },
+                {
+                    //资料库详情
+                    "path" : "quanquan_details",
+                    "style" : {
+                        "enablePullDownRefresh" : true
+                    }
+                }
+            ]
+        },
+        //======= wordpress相关的分包 Begin  ====
+        //======= 2021.10.23. 合并的意义不大，而且abotapi.js读取基本配置的接口都不一样，准备扩展help和help_detail来适应
+        /*
 		{
 			"root": "pages/wordpress",
 			"pages": [
@@ -776,198 +1042,366 @@
 				}
 			]
 			
-		},*/
-		//======= wordpress相关的分包 Begin  ====
-		//======= 视频直播相关的分包 Begin  ====
-		{
-			"root": "pages/live",
-			"pages": [
-				{
-					"path" : "livereserve",
-					"style" : {
-						"navigationBarTitleText":"直播预约",
-						"enablePullDownRefresh": true
-					}
-				},
-				{
-				    "path" : "live-list",
-				    "style" : {
-						"navigationBarTitleText":"直播间列表",
-						"mp-weixin888": {
-						      "usingComponents": {
-						        "live-player-plugin": "plugin://live-player-plugin/live-player-plugin"
-						      }
-						}
-					}
-				},		
-				{
-				    "path" : "live-historylog",
-				    "style" : {
-						"navigationBarTitleText":"直播记录"
-					}
-				},
-				{
-				    "path" : "live-pusher",
-				    "style" : {
-				    	"navigationBarTitleText":"主播控制台",
-				    	//"navigationBarBackgroundColor":"#1569DB",
-						"navigationBarTextStyle":"white"
-						
-				    }
-				},
-				{
-				    "path" : "live-player",
-				    "style" : {
-						// "app-plus": {  
-						// 	"subNVues":[{  
-						// 		"id": "sendDanmu", // 唯一标识  
-						// 		"path": "subNVues/live-player", // 页面路径  
-						// 		// "type": "popup",  //原生子窗口内置样式，可取值：'popup',弹出层；"navigationBar",导航栏
-						// 		"style": {  
-						// 			"position": "absolute",  
-						// 			// "dock": "right",  
-						// 			"width": "100upx",  
-						// 			"height": "150upx",  
-						// 			"background": "transparent"  
-						// 		}    
-						// 	}]  
-						// }
-					}
-				}
-			]
-			
-		},
-		//======= 视频直播相关的分包 Begin  ====
-		//======= 分销中心和推广联盟 相关的分包 Begin  ====
-		{	
-			"root": "pages/fenxiao",
-			"pages": [
-				{
-					"path" : "fenxiao_center",
-					"style" :                                                                                    
-					{
-						"navigationBarTitleText": "分销中心",
-						"enablePullDownRefresh": true
-					}            
-				},
-				{
-					"path" : "fenxiao_order_list",
-					"style" :                                                                                    
-					{
-						"navigationBarTitleText": "分销订单列表",
-						"enablePullDownRefresh": true
-					}            
-				},
-				{
-					"path" : "fenxiao_order_detail",
-					"style" :                                                                                    
-					{
-						"navigationBarTitleText": "分销订单详情",
-						"enablePullDownRefresh": true
-					}            
-				},
-				{
-					"path" : "myteam",
-					"style" :                                                                                    
-					{
-						"navigationBarTitleText": "我的团队",
-						"enablePullDownRefresh": true
-					}            
-				},
-				{
-					"path" : "mybuyer",
-					"style" :                                                                                    
-					{
-						"navigationBarTitleText": "我的顾客",
-						"enablePullDownRefresh": true
-					}            
-				},
-				{
-					"path" : "profit_summary",
-					"style" :                                                                                    
-					{
-						"navigationBarTitleText": "收益汇总",
-						"enablePullDownRefresh": false
-					}            
-				},
-				{
-					"path" : "profit_center",
-					"style" :                                                                                    
-					{
-						"navigationBarTitleText": "收益中心",
-						"enablePullDownRefresh": false
-					}            
-				},
-				{
-					"path" : "agent_become",
-					"style" :                                                                                    
-					{
-						"navigationBarTitleText": "成为代理",
-						"enablePullDownRefresh": true
-					}            
-				}
-		    ]
-			
-		},
-		//======= 分销中心和推广联盟 相关的分包 Begin  ====
-		//======= 小游戏小工具相关的分包 Begin  ====
-		{	
-			"root": "pages/tools",
-			"pages": [
-				{
-					"path" : "clock",
-					"style" :                                                                                    
-					{
-						"navigationBarTitleText": "简约时钟",
-						"enablePullDownRefresh": true
-					}            
-				},
-				{
-					"path" : "calculator",
-					"style" :                                                                                    
-					{
-						"navigationBarTitleText": "计算器",
-						"enablePullDownRefresh": true
-					}            
-				},
-				{
-					"path" : "dice",
-					"style" :                                                                                    
-					{
-						"navigationBarTitleText": "掷骰子",
-						"enablePullDownRefresh": true
-					}            
-				},
-				{
-					"path" : "puzzle",
-					"style" :                                                                                    
-					{
-						"navigationBarTitleText": "拼图",
-						"enablePullDownRefresh": true
-					}            
-				},
-				{
-					"path" : "mine_clearing",
-					"style" :                                                                                    
-					{
-						"navigationBarTitleText": "扫雷",
-						"enablePullDownRefresh": true
-					}            
-				},
-				{
-					"path" : "graffiti",
-					"style" :                                                                                    
-					{
-						"navigationBarTitleText": "涂鸦",
-						"enablePullDownRefresh": false
-					}            
-				}
-		    ]
-			
-		},
-		//======= 小游戏小工具相关的分包 Begin  ====
-		//======= NFT卡包卡牌相关的分包 Begin  ====
-		{	
+		},*///======= wordpress相关的分包 Begin  ====
+        //======= 视频直播相关的分包 Begin  ====
+        {
+            "root" : "pages/live",
+            "pages" : [
+                {
+                    "path" : "livereserve",
+                    "style" : {
+                        "navigationBarTitleText" : "直播预约",
+                        "enablePullDownRefresh" : true
+                    }
+                },
+                {
+                    "path" : "live-list",
+                    "style" : {
+                        "navigationBarTitleText" : "直播间列表",
+                        "mp-weixin888" : {
+                            "usingComponents" : {
+                                "live-player-plugin" : "plugin://live-player-plugin/live-player-plugin"
+                            }
+                        }
+                    }
+                },
+                {
+                    "path" : "live-historylog",
+                    "style" : {
+                        "navigationBarTitleText" : "直播记录"
+                    }
+                },
+                {
+                    "path" : "live-pusher",
+                    "style" : {
+                        "navigationBarTitleText" : "主播控制台",
+                        //"navigationBarBackgroundColor":"#b2addb",
+                        "navigationBarTextStyle" : "white"
+                    }
+                },
+                {
+                    "path" : "live-player",
+                    "style" : {}
+                }
+            ]
+        },
+        // "app-plus": {  
+        // 	"subNVues":[{  
+        // 		"id": "sendDanmu", // 唯一标识  
+        // 		"path": "subNVues/live-player", // 页面路径  
+        // 		// "type": "popup",  //原生子窗口内置样式，可取值：'popup',弹出层；"navigationBar",导航栏
+        // 		"style": {  
+        // 			"position": "absolute",  
+        // 			// "dock": "right",  
+        // 			"width": "100upx",  
+        // 			"height": "150upx",  
+        // 			"background": "transparent"  
+        // 		}    
+        // 	}]  
+        // }
+        //======= 视频直播相关的分包 Begin  ====
+        //======= 视频直播相关的分包(ver2.0) Begin  ====
+        {
+            "root" : "pages/live_v2",
+            "pages" : [
+                {
+                    "path" : "livereserve",
+                    "style" : {
+                        "navigationBarTitleText" : "直播预约",
+                        "enablePullDownRefresh" : true
+                    }
+                },
+                {
+                    "path" : "live-list",
+                    "style" : {
+                        "navigationBarTitleText" : "直播间列表",
+                        "mp-weixin888" : {
+                            "usingComponents" : {
+                                "live-player-plugin" : "plugin://live-player-plugin/live-player-plugin"
+                            }
+                        }
+                    }
+                },
+                {
+                    "path" : "live-historylog",
+                    "style" : {
+                        "navigationBarTitleText" : "直播记录"
+                    }
+                },
+                {
+                    "path" : "live-pusher",
+                    "style" : {
+                        "navigationBarTitleText" : "直播间",
+                        //"navigationBarBackgroundColor":"#db2577",
+                        //"navigationBarBackgroundColor":"{{navBarColor}}",
+                        "navigationBarTextStyle" : "white"
+                    }
+                },
+                {
+                    "path" : "live-player",
+                    "style" : {
+                        "navigationBarTitleText" : "直播间",
+                        //"navigationBarBackgroundColor":"#99b0db",
+                        //"navigationBarBackgroundColor":"{{navBarColor}}",
+                        "navigationBarTextStyle" : "white"
+                    }
+                }
+            ]
+        },
+        // "app-plus": {  
+        // 	"subNVues":[{  
+        // 		"id": "sendDanmu", // 唯一标识  
+        // 		"path": "subNVues/live-player", // 页面路径  
+        // 		// "type": "popup",  //原生子窗口内置样式，可取值：'popup',弹出层；"navigationBar",导航栏
+        // 		"style": {  
+        // 			"position": "absolute",  
+        // 			// "dock": "right",  
+        // 			"width": "100upx",  
+        // 			"height": "150upx",  
+        // 			"background": "transparent"  
+        // 		}    
+        // 	}]  
+        // }
+        //======= 视频直播相关的分包 Begin  ====
+        //======= 分销中心和推广联盟 相关的分包 Begin  ====
+        {
+            "root" : "pages/fenxiao",
+            "pages" : [
+                {
+                    "path" : "fenxiao_center",
+                    "style" : {
+                        "navigationBarTitleText" : "分销中心",
+                        "enablePullDownRefresh" : true
+                    }
+                },
+                {
+                    "path" : "fenxiao_order_list",
+                    "style" : {
+                        "navigationBarTitleText" : "分销订单列表",
+                        "enablePullDownRefresh" : true,
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "fenxiao_order_detail",
+                    "style" : {
+                        "navigationBarTitleText" : "分销订单详情",
+                        "enablePullDownRefresh" : true
+                    }
+                },
+                {
+                    "path" : "myteam",
+                    "style" : {
+                        "navigationBarTitleText" : "我的团队",
+                        "enablePullDownRefresh" : true,
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "mybuyer",
+                    "style" : {
+                        "navigationBarTitleText" : "我的顾客",
+                        "enablePullDownRefresh" : true,
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "profit_summary",
+                    "style" : {
+                        "navigationBarTitleText" : "收益汇总",
+                        "enablePullDownRefresh" : false
+                    }
+                },
+                {
+                    "path" : "profit_center",
+                    "style" : {
+                        "navigationBarTitleText" : "收益中心",
+                        "enablePullDownRefresh" : false,
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "agent_become",
+                    "style" : {
+                        "navigationBarTitleText" : "成为代理",
+                        "enablePullDownRefresh" : true
+                    }
+                }
+            ]
+        },
+        //======= 分销中心和推广联盟 相关的分包 Begin  ====
+        //======= 专家在线：按分钟计费视频聊天功能模块 相关的分包 Begin  ====
+        {
+            "root" : "pages/expert_online",
+            "pages" : [
+                {
+                    "path" : "anchor_detail",
+                    "style" : {
+                        "navigationBarTitleText" : "主播详情",
+                        "enablePullDownRefresh" : true
+                    }
+                },
+                {
+                    "path" : "hotlist",
+                    "style" : {
+                        "navigationBarTitleText" : "在线专家列表",
+                        "enablePullDownRefresh" : true
+                    }
+                },
+                {
+                    "path" : "buy_rose",
+                    "style" : {
+                        "navigationBarTitleText" : "购买玫瑰",
+                        "enablePullDownRefresh" : true
+                    }
+                },
+                {
+                    "path" : "chat_list",
+                    "style" : {
+                        "navigationBarTitleText" : "聊天",
+                        "enablePullDownRefresh" : true
+                    }
+                },
+                {
+                    "path" : "follow_list",
+                    "style" : {
+                        "navigationBarTitleText" : "关注列表",
+                        "enablePullDownRefresh" : true
+                    }
+                },
+                {
+                    "path" : "object_list",
+                    "style" : {
+                        "navigationBarTitleText" : "对象",
+                        "enablePullDownRefresh" : true
+                    }
+                },
+                {
+                    "path" : "record_consumption",
+                    "style" : {
+                        "navigationBarTitleText" : "消费记录",
+                        "enablePullDownRefresh" : true
+                    }
+                },
+                {
+                    "path" : "tuijian_anchor",
+                    "style" : {
+                        "navigationBarTitleText" : "推荐主播",
+                        "enablePullDownRefresh" : true
+                    }
+                },
+                {
+                    "path" : "member_center",
+                    "style" : {
+                        "navigationBarTitleText" : "用户中心",
+                        "enablePullDownRefresh" : true,
+                        "onReachBottomDistance" : 50
+                    }
+                }
+            ]
+        },
+        //======= 专家在线：按分钟计费视频聊天功能模块 相关的分包 End  ====
+        //======= community_service 相关的分包 Begin  ====
+        {
+            "root" : "pages/community_service",
+            "pages" : [
+                {
+                    "path" : "index",
+                    "style" : {
+                        "navigationBarTitleText" : "首页",
+                        "enablePullDownRefresh" : true
+                    }
+                },
+                {
+                    "path" : "my_community",
+                    "style" : {
+                        "navigationBarTitleText" : "管理社区",
+                        "enablePullDownRefresh" : true
+                    }
+                }
+            ]
+        },
+        //======= community_service 相关的分包 End  ====
+        //======= 小游戏小工具相关的分包 Begin  ====
+        {
+            "root" : "pages/tools",
+            "pages" : [
+                {
+                    "path" : "clock",
+                    "style" : {
+                        "navigationBarTitleText" : "简约时钟",
+                        "enablePullDownRefresh" : true
+                    }
+                },
+                {
+                    "path" : "calculator",
+                    "style" : {
+                        "navigationBarTitleText" : "计算器",
+                        "enablePullDownRefresh" : true
+                    }
+                },
+                {
+                    "path" : "dice",
+                    "style" : {
+                        "navigationBarTitleText" : "掷骰子",
+                        "enablePullDownRefresh" : true
+                    }
+                },
+                {
+                    "path" : "puzzle",
+                    "style" : {
+                        "navigationBarTitleText" : "拼图",
+                        "enablePullDownRefresh" : true
+                    }
+                },
+                {
+                    "path" : "mine_clearing",
+                    "style" : {
+                        "navigationBarTitleText" : "扫雷",
+                        "enablePullDownRefresh" : true
+                    }
+                },
+                {
+                    "path" : "graffiti",
+                    "style" : {
+                        "navigationBarTitleText" : "涂鸦",
+                        "enablePullDownRefresh" : false
+                    }
+                },
+                {
+                    "path" : "remove_img_bg",
+                    "style" : {
+                        "navigationBarTitleText" : "在线抠图",
+                        "enablePullDownRefresh" : true
+                    }
+                },
+                {
+                    "path" : "todo_list",
+                    "style" : {
+                        "navigationBarTitleText" : "Todo List",
+                        "enablePullDownRefresh" : true
+                    }
+                },
+                {
+                    "path" : "notepad",
+                    "style" : {
+                        "navigationBarTitleText" : "记事本",
+                        "enablePullDownRefresh" : true
+                    }
+                },
+                {
+                    "path" : "leetspeak",
+                    "style" : {
+                        "navigationBarTitleText" : "火星文转换器",
+                        "enablePullDownRefresh" : true
+                    }
+                }
+            ]
+        },
+        //======= 小游戏小工具相关的分包 Begin  ====
+        //======= NFT卡包卡牌相关的分包 Begin  ====
+        //针对抖音小程序，暂时隐藏此功能模块，否则编辑提示 TypeError: The "to" argument must be of type string. Received undefined
+        {	
 			"root": "pages/nftcard",
 			"pages": [
 				{
@@ -1044,17 +1478,17 @@
 				
 				},
 				{
-                    "path" : "gift_card_share",
-                    "style" :                                                                                    
+										"path" : "gift_card_share",
+										"style" :                                                                                    
 					{
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false
 					}
-                
-                },
+								
+								},
 				{
-				    "path" : "package_to_coupon_log",
-				    "style" :                                                                                    
+						"path" : "package_to_coupon_log",
+						"style" :                                                                                    
 					{
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": true
@@ -1062,27 +1496,203 @@
 				
 				},
 				{
-				    "path" : "gift_send_or_get_log",
-				    "style" :                                                                                    
+						"path" : "gift_send_or_get_log",
+						"style" :                                                                                    
 					{
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": true
 					}
 				
 				}
+			]
+		},//======= NFT卡包卡牌相关的分包 Begin  ====
+        //======= 产品吗+scan_qrcode相关的分包 Begin  ====
+        {
+            "root" : "pages/scan_qrcode",
+            "pages" : [
+                {
+                    "path" : "scan_qrcode",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "产品码店",
+                        "softinputNavBar" : "none"
+                    }
+                },
+                {
+                    "path" : "scan_qrcode01",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "产品码店",
+                        "softinputNavBar" : "none"
+                    }
+                },
+                {
+                    "path" : "scan_bind_mobile",
+                    "style" : {
+                        "navigationBarTitleText" : "产品码店",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "welcome_page",
+                    "style" : {
+                        "navigationBarTitleText" : "产品码店",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                },
+                {
+                    "path" : "scan_change_mobile",
+                    "style" : {
+                        "enablePullDownRefresh" : true,
+                        "navigationBarTitleText" : "产品码店",
+                        "softinputNavBar" : "none",
+                        "onReachBottomDistance" : 50
+                    }
+                }
             ]
-			
+        },
+		//======= 产品吗+scan_qrcode相关的分包 End  ====
+		//======= 工单系统小程序的分包 Begin  ====
+        {
+            "root" : "pages/work_flow",
+            "pages" : [
+                {
+                    "path" : "index",
+                    "style" : {
+                        "navigationBarTitleText" : "工单系统",
+                        "enablePullDownRefresh" : true
+                    }
+                },
+                {
+                    "path" : "kehu_list",
+                    "style" : {
+                        "navigationBarTitleText" : "客户",
+                        "softinputNavBar" : "none"
+                    }
+                },
+                {
+                    //工单
+                    "path" : "work_flow",
+                    "style" : {
+                        "navigationBarTitleText" : "工单",
+                        "enablePullDownRefresh" : true,
+                        "app-plus" : {
+                            "bounce" : "none"
+                        }
+                    }
+                },
+                {
+                    "path" : "flow_form",
+                    "style" : {
+                        "navigationBarTitleText" : "工单",
+                        "enablePullDownRefresh" : false
+                    }
+                },
+                {
+                	"path" : "flow_set",
+                	"style" : 
+                	{
+                		"navigationBarTitleText" : "工单设置",
+                		"enablePullDownRefresh" : false
+                	}
+                },
+                {
+                	"path" : "flow_xinxi",
+                	"style" : 
+                	{
+                		"navigationBarTitleText" : "工单",
+                		"enablePullDownRefresh" : false
+                	}
+                },
+                {
+                	"path" : "kehu_xinxi",
+                	"style" : 
+                	{
+                		"navigationBarTitleText" : "客户",
+                		"enablePullDownRefresh" : false
+                	}
+                },
+                {
+                	"path" : "addkehu",
+                	"style" : 
+                	{
+                		"navigationBarTitleText" : "客户",
+                		"enablePullDownRefresh" : false
+                	}
+                },
+                {
+                	"path" : "addflow_set",
+                	"style" : 
+                	{
+                		"navigationBarTitleText" : "工单设置",
+                		"enablePullDownRefresh" : false
+                	}
+                },
+                {
+                	"path" : "baobiao",
+                	"style" : 
+                	{
+                		"navigationBarTitleText" : "报表",
+                		"enablePullDownRefresh" : false
+                	}
+                }
+            ]
+        },   
+		//======= 工单系统小程序的分包 End  ====
+		//======= 寄存点小程序的分包 Begin  ====
+		{
+			"root" : "pages/jicundian",
+			"pages" : [
+				{
+					"path" : "index",
+					"style" : {
+						"navigationBarTitleText" : "寄存点",
+						"enablePullDownRefresh" : true
+					}
+				},
+				{
+					"path" : "order_form",
+					"style" : 
+					{
+						"navigationBarTitleText" : "填写订单"
+					}
+				},
+				{
+					"path" : "order_queren",
+					"style" : 
+					{
+						"navigationBarTitleText" : "订单详情"
+					}
+				},
+				{
+					"path" : "order_list",
+					"style" : 
+					{
+						"navigationBarTitleText" : "订单列表",
+						"enablePullDownRefresh" : true
+					}
+				}
+				
+			]
 		}
-		//======= NFT卡包卡牌相关的分包 Begin  ====
-	],
-	"condition" : { //模式配置，仅开发期间生效
-		"current": 0, //当前激活的模式(list 的索引项)
-		"list": [
-			{
-				"name": "", //模式名称
-				"path": "", //启动页面，必选
-				"query": "" //启动参数，在页面的onLoad函数里面得到
-			}
-		]
-	}
+		//======= 寄存点小程序的分包 Begin  ====
+    ],
+		
+	"easycom" : {
+		    "^u-(.*)" : "@/uni_modules/uview-ui/components/u-$1/u-$1.vue"
+		},
+    
+    "condition" : {
+        //模式配置，仅开发期间生效
+        "current" : 0, //当前激活的模式(list 的索引项)
+        "list" : [
+            {
+                "name" : "", //模式名称
+                "path" : "", //启动页面，必选
+                "query" : "" //启动参数，在页面的onLoad函数里面得到
+            }
+        ]
+    }
 }

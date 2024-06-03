@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view :style="{backgroundColor: index_page_bg_color}">
 		<!-- 状态栏 -->
 		<view v-if="showHeader" class="mystatusbar" 
 			:style="{ position: headerPosition,top:statusTop,opacity: afterHeaderOpacity, fontColor:wxa_shop_nav_font_color}"></view>
@@ -29,7 +29,7 @@
 			<!-- 右侧图标按钮 -->
 			<view class="icon-btn">
 				<view class="icon yuyin-home" style="display: none;"></view>
-				<view class="icon tongzhi" @tap="toMsg"></view>  <!-- 下版本换为:toMsg -->
+				<view class="icon tongzhi" @tap="toMsg" v-if="wxa_hidden_to_msg_btn_in_usercenter != 1"></view>  <!-- 下版本换为:toMsg -->
 			</view>
 		</view>
 		
@@ -69,12 +69,13 @@
 		<view v-if="wxa_show_toutiao == 1">
 		   <view class="toutiao">
 				<view class="toutiao_left" @tap="touTiaoList" v-if="!wxa_shop_toutiao_icon">
-					<image :src="wxa_shop_toutiao_icon"></image>
+					<image :src="wxa_shop_toutiao_icon" mode="widthFix"></image>
 				</view>
 				<view class="toutiao_left" @tap="touTiaoList" v-if="wxa_shop_toutiao_icon">
-					<image :src="wxa_shop_toutiao_icon"></image>
+					<image :src="wxa_shop_toutiao_icon" mode="widthFix"></image>
 				</view>
-				<swiper class="toutiao_right" vertical="true" autoplay="true" circular="true" interval="2000" v-if="!wxa_shop_toutiao_flash_line||wxa_shop_toutiao_flash_line!=2">
+				<swiper class="toutiao_right" vertical="true" autoplay="true" circular="true" interval="2000" 
+					v-if="!wxa_shop_toutiao_flash_line||wxa_shop_toutiao_flash_line!=2">
 					<swiper-item v-for="(item,index) in articlelist" :key="index">
 						<view class="toutiao_right" @tap="touTiaoList(item.id)" >
 							<text>{{item.title}}</text>
@@ -82,7 +83,8 @@
 					</swiper-item>
 				</swiper>
 			
-				<swiper class="toutiao_right2" vertical="true" autoplay="true" circular="true" interval="2000" v-if="wxa_shop_toutiao_flash_line==2">
+				<swiper class="toutiao_right2" vertical="true" autoplay="true" circular="true" interval="2000" 
+					v-if="wxa_shop_toutiao_flash_line==2">
 					<swiper-item v-for="(item2,index2) in articlelist2" :key="index2" @tap="touTiaoList(item2.id)">
 						<view class="toutiao_right2_item">{{item2[0].title}}</view>
 						<view class="toutiao_right2_item">{{item2[1].title}}</view>
@@ -94,7 +96,7 @@
 		
 		<!-- 首页导航图标列表 -->
 		<view class="category-list" v-if="wxa_show_index_icon == 1">
-			<view class="category" :style="wxa_show_icon_index_count== 4? 'width:25%':'width:20%'" 
+			<view class="category" :style="{width:wxa_show_icon_index_width_percent +'%'}" 
 				v-for="(item, index) in index_icon_list"	
 				:key="index" 
 				@click="toAdDetails(item.url)"> <!--  -->
@@ -104,6 +106,35 @@
 				</view>
 			</view>
 		</view>
+				
+		<!-- 2024.4.2. 将视频组件调整到营业地址和客服大图标的上方 -->
+		<!-- 视频组件 -->
+		<!-- #ifdef MP-WEIXIN -->		
+				<view v-if="wxa_show_video_player == 1" style="text-align: center;">
+				   <video object-fit='fill' :src="wxa_video_player_url" :poster='wxa_video_screen_url'
+					controls="true" :autoplay="wxa_show_video_autoplay"
+					:style="{width:videometa_width_height[0] + 'rpx', height: videometa_width_height[1] + 'rpx'}"
+					@loadedmetadata="videometa_auto_set($event)"
+					enable-play-gesture="true"
+		
+					>
+					</video>
+				</view>
+		<!-- #endif -->
+		<!-- #ifndef MP-WEIXIN -->		
+				<view v-if="wxa_show_video_player == 1" style="text-align: center;">
+				   <video object-fit='fill' :src="wxa_video_player_url" :poster='wxa_video_screen_url'
+					controls="true" :autoplay="wxa_show_video_autoplay"
+					:style="{width:videometa_width_height[0] + 'rpx', height: videometa_width_height[1] + 'rpx'}"
+					enable-play-gesture="true"
+					>
+					</video>
+					<view style="display:none;">
+						<image mode="widthFix" :src="wxa_video_screen_url" @load="videometa_auto_set($event)"></image>
+					</view>
+				</view>
+		
+		<!-- #endif -->
 		
 		
 		<!-- 营业地址卡片 2021.1.18. -->
@@ -120,13 +151,14 @@
 				<view style=";font-size: 20rpx;display: block;">地图</view>
 			</view>
 			<view class="index_address_card_icon_telephone" 
-				style="border-left: #bcbcbc 1px solid;" @tap="index_address_card_call_seller">
+				style="border-left: #bcbcbc 1rpx solid;" @tap="index_address_card_call_seller">
 				<image class="index_address_card_icon_telephone_img" src="https://yanyubao.tseo.cn/Tpl/static/images/location_mobile_new.png" mode="widthFix"></image>
 				<view style="display: block;font-size: 20rpx;">电话</view>
 			</view>
 			<!-- <image class="mobile_img" src="../../static/img/mobile_new.png" mode="widthFix" ></image>
 			<view>电话</view> -->
 		</view>
+		
 		
 		
 		<!-- 客服大图标功能按钮 -->
@@ -151,7 +183,6 @@
 			
 			
 		</view>
-		
 		
 		
 		<!-- 富媒体组件 2021.1.18. -->
@@ -180,16 +211,19 @@
 			
 <!-- #endif -->		
 		
-		
-		<view style="width:100%;">
+		<!-- 功能图片列表 -->
+		<view style="width:100%;" :style="{backgroundColor: function_images_list_block_bg_color}"></view>
+		<view style="width:100%;float: left;" :style="{backgroundColor: function_images_list_block_bg_color}">
 			<block v-for="(function_item, index) in function_images_list"
-				:key="index">
+				:key="index">					
 				<view :style="{width: '' + function_item.width_percent+'%', 'float':'left'}"
 					@click="toAdDetails(function_item.url)">
 					<image :src="function_item.image" style="width: 100%;vertical-align: middle;" mode="widthFix"></image>
 				</view>
 			</block>
+			
 		</view>
+		<view style="width:100%;" :style="{backgroundColor: function_images_list_block_bg_color}"></view>
 		
 		
 		
@@ -226,42 +260,11 @@
 				</view>
 			</view>
 		</view> -->
-		
-		
-		
-		<!-- 视频组件 -->
-		<!-- #ifdef MP-WEIXIN -->		
-				<view v-if="wxa_show_video_player == 1" style="text-align: center;">
-				   <video object-fit='fill' :src="wxa_video_player_url" :poster='wxa_video_screen_url'
-					controls="true" :autoplay="wxa_show_video_autoplay"
-					:style="{width:videometa_width_height[0] + 'rpx', height: videometa_width_height[1] + 'rpx'}"
-					@loadedmetadata="videometa_auto_set($event)"
-					enable-play-gesture="true"
-		
-					>
-					</video>
-				</view>
-		<!-- #endif -->
-		<!-- #ifndef MP-WEIXIN -->		
-				<view v-if="wxa_show_video_player == 1" style="text-align: center;">
-				   <video object-fit='fill' :src="wxa_video_player_url" :poster='wxa_video_screen_url'
-					controls="true" :autoplay="wxa_show_video_autoplay"
-					:style="{width:videometa_width_height[0] + 'rpx', height: videometa_width_height[1] + 'rpx'}"
-					enable-play-gesture="true"
-					>
-					</video>
-					<view style="display:none;">
-						<image mode="widthFix" :src="wxa_video_screen_url" @load="videometa_auto_set($event)"></image>
-					</view>
-				</view>
-
-		<!-- #endif -->
-		
 	
 		<!-- 爆款商品 hot_product_list_in_index  -->
 		<block v-if="wxa_show_hot_products_in_index == 1">
 			<view style="padding-top: 10upx;padding-bottom: 5upx;">
-				<view style="background-color: #f4f4f4;padding: 1px 0px 1px 0px;"></view>
+				<view style="background-color: #f4f4f4;padding: 1rpx 0rpx 1rpx 0rpx;"></view>
 				<view class="zhuanti_title" v-if="show_hot_products_tishi == ''">   ———— ※ 爆款商品 ※ ————   </view>
 				<view class="zhuanti_title" v-if="show_hot_products_tishi != ''">{{show_hot_products_tishi}}</view>
 				<scroll-view scroll-x="true">
@@ -302,10 +305,16 @@
 		<!-- 实体商家结束 -->
 		
 		<!-- 论坛发帖列表 -->
-		<publishList v-if="index_publish_list" :index_list="index_publish_list" 
-			@goForum="goForum" @previewImage="previewImage"
-			@goToPublishList="goToPublishList"
-			:show_zhuanti_title = 1></publishList>
+		
+		<publishList v-if="index_publish_list"
+						:index_list="index_publish_list"
+						@goForum="goForum"
+						@previewImage="previewImage"
+						:show_zhuanti_title = 1
+						@goToPublishList="goToPublishList">
+		</publishList>
+		
+		
 			
 		<!-- 商品列表 -->
 		<block v-if="current_product_list && (wxa_hidden_product_list ==0)">
@@ -360,8 +369,8 @@
 		yinsi_cfg_yinsizhengce_imgid:'',   
 		yinsi_cfg_shiyongxieyi_imgid:'', -->
 		<!-- 隐私协议的弹层 begin-->
-		<view class="zhezhao" v-if="know==true"></view>
-		<view class="kcrzxy" v-if="know==true">
+		<view class="zhezhao" v-if="unknown_yinsi==true"></view>
+		<view class="kcrzxy" v-if="unknown_yinsi==true">
 		    <view class="kcrzxyhd" :style="{backgroundColor:wxa_shop_nav_bg_color}">服务协议和隐私政策</view>
 		    <scroll-view scrollY class="kcrzxybd" style="height: 600rpx;">
 		        <view style="width: 100%;overflow: hidden;" auto-height='true'>
@@ -372,6 +381,10 @@
 					<block>了解详细信息，如果同意，请点击“同意”开始使用我们的服务。</block>
 				</view>
 		    </scroll-view>
+			<view style="margin: 0 24rpx;display: flex;justify-content: center; font-size: 26rpx;" >
+				<checkbox-group @change="checkboxChange"><checkbox value="checked" :checked="checked_user_agreement"></checkbox></checkbox-group>				
+				我已阅读并同意“服务协议”和“隐私政策”
+			</view>
 			<view style="display: flex;justify-content: center;">
 				<view @click="tongyi_yinsi_cfg" data-index='2' class="queren" style="font-size:26upx;background: #ccc;" >不同意</view>
 				<view @click="tongyi_yinsi_cfg" data-index='1' class="queren" :style="{backgroundColor:wxa_shop_nav_bg_color}">同意</view>
@@ -393,8 +406,9 @@ import util from '../../common/util.js';
 import bmap from '../../common/SDK/bmap-wx.js';
 //import amap from '@/common/SDK/amap-wx.js';
 
-import io from '../../common/weapp.socket.io.js'; 
+import socket_io_function from '../../common/weapp.socket.io.js'; 
 
+// 规范APP首页获取用户位置授权的场景，如果不使用天气预报，且不显示附近商家，则不需要位置授权。
 import locationapi from '../../common/locationapi.js'; 
 
 import shopList from '../../components/shop-list/shop-list.vue';
@@ -439,6 +453,7 @@ export default {
 			articlelist:'',
 			articlelist2:'',
 			
+			checked_user_agreement:false,
 			
 			wxa_show_index_swiper:0,
 			wxa_show_search_input:0,
@@ -453,7 +468,11 @@ export default {
 			
 			
 			addListener:'',
+			
+			//首页导航图标
 			wxa_show_icon_index_count:'',
+			wxa_show_icon_index_width_percent:25,
+			
 			current_cityname:'上海市',
 			current_citynameLength:'',
 			current_citynameWidth:'',
@@ -483,6 +502,8 @@ export default {
 			flash_ad_list:null,
 			
 			function_images_list:null,  	//功能图片列表（与平铺图片不同，可以定义图片显示在屏幕上的宽度百分比）
+			show_function_images_list:0,
+			function_images_list_block_bg_color:'#ffffff',
 			
 			flash_img_list:null,
 			index_icon_list:null,
@@ -555,9 +576,11 @@ export default {
 			default_copyright_text:'',
 			
 			//分享转发
-			 wxa_share_img:'',
-			 wxa_share_title:'',
-			 know:'',
+			wxa_share_img:'',
+			wxa_share_title:'',
+			 
+			// 是否知道隐私协议相关的内容
+			unknown_yinsi: false,
 			 
 			 //隐私协议相关
 			 yinsi_cfg_shiyongxieyi_cms_token:'',
@@ -606,7 +629,13 @@ export default {
 			//2022.05.11 增加提示文字
 			show_hot_products_tishi:'',
 			shang_list_count_tishi:'',
-			hidden_product_list_tishi:''
+			hidden_product_list_tishi:'',
+			
+			//2023.9.25. 首页背景颜色
+			index_page_bg_color: '#ffffff',
+			
+			//2024.4.9.是否隐藏 右上角的  消息小图标
+			wxa_hidden_to_msg_btn_in_usercenter:0,
 		};
 	},
 	onLoad: function (options) {
@@ -642,10 +671,12 @@ export default {
 		
 		var yinsi_cfg_if_consent = uni.getStorageSync('yinsi_cfg_if_consent'+this.abotapi.globalData.version_code);
 		if(!yinsi_cfg_if_consent){
-			this.know = true;
+			this.unknown_yinsi = true;
 			uni.hideTabBar({
 				
 			})
+			
+			return;
 		}
 		
 		
@@ -663,9 +694,6 @@ export default {
 		console.log('当前平台名称ii：' + this.abotapi.globalData.current_platform);
 		
 		
-		
-		
-		
 		//=====判断sellerid和parentid Begin=====
 		var sellerid = null;
 		
@@ -677,11 +705,15 @@ export default {
 		else if (options && options.scene) {
 		  var parentid_value = decodeURIComponent(options.scene);
 	
-		  console.log('来自小程序码的推荐者ID：' + parentid_value);
+		  console.log('来自options.scene的值：' + parentid_value);
+		  
 		  if (parentid_value && (parentid_value.indexOf('parentid_') != -1)) {
 			parentid_value = parentid_value.replace('parentid_', '');
 	
 			this.abotapi.set_current_parentid(parentid_value);
+			
+			console.log('来自小程序码的推荐者ID：' + parentid_value);
+			
 		  }
 		  else {
 			console.log('推荐者ID：' + parentid_value + '不是 parentid_开头的，默认为sellerid的值');
@@ -735,8 +767,15 @@ export default {
 		//========  End =======
 		
 		
-		
-		//2021.2.18. 判断是否有  向其他界面跳转  的指令
+		var yinsi_cfg_if_consent = uni.getStorageSync('yinsi_cfg_if_consent'+this.abotapi.globalData.version_code);
+		if(!yinsi_cfg_if_consent){
+			this.unknown_yinsi = true;
+			uni.hideTabBar({
+				
+			})
+			
+			return;
+		}
 		
 		
 		
@@ -744,14 +783,41 @@ export default {
 		
 		this.abotapi.set_shop_option_data(this, this.callback_function_shop_option_data);
 		
-		
-		
-		
-		
 		//开启定时器
 		this.Timer();
 		//加载活动专区
 		this.loadPromotion();
+		
+		//连接socket服务器
+		this.linkSocket();
+		
+		
+		if(this.unknown_yinsi == false){
+			//如果已经知道并且同意了隐私协议，如果又有跳转到新页面，这里跳转
+			if(options.goto_new_index && (options.goto_new_index.length > 5) ){
+				console.log("options参数中要求跳转到其他页面：" + options.goto_new_index);
+				console.log("解码后的界面路径：" + decodeURIComponent(options.goto_new_index) );
+				
+				this.abotapi.call_h5browser_or_other_goto_url(options.goto_new_index);				
+				
+				return;
+			}
+			
+			//2021.2.18. 判断是否有  向其他界面跳转  的指令
+			//2023.4.27. 实现向其他页面跳转的指令
+			//2024.4.11. 如果abot_data.js中设置了首页调整，则优先级更高，
+			//但是不如options参数中设置的优先级高，比服务器设置的优先级高
+			//这里的跳转是否需要转移到 onShow ？
+			if(this.abotapi.globalData.goto_new_index 
+			&& (this.abotapi.globalData.goto_new_index.length > 5) ){
+				console.log("abot_data.js中要求跳转到其他页面：" + this.abotapi.globalData.goto_new_index);
+				
+				this.abotapi.call_h5browser_or_other_goto_url(this.abotapi.globalData.goto_new_index);				
+				
+				return;
+			}
+			
+		}
 		
 	},
 	onShow:function(){
@@ -761,7 +827,7 @@ export default {
 	
 		if(userInfo && userInfo.userid){
 			console.log('88888====')
-			this.linkSocket();
+			//this.linkSocket();
 		}
 		
 		var city_name = uni.getStorageSync('city_name');
@@ -880,50 +946,27 @@ export default {
 	},
 	
 	onShareAppMessage: function () {
-		var that = this;
+		console.log('==================>>>onShareAppMessage');
 		
-		var option_list = this.abotapi.globalData.option_list;
+		return this.share_return(true);
 		
-		var share_title = option_list.wxa_share_title;
-		if (share_title.length > 22) {
-			share_title = share_title.substr(0, 20) + '...';
-		}
-		
-		var share_path = '/pages/index/index?sellerid=' + this.abotapi.get_sellerid();
-		
-		var userInfo = this.abotapi.get_user_info();
-		
-		//如果用户登录，则记录推荐者
-		if (userInfo && userInfo.userid) {
-			share_path += '&parentid=' + userInfo.userid;
-		}
-		
-		var share_img = option_list.wxa_share_img;
-		if(!share_img){
-			share_img = option_list.wxa_shop_operation_logo_url;
-		}
-		
-		return {
-			title: share_title,
-			path: share_path,
-			imageUrl: share_img,
-			success: function(res) {
-				// 分享成功
-			},
-			fail: function(res) {
-				// 分享失败
-			}
-		}
 	},
 	
 	onShareTimeline: function () {
+		console.log('==================>>>onShareTimeline');
+		
 		return this.share_return();
 	},
 	onAddToFavorites: function () {
+		console.log('==================>>>onAddToFavorites');
+		
 		return this.share_return();
 	},
 	methods: {
-		share_return: function() {
+		checkboxChange: function (e) {
+			this.checked_user_agreement = !this.checked_user_agreement;
+		},
+		share_return: function(is_share_app=false) {
 			var that = this;
 			
 			var option_list = this.abotapi.globalData.option_list;
@@ -944,7 +987,16 @@ export default {
 			var share_img = option_list.wxa_share_img;
 			if(!share_img){
 				share_img = option_list.wxa_shop_operation_logo_url;
-			}			
+			}
+					
+			if(is_share_app){
+				return {
+					title: share_title,
+					path: 'pages/index/index?'+ share_path,
+					imageUrl: share_img,
+				}
+				
+			}
 			
 			return {
 				title: share_title,
@@ -1103,11 +1155,13 @@ export default {
 			if(cb_params.option_list.shutdown_website_status == 1){
 				//跳转到网站关闭的提示页面
 				console.log("跳转到网站关闭的提示页面");
+				
 				uni.reLaunch({
 					url:'/pages/main/shutdown_website/shutdown_website'
 				})
+				
 				return;
-			}
+			}			
 			
 			if(cb_params.option_list.wxa_shop_new_name){
 				uni.setNavigationBarTitle({
@@ -1146,6 +1200,30 @@ export default {
 			    that.wxa_show_icon_index_count = cb_params.option_list.wxa_show_icon_index_count
 			  
 			}
+			
+			//2023.9.25. 首页背景颜色
+			if(cb_params.option_list.index_page_bg_color){
+				that.index_page_bg_color = cb_params.option_list.index_page_bg_color;
+			}
+			
+			//2022.12.14. 设置首页导航图标的每个占的宽度
+			if(that.wxa_show_icon_index_count == 2){
+				that.wxa_show_icon_index_width_percent = 50;
+			}
+			else if(that.wxa_show_icon_index_count == 3){
+				that.wxa_show_icon_index_width_percent = 33.33;
+			}
+			else if(that.wxa_show_icon_index_count == 4){
+				that.wxa_show_icon_index_width_percent = 25;
+			}
+			else if(that.wxa_show_icon_index_count == 5){
+				that.wxa_show_icon_index_width_percent = 20;
+			}
+			else {
+				that.wxa_show_icon_index_width_percent = 20;
+			}
+			
+			
 			if (cb_params.option_list.wxa_show_index_icon) {
 			  
 			   that.wxa_show_index_icon = cb_params.option_list.wxa_show_index_icon
@@ -1238,7 +1316,7 @@ export default {
 			//提示文字
 			if(cb_params.option_list.hidden_product_list_tishi) {
 				that.hidden_product_list_tishi =cb_params.option_list.hidden_product_list_tishi
-			console.log('that.hidden_product_list_tishi=====>>>>',that.hidden_product_list_tishi)
+				console.log('that.hidden_product_list_tishi=====>>>>',that.hidden_product_list_tishi)
 			}
 			
 			
@@ -1308,8 +1386,11 @@ export default {
 			}
 			
 			if (cb_params.option_list.default_shang_list_count_in_front_page) {
-			  
-			    that.abotapi.globalData.default_shang_list_count_in_front_page = cb_params.option_list.default_shang_list_count_in_front_page
+				
+				that.abotapi.globalData.default_shang_list_count_in_front_page = cb_params.option_list.default_shang_list_count_in_front_page;
+				
+				//商户列表
+				that.call_back_get_shang_list();
 			  
 			}
 			else{
@@ -1317,10 +1398,10 @@ export default {
 			}
 			 
 			 
-			 if (cb_params.option_list.shang_list_count_tishi){
+			if (cb_params.option_list.shang_list_count_tishi){
 				 that.shang_list_count_tishi = cb_params.option_list.shang_list_count_tishi;
 				 console.log('15847shang_list_count_tishi',that.shang_list_count_tishi)
-			 }
+			}
 			 
 			 
 			if(cb_params.option_list.cms_token){
@@ -1332,9 +1413,12 @@ export default {
 			    that.abotapi.globalData.default_publish_list_count_in_front_page = cb_params.option_list.default_publish_list_count_in_front_page;
 				that.current_page_size = cb_params.option_list.default_publish_list_count_in_front_page;
 			}
-			if (cb_params.option_list.show_weather_forecast_in_index) {
+			if (cb_params.option_list.show_weather_forecast_in_index 
+				&& (cb_params.option_list.show_weather_forecast_in_index  == 1) ) {
 			  
 			    that.show_weather_forecast_in_index = cb_params.option_list.show_weather_forecast_in_index;
+				
+				that.get_tianqi();
 			}
 			if (cb_params.option_list.wxa_share_title) {
 				//分享转发标题
@@ -1449,25 +1533,48 @@ export default {
 				
 			}
 			
+			//2022.10.8. 
+			if(cb_params.option_list.xianmai_shang_list_switch_to_supplier_list == 1){
+				that.abotapi.globalData.xianmai_shang_list_switch_to_supplier_list = 1;
+			}
+			
+			
+			//2024.4.9.
+			if(cb_params.option_list.wxa_hidden_to_msg_btn_in_usercenter){
+				that.wxa_hidden_to_msg_btn_in_usercenter = cb_params.option_list.wxa_hidden_to_msg_btn_in_usercenter;
+			}
 			
 			
 			
 			
-			
+			//滚动图片和平铺图片
 			that.get_flash_ad_list();
 			
-			if(cb_params.option_list.function_images_list){
+			//2023.7.2. 增加是否显示的判断
+			if( (cb_params.option_list.show_function_images_list == 1) 
+						&& (cb_params.option_list.function_images_list) ){
+				//功能图片列表
 				that.function_images_list = cb_params.option_list.function_images_list;
+				
+				if(cb_params.option_list.function_images_list_block_bg_color){
+					that.function_images_list_block_bg_color = cb_params.option_list.function_images_list_block_bg_color;
+				}
+			}
+			else{
+				that.function_images_list = null;
 			}
 			
 			
 			that.get_flash_img_list();
+			
+			//新闻公告
 			that.initArticleList(cb_params.option_list);
+			
+			//首页导航图标
 			that.get_shop_icon_index();
 			
+			//商品列表
 			that.get_product_list();
-			
-			that.call_back_get_shang_list();
 			
 			//显示最新的帖子列表
 			if(that.abotapi.globalData.default_publish_list_count_in_front_page > 0){
@@ -1492,8 +1599,8 @@ export default {
 				publish_list_api.get_publish_list(that, that.get_api_publish_list);
 			}
 			
-			//加载天气预报
-			that.get_tianqi();
+			//加载天气预报，但只有显示天气预报的时候才加载
+			//that.get_tianqi();
 			
 			
 			
@@ -1556,6 +1663,15 @@ export default {
 			// #endif	
 			
 			
+			if((this.unknown_yinsi == false)
+				&& cb_params.option_list.goto_new_index 
+				&& (cb_params.option_list.goto_new_index.length > 5) ){
+				console.log("跳转到服务器设定的自定义页面：" + cb_params.option_list.goto_new_index);
+				
+				that.abotapi.call_h5browser_or_other_goto_url(cb_params.option_list.goto_new_index);				
+				
+				return;
+			}
 			
 			
 			
@@ -1564,6 +1680,9 @@ export default {
 		get_api_publish_list:function(that,publishData){
 			//帖子列表
 			console.log('publishData====>>>>',publishData);
+			
+			
+			that.index_publish_list = [];
 			
 			for(var i in publishData.index_list){
 				that.index_publish_list.push(publishData.index_list[i]);
@@ -1587,6 +1706,7 @@ export default {
 				return;
 			}
 			
+			//== 获取全部商家经纬度和ID的对应关系的逻辑 Begin ===
 			var arr = uni.getStorageSync('all_shang_jingwei_list');
 			var arr_save_time = uni.getStorageSync('all_shang_jingwei_list_save_time');
 			
@@ -1594,25 +1714,33 @@ export default {
 			
 			console.log('call_back_get_shang_list currentTime======>>>>'+currentTime);
 			
-			if(arr && (currentTime - arr_save_time) < 2*60*60*1000 ){
+			if(arr && ( (currentTime - arr_save_time) < 2*60*60*1000 ) ){
+				
+				console.log('call_back_get_shang_list 存在列表且在2小时内（arr_save_time）'+arr_save_time);
+				
 				
 				locationapi.get_location(that, that.set_paixu_shanglist);
 				//that.set_paixu_shanglist();
 			}
 			else{
-				var post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/XianmaiShangData/get_shang_all_jingwei';
+				
+				console.log('call_back_get_shang_list 超过2小时（arr_save_time），自动获取最新的列表======>>>>'+arr_save_time);
+				
+				var post_url = that.abotapi.globalData.yanyubao_server_url + '/openapi/XianmaiShangData/get_shang_all_jingwei';
 				
 				//2021.8.5. 如果读取supplier的列表
 				if(that.abotapi.globalData.xianmai_shang_list_switch_to_supplier_list == 1){
-					post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/supplier_all_jingwei';
+					post_url = that.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/supplier_all_jingwei';
 				}
 				
+				console.log('call_back_get_shang_list 超过2小时（post_url），请求网址为======>>>>'+post_url);
 				
-				this.abotapi.abotRequest({
+				
+				that.abotapi.abotRequest({
 				    url: post_url,
 				    method: 'post',
 				    data: {
-						sellerid:this.abotapi.globalData.default_sellerid,
+						sellerid:that.abotapi.globalData.default_sellerid,
 				    },
 				    success: function (res) {
 						console.log('get_shang_all_jingwei====>>>>>', res);
@@ -1639,6 +1767,7 @@ export default {
 				    },
 				}); 
 			}
+			//== 获取全部商家经纬度和ID的对应关系的逻辑 End ===
 			
 		},
 		//给商家排序
@@ -1699,12 +1828,18 @@ export default {
 				}
 				shangid_str += paixu_shanglist[i]['xianmai_shangid']+'|';
 			}
-			//排序
+			//排序 end
+			
+			var post_url = that.abotapi.globalData.yanyubao_server_url + '/openapi/XianmaiShangData/get_shang_list';
+			
+			if(that.abotapi.globalData.xianmai_shang_list_switch_to_supplier_list == 1){
+				post_url = this.abotapi.globalData.yanyubao_server_url + '/openapi/NftCardData/supplier_list';
+			}
 			
 			
 			//用商家id字符串请求获取商家列表
 			that.abotapi.abotRequest({
-			    url: that.abotapi.globalData.yanyubao_server_url + '/openapi/XianmaiShangData/get_shang_list',
+			    url: post_url,
 			    method: 'post',
 			    data: {
 					sellerid:that.abotapi.globalData.default_sellerid,
@@ -1819,7 +1954,7 @@ export default {
 			
 			if(userInfo && userInfo.userid){
 				console.log('88888====')
-				this.linkSocket();
+				//this.linkSocket();
 			}
 			
 		},
@@ -1827,8 +1962,16 @@ export default {
 		// 建立socket连接
 		linkSocket: function(){
 			var that = this;
+			
 			var userInfo = that.abotapi.get_user_info();
-			const socket_io = io(that.abotapi.globalData.socket_server, {path: '/socketio/'})
+			
+			if(!userInfo){
+				return;
+			}
+			
+			console.debug('准备连接socket服务器：' + that.abotapi.globalData.socket_server);
+			
+			const socket_io = socket_io_function(that.abotapi.globalData.socket_server, {path: '/socketio/'})
 		   
 			// socket连接后以uid登录
 			
@@ -1971,7 +2114,7 @@ export default {
 						else{
 							that.current_product_list = that.current_product_list.concat(res.data.product_list);
 							
-							//console.log('超过一页',that.current_product_list)
+							console.log('超过一页',that.current_product_list)
 							
 							uni.stopPullDownRefresh();//得到数据后停止下拉刷新
 						}
@@ -2145,7 +2288,7 @@ export default {
 			var that = this;
 			
 			that.cms_token_001 = option_list.weiduke_token_to_toutiao;
-			that.cataid = option_list.weiduke_classid_to_toutiao; 
+			that.cms_cataid = option_list.weiduke_classid_to_toutiao; 
 			that.page = 0;
 			
 			that.is_get_article_list = true;
@@ -2444,8 +2587,15 @@ export default {
 			console.log('rrxfff===',e.currentTarget.dataset.shangid);
 			
 			var shangid = e.currentTarget.dataset.shangid;
+			
+			var new_url = '/pages/shopDetail/shopDetail?shangid='+shangid;
+			
+			if(this.abotapi.globalData.xianmai_shang_list_switch_to_supplier_list == 1){
+				new_url = '/pages/nftcard/shopDetail?shangid='+shangid
+			}
+			
 			uni.navigateTo({
-				url: '/pages/shopDetail/shopDetail?shangid='+shangid
+				url: new_url
 			});
 		},
 		toShangList(){
@@ -2484,15 +2634,18 @@ export default {
 		
 		//隐私协议同意不同意
 		tongyi_yinsi_cfg:function(e){
+			var that = this;
+			console.log('this----->>>>', this)
+			console.log('that----->>>>', that)
 			var index = e.currentTarget.dataset.index;
 			
-			if(index == 1){
+			if((index == 1) && this.checked_user_agreement){
 				//同意  写缓存   关闭弹层
-				this.know = false;
+				this.unknown_yinsi = false;
 				
 				uni.setStorageSync('yinsi_cfg_if_consent'+ this.abotapi.globalData.version_code,'1');
 				
-				this.abotapi.set_shop_option_data(this, function(that, cb_params){
+				/*this.abotapi.set_shop_option_data(this, function(that, cb_params){
 					if(cb_params.option_list && (cb_params.option_list.wxa_hidden_tabbar == 1)){
 						
 					}
@@ -2501,8 +2654,37 @@ export default {
 						})
 					}
 					
+				});*/
+				
+				uni.showTabBar({
 				});
 				
+				//that.onLoad();
+				
+				//this.startPullDownRefresh();
+				
+				//重新执行onLoad函数要执行的各种操作
+				this.abotapi.get_shop_info_from_server(this.callback_func_for_shop_info);
+				
+				this.abotapi.set_shop_option_data(this, this.callback_function_shop_option_data);
+				
+				//开启定时器
+				this.Timer();
+				//加载活动专区
+				this.loadPromotion();
+				
+				//连接socket服务器
+				this.linkSocket();
+				
+				
+			}
+			else if(this.checked_user_agreement == false){
+				
+				uni.showModal({
+					title:'提示',
+					content:'请阅读并同意服务协议和隐私政策后继续',
+					showCancel:false,
+				})
 				
 			}
 			else{
@@ -2654,7 +2836,9 @@ export default {
 			//判断登录，并且拼接替换这个参数
 			if(rich_html_url.indexOf("%current_userid%") != -1) {
 				var userInfo = that.abotapi.get_user_info();
+				
 				console.log('userid===',userInfo);
+				
 				if(!userInfo){
 					//下次进入 onShow 函数的时候，自动执行下拉刷新的操作
 					
@@ -2974,16 +3158,16 @@ page{position: relative;background-color: #fff;}
 }
 
 .toutiao_left{
-  width: 80rpx;
+  width: 100rpx;
   height: 100rpx;
   float: left;
 }
 
 .toutiao_left image{
-  width: 100%;
-  height: 50rpx;
+  width: 80rpx;
+  height: 80rpx;
   float: left;
-  margin-top: 20rpx;
+  margin-top: 10rpx;
 }
 
 .toutiao_right{
@@ -3021,7 +3205,7 @@ page{position: relative;background-color: #fff;}
 	text-align: center;
 	color:#a2a2a2;
 	padding: 30rpx auto;
-	margin: 15px auto 0;
+	margin: 30rpx auto 0;
 	display: block;
 	height: 40rpx;
 	width: 90%;
@@ -3185,11 +3369,11 @@ page{position: relative;background-color: #fff;}
 .youhui-biaoqian {
 		font-size: 24upx;
 		margin-bottom: 10upx;
-		border: 1px solid #666;
+		border: 1rpx solid #666;
 		text-align: center;
 		color: #555;
 		border-radius: 6upx;
-		padding: 2px 5px;
+		padding: 4rpx 10rpx;
 		margin-right: 10upx;
 	}
 	.u-tap-btn {
@@ -3206,9 +3390,9 @@ page{position: relative;background-color: #fff;}
 	  border-radius:55upx;
 	  width:110upx;
 	  height:110upx;
-	  border:0px solid #eee;
+	  border:0rpx solid #eee;
 	  font-size:20upx;
-	  /*box-shadow:0px 4upx 8upx rgba(0,0,0,0.35);*/
+	  /*box-shadow:0rpx 4upx 8upx rgba(0,0,0,0.35);*/
 	  z-index:2;
 	  opacity:1;
 	  /*background:#44b549;*/
@@ -3241,7 +3425,7 @@ page{position: relative;background-color: #fff;}
 	position: fixed;
 	transform: translate(-50%,0);
 	background: #fff;
-	border-radius: 10px;
+	border-radius: 20rpx;
 	z-index: 999;
 	
 	}
@@ -3253,8 +3437,8 @@ page{position: relative;background-color: #fff;}
 	height: 70rpx;
 	line-height: 70rpx;
 	color: white;
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
+	border-top-left-radius: 20rpx;
+	border-top-right-radius: 20rpx;
 	
 	}
 	
@@ -3281,6 +3465,7 @@ page{position: relative;background-color: #fff;}
 		display: flex;
 		align-items: center;
 		padding-top: 20rpx;
+		padding-bottom: 20rpx;
 		padding-left: 20rpx;
 	}
 	
@@ -3351,6 +3536,7 @@ page{position: relative;background-color: #fff;}
 	} */
 	.copyright_info {
 		padding: 40rpx 0 80rpx 0;
+		
 	}
 	
 	//2022.05.10
@@ -3381,4 +3567,5 @@ page{position: relative;background-color: #fff;}
 		margin-bottom: 20rpx;
 		box-shadow: 0rpx 5rpx 10rpx rgba(0, 0, 0, 0.1);
 	}
+
 </style>
